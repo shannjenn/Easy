@@ -13,5 +13,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface EasyTable {
 
+    /**
+     * 表名
+     */
     String tableName();
 }

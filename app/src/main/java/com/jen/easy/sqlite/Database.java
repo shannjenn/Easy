@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
 class Database extends SQLiteOpenHelper {
+    private DatabaseListener listener;
 
     public Database(Context context, String name, CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -26,9 +27,12 @@ class Database extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         DBLog.d("Database onUpgrade oldVersion=" + oldVersion + " newVersion=" + newVersion);
-        try {
+        if (listener != null) {
+            listener.onUpgrade(db, oldVersion, newVersion);
+        }
+        /*try {
             db.beginTransaction();
-            /*if (oldVersion <= 1 && newVersion >= 2) {
+            if (oldVersion <= 1 && newVersion >= 2) {
                 final String LCount = "LCount";
                 boolean LCountExist = checkColumnExist(db, TB.TB_StudyProgress, LCount);
                 if (!LCountExist) {
@@ -42,39 +46,73 @@ class Database extends SQLiteOpenHelper {
                     db.execSQL("alter table StudyProgress add RCount integer");
                     DBLog.d("增加 学习进度表 已读总数字段：RCount 成功!!");
                 }
-            }*/
+            }
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             e.printStackTrace();
             DBLog.e("Database onUpgrade error");
         }
-        db.endTransaction();
+        db.endTransaction();*/
     }
 
     /**
-     * checkColumnExist1:(检查某表列是否存在)
+     * 增加指定表字段
      *
-     * @param db
-     * @param tableName
-     * @param columnName
-     * @return boolean
+     * @param tableName  表名
+     * @param columnName 列名
+     * @param columnType 类型
      * @author Jenn 2017-4-25 下午5:21:08
      * @since 1.0.0
      */
-    private boolean checkColumnExist(SQLiteDatabase db, String tableName, String columnName) {
-        boolean result = false;
-        Cursor cursor = null;
+    public void addColumnName(SQLiteDatabase db, String tableName, String columnName, String columnType) {
         try {
-            cursor = db.rawQuery("SELECT * FROM " + tableName + " LIMIT 0", null);
-            result = cursor != null && cursor.getColumnIndex(columnName) != -1;
-        } catch (Exception e) {
+            db.beginTransaction();
+            db.execSQL("alter table " + tableName + " add " + columnName + " " + columnType);
+            db.setTransactionSuccessful();
+            DBLog.w("table:" + tableName + " add column " + columnName + " SUCCESS");
+        } catch (SQLException e) {
             e.printStackTrace();
-            DBLog.e("Database checkColumnExist error");
+            DBLog.e("Database add columnName error");
         } finally {
-            if (null != cursor && !cursor.isClosed())
-                cursor.close();
+            db.endTransaction();
         }
-        return result;
     }
 
+    /**
+     * 检测表是否存在
+     *
+     * @param db
+     * @param tableName
+     * @return
+     */
+    public boolean checkTableExist(SQLiteDatabase db, String tableName) {
+        Cursor cursor = db.rawQuery("SELECT * FROM " + tableName + " LIMIT 0", null);
+        boolean exist = cursor != null;
+        if (cursor != null)
+            cursor.close();
+        return exist;
+    }
+
+    /**
+     * 检测列是否存在
+     *
+     * @param db
+     * @param tableName
+     * @return
+     */
+    public boolean checkCloumnExist(SQLiteDatabase db, String tableName, String columnName) {
+        Cursor cursor = db.rawQuery("SELECT * FROM " + tableName + " LIMIT 0", null);
+        boolean exist = cursor != null && cursor.getColumnIndex(columnName) != -1;
+        if (cursor != null)
+            cursor.close();
+        return exist;
+    }
+
+    interface DatabaseListener {
+        void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion);
+    }
+
+    public void setListener(DatabaseListener listener) {
+        this.listener = listener;
+    }
 }
