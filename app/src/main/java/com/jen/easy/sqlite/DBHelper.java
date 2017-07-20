@@ -1,5 +1,6 @@
 package com.jen.easy.sqlite;
 
+import android.app.Application;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -13,15 +14,16 @@ public class DBHelper {
     private static DBHelper dbHelper;
     private Database database;
 
-    private DBHelper() {
+    private DBHelper(Application AppContext) {
         if (database == null) {
-            database = new Database(EasyApplication.getAppContext());
+            database = new Database(AppContext);
         }
     }
 
     /**
+     * 获取实例
+     *
      * @return
-     * @获取实例
      */
     public static DBHelper getInstance() {
         if (EasyApplication.getAppContext() == null) {
@@ -29,7 +31,24 @@ public class DBHelper {
             return null;
         }
         if (dbHelper == null) {
-            dbHelper = new DBHelper();
+            dbHelper = new DBHelper(EasyApplication.getAppContext());
+        }
+        return dbHelper;
+    }
+
+    /**
+     * 获取实例
+     *
+     * @param AppContext
+     * @return
+     */
+    public static DBHelper getInstance(Application AppContext) {
+        if (AppContext == null) {
+            DBLog.w("AppContext is null ");
+            return null;
+        }
+        if (dbHelper == null) {
+            dbHelper = new DBHelper(AppContext);
         }
         return dbHelper;
     }

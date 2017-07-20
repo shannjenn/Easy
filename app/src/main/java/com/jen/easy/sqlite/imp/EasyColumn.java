@@ -9,7 +9,6 @@ import java.lang.annotation.Target;
  * Created by jen on 2017/7/18.
  * primaryKey：是否为主键
  * columnName：字段名称
- * columnType：数据类型，不输入默认文本类型
  */
 
 @Target(ElementType.FIELD)
