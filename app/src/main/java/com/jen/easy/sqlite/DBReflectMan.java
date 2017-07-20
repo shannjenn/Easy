@@ -24,7 +24,7 @@ class DBReflectMan {
      * @param clazz
      * @return
      */
-    protected static String getTableName(Class clazz) {
+    static String getTableName(Class clazz) {
         String tbName = null;
         Annotation[] anns = clazz.getDeclaredAnnotations();
         for (int i = 0; i < anns.length; i++) {
@@ -42,7 +42,7 @@ class DBReflectMan {
      * @param clazz
      * @return Map<String, List<String>>: (column（name,type）, primaryKey)
      */
-    protected static Map<String, Object> getColumnNames(Class clazz) {
+    static Map<String, Object> getColumnNames(Class clazz) {
         Map<String, Object> objectMap = new HashMap<>();
         List<String> primaryKey = new ArrayList<>();
         Map<String, String> column = new HashMap<>();
@@ -78,7 +78,7 @@ class DBReflectMan {
      * @param clazz
      * @return Map<String, List<String>>: (column, primaryKey,fieldName)
      */
-    public static Map<String, Object> getFields(Class clazz) {
+    static Map<String, Object> getFields(Class clazz) {
         Map<String, Object> objectMap = new HashMap<>();
         List<String> primaryKey = new ArrayList<>();
         Map<String, String> column = new HashMap<>();

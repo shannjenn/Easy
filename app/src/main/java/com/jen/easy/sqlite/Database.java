@@ -11,12 +11,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 class Database extends SQLiteOpenHelper {
     private DatabaseListener listener;
 
-    public Database(Context context, String name, CursorFactory factory, int version) {
+    Database(Context context, String name, CursorFactory factory, int version) {
         super(context, name, factory, version);
         DBLog.d("Database name=" + name + " version=" + version);
     }
 
-    public Database(Context context) {
+    Database(Context context) {
         this(context, DB.DB_NAME, null, DB.DB_VERSION);
     }
 
@@ -63,7 +63,7 @@ class Database extends SQLiteOpenHelper {
      * @param tableName
      * @return
      */
-    public boolean checkTableExist(SQLiteDatabase db, String tableName) {
+    boolean checkTableExist(SQLiteDatabase db, String tableName) {
         boolean exist = false;
         try {
             Cursor cursor = db.rawQuery("SELECT * FROM " + tableName + " LIMIT 0", null);
@@ -85,7 +85,7 @@ class Database extends SQLiteOpenHelper {
      * @param tableName
      * @return
      */
-    public boolean checkCloumnExist(SQLiteDatabase db, String tableName, String columnName) {
+    boolean checkCloumnExist(SQLiteDatabase db, String tableName, String columnName) {
         boolean exist = false;
         try {
             Cursor cursor = db.rawQuery("SELECT * FROM " + tableName + " LIMIT 0", null);
@@ -103,7 +103,7 @@ class Database extends SQLiteOpenHelper {
         void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion);
     }
 
-    public void setListener(DatabaseListener listener) {
+    void setListener(DatabaseListener listener) {
         this.listener = listener;
     }
 }

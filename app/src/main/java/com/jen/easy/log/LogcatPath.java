@@ -7,7 +7,7 @@ import java.io.File;
 class LogcatPath {
     private static String logPath;
 
-    public static String getDefaultPath() {
+    static String setDefaultPath() {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {// 优先保存到SD卡中
             logPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "_LogcatHelper";
         }/*
@@ -24,11 +24,17 @@ class LogcatPath {
         return logPath;
     }
 
-    public static String getLogPath() {
+    static String getLogPath() {
         return logPath;
     }
 
-    public static void setLogPath(String logPath) {
+    static void setLogPath(String logPath) {
+        if (logPath == null)
+            return;
+        File file = new File(logPath);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
         LogcatPath.logPath = logPath;
     }
 

@@ -12,10 +12,8 @@ class LogcatCrash implements UncaughtExceptionHandler {
     private static LogcatCrash instance; // 单例模式
     private LogcatCrashListener mListener;
     private UncaughtExceptionHandler defalutHandler; // 系统默认的UncaughtException处理类
-    private String Dir;
 
     private LogcatCrash() {
-        Dir = LogcatPath.getDefaultPath();
     }
 
     /**
@@ -23,7 +21,7 @@ class LogcatCrash implements UncaughtExceptionHandler {
      *
      * @return CrashHandler
      */
-    public static LogcatCrash getInstance() {
+    static LogcatCrash getInstance() {
         if (instance == null) {
             synchronized (LogcatCrash.class) {
                 if (instance == null) {
@@ -37,8 +35,8 @@ class LogcatCrash implements UncaughtExceptionHandler {
     /**
      * 异常处理初始化
      */
-    public void start() {
-        if (Dir == null) {
+    void start() {
+        if (LogcatPath.getLogPath() == null) {
             Logcat.w("日志路径为空，LogcatHelper日志未能启动--------------------");
             return;
         }
@@ -48,7 +46,7 @@ class LogcatCrash implements UncaughtExceptionHandler {
         Thread.setDefaultUncaughtExceptionHandler(this);
     }
 
-    public void stop() {
+    void stop() {
         if (defalutHandler != null)
             Thread.setDefaultUncaughtExceptionHandler(defalutHandler);
     }
@@ -58,7 +56,7 @@ class LogcatCrash implements UncaughtExceptionHandler {
         boolean userCatch = false;
         if (mListener != null) {
             try {
-                PrintWriter p = new PrintWriter(new FileOutputStream(new File(Dir, "LogcatCrash-" + LogcatDate.getFileName() + ".txt"), true));
+                PrintWriter p = new PrintWriter(new FileOutputStream(new File(LogcatPath.getLogPath(), "LogcatCrash-" + LogcatDate.getFileName() + ".txt"), true));
                 p.println(LogcatDate.getDateEN() + " " + ex.toString() + "\n");
                 p.println(LogcatDate.getDateEN() + " " + ex.getLocalizedMessage());
                 p.println(LogcatDate.getDateEN() + " " + ex.getMessage());
@@ -85,15 +83,12 @@ class LogcatCrash implements UncaughtExceptionHandler {
         }
     }
 
-    public interface LogcatCrashListener {
+    interface LogcatCrashListener {
         boolean onBeforeHandleException(Throwable ex);
     }
 
-    public void setListener(LogcatCrashListener listener) {
+    void setListener(LogcatCrashListener listener) {
         this.mListener = listener;
     }
 
-    public void setDir(String dir) {
-        Dir = dir;
-    }
 }

@@ -37,7 +37,7 @@ public class LogcatHelper {
 	 * @param path
 	 */
 	public void setLogPath(String path) {
-		LogDumper.getInstance().setDir(path);
+		LogcatPath.setLogPath(path);
 	}
 
 	/**
