@@ -21,16 +21,6 @@ public @interface EasyColumn {
     String columnName();
 
     /**
-     * 数据类型：
-     * ColumnType.TYPE0TEXT文本类型，
-     * ColumnType.TYPE1无符号整型，
-     * ColumnType.TYPE2浮点类型，
-     * ColumnType.TYPE3任何类型,
-     * ColumnType.TYPE4空值类型
-     */
-    int columnType() default 0;
-
-    /**
      * 是否为主键
      */
     boolean primaryKey() default false;

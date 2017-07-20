@@ -4,15 +4,19 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.jen.easy.app.EasyApplication;
+import com.jen.easy.constant.FieldType;
 
 import java.util.List;
 import java.util.Map;
 
 public class DBHelper {
     private static DBHelper dbHelper;
-    private static Database database;
+    private Database database;
 
     private DBHelper() {
+        if (database == null) {
+            database = new Database(EasyApplication.getAppContext());
+        }
     }
 
     /**
@@ -26,7 +30,6 @@ public class DBHelper {
         }
         if (dbHelper == null) {
             dbHelper = new DBHelper();
-            database = new Database(EasyApplication.getAppContext());
         }
         return dbHelper;
     }
@@ -90,7 +93,7 @@ public class DBHelper {
         DBLog.d("createTB");
         Map<String, Object> fields = DBReflectMan.getColumnNames(clazz);
         List<String> primaryKey = (List<String>) fields.get("primaryKey");
-        Map<String, Integer> column = (Map<String, Integer>) fields.get("column");
+        Map<String, String> column = (Map<String, String>) fields.get("column");
 
         if (tableName == null) {
             DBLog.w("createTB error:tableName is null");
@@ -104,8 +107,8 @@ public class DBHelper {
         StringBuffer fieldSql = new StringBuffer("");
 
         for (String fieldName : column.keySet()) {
-            int fieldType = column.get(fieldName);
-            String type = ColumnType.getFieldType(fieldType);
+            String fieldType = column.get(fieldName);
+            String type = FieldType.getDBCoumnType(fieldType);
 
             fieldSql.append(fieldName);
             fieldSql.append(" ");
@@ -191,7 +194,12 @@ public class DBHelper {
         createTB(clazz);
     }
 
-    public void addColumn(String tableName, String columnName, int columnType) {
+    /**
+     * @param tableName  表名
+     * @param columnName 列名
+     * @param fieldType  FieldType
+     */
+    public void addColumn(String tableName, String columnName, String fieldType) {
         SQLiteDatabase db = dbHelper.getWtriteDatabse();
         boolean existTB = database.checkTableExist(db, tableName);
         if (!existTB) {
@@ -205,7 +213,7 @@ public class DBHelper {
         }
         try {
             db.beginTransaction();
-            db.execSQL("alter table " + tableName + " add " + columnName + ColumnType.getFieldType(columnType));
+            db.execSQL("alter table " + tableName + " add " + columnName + FieldType.getDBCoumnType(fieldType));
             db.setTransactionSuccessful();
             DBLog.d("add table name : " + tableName + " column : " + columnName + " SUCCESS");
         } catch (SQLException e) {

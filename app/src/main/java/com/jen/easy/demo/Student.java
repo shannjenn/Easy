@@ -1,8 +1,9 @@
 package com.jen.easy.demo;
 
-import com.jen.easy.sqlite.ColumnType;
 import com.jen.easy.sqlite.imp.EasyColumn;
 import com.jen.easy.sqlite.imp.EasyTable;
+
+import java.util.Date;
 
 /**
  * Created by Jen on 2017/7/19.
@@ -14,15 +15,17 @@ public class Student {
     @EasyColumn(columnName = "id", primaryKey = true)
     private String id;
 
-    @EasyColumn(columnName = "name", columnType = ColumnType.TYPE0)
+    @EasyColumn(columnName = "name")
     private String name;
 
     @EasyColumn(columnName = "age")
-    private String age;
+    private int age;
 
-    boolean ok;
-    boolean isok;
-    boolean isOk;
+    @EasyColumn(columnName = "yes")
+    private boolean yes;
+
+    @EasyColumn(columnName = "date")
+    private Date date;
 
     public String getId() {
         return id;
@@ -40,27 +43,27 @@ public class Student {
         this.name = name;
     }
 
-    public String getAge() {
+    public int getAge() {
         return age;
     }
 
-    public void setAge(String age) {
+    public void setAge(int age) {
         this.age = age;
     }
 
-    public boolean isOk() {
-        return ok;
+    public boolean isYes() {
+        return yes;
     }
 
-    public void setOk(boolean ok) {
-        this.ok = ok;
+    public void setYes(boolean yes) {
+        this.yes = yes;
     }
 
-    public boolean isok() {
-        return isok;
+    public Date getDate() {
+        return date;
     }
 
-    public void setIsok(boolean isok) {
-        this.isok = isok;
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

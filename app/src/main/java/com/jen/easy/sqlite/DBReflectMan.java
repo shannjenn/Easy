@@ -1,5 +1,6 @@
 package com.jen.easy.sqlite;
 
+import com.jen.easy.constant.FieldType;
 import com.jen.easy.sqlite.imp.EasyColumn;
 import com.jen.easy.sqlite.imp.EasyTable;
 
@@ -16,10 +17,6 @@ import java.util.Map;
  */
 
 class DBReflectMan {
-    public static final String TYPE0 = "class java.lang.String";
-    public static final String TYPE1 = "class java.lang.Integer";
-    public static final String TYPE2 = "class java.lang.Boolean";
-    public static final String TYPE3 = "class java.util.Date";
 
     /**
      * 获取表名
@@ -43,16 +40,16 @@ class DBReflectMan {
      * 获取数据列
      *
      * @param clazz
-     * @return Map<String, List<String>>: (column, primaryKey)
+     * @return Map<String, List<String>>: (column（name,type）, primaryKey)
      */
     protected static Map<String, Object> getColumnNames(Class clazz) {
         Map<String, Object> objectMap = new HashMap<>();
         List<String> primaryKey = new ArrayList<>();
-        Map<String, Integer> column = new HashMap<>();
+        Map<String, String> column = new HashMap<>();
 
-        Field[] fs = clazz.getDeclaredFields();
-        for (int i = 0; i < fs.length; i++) {
-            Annotation[] anns = fs[i].getDeclaredAnnotations();
+        Field[] fields = clazz.getDeclaredFields();
+        for (int i = 0; i < fields.length; i++) {
+            Annotation[] anns = fields[i].getDeclaredAnnotations();
             for (int j = 0; j < anns.length; j++) {
                 if (anns[j] instanceof EasyColumn) {
                     EasyColumn easyField = (EasyColumn) anns[j];
@@ -61,11 +58,11 @@ class DBReflectMan {
                         continue;
                     }
                     boolean isPrimary = easyField.primaryKey();
-                    int keytype = easyField.columnType();
+                    String type = fields[i].getGenericType().toString();
 
                     if (isPrimary)
                         primaryKey.add(coulumnName);
-                    column.put(coulumnName, keytype);
+                    column.put(coulumnName, type);
                     break;
                 }
             }
@@ -84,12 +81,12 @@ class DBReflectMan {
     public static Map<String, Object> getFields(Class clazz) {
         Map<String, Object> objectMap = new HashMap<>();
         List<String> primaryKey = new ArrayList<>();
-        Map<String, Integer> column = new HashMap<>();
+        Map<String, String> column = new HashMap<>();
         Map<String, Field> fieldName = new HashMap<>();
 
-        Field[] fs = clazz.getDeclaredFields();
-        for (int i = 0; i < fs.length; i++) {
-            Annotation[] anns = fs[i].getDeclaredAnnotations();
+        Field[] fields = clazz.getDeclaredFields();
+        for (int i = 0; i < fields.length; i++) {
+            Annotation[] anns = fields[i].getDeclaredAnnotations();
             for (int j = 0; j < anns.length; j++) {
                 if (anns[j] instanceof EasyColumn) {
                     EasyColumn easyField = (EasyColumn) anns[j];
@@ -98,12 +95,12 @@ class DBReflectMan {
                         continue;
                     }
                     boolean isPrimary = easyField.primaryKey();
-                    int oulumnType = easyField.columnType();
+                    String type = fields[i].getGenericType().toString();
 
                     if (isPrimary)
                         primaryKey.add(coulumnName);
-                    column.put(coulumnName, oulumnType);
-                    fieldName.put(coulumnName, fs[i]);
+                    column.put(coulumnName, type);
+                    fieldName.put(coulumnName, fields[i]);
                     break;
                 }
             }
