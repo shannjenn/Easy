@@ -28,8 +28,8 @@ class DBLog {
             Log.w(TAG, msg + "  --- DBLog ---");
     }
 
-    public static void e(String msg) {
+    /*public static void e(String msg) {
         if (DEBUG)
             Log.e(TAG, msg + "  --- DBLog ---");
-    }
+    }*/
 }

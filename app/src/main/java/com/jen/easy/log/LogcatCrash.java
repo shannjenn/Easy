@@ -39,7 +39,7 @@ class LogcatCrash implements UncaughtExceptionHandler {
      */
     public void start() {
         if (Dir == null) {
-            Logcat.e("日志路径为空，LogcatHelper日志未能启动--------------------");
+            Logcat.w("日志路径为空，LogcatHelper日志未能启动--------------------");
             return;
         }
         // 获取系统默认的UncaughtException处理器

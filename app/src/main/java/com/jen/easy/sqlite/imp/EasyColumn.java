@@ -15,28 +15,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface EasyColumn {
-
-    /**
-     * TEXT文本类型
-     */
-    public static final int TYPE0 = 0;
-    /**
-     * INTEEGER无符号整型
-     */
-    public static final int TYPE1 = 1;
-    /**
-     * REAL浮点类型
-     */
-    public static final int TYPE2 = 2;
-    /**
-     * BLOB任何类型
-     */
-    public static final int TYPE3 = 3;
-    /**
-     * NULL空值类型
-     */
-    public static final int TYPE4 = 4;
-
     /**
      * 字段名称
      */
@@ -44,11 +22,11 @@ public @interface EasyColumn {
 
     /**
      * 数据类型：
-     * EasyColumn.TYPE0TEXT文本类型，
-     * EasyColumn.TYPE1无符号整型，
-     * EasyColumn.TYPE2浮点类型，
-     * EasyColumn.TYPE3任何类型,
-     * EasyColumn.TYPE4空值类型
+     * ColumnType.TYPE0TEXT文本类型，
+     * ColumnType.TYPE1无符号整型，
+     * ColumnType.TYPE2浮点类型，
+     * ColumnType.TYPE3任何类型,
+     * ColumnType.TYPE4空值类型
      */
     int columnType() default 0;
 

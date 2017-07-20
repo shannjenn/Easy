@@ -1,10 +1,9 @@
 package com.jen.easy.sqlite;
 
-import android.app.Application;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.jen.easy.sqlite.imp.EasyColumn;
+import com.jen.easy.app.EasyApplication;
 
 import java.util.List;
 import java.util.Map;
@@ -14,18 +13,20 @@ public class DBHelper {
     private static Database database;
 
     private DBHelper() {
-
     }
 
     /**
-     * 获取实例
-     *
      * @return
+     * @获取实例
      */
-    public static DBHelper getInstance(Application appContext) {
+    public static DBHelper getInstance() {
+        if (EasyApplication.getAppContext() == null) {
+            DBLog.w("未继承EasyApplication 该功能不能使用 ");
+            return null;
+        }
         if (dbHelper == null) {
             dbHelper = new DBHelper();
-            database = new Database(appContext);
+            database = new Database(EasyApplication.getAppContext());
         }
         return dbHelper;
     }
@@ -72,24 +73,30 @@ public class DBHelper {
     /**
      * 创建表
      *
-     * @param classObj 传入对象
+     * @param clazz 传入对象
      */
-    public void createTB(Class<?> classObj) {
-        if (classObj == null) {
-            DBLog.e("createTB error:classObj is null");
+    public void createTB(Class clazz) {
+        if (clazz == null) {
+            DBLog.w("createTB error:classObj is null");
             return;
         }
+        SQLiteDatabase db = dbHelper.getWtriteDatabse();
+        String tableName = DBReflectMan.getTableName(clazz);
+        boolean existTB = database.checkTableExist(db, tableName);
+        if (existTB) {
+            return;
+        }
+
         DBLog.d("createTB");
-        String tableName = DBMan.getTableName(classObj);
-        Map<String, Object> fields = DBMan.getFieldNames(classObj);
+        Map<String, Object> fields = DBReflectMan.getColumnNames(clazz);
         List<String> primaryKey = (List<String>) fields.get("primaryKey");
         Map<String, Integer> column = (Map<String, Integer>) fields.get("column");
 
         if (tableName == null) {
-            DBLog.e("createTB error:tableName is null");
+            DBLog.w("createTB error:tableName is null");
             return;
         } else if (column.size() == 0) {
-            DBLog.e("createTB error:column is null");
+            DBLog.w("createTB error:column is null");
             return;
         }
 
@@ -98,7 +105,7 @@ public class DBHelper {
 
         for (String fieldName : column.keySet()) {
             int fieldType = column.get(fieldName);
-            String type = getFieldType(fieldType);
+            String type = ColumnType.getFieldType(fieldType);
 
             fieldSql.append(fieldName);
             fieldSql.append(" ");
@@ -127,10 +134,9 @@ public class DBHelper {
                 ")";
 
         if (dbHelper == null) {
-            DBLog.d("dbHelper is null");
+            DBLog.w("dbHelper is null");
             return;
         }
-        SQLiteDatabase db = dbHelper.getWtriteDatabse();
         try {
             db.beginTransaction();
             db.execSQL(sql);
@@ -138,7 +144,7 @@ public class DBHelper {
             DBLog.d("create table name : " + tableName + " column : " + fieldSql.toString()
                     + " primaryKey : " + primaryKeySql + " SUCCESS");
         } catch (SQLException e) {
-            DBLog.d("create table:" + tableName + " error");
+            DBLog.w("create table:" + tableName + " error");
             e.printStackTrace();
         } finally {
             db.endTransaction();
@@ -146,31 +152,76 @@ public class DBHelper {
     }
 
     /**
-     * 获取字段类型
+     * 删除表
      *
-     * @param fieldType
-     * @return
+     * @param tableName 表名
      */
-    public String getFieldType(int fieldType) {
-        String type = "TEXT";
-        switch (fieldType) {
-            case EasyColumn.TYPE0:
-                type = "TEXT";
-                break;
-            case EasyColumn.TYPE1:
-                type = "INTEEGER";
-                break;
-            case EasyColumn.TYPE2:
-                type = "REAL";
-                break;
-            case EasyColumn.TYPE3:
-                type = "NULL";
-                break;
-            case EasyColumn.TYPE4:
-                type = "NULL";
-                break;
+    public void deleteTB(String tableName) {
+        SQLiteDatabase db = dbHelper.getWtriteDatabse();
+        try {
+            db.beginTransaction();
+            db.execSQL("DROP TABLE " + tableName);
+            db.setTransactionSuccessful();
+            DBLog.d("delete table name : " + tableName + " SUCCESS");
+        } catch (SQLException e) {
+            DBLog.w("table:" + tableName + " delete error or no exist");
+            e.printStackTrace();
+        } finally {
+            db.endTransaction();
         }
-        return type;
     }
 
+    /**
+     * 删除表
+     *
+     * @param clazz
+     */
+    public void deleteTB(Class clazz) {
+        String tableName = DBReflectMan.getTableName(clazz);
+        deleteTB(tableName);
+    }
+
+    /**
+     * 重建表(注意：该操作删除所有数据)
+     *
+     * @param clazz
+     */
+    public void rebuildTB(Class clazz) {
+        deleteTB(clazz);
+        createTB(clazz);
+    }
+
+    public void addColumn(String tableName, String columnName, int columnType) {
+        SQLiteDatabase db = dbHelper.getWtriteDatabse();
+        boolean existTB = database.checkTableExist(db, tableName);
+        if (!existTB) {
+            DBLog.w("table : " + tableName + " is not exist");
+            return;
+        }
+        boolean existClumn = database.checkCloumnExist(db, tableName, columnName);
+        if (existClumn) {
+            DBLog.w("columnName : " + columnName + " is exist");
+            return;
+        }
+        try {
+            db.beginTransaction();
+            db.execSQL("alter table " + tableName + " add " + columnName + ColumnType.getFieldType(columnType));
+            db.setTransactionSuccessful();
+            DBLog.d("add table name : " + tableName + " column : " + columnName + " SUCCESS");
+        } catch (SQLException e) {
+            DBLog.w("table:" + tableName + " delete error or no exist");
+            e.printStackTrace();
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    /**
+     * 数据库监听(可以做升级逻辑操作等)
+     *
+     * @param databaseListener
+     */
+    public void setDatabaseListener(Database.DatabaseListener databaseListener) {
+
+    }
 }

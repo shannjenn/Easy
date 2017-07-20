@@ -72,7 +72,7 @@ class LogDumper extends Thread {
 
 	public void startLogs() {
 		if (Dir == null) {
-			Logcat.e("日志路径为空，LogcatHelper日志未能启动--------------------");
+			Logcat.w("日志路径为空，LogcatHelper日志未能启动--------------------");
 			return;
 		}
 		running = true;

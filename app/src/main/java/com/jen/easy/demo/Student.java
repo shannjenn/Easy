@@ -1,5 +1,6 @@
 package com.jen.easy.demo;
 
+import com.jen.easy.sqlite.ColumnType;
 import com.jen.easy.sqlite.imp.EasyColumn;
 import com.jen.easy.sqlite.imp.EasyTable;
 
@@ -13,11 +14,15 @@ public class Student {
     @EasyColumn(columnName = "id", primaryKey = true)
     private String id;
 
-    @EasyColumn(columnName = "name", columnType = EasyColumn.TYPE0)
+    @EasyColumn(columnName = "name", columnType = ColumnType.TYPE0)
     private String name;
 
     @EasyColumn(columnName = "age")
     private String age;
+
+    boolean ok;
+    boolean isok;
+    boolean isOk;
 
     public String getId() {
         return id;
@@ -41,5 +46,21 @@ public class Student {
 
     public void setAge(String age) {
         this.age = age;
+    }
+
+    public boolean isOk() {
+        return ok;
+    }
+
+    public void setOk(boolean ok) {
+        this.ok = ok;
+    }
+
+    public boolean isok() {
+        return isok;
+    }
+
+    public void setIsok(boolean isok) {
+        this.isok = isok;
     }
 }

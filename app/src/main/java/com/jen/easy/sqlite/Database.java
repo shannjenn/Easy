@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
 class Database extends SQLiteOpenHelper {
@@ -30,29 +31,6 @@ class Database extends SQLiteOpenHelper {
         if (listener != null) {
             listener.onUpgrade(db, oldVersion, newVersion);
         }
-        /*try {
-            db.beginTransaction();
-            if (oldVersion <= 1 && newVersion >= 2) {
-                final String LCount = "LCount";
-                boolean LCountExist = checkColumnExist(db, TB.TB_StudyProgress, LCount);
-                if (!LCountExist) {
-                    db.execSQL("alter table StudyProgress add LCount integer");
-                    DBLog.d("增加 学习进度表 已学总数字段：LCount 成功!!");
-                }
-
-                final String RCount = "RCount";
-                boolean RCountExist = checkColumnExist(db, TB.TB_StudyProgress, RCount);
-                if (!RCountExist) {
-                    db.execSQL("alter table StudyProgress add RCount integer");
-                    DBLog.d("增加 学习进度表 已读总数字段：RCount 成功!!");
-                }
-            }
-            db.setTransactionSuccessful();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            DBLog.e("Database onUpgrade error");
-        }
-        db.endTransaction();*/
     }
 
     /**
@@ -69,10 +47,10 @@ class Database extends SQLiteOpenHelper {
             db.beginTransaction();
             db.execSQL("alter table " + tableName + " add " + columnName + " " + columnType);
             db.setTransactionSuccessful();
-            DBLog.w("table:" + tableName + " add column " + columnName + " SUCCESS");
+            DBLog.d("table:" + tableName + " add column " + columnName + " SUCCESS");
         } catch (SQLException e) {
             e.printStackTrace();
-            DBLog.e("Database add columnName error");
+            DBLog.w("Database add columnName error");
         } finally {
             db.endTransaction();
         }
@@ -86,10 +64,17 @@ class Database extends SQLiteOpenHelper {
      * @return
      */
     public boolean checkTableExist(SQLiteDatabase db, String tableName) {
-        Cursor cursor = db.rawQuery("SELECT * FROM " + tableName + " LIMIT 0", null);
-        boolean exist = cursor != null;
-        if (cursor != null)
-            cursor.close();
+        boolean exist = false;
+        try {
+            Cursor cursor = db.rawQuery("SELECT * FROM " + tableName + " LIMIT 0", null);
+            exist = cursor != null;
+            if (cursor != null)
+                cursor.close();
+            return exist;
+        } catch (SQLiteException e) {
+//            e.printStackTrace();
+            exist = false;
+        }
         return exist;
     }
 
@@ -101,10 +86,16 @@ class Database extends SQLiteOpenHelper {
      * @return
      */
     public boolean checkCloumnExist(SQLiteDatabase db, String tableName, String columnName) {
-        Cursor cursor = db.rawQuery("SELECT * FROM " + tableName + " LIMIT 0", null);
-        boolean exist = cursor != null && cursor.getColumnIndex(columnName) != -1;
-        if (cursor != null)
-            cursor.close();
+        boolean exist = false;
+        try {
+            Cursor cursor = db.rawQuery("SELECT * FROM " + tableName + " LIMIT 0", null);
+            exist = cursor != null && cursor.getColumnIndex(columnName) != -1;
+            if (cursor != null)
+                cursor.close();
+            return exist;
+        } catch (SQLiteException e) {
+//            e.printStackTrace();
+        }
         return exist;
     }
 
