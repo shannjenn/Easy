@@ -1,5 +1,6 @@
 package com.jen.easy.demo;
 
+import com.jen.easy.http.imp.EasyHttpParamName;
 import com.jen.easy.sqlite.imp.EasyColumn;
 import com.jen.easy.sqlite.imp.EasyTable;
 
@@ -12,12 +13,15 @@ import java.util.Date;
 @EasyTable(tableName = "student")
 public class Student {
 
+    @EasyHttpParamName(paramName = "id")
     @EasyColumn(columnName = "id", primaryKey = true)
     private String id;
 
+    @EasyHttpParamName(paramName = "name")
     @EasyColumn(columnName = "name")
     private String name;
 
+    @EasyHttpParamName(paramName = "name")
     @EasyColumn(columnName = "age")
     private int age;
 

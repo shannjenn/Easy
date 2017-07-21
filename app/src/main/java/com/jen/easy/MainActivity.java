@@ -25,8 +25,9 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         DBHelper dbHelper = DBHelper.getInstance();
 //        dbHelper.createTB(Student.class);
-        dbHelper.rebuildTB(Student.class);
-        Student student = new Student();
+        dbHelper.createTB(Student.class);
+
+        /*Student student = new Student();
         student.setId("100");
         student.setName("jen");
         student.setYes(true);
@@ -35,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
         SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.SIMPLIFIED_CHINESE);
         Date d1=new Date(time);
         student.setDate(d1);
-        EasyDBDao.replace(student);
+        EasyDBDao.replace(student);*/
+
         Object object = EasyDBDao.searchById(Student.class, "100");
 
         Logcat.d("");

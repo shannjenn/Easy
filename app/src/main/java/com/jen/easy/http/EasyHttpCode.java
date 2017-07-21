@@ -16,5 +16,5 @@ public final class EasyHttpCode {
     /**
      * 用户取消
      */
-    public final static int CANCEL = 3;
+    public final static int USER_CANCEL = 3;
 }

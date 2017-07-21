@@ -3,7 +3,7 @@ package com.jen.easy.http;
 import android.util.Log;
 
 /**
- * Created by Administrator on 2017/7/18.
+ * Created by Jen on 2017/7/18.
  */
 
 public class HttpLog {

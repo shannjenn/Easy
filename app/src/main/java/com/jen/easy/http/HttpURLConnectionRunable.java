@@ -1,5 +1,7 @@
 package com.jen.easy.http;
 
+import com.jen.easy.http.param.EasyHttpParam;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,9 +10,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 class HttpURLConnectionRunable implements Runnable {
-    private final String TAG = "HttpURLConnectionRunable";
     private EasyHttpParam param;
-    private EasyHttpListener easyHttpListener;
 
     HttpURLConnectionRunable(EasyHttpParam param) {
         super();
@@ -19,7 +19,7 @@ class HttpURLConnectionRunable implements Runnable {
 
     @Override
     public void run() {
-        if (param == null || param.url == null) {
+        if (param == null || param.getUrl() == null) {
             HttpLog.e("param or url is null");
             fail(EasyHttpCode.FAIL, "参数错误");
             return;
@@ -27,16 +27,16 @@ class HttpURLConnectionRunable implements Runnable {
 
         StringBuffer result = new StringBuffer("");
         try {
-            URL url = new URL(param.url);
+            URL url = new URL(param.getUrl());
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             // connection.setDoInput(true);
             // connection.setDoOutput(true);
             //connection.setUseCaches(false);
-            connection.setRequestProperty("Charset", param.charset);
-            connection.setConnectTimeout(param.timeout);
-            connection.setReadTimeout(param.timeout);
-            connection.setRequestProperty("Content-Type", "text/html");
-            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Charset", param.getCharset());
+            connection.setConnectTimeout(param.getTimeout());
+            connection.setReadTimeout(param.getReadTimeout());
+            connection.setRequestProperty("Content-Type", param.getContentType());
+            connection.setRequestMethod(param.getMethod());
             //	connection.setRequestProperty("Range", "bytes=" + param.start + "-" + param.end);
 
             if ((connection.getResponseCode() == 200)) {
@@ -61,17 +61,13 @@ class HttpURLConnectionRunable implements Runnable {
         return param;
     }
 
-    public void setEasyHttpListener(EasyHttpListener easyHttpListener) {
-        this.easyHttpListener = easyHttpListener;
-    }
-
     private void success(StringBuffer result) {
-        if (easyHttpListener != null)
-            easyHttpListener.success(param.flagCode, param.flag, result);
+        if (param.getEasyHttpListener() != null)
+            param.getEasyHttpListener().success(param.getFlagCode(), param.getFlag(), result);
     }
 
     private void fail(int easyHttpCode, String tag) {
-        if (easyHttpListener != null)
-            easyHttpListener.fail(param.flagCode, param.flag, easyHttpCode, tag);
+        if (param.getEasyHttpListener() != null)
+            param.getEasyHttpListener().fail(param.getFlagCode(), param.getFlag(), easyHttpCode, tag);
     }
 }

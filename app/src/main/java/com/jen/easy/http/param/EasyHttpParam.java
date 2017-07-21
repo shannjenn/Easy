@@ -1,24 +1,28 @@
-package com.jen.easy.http;
+package com.jen.easy.http.param;
+
+import com.jen.easy.http.listener.EasyHttpListener;
 
 /**
- * Created by Administrator on 2017/7/21.
+ * Created by Jen on 2017/7/21.
  */
 
 public abstract class EasyHttpParam {
-    int flagCode;
-    String flag;
+    private EasyHttpListener easyHttpListener;
 
-    String url;
-    String method = "GET";
-    String charset = "utf-8";
-    String contentType = "text/html";
+    private int flagCode;
+    private String flag;
 
-    int timeout = 30 * 1000;
-    int readTimeout = 30 * 1000;
-    boolean doOutput = false;
-    boolean doInput = true;
-    boolean useCaches = false;
+    private String url;
+    private String method;
+    private String charset;
+    private String contentType;
 
+    private int timeout = -1;
+    private int readTimeout = -1;
+
+    private boolean doOutput = false;
+    private boolean doInput = true;
+    private boolean useCaches = false;
 
     public int getFlagCode() {
         return flagCode;
@@ -108,4 +112,11 @@ public abstract class EasyHttpParam {
         this.useCaches = useCaches;
     }
 
+    public EasyHttpListener getEasyHttpListener() {
+        return easyHttpListener;
+    }
+
+    public void setEasyHttpListener(EasyHttpListener easyHttpListener) {
+        this.easyHttpListener = easyHttpListener;
+    }
 }
