@@ -8,6 +8,8 @@ import com.jen.easy.http.listener.EasyHttpUploadFileListener;
 
 public abstract class EasyHttpUploadFileParam extends EasyHttpParam {
     private EasyHttpUploadFileListener easyHttpUploadFileListener;
+
+    private String fileName;
     /**
      * 下载文件位置
      */
@@ -30,6 +32,12 @@ public abstract class EasyHttpUploadFileParam extends EasyHttpParam {
      * 用户停止
      */
     private boolean userCancel;
+
+    public EasyHttpUploadFileParam() {
+        doOutput = true;
+        doInput = true;
+        useCaches = false;
+    }
 
     public EasyHttpUploadFileListener getEasyHttpUploadFileListener() {
         return easyHttpUploadFileListener;
@@ -77,5 +85,13 @@ public abstract class EasyHttpUploadFileParam extends EasyHttpParam {
 
     public void setUserCancel(boolean userCancel) {
         this.userCancel = userCancel;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 }

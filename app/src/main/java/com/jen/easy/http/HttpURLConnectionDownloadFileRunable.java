@@ -1,5 +1,7 @@
 package com.jen.easy.http;
 
+import android.text.TextUtils;
+
 import com.jen.easy.http.param.EasyHttpDownloadFileParam;
 
 import java.io.IOException;
@@ -21,8 +23,8 @@ class HttpURLConnectionDownloadFileRunable implements Runnable {
     @Override
     public void run() {
         int result = EasyHttpCode.FAIL;
-        if (param == null || param.getUrl() == null) {
-            HttpLog.e("保存文件地址错误");
+        if (TextUtils.isEmpty(param.getUrl())) {
+            HttpLog.e("URL地址错误");
             fail(EasyHttpCode.FAIL, "参数错误");
             return;
         }
@@ -40,13 +42,14 @@ class HttpURLConnectionDownloadFileRunable implements Runnable {
         try {
             URL url = new URL(param.getUrl());
             connection = (HttpURLConnection) url.openConnection();
-            // connection.setDoInput(true);
-            // connection.setDoOutput(true);
-            //connection.setUseCaches(false);
-            connection.setRequestProperty("Charset", param.getCharset());
+            connection.setDoInput(param.isDoInput());
+            connection.setDoOutput(param.isDoOutput());
+            connection.setUseCaches(param.isUseCaches());
             connection.setConnectTimeout(param.getTimeout());
             connection.setReadTimeout(param.getReadTimeout());
+            connection.setRequestProperty("Charset", param.getCharset());
             connection.setRequestProperty("Content-Type", param.getContentType());
+            connection.setRequestProperty("Connection", param.getConnection());
             connection.setRequestMethod(param.getMethod());
             if (param.isBreak() && param.getEndPoit() > param.getStartPoit() + 100) {
                 connection.setRequestProperty("Range", "bytes=" + param.getStartPoit() + "-" + param.getEndPoit());

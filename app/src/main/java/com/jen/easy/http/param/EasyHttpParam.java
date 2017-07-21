@@ -16,13 +16,14 @@ public abstract class EasyHttpParam {
     private String method;
     private String charset;
     private String contentType;
+    private String connection;
 
     private int timeout = -1;
     private int readTimeout = -1;
 
-    private boolean doOutput = false;
-    private boolean doInput = true;
-    private boolean useCaches = false;
+    boolean doOutput = false;
+    boolean doInput = true;
+    boolean useCaches = false;
 
     public int getFlagCode() {
         return flagCode;
@@ -118,5 +119,13 @@ public abstract class EasyHttpParam {
 
     public void setEasyHttpListener(EasyHttpListener easyHttpListener) {
         this.easyHttpListener = easyHttpListener;
+    }
+
+    public String getConnection() {
+        return connection;
+    }
+
+    public void setConnection(String connection) {
+        this.connection = connection;
     }
 }

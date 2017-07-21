@@ -19,6 +19,7 @@ public class EasyHttp {
     private String method = "GET";
     private String charset = "utf-8";
     private String contentType = "text/html";
+    private String connection = "Keep-Alive";
 
     private int timeout = 30 * 1000;
     private int readTimeout = 30 * 1000;
@@ -75,6 +76,8 @@ public class EasyHttp {
             param.setCharset(charset);
         if (param.getContentType() == null)
             param.setContentType(contentType);
+        if (param.getConnection() == null)
+            param.setConnection(connection);
         if (param.getTimeout() == -1)
             param.setTimeout(timeout);
         if (param.getReadTimeout() == -1)
@@ -125,6 +128,15 @@ public class EasyHttp {
      */
     public void setDefaultReadTimeout(int readTimeout) {
         this.readTimeout = readTimeout;
+    }
+
+    /**
+     * 设置默认字符编码连接参数
+     *
+     * @param connection
+     */
+    public void setDefaultConnection(String connection) {
+        this.connection = connection;
     }
 
     /**

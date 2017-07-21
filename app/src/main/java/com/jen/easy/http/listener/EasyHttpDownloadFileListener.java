@@ -8,7 +8,7 @@ public interface EasyHttpDownloadFileListener {
 
     public void success(int flagCode, String flag);
 
-    public void fail(int flagCode, String flag, int easyHttpCode, String tag);
+    public void fail(int flagCode, String flag, int easyHttpCode, String msg);
 
     public void progress(int flagCode, String flag, long currentPoint, long endPoint);
 }

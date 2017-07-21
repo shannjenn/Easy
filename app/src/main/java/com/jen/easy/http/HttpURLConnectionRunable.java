@@ -22,7 +22,7 @@ class HttpURLConnectionRunable implements Runnable {
     @Override
     public void run() {
         if (TextUtils.isEmpty(param.getUrl())) {
-            HttpLog.e("param or url is null");
+            HttpLog.e("URL地址错误");
             fail(EasyHttpCode.FAIL, "参数错误");
             return;
         }
@@ -30,15 +30,15 @@ class HttpURLConnectionRunable implements Runnable {
         try {
             URL url = new URL(param.getUrl());
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            // connection.setDoInput(true);
-            // connection.setDoOutput(true);
-            //connection.setUseCaches(false);
-            connection.setRequestProperty("Charset", param.getCharset());
+            connection.setDoInput(param.isDoInput());
+            connection.setDoOutput(param.isDoOutput());
+            connection.setUseCaches(param.isUseCaches());
             connection.setConnectTimeout(param.getTimeout());
             connection.setReadTimeout(param.getReadTimeout());
+            connection.setRequestProperty("Charset", param.getCharset());
             connection.setRequestProperty("Content-Type", param.getContentType());
+            connection.setRequestProperty("Connection", param.getConnection());
             connection.setRequestMethod(param.getMethod());
-            //	connection.setRequestProperty("Range", "bytes=" + param.start + "-" + param.end);
 
             if ((connection.getResponseCode() == 200)) {
                 StringBuffer result = new StringBuffer("");

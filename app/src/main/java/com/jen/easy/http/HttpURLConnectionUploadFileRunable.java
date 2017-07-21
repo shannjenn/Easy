@@ -1,18 +1,21 @@
 package com.jen.easy.http;
 
+import android.text.TextUtils;
+
 import com.jen.easy.http.param.EasyHttpUploadFileParam;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.RandomAccessFile;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 
 class HttpURLConnectionUploadFileRunable implements Runnable {
     private EasyHttpUploadFileParam param;
-    private final int UNIT_SIZE = 10 * 1024;
 
     HttpURLConnectionUploadFileRunable(EasyHttpUploadFileParam param) {
         super();
@@ -22,93 +25,75 @@ class HttpURLConnectionUploadFileRunable implements Runnable {
     @Override
     public void run() {
         int result = EasyHttpCode.FAIL;
-        if (param == null || param.getUrl() == null) {
-            HttpLog.e("保存文件地址错误");
+        if (TextUtils.isEmpty(param.getUrl())) {
+            HttpLog.e("URL地址错误");
             fail(EasyHttpCode.FAIL, "参数错误");
             return;
         }
-
-        if (param.getStartPoit() <= 1024 * 2) {
-            param.setStartPoit(0);
-        } else if (param.getStartPoit() > 1024 * 2) {
-            param.setStartPoit(param.getStartPoit() - 1024 * 2);
+        File file = new File(param.getFilePath());
+        if (!file.isFile()) {
+            fail(EasyHttpCode.FAIL, "文件地址参数错误");
+            return;
         }
 
-        long curbytes = param.getStartPoit();
         HttpURLConnection connection = null;
-        RandomAccessFile randFile = null;
-        InputStream inStream = null;
         try {
             URL url = new URL(param.getUrl());
             connection = (HttpURLConnection) url.openConnection();
-            // connection.setDoInput(true);
-            // connection.setDoOutput(true);
-            //connection.setUseCaches(false);
-            connection.setRequestProperty("Charset", param.getCharset());
+            connection.setDoInput(param.isDoInput());
+            connection.setDoOutput(param.isDoOutput());
+            connection.setUseCaches(param.isUseCaches());
             connection.setConnectTimeout(param.getTimeout());
             connection.setReadTimeout(param.getReadTimeout());
-            connection.setRequestProperty("Content-Type", param.getContentType());
+            connection.setRequestProperty("Charset", param.getCharset());
+            connection.setRequestProperty("Content-Type", "multipart/form-data;file=" + param.getContentType());
+            connection.setRequestProperty("Connection", param.getConnection());
             connection.setRequestMethod(param.getMethod());
             if (param.isBreak() && param.getEndPoit() > param.getStartPoit() + 100) {
                 connection.setRequestProperty("Range", "bytes=" + param.getStartPoit() + "-" + param.getEndPoit());
             }
 
-            if ((connection.getResponseCode() == 200)) {
-                param.setEndPoit(connection.getContentLength());
-                inStream = connection.getInputStream();
-                byte[] buffer = new byte[1024];
-                randFile = new RandomAccessFile(param.getFilePath(), "rwd");
-                randFile.seek(param.getStartPoit());
-                int len = 0;
-                while ((len = inStream.read(buffer)) != -1 && !param.isUserCancel()) {
-                    randFile.write(buffer, 0, len);
-                    curbytes += len;
-                    if (!param.isUserCancel()) {
-                        progress(curbytes, param.getEndPoit());
-                    } else {
-                        break;
-                    }
+            DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+            DataInputStream in = new DataInputStream(new FileInputStream(file));
+            int bytes = 0;
+            byte[] bufferOut = new byte[1024];
+            while ((bytes = in.read(bufferOut)) != -1 && !param.isUserCancel()) {
+                out.write(bufferOut, 0, bytes);
+                if (param.isUserCancel()) {
+                    break;
                 }
             }
+            in.close();
+            out.flush();
+            out.close();
+
             if (param.isUserCancel()) {
-                result = EasyHttpCode.USER_CANCEL;
-            } else if (curbytes == param.getEndPoit()) {
-                result = EasyHttpCode.SUCCESS;
+                fail(EasyHttpCode.FAIL, "用户取消");
+                return;
             }
-        } catch (MalformedURLException e) {
-            HttpLog.e("MalformedURLException error --------");
-            e.printStackTrace();
-        } catch (ProtocolException e) {
-            HttpLog.e("ProtocolException error --------");
-            e.printStackTrace();
+
+            // 读取返回数据
+            StringBuffer buffer = new StringBuffer();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                buffer.append(line);
+            }
+            reader.close();
+            reader = null;
+            success(buffer.toString());
         } catch (IOException e) {
-            HttpLog.e("IOException error --------");
-            e.printStackTrace();
-        } catch (IllegalStateException e) {
-            HttpLog.e("IllegalStateException error --------");
             e.printStackTrace();
         } finally {
-            if (connection != null)
+            if (connection != null) {
                 connection.disconnect();
-            try {
-                if (null != randFile)
-                    randFile.close();
-                if (null != inStream)
-                    inStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-        }
-        if (result == EasyHttpCode.SUCCESS) {
-            success();
-        } else {
-            fail(result, result == EasyHttpCode.USER_CANCEL ? "用户取消" : "下载异常");
         }
     }
 
-    private void success() {
+    private void success(String msg) {
         if (param.getEasyHttpUploadFileListener() != null)
-            param.getEasyHttpUploadFileListener().success(param.getFlagCode(), param.getFlag());
+            param.getEasyHttpUploadFileListener().success(param.getFlagCode(), param.getFlag(), msg);
     }
 
     private void fail(int easyHttpCode, String tag) {

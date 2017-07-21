@@ -6,7 +6,7 @@ package com.jen.easy.http.listener;
 
 public interface EasyHttpListener {
 
-    public void success(int flagCode, String flag, String result);
+    public void success(int flagCode, String flag, String msg);
 
-    public void fail(int flagCode, String flag, int easyHttpCode, String tag);
+    public void fail(int flagCode, String flag, int easyHttpCode, String msg);
 }
