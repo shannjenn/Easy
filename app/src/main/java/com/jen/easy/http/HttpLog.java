@@ -1,4 +1,4 @@
-package com.jen.easy.sqlite;
+package com.jen.easy.http;
 
 import android.util.Log;
 
@@ -6,8 +6,8 @@ import android.util.Log;
  * Created by Administrator on 2017/7/18.
  */
 
-public class DBLog {
-    static final String TAG = DBLog.class.getSimpleName();
+public class HttpLog {
+    static final String TAG = HttpLog.class.getSimpleName();
     /**
      * 是否打印DBLog(默认打印)
      */

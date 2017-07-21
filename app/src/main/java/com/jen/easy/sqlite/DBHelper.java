@@ -111,8 +111,8 @@ public class DBHelper {
 
         DBLog.d("createTB");
         Map<String, Object> fields = DBReflectMan.getColumnNames(clazz);
-        List<String> primaryKey = (List<String>) fields.get("primaryKey");
-        Map<String, String> column = (Map<String, String>) fields.get("column");
+        List<String> primaryKey = (List<String>) fields.get(DBReflectMan.PRIMARY_KEY);
+        Map<String, String> column = (Map<String, String>) fields.get(DBReflectMan.COLUMN_TYPE);
 
         if (tableName == null) {
             DBLog.w("createTB error:tableName is null");

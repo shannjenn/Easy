@@ -8,7 +8,6 @@ import com.jen.easy.log.Logcat;
 import com.jen.easy.sqlite.DBHelper;
 import com.jen.easy.sqlite.EasyDBDao;
 
-import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -36,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.SIMPLIFIED_CHINESE);
         Date d1=new Date(time);
         student.setDate(d1);
-        EasyDBDao.insert(student);
+        EasyDBDao.replace(student);
         Object object = EasyDBDao.searchById(Student.class, "100");
 
         Logcat.d("");

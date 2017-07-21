@@ -1,6 +1,5 @@
 package com.jen.easy.sqlite;
 
-import com.jen.easy.constant.FieldType;
 import com.jen.easy.sqlite.imp.EasyColumn;
 import com.jen.easy.sqlite.imp.EasyTable;
 
@@ -17,6 +16,19 @@ import java.util.Map;
  */
 
 class DBReflectMan {
+    /**
+     * 主键名List
+     */
+    static final String PRIMARY_KEY = "primary_key";
+    /**
+     * 全部列明和属性类型
+     */
+    static final String COLUMN_TYPE = "column_type";
+    /**
+     * 全部列明和属性名称
+     */
+    static final String COLUMN_FIELD = "column_field";
+
 
     /**
      * 获取表名
@@ -31,6 +43,7 @@ class DBReflectMan {
             if (anns[i] instanceof EasyTable) {
                 EasyTable easyTable = (EasyTable) anns[i];
                 tbName = easyTable.tableName();
+                break;
             }
         }
         return tbName;
@@ -40,7 +53,7 @@ class DBReflectMan {
      * 获取数据列
      *
      * @param clazz
-     * @return Map<String, List<String>>: (column（name,type）, primaryKey)
+     * @return Map<String, List<String>>
      */
     static Map<String, Object> getColumnNames(Class clazz) {
         Map<String, Object> objectMap = new HashMap<>();
@@ -67,8 +80,8 @@ class DBReflectMan {
                 }
             }
         }
-        objectMap.put("primaryKey", primaryKey);
-        objectMap.put("column", column);
+        objectMap.put(PRIMARY_KEY, primaryKey);
+        objectMap.put(COLUMN_TYPE, column);
         return objectMap;
     }
 
@@ -76,7 +89,7 @@ class DBReflectMan {
      * 获取字字段
      *
      * @param clazz
-     * @return Map<String, List<String>>: (column, primaryKey,fieldName)
+     * @return Map<String, List<String>>
      */
     static Map<String, Object> getFields(Class clazz) {
         Map<String, Object> objectMap = new HashMap<>();
@@ -105,9 +118,9 @@ class DBReflectMan {
                 }
             }
         }
-        objectMap.put("primaryKey", primaryKey);
-        objectMap.put("column", column);
-        objectMap.put("fieldName", fieldName);
+        objectMap.put(PRIMARY_KEY, primaryKey);
+        objectMap.put(COLUMN_TYPE, column);
+        objectMap.put(COLUMN_FIELD, fieldName);
         return objectMap;
     }
 }
