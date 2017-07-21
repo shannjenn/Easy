@@ -1,5 +1,7 @@
 package com.jen.easy.http;
 
+import android.text.TextUtils;
+
 import com.jen.easy.http.param.EasyHttpParam;
 
 import java.io.BufferedReader;
@@ -19,13 +21,12 @@ class HttpURLConnectionRunable implements Runnable {
 
     @Override
     public void run() {
-        if (param == null || param.getUrl() == null) {
+        if (TextUtils.isEmpty(param.getUrl())) {
             HttpLog.e("param or url is null");
             fail(EasyHttpCode.FAIL, "参数错误");
             return;
         }
 
-        StringBuffer result = new StringBuffer("");
         try {
             URL url = new URL(param.getUrl());
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -40,6 +41,7 @@ class HttpURLConnectionRunable implements Runnable {
             //	connection.setRequestProperty("Range", "bytes=" + param.start + "-" + param.end);
 
             if ((connection.getResponseCode() == 200)) {
+                StringBuffer result = new StringBuffer("");
                 InputStream inStream = connection.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inStream));
                 String s = null;
@@ -49,19 +51,19 @@ class HttpURLConnectionRunable implements Runnable {
                 reader.close();
                 inStream.close();
                 connection.disconnect();
+                success(result.toString());
             }
         } catch (IOException e) {
             e.printStackTrace();
-            fail(EasyHttpCode.FAIL, "读取流异常");
         }
-        success(result);
+        fail(EasyHttpCode.FAIL, "获取数据异常");
     }
 
     EasyHttpParam getParam() {
         return param;
     }
 
-    private void success(StringBuffer result) {
+    private void success(String result) {
         if (param.getEasyHttpListener() != null)
             param.getEasyHttpListener().success(param.getFlagCode(), param.getFlag(), result);
     }

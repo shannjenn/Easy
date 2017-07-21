@@ -12,7 +12,6 @@ import java.net.URL;
 
 class HttpURLConnectionDownloadFileRunable implements Runnable {
     private EasyHttpDownloadFileParam param;
-    private final int UNIT_SIZE = 10 * 1024;
 
     HttpURLConnectionDownloadFileRunable(EasyHttpDownloadFileParam param) {
         super();
