@@ -23,6 +23,7 @@ class Database extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         DBLog.d("Database onCreate");
+        listener.onCreate(db);
     }
 
     @Override
@@ -100,6 +101,7 @@ class Database extends SQLiteOpenHelper {
     }
 
     interface DatabaseListener {
+        void onCreate(SQLiteDatabase db);
         void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion);
     }
 

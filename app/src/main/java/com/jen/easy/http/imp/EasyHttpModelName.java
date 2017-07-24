@@ -6,18 +6,18 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 网络请求参数名
+ * 网络请求对象名
  * Created by Jen on 2017/7/21.
  */
 
-@Target(ElementType.FIELD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface EasyHttpParamName {
+public @interface EasyHttpModelName {
 
     /**
-     * 参数名称
+     * 对象名称
      *
      * @return
      */
-    String paramName();
+    String modelName();
 }

@@ -249,6 +249,6 @@ public class DBHelper {
      * @param databaseListener
      */
     public void setDatabaseListener(Database.DatabaseListener databaseListener) {
-
+        database.setListener(databaseListener);
     }
 }
