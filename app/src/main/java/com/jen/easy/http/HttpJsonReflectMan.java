@@ -91,7 +91,9 @@ class HttpJsonReflectMan {
                         String value = jsonObject.getString(param);
                         Date date = DataFormat.parser(value);
                         field.set(object, date);
-                    }
+                    } /*else if(){
+                        Class<?> clazz2 = Class.forName(clazzName);
+                    }*/
                 }
             }
         } catch (JSONException e) {
@@ -112,7 +114,7 @@ class HttpJsonReflectMan {
      * @param jsonArray
      * @return
      */
-    public static List<Object> parseJsonArray(Class clazz, JSONArray jsonArray) {
+    static List<Object> parseJsonArray(Class clazz, JSONArray jsonArray) {
         List<Object> list = new ArrayList<>();
         if (jsonArray == null) {
             HttpLog.e("clazz or jsonArray is null");

@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.jen.easy.log.Logcat;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,16 +18,21 @@ public class HttpJsonParse {
         if (obj == null) {
             Logcat.e("obj is null");
         }
+        Object o = null;
         try {
             if (obj instanceof String) {
                 JSONObject object = new JSONObject((String) obj);
                 parseJson(clazz, object);
             } else if (obj instanceof JSONObject) {
-                HttpJsonReflectMan.parseJsonObject(clazz, (JSONObject) obj);
+                o = HttpJsonReflectMan.parseJsonObject(clazz, (JSONObject) obj);
+            } else if (obj instanceof JSONArray) {
+                o = HttpJsonReflectMan.parseJsonArray(clazz, (JSONArray) obj);
+            } else {
+                Logcat.e("obj is not JSONObject or JSONArray");
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return null;
+        return o;
     }
 }
