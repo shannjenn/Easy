@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.jen.easy.http.param.EasyHttpDownloadFileParam;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
@@ -11,6 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.net.URLEncoder;
 
 class HttpURLConnectionDownloadFileRunable implements Runnable {
     private EasyHttpDownloadFileParam param;
@@ -39,8 +41,29 @@ class HttpURLConnectionDownloadFileRunable implements Runnable {
         HttpURLConnection connection = null;
         RandomAccessFile randFile = null;
         InputStream inStream = null;
+
         try {
-            URL url = new URL(param.getUrl());
+            boolean hasParam = false;
+            boolean isNotFirst = false;
+            StringBuffer requestBuf = new StringBuffer("");
+            for (String name : param.getRequestParam().keySet()) {
+                String value = param.getRequestParam().get(name);
+                if (isNotFirst) {
+                    requestBuf.append("&");
+                }
+                requestBuf.append(name);
+                requestBuf.append("=");
+                requestBuf.append(URLEncoder.encode(value, param.getCharset()));
+                isNotFirst = true;
+                hasParam =true;
+            }
+
+            String urlStr = param.getUrl();
+            if (param.getMethod().toUpperCase().equals("GET") && hasParam) {
+                urlStr = urlStr + "?" + requestBuf.toString();
+            }
+
+            URL url = new URL(urlStr);
             connection = (HttpURLConnection) url.openConnection();
             connection.setDoInput(param.isDoInput());
             connection.setDoOutput(param.isDoOutput());
@@ -53,6 +76,14 @@ class HttpURLConnectionDownloadFileRunable implements Runnable {
             connection.setRequestMethod(param.getMethod());
             if (param.isBreak() && param.getEndPoit() > param.getStartPoit() + 100) {
                 connection.setRequestProperty("Range", "bytes=" + param.getStartPoit() + "-" + param.getEndPoit());
+            }
+
+            if (param.getMethod().toUpperCase().equals("POST") && hasParam) {
+                connection.connect();
+                DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+                out.writeBytes(requestBuf.toString());
+                out.flush();
+                out.close();
             }
 
             if ((connection.getResponseCode() == 200)) {

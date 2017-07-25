@@ -2,6 +2,9 @@ package com.jen.easy.http.param;
 
 import com.jen.easy.http.listener.EasyHttpListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Jen on 2017/7/21.
  */
@@ -12,6 +15,7 @@ public abstract class EasyHttpParam {
     private int flagCode;
     private String flag;
     private boolean parseJson;
+    private Map<String, String> requestParam = new HashMap<>();
 
     private String url;
     private String method;
@@ -25,6 +29,10 @@ public abstract class EasyHttpParam {
     boolean doOutput = false;
     boolean doInput = true;
     boolean useCaches = false;
+
+    public void addRequestParam(String name, String value) {
+        requestParam.put(name, value);
+    }
 
     public int getFlagCode() {
         return flagCode;
@@ -136,5 +144,9 @@ public abstract class EasyHttpParam {
 
     public void setParseJson(boolean parseJson) {
         this.parseJson = parseJson;
+    }
+
+    public Map<String, String> getRequestParam() {
+        return requestParam;
     }
 }

@@ -92,10 +92,14 @@ class HttpURLConnectionUploadFileRunable implements Runnable {
     }
 
     private void success(String result) {
-        if (param.getEasyHttpUploadFileListener() != null){
+        if (param.getEasyHttpUploadFileListener() != null) {
             Object object = null;
             if (param.isParseJson()) {
                 object = HttpParse.parseJson(param.getClass(), result);
+                if (object == null) {
+                    fail(EasyHttpCode.FAIL, "数据异常");
+                    return;
+                }
             }
             param.getEasyHttpUploadFileListener().success(param.getFlagCode(), param.getFlag(), object);
         }

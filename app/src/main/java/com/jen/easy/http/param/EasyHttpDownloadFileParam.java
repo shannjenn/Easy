@@ -3,7 +3,7 @@ package com.jen.easy.http.param;
 import com.jen.easy.http.listener.EasyHttpDownloadFileListener;
 
 /**
- * Created by Administrator on 2017/7/21.
+ * Created by Jen on 2017/7/21.
  */
 
 public abstract class EasyHttpDownloadFileParam extends EasyHttpParam {
