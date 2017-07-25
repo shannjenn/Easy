@@ -1,7 +1,5 @@
 package com.jen.easy.http;
 
-import android.text.TextUtils;
-
 import com.jen.easy.log.Logcat;
 
 import org.json.JSONArray;
@@ -9,11 +7,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by Administrator on 2017/7/24.
+ * Created by Jen on 2017/7/24.
  */
 
-public class HttpJsonParse {
+public class HttpParse {
 
+    /**
+     * json解析
+     *
+     * @param clazz
+     * @param obj
+     * @return
+     */
     public static Object parseJson(Class clazz, Object obj) {
         if (obj == null) {
             Logcat.e("obj is null");
@@ -35,4 +40,5 @@ public class HttpJsonParse {
         }
         return o;
     }
+
 }

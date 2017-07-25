@@ -1,5 +1,7 @@
 package com.jen.easy.http;
 
+import android.text.TextUtils;
+
 import com.jen.easy.constant.FieldType;
 import com.jen.easy.http.imp.EasyHttpModelName;
 import com.jen.easy.http.imp.EasyHttpParamName;
@@ -38,6 +40,11 @@ class HttpJsonReflectMan {
             HttpLog.e("clazz or jsonObject is null");
             return null;
         }
+        String modelName = getModelName(clazz);
+        if (TextUtils.isEmpty(modelName)) {
+            HttpLog.e("modelName is null");
+            return null;
+        }
         Map<String, Object> objectMap = getFields(clazz);
         if (objectMap.size() == 0) {
             HttpLog.e("objectMap size is empty");
@@ -52,6 +59,15 @@ class HttpJsonReflectMan {
 
         Object object = null;
         try {
+            if(jsonObject.has(modelName)) {
+                Object obj = jsonObject.get(modelName);
+                if (obj instanceof JSONObject) {
+                    object = parseJsonObject(clazz, (JSONObject) obj);
+                } else if (obj instanceof JSONArray) {
+                    object = parseJsonArray(clazz, (JSONArray) obj);
+                }
+                return obj;
+            }
             object = clazz.newInstance();
             for (String param : param_type.keySet()) {
                 Field field = param_field.get(param);
@@ -91,9 +107,19 @@ class HttpJsonReflectMan {
                         String value = jsonObject.getString(param);
                         Date date = DataFormat.parser(value);
                         field.set(object, date);
-                    } /*else if(){
-                        Class<?> clazz2 = Class.forName(clazzName);
-                    }*/
+                    } else if (type.contains(FieldType.LIST)) {
+                        String clazzName = type.substring(type.indexOf("<") + 1, type.indexOf(">"));
+                        Class clazz2 = Class.forName(clazzName);
+                        JSONArray array = jsonObject.getJSONArray(param);
+                        List<Object> objList = parseJsonArray(clazz2, array);
+                        field.set(object, objList);
+                    } else if (type.contains("class ")) {
+                        String clazzName = type.replace("class ", "").trim();
+                        Class clazz2 = Class.forName(clazzName);
+                        JSONObject jsonObj = jsonObject.getJSONObject(param);
+                        Object obj = parseJsonObject(clazz2, jsonObj);
+                        field.set(object, obj);
+                    }
                 }
             }
         } catch (JSONException e) {
@@ -102,6 +128,8 @@ class HttpJsonReflectMan {
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         return object;

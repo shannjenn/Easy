@@ -32,33 +32,6 @@ public class School {
     private List<Student> students;
 
 
-    @EasyHttpParamName(paramName = "char")
-    private char aChar;
-    @EasyHttpParamName(paramName = "byte")
-    private Byte aByte;
-    @EasyHttpParamName(paramName = "Short")
-    private Short aShort;
-    @EasyHttpParamName(paramName = "aLong")
-    private Long aLong;
-    @EasyHttpParamName(paramName = "aFloat")
-    private float aFloat;
-    @EasyHttpParamName(paramName = "aDouble")
-    private double aDouble;
-
-
-    @EasyHttpModelName(modelName = "teacher")
-    @EasyTable(tableName = "teacher")
-    public class Teacher {
-        @EasyHttpParamName(paramName = "id")
-        @EasyColumn(columnName = "id", primaryKey = true)
-        private String id;
-
-        @EasyHttpParamName(paramName = "name")
-        @EasyColumn(columnName = "name")
-        private String name;
-    }
-
-
     public String getId() {
         return id;
     }

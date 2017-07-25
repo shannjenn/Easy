@@ -19,6 +19,8 @@ public class FieldType {
 
     public static final String DATE = "class java.util.Date";
 
+    public static final String LIST = "java.util.List";
+
 
     /**
      * 获取表中字段类型

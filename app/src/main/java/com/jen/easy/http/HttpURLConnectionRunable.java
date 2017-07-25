@@ -64,12 +64,17 @@ class HttpURLConnectionRunable implements Runnable {
     }
 
     private void success(String result) {
-        if (param.getEasyHttpListener() != null)
-            param.getEasyHttpListener().success(param.getFlagCode(), param.getFlag(), result);
+        if (param.getEasyHttpListener() != null) {
+            Object object = null;
+            if (param.isParseJson()) {
+                object = HttpParse.parseJson(param.getClass(), result);
+            }
+            param.getEasyHttpListener().success(param.getFlagCode(), param.getFlag(), object);
+        }
     }
 
-    private void fail(int easyHttpCode, String tag) {
+    private void fail(int easyHttpCode, String result) {
         if (param.getEasyHttpListener() != null)
-            param.getEasyHttpListener().fail(param.getFlagCode(), param.getFlag(), easyHttpCode, tag);
+            param.getEasyHttpListener().fail(param.getFlagCode(), param.getFlag(), easyHttpCode, result);
     }
 }

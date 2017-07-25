@@ -11,6 +11,7 @@ public abstract class EasyHttpParam {
 
     private int flagCode;
     private String flag;
+    private boolean parseJson;
 
     private String url;
     private String method;
@@ -127,5 +128,13 @@ public abstract class EasyHttpParam {
 
     public void setConnection(String connection) {
         this.connection = connection;
+    }
+
+    public boolean isParseJson() {
+        return parseJson;
+    }
+
+    public void setParseJson(boolean parseJson) {
+        this.parseJson = parseJson;
     }
 }

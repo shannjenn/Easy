@@ -23,7 +23,8 @@ class Database extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         DBLog.d("Database onCreate");
-        listener.onCreate(db);
+        if (listener != null)
+            listener.onCreate(db);
     }
 
     @Override
