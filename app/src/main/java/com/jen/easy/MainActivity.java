@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         Logcat.d("");
 
-
+        String url = BuildConfig.BASE_URL;
     }
 
     private void json() {
