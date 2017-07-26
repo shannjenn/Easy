@@ -58,7 +58,7 @@ class HttpJsonReflectMan {
 
         Object object = null;
         try {
-            if(jsonObject.has(modelName)) {
+            if (jsonObject.has(modelName)) {
                 Object obj = jsonObject.get(modelName);
                 if (obj instanceof JSONObject) {
                     object = parseJsonObject(clazz, (JSONObject) obj);
@@ -197,6 +197,12 @@ class HttpJsonReflectMan {
         Map<String, Object> objectMap = new HashMap<>();
         Map<String, String> param_type = new HashMap<>();
         Map<String, Field> param_field = new HashMap<>();
+        objectMap.put(PARAM_TYPE, param_type);
+        objectMap.put(PARAM_FIELD, param_field);
+        if (clazz == null) {
+            HttpLog.e("clazz is not null");
+            return null;
+        }
 
         Field[] fields = clazz.getDeclaredFields();
         for (int i = 0; i < fields.length; i++) {
@@ -209,8 +215,6 @@ class HttpJsonReflectMan {
             param_type.put(paramName, type);
             param_field.put(paramName, fields[i]);
         }
-        objectMap.put(PARAM_TYPE, param_type);
-        objectMap.put(PARAM_FIELD, param_field);
         return objectMap;
     }
 }

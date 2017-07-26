@@ -1,4 +1,4 @@
-package com.jen.easy.sqlite;
+package com.jen.easy.bind;
 
 import android.util.Log;
 
@@ -6,8 +6,8 @@ import android.util.Log;
  * Created by Jen on 2017/7/18.
  */
 
-public class DBLog {
-    static final String TAG = DBLog.class.getSimpleName();
+public class BindLog {
+    static final String TAG = BindLog.class.getSimpleName();
     /**
      * 是否打印DBLog(默认打印)
      */

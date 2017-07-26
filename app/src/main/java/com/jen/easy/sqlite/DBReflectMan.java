@@ -61,6 +61,12 @@ class DBReflectMan {
         Map<String, Object> objectMap = new HashMap<>();
         List<String> primaryKey = new ArrayList<>();
         Map<String, String> column = new HashMap<>();
+        objectMap.put(PRIMARY_KEY, primaryKey);
+        objectMap.put(COLUMN_TYPE, column);
+        if (clazz == null) {
+            DBLog.e("clazz is not null");
+            return objectMap;
+        }
 
         Field[] fields = clazz.getDeclaredFields();
         for (int i = 0; i < fields.length; i++) {
@@ -76,8 +82,6 @@ class DBReflectMan {
                 primaryKey.add(coulumnName);
             column.put(coulumnName, type);
         }
-        objectMap.put(PRIMARY_KEY, primaryKey);
-        objectMap.put(COLUMN_TYPE, column);
         return objectMap;
     }
 
@@ -92,6 +96,13 @@ class DBReflectMan {
         List<String> primaryKey = new ArrayList<>();
         Map<String, String> column = new HashMap<>();
         Map<String, Field> fieldName = new HashMap<>();
+        objectMap.put(PRIMARY_KEY, primaryKey);
+        objectMap.put(COLUMN_TYPE, column);
+        objectMap.put(COLUMN_FIELD, fieldName);
+        if (clazz == null) {
+            DBLog.e("clazz is not null");
+            return objectMap;
+        }
 
         Field[] fields = clazz.getDeclaredFields();
         for (int i = 0; i < fields.length; i++) {
@@ -108,9 +119,6 @@ class DBReflectMan {
             column.put(coulumnName, type);
             fieldName.put(coulumnName, fields[i]);
         }
-        objectMap.put(PRIMARY_KEY, primaryKey);
-        objectMap.put(COLUMN_TYPE, column);
-        objectMap.put(COLUMN_FIELD, fieldName);
         return objectMap;
     }
 }

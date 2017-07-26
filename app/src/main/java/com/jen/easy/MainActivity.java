@@ -3,7 +3,13 @@ package com.jen.easy;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 
+import com.jen.easy.bind.EasyBind;
+import com.jen.easy.bind.imp.EasyBindID;
+import com.jen.easy.bind.imp.EasyBindMethod;
 import com.jen.easy.demo.School;
 import com.jen.easy.demo.Student;
 import com.jen.easy.http.EasyHttp;
@@ -21,10 +27,14 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    TextView tv_test;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        View view = LayoutInflater.from(this).inflate(R.layout.activity_main,null);
+        setContentView(view);
+        EasyBind.inject(this,this.getWindow().getDecorView());
     }
 
     @Override
@@ -44,11 +54,17 @@ public class MainActivity extends AppCompatActivity {
 
         EasyHttp.getInstance().start(student);
 
-        Logcat.d("");
+        Logcat.d(MainActivity.this.getClass().getName());
 
         String url = BuildConfig.BASE_URL;
         downloadTest();
         doHttpTest();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Logcat.e("onDestroy-------");
     }
 
     private void json() {
@@ -116,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void downloadTest(){
+    private void downloadTest() {
         Student student = new Student();
         student.httpBase.url = "http://mdm.zte.com.cn/PositionEnglishTest/AppUploadFolder/Audio/609e507c-05cd-4a9a-a52f-454209aa58f3_1.zip";
         student.fileParam.filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator
@@ -124,11 +140,17 @@ public class MainActivity extends AppCompatActivity {
         EasyHttp.getInstance().start(student);
     }
 
-    private void doHttpTest(){
+    private void doHttpTest() {
         String url = "https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=0&rsv_idx=1&tn=baidu&wd=%E6%88%91%E4%BB%AC&rsv_pq=d8f04bcf0001c5af&rsv_t=859bmrPQY0BJ%2FPDl6W8qPBW4qLToGicBk9fsbqb5aLWtb4%2FobFUYZNN6Y5o&rqlang=cn&rsv_enter=1&rsv_sug3=6&rsv_sug1=9&rsv_sug7=100&rsv_sug2=0&inputT=3945&rsv_sug4=4966";
         School school = new School();
         school.httpBase.url = url;
         EasyHttp.getInstance().start(school);
+    }
+
+
+    @EasyBindMethod(onClick = {R.id.tv_test, R.id.tv_test})
+    private void onViewClick(View view) {
+        Logcat.d("onViewClick-------");
     }
 
 }
