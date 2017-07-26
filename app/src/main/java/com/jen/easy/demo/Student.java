@@ -2,7 +2,7 @@ package com.jen.easy.demo;
 
 import com.jen.easy.http.imp.EasyHttpModelName;
 import com.jen.easy.http.imp.EasyHttpParamName;
-import com.jen.easy.http.param.EasyHttpParam;
+import com.jen.easy.http.EasyHttpDownloadParam;
 import com.jen.easy.sqlite.imp.EasyColumn;
 import com.jen.easy.sqlite.imp.EasyTable;
 
@@ -14,7 +14,7 @@ import java.util.Date;
 
 @EasyHttpModelName(modelName = "student")
 @EasyTable(tableName = "student")
-public class Student extends EasyHttpParam {
+public class Student extends EasyHttpDownloadParam {
 
     @EasyHttpParamName(paramName = "id")
     @EasyColumn(columnName = "id", primaryKey = true)

@@ -1,5 +1,6 @@
 package com.jen.easy.demo;
 
+import com.jen.easy.http.EasyHttpBaseParam;
 import com.jen.easy.http.imp.EasyHttpModelName;
 import com.jen.easy.http.imp.EasyHttpParamName;
 import com.jen.easy.sqlite.imp.EasyColumn;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @EasyHttpModelName(modelName = "school")
 @EasyTable(tableName = "school")
-public class School {
+public class School extends EasyHttpBaseParam{
 
     @EasyHttpParamName(paramName = "id")
     @EasyColumn(columnName = "id", primaryKey = true)

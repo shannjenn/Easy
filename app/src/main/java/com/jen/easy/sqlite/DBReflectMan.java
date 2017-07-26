@@ -3,7 +3,6 @@ package com.jen.easy.sqlite;
 import com.jen.easy.sqlite.imp.EasyColumn;
 import com.jen.easy.sqlite.imp.EasyTable;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,15 +36,18 @@ class DBReflectMan {
      * @return
      */
     static String getTableName(Class clazz) {
-        String tbName = null;
-        Annotation[] anns = clazz.getDeclaredAnnotations();
-        for (int i = 0; i < anns.length; i++) {
-            if (anns[i] instanceof EasyTable) {
-                EasyTable easyTable = (EasyTable) anns[i];
-                tbName = easyTable.tableName();
-                break;
-            }
+        if (clazz == null) {
+            DBLog.e("clazz is not null");
+            return null;
         }
+        String tbName = null;
+        boolean isAnno = clazz.isAnnotationPresent(EasyTable.class);
+        if (!isAnno) {
+            DBLog.e("clazz is not AnnotationPresent");
+            return null;
+        }
+        EasyTable easyTable = (EasyTable) clazz.getAnnotation(EasyTable.class);
+        tbName = easyTable.tableName();
         return tbName;
     }
 
@@ -62,23 +64,17 @@ class DBReflectMan {
 
         Field[] fields = clazz.getDeclaredFields();
         for (int i = 0; i < fields.length; i++) {
-            Annotation[] anns = fields[i].getDeclaredAnnotations();
-            for (int j = 0; j < anns.length; j++) {
-                if (anns[j] instanceof EasyColumn) {
-                    EasyColumn easyField = (EasyColumn) anns[j];
-                    String coulumnName = easyField.columnName();
-                    if (coulumnName == null) {
-                        continue;
-                    }
-                    boolean isPrimary = easyField.primaryKey();
-                    String type = fields[i].getGenericType().toString();
+            boolean isAnno = fields[i].isAnnotationPresent(EasyColumn.class);
+            if (!isAnno)
+                continue;
+            EasyColumn easyColumn = fields[i].getAnnotation(EasyColumn.class);
+            String coulumnName = easyColumn.columnName();
+            boolean isPrimary = easyColumn.primaryKey();
+            String type = fields[i].getGenericType().toString();
 
-                    if (isPrimary)
-                        primaryKey.add(coulumnName);
-                    column.put(coulumnName, type);
-                    break;
-                }
-            }
+            if (isPrimary)
+                primaryKey.add(coulumnName);
+            column.put(coulumnName, type);
         }
         objectMap.put(PRIMARY_KEY, primaryKey);
         objectMap.put(COLUMN_TYPE, column);
@@ -99,24 +95,18 @@ class DBReflectMan {
 
         Field[] fields = clazz.getDeclaredFields();
         for (int i = 0; i < fields.length; i++) {
-            Annotation[] anns = fields[i].getDeclaredAnnotations();
-            for (int j = 0; j < anns.length; j++) {
-                if (anns[j] instanceof EasyColumn) {
-                    EasyColumn easyField = (EasyColumn) anns[j];
-                    String coulumnName = easyField.columnName();
-                    if (coulumnName == null) {
-                        continue;
-                    }
-                    boolean isPrimary = easyField.primaryKey();
-                    String type = fields[i].getGenericType().toString();
+            boolean isAnno = fields[i].isAnnotationPresent(EasyColumn.class);
+            if (!isAnno)
+                continue;
+            EasyColumn easyColumn = fields[i].getAnnotation(EasyColumn.class);
+            String coulumnName = easyColumn.columnName();
+            boolean isPrimary = easyColumn.primaryKey();
+            String type = fields[i].getGenericType().toString();
 
-                    if (isPrimary)
-                        primaryKey.add(coulumnName);
-                    column.put(coulumnName, type);
-                    fieldName.put(coulumnName, fields[i]);
-                    break;
-                }
-            }
+            if (isPrimary)
+                primaryKey.add(coulumnName);
+            column.put(coulumnName, type);
+            fieldName.put(coulumnName, fields[i]);
         }
         objectMap.put(PRIMARY_KEY, primaryKey);
         objectMap.put(COLUMN_TYPE, column);

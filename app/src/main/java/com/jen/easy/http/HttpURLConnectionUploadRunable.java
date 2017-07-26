@@ -2,8 +2,6 @@ package com.jen.easy.http;
 
 import android.text.TextUtils;
 
-import com.jen.easy.http.param.EasyHttpUploadFileParam;
-
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -14,23 +12,25 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-class HttpURLConnectionUploadFileRunable implements Runnable {
-    private EasyHttpUploadFileParam param;
+class HttpURLConnectionUploadRunable implements Runnable {
+    private EasyHttpUploadParam param;
 
-    HttpURLConnectionUploadFileRunable(EasyHttpUploadFileParam param) {
+    HttpURLConnectionUploadRunable(EasyHttpUploadParam param) {
         super();
         this.param = param;
     }
 
     @Override
     public void run() {
-        int result = EasyHttpCode.FAIL;
-        if (TextUtils.isEmpty(param.getUrl())) {
+        if (TextUtils.isEmpty(param.httpBase.url)) {
             HttpLog.e("URL地址错误");
             fail(EasyHttpCode.FAIL, "参数错误");
             return;
+        } else if (TextUtils.isEmpty(param.fileParam.filePath)) {
+            fail(EasyHttpCode.FAIL, "文件地址不能为空");
+            return;
         }
-        File file = new File(param.getFilePath());
+        File file = new File(param.fileParam.filePath);
         if (!file.isFile()) {
             fail(EasyHttpCode.FAIL, "文件地址参数错误");
             return;
@@ -38,28 +38,28 @@ class HttpURLConnectionUploadFileRunable implements Runnable {
 
         HttpURLConnection connection = null;
         try {
-            URL url = new URL(param.getUrl());
+            URL url = new URL(param.httpBase.url);
             connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(param.isDoInput());
-            connection.setDoOutput(param.isDoOutput());
-            connection.setUseCaches(param.isUseCaches());
-            connection.setConnectTimeout(param.getTimeout());
-            connection.setReadTimeout(param.getReadTimeout());
-            connection.setRequestProperty("Charset", param.getCharset());
-            connection.setRequestProperty("Content-Type", "multipart/form-data;file=" + param.getContentType());
-            connection.setRequestProperty("Connection", param.getConnection());
-            connection.setRequestMethod(param.getMethod());
-            if (param.isBreak() && param.getEndPoit() > param.getStartPoit() + 100) {
-                connection.setRequestProperty("Range", "bytes=" + param.getStartPoit() + "-" + param.getEndPoit());
+            connection.setDoInput(param.httpBase.doInput);
+            connection.setDoOutput(param.httpBase.doOutput);
+            connection.setUseCaches(param.httpBase.useCaches);
+            connection.setConnectTimeout(param.httpBase.timeout);
+            connection.setReadTimeout(param.httpBase.readTimeout);
+            connection.setRequestProperty("Charset", param.httpBase.charset);
+            connection.setRequestProperty("Content-Type", param.httpBase.contentType);
+            connection.setRequestProperty("Connection", param.httpBase.connection);
+            connection.setRequestMethod(param.httpBase.method);
+            if (param.fileParam.isBreak && param.fileParam.endPoit > param.fileParam.startPoit + 100) {
+                connection.setRequestProperty("Range", "bytes=" + param.fileParam.startPoit + "-" + param.fileParam.endPoit);
             }
 
             DataOutputStream out = new DataOutputStream(connection.getOutputStream());
             DataInputStream in = new DataInputStream(new FileInputStream(file));
             int bytes = 0;
             byte[] bufferOut = new byte[1024];
-            while ((bytes = in.read(bufferOut)) != -1 && !param.isUserCancel()) {
+            while ((bytes = in.read(bufferOut)) != -1 && !param.httpBase.userCancel) {
                 out.write(bufferOut, 0, bytes);
-                if (param.isUserCancel()) {
+                if (param.httpBase.userCancel) {
                     break;
                 }
             }
@@ -67,7 +67,7 @@ class HttpURLConnectionUploadFileRunable implements Runnable {
             out.flush();
             out.close();
 
-            if (param.isUserCancel()) {
+            if (param.httpBase.userCancel) {
                 fail(EasyHttpCode.FAIL, "用户取消");
                 return;
             }
@@ -94,24 +94,24 @@ class HttpURLConnectionUploadFileRunable implements Runnable {
     private void success(String result) {
         if (param.getEasyHttpUploadFileListener() != null) {
             Object object = null;
-            if (param.isParseJson()) {
+            if (param.httpBase.parseJson) {
                 object = HttpParse.parseJson(param.getClass(), result);
                 if (object == null) {
                     fail(EasyHttpCode.FAIL, "数据异常");
                     return;
                 }
             }
-            param.getEasyHttpUploadFileListener().success(param.getFlagCode(), param.getFlag(), object);
+            param.getEasyHttpUploadFileListener().success(param.httpBase.flagCode, param.httpBase.flag, object);
         }
     }
 
     private void fail(int easyHttpCode, String tag) {
         if (param.getEasyHttpUploadFileListener() != null)
-            param.getEasyHttpUploadFileListener().fail(param.getFlagCode(), param.getFlag(), easyHttpCode, tag);
+            param.getEasyHttpUploadFileListener().fail(param.httpBase.flagCode, param.httpBase.flag, easyHttpCode, tag);
     }
 
     private void progress(long currentPoint, long endPoint) {
         if (param.getEasyHttpUploadFileListener() != null)
-            param.getEasyHttpUploadFileListener().progress(param.getFlagCode(), param.getFlag(), currentPoint, endPoint);
+            param.getEasyHttpUploadFileListener().progress(param.httpBase.flagCode, param.httpBase.flag, currentPoint, endPoint);
     }
 }

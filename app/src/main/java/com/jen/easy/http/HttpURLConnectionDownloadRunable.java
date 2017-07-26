@@ -2,9 +2,8 @@ package com.jen.easy.http;
 
 import android.text.TextUtils;
 
-import com.jen.easy.http.param.EasyHttpDownloadFileParam;
-
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
@@ -14,10 +13,10 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-class HttpURLConnectionDownloadFileRunable implements Runnable {
-    private EasyHttpDownloadFileParam param;
+class HttpURLConnectionDownloadRunable implements Runnable {
+    private EasyHttpDownloadParam param;
 
-    HttpURLConnectionDownloadFileRunable(EasyHttpDownloadFileParam param) {
+    HttpURLConnectionDownloadRunable(EasyHttpDownloadParam param) {
         super();
         this.param = param;
     }
@@ -25,19 +24,33 @@ class HttpURLConnectionDownloadFileRunable implements Runnable {
     @Override
     public void run() {
         int result = EasyHttpCode.FAIL;
-        if (TextUtils.isEmpty(param.getUrl())) {
+        if (TextUtils.isEmpty(param.httpBase.url)) {
             HttpLog.e("URL地址错误");
             fail(EasyHttpCode.FAIL, "参数错误");
             return;
+        } else if (TextUtils.isEmpty(param.fileParam.filePath)) {
+            fail(EasyHttpCode.FAIL, "文件地址不能为空");
+            return;
         }
 
-        if (param.getStartPoit() <= 1024 * 2) {
-            param.setStartPoit(0);
-        } else if (param.getStartPoit() > 1024 * 2) {
-            param.setStartPoit(param.getStartPoit() - 1024 * 2);
+        File fileFolder = new File(param.fileParam.filePath.substring(0, param.fileParam.filePath.lastIndexOf("/")));
+        if (!fileFolder.exists()) {
+            fileFolder.mkdirs();
+        }
+        if (param.fileParam.deleteOldFile) {
+            File file = new File(param.fileParam.filePath);
+            if (file.exists()) {
+                file.delete();
+            }
         }
 
-        long curbytes = param.getStartPoit();
+        if (param.fileParam.startPoit <= 1024 * 2) {
+            param.fileParam.startPoit = 0;
+        } else if (param.fileParam.startPoit > 1024 * 2) {
+            param.fileParam.startPoit = param.fileParam.startPoit - 1024 * 2;
+        }
+
+        long curbytes = param.fileParam.startPoit;
         HttpURLConnection connection = null;
         RandomAccessFile randFile = null;
         InputStream inStream = null;
@@ -46,39 +59,39 @@ class HttpURLConnectionDownloadFileRunable implements Runnable {
             boolean hasParam = false;
             boolean isNotFirst = false;
             StringBuffer requestBuf = new StringBuffer("");
-            for (String name : param.getRequestParam().keySet()) {
-                String value = param.getRequestParam().get(name);
+            for (String name : param.httpBase.requestParam.keySet()) {
+                String value = param.httpBase.requestParam.get(name);
                 if (isNotFirst) {
                     requestBuf.append("&");
                 }
                 requestBuf.append(name);
                 requestBuf.append("=");
-                requestBuf.append(URLEncoder.encode(value, param.getCharset()));
+                requestBuf.append(URLEncoder.encode(value, param.httpBase.charset));
                 isNotFirst = true;
-                hasParam =true;
+                hasParam = true;
             }
 
-            String urlStr = param.getUrl();
-            if (param.getMethod().toUpperCase().equals("GET") && hasParam) {
+            String urlStr = param.httpBase.url;
+            if (param.httpBase.method.toUpperCase().equals("GET") && hasParam) {
                 urlStr = urlStr + "?" + requestBuf.toString();
             }
 
             URL url = new URL(urlStr);
             connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(param.isDoInput());
-            connection.setDoOutput(param.isDoOutput());
-            connection.setUseCaches(param.isUseCaches());
-            connection.setConnectTimeout(param.getTimeout());
-            connection.setReadTimeout(param.getReadTimeout());
-            connection.setRequestProperty("Charset", param.getCharset());
-            connection.setRequestProperty("Content-Type", param.getContentType());
-            connection.setRequestProperty("Connection", param.getConnection());
-            connection.setRequestMethod(param.getMethod());
-            if (param.isBreak() && param.getEndPoit() > param.getStartPoit() + 100) {
-                connection.setRequestProperty("Range", "bytes=" + param.getStartPoit() + "-" + param.getEndPoit());
+            connection.setDoInput(param.httpBase.doInput);
+            connection.setDoOutput(param.httpBase.doOutput);
+            connection.setUseCaches(param.httpBase.useCaches);
+            connection.setConnectTimeout(param.httpBase.timeout);
+            connection.setReadTimeout(param.httpBase.readTimeout);
+            connection.setRequestProperty("Charset", param.httpBase.charset);
+            connection.setRequestProperty("Content-Type", param.httpBase.contentType);
+            connection.setRequestProperty("Connection", param.httpBase.connection);
+            connection.setRequestMethod(param.httpBase.method);
+            if (param.fileParam.isBreak && param.fileParam.endPoit > param.fileParam.startPoit + 100) {
+                connection.setRequestProperty("Range", "bytes=" + param.fileParam.startPoit + "-" + param.fileParam.endPoit);
             }
 
-            if (param.getMethod().toUpperCase().equals("POST") && hasParam) {
+            if (param.httpBase.method.toUpperCase().equals("POST") && hasParam) {
                 connection.connect();
                 DataOutputStream out = new DataOutputStream(connection.getOutputStream());
                 out.writeBytes(requestBuf.toString());
@@ -87,25 +100,25 @@ class HttpURLConnectionDownloadFileRunable implements Runnable {
             }
 
             if ((connection.getResponseCode() == 200)) {
-                param.setEndPoit(connection.getContentLength());
+                param.fileParam.endPoit = connection.getContentLength();
                 inStream = connection.getInputStream();
                 byte[] buffer = new byte[1024];
-                randFile = new RandomAccessFile(param.getFilePath(), "rwd");
-                randFile.seek(param.getStartPoit());
+                randFile = new RandomAccessFile(param.fileParam.filePath, "rwd");
+                randFile.seek(param.fileParam.startPoit);
                 int len = 0;
-                while ((len = inStream.read(buffer)) != -1 && !param.isUserCancel()) {
+                while ((len = inStream.read(buffer)) != -1 && !param.httpBase.userCancel) {
                     randFile.write(buffer, 0, len);
                     curbytes += len;
-                    if (!param.isUserCancel()) {
-                        progress(curbytes, param.getEndPoit());
+                    if (!param.httpBase.userCancel) {
+                        progress(curbytes, param.fileParam.endPoit);
                     } else {
                         break;
                     }
                 }
             }
-            if (param.isUserCancel()) {
+            if (param.httpBase.userCancel) {
                 result = EasyHttpCode.USER_CANCEL;
-            } else if (curbytes == param.getEndPoit()) {
+            } else if (curbytes == param.fileParam.endPoit) {
                 result = EasyHttpCode.SUCCESS;
             }
         } catch (MalformedURLException e) {
@@ -141,16 +154,16 @@ class HttpURLConnectionDownloadFileRunable implements Runnable {
 
     private void success() {
         if (param.getEasyHttpDownloadFileListener() != null)
-            param.getEasyHttpDownloadFileListener().success(param.getFlagCode(), param.getFlag());
+            param.getEasyHttpDownloadFileListener().success(param.httpBase.flagCode, param.httpBase.flag);
     }
 
     private void fail(int easyHttpCode, String tag) {
         if (param.getEasyHttpDownloadFileListener() != null)
-            param.getEasyHttpDownloadFileListener().fail(param.getFlagCode(), param.getFlag(), easyHttpCode, tag);
+            param.getEasyHttpDownloadFileListener().fail(param.httpBase.flagCode, param.httpBase.flag, easyHttpCode, tag);
     }
 
     private void progress(long currentPoint, long endPoint) {
         if (param.getEasyHttpDownloadFileListener() != null)
-            param.getEasyHttpDownloadFileListener().progress(param.getFlagCode(), param.getFlag(), currentPoint, endPoint);
+            param.getEasyHttpDownloadFileListener().progress(param.httpBase.flagCode, param.httpBase.flag, currentPoint, endPoint);
     }
 }

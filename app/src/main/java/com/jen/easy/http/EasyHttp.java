@@ -1,9 +1,5 @@
 package com.jen.easy.http;
 
-import com.jen.easy.http.param.EasyHttpDownloadFileParam;
-import com.jen.easy.http.param.EasyHttpParam;
-import com.jen.easy.http.param.EasyHttpUploadFileParam;
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -46,20 +42,20 @@ public class EasyHttp {
      *
      * @param param
      */
-    public void start(EasyHttpParam param) {
+    public void start(EasyHttpParamFather param) {
         if (param == null) {
             HttpLog.w("参数为空");
             return;
         }
         setDefault(param);
-        if (param instanceof EasyHttpUploadFileParam) {
-            HttpURLConnectionUploadFileRunable upload = new HttpURLConnectionUploadFileRunable((EasyHttpUploadFileParam) param);
+        if (param instanceof EasyHttpUploadParam) {
+            HttpURLConnectionUploadRunable upload = new HttpURLConnectionUploadRunable((EasyHttpUploadParam) param);
             pool.execute(upload);
-        } else if (param instanceof EasyHttpDownloadFileParam) {
-            HttpURLConnectionDownloadFileRunable download = new HttpURLConnectionDownloadFileRunable((EasyHttpDownloadFileParam) param);
+        } else if (param instanceof EasyHttpDownloadParam) {
+            HttpURLConnectionDownloadRunable download = new HttpURLConnectionDownloadRunable((EasyHttpDownloadParam) param);
             pool.execute(download);
         } else {
-            HttpURLConnectionRunable httpURLConnectionRunable = new HttpURLConnectionRunable(param);
+            HttpURLConnectionRunable httpURLConnectionRunable = new HttpURLConnectionRunable((EasyHttpBaseParam) param);
             pool.execute(httpURLConnectionRunable);
         }
     }
@@ -69,19 +65,19 @@ public class EasyHttp {
      *
      * @param param
      */
-    private void setDefault(EasyHttpParam param) {
-        if (param.getMethod() == null)
-            param.setMethod(method);
-        if (param.getCharset() == null)
-            param.setCharset(charset);
-        if (param.getContentType() == null)
-            param.setContentType(contentType);
-        if (param.getConnection() == null)
-            param.setConnection(connection);
-        if (param.getTimeout() == -1)
-            param.setTimeout(timeout);
-        if (param.getReadTimeout() == -1)
-            param.setReadTimeout(readTimeout);
+    private void setDefault(EasyHttpParamFather param) {
+        if (param.httpBase.method == null)
+            param.httpBase.method = method;
+        if (param.httpBase.charset == null)
+            param.httpBase.charset = charset;
+        if (param.httpBase.contentType == null)
+            param.httpBase.contentType = contentType;
+        if (param.httpBase.connection == null)
+            param.httpBase.connection = connection;
+        if (param.httpBase.timeout == -1)
+            param.httpBase.timeout = timeout;
+        if (param.httpBase.readTimeout == -1)
+            param.httpBase.readTimeout = readTimeout;
     }
 
     /**

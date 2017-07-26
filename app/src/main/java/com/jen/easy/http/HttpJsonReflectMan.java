@@ -11,7 +11,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
@@ -172,45 +171,20 @@ class HttpJsonReflectMan {
      * @param clazz
      * @return
      */
-    static String getModelName(Class clazz) {
+    private static String getModelName(Class clazz) {
+        if (clazz == null) {
+            HttpLog.e("clazz is not null");
+            return null;
+        }
         String modelName = null;
-        Annotation[] anns = clazz.getDeclaredAnnotations();
-        for (int i = 0; i < anns.length; i++) {
-            if (anns[i] instanceof EasyHttpModelName) {
-                EasyHttpModelName easyTable = (EasyHttpModelName) anns[i];
-                modelName = easyTable.modelName();
-                break;
-            }
+        boolean isAnno = clazz.isAnnotationPresent(EasyHttpModelName.class);
+        if (!isAnno) {
+            HttpLog.e("clazz is not AnnotationPresent");
+            return null;
         }
+        EasyHttpModelName easyTable = (EasyHttpModelName) clazz.getAnnotation(EasyHttpModelName.class);
+        modelName = easyTable.modelName();
         return modelName;
-    }
-
-    /**
-     * 获取属性
-     *
-     * @param clazz
-     * @return Map<String, List<String>>
-     */
-    static Map<String, String> getParamNames(Class clazz) {
-        Map<String, String> param_type = new HashMap<>();
-
-        Field[] fields = clazz.getDeclaredFields();
-        for (int i = 0; i < fields.length; i++) {
-            Annotation[] anns = fields[i].getDeclaredAnnotations();
-            for (int j = 0; j < anns.length; j++) {
-                if (anns[j] instanceof EasyHttpParamName) {
-                    EasyHttpParamName easyField = (EasyHttpParamName) anns[j];
-                    String coulumnName = easyField.paramName();
-                    if (coulumnName == null) {
-                        continue;
-                    }
-                    String type = fields[i].getGenericType().toString();
-                    param_type.put(coulumnName, type);
-                    break;
-                }
-            }
-        }
-        return param_type;
     }
 
     /**
@@ -219,28 +193,21 @@ class HttpJsonReflectMan {
      * @param clazz
      * @return Map<String, List<String>>
      */
-    static Map<String, Object> getFields(Class clazz) {
+    private static Map<String, Object> getFields(Class clazz) {
         Map<String, Object> objectMap = new HashMap<>();
         Map<String, String> param_type = new HashMap<>();
         Map<String, Field> param_field = new HashMap<>();
 
         Field[] fields = clazz.getDeclaredFields();
         for (int i = 0; i < fields.length; i++) {
-            Annotation[] anns = fields[i].getDeclaredAnnotations();
-            for (int j = 0; j < anns.length; j++) {
-                if (anns[j] instanceof EasyHttpParamName) {
-                    EasyHttpParamName easyField = (EasyHttpParamName) anns[j];
-                    String coulumnName = easyField.paramName();
-                    if (coulumnName == null) {
-                        continue;
-                    }
-                    String type = fields[i].getGenericType().toString();
-
-                    param_type.put(coulumnName, type);
-                    param_field.put(coulumnName, fields[i]);
-                    break;
-                }
-            }
+            boolean isAnno = fields[i].isAnnotationPresent(EasyHttpParamName.class);
+            if (!isAnno)
+                continue;
+            EasyHttpParamName easyColumn = fields[i].getAnnotation(EasyHttpParamName.class);
+            String paramName = easyColumn.paramName();
+            String type = fields[i].getGenericType().toString();
+            param_type.put(paramName, type);
+            param_field.put(paramName, fields[i]);
         }
         objectMap.put(PARAM_TYPE, param_type);
         objectMap.put(PARAM_FIELD, param_field);

@@ -4,7 +4,7 @@ package com.jen.easy.http.listener;
  * Created by Jen on 2017/7/21.
  */
 
-public interface EasyHttpUploadFileListener {
+public interface EasyHttpUploadListener {
 
     public void success(int flagCode, String flag, Object result);
 
