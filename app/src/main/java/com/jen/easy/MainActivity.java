@@ -27,6 +27,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    @EasyBindID(ID = R.id.tv_test)
     TextView tv_test;
 
     @Override
@@ -34,7 +35,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         View view = LayoutInflater.from(this).inflate(R.layout.activity_main,null);
         setContentView(view);
-        EasyBind.inject(this,this.getWindow().getDecorView());
+//        EasyBind.inject(this,this.getWindow().getDecorView());
+        EasyBind.bind(this);
     }
 
     @Override
@@ -65,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Logcat.e("onDestroy-------");
+        EasyBind.unbind(this);
     }
 
     private void json() {

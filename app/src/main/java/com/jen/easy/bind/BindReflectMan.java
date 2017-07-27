@@ -16,11 +16,11 @@ class BindReflectMan {
     /**
      * 全部列明和属性类型
      */
-    static final String COLUMN_TYPE = "id_type";
+    static final String ID_TYPE = "id_type";
     /**
      * 全部列明和属性名称
      */
-    static final String COLUMN_FIELD = "id_field";
+    static final String ID_FIELD = "id_field";
 
     /**
      * 获取字段
@@ -32,8 +32,8 @@ class BindReflectMan {
         Map<String, Object> objectMap = new HashMap<>();
         Map<Integer, String> id_type = new HashMap<>();
         Map<Integer, Field> id_field = new HashMap<>();
-        objectMap.put(COLUMN_TYPE, id_type);
-        objectMap.put(COLUMN_FIELD, id_field);
+        objectMap.put(ID_TYPE, id_type);
+        objectMap.put(ID_FIELD, id_field);
         if (clazz == null) {
             BindLog.e("clazz is null");
             return objectMap;
