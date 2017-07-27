@@ -5,6 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.jen.easy.bind.EasyBind;
+import com.jen.easy.sqlite.DBHelper;
+
 public class MainActivity extends AppCompatActivity {
 
 
@@ -18,5 +21,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        EasyBind.bind(this);
+        DBHelper.getInstance().getDBName();
     }
 }

@@ -32,6 +32,11 @@
 
 -keepattributes *Annotation*
 
+-keep class com.jen.easy.bind.EasyBind {
+    native <methods>;
+    public <fields>;
+    public <methods>;
+}
 -keep class * {
     native <methods>;
     public <fields>;

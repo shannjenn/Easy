@@ -2,34 +2,32 @@ package com.jen.easy.bind;
 
 import android.util.Log;
 
+import com.jen.easy.log.Logcat;
+
 /**
  * Created by Jen on 2017/7/18.
  */
 
-public class BindLog {
-    static final String TAG = BindLog.class.getSimpleName();
-    /**
-     * 是否打印DBLog(默认打印)
-     */
-    public static boolean DEBUG = true;
+class BindLog {
+    private static final String TAG = BindLog.class.getSimpleName();
 
     static void d(String msg) {
-        if (DEBUG)
+        if (Logcat.BIND_LOG)
             Log.d(TAG, msg + "  --- DBLog ---");
     }
 
     static void i(String msg) {
-        if (DEBUG)
+        if (Logcat.BIND_LOG)
             Log.i(TAG, msg + "  --- DBLog ---");
     }
 
     static void w(String msg) {
-        if (DEBUG)
+        if (Logcat.BIND_LOG)
             Log.w(TAG, msg + "  --- DBLog ---");
     }
 
     static void e(String msg) {
-        if (DEBUG)
+        if (Logcat.BIND_LOG)
             Log.e(TAG, msg + "  --- DBLog ---");
     }
 }

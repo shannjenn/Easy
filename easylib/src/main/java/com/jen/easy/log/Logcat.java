@@ -15,6 +15,20 @@ public class Logcat {
      */
     private static boolean debugLog = true;
     /**
+     * BindLog(默认打印)
+     */
+    public static boolean BIND_LOG = true;
+    /**
+     * HttpLog(默认打印)
+     */
+    public static boolean HTTP_LOG = true;
+    /**
+     * DBLog(默认打印)
+     */
+    public static boolean DB_LOG = true;
+
+
+    /**
      * 设置w-e级别Log是否打印
      */
     private static boolean errorLog = true;
