@@ -143,7 +143,7 @@
     public <fields>;
     public <methods>;
 }
--keep class com.jen.easy.app.Version {
+-keep class com.jen.easy.app.EasyVersion {
     public <fields>;
     public <methods>;
 }

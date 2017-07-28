@@ -5,7 +5,7 @@ package com.jen.easy.app;
  * Created by Jen on 2017/7/29.
  */
 
-public final class Version {
+public final class EasyVersion {
     /**
      * 版本号(初版：1)
      */
