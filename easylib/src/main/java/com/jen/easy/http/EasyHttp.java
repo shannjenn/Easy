@@ -1,5 +1,10 @@
 package com.jen.easy.http;
 
+import com.jen.easy.http.param.EasyHttpBaseParam;
+import com.jen.easy.http.param.EasyHttpDownloadParam;
+import com.jen.easy.http.param.EasyHttpParamFather;
+import com.jen.easy.http.param.EasyHttpUploadParam;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 

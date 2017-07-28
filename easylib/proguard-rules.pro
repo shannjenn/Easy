@@ -32,14 +32,115 @@
 
 -keepattributes *Annotation*
 
--keep class com.jen.easy.bind.EasyBind {
-    native <methods>;
-    public <fields>;
-    public <methods>;
-}
--keep class * {
+#application
+-keep class com.jen.easy.app.EasyApplication {
     native <methods>;
     public <fields>;
     public <methods>;
 }
 
+###控件绑定模块
+-keep class com.jen.easy.bind.EasyBind {
+    public <fields>;
+    public <methods>;
+}
+-keep class com.jen.easy.bind.imp.EasyBindID {
+    public <fields>;
+    public <methods>;
+}
+-keep class com.jen.easy.bind.imp.EasyBindMethod {
+    public <fields>;
+    public <methods>;
+}
+###控件绑定模块
+
+###常量
+-keep class com.jen.easy.constant.FieldType {
+    public <fields>;
+    public <methods>;
+}
+###常量
+
+###网络模块
+-keep class com.jen.easy.http.EasyHttp {
+    public <fields>;
+    public <methods>;
+}
+-keep class com.jen.easy.http.EasyHttpCode {
+    public <fields>;
+    public <methods>;
+}
+-keep class com.jen.easy.http.EasyParse {
+    public <fields>;
+    public <methods>;
+}
+-keep class com.jen.easy.http.imp.EasyHttpModelName {
+    public <fields>;
+    public <methods>;
+}
+-keep class com.jen.easy.http.imp.EasyHttpParamName {
+    public <fields>;
+    public <methods>;
+}
+-keep class com.jen.easy.http.listener.EasyHttpDownloadListener {
+    public <fields>;
+    public <methods>;
+}
+-keep class com.jen.easy.http.listener.EasyHttpListener {
+    public <fields>;
+    public <methods>;
+}
+-keep class com.jen.easy.http.listener.EasyHttpUploadListener {
+    public <fields>;
+    public <methods>;
+}
+-keep class com.jen.easy.http.param.EasyHttpBaseParam {
+    public <fields>;
+    public <methods>;
+}
+-keep class com.jen.easy.http.param.EasyHttpDownloadParam {
+    public <fields>;
+    public <methods>;
+}
+-keep class com.jen.easy.http.param.EasyHttpUploadParam {
+    public <fields>;
+    public <methods>;
+}
+###网络模块
+
+###Log模块
+-keep class com.jen.easy.log.Logcat {
+    public <fields>;
+    public <methods>;
+}
+-keep class com.jen.easy.log.LogcatHelper {
+    public <fields>;
+    public <methods>;
+}
+###Log模块
+
+###数据库模块
+-keep class com.jen.easy.sqlite.DBHelper {
+    public <fields>;
+    public <methods>;
+}
+-keep class com.jen.easy.sqlite.EasyDBDao {
+    public <fields>;
+    public <methods>;
+}
+-keep class com.jen.easy.sqlite.imp.EasyColumn {
+    public <fields>;
+    public <methods>;
+}
+-keep class com.jen.easy.sqlite.imp.EasyTable {
+    public <fields>;
+    public <methods>;
+}
+###数据库模块
+
+###其他
+-keep class com.jen.easy.util.DataFormat {
+    public <fields>;
+    public <methods>;
+}
+###其他

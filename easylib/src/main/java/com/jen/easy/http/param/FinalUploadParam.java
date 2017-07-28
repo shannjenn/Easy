@@ -1,11 +1,11 @@
-package com.jen.easy.http;
+package com.jen.easy.http.param;
 
 /**
  * Created by Jen on 2017/7/26.
  */
 
-public final class FinalDownloadParam {
-    FinalDownloadParam() {
+public final class FinalUploadParam {
+    FinalUploadParam() {
     }
 
     /**
@@ -25,10 +25,4 @@ public final class FinalDownloadParam {
      * 是否断点下载
      */
     public boolean isBreak;
-
-    /**
-     * 是否在下载删除旧文件
-     */
-    public boolean deleteOldFile;
-
 }

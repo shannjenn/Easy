@@ -1,10 +1,10 @@
-package com.jen.easy.http;
+package com.jen.easy.http.param;
 
 /**
  * Created by Jen on 2017/7/26.
  */
 
-abstract class EasyHttpParamFather {
+public abstract class EasyHttpParamFather {
     public FinalBaseParam httpBase;
 
     public EasyHttpParamFather() {

@@ -2,6 +2,8 @@ package com.jen.easy.http;
 
 import android.text.TextUtils;
 
+import com.jen.easy.http.param.EasyHttpDownloadParam;
+
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;

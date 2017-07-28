@@ -1,4 +1,4 @@
-package com.jen.easy.http;
+package com.jen.easy.http.param;
 
 import java.util.HashMap;
 import java.util.Map;

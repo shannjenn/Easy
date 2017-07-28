@@ -2,6 +2,8 @@ package com.jen.easy.http;
 
 import android.text.TextUtils;
 
+import com.jen.easy.http.param.EasyHttpBaseParam;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
