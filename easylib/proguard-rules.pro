@@ -143,4 +143,8 @@
     public <fields>;
     public <methods>;
 }
+-keep class com.jen.easy.app.Version {
+    public <fields>;
+    public <methods>;
+}
 ###其他
