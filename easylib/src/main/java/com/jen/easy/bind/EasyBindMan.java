@@ -49,20 +49,22 @@ class EasyBindMan {
         Map<Method, int[]> method_ids = BindReflectMan.getMethods(activity.getClass());
         for (final Method method : method_ids.keySet()) {
             int[] ids = method_ids.get(method);
-            final View view = activity.findViewById(ids[0]);
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    method.setAccessible(true);
-                    try {
-                        method.invoke(activity, view);
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    } catch (InvocationTargetException e) {
-                        e.printStackTrace();
+            for (int i = 0; i < ids.length; i++) {
+                final View view = activity.findViewById(ids[i]);
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        method.setAccessible(true);
+                        try {
+                            method.invoke(activity, view);
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        } catch (InvocationTargetException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
-            });
+                });
+            }
         }
     }
 
