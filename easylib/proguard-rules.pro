@@ -106,6 +106,18 @@
     public <fields>;
     public <methods>;
 }
+-keep class com.jen.easy.http.param.FinalBaseParam {
+    public <fields>;
+    public <methods>;
+}
+-keep class com.jen.easy.http.param.FinalDownloadParam {
+    public <fields>;
+    public <methods>;
+}
+-keep class com.jen.easy.http.param.FinalUploadParam {
+    public <fields>;
+    public <methods>;
+}
 ###网络模块
 
 ###Log模块
