@@ -1,7 +1,5 @@
 package com.jen.easy.log;
 
-import android.util.Log;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -75,7 +73,8 @@ class LogcatCrash implements UncaughtExceptionHandler {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                Log.e(Logcat.TAG, "error : ", e);
+                e.printStackTrace();
+                Logcat.e("LogcatCrash InterruptedException");
             }
             // 退出程序
             android.os.Process.killProcess(android.os.Process.myPid());

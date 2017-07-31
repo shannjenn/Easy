@@ -9,11 +9,15 @@ import android.util.Log;
  * @since 1.0.0
  */
 public class Logcat {
-    public static String TAG = "Logcat";
+    private static String TAG = "Logcat";
     /**
      * 设置v-i级别Log是否打印
      */
-    private static boolean debugLog = true;
+    public static boolean DEBUG_LOG = true;
+    /**
+     * 设置w-e级别Log是否打印
+     */
+    public static boolean ERROR_LOG = true;
     /**
      * BindLog(默认打印)
      */
@@ -27,34 +31,28 @@ public class Logcat {
      */
     public static boolean DB_LOG = true;
 
-
-    /**
-     * 设置w-e级别Log是否打印
-     */
-    private static boolean errorLog = true;
-
     public static void v(String msg) {
-        if (debugLog)
+        if (DEBUG_LOG)
             Log.v(TAG, msg);
     }
 
     public static void d(String msg) {
-        if (debugLog)
+        if (DEBUG_LOG)
             Log.d(TAG, msg);
     }
 
     public static void i(String msg) {
-        if (debugLog)
+        if (DEBUG_LOG)
             Log.i(TAG, msg);
     }
 
     public static void w(String msg) {
-        if (errorLog)
+        if (ERROR_LOG)
             Log.w(TAG, msg);
     }
 
     public static void e(String msg) {
-        if (errorLog)
+        if (ERROR_LOG)
             Log.e(TAG, msg);
     }
 }
