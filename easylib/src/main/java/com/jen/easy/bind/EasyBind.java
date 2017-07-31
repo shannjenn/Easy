@@ -25,7 +25,7 @@ public abstract class EasyBind {
     /**
      * 注入
      */
-    static void inject(Object obj, View parent) {
+    public static void inject(Object obj, View parent) {
         EasyBindMan.inject(obj, parent);
     }
 
@@ -34,7 +34,7 @@ public abstract class EasyBind {
      *
      * @param activity
      */
-    static void unbind(Activity activity) {
+    public static void unbind(Activity activity) {
         EasyBindMan.unbind(activity);
     }
 }
