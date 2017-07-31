@@ -31,6 +31,7 @@
 -dontusemixedcaseclassnames
 
 -keepattributes *Annotation*
+-keep class * extends java.lang.annotation.Annotation { *; }
 
 #application
 -keep class com.jen.easy.app.EasyApplication {
@@ -126,6 +127,10 @@
     public <methods>;
 }
 -keep class com.jen.easy.log.LogcatHelper {
+    public <fields>;
+    public <methods>;
+}
+-keep class com.jen.easy.log.listener.LogcatCrashListener {
     public <fields>;
     public <methods>;
 }

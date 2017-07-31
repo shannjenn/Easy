@@ -1,5 +1,7 @@
 package com.jen.easy.log;
 
+import com.jen.easy.log.listener.LogcatCrashListener;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -80,10 +82,6 @@ class LogcatCrash implements UncaughtExceptionHandler {
             android.os.Process.killProcess(android.os.Process.myPid());
             System.exit(1);
         }
-    }
-
-    interface LogcatCrashListener {
-        boolean onBeforeHandleException(Throwable ex);
     }
 
     void setListener(LogcatCrashListener listener) {
