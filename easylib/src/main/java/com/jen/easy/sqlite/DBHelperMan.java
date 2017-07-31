@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.jen.easy.app.EasyApplication;
 import com.jen.easy.constant.FieldType;
+import com.jen.easy.sqlite.listener.DatabaseListener;
 
 import java.util.List;
 import java.util.Map;
@@ -227,7 +228,7 @@ class DBHelperMan {
      *
      * @param databaseListener
      */
-    void setDatabaseListener(Database.DatabaseListener databaseListener) {
+    void setDatabaseListener(DatabaseListener databaseListener) {
         database.setListener(databaseListener);
     }
 }

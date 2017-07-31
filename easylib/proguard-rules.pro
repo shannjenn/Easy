@@ -136,6 +136,10 @@
     public <fields>;
     public <methods>;
 }
+-keep class com.jen.easy.sqlite.listener.DatabaseListener {
+    public <fields>;
+    public <methods>;
+}
 ###数据库模块
 
 ###其他

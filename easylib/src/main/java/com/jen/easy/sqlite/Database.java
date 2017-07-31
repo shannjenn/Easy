@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.jen.easy.sqlite.listener.DatabaseListener;
+
 class Database extends SQLiteOpenHelper {
     private DatabaseListener listener;
 
@@ -99,11 +101,6 @@ class Database extends SQLiteOpenHelper {
 //            e.printStackTrace();
         }
         return exist;
-    }
-
-    interface DatabaseListener {
-        void onCreate(SQLiteDatabase db);
-        void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion);
     }
 
     void setListener(DatabaseListener listener) {

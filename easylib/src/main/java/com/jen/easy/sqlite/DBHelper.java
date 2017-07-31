@@ -4,6 +4,7 @@ import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.jen.easy.app.EasyApplication;
+import com.jen.easy.sqlite.listener.DatabaseListener;
 
 public class DBHelper {
     private static DBHelper dbHelper;
@@ -133,7 +134,7 @@ public class DBHelper {
      *
      * @param databaseListener
      */
-    public void setDatabaseListener(Database.DatabaseListener databaseListener) {
+    public void setDatabaseListener(DatabaseListener databaseListener) {
         man.setDatabaseListener(databaseListener);
     }
 }
