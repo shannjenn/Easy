@@ -2,6 +2,8 @@ package com.jen.easy.log;
 
 import com.jen.easy.log.listener.LogcatCrashListener;
 
+import java.io.File;
+
 /**
  * ClassName:LogcatHelper Function: log日志统计保存
  *
@@ -28,6 +30,7 @@ public class LogcatHelper {
     }
 
     private void init() {
+        LogcatPath.setDefaultPath();
         LogcatCrash.getInstance();
         LogDumper.getInstance();
     }
@@ -54,6 +57,10 @@ public class LogcatHelper {
      * 开始日志记录
      */
     public void start() {
+        if (LogcatPath.getLogPath() == null) {
+            Logcat.w("日志路径为空，LogcatHelper日志未能启动--------------------");
+            return;
+        }
         LogDumper.getInstance().startLogs();
         LogcatCrash.getInstance().start();
     }

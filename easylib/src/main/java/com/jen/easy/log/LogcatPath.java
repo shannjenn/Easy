@@ -7,7 +7,7 @@ import java.io.File;
 class LogcatPath {
     private static String logPath;
 
-    static String setDefaultPath() {
+    static void setDefaultPath() {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {// 优先保存到SD卡中
             logPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "_LogcatHelper";
         }/*
@@ -16,12 +16,13 @@ class LogcatPath {
 		  "WeCareLoveLog"; }
 		 */
         if (logPath == null)
-            return null;
+            return;
         File file = new File(logPath);
         if (!file.exists()) {
-            file.mkdirs();
+            boolean ret = file.mkdirs();
+            if (!ret)
+                logPath = null;
         }
-        return logPath;
     }
 
     static String getLogPath() {
@@ -29,11 +30,17 @@ class LogcatPath {
     }
 
     static void setLogPath(String logPath) {
-        if (logPath == null)
+        if (logPath == null) {
+            Logcat.w("设置的日志路径不能为空：");
             return;
+        }
         File file = new File(logPath);
         if (!file.exists()) {
-            file.mkdirs();
+            boolean ret = file.mkdirs();
+            if (!ret) {
+                Logcat.w("设置的日志路径不正确：" + logPath);
+                return;
+            }
         }
         LogcatPath.logPath = logPath;
     }
