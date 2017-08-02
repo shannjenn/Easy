@@ -1,21 +1,20 @@
 package com.jen.easytest;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.jen.easy.bind.EasyBind;
 import com.jen.easy.sqlite.DBHelper;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View view = LayoutInflater.from(this).inflate(R.layout.activity_main, null);
-        setContentView(view);
+        setContentView(R.layout.activity_main);
     }
 
     @Override
