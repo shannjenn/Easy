@@ -87,10 +87,30 @@ public class DBHelper {
     /**
      * 创建表
      *
+     * @param db
+     * @param clazz 传入对象
+     */
+    public void createTB(SQLiteDatabase db, Class clazz) {
+        man.createTB(db, clazz);
+    }
+
+    /**
+     * 创建表
+     *
      * @param clazz 传入对象
      */
     public void createTB(Class clazz) {
         man.createTB(clazz);
+    }
+
+    /**
+     * 删除表
+     *
+     * @param db
+     * @param tableName 表名
+     */
+    public void deleteTB(SQLiteDatabase db, String tableName) {
+        man.deleteTB(db, tableName);
     }
 
     /**
@@ -105,10 +125,30 @@ public class DBHelper {
     /**
      * 删除表
      *
+     * @param db
+     * @param clazz
+     */
+    public void deleteTB(SQLiteDatabase db, Class clazz) {
+        man.deleteTB(db, clazz);
+    }
+
+    /**
+     * 删除表
+     *
      * @param clazz
      */
     public void deleteTB(Class clazz) {
         man.deleteTB(clazz);
+    }
+
+    /**
+     * 重建表(注意：该操作删除所有数据)
+     *
+     * @param db
+     * @param clazz
+     */
+    public void rebuildTB(SQLiteDatabase db, Class clazz) {
+        man.rebuildTB(db, clazz);
     }
 
     /**
@@ -121,6 +161,20 @@ public class DBHelper {
     }
 
     /**
+     * 增加字段
+     *
+     * @param db
+     * @param tableName  表名
+     * @param columnName 列名
+     * @param fieldType  FieldType
+     */
+    public void addColumn(SQLiteDatabase db, String tableName, String columnName, String fieldType) {
+        man.addColumn(db, tableName, columnName, fieldType);
+    }
+
+    /**
+     * 增加字段
+     *
      * @param tableName  表名
      * @param columnName 列名
      * @param fieldType  FieldType

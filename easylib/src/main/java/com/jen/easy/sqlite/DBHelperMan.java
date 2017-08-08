@@ -75,14 +75,10 @@ class DBHelperMan {
     /**
      * 创建表
      *
+     * @param db
      * @param clazz 传入对象
      */
-    void createTB(Class clazz) {
-        if (clazz == null) {
-            DBLog.w("createTB error:classObj is null");
-            return;
-        }
-        SQLiteDatabase db = dbHelper.getWtriteDatabse();
+    void createTB(SQLiteDatabase db, Class clazz) {
         String tableName = DBReflectMan.getTableName(clazz);
         boolean existTB = database.checkTableExist(db, tableName);
         if (existTB) {
@@ -154,12 +150,26 @@ class DBHelperMan {
     }
 
     /**
+     * 创建表
+     *
+     * @param clazz 传入对象
+     */
+    void createTB(Class clazz) {
+        if (clazz == null) {
+            DBLog.w("createTB error:classObj is null");
+            return;
+        }
+        SQLiteDatabase db = dbHelper.getWtriteDatabse();
+        createTB(db, clazz);
+    }
+
+    /**
      * 删除表
      *
+     * @param db
      * @param tableName 表名
      */
-    void deleteTB(String tableName) {
-        SQLiteDatabase db = dbHelper.getWtriteDatabse();
+    void deleteTB(SQLiteDatabase db, String tableName) {
         try {
             db.beginTransaction();
             db.execSQL("DROP TABLE " + tableName);
@@ -176,11 +186,42 @@ class DBHelperMan {
     /**
      * 删除表
      *
+     * @param tableName 表名
+     */
+    void deleteTB(String tableName) {
+        SQLiteDatabase db = dbHelper.getWtriteDatabse();
+        deleteTB(db, tableName);
+    }
+
+    /**
+     * 删除表
+     *
+     * @param clazz
+     */
+    void deleteTB(SQLiteDatabase db, Class clazz) {
+        String tableName = DBReflectMan.getTableName(clazz);
+        deleteTB(db, tableName);
+    }
+
+    /**
+     * 删除表
+     *
      * @param clazz
      */
     void deleteTB(Class clazz) {
+        SQLiteDatabase db = dbHelper.getWtriteDatabse();
         String tableName = DBReflectMan.getTableName(clazz);
-        deleteTB(tableName);
+        deleteTB(db, tableName);
+    }
+
+    /**
+     * 重建表(注意：该操作删除所有数据)
+     *
+     * @param clazz
+     */
+    void rebuildTB(SQLiteDatabase db, Class clazz) {
+        deleteTB(db, clazz);
+        createTB(db, clazz);
     }
 
     /**
@@ -189,17 +230,18 @@ class DBHelperMan {
      * @param clazz
      */
     void rebuildTB(Class clazz) {
-        deleteTB(clazz);
-        createTB(clazz);
+        SQLiteDatabase db = dbHelper.getWtriteDatabse();
+        deleteTB(db, clazz);
+        createTB(db, clazz);
     }
 
     /**
+     * @param db
      * @param tableName  表名
      * @param columnName 列名
      * @param fieldType  FieldType
      */
-    void addColumn(String tableName, String columnName, String fieldType) {
-        SQLiteDatabase db = dbHelper.getWtriteDatabse();
+    void addColumn(SQLiteDatabase db, String tableName, String columnName, String fieldType) {
         boolean existTB = database.checkTableExist(db, tableName);
         if (!existTB) {
             DBLog.w("table : " + tableName + " is not exist");
@@ -221,6 +263,16 @@ class DBHelperMan {
         } finally {
             db.endTransaction();
         }
+    }
+
+    /**
+     * @param tableName  表名
+     * @param columnName 列名
+     * @param fieldType  FieldType
+     */
+    void addColumn(String tableName, String columnName, String fieldType) {
+        SQLiteDatabase db = dbHelper.getWtriteDatabse();
+        addColumn(db, tableName, columnName, fieldType);
     }
 
     /**

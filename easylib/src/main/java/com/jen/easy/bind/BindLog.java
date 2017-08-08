@@ -9,7 +9,7 @@ import com.jen.easy.log.Logcat;
  */
 
 class BindLog {
-    private static final String TAG = BindLog.class.getSimpleName();
+    private static final String TAG = "BIND_LOG";
 
     static void d(String msg) {
         if (Logcat.BIND_LOG)

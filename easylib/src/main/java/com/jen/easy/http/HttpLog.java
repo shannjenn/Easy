@@ -9,7 +9,7 @@ import com.jen.easy.log.Logcat;
  */
 
 class HttpLog {
-    private static final String TAG = HttpLog.class.getSimpleName();
+    private static final String TAG = "HTTP_LOG";
 
     static void d(String msg) {
         if (Logcat.HTTP_LOG)

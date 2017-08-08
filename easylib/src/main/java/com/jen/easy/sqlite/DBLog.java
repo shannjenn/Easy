@@ -9,7 +9,7 @@ import com.jen.easy.log.Logcat;
  */
 
 class DBLog {
-    private static final String TAG = DBLog.class.getSimpleName();
+    private static final String TAG = "DB_LOG";
 
     static void d(String msg) {
         if (Logcat.DB_LOG)
