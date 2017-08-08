@@ -6,6 +6,6 @@ package com.jen.easy.sqlite;
  * @author Administrator
  */
 class DB {
-    static int DB_VERSION = 0;//默认为0
+    static int DB_VERSION = 1;
     final static String DB_NAME = "easyDB.db";
 }
