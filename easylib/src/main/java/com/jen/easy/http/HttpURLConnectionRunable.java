@@ -2,7 +2,9 @@ package com.jen.easy.http;
 
 import android.text.TextUtils;
 
-import com.jen.easy.http.param.EasyHttpBaseParam;
+import com.jen.easy.Easy;
+import com.jen.easy.EasyF;
+import com.jen.easy.EasyP;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -14,9 +16,9 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 class HttpURLConnectionRunable implements Runnable {
-    private EasyHttpBaseParam param;
+    private EasyP.HTTP.BaseParam param;
 
-    HttpURLConnectionRunable(EasyHttpBaseParam param) {
+    HttpURLConnectionRunable(EasyP.HTTP.BaseParam param) {
         super();
         this.param = param;
     }
@@ -25,7 +27,7 @@ class HttpURLConnectionRunable implements Runnable {
     public void run() {
         if (TextUtils.isEmpty(param.httpBase.url)) {
             HttpLog.e("URL地址错误");
-            fail(EasyHttpCode.FAIL, "参数错误");
+            fail(EasyF.HTTP.Code.FAIL, "参数错误");
             return;
         }
 
@@ -86,25 +88,25 @@ class HttpURLConnectionRunable implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        fail(EasyHttpCode.FAIL, "获取数据异常");
+        fail(EasyF.HTTP.Code.FAIL, "获取数据异常");
     }
 
     private void success(String result) {
-        if (param.getEasyHttpListener() != null) {
+        if (param.getBseListener() != null) {
             Object object = null;
             if (param.httpBase.parseJson) {
-                object = HttpParse.parseJson(param.getClass(), result);
+                object = Easy.HPARSE.parseJson(param.getClass(), result);
                 if (object == null) {
-                    fail(EasyHttpCode.FAIL, "数据异常");
+                    fail(EasyF.HTTP.Code.FAIL, "数据异常");
                     return;
                 }
             }
-            param.getEasyHttpListener().success(param.httpBase.flagCode, param.httpBase.flag, object);
+            param.getBseListener().success(param.httpBase.flagCode, param.httpBase.flag, object);
         }
     }
 
-    private void fail(int easyHttpCode, String result) {
-        if (param.getEasyHttpListener() != null)
-            param.getEasyHttpListener().fail(param.httpBase.flagCode, param.httpBase.flag, easyHttpCode, result);
+    private void fail(int code, String result) {
+        if (param.getBseListener() != null)
+            param.getBseListener().fail(param.httpBase.flagCode, param.httpBase.flag, code, result);
     }
 }

@@ -2,7 +2,9 @@ package com.jen.easy.http;
 
 import android.text.TextUtils;
 
-import com.jen.easy.http.param.EasyHttpUploadParam;
+import com.jen.easy.Easy;
+import com.jen.easy.EasyF;
+import com.jen.easy.EasyP;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -15,9 +17,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 class HttpURLConnectionUploadRunable implements Runnable {
-    private EasyHttpUploadParam param;
+    private EasyP.HTTP.UploadParam param;
 
-    HttpURLConnectionUploadRunable(EasyHttpUploadParam param) {
+    HttpURLConnectionUploadRunable(EasyP.HTTP.UploadParam param) {
         super();
         this.param = param;
     }
@@ -26,15 +28,15 @@ class HttpURLConnectionUploadRunable implements Runnable {
     public void run() {
         if (TextUtils.isEmpty(param.httpBase.url)) {
             HttpLog.e("URL地址错误");
-            fail(EasyHttpCode.FAIL, "参数错误");
+            fail(EasyF.HTTP.Code.FAIL, "参数错误");
             return;
         } else if (TextUtils.isEmpty(param.fileParam.filePath)) {
-            fail(EasyHttpCode.FAIL, "文件地址不能为空");
+            fail(EasyF.HTTP.Code.FAIL, "文件地址不能为空");
             return;
         }
         File file = new File(param.fileParam.filePath);
         if (!file.isFile()) {
-            fail(EasyHttpCode.FAIL, "文件地址参数错误");
+            fail(EasyF.HTTP.Code.FAIL, "文件地址参数错误");
             return;
         }
 
@@ -70,7 +72,7 @@ class HttpURLConnectionUploadRunable implements Runnable {
             out.close();
 
             if (param.httpBase.userCancel) {
-                fail(EasyHttpCode.FAIL, "用户取消");
+                fail(EasyF.HTTP.Code.FAIL, "用户取消");
                 return;
             }
 
@@ -94,26 +96,26 @@ class HttpURLConnectionUploadRunable implements Runnable {
     }
 
     private void success(String result) {
-        if (param.getEasyHttpUploadFileListener() != null) {
+        if (param.getUploadListener() != null) {
             Object object = null;
             if (param.httpBase.parseJson) {
-                object = HttpParse.parseJson(param.getClass(), result);
+                object = Easy.HPARSE.parseJson(param.getClass(), result);
                 if (object == null) {
-                    fail(EasyHttpCode.FAIL, "数据异常");
+                    fail(EasyF.HTTP.Code.FAIL, "数据异常");
                     return;
                 }
             }
-            param.getEasyHttpUploadFileListener().success(param.httpBase.flagCode, param.httpBase.flag, object);
+            param.getUploadListener().success(param.httpBase.flagCode, param.httpBase.flag, object);
         }
     }
 
     private void fail(int easyHttpCode, String tag) {
-        if (param.getEasyHttpUploadFileListener() != null)
-            param.getEasyHttpUploadFileListener().fail(param.httpBase.flagCode, param.httpBase.flag, easyHttpCode, tag);
+        if (param.getUploadListener() != null)
+            param.getUploadListener().fail(param.httpBase.flagCode, param.httpBase.flag, easyHttpCode, tag);
     }
 
     private void progress(long currentPoint, long endPoint) {
-        if (param.getEasyHttpUploadFileListener() != null)
-            param.getEasyHttpUploadFileListener().progress(param.httpBase.flagCode, param.httpBase.flag, currentPoint, endPoint);
+        if (param.getUploadListener() != null)
+            param.getUploadListener().progress(param.httpBase.flagCode, param.httpBase.flag, currentPoint, endPoint);
     }
 }

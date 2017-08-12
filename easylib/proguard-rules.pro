@@ -33,89 +33,64 @@
 -keepattributes *Annotation*
 -keep class * extends java.lang.annotation.Annotation { *; }
 
-#application
+###application
 -keep class com.jen.easy.app.EasyApplication {
     native <methods>;
     public <fields>;
     public <methods>;
 }
+-keep class com.jen.easy.app.EasyVersion {
+    public <fields>;
+    public <methods>;
+}
+-keep class com.jen.easy.Easy {
+    public <fields>;
+    public <methods>;
+}
+-keep class com.jen.easy.EasyA$* {
+    public <fields>;
+    public <methods>;
+}
+-keep class com.jen.easy.EasyF$* {
+    public <fields>;
+    public <methods>;
+}
+-keep class com.jen.easy.EasyL$* {
+    public <fields>;
+    public <methods>;
+}
+-keep class com.jen.easy.EasyP$* {
+    public <fields>;
+    public <methods>;
+}
+###application
+
 
 ###控件绑定模块
--keep class com.jen.easy.bind.EasyBind {
-    public <fields>;
-    public <methods>;
-}
--keep class com.jen.easy.bind.imp.EasyBindID {
-    public <fields>;
-    public <methods>;
-}
--keep class com.jen.easy.bind.imp.EasyBindMethod {
+-keep class com.jen.easy.bind.imp.BindImp {
     public <fields>;
     public <methods>;
 }
 ###控件绑定模块
-
-###常量
--keep class com.jen.easy.constant.FieldType {
-    public <fields>;
-    public <methods>;
-}
-###常量
 
 ###网络模块
--keep class com.jen.easy.http.EasyHttp {
+-keep class com.jen.easy.http.imp.HttpImp {
     public <fields>;
     public <methods>;
 }
--keep class com.jen.easy.http.EasyHttpCode {
+-keep class com.jen.easy.http.imp.HttpParseImp {
     public <fields>;
     public <methods>;
 }
--keep class com.jen.easy.http.EasyParse {
+-keep class com.jen.easy.http.param.factory.FinalBaseParam {
     public <fields>;
     public <methods>;
 }
--keep class com.jen.easy.http.imp.EasyHttpModelName {
+-keep class com.jen.easy.http.param.factory.FinalDownloadParam {
     public <fields>;
     public <methods>;
 }
--keep class com.jen.easy.http.imp.EasyHttpParamName {
-    public <fields>;
-    public <methods>;
-}
--keep class com.jen.easy.http.listener.EasyHttpDownloadListener {
-    public <fields>;
-    public <methods>;
-}
--keep class com.jen.easy.http.listener.EasyHttpListener {
-    public <fields>;
-    public <methods>;
-}
--keep class com.jen.easy.http.listener.EasyHttpUploadListener {
-    public <fields>;
-    public <methods>;
-}
--keep class com.jen.easy.http.param.EasyHttpBaseParam {
-    public <fields>;
-    public <methods>;
-}
--keep class com.jen.easy.http.param.EasyHttpDownloadParam {
-    public <fields>;
-    public <methods>;
-}
--keep class com.jen.easy.http.param.EasyHttpUploadParam {
-    public <fields>;
-    public <methods>;
-}
--keep class com.jen.easy.http.param.FinalBaseParam {
-    public <fields>;
-    public <methods>;
-}
--keep class com.jen.easy.http.param.FinalDownloadParam {
-    public <fields>;
-    public <methods>;
-}
--keep class com.jen.easy.http.param.FinalUploadParam {
+-keep class com.jen.easy.http.param.factory.FinalUploadParam {
     public <fields>;
     public <methods>;
 }
@@ -126,45 +101,25 @@
     public <fields>;
     public <methods>;
 }
--keep class com.jen.easy.log.LogcatHelper {
-    public <fields>;
-    public <methods>;
-}
--keep class com.jen.easy.log.listener.LogcatCrashListener {
+-keep class com.jen.easy.log.imp.LogcatHelperImp {
     public <fields>;
     public <methods>;
 }
 ###Log模块
 
 ###数据库模块
--keep class com.jen.easy.sqlite.DBHelper {
+-keep class com.jen.easy.sqlite.imp.DBHelperImp {
     public <fields>;
     public <methods>;
 }
--keep class com.jen.easy.sqlite.EasyDBDao {
-    public <fields>;
-    public <methods>;
-}
--keep class com.jen.easy.sqlite.imp.EasyColumn {
-    public <fields>;
-    public <methods>;
-}
--keep class com.jen.easy.sqlite.imp.EasyTable {
-    public <fields>;
-    public <methods>;
-}
--keep class com.jen.easy.sqlite.listener.DatabaseListener {
+-keep class com.jen.easy.sqlite.imp.DBDaoImp {
     public <fields>;
     public <methods>;
 }
 ###数据库模块
 
 ###其他
--keep class com.jen.easy.util.DataFormat {
-    public <fields>;
-    public <methods>;
-}
--keep class com.jen.easy.app.EasyVersion {
+-keep class com.jen.easy.util.imp.DataFormatImp {
     public <fields>;
     public <methods>;
 }

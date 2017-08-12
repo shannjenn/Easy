@@ -2,7 +2,8 @@ package com.jen.easy.http;
 
 import android.text.TextUtils;
 
-import com.jen.easy.http.param.EasyHttpDownloadParam;
+import com.jen.easy.EasyF;
+import com.jen.easy.EasyP;
 
 import java.io.DataOutputStream;
 import java.io.File;
@@ -16,22 +17,22 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 class HttpURLConnectionDownloadRunable implements Runnable {
-    private EasyHttpDownloadParam param;
+    private EasyP.HTTP.DownloadParam param;
 
-    HttpURLConnectionDownloadRunable(EasyHttpDownloadParam param) {
+    HttpURLConnectionDownloadRunable(EasyP.HTTP.DownloadParam param) {
         super();
         this.param = param;
     }
 
     @Override
     public void run() {
-        int result = EasyHttpCode.FAIL;
+        int result = EasyF.HTTP.Code.FAIL;
         if (TextUtils.isEmpty(param.httpBase.url)) {
             HttpLog.e("URL地址错误");
-            fail(EasyHttpCode.FAIL, "参数错误");
+            fail(EasyF.HTTP.Code.FAIL, "参数错误");
             return;
         } else if (TextUtils.isEmpty(param.fileParam.filePath)) {
-            fail(EasyHttpCode.FAIL, "文件地址不能为空");
+            fail(EasyF.HTTP.Code.FAIL, "文件地址不能为空");
             return;
         }
 
@@ -119,9 +120,9 @@ class HttpURLConnectionDownloadRunable implements Runnable {
                 }
             }
             if (param.httpBase.userCancel) {
-                result = EasyHttpCode.USER_CANCEL;
+                result = EasyF.HTTP.Code.USER_CANCEL;
             } else if (curbytes == param.fileParam.endPoit) {
-                result = EasyHttpCode.SUCCESS;
+                result = EasyF.HTTP.Code.SUCCESS;
             }
         } catch (MalformedURLException e) {
             HttpLog.e("MalformedURLException error --------");
@@ -147,25 +148,25 @@ class HttpURLConnectionDownloadRunable implements Runnable {
                 e.printStackTrace();
             }
         }
-        if (result == EasyHttpCode.SUCCESS) {
+        if (result == EasyF.HTTP.Code.SUCCESS) {
             success();
         } else {
-            fail(result, result == EasyHttpCode.USER_CANCEL ? "用户取消" : "下载异常");
+            fail(result, result == EasyF.HTTP.Code.USER_CANCEL ? "用户取消" : "下载异常");
         }
     }
 
     private void success() {
-        if (param.getEasyHttpDownloadFileListener() != null)
-            param.getEasyHttpDownloadFileListener().success(param.httpBase.flagCode, param.httpBase.flag);
+        if (param.getDownloadListener() != null)
+            param.getDownloadListener().success(param.httpBase.flagCode, param.httpBase.flag);
     }
 
-    private void fail(int easyHttpCode, String tag) {
-        if (param.getEasyHttpDownloadFileListener() != null)
-            param.getEasyHttpDownloadFileListener().fail(param.httpBase.flagCode, param.httpBase.flag, easyHttpCode, tag);
+    private void fail(int code, String tag) {
+        if (param.getDownloadListener() != null)
+            param.getDownloadListener().fail(param.httpBase.flagCode, param.httpBase.flag, code, tag);
     }
 
     private void progress(long currentPoint, long endPoint) {
-        if (param.getEasyHttpDownloadFileListener() != null)
-            param.getEasyHttpDownloadFileListener().progress(param.httpBase.flagCode, param.httpBase.flag, currentPoint, endPoint);
+        if (param.getDownloadListener() != null)
+            param.getDownloadListener().progress(param.httpBase.flagCode, param.httpBase.flag, currentPoint, endPoint);
     }
 }

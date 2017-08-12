@@ -13,21 +13,21 @@ class DBLog {
 
     static void d(String msg) {
         if (Logcat.DB_LOG)
-            Log.d(TAG, msg + "  --- DBLog ---");
+            Log.d(TAG, msg + "  --- " + TAG + " ---");
     }
 
     static void i(String msg) {
         if (Logcat.DB_LOG)
-            Log.i(TAG, msg + "  --- DBLog ---");
+            Log.i(TAG, msg + "  --- " + TAG + " ---");
     }
 
     static void w(String msg) {
         if (Logcat.DB_LOG)
-            Log.w(TAG, msg + "  --- DBLog ---");
+            Log.w(TAG, msg + "  --- " + TAG + " ---");
     }
 
     static void e(String msg) {
         if (Logcat.DB_LOG)
-            Log.e(TAG, msg + "  --- DBLog ---");
+            Log.e(TAG, msg + "  --- " + TAG + " ---");
     }
 }

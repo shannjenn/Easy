@@ -2,62 +2,64 @@ package com.jen.easy.sqlite;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteException;
-import android.database.sqlite.SQLiteOpenHelper;
 
-import com.jen.easy.sqlite.listener.DatabaseListener;
+import com.jen.easy.EasyL;
 
-class Database extends SQLiteOpenHelper {
-    private DatabaseListener listener;
+class Database {
+    private int version = 1;
+    private final String name = "easy.db";
 
-    Database(Context context, String name, CursorFactory factory, int version) {
-        super(context, name, factory, version);
-        DBLog.d("Database name=" + name + " version=" + version);
-    }
+    private String path;
+    private EasyL.DB.DatabaseListener listener;
 
     Database(Context context) {
-        this(context, DB.DB_NAME, null, DB.DB_VERSION);
-    }
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        DBLog.d("Database onCreate");
-        if (listener != null)
-            listener.onCreate(db);
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        DBLog.d("Database onUpgrade oldVersion=" + oldVersion + " newVersion=" + newVersion);
-        if (listener != null) {
-            listener.onUpgrade(db, oldVersion, newVersion);
-        }
+        path = context.getDatabasePath(name).getPath();
     }
 
     /**
-     * 增加指定表字段
-     *
-     * @param tableName  表名
-     * @param columnName 列名
-     * @param columnType 类型
-     * @author Jenn 2017-4-25 下午5:21:08
-     * @since 1.0.0
+     * 创建数据库
      */
-    public void addColumnName(SQLiteDatabase db, String tableName, String columnName, String columnType) {
-        try {
-            db.beginTransaction();
-            db.execSQL("alter table " + tableName + " add " + columnName + " " + columnType);
-            db.setTransactionSuccessful();
-            DBLog.d("table:" + tableName + " add column " + columnName + " SUCCESS");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            DBLog.w("Database add columnName error");
-        } finally {
-            db.endTransaction();
+    void createDB() {
+        SQLiteDatabase.openOrCreateDatabase(path, null);
+    }
+
+    /**
+     * 升级数据库
+     *
+     * @param version
+     */
+    void setVersion(int version) {
+        SQLiteDatabase db = getWritableDatabase();
+        int oldVersion = db.getVersion();
+        if (version < oldVersion) {
+            DBLog.w("升级版本不能小于当前版本：" + oldVersion);
         }
+        this.version = version;
+        if (oldVersion == this.version) {
+            return;
+        }
+        db.setVersion(version);
+        if (listener != null) {
+            listener.onUpgrade(db, oldVersion, oldVersion);
+        }
+    }
+
+    int getVersion() {
+        return version;
+    }
+
+    String getName() {
+        return name;
+    }
+
+    SQLiteDatabase getReadableDatabase() {
+        return SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.OPEN_READONLY);
+    }
+
+    SQLiteDatabase getWritableDatabase() {
+        return SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.OPEN_READWRITE);
     }
 
     /**
@@ -103,7 +105,7 @@ class Database extends SQLiteOpenHelper {
         return exist;
     }
 
-    void setListener(DatabaseListener listener) {
+    void setListener(EasyL.DB.DatabaseListener listener) {
         this.listener = listener;
     }
 }

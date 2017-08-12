@@ -1,12 +1,13 @@
 package com.jen.easytest;
 
 import android.app.Activity;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
 
-import com.jen.easy.bind.EasyBind;
-import com.jen.easy.sqlite.DBHelper;
+import com.jen.easy.Easy;
+import com.jen.easy.EasyF;
+
+import java.io.File;
 
 public class MainActivity extends Activity {
 
@@ -20,7 +21,12 @@ public class MainActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        EasyBind.bind(this);
-        DBHelper.getInstance().getDBName();
+        Easy.BIND.bind(this);
+
+        File file = getDatabasePath("Easy.db");
+        SQLiteDatabase.create(null);
+        if(EasyF.HTTP.Code.FAIL == 0){
+
+        };
     }
 }
