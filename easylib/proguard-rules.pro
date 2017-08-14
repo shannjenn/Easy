@@ -28,6 +28,7 @@
 -libraryjars 'E:\Android\sdk\platforms\android-20\android.jar'
 
 -optimizationpasses 5
+-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
 -dontusemixedcaseclassnames
 
 -keepattributes *Annotation*
