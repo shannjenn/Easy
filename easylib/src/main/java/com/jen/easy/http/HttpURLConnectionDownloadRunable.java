@@ -2,8 +2,8 @@ package com.jen.easy.http;
 
 import android.text.TextUtils;
 
-import com.jen.easy.EasyF;
-import com.jen.easy.EasyP;
+import com.jen.easy.EasyFinal;
+import com.jen.easy.EasyParam;
 
 import java.io.DataOutputStream;
 import java.io.File;
@@ -17,22 +17,22 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 class HttpURLConnectionDownloadRunable implements Runnable {
-    private EasyP.HTTP.DownloadParam param;
+    private EasyParam.HTTP.DownloadParam param;
 
-    HttpURLConnectionDownloadRunable(EasyP.HTTP.DownloadParam param) {
+    HttpURLConnectionDownloadRunable(EasyParam.HTTP.DownloadParam param) {
         super();
         this.param = param;
     }
 
     @Override
     public void run() {
-        int result = EasyF.HTTP.Code.FAIL;
+        int result = EasyFinal.HTTP.Code.FAIL;
         if (TextUtils.isEmpty(param.httpBase.url)) {
             HttpLog.e("URL地址错误");
-            fail(EasyF.HTTP.Code.FAIL, "参数错误");
+            fail(EasyFinal.HTTP.Code.FAIL, "参数错误");
             return;
         } else if (TextUtils.isEmpty(param.fileParam.filePath)) {
-            fail(EasyF.HTTP.Code.FAIL, "文件地址不能为空");
+            fail(EasyFinal.HTTP.Code.FAIL, "文件地址不能为空");
             return;
         }
 
@@ -120,9 +120,9 @@ class HttpURLConnectionDownloadRunable implements Runnable {
                 }
             }
             if (param.httpBase.userCancel) {
-                result = EasyF.HTTP.Code.USER_CANCEL;
+                result = EasyFinal.HTTP.Code.USER_CANCEL;
             } else if (curbytes == param.fileParam.endPoit) {
-                result = EasyF.HTTP.Code.SUCCESS;
+                result = EasyFinal.HTTP.Code.SUCCESS;
             }
         } catch (MalformedURLException e) {
             HttpLog.e("MalformedURLException error --------");
@@ -148,10 +148,10 @@ class HttpURLConnectionDownloadRunable implements Runnable {
                 e.printStackTrace();
             }
         }
-        if (result == EasyF.HTTP.Code.SUCCESS) {
+        if (result == EasyFinal.HTTP.Code.SUCCESS) {
             success();
         } else {
-            fail(result, result == EasyF.HTTP.Code.USER_CANCEL ? "用户取消" : "下载异常");
+            fail(result, result == EasyFinal.HTTP.Code.USER_CANCEL ? "用户取消" : "下载异常");
         }
     }
 

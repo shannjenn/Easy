@@ -6,7 +6,10 @@ package com.jen.easy;
  * 时间：2017/8/12.
  */
 
-public final class EasyF {
+public final class EasyFinal {
+    private EasyFinal() {
+    }
+
     /**
      * ********************
      */

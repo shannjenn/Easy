@@ -1,6 +1,6 @@
 package com.jen.easy.log;
 
-import com.jen.easy.EasyL;
+import com.jen.easy.EasyListener;
 import com.jen.easy.log.imp.LogcatHelperImp;
 
 /**
@@ -69,7 +69,7 @@ public class LogcatHelperManager implements LogcatHelperImp {
      * 未抓取崩溃监听
      */
     @Override
-    public void setListener(EasyL.LOG.CrashListener listener) {
+    public void setListener(EasyListener.LOG.CrashListener listener) {
         LogcatCrash.getInstance().setListener(listener);
     }
 }

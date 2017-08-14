@@ -1,6 +1,6 @@
 package com.jen.easy.http;
 
-import com.jen.easy.EasyP;
+import com.jen.easy.EasyParam;
 import com.jen.easy.http.imp.HttpImp;
 import com.jen.easy.http.param.factory.ParamFather;
 
@@ -40,14 +40,14 @@ public class HttpManager implements HttpImp {
             return;
         }
         setDefault(param);
-        if (param instanceof EasyP.HTTP.UploadParam) {
-            HttpURLConnectionUploadRunable upload = new HttpURLConnectionUploadRunable((EasyP.HTTP.UploadParam) param);
+        if (param instanceof EasyParam.HTTP.UploadParam) {
+            HttpURLConnectionUploadRunable upload = new HttpURLConnectionUploadRunable((EasyParam.HTTP.UploadParam) param);
             pool.execute(upload);
-        } else if (param instanceof EasyP.HTTP.DownloadParam) {
-            HttpURLConnectionDownloadRunable download = new HttpURLConnectionDownloadRunable((EasyP.HTTP.DownloadParam) param);
+        } else if (param instanceof EasyParam.HTTP.DownloadParam) {
+            HttpURLConnectionDownloadRunable download = new HttpURLConnectionDownloadRunable((EasyParam.HTTP.DownloadParam) param);
             pool.execute(download);
         } else {
-            HttpURLConnectionRunable httpURLConnectionRunable = new HttpURLConnectionRunable((EasyP.HTTP.BaseParam) param);
+            HttpURLConnectionRunable httpURLConnectionRunable = new HttpURLConnectionRunable((EasyParam.HTTP.BaseParam) param);
             pool.execute(httpURLConnectionRunable);
         }
     }

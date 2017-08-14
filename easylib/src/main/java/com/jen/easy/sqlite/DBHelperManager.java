@@ -5,7 +5,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
-import com.jen.easy.EasyL;
+import com.jen.easy.EasyListener;
 import com.jen.easy.constant.FieldType;
 import com.jen.easy.sqlite.imp.DBHelperImp;
 
@@ -26,7 +26,10 @@ public class DBHelperManager implements DBHelperImp {
         database.createDB();
     }
 
-    ;
+    @Override
+    public void create(String password) {
+        database.createDB();
+    }
 
     /**
      * 读取数据库
@@ -211,7 +214,7 @@ public class DBHelperManager implements DBHelperImp {
      * @param databaseListener
      */
     @Override
-    public void setDatabaseListener(EasyL.DB.DatabaseListener databaseListener) {
+    public void setDatabaseListener(EasyListener.DB.DatabaseListener databaseListener) {
         database.setListener(databaseListener);
     }
 

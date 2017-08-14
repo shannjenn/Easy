@@ -8,8 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
  * 时间：2017/8/12.
  */
 
-public abstract class EasyL {
-
+public abstract class EasyListener {
 
     /**
      * 数据库********************

@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.jen.easy.Easy;
+import com.jen.easy.EasyUtil;
 import com.jen.easy.constant.FieldType;
 import com.jen.easy.sqlite.imp.DBDaoImp;
 import com.jen.easy.sqlite.imp.DBHelperImp;
@@ -281,7 +281,7 @@ public class DBDaoManager implements DBDaoImp {
                     values.put(column, value);
                 } else if (type.equals(FieldType.DATE)) {
                     Date value = (Date) field.get(obj);
-                    values.put(column, value == null ? null : Easy.FORMAT.format(value));
+                    values.put(column, value == null ? null : EasyUtil.DATAFORMAT.format(value));
                 }
             }
         } catch (IllegalAccessException e) {
@@ -336,7 +336,7 @@ public class DBDaoManager implements DBDaoImp {
                     field.set(obj, value);
                 } else if (type.equals(FieldType.DATE)) {
                     String value = cursor.getString(cursor.getColumnIndex(column));
-                    Date date = Easy.FORMAT.parser(value);
+                    Date date = EasyUtil.DATAFORMAT.parser(value);
                     field.set(obj, date);
                 }
             }

@@ -1,6 +1,7 @@
 package com.jen.easy.sqlite;
 
-import com.jen.easy.EasyA;
+import com.jen.easy.EasyMouse;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,12 +40,12 @@ class DBReflectManager {
             return null;
         }
         String tbName = null;
-        boolean isAnno = clazz.isAnnotationPresent(EasyA.DB.Table.class);
+        boolean isAnno = clazz.isAnnotationPresent(EasyMouse.DB.Table.class);
         if (!isAnno) {
             DBLog.e("clazz is not AnnotationPresent");
             return null;
         }
-        EasyA.DB.Table table = (EasyA.DB.Table) clazz.getAnnotation(EasyA.DB.Table.class);
+        EasyMouse.DB.Table table = (EasyMouse.DB.Table) clazz.getAnnotation(EasyMouse.DB.Table.class);
         tbName = table.tableName();
         return tbName;
     }
@@ -68,10 +69,10 @@ class DBReflectManager {
 
         Field[] fields = clazz.getDeclaredFields();
         for (int i = 0; i < fields.length; i++) {
-            boolean isAnno = fields[i].isAnnotationPresent(EasyA.DB.Column.class);
+            boolean isAnno = fields[i].isAnnotationPresent(EasyMouse.DB.Column.class);
             if (!isAnno)
                 continue;
-            EasyA.DB.Column columnClass = fields[i].getAnnotation(EasyA.DB.Column.class);
+            EasyMouse.DB.Column columnClass = fields[i].getAnnotation(EasyMouse.DB.Column.class);
             String coulumnName = columnClass.columnName();
             boolean isPrimary = columnClass.primaryKey();
             String type = fields[i].getGenericType().toString();
@@ -104,10 +105,10 @@ class DBReflectManager {
 
         Field[] fields = clazz.getDeclaredFields();
         for (int i = 0; i < fields.length; i++) {
-            boolean isAnno = fields[i].isAnnotationPresent(EasyA.DB.Column.class);
+            boolean isAnno = fields[i].isAnnotationPresent(EasyMouse.DB.Column.class);
             if (!isAnno)
                 continue;
-            EasyA.DB.Column columnClass = fields[i].getAnnotation(EasyA.DB.Column.class);
+            EasyMouse.DB.Column columnClass = fields[i].getAnnotation(EasyMouse.DB.Column.class);
             String coulumnName = columnClass.columnName();
             boolean isPrimary = columnClass.primaryKey();
             String type = fields[i].getGenericType().toString();

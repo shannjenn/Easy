@@ -43,23 +43,27 @@
     public <fields>;
     public <methods>;
 }
--keep class com.jen.easy.Easy {
+-keep class com.jen.easy.EasyMain {
     public <fields>;
     public <methods>;
 }
--keep class com.jen.easy.EasyA$* {
+-keep class com.jen.easy.EasyMouse$* {
     public <fields>;
     public <methods>;
 }
--keep class com.jen.easy.EasyF$* {
+-keep class com.jen.easy.EasyFinal$* {
     public <fields>;
     public <methods>;
 }
--keep class com.jen.easy.EasyL$* {
+-keep class com.jen.easy.EasyListener$* {
     public <fields>;
     public <methods>;
 }
--keep class com.jen.easy.EasyP$* {
+-keep class com.jen.easy.EasyParam$* {
+    public <fields>;
+    public <methods>;
+}
+-keep class com.jen.easy.EasyUtil {
     public <fields>;
     public <methods>;
 }
@@ -118,9 +122,16 @@
 }
 ###数据库模块
 
-###其他
+###切面编程
+-keep class com.jen.easy.aop.imp.DynamicProxyImp {
+    public <fields>;
+    public <methods>;
+}
+###切面编程
+
+###工具类
 -keep class com.jen.easy.util.imp.DataFormatImp {
     public <fields>;
     public <methods>;
 }
-###其他
+###工具类

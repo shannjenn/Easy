@@ -5,14 +5,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
-import com.jen.easy.EasyL;
+import com.jen.easy.EasyListener;
 
 class Database {
     private int version = 1;
     private final String name = "easy.db";
 
     private String path;
-    private EasyL.DB.DatabaseListener listener;
+    private EasyListener.DB.DatabaseListener listener;
 
     Database(Context context) {
         path = context.getDatabasePath(name).getPath();
@@ -105,7 +105,8 @@ class Database {
         return exist;
     }
 
-    void setListener(EasyL.DB.DatabaseListener listener) {
+    void setListener(EasyListener.DB.DatabaseListener listener) {
         this.listener = listener;
     }
+
 }

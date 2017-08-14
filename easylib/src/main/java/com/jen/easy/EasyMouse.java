@@ -6,11 +6,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 创建人：ShannJenn
+ * @类 创建人：ShannJenn
  * 时间：2017/8/12.
  */
 
-public abstract class EasyA {
+public abstract class EasyMouse {
 
     /**
      * 数据库********************
@@ -73,7 +73,6 @@ public abstract class EasyA {
          * 网络请求对象
          * Created by Jen on 2017/7/21.
          */
-
         @Target(ElementType.TYPE)
         @Retention(RetentionPolicy.RUNTIME)
         public @interface Model {
@@ -90,7 +89,6 @@ public abstract class EasyA {
          * 网络请求参数名
          * Created by Jen on 2017/7/21.
          */
-
         @Target(ElementType.FIELD)
         @Retention(RetentionPolicy.RUNTIME)
         public @interface Param {
@@ -101,6 +99,30 @@ public abstract class EasyA {
              * @return
              */
             String paramName();
+        }
+    }
+
+    /**
+     * 面向切入********************
+     */
+    public abstract static class AOP {
+
+        /**
+         * 切入编程
+         * Created by Jen on 2017/7/21.
+         */
+        @Target({ElementType.METHOD})
+        @Retention(RetentionPolicy.RUNTIME)
+        public @interface Single {
+            /**
+             * 切人前方法
+             */
+            int before();
+
+            /**
+             * 切人后方法
+             */
+            int after();
         }
     }
 

@@ -1,6 +1,6 @@
 package com.jen.easy.bind;
 
-import com.jen.easy.EasyA;
+import com.jen.easy.EasyMouse;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -40,10 +40,10 @@ abstract class BindReflectManager {
 
         Field[] fields = clazz.getDeclaredFields();
         for (int i = 0; i < fields.length; i++) {
-            boolean isAnno = fields[i].isAnnotationPresent(EasyA.BIND.ID.class);
+            boolean isAnno = fields[i].isAnnotationPresent(EasyMouse.BIND.ID.class);
             if (!isAnno)
                 continue;
-            EasyA.BIND.ID easyID = fields[i].getAnnotation(EasyA.BIND.ID.class);
+            EasyMouse.BIND.ID easyID = fields[i].getAnnotation(EasyMouse.BIND.ID.class);
             int coulumnName = easyID.ID();
             String type = fields[i].getGenericType().toString();
 
@@ -67,10 +67,10 @@ abstract class BindReflectManager {
         }
         Method[] methods = clazz.getDeclaredMethods();
         for (int i = 0; i < methods.length; i++) {
-            boolean isAnno = methods[i].isAnnotationPresent(EasyA.BIND.Method.class);
+            boolean isAnno = methods[i].isAnnotationPresent(EasyMouse.BIND.Method.class);
             if (!isAnno)
                 continue;
-            EasyA.BIND.Method easyID = methods[i].getAnnotation(EasyA.BIND.Method.class);
+            EasyMouse.BIND.Method easyID = methods[i].getAnnotation(EasyMouse.BIND.Method.class);
             int[] ids = easyID.onClick();
             method_ids.put(methods[i], ids);
         }

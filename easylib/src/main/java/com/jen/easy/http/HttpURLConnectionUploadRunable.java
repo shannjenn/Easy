@@ -2,9 +2,9 @@ package com.jen.easy.http;
 
 import android.text.TextUtils;
 
-import com.jen.easy.Easy;
-import com.jen.easy.EasyF;
-import com.jen.easy.EasyP;
+import com.jen.easy.EasyMain;
+import com.jen.easy.EasyFinal;
+import com.jen.easy.EasyParam;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -17,9 +17,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 class HttpURLConnectionUploadRunable implements Runnable {
-    private EasyP.HTTP.UploadParam param;
+    private EasyParam.HTTP.UploadParam param;
 
-    HttpURLConnectionUploadRunable(EasyP.HTTP.UploadParam param) {
+    HttpURLConnectionUploadRunable(EasyParam.HTTP.UploadParam param) {
         super();
         this.param = param;
     }
@@ -28,15 +28,15 @@ class HttpURLConnectionUploadRunable implements Runnable {
     public void run() {
         if (TextUtils.isEmpty(param.httpBase.url)) {
             HttpLog.e("URL地址错误");
-            fail(EasyF.HTTP.Code.FAIL, "参数错误");
+            fail(EasyFinal.HTTP.Code.FAIL, "参数错误");
             return;
         } else if (TextUtils.isEmpty(param.fileParam.filePath)) {
-            fail(EasyF.HTTP.Code.FAIL, "文件地址不能为空");
+            fail(EasyFinal.HTTP.Code.FAIL, "文件地址不能为空");
             return;
         }
         File file = new File(param.fileParam.filePath);
         if (!file.isFile()) {
-            fail(EasyF.HTTP.Code.FAIL, "文件地址参数错误");
+            fail(EasyFinal.HTTP.Code.FAIL, "文件地址参数错误");
             return;
         }
 
@@ -72,7 +72,7 @@ class HttpURLConnectionUploadRunable implements Runnable {
             out.close();
 
             if (param.httpBase.userCancel) {
-                fail(EasyF.HTTP.Code.FAIL, "用户取消");
+                fail(EasyFinal.HTTP.Code.FAIL, "用户取消");
                 return;
             }
 
@@ -99,9 +99,9 @@ class HttpURLConnectionUploadRunable implements Runnable {
         if (param.getUploadListener() != null) {
             Object object = null;
             if (param.httpBase.parseJson) {
-                object = Easy.HPARSE.parseJson(param.getClass(), result);
+                object = EasyMain.HPARSE.parseJson(param.getClass(), result);
                 if (object == null) {
-                    fail(EasyF.HTTP.Code.FAIL, "数据异常");
+                    fail(EasyFinal.HTTP.Code.FAIL, "数据异常");
                     return;
                 }
             }

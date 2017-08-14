@@ -2,7 +2,7 @@ package com.jen.easy.sqlite.imp;
 
 import android.database.sqlite.SQLiteDatabase;
 
-import com.jen.easy.EasyL;
+import com.jen.easy.EasyListener;
 
 public interface DBHelperImp {
 
@@ -10,6 +10,12 @@ public interface DBHelperImp {
      * 创建数据库
      */
     void create();
+
+    /**
+     * 创建加密数据库
+     * @return
+     */
+    void create(String password);
 
     /**
      * 读取数据库
@@ -65,7 +71,7 @@ public interface DBHelperImp {
      *
      * @param databaseListener
      */
-    void setDatabaseListener(EasyL.DB.DatabaseListener databaseListener);
+    void setDatabaseListener(EasyListener.DB.DatabaseListener databaseListener);
 
     /**
      * 升级数据库

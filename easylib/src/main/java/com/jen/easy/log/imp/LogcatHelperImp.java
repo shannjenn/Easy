@@ -1,6 +1,6 @@
 package com.jen.easy.log.imp;
 
-import com.jen.easy.EasyL;
+import com.jen.easy.EasyListener;
 
 /**
  * ClassName:LogcatHelperManager Function: log日志统计保存
@@ -40,5 +40,5 @@ public interface LogcatHelperImp {
     /**
      * 未抓取崩溃监听
      */
-    void setListener(EasyL.LOG.CrashListener listener);
+    void setListener(EasyListener.LOG.CrashListener listener);
 }

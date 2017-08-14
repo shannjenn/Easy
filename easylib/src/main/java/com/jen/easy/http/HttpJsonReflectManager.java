@@ -2,8 +2,8 @@ package com.jen.easy.http;
 
 import android.text.TextUtils;
 
-import com.jen.easy.Easy;
-import com.jen.easy.EasyA;
+import com.jen.easy.EasyMouse;
+import com.jen.easy.EasyUtil;
 import com.jen.easy.constant.FieldType;
 
 import org.json.JSONArray;
@@ -103,7 +103,7 @@ class HttpJsonReflectManager {
                         field.set(object, value);
                     } else if (type.equals(FieldType.DATE)) {
                         String value = jsonObject.getString(param);
-                        Date date = Easy.FORMAT.parser(value);
+                        Date date = EasyUtil.DATAFORMAT.parser(value);
                         field.set(object, date);
                     } else if (type.contains(FieldType.LIST)) {
                         String clazzName = type.substring(type.indexOf("<") + 1, type.indexOf(">"));
@@ -176,12 +176,12 @@ class HttpJsonReflectManager {
             return null;
         }
         String modelName = null;
-        boolean isAnno = clazz.isAnnotationPresent(EasyA.HTTP.Model.class);
+        boolean isAnno = clazz.isAnnotationPresent(EasyMouse.HTTP.Model.class);
         if (!isAnno) {
             HttpLog.e("clazz is not AnnotationPresent");
             return null;
         }
-        EasyA.HTTP.Model model = (EasyA.HTTP.Model) clazz.getAnnotation(EasyA.HTTP.Model.class);
+        EasyMouse.HTTP.Model model = (EasyMouse.HTTP.Model) clazz.getAnnotation(EasyMouse.HTTP.Model.class);
         modelName = model.modelName();
         return modelName;
     }
@@ -205,10 +205,10 @@ class HttpJsonReflectManager {
 
         Field[] fields = clazz.getDeclaredFields();
         for (int i = 0; i < fields.length; i++) {
-            boolean isAnno = fields[i].isAnnotationPresent(EasyA.HTTP.Param.class);
+            boolean isAnno = fields[i].isAnnotationPresent(EasyMouse.HTTP.Param.class);
             if (!isAnno)
                 continue;
-            EasyA.HTTP.Param param = fields[i].getAnnotation(EasyA.HTTP.Param.class);
+            EasyMouse.HTTP.Param param = fields[i].getAnnotation(EasyMouse.HTTP.Param.class);
             String paramName = param.paramName();
             String type = fields[i].getGenericType().toString();
             param_type.put(paramName, type);

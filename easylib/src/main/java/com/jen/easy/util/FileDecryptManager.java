@@ -1,4 +1,4 @@
-package com.jen.easy.sqlite.fileutil;
+package com.jen.easy.util;
 
 import android.os.Environment;
 

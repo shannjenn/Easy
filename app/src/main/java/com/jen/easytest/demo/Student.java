@@ -5,8 +5,8 @@ package com.jen.easytest.demo;
  * 时间：2017/8/9.
  */
 
-import com.jen.easy.EasyA;
-import com.jen.easy.EasyP;
+import com.jen.easy.EasyMouse;
+import com.jen.easy.EasyParam;
 
 import java.util.Date;
 
@@ -14,25 +14,25 @@ import java.util.Date;
  * Created by Jen on 2017/7/19.
  */
 
-@EasyA.DB.Table(tableName = "student")
-public class Student extends EasyP.HTTP.BaseParam{
+@EasyMouse.DB.Table(tableName = "student")
+public class Student extends EasyParam.HTTP.BaseParam{
 
-    @EasyA.HTTP.Param(paramName = "id")
-    @EasyA.DB.Column(columnName = "id", primaryKey = true)
+    @EasyMouse.HTTP.Param(paramName = "id")
+    @EasyMouse.DB.Column(columnName = "id", primaryKey = true)
     private String id;
 
-    @EasyA.HTTP.Param(paramName = "name")
-    @EasyA.DB.Column(columnName = "name")
+    @EasyMouse.HTTP.Param(paramName = "name")
+    @EasyMouse.DB.Column(columnName = "name")
     private String name;
 
-    @EasyA.HTTP.Param(paramName = "name")
-    @EasyA.DB.Column(columnName = "age")
+    @EasyMouse.HTTP.Param(paramName = "name")
+    @EasyMouse.DB.Column(columnName = "age")
     private int age;
 
-    @EasyA.DB.Column(columnName = "yes")
+    @EasyMouse.DB.Column(columnName = "yes")
     private boolean yes;
 
-    @EasyA.DB.Column(columnName = "date")
+    @EasyMouse.DB.Column(columnName = "date")
     private Date date;
 
     public String getId() {

@@ -4,8 +4,7 @@ import android.app.Activity;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
-import com.jen.easy.Easy;
-import com.jen.easy.EasyF;
+import com.jen.easy.EasyMain;
 
 import java.io.File;
 
@@ -21,12 +20,11 @@ public class MainActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        Easy.BIND.bind(this);
+        EasyMain.BIND.bind(this);
 
-        File file = getDatabasePath("Easy.db");
+        File file = getDatabasePath("EasyMain.db");
         SQLiteDatabase.create(null);
-        if(EasyF.HTTP.Code.FAIL == 0){
-
-        };
     }
+
+
 }
