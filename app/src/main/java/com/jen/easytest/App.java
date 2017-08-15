@@ -9,4 +9,8 @@ import com.jen.easy.app.EasyApplication;
 
 public class App extends EasyApplication{
 
+    @Override
+    protected String setDBPassword() {
+        return "123";
+    }
 }

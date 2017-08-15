@@ -32,7 +32,7 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.1'
-//    compile project(':easylib')
-    compile files('libs/easy.jar')
+    compile project(':easylib')
+//    compile files('libs/easy.jar')
     testCompile 'junit:junit:4.12'
 }

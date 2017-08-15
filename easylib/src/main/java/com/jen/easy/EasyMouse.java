@@ -10,12 +10,17 @@ import java.lang.annotation.Target;
  * 时间：2017/8/12.
  */
 
-public abstract class EasyMouse {
+public final class EasyMouse {
+    private EasyMouse() {
+    }
 
     /**
      * 数据库********************
      */
-    public abstract static class DB {
+    public final static class DB {
+        private DB() {
+        }
+
         @Target(ElementType.TYPE)
         @Retention(RetentionPolicy.RUNTIME)
         public @interface Table {
@@ -44,7 +49,10 @@ public abstract class EasyMouse {
     /**
      * 控件绑定********************
      */
-    public abstract static class BIND {
+    public final static class BIND {
+        private BIND() {
+        }
+
         @Target({ElementType.FIELD})
         @Retention(RetentionPolicy.RUNTIME)
         public @interface ID {
@@ -68,7 +76,10 @@ public abstract class EasyMouse {
     /**
      * 网络请求********************
      */
-    public abstract static class HTTP {
+    public final static class HTTP {
+        private HTTP() {
+        }
+
         /**
          * 网络请求对象
          * Created by Jen on 2017/7/21.
@@ -105,24 +116,26 @@ public abstract class EasyMouse {
     /**
      * 面向切入********************
      */
-    public abstract static class AOP {
+    public final static class AOP {
+        private AOP() {
+        }
 
         /**
-         * 切入编程
+         * 切入编程前
          * Created by Jen on 2017/7/21.
          */
         @Target({ElementType.METHOD})
         @Retention(RetentionPolicy.RUNTIME)
-        public @interface Single {
-            /**
-             * 切人前方法
-             */
-            int before();
+        public @interface SingleBefore {
+        }
 
-            /**
-             * 切人后方法
-             */
-            int after();
+        /**
+         * 切入编程后
+         * Created by Jen on 2017/7/21.
+         */
+        @Target({ElementType.METHOD})
+        @Retention(RetentionPolicy.RUNTIME)
+        public @interface SingleAfter {
         }
     }
 

@@ -10,11 +10,17 @@ import com.jen.easy.http.param.factory.ParamFather;
  * 时间：2017/8/12.
  */
 
-public abstract class EasyParam {
+public final class EasyParam {
+    private EasyParam() {
+    }
+
     /**
      * 网络请求********************
      */
-    public static abstract class HTTP {
+    public static final class HTTP {
+        private HTTP() {
+        }
+
         /**
          * 基本请求
          */

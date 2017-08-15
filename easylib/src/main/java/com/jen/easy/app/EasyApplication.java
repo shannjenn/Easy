@@ -2,12 +2,15 @@ package com.jen.easy.app;
 
 import android.app.Application;
 
+import com.jen.easy.log.Logcat;
+import com.jen.easy.sqlite.DBConstant;
+
 /**
  * 继承该Application
  * Created by Jen on 2017/7/20.
  */
 
-public class EasyApplication extends Application {
+public abstract class EasyApplication extends Application {
     private static EasyApplication instance;
 
     public static Application getAppContext() {
@@ -17,6 +20,10 @@ public class EasyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Logcat.d("EasyApplication onCreate----");
         instance = this;
+        DBConstant.PASSWORD = setDBPassword();
     }
+
+    protected abstract String setDBPassword();
 }

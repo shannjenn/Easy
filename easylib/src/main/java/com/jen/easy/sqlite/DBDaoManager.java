@@ -1,6 +1,7 @@
 package com.jen.easy.sqlite;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,7 +9,6 @@ import android.database.sqlite.SQLiteDatabase;
 import com.jen.easy.EasyUtil;
 import com.jen.easy.constant.FieldType;
 import com.jen.easy.sqlite.imp.DBDaoImp;
-import com.jen.easy.sqlite.imp.DBHelperImp;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -24,10 +24,10 @@ import static com.jen.easy.sqlite.DBReflectManager.COLUMN_FIELD;
  */
 
 public class DBDaoManager implements DBDaoImp {
-    private DBHelperImp dbHelper;
+    private Database database;
 
-    public DBDaoManager(DBHelperImp dbHelper) {
-        this.dbHelper = dbHelper;
+    public DBDaoManager(Context context) {
+        database = new Database(context);
     }
 
 
@@ -55,7 +55,7 @@ public class DBDaoManager implements DBDaoImp {
             DBLog.w("primaryKey is null");
             return null;
         }
-        SQLiteDatabase db = dbHelper.getReadDatabse();
+        SQLiteDatabase db = database.getReadableDatabase();
         String selection = primaryKey.get(0) + "=?";
         String[] selectionArgs = {id};
         Cursor cursor = db.query(tableName, null, selection, selectionArgs, null, null, null);
@@ -100,7 +100,7 @@ public class DBDaoManager implements DBDaoImp {
         if (pageNo > 0) {
             limit = page * pageNo + "," + pageNo;
         }
-        SQLiteDatabase db = dbHelper.getReadDatabse();
+        SQLiteDatabase db = database.getReadableDatabase();
         Cursor cursor = db.query(tableName, null, selection, selectionArgs, null, null, orderBy, limit);
         if (cursor == null || cursor.getCount() == 0) {
             return objs;
@@ -133,7 +133,7 @@ public class DBDaoManager implements DBDaoImp {
         }
         String tableName = DBReflectManager.getTableName(obj.getClass());
         ContentValues values = cntentValues(obj);
-        SQLiteDatabase db = dbHelper.getReadDatabse();
+        SQLiteDatabase db = database.getWritableDatabase();
         db.insert(tableName, null, values);
     }
 
@@ -150,7 +150,7 @@ public class DBDaoManager implements DBDaoImp {
         }
         String tableName = DBReflectManager.getTableName(obj.getClass());
         ContentValues values = cntentValues(obj);
-        SQLiteDatabase db = dbHelper.getReadDatabse();
+        SQLiteDatabase db = database.getWritableDatabase();
         db.replace(tableName, null, values);
     }
 
@@ -177,7 +177,7 @@ public class DBDaoManager implements DBDaoImp {
             DBLog.w("primary is null");
             return;
         }
-        SQLiteDatabase db = dbHelper.getReadDatabse();
+        SQLiteDatabase db = database.getWritableDatabase();
         db.delete(tableName, primarys.get(0) + "=?", new String[]{id});
     }
 
@@ -192,7 +192,7 @@ public class DBDaoManager implements DBDaoImp {
             DBLog.w("tableName is null");
             return;
         }
-        SQLiteDatabase db = dbHelper.getReadDatabse();
+        SQLiteDatabase db = database.getWritableDatabase();
         db.delete(tableName, selection, selectionArgs);
     }
 
@@ -203,7 +203,7 @@ public class DBDaoManager implements DBDaoImp {
      */
     @Override
     public void execSQL(String sql) {
-        SQLiteDatabase db = dbHelper.getReadDatabse();
+        SQLiteDatabase db = database.getWritableDatabase();
         try {
             db.beginTransaction();
             db.execSQL(sql);
@@ -223,7 +223,7 @@ public class DBDaoManager implements DBDaoImp {
      */
     @Override
     public void execSQL(String sql, String[] bindArgs) {
-        SQLiteDatabase db = dbHelper.getReadDatabse();
+        SQLiteDatabase db = database.getWritableDatabase();
         try {
             db.beginTransaction();
             db.execSQL(sql);

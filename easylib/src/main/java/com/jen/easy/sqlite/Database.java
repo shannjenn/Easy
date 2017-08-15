@@ -7,10 +7,10 @@ import android.database.sqlite.SQLiteException;
 
 import com.jen.easy.EasyListener;
 
-class Database {
-    private int version = 1;
-    private final String name = "easy.db";
+import java.io.File;
 
+class Database {
+    private final String name = "easy.db";
     private String path;
     private EasyListener.DB.DatabaseListener listener;
 
@@ -22,8 +22,24 @@ class Database {
      * 创建数据库
      */
     void createDB() {
+        File file = new File(path);
+        if (file.exists()) {
+            return;
+        }
         SQLiteDatabase.openOrCreateDatabase(path, null);
     }
+
+    /**
+     * 创建数据库
+     */
+    /*void createDB(String password) {
+        File file = new File(path);
+        if (file.exists()) {
+            return;
+        }
+        SQLiteDatabase.openOrCreateDatabase(path, null);
+        DBConstant.PASSWORD = password;
+    }*/
 
     /**
      * 升级数据库
@@ -36,8 +52,7 @@ class Database {
         if (version < oldVersion) {
             DBLog.w("升级版本不能小于当前版本：" + oldVersion);
         }
-        this.version = version;
-        if (oldVersion == this.version) {
+        if (oldVersion == version) {
             return;
         }
         db.setVersion(version);
@@ -47,7 +62,7 @@ class Database {
     }
 
     int getVersion() {
-        return version;
+        return getReadableDatabase().getVersion();
     }
 
     String getName() {

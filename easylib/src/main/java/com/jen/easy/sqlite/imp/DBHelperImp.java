@@ -15,7 +15,7 @@ public interface DBHelperImp {
      * 创建加密数据库
      * @return
      */
-    void create(String password);
+//    void create(String password);
 
     /**
      * 读取数据库

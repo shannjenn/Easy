@@ -39,6 +39,7 @@
     native <methods>;
     public <fields>;
     public <methods>;
+    protected <methods>;
 }
 -keep class com.jen.easy.app.EasyVersion {
     public <fields>;
@@ -130,8 +131,23 @@
 }
 ###切面编程
 
+###数据存储Share
+-keep class com.jen.easy.share.imp.ShareImp {
+    public <fields>;
+    public <methods>;
+}
+###数据存储Share
+
 ###工具类
 -keep class com.jen.easy.util.imp.DataFormatImp {
+    public <fields>;
+    public <methods>;
+}
+-keep class com.jen.easy.util.imp.StringToListImp {
+    public <fields>;
+    public <methods>;
+}
+-keep class com.jen.easy.util.factory.FileDecryptFactory {
     public <fields>;
     public <methods>;
 }

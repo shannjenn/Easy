@@ -8,12 +8,17 @@ import android.database.sqlite.SQLiteDatabase;
  * 时间：2017/8/12.
  */
 
-public abstract class EasyListener {
+public final class EasyListener {
+    private EasyListener() {
+    }
 
     /**
      * 数据库********************
      */
-    public abstract static class DB {
+    public final static class DB {
+        private DB() {
+        }
+
         /**
          * 数据监听
          * Created by Jen on 2017/7/31.
@@ -35,7 +40,10 @@ public abstract class EasyListener {
     /**
      * LOG日记********************
      */
-    public abstract static class LOG {
+    public final static class LOG {
+        private LOG() {
+        }
+
         /**
          * 日志抓取监听
          */
@@ -51,7 +59,9 @@ public abstract class EasyListener {
     /**
      * 网络请求********************
      */
-    public abstract static class HTTP {
+    public final static class HTTP {
+        private HTTP() {
+        }
         /**
          * 基本数据网络请求监听
          */

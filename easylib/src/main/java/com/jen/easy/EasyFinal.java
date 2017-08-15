@@ -14,7 +14,13 @@ public final class EasyFinal {
      * ********************
      */
     public final class HTTP {
+        private HTTP() {
+        }
+
         public final class Code {
+            private Code() {
+            }
+
             /**
              * 成功
              */

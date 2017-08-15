@@ -1,7 +1,8 @@
 package com.jen.easy;
 
-import com.jen.easy.aop.DynamicProxyManager;
-import com.jen.easy.aop.imp.DynamicProxyImp;
+import android.text.TextUtils;
+
+import com.jen.easy.aop.factory.DynamicProxyFactory;
 import com.jen.easy.app.EasyApplication;
 import com.jen.easy.bind.BindManager;
 import com.jen.easy.bind.imp.BindImp;
@@ -12,17 +13,24 @@ import com.jen.easy.http.imp.HttpParseImp;
 import com.jen.easy.log.Logcat;
 import com.jen.easy.log.LogcatHelperManager;
 import com.jen.easy.log.imp.LogcatHelperImp;
+import com.jen.easy.share.ShareManager;
+import com.jen.easy.share.imp.ShareImp;
+import com.jen.easy.sqlite.DBConstant;
 import com.jen.easy.sqlite.DBDaoManager;
 import com.jen.easy.sqlite.DBHelperManager;
 import com.jen.easy.sqlite.imp.DBDaoImp;
 import com.jen.easy.sqlite.imp.DBHelperImp;
+import com.jen.easy.util.factory.FileDecryptFactory;
 
 /**
  * 创建人：ShannJenn
  * 时间：2017/8/12.
  */
 
-public abstract class EasyMain {
+public final class EasyMain {
+    private EasyMain() {
+    }
+
     /**
      * ID绑定
      */
@@ -48,24 +56,46 @@ public abstract class EasyMain {
      */
     public static final LogcatHelperImp LOG;
     /**
-     * 切入编程
+     * 数据存储SharedPreferences
      */
-    public static final DynamicProxyImp PROXY;
+    public static final ShareImp SHARE;
 
     static {
-        PROXY = new DynamicProxyManager();
+        Logcat.d("init EasyMain -------");
 
         BIND = new BindManager();
         HTTP = new HttpManager();
         HPARSE = new HttpParseManager();
+        LOG = new LogcatHelperManager();
+
         if (EasyApplication.getAppContext() != null) {
-            DB = new DBHelperManager(EasyApplication.getAppContext());
-            DBD = new DBDaoManager(DB);
+            SHARE = new ShareManager(EasyApplication.getAppContext());
+
+            if (TextUtils.isEmpty(DBConstant.PASSWORD)) {
+                DB = new DBHelperManager(EasyApplication.getAppContext());
+                DBD = new DBDaoManager(EasyApplication.getAppContext());
+            } else {
+                DBHelperImp DBtemp = new DBHelperManager(EasyApplication.getAppContext());
+                DBDaoImp DBDtemp = new DBDaoManager(EasyApplication.getAppContext());
+
+                DynamicProxyFactory proxyDB = DynamicProxyFactory.getProx();
+                DB = (DBHelperImp) proxyDB.bind(DBtemp);
+                String path = EasyApplication.getAppContext().getDatabasePath(DB.getName()).getPath();
+
+                proxyDB.setBeforeMethod(FileDecryptFactory.getFileDecryptClass(), new Object[]{path, DBConstant.PASSWORD})
+                        .setAfterMethod(FileDecryptFactory.getFileDecryptClass(), new Object[]{path, DBConstant.PASSWORD})
+                        .bind(DBtemp);
+
+                DynamicProxyFactory proxyDBD = DynamicProxyFactory.getProx();
+                DBD = (DBDaoImp) proxyDBD.bind(DBDtemp);
+                proxyDBD.setBeforeMethod(FileDecryptFactory.getFileDecryptClass(), new Object[]{path, DBConstant.PASSWORD});
+                proxyDBD.setAfterMethod(FileDecryptFactory.getFileDecryptClass(), new Object[]{path, DBConstant.PASSWORD});
+            }
         } else {
+            SHARE = null;
             DB = null;
             DBD = null;
             Logcat.e("请继承:" + EasyApplication.class.getSimpleName());
         }
-        LOG = new LogcatHelperManager();
     }
 }

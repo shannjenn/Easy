@@ -26,10 +26,10 @@ public class DBHelperManager implements DBHelperImp {
         database.createDB();
     }
 
-    @Override
+    /*@Override
     public void create(String password) {
-        database.createDB();
-    }
+        database.createDB(password);
+    }*/
 
     /**
      * 读取数据库
