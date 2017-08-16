@@ -18,14 +18,14 @@ class AOPReflectManager {
      * @param clazz
      * @return
      */
-    static Method getSingleBefore(Class clazz) {
+    static Method getBefore(Class clazz) {
         if (clazz == null) {
             Logcat.e("clazz is null");
             return null;
         }
         Method[] methods = clazz.getDeclaredMethods();
         for (int i = 0; i < methods.length; i++) {
-            boolean isAnno = methods[i].isAnnotationPresent(EasyMouse.AOP.SingleBefore.class);
+            boolean isAnno = methods[i].isAnnotationPresent(EasyMouse.AOP.before.class);
             if (!isAnno)
                 continue;
             return methods[i];
@@ -39,14 +39,14 @@ class AOPReflectManager {
      * @param clazz
      * @return
      */
-    static Method getSingleAfter(Class clazz) {
+    static Method getAfter(Class clazz) {
         if (clazz == null) {
             Logcat.e("clazz is null");
             return null;
         }
         Method[] methods = clazz.getDeclaredMethods();
         for (int i = 0; i < methods.length; i++) {
-            boolean isAnno = methods[i].isAnnotationPresent(EasyMouse.AOP.SingleAfter.class);
+            boolean isAnno = methods[i].isAnnotationPresent(EasyMouse.AOP.after.class);
             if (!isAnno)
                 continue;
             return methods[i];

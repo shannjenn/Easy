@@ -10,8 +10,8 @@ import com.jen.easy.http.param.factory.ParamFather;
  * 时间：2017/8/12.
  */
 
-public final class EasyParam {
-    private EasyParam() {
+public final class EasyFactory {
+    private EasyFactory() {
     }
 
     /**

@@ -1,8 +1,8 @@
 package com.jen.easy.aop;
 
-import com.jen.easy.aop.factory.DynamicProxyFactory;
 import com.jen.easy.log.Logcat;
 
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -12,7 +12,7 @@ import java.lang.reflect.Proxy;
  * 创建人：ShannJenn
  * 时间：2017/8/14.
  */
-public class DynamicProxyManager extends DynamicProxyFactory {
+public class DynamicProxyManager implements InvocationHandler {
     private Object target;
 
     private Object beforeClzz;
@@ -22,7 +22,6 @@ public class DynamicProxyManager extends DynamicProxyFactory {
     private Object[] beforeParams;
     private Object[] afterParams;
 
-    @Override
     public Object bind(Object target) {
         if (target == null) {
             Logcat.e("绑定对象为空----");
@@ -37,14 +36,13 @@ public class DynamicProxyManager extends DynamicProxyFactory {
         return null;
     }
 
-    @Override
-    public DynamicProxyManager setBeforeMethod(Class<?> beforeClzz, Object[] beforeParams) {
+    public DynamicProxyManager setBeforeMethod(Class<?> beforeClzz, Object... beforeParams) {
         if (beforeClzz == null) {
             Logcat.e("切入对象为空----");
             return this;
         }
         try {
-            beforeMethod = AOPReflectManager.getSingleBefore(beforeClzz);
+            beforeMethod = AOPReflectManager.getBefore(beforeClzz);
             this.beforeClzz = beforeClzz.newInstance();
             this.beforeParams = beforeParams;
             for (int i = 0; i < beforeParams.length; i++) {
@@ -61,14 +59,13 @@ public class DynamicProxyManager extends DynamicProxyFactory {
         return this;
     }
 
-    @Override
-    public DynamicProxyManager setAfterMethod(Class<?> afterClzz, Object[] afterParams) {
+    public DynamicProxyManager setAfterMethod(Class<?> afterClzz, Object... afterParams) {
         if (afterClzz == null) {
             Logcat.e("切入对象为空----");
             return this;
         }
         try {
-            afterMethod = AOPReflectManager.getSingleAfter(afterClzz);
+            afterMethod = AOPReflectManager.getAfter(afterClzz);
             this.afterClzz = afterClzz.newInstance();
             this.afterParams = afterParams;
             for (int i = 0; i < afterParams.length; i++) {

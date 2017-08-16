@@ -5,8 +5,8 @@ package com.jen.easytest.demo;
  * 时间：2017/8/9.
  */
 
+import com.jen.easy.EasyFactory;
 import com.jen.easy.EasyMouse;
-import com.jen.easy.EasyParam;
 
 import java.util.Date;
 
@@ -15,7 +15,7 @@ import java.util.Date;
  */
 
 @EasyMouse.DB.Table(tableName = "student")
-public class Student extends EasyParam.HTTP.BaseParam{
+public class Student extends EasyFactory.HTTP.BaseParam{
 
     @EasyMouse.HTTP.Param(paramName = "id")
     @EasyMouse.DB.Column(columnName = "id", primaryKey = true)

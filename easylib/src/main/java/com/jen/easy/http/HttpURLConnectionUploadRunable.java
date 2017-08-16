@@ -4,7 +4,7 @@ import android.text.TextUtils;
 
 import com.jen.easy.EasyMain;
 import com.jen.easy.EasyFinal;
-import com.jen.easy.EasyParam;
+import com.jen.easy.EasyFactory;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -17,9 +17,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 class HttpURLConnectionUploadRunable implements Runnable {
-    private EasyParam.HTTP.UploadParam param;
+    private EasyFactory.HTTP.UploadParam param;
 
-    HttpURLConnectionUploadRunable(EasyParam.HTTP.UploadParam param) {
+    HttpURLConnectionUploadRunable(EasyFactory.HTTP.UploadParam param) {
         super();
         this.param = param;
     }

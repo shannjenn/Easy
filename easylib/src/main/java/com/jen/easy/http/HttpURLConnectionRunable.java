@@ -2,9 +2,9 @@ package com.jen.easy.http;
 
 import android.text.TextUtils;
 
+import com.jen.easy.EasyFactory;
 import com.jen.easy.EasyMain;
 import com.jen.easy.EasyFinal;
-import com.jen.easy.EasyParam;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -16,9 +16,9 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 class HttpURLConnectionRunable implements Runnable {
-    private EasyParam.HTTP.BaseParam param;
+    private EasyFactory.HTTP.BaseParam param;
 
-    HttpURLConnectionRunable(EasyParam.HTTP.BaseParam param) {
+    HttpURLConnectionRunable(EasyFactory.HTTP.BaseParam param) {
         super();
         this.param = param;
     }

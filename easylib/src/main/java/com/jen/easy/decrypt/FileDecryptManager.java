@@ -1,16 +1,14 @@
-package com.jen.easy.util;
+package com.jen.easy.decrypt;
 
 import com.jen.easy.EasyMain;
-import com.jen.easy.EasyMouse;
 import com.jen.easy.log.Logcat;
-import com.jen.easy.util.factory.FileDecryptFactory;
 
 import java.io.File;
 import java.io.RandomAccessFile;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
-public class FileDecryptManager extends FileDecryptFactory {
+public class FileDecryptManager {
 
     /**
      * 解密
@@ -18,8 +16,6 @@ public class FileDecryptManager extends FileDecryptFactory {
      * @param strFile 源文件绝对路径
      * @return
      */
-    @EasyMouse.AOP.SingleBefore
-    @Override
     public boolean encrypt(String strFile, String password) {
         File file = new File(strFile);
         if (!file.exists() || !isDecripted(strFile)) {
@@ -56,10 +52,10 @@ public class FileDecryptManager extends FileDecryptFactory {
             channel.close();
             raf.close();
             EasyMain.SHARE.setBoolean(strFile, false);
-            Logcat.d("数据解密成功!");
             return true;
         } catch (Exception e) {
             e.printStackTrace();
+            Logcat.d("数据解密异常");
         }
         return false;
     }
@@ -70,8 +66,6 @@ public class FileDecryptManager extends FileDecryptFactory {
      * @param strFile 源文件绝对路径
      * @return
      */
-    @EasyMouse.AOP.SingleAfter
-    @Override
     public boolean decrypt(String strFile, String password) {
         File file = new File(strFile);
         if (!file.exists() || isDecripted(strFile)) {
@@ -108,10 +102,10 @@ public class FileDecryptManager extends FileDecryptFactory {
             channel.close();
             raf.close();
             EasyMain.SHARE.setBoolean(strFile, true);
-            Logcat.d("数据加密成功!------");
             return true;
         } catch (Exception e) {
             e.printStackTrace();
+            Logcat.d("数据加密异常");
         }
         return false;
     }

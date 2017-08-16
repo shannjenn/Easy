@@ -53,6 +53,10 @@
     public <fields>;
     public <methods>;
 }
+-keep class com.jen.easy.EasyClass$* {
+    public <fields>;
+    public <methods>;
+}
 -keep class com.jen.easy.EasyFinal$* {
     public <fields>;
     public <methods>;
@@ -61,7 +65,7 @@
     public <fields>;
     public <methods>;
 }
--keep class com.jen.easy.EasyParam$* {
+-keep class com.jen.easy.EasyFactory$* {
     public <fields>;
     public <methods>;
 }
@@ -144,10 +148,6 @@
     public <methods>;
 }
 -keep class com.jen.easy.util.imp.StringToListImp {
-    public <fields>;
-    public <methods>;
-}
--keep class com.jen.easy.util.factory.FileDecryptFactory {
     public <fields>;
     public <methods>;
 }

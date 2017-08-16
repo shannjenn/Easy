@@ -2,7 +2,6 @@ package com.jen.easy;
 
 import android.text.TextUtils;
 
-import com.jen.easy.aop.factory.DynamicProxyFactory;
 import com.jen.easy.app.EasyApplication;
 import com.jen.easy.bind.BindManager;
 import com.jen.easy.bind.imp.BindImp;
@@ -20,9 +19,9 @@ import com.jen.easy.sqlite.DBDaoManager;
 import com.jen.easy.sqlite.DBHelperManager;
 import com.jen.easy.sqlite.imp.DBDaoImp;
 import com.jen.easy.sqlite.imp.DBHelperImp;
-import com.jen.easy.util.factory.FileDecryptFactory;
 
 /**
+ * 核心框架模块
  * 创建人：ShannJenn
  * 时间：2017/8/12.
  */
@@ -78,18 +77,18 @@ public final class EasyMain {
                 DBHelperImp DBtemp = new DBHelperManager(EasyApplication.getAppContext());
                 DBDaoImp DBDtemp = new DBDaoManager(EasyApplication.getAppContext());
 
-                DynamicProxyFactory proxyDB = DynamicProxyFactory.getProx();
+                EasyClass.DynamicProxy proxyDB = new EasyClass.DynamicProxy();
                 DB = (DBHelperImp) proxyDB.bind(DBtemp);
                 String path = EasyApplication.getAppContext().getDatabasePath(DB.getName()).getPath();
 
-                proxyDB.setBeforeMethod(FileDecryptFactory.getFileDecryptClass(), new Object[]{path, DBConstant.PASSWORD})
-                        .setAfterMethod(FileDecryptFactory.getFileDecryptClass(), new Object[]{path, DBConstant.PASSWORD})
+                proxyDB.setBeforeMethod(EasyClass.FileDecrypt.class, path, DBConstant.PASSWORD)
+                        .setAfterMethod(EasyClass.FileDecrypt.class, path, DBConstant.PASSWORD)
                         .bind(DBtemp);
 
-                DynamicProxyFactory proxyDBD = DynamicProxyFactory.getProx();
+                EasyClass.DynamicProxy proxyDBD = new EasyClass.DynamicProxy();
                 DBD = (DBDaoImp) proxyDBD.bind(DBDtemp);
-                proxyDBD.setBeforeMethod(FileDecryptFactory.getFileDecryptClass(), new Object[]{path, DBConstant.PASSWORD});
-                proxyDBD.setAfterMethod(FileDecryptFactory.getFileDecryptClass(), new Object[]{path, DBConstant.PASSWORD});
+                proxyDBD.setBeforeMethod(EasyClass.FileDecrypt.class, path, DBConstant.PASSWORD);
+                proxyDBD.setAfterMethod(EasyClass.FileDecrypt.class, path, DBConstant.PASSWORD);
             }
         } else {
             SHARE = null;

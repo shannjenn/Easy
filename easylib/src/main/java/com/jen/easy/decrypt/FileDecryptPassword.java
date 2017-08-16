@@ -1,4 +1,4 @@
-package com.jen.easy.util;
+package com.jen.easy.decrypt;
 
 class FileDecryptPassword {
     private static final String defautPassword = "louxiumeiwoaini520";

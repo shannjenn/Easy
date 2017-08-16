@@ -3,7 +3,7 @@ package com.jen.easy.http;
 import android.text.TextUtils;
 
 import com.jen.easy.EasyFinal;
-import com.jen.easy.EasyParam;
+import com.jen.easy.EasyFactory;
 
 import java.io.DataOutputStream;
 import java.io.File;
@@ -17,9 +17,9 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 class HttpURLConnectionDownloadRunable implements Runnable {
-    private EasyParam.HTTP.DownloadParam param;
+    private EasyFactory.HTTP.DownloadParam param;
 
-    HttpURLConnectionDownloadRunable(EasyParam.HTTP.DownloadParam param) {
+    HttpURLConnectionDownloadRunable(EasyFactory.HTTP.DownloadParam param) {
         super();
         this.param = param;
     }
