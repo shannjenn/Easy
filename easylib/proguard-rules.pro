@@ -104,6 +104,10 @@
     public <fields>;
     public <methods>;
 }
+-keep class com.jen.easy.http.param.factory.ParamFather {
+    public <fields>;
+    public <methods>;
+}
 ###网络模块
 
 ###Log模块
