@@ -7,8 +7,8 @@ import java.util.Map;
  * Created by Jen on 2017/7/26.
  */
 
-public final class FinalBaseParam {
-    FinalBaseParam() {
+public final class FinalBasePram {
+    FinalBasePram() {
     }
 
     /**
@@ -22,9 +22,9 @@ public final class FinalBaseParam {
     public String flag;
 
     /**
-     * 是否要解析返回结果(Json格式)
+     * 是否要解析返回结果(默认解析)
      */
-    public boolean parseJson;
+    public boolean parse = true;
 
     /**
      * 用户停止
@@ -36,16 +36,4 @@ public final class FinalBaseParam {
      */
     public final Map<String, String> requestParam = new HashMap<>();
 
-    public String url;
-    public String method;
-    public String charset;
-    public String contentType;
-    public String connection;
-
-    public int timeout = -1;
-    public int readTimeout = -1;
-
-    public boolean doOutput = false;
-    public boolean doInput = true;
-    public boolean useCaches = false;
 }

@@ -92,7 +92,11 @@
     public <fields>;
     public <methods>;
 }
--keep class com.jen.easy.http.param.factory.FinalBaseParam {
+-keep class com.jen.easy.http.param.factory.FinalHttpPram {
+    public <fields>;
+    public <methods>;
+}
+-keep class com.jen.easy.http.param.factory.FinalBasePram {
     public <fields>;
     public <methods>;
 }

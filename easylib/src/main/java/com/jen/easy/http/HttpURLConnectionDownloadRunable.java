@@ -27,7 +27,7 @@ class HttpURLConnectionDownloadRunable implements Runnable {
     @Override
     public void run() {
         int result = EasyFinal.HTTP.Code.FAIL;
-        if (TextUtils.isEmpty(param.httpBase.url)) {
+        if (TextUtils.isEmpty(param.httpParam.url)) {
             HttpLog.e("URL地址错误");
             fail(EasyFinal.HTTP.Code.FAIL, "参数错误");
             return;
@@ -62,39 +62,39 @@ class HttpURLConnectionDownloadRunable implements Runnable {
             boolean hasParam = false;
             boolean isNotFirst = false;
             StringBuffer requestBuf = new StringBuffer("");
-            for (String name : param.httpBase.requestParam.keySet()) {
-                String value = param.httpBase.requestParam.get(name);
+            for (String name : param.baseParam.requestParam.keySet()) {
+                String value = param.baseParam.requestParam.get(name);
                 if (isNotFirst) {
                     requestBuf.append("&");
                 }
                 requestBuf.append(name);
                 requestBuf.append("=");
-                requestBuf.append(URLEncoder.encode(value, param.httpBase.charset));
+                requestBuf.append(URLEncoder.encode(value, param.httpParam.charset));
                 isNotFirst = true;
                 hasParam = true;
             }
 
-            String urlStr = param.httpBase.url;
-            if (param.httpBase.method.toUpperCase().equals("GET") && hasParam) {
+            String urlStr = param.httpParam.url;
+            if (param.httpParam.method.toUpperCase().equals("GET") && hasParam) {
                 urlStr = urlStr + "?" + requestBuf.toString();
             }
 
             URL url = new URL(urlStr);
             connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(param.httpBase.doInput);
-            connection.setDoOutput(param.httpBase.doOutput);
-            connection.setUseCaches(param.httpBase.useCaches);
-            connection.setConnectTimeout(param.httpBase.timeout);
-            connection.setReadTimeout(param.httpBase.readTimeout);
-            connection.setRequestProperty("Charset", param.httpBase.charset);
-            connection.setRequestProperty("Content-Type", param.httpBase.contentType);
-            connection.setRequestProperty("Connection", param.httpBase.connection);
-            connection.setRequestMethod(param.httpBase.method);
+            connection.setDoInput(param.httpParam.doInput);
+            connection.setDoOutput(param.httpParam.doOutput);
+            connection.setUseCaches(param.httpParam.useCaches);
+            connection.setConnectTimeout(param.httpParam.timeout);
+            connection.setReadTimeout(param.httpParam.readTimeout);
+            connection.setRequestProperty("Charset", param.httpParam.charset);
+            connection.setRequestProperty("Content-Type", param.httpParam.contentType);
+            connection.setRequestProperty("Connection", param.httpParam.connection);
+            connection.setRequestMethod(param.httpParam.method);
             if (param.fileParam.isBreak && param.fileParam.endPoit > param.fileParam.startPoit + 100) {
                 connection.setRequestProperty("Range", "bytes=" + param.fileParam.startPoit + "-" + param.fileParam.endPoit);
             }
 
-            if (param.httpBase.method.toUpperCase().equals("POST") && hasParam) {
+            if (param.httpParam.method.toUpperCase().equals("POST") && hasParam) {
                 connection.connect();
                 DataOutputStream out = new DataOutputStream(connection.getOutputStream());
                 out.writeBytes(requestBuf.toString());
@@ -109,17 +109,17 @@ class HttpURLConnectionDownloadRunable implements Runnable {
                 randFile = new RandomAccessFile(param.fileParam.filePath, "rwd");
                 randFile.seek(param.fileParam.startPoit);
                 int len = 0;
-                while ((len = inStream.read(buffer)) != -1 && !param.httpBase.userCancel) {
+                while ((len = inStream.read(buffer)) != -1 && !param.baseParam.userCancel) {
                     randFile.write(buffer, 0, len);
                     curbytes += len;
-                    if (!param.httpBase.userCancel) {
+                    if (!param.baseParam.userCancel) {
                         progress(curbytes, param.fileParam.endPoit);
                     } else {
                         break;
                     }
                 }
             }
-            if (param.httpBase.userCancel) {
+            if (param.baseParam.userCancel) {
                 result = EasyFinal.HTTP.Code.USER_CANCEL;
             } else if (curbytes == param.fileParam.endPoit) {
                 result = EasyFinal.HTTP.Code.SUCCESS;
@@ -157,16 +157,16 @@ class HttpURLConnectionDownloadRunable implements Runnable {
 
     private void success() {
         if (param.getDownloadListener() != null)
-            param.getDownloadListener().success(param.httpBase.flagCode, param.httpBase.flag);
+            param.getDownloadListener().success(param.baseParam.flagCode, param.baseParam.flag);
     }
 
     private void fail(int code, String tag) {
         if (param.getDownloadListener() != null)
-            param.getDownloadListener().fail(param.httpBase.flagCode, param.httpBase.flag, code, tag);
+            param.getDownloadListener().fail(param.baseParam.flagCode, param.baseParam.flag, code, tag);
     }
 
     private void progress(long currentPoint, long endPoint) {
         if (param.getDownloadListener() != null)
-            param.getDownloadListener().progress(param.httpBase.flagCode, param.httpBase.flag, currentPoint, endPoint);
+            param.getDownloadListener().progress(param.baseParam.flagCode, param.baseParam.flag, currentPoint, endPoint);
     }
 }

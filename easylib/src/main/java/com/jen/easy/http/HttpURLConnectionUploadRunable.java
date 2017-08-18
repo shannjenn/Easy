@@ -26,7 +26,7 @@ class HttpURLConnectionUploadRunable implements Runnable {
 
     @Override
     public void run() {
-        if (TextUtils.isEmpty(param.httpBase.url)) {
+        if (TextUtils.isEmpty(param.httpParam.url)) {
             HttpLog.e("URL地址错误");
             fail(EasyFinal.HTTP.Code.FAIL, "参数错误");
             return;
@@ -42,17 +42,17 @@ class HttpURLConnectionUploadRunable implements Runnable {
 
         HttpURLConnection connection = null;
         try {
-            URL url = new URL(param.httpBase.url);
+            URL url = new URL(param.httpParam.url);
             connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(param.httpBase.doInput);
-            connection.setDoOutput(param.httpBase.doOutput);
-            connection.setUseCaches(param.httpBase.useCaches);
-            connection.setConnectTimeout(param.httpBase.timeout);
-            connection.setReadTimeout(param.httpBase.readTimeout);
-            connection.setRequestProperty("Charset", param.httpBase.charset);
-            connection.setRequestProperty("Content-Type", param.httpBase.contentType);
-            connection.setRequestProperty("Connection", param.httpBase.connection);
-            connection.setRequestMethod(param.httpBase.method);
+            connection.setDoInput(param.httpParam.doInput);
+            connection.setDoOutput(param.httpParam.doOutput);
+            connection.setUseCaches(param.httpParam.useCaches);
+            connection.setConnectTimeout(param.httpParam.timeout);
+            connection.setReadTimeout(param.httpParam.readTimeout);
+            connection.setRequestProperty("Charset", param.httpParam.charset);
+            connection.setRequestProperty("Content-Type", param.httpParam.contentType);
+            connection.setRequestProperty("Connection", param.httpParam.connection);
+            connection.setRequestMethod(param.httpParam.method);
             if (param.fileParam.isBreak && param.fileParam.endPoit > param.fileParam.startPoit + 100) {
                 connection.setRequestProperty("Range", "bytes=" + param.fileParam.startPoit + "-" + param.fileParam.endPoit);
             }
@@ -61,9 +61,9 @@ class HttpURLConnectionUploadRunable implements Runnable {
             DataInputStream in = new DataInputStream(new FileInputStream(file));
             int bytes = 0;
             byte[] bufferOut = new byte[1024];
-            while ((bytes = in.read(bufferOut)) != -1 && !param.httpBase.userCancel) {
+            while ((bytes = in.read(bufferOut)) != -1 && !param.baseParam.userCancel) {
                 out.write(bufferOut, 0, bytes);
-                if (param.httpBase.userCancel) {
+                if (param.baseParam.userCancel) {
                     break;
                 }
             }
@@ -71,7 +71,7 @@ class HttpURLConnectionUploadRunable implements Runnable {
             out.flush();
             out.close();
 
-            if (param.httpBase.userCancel) {
+            if (param.baseParam.userCancel) {
                 fail(EasyFinal.HTTP.Code.FAIL, "用户取消");
                 return;
             }
@@ -98,24 +98,24 @@ class HttpURLConnectionUploadRunable implements Runnable {
     private void success(String result) {
         if (param.getUploadListener() != null) {
             Object object = null;
-            if (param.httpBase.parseJson) {
+            if (param.baseParam.parse) {
                 object = EasyMain.HPARSE.parseJson(param.getClass(), result);
                 if (object == null) {
                     fail(EasyFinal.HTTP.Code.FAIL, "数据异常");
                     return;
                 }
             }
-            param.getUploadListener().success(param.httpBase.flagCode, param.httpBase.flag, object);
+            param.getUploadListener().success(param.baseParam.flagCode, param.baseParam.flag, object);
         }
     }
 
     private void fail(int easyHttpCode, String tag) {
         if (param.getUploadListener() != null)
-            param.getUploadListener().fail(param.httpBase.flagCode, param.httpBase.flag, easyHttpCode, tag);
+            param.getUploadListener().fail(param.baseParam.flagCode, param.baseParam.flag, easyHttpCode, tag);
     }
 
     private void progress(long currentPoint, long endPoint) {
         if (param.getUploadListener() != null)
-            param.getUploadListener().progress(param.httpBase.flagCode, param.httpBase.flag, currentPoint, endPoint);
+            param.getUploadListener().progress(param.baseParam.flagCode, param.baseParam.flag, currentPoint, endPoint);
     }
 }

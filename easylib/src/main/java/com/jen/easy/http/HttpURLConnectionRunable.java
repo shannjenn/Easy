@@ -25,7 +25,7 @@ class HttpURLConnectionRunable implements Runnable {
 
     @Override
     public void run() {
-        if (TextUtils.isEmpty(param.httpBase.url)) {
+        if (TextUtils.isEmpty(param.httpParam.url)) {
             HttpLog.e("URL地址错误");
             fail(EasyFinal.HTTP.Code.FAIL, "参数错误");
             return;
@@ -35,36 +35,36 @@ class HttpURLConnectionRunable implements Runnable {
             boolean hasParam = false;
             boolean isNotFirst = false;
             StringBuffer requestBuf = new StringBuffer("");
-            for (String name : param.httpBase.requestParam.keySet()) {
-                String value = param.httpBase.requestParam.get(name);
+            for (String name : param.baseParam.requestParam.keySet()) {
+                String value = param.baseParam.requestParam.get(name);
                 if (isNotFirst) {
                     requestBuf.append("&");
                 }
                 requestBuf.append(name);
                 requestBuf.append("=");
-                requestBuf.append(URLEncoder.encode(value, param.httpBase.charset));
+                requestBuf.append(URLEncoder.encode(value, param.httpParam.charset));
                 isNotFirst = true;
                 hasParam = true;
             }
 
-            String urlStr = param.httpBase.url;
-            if (param.httpBase.method.toUpperCase().equals("GET") && hasParam) {
+            String urlStr = param.httpParam.url;
+            if (param.httpParam.method.toUpperCase().equals("GET") && hasParam) {
                 urlStr = urlStr + "?" + requestBuf.toString();
             }
 
             URL url = new URL(urlStr);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(param.httpBase.doInput);
-            connection.setDoOutput(param.httpBase.doOutput);
-            connection.setUseCaches(param.httpBase.useCaches);
-            connection.setConnectTimeout(param.httpBase.timeout);
-            connection.setReadTimeout(param.httpBase.readTimeout);
-            connection.setRequestProperty("Charset", param.httpBase.charset);
-            connection.setRequestProperty("Content-Type", param.httpBase.contentType);
-            connection.setRequestProperty("Connection", param.httpBase.connection);
-            connection.setRequestMethod(param.httpBase.method);
+            connection.setDoInput(param.httpParam.doInput);
+            connection.setDoOutput(param.httpParam.doOutput);
+            connection.setUseCaches(param.httpParam.useCaches);
+            connection.setConnectTimeout(param.httpParam.timeout);
+            connection.setReadTimeout(param.httpParam.readTimeout);
+            connection.setRequestProperty("Charset", param.httpParam.charset);
+            connection.setRequestProperty("Content-Type", param.httpParam.contentType);
+            connection.setRequestProperty("Connection", param.httpParam.connection);
+            connection.setRequestMethod(param.httpParam.method);
 
-            if (param.httpBase.method.toUpperCase().equals("POST") && hasParam) {
+            if (param.httpParam.method.toUpperCase().equals("POST") && hasParam) {
                 connection.connect();
                 DataOutputStream out = new DataOutputStream(connection.getOutputStream());
                 out.writeBytes(requestBuf.toString());
@@ -94,19 +94,19 @@ class HttpURLConnectionRunable implements Runnable {
     private void success(String result) {
         if (param.getBseListener() != null) {
             Object object = null;
-            if (param.httpBase.parseJson) {
+            if (param.baseParam.parse) {
                 object = EasyMain.HPARSE.parseJson(param.getClass(), result);
                 if (object == null) {
                     fail(EasyFinal.HTTP.Code.FAIL, "数据异常");
                     return;
                 }
             }
-            param.getBseListener().success(param.httpBase.flagCode, param.httpBase.flag, object);
+            param.getBseListener().success(param.baseParam.flagCode, param.baseParam.flag, object);
         }
     }
 
     private void fail(int code, String result) {
         if (param.getBseListener() != null)
-            param.getBseListener().fail(param.httpBase.flagCode, param.httpBase.flag, code, result);
+            param.getBseListener().fail(param.baseParam.flagCode, param.baseParam.flag, code, result);
     }
 }

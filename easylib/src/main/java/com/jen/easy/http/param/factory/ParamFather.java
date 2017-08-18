@@ -5,9 +5,11 @@ package com.jen.easy.http.param.factory;
  */
 
 public abstract class ParamFather {
-    public FinalBaseParam httpBase;
+    public FinalHttpPram httpParam;
+    public FinalBasePram baseParam;
 
     public ParamFather() {
-        httpBase = new FinalBaseParam();
+        httpParam = new FinalHttpPram();
+        baseParam = new FinalBasePram();
     }
 }

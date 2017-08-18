@@ -58,18 +58,18 @@ public class HttpManager implements HttpImp {
      * @param param
      */
     private void setDefault(ParamFather param) {
-        if (param.httpBase.method == null)
-            param.httpBase.method = method;
-        if (param.httpBase.charset == null)
-            param.httpBase.charset = charset;
-        if (param.httpBase.contentType == null)
-            param.httpBase.contentType = contentType;
-        if (param.httpBase.connection == null)
-            param.httpBase.connection = connection;
-        if (param.httpBase.timeout == -1)
-            param.httpBase.timeout = timeout;
-        if (param.httpBase.readTimeout == -1)
-            param.httpBase.readTimeout = readTimeout;
+        if (param.httpParam.method == null)
+            param.httpParam.method = method;
+        if (param.httpParam.charset == null)
+            param.httpParam.charset = charset;
+        if (param.httpParam.contentType == null)
+            param.httpParam.contentType = contentType;
+        if (param.httpParam.connection == null)
+            param.httpParam.connection = connection;
+        if (param.httpParam.timeout == -1)
+            param.httpParam.timeout = timeout;
+        if (param.httpParam.readTimeout == -1)
+            param.httpParam.readTimeout = readTimeout;
     }
 
     /**
