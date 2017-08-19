@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.jen.easy.EasyUtil;
 import com.jen.easy.constant.FieldType;
+import com.jen.easy.log.EasyLog;
 import com.jen.easy.sqlite.imp.DBDaoImp;
 
 import java.lang.reflect.Field;
@@ -39,12 +40,12 @@ public class DBDaoManager implements DBDaoImp {
     @Override
     public Object searchById(Class clazz, String id) {
         if (clazz == null || id == null) {
-            DBLog.w("clazz is null or id is null");
+            EasyLog.w("clazz is null or id is null");
             return null;
         }
         String tableName = DBReflectManager.getTableName(clazz);
         if (tableName == null) {
-            DBLog.w("tableName is null");
+            EasyLog.w("tableName is null");
             return null;
         }
         Map<String, Object> objectMap = DBReflectManager.getFields(clazz);
@@ -52,7 +53,7 @@ public class DBDaoManager implements DBDaoImp {
         Map<String, Field> column_field = (Map<String, Field>) objectMap.get(COLUMN_FIELD);
 
         if (primaryKey.size() == 0) {
-            DBLog.w("primaryKey is null");
+            EasyLog.w("primaryKey is null");
             return null;
         }
         SQLiteDatabase db = database.getReadableDatabase();
@@ -83,12 +84,12 @@ public class DBDaoManager implements DBDaoImp {
     public List<Object> searchByWhere(Class clazz, String selection, String[] selectionArgs, String orderBy, int page, int pageNo) {
         List<Object> objs = new ArrayList<>();
         if (clazz == null || selection == null || selectionArgs == null || selectionArgs.length == 0) {
-            DBLog.w("clazz is null or id is null");
+            EasyLog.w("clazz is null or id is null");
             return objs;
         }
         String tableName = DBReflectManager.getTableName(clazz);
         if (tableName == null) {
-            DBLog.w("tableName is null");
+            EasyLog.w("tableName is null");
             return objs;
         }
         Map<String, Object> objectMap = DBReflectManager.getFields(clazz);
@@ -128,7 +129,7 @@ public class DBDaoManager implements DBDaoImp {
     @Override
     public void insert(Object obj) {
         if (obj == null) {
-            DBLog.w("obj is null");
+            EasyLog.w("obj is null");
             return;
         }
         String tableName = DBReflectManager.getTableName(obj.getClass());
@@ -145,7 +146,7 @@ public class DBDaoManager implements DBDaoImp {
     @Override
     public void replace(Object obj) {
         if (obj == null) {
-            DBLog.w("obj is null");
+            EasyLog.w("obj is null");
             return;
         }
         String tableName = DBReflectManager.getTableName(obj.getClass());
@@ -163,18 +164,18 @@ public class DBDaoManager implements DBDaoImp {
     @Override
     public void delete(Class clazz, String id) {
         if (clazz == null) {
-            DBLog.w("obj is null");
+            EasyLog.w("obj is null");
             return;
         }
         String tableName = DBReflectManager.getTableName(clazz);
         if (tableName == null) {
-            DBLog.w("tableName is null");
+            EasyLog.w("tableName is null");
             return;
         }
         Map<String, Object> objectMap = DBReflectManager.getColumnNames(clazz);
         List<String> primarys = (List<String>) objectMap.get(DBReflectManager.PRIMARY_KEY);
         if (primarys.size() == 0) {
-            DBLog.w("primary is null");
+            EasyLog.w("primary is null");
             return;
         }
         SQLiteDatabase db = database.getWritableDatabase();
@@ -184,12 +185,12 @@ public class DBDaoManager implements DBDaoImp {
     @Override
     public void delete(Class clazz, String selection, String[] selectionArgs) {
         if (clazz == null || selection == null || selectionArgs == null || selectionArgs.length == 0) {
-            DBLog.w("obj or selection or selectionArgs is error");
+            EasyLog.w("obj or selection or selectionArgs is error");
             return;
         }
         String tableName = DBReflectManager.getTableName(clazz);
         if (tableName == null) {
-            DBLog.w("tableName is null");
+            EasyLog.w("tableName is null");
             return;
         }
         SQLiteDatabase db = database.getWritableDatabase();

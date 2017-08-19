@@ -20,8 +20,9 @@ class LogcatPath {
         File file = new File(logPath);
         if (!file.exists()) {
             boolean ret = file.mkdirs();
-            if (!ret)
+            if (!ret){
                 logPath = null;
+            }
         }
     }
 
@@ -31,14 +32,14 @@ class LogcatPath {
 
     static void setLogPath(String logPath) {
         if (logPath == null) {
-            Logcat.w("设置的日志路径不能为空：");
+            EasyLog.w("设置的日志路径不能为空：");
             return;
         }
         File file = new File(logPath);
         if (!file.exists()) {
             boolean ret = file.mkdirs();
             if (!ret) {
-                Logcat.w("设置的日志路径不正确：" + logPath);
+                EasyLog.w("设置的日志路径不正确：" + logPath);
                 return;
             }
         }

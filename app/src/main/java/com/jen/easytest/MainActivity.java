@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import com.jen.easy.EasyMain;
 
+import java.io.File;
+
 
 public class MainActivity extends Activity {
 
@@ -18,17 +20,17 @@ public class MainActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        EasyMain.BIND.bind(this);
+        File file = getDatabasePath("easy.db");
+        File parent  =file.getParentFile();
+        if (!parent.exists()) {
+            parent.mkdirs();
+        }
+
+//        EasyMain.BIND.bind(this);
+//        EasyMain.HTTP.start(null);
         EasyMain.DB.create();
-//        String path = EasyApplication.getAppContext().getDatabasePath(EasyMain.DB.getName()).getPath();
-//        FileDecryptFactory.getFileDecrypt().encrypt(path, "123");
 
-        /*DBHelperImp DBtemp = new DBHelperManager(EasyApplication.getAppContext());
-        DBDaoImp DBDtemp = new DBDaoManager(EasyApplication.getAppContext());
-
-        DBHelperImp DB = (DBHelperImp) new DynamicProxyManager().bind(DBtemp);
-        DB.create();
-        Logcat.d("DB="+DB);*/
+//        EasyMain.LOG.start();
     }
 
 

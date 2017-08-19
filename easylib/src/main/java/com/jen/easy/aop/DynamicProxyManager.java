@@ -1,6 +1,6 @@
 package com.jen.easy.aop;
 
-import com.jen.easy.log.Logcat;
+import com.jen.easy.log.EasyLog;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -24,7 +24,7 @@ public class DynamicProxyManager implements InvocationHandler {
 
     public Object bind(Object target) {
         if (target == null) {
-            Logcat.e("绑定对象为空----");
+            EasyLog.e("绑定对象为空----");
             return null;
         }
         this.target = target;
@@ -38,7 +38,7 @@ public class DynamicProxyManager implements InvocationHandler {
 
     public DynamicProxyManager setBeforeMethod(Class<?> beforeClzz, Object... beforeParams) {
         if (beforeClzz == null) {
-            Logcat.e("切入对象为空----");
+            EasyLog.e("切入对象为空----");
             return this;
         }
         try {
@@ -61,7 +61,7 @@ public class DynamicProxyManager implements InvocationHandler {
 
     public DynamicProxyManager setAfterMethod(Class<?> afterClzz, Object... afterParams) {
         if (afterClzz == null) {
-            Logcat.e("切入对象为空----");
+            EasyLog.e("切入对象为空----");
             return this;
         }
         try {

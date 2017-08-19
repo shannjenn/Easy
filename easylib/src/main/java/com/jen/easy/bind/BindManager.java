@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.View;
 
 import com.jen.easy.bind.imp.BindImp;
+import com.jen.easy.log.EasyLog;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -24,7 +25,7 @@ public class BindManager implements BindImp {
     @Override
     public void bind(final Activity activity) {
         if (activity == null) {
-            BindLog.e("activity is null");
+            EasyLog.e("activity is null");
             return;
         }
         String name = activity.getClass().getName();
@@ -44,7 +45,7 @@ public class BindManager implements BindImp {
                     fild.set(activity, view);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
-                    BindLog.e("fild set value error");
+                    EasyLog.e("fild set value error");
                 }
             }
         }
@@ -77,7 +78,7 @@ public class BindManager implements BindImp {
     @Override
     public void inject(final Object obj, final View parent) {
         if (obj == null || parent == null) {
-            BindLog.e("obj or view is null");
+            EasyLog.e("obj or view is null");
             return;
         }
 
@@ -93,7 +94,7 @@ public class BindManager implements BindImp {
                     fild.set(obj, view);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
-                    BindLog.e("fild set value error");
+                    EasyLog.e("fild set value error");
                 }
             }
         }
@@ -128,7 +129,7 @@ public class BindManager implements BindImp {
     @Override
     public void unbind(Activity activity) {
         if (activity == null) {
-            BindLog.e("activity is null");
+            EasyLog.e("activity is null");
             return;
         }
         String name = activity.getClass().getName();

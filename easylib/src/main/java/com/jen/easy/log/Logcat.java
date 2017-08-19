@@ -9,7 +9,7 @@ import android.util.Log;
  * @since 1.0.0
  */
 public class Logcat {
-    private static String TAG = "Logcat";
+    private static String TAG = Logcat.class.getSimpleName();
     /**
      * 设置v-i级别Log是否打印
      */
@@ -19,17 +19,9 @@ public class Logcat {
      */
     public static boolean ERROR_LOG = true;
     /**
-     * BindLog(默认打印)
+     * 框架日志是否打印
      */
-    public static boolean BIND_LOG = true;
-    /**
-     * HttpLog(默认打印)
-     */
-    public static boolean HTTP_LOG = true;
-    /**
-     * DBLog(默认打印)
-     */
-    public static boolean DB_LOG = true;
+    public static boolean EASY_LOG = true;
 
     public static void v(String msg) {
         if (DEBUG_LOG)

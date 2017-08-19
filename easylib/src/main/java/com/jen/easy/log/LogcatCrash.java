@@ -75,7 +75,7 @@ class LogcatCrash implements UncaughtExceptionHandler {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-                Logcat.e("LogcatCrash InterruptedException");
+                EasyLog.e("LogcatCrash InterruptedException");
             }
             // 退出程序
             android.os.Process.killProcess(android.os.Process.myPid());

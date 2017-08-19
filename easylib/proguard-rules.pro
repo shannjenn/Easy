@@ -119,6 +119,10 @@
     public <fields>;
     public <methods>;
 }
+-keep class com.jen.easy.log.EasyLog {
+    public <fields>;
+    public <methods>;
+}
 -keep class com.jen.easy.log.imp.LogcatHelperImp {
     public <fields>;
     public <methods>;

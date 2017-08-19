@@ -1,6 +1,7 @@
 package com.jen.easy.sqlite;
 
 import com.jen.easy.EasyMouse;
+import com.jen.easy.log.EasyLog;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -36,13 +37,13 @@ class DBReflectManager {
      */
     static String getTableName(Class clazz) {
         if (clazz == null) {
-            DBLog.e("clazz is not null");
+            EasyLog.e("clazz is not null");
             return null;
         }
         String tbName = null;
         boolean isAnno = clazz.isAnnotationPresent(EasyMouse.DB.Table.class);
         if (!isAnno) {
-            DBLog.e("clazz is not AnnotationPresent");
+            EasyLog.e("clazz is not AnnotationPresent");
             return null;
         }
         EasyMouse.DB.Table table = (EasyMouse.DB.Table) clazz.getAnnotation(EasyMouse.DB.Table.class);
@@ -63,7 +64,7 @@ class DBReflectManager {
         objectMap.put(PRIMARY_KEY, primaryKey);
         objectMap.put(COLUMN_TYPE, column);
         if (clazz == null) {
-            DBLog.e("clazz is not null");
+            EasyLog.e("clazz is not null");
             return objectMap;
         }
 
@@ -99,7 +100,7 @@ class DBReflectManager {
         objectMap.put(COLUMN_TYPE, column);
         objectMap.put(COLUMN_FIELD, fieldName);
         if (clazz == null) {
-            DBLog.e("clazz is not null");
+            EasyLog.e("clazz is not null");
             return objectMap;
         }
 

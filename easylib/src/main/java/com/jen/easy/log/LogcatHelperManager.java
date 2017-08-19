@@ -18,9 +18,8 @@ public class LogcatHelperManager implements LogcatHelperImp {
     }
 
     private void init() {
+        EasyLog.d("LogcatHelperManager init");
         LogcatPath.setDefaultPath();
-        LogcatCrash.getInstance();
-        LogDumper.getInstance();
     }
 
     /**
@@ -49,9 +48,10 @@ public class LogcatHelperManager implements LogcatHelperImp {
     @Override
     public void start() {
         if (LogcatPath.getLogPath() == null) {
-            Logcat.w("日志路径为空，LogcatHelper日志未能启动--------------------");
+            EasyLog.w("日志路径为空，LogcatHelper日志未能启动--------------------");
             return;
         }
+        EasyLog.w("日志路径为:" + LogcatPath.getLogPath());
         LogDumper.getInstance().startLogs();
         LogcatCrash.getInstance().start();
     }

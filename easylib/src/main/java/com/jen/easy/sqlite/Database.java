@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
 import com.jen.easy.EasyListener;
+import com.jen.easy.log.EasyLog;
 
 import java.io.File;
 
@@ -16,6 +17,10 @@ class Database {
 
     Database(Context context) {
         path = context.getDatabasePath(name).getPath();
+        File parent = new File(path).getParentFile();
+        if (!parent.exists()) {
+            parent.mkdirs();
+        }
     }
 
     /**
@@ -50,7 +55,7 @@ class Database {
         SQLiteDatabase db = getWritableDatabase();
         int oldVersion = db.getVersion();
         if (version < oldVersion) {
-            DBLog.w("升级版本不能小于当前版本：" + oldVersion);
+            EasyLog.w("升级版本不能小于当前版本：" + oldVersion);
         }
         if (oldVersion == version) {
             return;

@@ -9,7 +9,7 @@ import com.jen.easy.http.HttpManager;
 import com.jen.easy.http.HttpParseManager;
 import com.jen.easy.http.imp.HttpImp;
 import com.jen.easy.http.imp.HttpParseImp;
-import com.jen.easy.log.Logcat;
+import com.jen.easy.log.EasyLog;
 import com.jen.easy.log.LogcatHelperManager;
 import com.jen.easy.log.imp.LogcatHelperImp;
 import com.jen.easy.share.ShareManager;
@@ -60,7 +60,7 @@ public final class EasyMain {
     public static final ShareImp SHARE;
 
     static {
-        Logcat.d("init EasyMain -------");
+        EasyLog.d("init EasyMain -------");
 
         BIND = new BindManager();
         HTTP = new HttpManager();
@@ -94,7 +94,7 @@ public final class EasyMain {
             SHARE = null;
             DB = null;
             DBD = null;
-            Logcat.e("请继承:" + EasyApplication.class.getSimpleName());
+            EasyLog.e("请继承:" + EasyApplication.class.getSimpleName());
         }
     }
 }

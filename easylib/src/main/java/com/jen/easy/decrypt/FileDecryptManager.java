@@ -1,7 +1,7 @@
 package com.jen.easy.decrypt;
 
 import com.jen.easy.EasyMain;
-import com.jen.easy.log.Logcat;
+import com.jen.easy.log.EasyLog;
 
 import java.io.File;
 import java.io.RandomAccessFile;
@@ -55,7 +55,7 @@ public class FileDecryptManager {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            Logcat.d("数据解密异常");
+            EasyLog.d("数据解密异常");
         }
         return false;
     }
@@ -105,7 +105,7 @@ public class FileDecryptManager {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            Logcat.d("数据加密异常");
+            EasyLog.d("数据加密异常");
         }
         return false;
     }

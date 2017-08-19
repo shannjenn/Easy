@@ -3,6 +3,7 @@ package com.jen.easy.http;
 import com.jen.easy.EasyFactory;
 import com.jen.easy.http.imp.HttpImp;
 import com.jen.easy.http.param.factory.ParamFather;
+import com.jen.easy.log.EasyLog;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -36,7 +37,7 @@ public class HttpManager implements HttpImp {
     @Override
     public void start(ParamFather param) {
         if (param == null) {
-            HttpLog.w("参数为空");
+            EasyLog.w("参数为空");
             return;
         }
         setDefault(param);

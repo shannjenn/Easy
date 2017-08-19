@@ -1,7 +1,7 @@
 package com.jen.easy.http;
 
 import com.jen.easy.http.imp.HttpParseImp;
-import com.jen.easy.log.Logcat;
+import com.jen.easy.log.EasyLog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,7 +23,7 @@ public class HttpParseManager implements HttpParseImp {
     @Override
     public Object parseJson(Class clazz, Object obj) {
         if (obj == null) {
-            Logcat.e("obj is null");
+            EasyLog.e("obj is null");
         }
         Object o = null;
         try {
@@ -35,7 +35,7 @@ public class HttpParseManager implements HttpParseImp {
             } else if (obj instanceof JSONArray) {
                 o = HttpJsonReflectManager.parseJsonArray(clazz, (JSONArray) obj);
             } else {
-                Logcat.e("obj is not JSONObject or JSONArray");
+                EasyLog.e("obj is not JSONObject or JSONArray");
             }
         } catch (JSONException e) {
             e.printStackTrace();

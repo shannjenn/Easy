@@ -2,7 +2,7 @@ package com.jen.easy.app;
 
 import android.app.Application;
 
-import com.jen.easy.log.Logcat;
+import com.jen.easy.log.EasyLog;
 import com.jen.easy.sqlite.DBConstant;
 
 /**
@@ -20,7 +20,7 @@ public abstract class EasyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Logcat.d("EasyApplication onCreate----");
+        EasyLog.d("EasyApplication onCreate----");
         instance = this;
         DBConstant.PASSWORD = setDBPassword();
     }

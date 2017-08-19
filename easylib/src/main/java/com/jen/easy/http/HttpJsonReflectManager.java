@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.jen.easy.EasyMouse;
 import com.jen.easy.EasyUtil;
 import com.jen.easy.constant.FieldType;
+import com.jen.easy.log.EasyLog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,23 +36,23 @@ class HttpJsonReflectManager {
      */
     static Object parseJsonObject(Class clazz, JSONObject jsonObject) {
         if (clazz == null || jsonObject == null) {
-            HttpLog.e("clazz or jsonObject is null");
+            EasyLog.e("clazz or jsonObject is null");
             return null;
         }
         String modelName = getModelName(clazz);
         if (TextUtils.isEmpty(modelName)) {
-            HttpLog.e("modelName is null");
+            EasyLog.e("modelName is null");
             return null;
         }
         Map<String, Object> objectMap = getFields(clazz);
         if (objectMap.size() == 0) {
-            HttpLog.e("objectMap size is empty");
+            EasyLog.e("objectMap size is empty");
             return null;
         }
         Map<String, String> param_type = (Map<String, String>) objectMap.get(PARAM_TYPE);
         Map<String, Field> param_field = (Map<String, Field>) objectMap.get(PARAM_FIELD);
         if (param_type.size() == 0 || param_field.size() == 0) {
-            HttpLog.e("param_type size is empty");
+            EasyLog.e("param_type size is empty");
             return null;
         }
 
@@ -122,7 +123,7 @@ class HttpJsonReflectManager {
             }
         } catch (JSONException e) {
             e.printStackTrace();
-            HttpLog.e("JSONException error");
+            EasyLog.e("JSONException error");
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -143,7 +144,7 @@ class HttpJsonReflectManager {
     static List<Object> parseJsonArray(Class clazz, JSONArray jsonArray) {
         List<Object> list = new ArrayList<>();
         if (jsonArray == null) {
-            HttpLog.e("clazz or jsonArray is null");
+            EasyLog.e("clazz or jsonArray is null");
             return list;
         }
         for (int i = 0; i < jsonArray.length(); i++) {
@@ -153,10 +154,10 @@ class HttpJsonReflectManager {
                 if (jsonObj instanceof JSONObject) {
                     obj = parseJsonObject(clazz, (JSONObject) jsonObj);
                 } else {
-                    HttpLog.e("jsonArray.get(i) is not JSONObject");
+                    EasyLog.e("jsonArray.get(i) is not JSONObject");
                 }
             } catch (JSONException e) {
-                HttpLog.e("parseJsonArray is error");
+                EasyLog.e("parseJsonArray is error");
                 e.printStackTrace();
             }
             list.add(obj);
@@ -172,13 +173,13 @@ class HttpJsonReflectManager {
      */
     private static String getModelName(Class clazz) {
         if (clazz == null) {
-            HttpLog.e("clazz is not null");
+            EasyLog.e("clazz is not null");
             return null;
         }
         String modelName = null;
         boolean isAnno = clazz.isAnnotationPresent(EasyMouse.HTTP.Model.class);
         if (!isAnno) {
-            HttpLog.e("clazz is not AnnotationPresent");
+            EasyLog.e("clazz is not AnnotationPresent");
             return null;
         }
         EasyMouse.HTTP.Model model = (EasyMouse.HTTP.Model) clazz.getAnnotation(EasyMouse.HTTP.Model.class);
@@ -199,7 +200,7 @@ class HttpJsonReflectManager {
         objectMap.put(PARAM_TYPE, param_type);
         objectMap.put(PARAM_FIELD, param_field);
         if (clazz == null) {
-            HttpLog.e("clazz is not null");
+            EasyLog.e("clazz is not null");
             return null;
         }
 

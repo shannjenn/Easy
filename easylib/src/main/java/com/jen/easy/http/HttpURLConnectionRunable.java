@@ -3,8 +3,9 @@ package com.jen.easy.http;
 import android.text.TextUtils;
 
 import com.jen.easy.EasyFactory;
-import com.jen.easy.EasyMain;
 import com.jen.easy.EasyFinal;
+import com.jen.easy.EasyMain;
+import com.jen.easy.log.EasyLog;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -26,7 +27,7 @@ class HttpURLConnectionRunable implements Runnable {
     @Override
     public void run() {
         if (TextUtils.isEmpty(param.httpParam.url)) {
-            HttpLog.e("URL地址错误");
+            EasyLog.e("URL地址错误");
             fail(EasyFinal.HTTP.Code.FAIL, "参数错误");
             return;
         }

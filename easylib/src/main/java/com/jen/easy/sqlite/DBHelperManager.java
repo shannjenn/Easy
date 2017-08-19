@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import com.jen.easy.EasyListener;
 import com.jen.easy.constant.FieldType;
+import com.jen.easy.log.EasyLog;
 import com.jen.easy.sqlite.imp.DBHelperImp;
 
 import java.util.List;
@@ -59,7 +60,7 @@ public class DBHelperManager implements DBHelperImp {
     @Override
     public void createTB(Class clazz) {
         if (clazz == null) {
-            DBLog.w("createTB error:classObj is null");
+            EasyLog.w("createTB error:classObj is null");
             return;
         }
         SQLiteDatabase db = getWtriteDatabse();
@@ -69,16 +70,16 @@ public class DBHelperManager implements DBHelperImp {
             return;
         }
 
-        DBLog.d("createTB");
+        EasyLog.d("createTB");
         Map<String, Object> fields = DBReflectManager.getColumnNames(clazz);
         List<String> primaryKey = (List<String>) fields.get(DBReflectManager.PRIMARY_KEY);
         Map<String, String> column = (Map<String, String>) fields.get(DBReflectManager.COLUMN_TYPE);
 
         if (tableName == null) {
-            DBLog.w("createTB error:tableName is null");
+            EasyLog.w("createTB error:tableName is null");
             return;
         } else if (column.size() == 0) {
-            DBLog.w("createTB error:column is null");
+            EasyLog.w("createTB error:column is null");
             return;
         }
 
@@ -119,10 +120,10 @@ public class DBHelperManager implements DBHelperImp {
             db.beginTransaction();
             db.execSQL(sql);
             db.setTransactionSuccessful();
-            DBLog.d("create table name : " + tableName + " column : " + fieldSql.toString()
+            EasyLog.d("create table name : " + tableName + " column : " + fieldSql.toString()
                     + " primaryKey : " + primaryKeySql + " SUCCESS");
         } catch (SQLException e) {
-            DBLog.w("create table:" + tableName + " error");
+            EasyLog.w("create table:" + tableName + " error");
             e.printStackTrace();
         } finally {
             db.endTransaction();
@@ -144,10 +145,10 @@ public class DBHelperManager implements DBHelperImp {
             db.beginTransaction();
             db.execSQL("DROP TABLE " + tableName);
             db.setTransactionSuccessful();
-            DBLog.d("delete table name : " + tableName + " SUCCESS");
+            EasyLog.d("delete table name : " + tableName + " SUCCESS");
             return true;
         } catch (SQLException e) {
-            DBLog.w("table:" + tableName + " delete error or no exist");
+            EasyLog.w("table:" + tableName + " delete error or no exist");
             e.printStackTrace();
         } finally {
             db.endTransaction();
@@ -187,21 +188,21 @@ public class DBHelperManager implements DBHelperImp {
         SQLiteDatabase db = getWtriteDatabse();
         boolean existTB = database.checkTableExist(db, tableName);
         if (!existTB) {
-            DBLog.w("table : " + tableName + " is not exist");
+            EasyLog.w("table : " + tableName + " is not exist");
             return;
         }
         boolean existClumn = database.checkCloumnExist(db, tableName, columnName);
         if (existClumn) {
-            DBLog.w("columnName : " + columnName + " is exist");
+            EasyLog.w("columnName : " + columnName + " is exist");
             return;
         }
         try {
             db.beginTransaction();
             db.execSQL("alter table " + tableName + " add " + columnName + FieldType.getDBCoumnType(fieldType));
             db.setTransactionSuccessful();
-            DBLog.d("add table name : " + tableName + " column : " + columnName + " SUCCESS");
+            EasyLog.d("add table name : " + tableName + " column : " + columnName + " SUCCESS");
         } catch (SQLException e) {
-            DBLog.w("table:" + tableName + " delete error or no exist");
+            EasyLog.w("table:" + tableName + " delete error or no exist");
             e.printStackTrace();
         } finally {
             db.endTransaction();
