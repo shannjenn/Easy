@@ -23,7 +23,7 @@ public class DynamicProxyManager implements InvocationHandler {
     private Object[] afterParams;
 
     public Object bind(Object target) {
-        if (target == null) {
+        if (target == null || target instanceof Class) {
             EasyLog.e("绑定对象为空----");
             return null;
         }

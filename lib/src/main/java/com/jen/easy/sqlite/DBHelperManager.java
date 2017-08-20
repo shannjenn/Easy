@@ -230,7 +230,12 @@ public class DBHelperManager implements DBHelperImp {
     }
 
     @Override
-    public String getName() {
+    public String getTBName(Class clazz) {
+        return DBReflectManager.getTableName(clazz);
+    }
+
+    @Override
+    public String getDBName() {
         return database.getName();
     }
 }

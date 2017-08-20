@@ -22,9 +22,9 @@ public final class FinalBasePram {
     public String flag;
 
     /**
-     * 是否要解析返回结果(默认解析)
+     * 是否要解析返回结果(默认不解析)
      */
-    public boolean parse = true;
+    public boolean parse;
 
     /**
      * 用户停止

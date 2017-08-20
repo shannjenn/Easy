@@ -92,5 +92,12 @@ public interface DBHelperImp {
      *
      * @return
      */
-    String getName();
+    String getDBName();
+
+    /**
+     * 获取表名称
+     *
+     * @return
+     */
+    String getTBName(Class clazz);
 }

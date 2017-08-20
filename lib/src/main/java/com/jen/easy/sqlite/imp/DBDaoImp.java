@@ -46,14 +46,14 @@ public interface DBDaoImp {
      *
      * @param obj
      */
-    void insert(Object obj);
+    boolean insert(Object obj);
 
     /**
      * 插入或者更新数据
      *
      * @param obj
      */
-    void replace(Object obj);
+    boolean replace(Object obj);
 
 
     /**
@@ -62,7 +62,15 @@ public interface DBDaoImp {
      * @param clazz
      * @param id
      */
-    void delete(Class clazz, String id);
+    boolean delete(Class clazz, String id);
+
+    /**
+     * 删除
+     *
+     * @param clazz
+     * @param ids
+     */
+    boolean delete(Class clazz, List<Object> ids);
 
     /**
      * 按条件删除
@@ -71,14 +79,14 @@ public interface DBDaoImp {
      * @param selection
      * @param selectionArgs
      */
-    void delete(Class clazz, String selection, String[] selectionArgs);
+    boolean delete(Class clazz, String selection, String[] selectionArgs);
 
     /**
      * 自定义操作
      *
      * @param sql
      */
-    void execSQL(String sql);
+    boolean execSQL(String sql);
 
     /**
      * 自定义操作
@@ -86,5 +94,5 @@ public interface DBDaoImp {
      * @param sql
      * @param bindArgs 参数的值
      */
-    void execSQL(String sql, String[] bindArgs);
+    boolean execSQL(String sql, String[] bindArgs);
 }

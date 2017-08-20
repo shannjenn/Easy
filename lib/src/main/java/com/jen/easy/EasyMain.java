@@ -79,7 +79,7 @@ public final class EasyMain {
 
                 EasyClass.DynamicProxy proxyDB = new EasyClass.DynamicProxy();
                 DB = (DBHelperImp) proxyDB.bind(DBtemp);
-                String path = EasyApplication.getAppContext().getDatabasePath(DB.getName()).getPath();
+                String path = EasyApplication.getAppContext().getDatabasePath(DB.getDBName()).getPath();
 
                 proxyDB.setBeforeMethod(EasyClass.FileDecrypt.class, path, DBConstant.PASSWORD)
                         .setAfterMethod(EasyClass.FileDecrypt.class, path, DBConstant.PASSWORD)

@@ -22,7 +22,7 @@ public class HttpParseManager implements HttpParseImp {
      */
     @Override
     public Object parseJson(Class clazz, Object obj) {
-        if (obj == null) {
+        if (obj == null || obj instanceof Class) {
             EasyLog.e("obj is null");
         }
         Object o = null;
