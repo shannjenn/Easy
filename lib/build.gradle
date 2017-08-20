@@ -32,11 +32,10 @@ dependencies {
 }
 
 task makeJar(type: Copy) {
-    delete 'jar/easy.jar' //删除已经存在的jar包
-    from('build/intermediates/bundles/default/')//从该目录下加载要打包的文件
-//    into('build/libs/')//jar包的保存目录
-    into('jar/')//jar包的保存目录
-    include('classes.jar')//设置过滤，只打包classes文件
-    rename('classes.jar', 'easy.jar')//重命名，mylibrary.jar 根据自己的需求设置
+    delete 'jar/easy.jar'
+    from('build/intermediates/bundles/default/')
+    into('jar/')
+    include('classes.jar')
+    rename('classes.jar', 'easy.jar')
 }
 makeJar.dependsOn(build)
