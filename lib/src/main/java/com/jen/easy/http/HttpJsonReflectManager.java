@@ -104,7 +104,7 @@ class HttpJsonReflectManager {
                         field.set(object, value);
                     } else if (type.equals(FieldType.DATE)) {
                         String value = jsonObject.getString(param);
-                        Date date = EasyUtil.DATAFORMAT.parser(value);
+                        Date date = EasyUtil.DATA.parser(value);
                         field.set(object, date);
                     } else if (type.contains(FieldType.LIST)) {
                         String clazzName = type.substring(type.indexOf("<") + 1, type.indexOf(">"));

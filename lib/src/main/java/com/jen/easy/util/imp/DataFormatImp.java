@@ -24,6 +24,15 @@ public interface DataFormatImp {
      */
     String format(Date date);
 
+
+    /**
+     * 时间格式转换
+     *
+     * @param str
+     * @return
+     */
+    String format(String str);
+
     /**
      * 时间转字符串
      *
@@ -31,6 +40,14 @@ public interface DataFormatImp {
      * @return
      */
     Date parser(String dateStr);
+
+    /**
+     * 获取时间
+     *
+     * @param dateStr
+     * @return
+     */
+    long getTime(String dateStr);
 
 
     /**

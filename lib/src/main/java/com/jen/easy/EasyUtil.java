@@ -16,16 +16,16 @@ public final class EasyUtil {
     /**
      * 时间格式化
      */
-    public static final DataFormatImp DATAFORMAT;
+    public static final DataFormatImp DATA;
     /**
      * 字符串与List转换
      */
-    public static final StringToListImp STRINGTOLIST;
+    public static final StringToListImp STRING;
 
 
     static {
-        DATAFORMAT = new DataFormatManager();
-        STRINGTOLIST = new StringToList();
+        DATA = new DataFormatManager();
+        STRING = new StringToList();
     }
 
 }

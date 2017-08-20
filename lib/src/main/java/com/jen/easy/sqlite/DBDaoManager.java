@@ -472,7 +472,7 @@ public class DBDaoManager implements DBDaoImp {
                     values.put(column, value);
                 } else if (type.equals(FieldType.DATE)) {
                     Date value = (Date) field.get(obj);
-                    values.put(column, value == null ? null : EasyUtil.DATAFORMAT.format(value));
+                    values.put(column, value == null ? null : EasyUtil.DATA.format(value));
                 }
             }
         } catch (IllegalAccessException e) {
@@ -527,7 +527,7 @@ public class DBDaoManager implements DBDaoImp {
                     field.set(obj, value);
                 } else if (type.equals(FieldType.DATE)) {
                     String value = cursor.getString(cursor.getColumnIndex(column));
-                    Date date = EasyUtil.DATAFORMAT.parser(value);
+                    Date date = EasyUtil.DATA.parser(value);
                     field.set(obj, date);
                 }
             }
