@@ -57,4 +57,36 @@ public interface DataFormatImp {
      */
     void setDefault(String dautformat);
 
+    /**
+     * 北京时间转当地时间
+     *
+     * @param time
+     * @return
+     */
+    String BJ2Loacl(String time);
+
+    /**
+     * 北京时间转当地时间
+     *
+     * @param date
+     * @return
+     */
+    Date BJ2Loacl(Date date);
+
+    /**
+     * 当地时间转北京时间
+     *
+     * @param time
+     * @return
+     */
+    String locad2BJ(String time);
+
+    /**
+     * 当地时间转北京时间
+     *
+     * @param date
+     * @return
+     */
+    Date locad2BJ(Date date);
+
 }

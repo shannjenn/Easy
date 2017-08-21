@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * Created by Jen on 2017/7/20.
@@ -73,6 +74,96 @@ public class DataFormatManager implements DataFormatImp {
             return 0;
         Date date = parse(dateStr);
         return date.getTime();
+    }
+
+    /**
+     * 将北京时间转为当前时区时间
+     *
+     * @param time
+     * @return
+     */
+    @Override
+    public String BJ2Loacl(String time) {
+        if (time == null)
+            return null;
+        Date date = parse(time);
+        if (date == null) {
+            return "";
+        }
+
+        TimeZone oldZone = TimeZone.getTimeZone("GMT+8:00");
+        TimeZone newZone = TimeZone.getDefault();
+        int DST = newZone.getDSTSavings();
+
+        int timeOffset = oldZone.getRawOffset() - (newZone.getRawOffset() + DST);
+        Date dateTmp = new Date(date.getTime() - timeOffset);
+        String loacl = format.format(dateTmp);
+        return loacl;
+    }
+
+    /**
+     * 将北京时间转为当前时区时间
+     *
+     * @param date
+     * @return
+     */
+    @Override
+    public Date BJ2Loacl(Date date) {
+        if (date == null)
+            return null;
+
+        TimeZone oldZone = TimeZone.getTimeZone("GMT+8:00");
+        TimeZone newZone = TimeZone.getDefault();
+        int DST = newZone.getDSTSavings();
+
+        int timeOffset = oldZone.getRawOffset() - (newZone.getRawOffset() + DST);
+        Date dateTmp = new Date(date.getTime() - timeOffset);
+        return dateTmp;
+    }
+
+    /**
+     * 将当前时区时间转为北京时间
+     *
+     * @param time
+     * @return
+     */
+    @Override
+    public String locad2BJ(String time) {
+        if (time == null)
+            return null;
+        Date date = parse(time);
+        if (date == null) {
+            return "";
+        }
+
+        TimeZone bjZone = TimeZone.getTimeZone("GMT+8:00");
+        TimeZone loadZone = TimeZone.getDefault();
+        int DST = loadZone.getDSTSavings();
+
+        int timeOffset = (loadZone.getRawOffset() + DST) - bjZone.getRawOffset();
+        Date dateTmp = new Date(date.getTime() - timeOffset);
+        String BJTime = format(dateTmp);
+        return BJTime;
+    }
+
+    /**
+     * 将当前时区时间转为北京时间
+     *
+     * @param date
+     * @return
+     */
+    @Override
+    public Date locad2BJ(Date date) {
+        if (date == null)
+            return null;
+
+        TimeZone bjZone = TimeZone.getTimeZone("GMT+8:00");
+        TimeZone loadZone = TimeZone.getDefault();
+        int DST = loadZone.getDSTSavings();
+
+        int timeOffset = (loadZone.getRawOffset() + DST) - bjZone.getRawOffset();
+        Date dateTmp = new Date(date.getTime() - timeOffset);
+        return dateTmp;
     }
 
 
