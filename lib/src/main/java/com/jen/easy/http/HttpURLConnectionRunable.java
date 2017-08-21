@@ -73,6 +73,7 @@ class HttpURLConnectionRunable implements Runnable {
                 out.close();
             }
 
+            EasyLog.d("Http 请求地址：" + url.getPath() + "  " + param.httpParam.method);
             if ((connection.getResponseCode() == 200)) {
                 StringBuffer result = new StringBuffer("");
                 InputStream inStream = connection.getInputStream();
@@ -84,7 +85,9 @@ class HttpURLConnectionRunable implements Runnable {
                 reader.close();
                 inStream.close();
                 connection.disconnect();
+                EasyLog.d(result.toString());
                 success(result.toString());
+                return;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -94,15 +97,16 @@ class HttpURLConnectionRunable implements Runnable {
 
     private void success(String result) {
         if (param.getBseListener() != null) {
-            Object object = null;
             if (param.baseParam.parse) {
-                object = EasyMain.HPARSE.parseJson(param.getClass(), result);
+                Object object = EasyMain.HPARSE.parseJson(param.getClass(), result);
                 if (object == null) {
                     fail(EasyFinal.HTTP.Code.FAIL, "数据异常");
-                    return;
+                } else {
+                    param.getBseListener().success(param.baseParam.flagCode, param.baseParam.flag, object);
                 }
+            } else {
+                param.getBseListener().success(param.baseParam.flagCode, param.baseParam.flag, result);
             }
-            param.getBseListener().success(param.baseParam.flagCode, param.baseParam.flag, object);
         }
     }
 

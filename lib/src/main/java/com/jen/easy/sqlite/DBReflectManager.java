@@ -43,7 +43,7 @@ class DBReflectManager {
         String tbName = null;
         boolean isAnno = clazz.isAnnotationPresent(EasyMouse.DB.Table.class);
         if (!isAnno) {
-            EasyLog.e("clazz is not AnnotationPresent");
+            EasyLog.e("getTableName clazz is not AnnotationPresent");
             return null;
         }
         EasyMouse.DB.Table table = (EasyMouse.DB.Table) clazz.getAnnotation(EasyMouse.DB.Table.class);

@@ -41,7 +41,7 @@ class HttpJsonReflectManager {
         }
         String modelName = getModelName(clazz);
         if (TextUtils.isEmpty(modelName)) {
-            EasyLog.e("modelName is null");
+            EasyLog.e("parseJsonObject modelName is null");
             return null;
         }
         Map<String, Object> objectMap = getFields(clazz);
@@ -160,7 +160,8 @@ class HttpJsonReflectManager {
                 EasyLog.e("parseJsonArray is error");
                 e.printStackTrace();
             }
-            list.add(obj);
+            if (obj != null)
+                list.add(obj);
         }
         return list;
     }
@@ -171,7 +172,7 @@ class HttpJsonReflectManager {
      * @param clazz
      * @return
      */
-    private static String getModelName(Class clazz) {
+    static String getModelName(Class clazz) {
         if (clazz == null) {
             EasyLog.e("clazz is not null");
             return null;
@@ -179,7 +180,7 @@ class HttpJsonReflectManager {
         String modelName = null;
         boolean isAnno = clazz.isAnnotationPresent(EasyMouse.HTTP.Model.class);
         if (!isAnno) {
-            EasyLog.e("clazz is not AnnotationPresent");
+            EasyLog.e("getModelName clazz is not AnnotationPresent");
             return null;
         }
         EasyMouse.HTTP.Model model = (EasyMouse.HTTP.Model) clazz.getAnnotation(EasyMouse.HTTP.Model.class);

@@ -24,7 +24,9 @@ public class DBHelperManager implements DBHelperImp {
 
     @Override
     public void create() {
-        database.createDB();
+        SQLiteDatabase db = database.createDB();
+        if (db != null)
+            db.close();
     }
 
     /*@Override
@@ -127,6 +129,7 @@ public class DBHelperManager implements DBHelperImp {
             e.printStackTrace();
         } finally {
             db.endTransaction();
+            db.close();
         }
     }
 
@@ -152,6 +155,7 @@ public class DBHelperManager implements DBHelperImp {
             e.printStackTrace();
         } finally {
             db.endTransaction();
+            db.close();
         }
         return false;
     }
@@ -206,6 +210,7 @@ public class DBHelperManager implements DBHelperImp {
             e.printStackTrace();
         } finally {
             db.endTransaction();
+            db.close();
         }
     }
 

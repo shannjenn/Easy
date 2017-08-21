@@ -26,12 +26,13 @@ class Database {
     /**
      * 创建数据库
      */
-    void createDB() {
+    SQLiteDatabase createDB() {
         File file = new File(path);
         if (file.exists()) {
-            return;
+            return null;
         }
-        SQLiteDatabase.openOrCreateDatabase(path, null);
+        SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(path, null);
+        return db;
     }
 
     /**
@@ -64,6 +65,7 @@ class Database {
         if (listener != null) {
             listener.onUpgrade(db, oldVersion, oldVersion);
         }
+        db.close();
     }
 
     int getVersion() {

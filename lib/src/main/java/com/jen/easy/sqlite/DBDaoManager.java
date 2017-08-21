@@ -67,6 +67,7 @@ public class DBDaoManager implements DBDaoImp {
         cursor.moveToFirst();
         Object obj = valuation(clazz, column_field, cursor);
         cursor.close();
+        db.close();
         return obj;
     }
 
@@ -113,6 +114,7 @@ public class DBDaoManager implements DBDaoImp {
             objs.add(obj);
         } while (cursor.moveToNext());
         cursor.close();
+        db.close();
         return objs;
     }
 
@@ -199,6 +201,7 @@ public class DBDaoManager implements DBDaoImp {
             e.printStackTrace();
         } finally {
             db.endTransaction();
+            db.close();
         }
         return false;
     }
@@ -280,6 +283,7 @@ public class DBDaoManager implements DBDaoImp {
             e.printStackTrace();
         } finally {
             db.endTransaction();
+            db.close();
         }
         return false;
     }
@@ -317,6 +321,7 @@ public class DBDaoManager implements DBDaoImp {
             e.printStackTrace();
         } finally {
             db.endTransaction();
+            db.close();
         }
         return false;
     }
@@ -356,6 +361,7 @@ public class DBDaoManager implements DBDaoImp {
             e.printStackTrace();
         } finally {
             db.endTransaction();
+            db.close();
         }
         return false;
     }
@@ -381,6 +387,7 @@ public class DBDaoManager implements DBDaoImp {
             e.printStackTrace();
         } finally {
             db.endTransaction();
+            db.close();
         }
         return false;
     }
@@ -401,6 +408,7 @@ public class DBDaoManager implements DBDaoImp {
             e.printStackTrace();
         } finally {
             db.endTransaction();
+            db.close();
         }
         return false;
     }
@@ -422,6 +430,7 @@ public class DBDaoManager implements DBDaoImp {
             e.printStackTrace();
         } finally {
             db.endTransaction();
+            db.close();
         }
         return false;
     }

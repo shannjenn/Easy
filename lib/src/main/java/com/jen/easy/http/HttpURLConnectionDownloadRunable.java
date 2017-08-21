@@ -103,6 +103,7 @@ class HttpURLConnectionDownloadRunable implements Runnable {
                 out.close();
             }
 
+            EasyLog.d("Http 请求地址：" + url.getPath() + "  " + param.httpParam.method);
             if ((connection.getResponseCode() == 200)) {
                 param.fileParam.endPoit = connection.getContentLength();
                 inStream = connection.getInputStream();

@@ -57,6 +57,7 @@ class HttpURLConnectionUploadRunable implements Runnable {
             if (param.fileParam.isBreak && param.fileParam.endPoit > param.fileParam.startPoit + 100) {
                 connection.setRequestProperty("Range", "bytes=" + param.fileParam.startPoit + "-" + param.fileParam.endPoit);
             }
+            EasyLog.d("Http 请求地址：" + url.getPath() + "  " + param.httpParam.method);
 
             DataOutputStream out = new DataOutputStream(connection.getOutputStream());
             DataInputStream in = new DataInputStream(new FileInputStream(file));
@@ -85,7 +86,7 @@ class HttpURLConnectionUploadRunable implements Runnable {
                 buffer.append(line);
             }
             reader.close();
-            reader = null;
+            EasyLog.d(buffer.toString());
             success(buffer.toString());
         } catch (IOException e) {
             e.printStackTrace();
@@ -98,15 +99,16 @@ class HttpURLConnectionUploadRunable implements Runnable {
 
     private void success(String result) {
         if (param.getUploadListener() != null) {
-            Object object = null;
             if (param.baseParam.parse) {
-                object = EasyMain.HPARSE.parseJson(param.getClass(), result);
+                Object object = EasyMain.HPARSE.parseJson(param.getClass(), result);
                 if (object == null) {
                     fail(EasyFinal.HTTP.Code.FAIL, "数据异常");
-                    return;
+                } else {
+                    param.getUploadListener().success(param.baseParam.flagCode, param.baseParam.flag, object);
                 }
+            } else {
+                param.getUploadListener().success(param.baseParam.flagCode, param.baseParam.flag, result);
             }
-            param.getUploadListener().success(param.baseParam.flagCode, param.baseParam.flag, object);
         }
     }
 
