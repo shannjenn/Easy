@@ -4,7 +4,7 @@ import android.text.TextUtils;
 
 import com.jen.easy.EasyMouse;
 import com.jen.easy.EasyUtil;
-import com.jen.easy.constant.FieldType;
+import com.jen.easy.constant.Constant;
 import com.jen.easy.log.EasyLog;
 
 import org.json.JSONArray;
@@ -75,38 +75,38 @@ class HttpJsonReflectManager {
                 if (jsonObject.has(param)) {
                     String type = param_type.get(param);
 
-                    if (type.equals(FieldType.CHAR)) {
+                    if (type.equals(Constant.FieldType.CHAR)) {
                         String value = jsonObject.getString(param);
                         field.set(object, value);
-                    } else if (type.equals(FieldType.STRING)) {
+                    } else if (type.equals(Constant.FieldType.STRING)) {
                         String value = jsonObject.getString(param);
                         field.set(object, value);
-                    } else if (type.equals(FieldType.BYTE)) {
+                    } else if (type.equals(Constant.FieldType.BYTE)) {
                         String value = jsonObject.getString(param);
                         field.set(object, value);
-                    } else if (type.equals(FieldType.SHORT)) {
+                    } else if (type.equals(Constant.FieldType.SHORT)) {
                         int value = jsonObject.getInt(param);
                         field.set(object, value);
-                    } else if (type.equals(FieldType.INTEGER)) {
+                    } else if (type.equals(Constant.FieldType.INTEGER)) {
                         int value = jsonObject.getInt(param);
                         field.set(object, value);
-                    } else if (type.equals(FieldType.FLOAT)) {
+                    } else if (type.equals(Constant.FieldType.FLOAT)) {
                         double value = jsonObject.getDouble(param);
                         field.set(object, value);
-                    } else if (type.equals(FieldType.DOUBLE)) {
+                    } else if (type.equals(Constant.FieldType.DOUBLE)) {
                         double value = jsonObject.getDouble(param);
                         field.set(object, value);
-                    } else if (type.equals(FieldType.LONG)) {
+                    } else if (type.equals(Constant.FieldType.LONG)) {
                         long value = jsonObject.getLong(param);
                         field.set(object, value);
-                    } else if (type.equals(FieldType.BOOLEAN)) {
+                    } else if (type.equals(Constant.FieldType.BOOLEAN)) {
                         boolean value = jsonObject.getBoolean(param);
                         field.set(object, value);
-                    } else if (type.equals(FieldType.DATE)) {
+                    } else if (type.equals(Constant.FieldType.DATE)) {
                         String value = jsonObject.getString(param);
                         Date date = EasyUtil.DATA.parser(value);
                         field.set(object, date);
-                    } else if (type.contains(FieldType.LIST)) {
+                    } else if (type.contains(Constant.FieldType.LIST)) {
                         String clazzName = type.substring(type.indexOf("<") + 1, type.indexOf(">"));
                         Class clazz2 = Class.forName(clazzName);
                         JSONArray array = jsonObject.getJSONArray(param);

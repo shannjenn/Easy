@@ -23,11 +23,7 @@ class LogcatCrash implements UncaughtExceptionHandler {
      */
     static LogcatCrash getInstance() {
         if (instance == null) {
-            synchronized (LogcatCrash.class) {
-                if (instance == null) {
-                    instance = new LogcatCrash();
-                }
-            }
+            instance = new LogcatCrash();
         }
         return instance;
     }
@@ -54,8 +50,10 @@ class LogcatCrash implements UncaughtExceptionHandler {
     public void uncaughtException(Thread thread, Throwable ex) {
         boolean userCatch = false;
         if (mListener != null) {
+            File file = new File(LogcatPath.getLogPath(), "LogcatCrash-" + LogcatDate.getFileName() + ".txt");
             try {
-                PrintWriter p = new PrintWriter(new FileOutputStream(new File(LogcatPath.getLogPath(), "LogcatCrash-" + LogcatDate.getFileName() + ".txt"), true));
+                FileOutputStream outputStream = new FileOutputStream(file, true);
+                PrintWriter p = new PrintWriter(outputStream);
                 p.println(LogcatDate.getDateEN() + " " + ex.toString() + "\n");
                 p.println(LogcatDate.getDateEN() + " " + ex.getLocalizedMessage());
                 p.println(LogcatDate.getDateEN() + " " + ex.getMessage());

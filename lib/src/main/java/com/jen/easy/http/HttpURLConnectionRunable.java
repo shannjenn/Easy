@@ -77,7 +77,7 @@ class HttpURLConnectionRunable implements Runnable {
             if ((connection.getResponseCode() == 200)) {
                 StringBuffer result = new StringBuffer("");
                 InputStream inStream = connection.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream));
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, param.httpParam.charset));
                 String s = null;
                 while ((s = reader.readLine()) != null) {
                     result.append(s);

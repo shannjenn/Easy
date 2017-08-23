@@ -7,7 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.jen.easy.EasyUtil;
-import com.jen.easy.constant.FieldType;
+import com.jen.easy.constant.Constant;
 import com.jen.easy.log.EasyLog;
 import com.jen.easy.sqlite.imp.DBDaoImp;
 
@@ -452,34 +452,34 @@ public class DBDaoManager implements DBDaoImp {
                 Field field = column_field.get(column);
                 field.setAccessible(true);
                 String type = field.getGenericType().toString();
-                if (type.equals(FieldType.CHAR)) {
+                if (type.equals(Constant.FieldType.CHAR)) {
                     char value = (char) field.getChar(obj);
                     values.put(column, value + "");
-                } else if (type.equals(FieldType.STRING)) {
+                } else if (type.equals(Constant.FieldType.STRING)) {
                     String value = (String) field.get(obj);
                     values.put(column, value);
-                } else if (type.equals(FieldType.BYTE)) {
+                } else if (type.equals(Constant.FieldType.BYTE)) {
                     byte value = field.getByte(obj);
                     values.put(column, value);
-                } else if (type.equals(FieldType.SHORT)) {
+                } else if (type.equals(Constant.FieldType.SHORT)) {
                     short value = field.getShort(obj);
                     values.put(column, value);
-                } else if (type.equals(FieldType.INTEGER)) {
+                } else if (type.equals(Constant.FieldType.INTEGER)) {
                     int value = field.getInt(obj);
                     values.put(column, value);
-                } else if (type.equals(FieldType.FLOAT)) {
+                } else if (type.equals(Constant.FieldType.FLOAT)) {
                     float value = field.getFloat(obj);
                     values.put(column, value);
-                } else if (type.equals(FieldType.DOUBLE)) {
+                } else if (type.equals(Constant.FieldType.DOUBLE)) {
                     double value = field.getDouble(obj);
                     values.put(column, value);
-                } else if (type.equals(FieldType.LONG)) {
+                } else if (type.equals(Constant.FieldType.LONG)) {
                     long value = field.getLong(obj);
                     values.put(column, value);
-                } else if (type.equals(FieldType.BOOLEAN)) {
+                } else if (type.equals(Constant.FieldType.BOOLEAN)) {
                     boolean value = field.getBoolean(obj);
                     values.put(column, value);
-                } else if (type.equals(FieldType.DATE)) {
+                } else if (type.equals(Constant.FieldType.DATE)) {
                     Date value = (Date) field.get(obj);
                     values.put(column, value == null ? null : EasyUtil.DATA.format(value));
                 }
@@ -507,34 +507,34 @@ public class DBDaoManager implements DBDaoImp {
                 field.setAccessible(true);
                 String type = field.getGenericType().toString();
 
-                if (type.equals(FieldType.CHAR)) {
+                if (type.equals(Constant.FieldType.CHAR)) {
                     String value = cursor.getString(cursor.getColumnIndex(column));
                     field.set(obj, value);
-                } else if (type.equals(FieldType.STRING)) {
+                } else if (type.equals(Constant.FieldType.STRING)) {
                     String value = cursor.getString(cursor.getColumnIndex(column));
                     field.set(obj, value);
-                } else if (type.equals(FieldType.BYTE)) {
+                } else if (type.equals(Constant.FieldType.BYTE)) {
                     int value = cursor.getInt(cursor.getColumnIndex(column));
                     field.set(obj, value);
-                } else if (type.equals(FieldType.SHORT)) {
+                } else if (type.equals(Constant.FieldType.SHORT)) {
                     short value = cursor.getShort(cursor.getColumnIndex(column));
                     field.set(obj, value);
-                } else if (type.equals(FieldType.INTEGER)) {
+                } else if (type.equals(Constant.FieldType.INTEGER)) {
                     String value = cursor.getString(cursor.getColumnIndex(column));
                     field.set(obj, value);
-                } else if (type.equals(FieldType.FLOAT)) {
+                } else if (type.equals(Constant.FieldType.FLOAT)) {
                     float value = cursor.getFloat(cursor.getColumnIndex(column));
                     field.set(obj, value);
-                } else if (type.equals(FieldType.DOUBLE)) {
+                } else if (type.equals(Constant.FieldType.DOUBLE)) {
                     double value = cursor.getDouble(cursor.getColumnIndex(column));
                     field.set(obj, value);
-                } else if (type.equals(FieldType.LONG)) {
+                } else if (type.equals(Constant.FieldType.LONG)) {
                     long value = cursor.getLong(cursor.getColumnIndex(column));
                     field.set(obj, value);
-                } else if (type.equals(FieldType.BOOLEAN)) {
+                } else if (type.equals(Constant.FieldType.BOOLEAN)) {
                     boolean value = cursor.getInt(cursor.getColumnIndex(column)) > 0;
                     field.set(obj, value);
-                } else if (type.equals(FieldType.DATE)) {
+                } else if (type.equals(Constant.FieldType.DATE)) {
                     String value = cursor.getString(cursor.getColumnIndex(column));
                     Date date = EasyUtil.DATA.parser(value);
                     field.set(obj, date);

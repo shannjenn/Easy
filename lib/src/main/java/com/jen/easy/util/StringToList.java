@@ -2,6 +2,7 @@ package com.jen.easy.util;
 
 import android.util.Base64;
 
+import com.jen.easy.constant.Constant;
 import com.jen.easy.util.imp.StringToListImp;
 
 import java.io.ByteArrayInputStream;
@@ -23,7 +24,7 @@ public class StringToList implements StringToListImp {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
             objectOutputStream.writeObject(list);
-            String str = new String(Base64.encode(byteArrayOutputStream.toByteArray(), 0));
+            String str = new String(Base64.encode(byteArrayOutputStream.toByteArray(), 0), Constant.Unicode.DEFAULT);
             objectOutputStream.close();
             return str;
         } catch (IOException e) {
@@ -36,7 +37,7 @@ public class StringToList implements StringToListImp {
     public <T> List<T> string2List(String str) {
         List list = null;
         try {
-            byte[] mobileBytes = Base64.decode(str.getBytes(), 0);
+            byte[] mobileBytes = Base64.decode(str.getBytes(Constant.Unicode.DEFAULT), 0);
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(mobileBytes);
             ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
             list = (List) objectInputStream.readObject();
@@ -55,7 +56,7 @@ public class StringToList implements StringToListImp {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
             objectOutputStream.writeObject(obj);
-            String str = new String(Base64.encode(byteArrayOutputStream.toByteArray(), 0));
+            String str = new String(Base64.encode(byteArrayOutputStream.toByteArray(), 0),Constant.Unicode.DEFAULT);
             objectOutputStream.close();
             return str;
         } catch (IOException e) {
@@ -67,7 +68,7 @@ public class StringToList implements StringToListImp {
     @Override
     public Object string2Object(String str) {
         try {
-            byte[] mobileBytes = Base64.decode(str.getBytes(), 0);
+            byte[] mobileBytes = Base64.decode(str.getBytes(Constant.Unicode.DEFAULT), 0);
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(mobileBytes);
             ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
 

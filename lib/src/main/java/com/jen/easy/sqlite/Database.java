@@ -11,7 +11,7 @@ import com.jen.easy.log.EasyLog;
 import java.io.File;
 
 class Database {
-    private final String name = "easy.db";
+    private static final String name = "easy.db";
     private String path;
     private EasyListener.DB.DatabaseListener listener;
 
@@ -19,7 +19,9 @@ class Database {
         path = context.getDatabasePath(name).getPath();
         File parent = new File(path).getParentFile();
         if (!parent.exists()) {
-            parent.mkdirs();
+            boolean ret = parent.mkdirs();
+            if (!ret)
+                EasyLog.w("创建文件失败");
         }
     }
 
@@ -44,7 +46,7 @@ class Database {
             return;
         }
         SQLiteDatabase.openOrCreateDatabase(path, null);
-        DBConstant.PASSWORD = password;
+        DB.PASSWORD = password;
     }*/
 
     /**

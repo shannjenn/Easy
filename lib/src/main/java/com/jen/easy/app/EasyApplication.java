@@ -2,8 +2,8 @@ package com.jen.easy.app;
 
 import android.app.Application;
 
+import com.jen.easy.constant.Constant;
 import com.jen.easy.log.EasyLog;
-import com.jen.easy.sqlite.DBConstant;
 
 /**
  * 继承该Application
@@ -21,8 +21,10 @@ public abstract class EasyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         EasyLog.d("EasyApplication onCreate----");
-        instance = this;
-        DBConstant.PASSWORD = setDBPassword();
+        if (instance == null)
+            instance = this;
+        if (Constant.DB.PASSWORD == null)
+            Constant.DB.PASSWORD = setDBPassword();
     }
 
     protected abstract String setDBPassword();

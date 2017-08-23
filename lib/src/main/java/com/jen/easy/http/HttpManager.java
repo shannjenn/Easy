@@ -1,6 +1,7 @@
 package com.jen.easy.http;
 
 import com.jen.easy.EasyFactory;
+import com.jen.easy.constant.Constant;
 import com.jen.easy.http.imp.HttpImp;
 import com.jen.easy.http.param.factory.ParamFather;
 import com.jen.easy.log.EasyLog;
@@ -17,7 +18,7 @@ public class HttpManager implements HttpImp {
     private int maxThreadSize = 100;
 
     private String method = "GET";
-    private String charset = "utf-8";
+    private String charset = Constant.Unicode.DEFAULT;
     private String contentType = "text/html";
     private String connection = "Keep-Alive";
 

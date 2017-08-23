@@ -15,7 +15,7 @@ import java.util.List;
  */
 
 public class ShareManager implements ShareImp {
-    private final String xmlFileName = "easyShare";
+    private static final String xmlFileName = "easyShare";
     private SharedPreferences config;
     private SharedPreferences.Editor editor;
 

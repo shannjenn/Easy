@@ -39,12 +39,16 @@ class HttpURLConnectionDownloadRunable implements Runnable {
 
         File fileFolder = new File(param.fileParam.filePath.substring(0, param.fileParam.filePath.lastIndexOf("/")));
         if (!fileFolder.exists()) {
-            fileFolder.mkdirs();
+            boolean ret = fileFolder.mkdirs();
+            if (!ret)
+                EasyLog.w("创建文件夹失败");
         }
         if (param.fileParam.deleteOldFile) {
             File file = new File(param.fileParam.filePath);
             if (file.exists()) {
-                file.delete();
+                boolean ret = file.delete();
+                if (!ret)
+                    EasyLog.w("删除文件失败");
             }
         }
 

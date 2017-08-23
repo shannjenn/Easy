@@ -7,6 +7,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import static com.jen.easy.constant.Constant.Unicode.DEFAULT;
+
 class LogDumper extends Thread {
     private static LogDumper instance;
     private Process logcatProc;
@@ -65,14 +67,14 @@ class LogDumper extends Thread {
 
     void stopLogs() {
         running = false;
-        instance = null;
+//        instance = null;
     }
 
     @Override
     public void run() {
         try {
             logcatProc = Runtime.getRuntime().exec(cmds);
-            reader = new BufferedReader(new InputStreamReader(logcatProc.getInputStream()), 1024);
+            reader = new BufferedReader(new InputStreamReader(logcatProc.getInputStream(), DEFAULT), 1024);
             String line = null;
             while (running && (line = reader.readLine()) != null) {
                 if (!running) {
@@ -84,7 +86,7 @@ class LogDumper extends Thread {
                 if (line.contains(PID)) {
                     try {
                         FileOutputStream out = new FileOutputStream(new File(LogcatPath.getLogPath(), "LogcatHelperManager-" + LogcatDate.getFileName() + ".txt"), true);
-                        out.write((LogcatDate.getDateEN() + "  " + line + "\n").getBytes());
+                        out.write((LogcatDate.getDateEN() + "  " + line + "\n").getBytes(DEFAULT));
                         out.flush();
                         out.close();
                     } catch (FileNotFoundException e) {

@@ -13,11 +13,11 @@ public final class EasyFinal {
     /**
      * ********************
      */
-    public final class HTTP {
+    public static final class HTTP {
         private HTTP() {
         }
 
-        public final class Code {
+        public static final class Code {
             private Code() {
             }
 

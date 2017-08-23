@@ -80,7 +80,7 @@ class HttpURLConnectionUploadRunable implements Runnable {
 
             // 读取返回数据
             StringBuffer buffer = new StringBuffer();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), param.httpParam.charset));
             String line = null;
             while ((line = reader.readLine()) != null) {
                 buffer.append(line);

@@ -115,6 +115,9 @@ public class DynamicProxyManager implements InvocationHandler {
                             beforeMethod.invoke(beforeClzz, beforeParams[0], beforeParams[1], beforeParams[2], beforeParams[3], beforeParams[4], beforeParams[5],
                                     beforeParams[6], beforeParams[7]);
                             break;
+                        default:
+                            EasyLog.e("方法参数超过8个");
+                            break;
                     }
                 } else {
                     beforeMethod.invoke(beforeClzz);
@@ -148,6 +151,9 @@ public class DynamicProxyManager implements InvocationHandler {
                         case 8:
                             afterMethod.invoke(afterClzz, afterParams[0], afterParams[1], afterParams[2], afterParams[3], afterParams[4], afterParams[5], afterParams[6],
                                     afterParams[7]);
+                            break;
+                        default:
+                            EasyLog.e("参数超过8个");
                             break;
                     }
                 } else {

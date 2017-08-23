@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
 import com.jen.easy.EasyListener;
-import com.jen.easy.constant.FieldType;
+import com.jen.easy.constant.Constant;
 import com.jen.easy.log.EasyLog;
 import com.jen.easy.sqlite.imp.DBHelperImp;
 
@@ -90,7 +90,7 @@ public class DBHelperManager implements DBHelperImp {
 
         for (String fieldName : column.keySet()) {
             String fieldType = column.get(fieldName);
-            String type = FieldType.getDBCoumnType(fieldType);
+            String type = Constant.FieldType.getDBCoumnType(fieldType);
 
             fieldSql.append(fieldName);
             fieldSql.append(" ");
@@ -202,7 +202,7 @@ public class DBHelperManager implements DBHelperImp {
         }
         try {
             db.beginTransaction();
-            db.execSQL("alter table " + tableName + " add " + columnName + FieldType.getDBCoumnType(fieldType));
+            db.execSQL("alter table " + tableName + " add " + columnName + Constant.FieldType.getDBCoumnType(fieldType));
             db.setTransactionSuccessful();
             EasyLog.d("add table name : " + tableName + " column : " + columnName + " SUCCESS");
         } catch (SQLException e) {
