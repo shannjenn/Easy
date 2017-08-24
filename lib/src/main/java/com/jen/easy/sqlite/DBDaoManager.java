@@ -85,7 +85,7 @@ public class DBDaoManager implements DBDaoImp {
     @Override
     public List<Object> searchByWhere(Class clazz, String selection, String[] selectionArgs, String orderBy, int page, int pageNo) {
         List<Object> objs = new ArrayList<>();
-        if (clazz == null || selection == null || selectionArgs == null || selectionArgs.length == 0) {
+        if (clazz == null) {
             EasyLog.w("clazz is null or id is null");
             return objs;
         }
@@ -118,9 +118,41 @@ public class DBDaoManager implements DBDaoImp {
         return objs;
     }
 
+    /**
+     * 按条件查询
+     *
+     * @param clazz         (not null)
+     * @param selection     查询条件(not null)
+     * @param selectionArgs 条件参数(not null)
+     * @param orderBy       排序
+     * @return
+     */
     @Override
     public List<Object> searchByWhere(Class clazz, String selection, String[] selectionArgs, String orderBy) {
         return searchByWhere(clazz, selection, selectionArgs, orderBy, 0, 0);
+    }
+
+    /**
+     * 查询所有
+     *
+     * @param clazz
+     * @return
+     */
+    @Override
+    public List<Object> searchAll(Class clazz) {
+        return searchByWhere(clazz, null, null, null, 0, 0);
+    }
+
+    /**
+     * 查询所有
+     *
+     * @param clazz
+     * @param orderBy
+     * @return
+     */
+    @Override
+    public List<Object> searchAll(Class clazz, String orderBy) {
+        return searchByWhere(clazz, null, null, orderBy, 0, 0);
     }
 
 

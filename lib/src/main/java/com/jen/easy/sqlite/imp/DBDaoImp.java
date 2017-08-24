@@ -42,6 +42,23 @@ public interface DBDaoImp {
     List<Object> searchByWhere(Class clazz, String selection, String[] selectionArgs, String orderBy);
 
     /**
+     * 查询所有
+     *
+     * @param clazz
+     * @return
+     */
+    List<Object> searchAll(Class clazz);
+
+    /**
+     * 查询所有
+     *
+     * @param clazz
+     * @param orderBy
+     * @return
+     */
+    List<Object> searchAll(Class clazz, String orderBy);
+
+    /**
      * 插入数据
      *
      * @param obj
