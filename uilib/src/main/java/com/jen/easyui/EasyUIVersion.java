@@ -13,5 +13,5 @@ public final class EasyUIVersion {
     /**
      * 版本名称(初版：1.0.0)
      */
-    public final static String VERSION_NAME = "1.0.0";
+    public final static String VERSION_NAME = "1.0";
 }
