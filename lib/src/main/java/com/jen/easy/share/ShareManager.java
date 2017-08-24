@@ -46,7 +46,8 @@ public class ShareManager implements ShareImp {
     public void setString(String name, String value) {
         editor = config.edit();
         editor.putString(name, value);
-        editor.commit();
+        editor.apply();
+//        editor.commit();
     }
 
     /**
@@ -70,7 +71,7 @@ public class ShareManager implements ShareImp {
     public void setBoolean(String name, boolean value) {
         editor = config.edit();
         editor.putBoolean(name, value);
-        editor.commit();
+        editor.apply();
     }
 
     /**
@@ -95,7 +96,7 @@ public class ShareManager implements ShareImp {
     public void setInt(String name, int value) {
         editor = config.edit();
         editor.putInt(name, value);
-        editor.commit();
+        editor.apply();
     }
 
     /**
@@ -170,6 +171,6 @@ public class ShareManager implements ShareImp {
     public void removeValue(String name) {
         editor = config.edit();
         editor.remove(name);
-        editor.commit();
+        editor.apply();
     }
 }
