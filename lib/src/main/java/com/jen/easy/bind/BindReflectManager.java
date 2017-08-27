@@ -45,7 +45,7 @@ abstract class BindReflectManager {
             if (!isAnno)
                 continue;
             EasyMouse.BIND.ID easyID = fields[i].getAnnotation(EasyMouse.BIND.ID.class);
-            int coulumnName = easyID.ID();
+            int coulumnName = easyID.value();
             String type = fields[i].getGenericType().toString();
 
             id_type.put(coulumnName, type);
@@ -72,7 +72,7 @@ abstract class BindReflectManager {
             if (!isAnno)
                 continue;
             EasyMouse.BIND.Method easyID = methods[i].getAnnotation(EasyMouse.BIND.Method.class);
-            int[] ids = easyID.onClick();
+            int[] ids = easyID.value();
             method_ids.put(methods[i], ids);
         }
         return method_ids;

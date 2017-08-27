@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * 注释类
+ *
  * @类 创建人：ShannJenn
  * 时间：2017/8/12.
  */
@@ -29,7 +30,7 @@ public final class EasyMouse {
             /**
              * 表名
              */
-            String tableName();
+            String value();
         }
 
         @Target(ElementType.FIELD)
@@ -61,7 +62,7 @@ public final class EasyMouse {
             /**
              * 绑定ID值
              */
-            int ID();
+            int value();
         }
 
         @Target({ElementType.METHOD})
@@ -70,7 +71,7 @@ public final class EasyMouse {
             /**
              * 绑定点击事件
              */
-            int[] onClick();
+            int[] value();
         }
     }
 
@@ -94,7 +95,7 @@ public final class EasyMouse {
              *
              * @return
              */
-            String modelName();
+            String value();
         }
 
         /**
@@ -110,7 +111,7 @@ public final class EasyMouse {
              *
              * @return
              */
-            String paramName();
+            String value();
         }
     }
 

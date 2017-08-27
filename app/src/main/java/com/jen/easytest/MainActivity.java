@@ -11,7 +11,7 @@ import com.jen.easytest.demo.Student;
 
 public class MainActivity extends AppCompatActivity {
 
-    @EasyMouse.BIND.ID(ID = R.id.listview_footer_content1)
+    @EasyMouse.BIND.ID(R.id.listview_footer_content1)
     RelativeLayout listview_footer_content;
 
     @Override

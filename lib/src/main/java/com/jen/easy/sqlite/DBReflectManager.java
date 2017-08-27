@@ -47,7 +47,7 @@ class DBReflectManager {
             return null;
         }
         EasyMouse.DB.Table table = (EasyMouse.DB.Table) clazz.getAnnotation(EasyMouse.DB.Table.class);
-        tbName = table.tableName();
+        tbName = table.value();
         return tbName;
     }
 

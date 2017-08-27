@@ -184,7 +184,7 @@ class HttpJsonReflectManager {
             return null;
         }
         EasyMouse.HTTP.Model model = (EasyMouse.HTTP.Model) clazz.getAnnotation(EasyMouse.HTTP.Model.class);
-        modelName = model.modelName();
+        modelName = model.value();
         return modelName;
     }
 
@@ -211,7 +211,7 @@ class HttpJsonReflectManager {
             if (!isAnno)
                 continue;
             EasyMouse.HTTP.Param param = fields[i].getAnnotation(EasyMouse.HTTP.Param.class);
-            String paramName = param.paramName();
+            String paramName = param.value();
             String type = fields[i].getGenericType().toString();
             param_type.put(paramName, type);
             param_field.put(paramName, fields[i]);
