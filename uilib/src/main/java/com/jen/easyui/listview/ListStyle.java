@@ -1,7 +1,7 @@
 package com.jen.easyui.listview;
 
 /**
- * Created by Administrator on 2017/8/24.
+ * Created by Jen on 2017/8/24.
  */
 
 public enum ListStyle {
@@ -9,5 +9,4 @@ public enum ListStyle {
     GRID_HORIZONTAL,
     GRID_VERTICAL,
     Waterfall;
-
 }

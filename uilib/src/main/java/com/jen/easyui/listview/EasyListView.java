@@ -11,6 +11,7 @@ import android.util.AttributeSet;
 public class EasyListView extends RecyclerView {
     private EasyRecyclerAdapter adapter;
     private ListStyle listStyle;
+    private int layout;
 
     public EasyListView(Context context) {
         super(context);
@@ -25,7 +26,7 @@ public class EasyListView extends RecyclerView {
         super.setLayoutManager(layout);
     }
 
-    public void setAdaper(ListStyle listStyle) {
+    public void setAdaper(ListStyle listStyle, int layout) {
         this.listStyle = listStyle;
     }
 }

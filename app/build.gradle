@@ -29,7 +29,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile project(':lib')
     compile project(':uilib')
-    compile(name: 'uilib-release', ext: 'aar')
 }
 
 repositories {
