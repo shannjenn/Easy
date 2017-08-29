@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.jen.easyui.EasyUILog;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,52 +22,52 @@ import java.util.Map;
  */
 
 public class EasyRecyclerAdapter extends RecyclerView.Adapter {
-    private List<Object> datas;
+    private List<?> datas;
     private int layout;
-    Map<Integer, String> layoutText = new HashMap<>();
-    Map<Integer, Object> layoutImg = new HashMap<>();
-    List<Integer> layoutclicks = new ArrayList<>();
-
-    private Field field;
-    private int[] values;
-    private int[] layouts;
-    Map<Integer, String> layoutsText = new HashMap<>();
-    Map<Integer, Object> layoutsImg = new HashMap<>();
-    List<Integer> layoutsclicks = new ArrayList<>();
-
     private boolean moreItem;//多种布局
+    private Map<Integer, Integer> layouts;
     private AdapterClickEvent adapterClickEvent;
+    Map<Integer, String> txtIds = new HashMap<>();
+    Map<Integer, Object> imgIds = new HashMap<>();
+    List<Integer> onClickIds = new ArrayList<>();
+    List<Integer> onLongClickIds = new ArrayList<>();
 
-    public EasyRecyclerAdapter(List<Object> datas, int layout) {
+    public EasyRecyclerAdapter(List<?> datas, int layout) {
         this.datas = datas;
         this.layout = layout;
+        if (datas == null || datas.size() == 0) {
+            return;
+        }
+        initItemLayout();
     }
 
-    public EasyRecyclerAdapter(List<Object> datas, boolean moreItem) {
+    public EasyRecyclerAdapter(List<?> datas, Map<Integer, Integer> viewType_layouts) {
         this.datas = datas;
-        this.moreItem = moreItem;
-        if (datas == null)
+        this.layouts = viewType_layouts;
+        moreItem = true;
+        if (datas == null || layouts == null)
             return;
-        for (int i = 0; i < datas.size(); i++) {
-            if (datas.get(i) == null)
-                continue;
-            Map<String, Object> map = LayoutReflectmanager.getLaout(datas.get(0).getClass());
-            if (map.size() == 0) {
-                continue;
-            }
-            field = (Field) map.get(LayoutReflectmanager.FIELD);
-            values = (int[]) map.get(LayoutReflectmanager.VIEWTYPES);
-            layouts = (int[]) map.get(LayoutReflectmanager.LAYOUTS);
-            break;
-        }
+        initItemLayout();
+    }
 
+    private void initItemLayout() {
+        txtIds.clear();
+        imgIds.clear();
+        onClickIds.clear();
+        onClickIds.clear();
+
+        Map<String, Object> map = LayoutReflectmanager.bindItemLayout(datas.get(0));
+        txtIds.putAll((Map<Integer, String>) map.get(LayoutReflectmanager.TEXT));
+        imgIds.putAll((Map<Integer, Object>) map.get(LayoutReflectmanager.IMAGE));
+        onClickIds.addAll((List<Integer>) map.get(LayoutReflectmanager.ONCLICK));
+        onClickIds.addAll((List<Integer>) map.get(LayoutReflectmanager.ONLONGCLICK));
     }
 
     class Holder extends RecyclerView.ViewHolder {
         private View itemView;
 
         public Holder(View itemView) {
-            super(itemView);
+            super(null);
             this.itemView = itemView;
         }
     }
@@ -76,8 +75,12 @@ public class EasyRecyclerAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (moreItem) {
-            for (int i = 0; i < values.length; i++) {
-                int layoutId = layouts[i];
+            for (int i = 0; i < layouts.size(); i++) {
+                if (!layouts.containsKey(viewType)) {
+                    EasyUILog.e("为找到该值对应item布局：" + viewType);
+                    return null;
+                }
+                int layoutId = layouts.get(viewType);
                 View viewLayout = LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false);
                 return new Holder(viewLayout);
             }
@@ -90,66 +93,35 @@ public class EasyRecyclerAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (holder == null) {
+            return;
+        }
         View view = ((Holder) holder).itemView;
-        if (moreItem) {
-            for (int id : layoutsText.keySet()) {
-                TextView textView = view.findViewById(id);
-                if (textView == null) {
-                    EasyUILog.e("找不到该控件textView");
-                    continue;
-                }
-                textView.setText(layoutsText.get(id));
-            }
-            for (int id : layoutsImg.keySet()) {
-                ImageView imageView = view.findViewById(id);
-                if (imageView == null) {
-                    EasyUILog.e("找不到该控件imageView");
-                    continue;
-                }
-                Object img = layoutsImg.get(id);
-                if (img instanceof Integer) {
-                    imageView.setImageResource((Integer) img);
-                } else if (img instanceof Drawable) {
-                    imageView.setImageDrawable((Drawable) img);
-                } else if (img instanceof Bitmap) {
-                    imageView.setImageBitmap((Bitmap) img);
-                } else if (img instanceof Uri) {
-                    imageView.setImageURI((Uri) img);
-                }
-            }
-        } else {
-            for (int id : layoutText.keySet()) {
-                TextView textView = view.findViewById(id);
-                if (textView == null) {
-                    EasyUILog.e("找不到该控件textView");
-                    continue;
-                }
-                textView.setText(layoutText.get(id));
-            }
-            for (int id : layoutImg.keySet()) {
-                ImageView imageView = view.findViewById(id);
-                if (imageView == null) {
-                    EasyUILog.e("找不到该控件imageView");
-                    continue;
-                }
-                Object img = layoutImg.get(id);
-                if (img instanceof Integer) {
-                    imageView.setImageResource((Integer) img);
-                } else if (img instanceof Drawable) {
-                    imageView.setImageDrawable((Drawable) img);
-                } else if (img instanceof Bitmap) {
-                    imageView.setImageBitmap((Bitmap) img);
-                } else if (img instanceof Uri) {
-                    imageView.setImageURI((Uri) img);
-                }
-            }
-            for (int key : layoutclicks) {
-                View viewClick = view.findViewById(key);
-                if (viewClick != null) {
-                    viewClick.setOnClickListener(adapterClickEvent);
-                }
+
+        for (int key : txtIds.keySet()) {
+            TextView tv = view.findViewById(key);
+            tv.setText(txtIds.get(key));
+        }
+        for (int key : imgIds.keySet()) {
+            ImageView imageView = view.findViewById(key);
+            Object img = imgIds.get(key);
+            if (img instanceof Integer) {
+                imageView.setImageResource((Integer) img);
+            } else if (img instanceof Drawable) {
+                imageView.setImageDrawable((Drawable) img);
+            } else if (img instanceof Bitmap) {
+                imageView.setImageBitmap((Bitmap) img);
+            } else if (img instanceof Uri) {
+                imageView.setImageURI((Uri) img);
             }
         }
+        for (int i = 0; i < onClickIds.size(); i++) {
+            view.findViewById(onClickIds.get(i)).setOnClickListener(adapterClickEvent);
+        }
+        for (int i = 0; i < onLongClickIds.size(); i++) {
+            view.findViewById(onLongClickIds.get(i)).setOnLongClickListener(adapterClickEvent);
+        }
+
     }
 
     @Override
@@ -157,8 +129,7 @@ public class EasyRecyclerAdapter extends RecyclerView.Adapter {
         if (datas == null || datas.size() == 0) {
             return 0;
         }
-        if (moreItem && field == null) {
-            EasyUILog.e("请在demo中备注@Itemlayout");
+        if (moreItem && (layouts == null || layouts.size() == 0)) {
             return 0;
         }
         return datas.size();
@@ -167,15 +138,7 @@ public class EasyRecyclerAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemViewType(int position) {
         if (moreItem) {
-            try {
-                Object obj = field.get(datas);
-                if (obj != null && obj instanceof Integer) {
-                    return (int) obj;
-                }
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-            return -1;
+            return LayoutReflectmanager.getViewType(datas.get(position));
         } else {
             return super.getItemViewType(position);
         }

@@ -6,6 +6,8 @@ package com.jen.easyui;
 
 public class Student {
 
-    private String id;
+    public String id = "abc";
+
+    public String name = "测试";
 
 }

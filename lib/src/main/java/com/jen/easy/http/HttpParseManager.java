@@ -1,5 +1,7 @@
 package com.jen.easy.http;
 
+import android.text.TextUtils;
+
 import com.jen.easy.http.imp.HttpParseImp;
 import com.jen.easy.log.EasyLog;
 
@@ -28,7 +30,7 @@ public class HttpParseManager implements HttpParseImp {
             EasyLog.e("obj is null");
         }
         String modelName = getModelName(clazz);
-        if (modelName == null) {
+        if (TextUtils.isEmpty(modelName)) {
             EasyLog.e("请检查是否已经增加注释：EasyMouse.HTTP.Model、EasyMouse.HTTP.Param");
             return null;
         }

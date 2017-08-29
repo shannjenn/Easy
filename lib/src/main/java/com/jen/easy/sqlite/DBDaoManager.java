@@ -26,6 +26,8 @@ import static com.jen.easy.sqlite.DBReflectManager.getTableName;
  */
 
 public class DBDaoManager implements DBDaoImp {
+    private final String CONTENTVALUES = "ContentValues";
+    private final String OBJECT = "OBJECT";
     private Database database;
 
     public DBDaoManager(Context context) {
@@ -49,7 +51,7 @@ public class DBDaoManager implements DBDaoImp {
             EasyLog.w("tableName is null");
             return null;
         }
-        Map<String, Object> objectMap = DBReflectManager.getFields(clazz);
+        Map<String, Object> objectMap = DBReflectManager.getColumnNames(clazz);
         List<String> primaryKey = (List<String>) objectMap.get(DBReflectManager.PRIMARY_KEY);
         Map<String, Field> column_field = (Map<String, Field>) objectMap.get(COLUMN_FIELD);
 
@@ -94,7 +96,7 @@ public class DBDaoManager implements DBDaoImp {
             EasyLog.w("tableName is null");
             return objs;
         }
-        Map<String, Object> objectMap = DBReflectManager.getFields(clazz);
+        Map<String, Object> objectMap = DBReflectManager.getColumnNames(clazz);
         Map<String, Field> column_field = (Map<String, Field>) objectMap.get(DBReflectManager.COLUMN_FIELD);
         if (column_field.size() == 0)
             return objs;
@@ -181,8 +183,10 @@ public class DBDaoManager implements DBDaoImp {
                     EasyLog.w("插入表名为空，请检查是否已经注释表明");
                     return false;
                 }
+                Map<String, Object> objectMap = DBReflectManager.getColumnNames(list.get(0).getClass());
+                Map<String, Field> column_field = (Map<String, Field>) objectMap.get(COLUMN_FIELD);
                 for (int i = 0; i < list.size(); i++) {
-                    ContentValues values = cntentValues(list.get(i));
+                    ContentValues values = cntentValues(list.get(i), column_field);
                     db.insert(tableName, null, values);
                 }
             } else if (obj instanceof Object[]) {
@@ -196,8 +200,10 @@ public class DBDaoManager implements DBDaoImp {
                     EasyLog.w("插入表名为空，请检查是否已经注释表明");
                     return false;
                 }
+                Map<String, Object> objectMap = DBReflectManager.getColumnNames(objs[0].getClass());
+                Map<String, Field> column_field = (Map<String, Field>) objectMap.get(COLUMN_FIELD);
                 for (int i = 0; i < objs.length; i++) {
-                    ContentValues values = cntentValues(objs[i]);
+                    ContentValues values = cntentValues(objs[i], column_field);
                     db.insert(tableName, null, values);
                 }
             } else if (obj instanceof Map) {
@@ -206,16 +212,15 @@ public class DBDaoManager implements DBDaoImp {
                     EasyLog.w("数据为空");
                     return false;
                 }
-                String tableName = null;
+                String tableName = DBReflectManager.getTableName(map.get(0).getClass());
+                if (tableName == null) {
+                    EasyLog.w("插入表名为空，请检查是否已经注释表明");
+                    return false;
+                }
+                Map<String, Object> objectMap = DBReflectManager.getColumnNames(map.get(0).getClass());
+                Map<String, Field> column_field = (Map<String, Field>) objectMap.get(COLUMN_FIELD);
                 for (Object value : map.values()) {
-                    if (tableName == null) {
-                        tableName = DBReflectManager.getTableName(value.getClass());
-                    }
-                    if (tableName == null) {
-                        EasyLog.w("插入表名为空，请检查是否已经注释表明");
-                        return false;
-                    }
-                    ContentValues values = cntentValues(value);
+                    ContentValues values = cntentValues(value, column_field);
                     db.insert(tableName, null, values);
                 }
             } else {
@@ -224,7 +229,9 @@ public class DBDaoManager implements DBDaoImp {
                     EasyLog.w("插入表名为空，请检查是否已经注释表明");
                     return false;
                 }
-                ContentValues values = cntentValues(obj);
+                Map<String, Object> objectMap = DBReflectManager.getColumnNames(obj.getClass());
+                Map<String, Field> column_field = (Map<String, Field>) objectMap.get(COLUMN_FIELD);
+                ContentValues values = cntentValues(obj, column_field);
                 db.insert(tableName, null, values);
             }
             db.setTransactionSuccessful();
@@ -263,8 +270,10 @@ public class DBDaoManager implements DBDaoImp {
                     EasyLog.w("插入表名为空，请检查是否已经注释表明");
                     return false;
                 }
+                Map<String, Object> objectMap = DBReflectManager.getColumnNames(list.get(0).getClass());
+                Map<String, Field> column_field = (Map<String, Field>) objectMap.get(COLUMN_FIELD);
                 for (int i = 0; i < list.size(); i++) {
-                    ContentValues values = cntentValues(list.get(i));
+                    ContentValues values = cntentValues(list.get(i), column_field);
                     db.replace(tableName, null, values);
                 }
             } else if (obj instanceof Object[]) {
@@ -278,8 +287,10 @@ public class DBDaoManager implements DBDaoImp {
                     EasyLog.w("插入表名为空，请检查是否已经注释表明");
                     return false;
                 }
+                Map<String, Object> objectMap = DBReflectManager.getColumnNames(objs[0].getClass());
+                Map<String, Field> column_field = (Map<String, Field>) objectMap.get(COLUMN_FIELD);
                 for (int i = 0; i < objs.length; i++) {
-                    ContentValues values = cntentValues(objs[i]);
+                    ContentValues values = cntentValues(objs[i], column_field);
                     db.replace(tableName, null, values);
                 }
             } else if (obj instanceof Map) {
@@ -288,16 +299,15 @@ public class DBDaoManager implements DBDaoImp {
                     EasyLog.w("数据为空");
                     return false;
                 }
-                String tableName = null;
+                String tableName = DBReflectManager.getTableName(map.get(0).getClass());
+                if (tableName == null) {
+                    EasyLog.w("插入表名为空，请检查是否已经注释表明");
+                    return false;
+                }
+                Map<String, Object> objectMap = DBReflectManager.getColumnNames(map.get(0).getClass());
+                Map<String, Field> column_field = (Map<String, Field>) objectMap.get(COLUMN_FIELD);
                 for (Object value : map.values()) {
-                    if (tableName == null) {
-                        tableName = DBReflectManager.getTableName(value.getClass());
-                    }
-                    if (tableName == null) {
-                        EasyLog.w("插入表名为空，请检查是否已经注释表明");
-                        return false;
-                    }
-                    ContentValues values = cntentValues(value);
+                    ContentValues values = cntentValues(value, column_field);
                     db.replace(tableName, null, values);
                 }
             } else {
@@ -306,7 +316,9 @@ public class DBDaoManager implements DBDaoImp {
                     EasyLog.w("插入表名为空，请检查是否已经注释表明");
                     return false;
                 }
-                ContentValues values = cntentValues(obj);
+                Map<String, Object> objectMap = DBReflectManager.getColumnNames(obj.getClass());
+                Map<String, Field> column_field = (Map<String, Field>) objectMap.get(COLUMN_FIELD);
+                ContentValues values = cntentValues(obj, column_field);
                 db.replace(tableName, null, values);
             }
             db.setTransactionSuccessful();
@@ -474,50 +486,46 @@ public class DBDaoManager implements DBDaoImp {
      * @param obj
      * @return
      */
-    private ContentValues cntentValues(Object obj) {
-        Map<String, Object> objectMap = DBReflectManager.getFields(obj.getClass());
-        Map<String, Field> column_field = (Map<String, Field>) objectMap.get(COLUMN_FIELD);
-
+    private ContentValues cntentValues(Object obj, Map<String, Field> column_field) {
         ContentValues values = new ContentValues();
         try {
             for (String column : column_field.keySet()) {
                 Field field = column_field.get(column);
-                field.setAccessible(true);
-                String type = field.getGenericType().toString();
-                if (type.equals(Constant.FieldType.CHAR)) {
-                    char value = (char) field.getChar(obj);
-                    values.put(column, value + "");
-                } else if (type.equals(Constant.FieldType.STRING)) {
-                    String value = (String) field.get(obj);
-                    values.put(column, value);
-                } else if (type.equals(Constant.FieldType.BYTE)) {
-                    byte value = field.getByte(obj);
-                    values.put(column, value);
-                } else if (type.equals(Constant.FieldType.SHORT)) {
-                    short value = field.getShort(obj);
-                    values.put(column, value);
-                } else if (type.equals(Constant.FieldType.INTEGER)) {
-                    int value = field.getInt(obj);
-                    values.put(column, value);
-                } else if (type.equals(Constant.FieldType.FLOAT)) {
-                    float value = field.getFloat(obj);
-                    values.put(column, value);
-                } else if (type.equals(Constant.FieldType.DOUBLE)) {
-                    double value = field.getDouble(obj);
-                    values.put(column, value);
-                } else if (type.equals(Constant.FieldType.LONG)) {
-                    long value = field.getLong(obj);
-                    values.put(column, value);
-                } else if (type.equals(Constant.FieldType.BOOLEAN)) {
-                    boolean value = field.getBoolean(obj);
-                    values.put(column, value);
-                } else if (type.equals(Constant.FieldType.DATE)) {
-                    Date value = (Date) field.get(obj);
-                    values.put(column, value == null ? null : EasyUtil.DATA.format(value));
-                }
+//                field.setAccessible(true);
+//                String type = field.getGenericType().toString();
+                Object value = field.get(obj);
+                if (value instanceof Character) {
+                    values.put(column, (char) value + "");
+                } else if (value instanceof String) {
+                    values.put(column, (String) value);
+                } else if (value instanceof Byte) {
+                    values.put(column, (Byte) value);
+                } else if (value instanceof Short) {
+                    values.put(column, (Short) value);
+                } else if (value instanceof Integer) {
+                    values.put(column, (Integer) value);
+                } else if (value instanceof Float) {
+                    values.put(column, (Float) value);
+                } else if (value instanceof Double) {
+                    values.put(column, (Double) value);
+                } else if (value instanceof Long) {
+                    values.put(column, (Long) value);
+                } else if (value instanceof Boolean) {
+                    values.put(column, (Boolean) value);
+                } else if (value instanceof Date) {
+                    values.put(column, EasyUtil.DATA.format((Date) value));
+                }/* else if (type.contains(Constant.FieldType.MAP)) {
+                    EasyLog.e("Constant.FieldType.MAP");
+                } else if (type.contains(Constant.FieldType.ARRAY)) {
+                    EasyLog.e("Constant.FieldType.ARRAY");
+                } else if (type.contains(Constant.FieldType.CLASS)) {
+                    String clazzName = type.replace("class ", "").trim();
+                    Class clazz = Class.forName(clazzName);
+                }*/
             }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
+            EasyLog.e("cntentValues IllegalAccessException");
         }
         return values;
     }

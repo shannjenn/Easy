@@ -45,11 +45,13 @@ abstract class BindReflectManager {
             if (!isAnno)
                 continue;
             EasyMouse.BIND.ID easyID = fields[i].getAnnotation(EasyMouse.BIND.ID.class);
-            int coulumnName = easyID.value();
+            int id = easyID.value();
+            if (id == -1)
+                continue;
             String type = fields[i].getGenericType().toString();
 
-            id_type.put(coulumnName, type);
-            id_field.put(coulumnName, fields[i]);
+            id_type.put(id, type);
+            id_field.put(id, fields[i]);
         }
         return objectMap;
     }

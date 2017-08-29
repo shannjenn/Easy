@@ -39,7 +39,7 @@ public final class EasyMouse {
             /**
              * 字段名称
              */
-            String columnName();
+            String columnName() default "";
 
             /**
              * 是否为主键
@@ -62,7 +62,7 @@ public final class EasyMouse {
             /**
              * 绑定ID值
              */
-            int value();
+            int value() default -1;
         }
 
         @Target({ElementType.METHOD})

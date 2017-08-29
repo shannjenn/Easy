@@ -57,7 +57,7 @@ class DBReflectManager {
      * @param clazz
      * @return Map<String, List<String>>
      */
-    static Map<String, Object> getColumnNames(Class clazz) {
+    /*static Map<String, Object> getColumnNames(Class clazz) {
         Map<String, Object> objectMap = new HashMap<>();
         List<String> primaryKey = new ArrayList<>();
         Map<String, String> column = new HashMap<>();
@@ -78,20 +78,22 @@ class DBReflectManager {
             boolean isPrimary = columnClass.primaryKey();
             String type = fields[i].getGenericType().toString();
 
+            if (coulumnName.trim().length() == 0) {
+                continue;
+            }
             if (isPrimary)
                 primaryKey.add(coulumnName);
             column.put(coulumnName, type);
         }
         return objectMap;
-    }
+    }*/
 
     /**
      * 获取字字段
-     *
      * @param clazz
-     * @return Map<String, List<String>>
+     * @return
      */
-    static Map<String, Object> getFields(Class clazz) {
+    static Map<String, Object> getColumnNames(Class clazz) {
         Map<String, Object> objectMap = new HashMap<>();
         List<String> primaryKey = new ArrayList<>();
         Map<String, String> column = new HashMap<>();
@@ -114,6 +116,9 @@ class DBReflectManager {
             boolean isPrimary = columnClass.primaryKey();
             String type = fields[i].getGenericType().toString();
 
+            if (coulumnName.trim().length() == 0) {
+                continue;
+            }
             if (isPrimary)
                 primaryKey.add(coulumnName);
             column.put(coulumnName, type);

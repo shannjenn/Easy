@@ -36,10 +36,11 @@ public final class Constant {
         public static final String LONG = "class java.lang.Long";
 
         public static final String BOOLEAN = "boolean";
-
         public static final String DATE = "class java.util.Date";
-
         public static final String LIST = "java.util.List";
+        public static final String MAP = "java.util.Map";
+        public static final String ARRAY = "class [L";//数组
+        public static final String CLASS = "class ";//做最后判断
 
 
         /**

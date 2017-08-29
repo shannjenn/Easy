@@ -34,19 +34,17 @@ public class BindManager implements BindImp {
         }
 
         Map<String, Object> objectMap = BindReflectManager.getFields(activity.getClass());
-        if (objectMap.size() > 0) {
-            Map<Integer, String> id_type = (Map<Integer, String>) objectMap.get(BindReflectManager.ID_TYPE);
-            Map<Integer, Field> id_field = (Map<Integer, Field>) objectMap.get(BindReflectManager.ID_FIELD);
-            for (int id : id_type.keySet()) {
-                View view = activity.findViewById(id);
-                Field fild = id_field.get(id);
-                fild.setAccessible(true);
-                try {
-                    fild.set(activity, view);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                    EasyLog.e("fild set value error");
-                }
+        Map<Integer, String> id_type = (Map<Integer, String>) objectMap.get(BindReflectManager.ID_TYPE);
+        Map<Integer, Field> id_field = (Map<Integer, Field>) objectMap.get(BindReflectManager.ID_FIELD);
+        for (int id : id_type.keySet()) {
+            View view = activity.findViewById(id);
+            Field fild = id_field.get(id);
+            fild.setAccessible(true);
+            try {
+                fild.set(activity, view);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+                EasyLog.e("fild set value error");
             }
         }
 
@@ -83,19 +81,17 @@ public class BindManager implements BindImp {
         }
 
         Map<String, Object> objectMap = BindReflectManager.getFields(obj.getClass());
-        if (objectMap.size() > 0) {
-            Map<Integer, String> id_type = (Map<Integer, String>) objectMap.get(BindReflectManager.ID_TYPE);
-            Map<Integer, Field> id_field = (Map<Integer, Field>) objectMap.get(BindReflectManager.ID_FIELD);
-            for (int id : id_type.keySet()) {
-                View view = parent.findViewById(id);
-                Field fild = id_field.get(id);
-                fild.setAccessible(true);
-                try {
-                    fild.set(obj, view);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                    EasyLog.e("fild set value error");
-                }
+        Map<Integer, String> id_type = (Map<Integer, String>) objectMap.get(BindReflectManager.ID_TYPE);
+        Map<Integer, Field> id_field = (Map<Integer, Field>) objectMap.get(BindReflectManager.ID_FIELD);
+        for (int id : id_type.keySet()) {
+            View view = parent.findViewById(id);
+            Field fild = id_field.get(id);
+            fild.setAccessible(true);
+            try {
+                fild.set(obj, view);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+                EasyLog.e("fild set value error");
             }
         }
 

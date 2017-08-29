@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
+import java.util.List;
+
 /**
  * Created by Jen on 2017/8/24.
  */
@@ -26,7 +28,9 @@ public class EasyListView extends RecyclerView {
         super.setLayoutManager(layout);
     }
 
-    public void setAdaper(ListStyle listStyle, int layout) {
+    public void setAdaper(List<?> datas, ListStyle listStyle, int layout) {
         this.listStyle = listStyle;
+        adapter = new EasyRecyclerAdapter(datas, layout);
+        setAdapter(adapter);
     }
 }

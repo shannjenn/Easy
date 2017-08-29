@@ -10,10 +10,16 @@ import java.lang.annotation.Target;
  */
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Itemlayout {
+public @interface ItemLayout {
 
-    int[] viewType();
+    boolean isViewType() default false;
 
-    int[] layout();
+    int text();
+
+    int image() default -1;
+
+    int onClick() default -1;
+
+    int onLongClick() default -1;
 
 }
