@@ -12,6 +12,8 @@ import com.jen.easytest.demo.Student;
 import com.jen.easyui.listview.ItemLayout;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,9 +53,11 @@ public class MainActivity extends AppCompatActivity {
         String d = fields[3].getGenericType().toString();
         String e = fields[4].getGenericType().toString();
 
+        List<Student> list1 = new ArrayList<>();
 
         Logcat.d(TextUtils.isEmpty(" ") + "");
         Logcat.d(TextUtils.isEmpty(" ") + "");
+
 
     }
 

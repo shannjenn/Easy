@@ -45,6 +45,11 @@ public final class EasyMouse {
              * 是否为主键
              */
             boolean primaryKey() default false;
+
+            /**
+             * 外键名称
+             */
+            String foreignKey() default "";
         }
     }
 

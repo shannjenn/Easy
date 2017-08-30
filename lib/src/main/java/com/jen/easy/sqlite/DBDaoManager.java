@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.jen.easy.sqlite.DBReflectManager.COLUMN_FIELD;
+import static com.jen.easy.sqlite.DBReflectManager.FOREIGN_KEY;
 import static com.jen.easy.sqlite.DBReflectManager.getTableName;
 
 /**
@@ -184,9 +185,8 @@ public class DBDaoManager implements DBDaoImp {
                     return false;
                 }
                 Map<String, Object> objectMap = DBReflectManager.getColumnNames(list.get(0).getClass());
-                Map<String, Field> column_field = (Map<String, Field>) objectMap.get(COLUMN_FIELD);
                 for (int i = 0; i < list.size(); i++) {
-                    ContentValues values = cntentValues(list.get(i), column_field);
+                    ContentValues values = cntentValues(list.get(i), objectMap);
                     db.insert(tableName, null, values);
                 }
             } else if (obj instanceof Object[]) {
@@ -201,9 +201,8 @@ public class DBDaoManager implements DBDaoImp {
                     return false;
                 }
                 Map<String, Object> objectMap = DBReflectManager.getColumnNames(objs[0].getClass());
-                Map<String, Field> column_field = (Map<String, Field>) objectMap.get(COLUMN_FIELD);
                 for (int i = 0; i < objs.length; i++) {
-                    ContentValues values = cntentValues(objs[i], column_field);
+                    ContentValues values = cntentValues(objs[i], objectMap);
                     db.insert(tableName, null, values);
                 }
             } else if (obj instanceof Map) {
@@ -212,15 +211,18 @@ public class DBDaoManager implements DBDaoImp {
                     EasyLog.w("数据为空");
                     return false;
                 }
-                String tableName = DBReflectManager.getTableName(map.get(0).getClass());
-                if (tableName == null) {
-                    EasyLog.w("插入表名为空，请检查是否已经注释表明");
-                    return false;
-                }
-                Map<String, Object> objectMap = DBReflectManager.getColumnNames(map.get(0).getClass());
-                Map<String, Field> column_field = (Map<String, Field>) objectMap.get(COLUMN_FIELD);
+                String tableName = null;
+                Map<String, Object> objectMap = null;
                 for (Object value : map.values()) {
-                    ContentValues values = cntentValues(value, column_field);
+                    if (tableName == null) {
+                        tableName = DBReflectManager.getTableName(value.getClass());
+                        objectMap = DBReflectManager.getColumnNames(value.getClass());
+                    }
+                    if (tableName == null) {
+                        EasyLog.w("插入表名为空，请检查是否已经注释表明");
+                        return false;
+                    }
+                    ContentValues values = cntentValues(value, objectMap);
                     db.insert(tableName, null, values);
                 }
             } else {
@@ -230,8 +232,7 @@ public class DBDaoManager implements DBDaoImp {
                     return false;
                 }
                 Map<String, Object> objectMap = DBReflectManager.getColumnNames(obj.getClass());
-                Map<String, Field> column_field = (Map<String, Field>) objectMap.get(COLUMN_FIELD);
-                ContentValues values = cntentValues(obj, column_field);
+                ContentValues values = cntentValues(obj, objectMap);
                 db.insert(tableName, null, values);
             }
             db.setTransactionSuccessful();
@@ -271,9 +272,8 @@ public class DBDaoManager implements DBDaoImp {
                     return false;
                 }
                 Map<String, Object> objectMap = DBReflectManager.getColumnNames(list.get(0).getClass());
-                Map<String, Field> column_field = (Map<String, Field>) objectMap.get(COLUMN_FIELD);
                 for (int i = 0; i < list.size(); i++) {
-                    ContentValues values = cntentValues(list.get(i), column_field);
+                    ContentValues values = cntentValues(list.get(i), objectMap);
                     db.replace(tableName, null, values);
                 }
             } else if (obj instanceof Object[]) {
@@ -288,9 +288,8 @@ public class DBDaoManager implements DBDaoImp {
                     return false;
                 }
                 Map<String, Object> objectMap = DBReflectManager.getColumnNames(objs[0].getClass());
-                Map<String, Field> column_field = (Map<String, Field>) objectMap.get(COLUMN_FIELD);
                 for (int i = 0; i < objs.length; i++) {
-                    ContentValues values = cntentValues(objs[i], column_field);
+                    ContentValues values = cntentValues(objs[i], objectMap);
                     db.replace(tableName, null, values);
                 }
             } else if (obj instanceof Map) {
@@ -299,15 +298,18 @@ public class DBDaoManager implements DBDaoImp {
                     EasyLog.w("数据为空");
                     return false;
                 }
-                String tableName = DBReflectManager.getTableName(map.get(0).getClass());
-                if (tableName == null) {
-                    EasyLog.w("插入表名为空，请检查是否已经注释表明");
-                    return false;
-                }
-                Map<String, Object> objectMap = DBReflectManager.getColumnNames(map.get(0).getClass());
-                Map<String, Field> column_field = (Map<String, Field>) objectMap.get(COLUMN_FIELD);
+                String tableName = null;
+                Map<String, Object> objectMap = null;
                 for (Object value : map.values()) {
-                    ContentValues values = cntentValues(value, column_field);
+                    if (tableName == null) {
+                        tableName = DBReflectManager.getTableName(value.getClass());
+                        objectMap = DBReflectManager.getColumnNames(value.getClass());
+                    }
+                    if (tableName == null) {
+                        EasyLog.w("插入表名为空，请检查是否已经注释表明");
+                        return false;
+                    }
+                    ContentValues values = cntentValues(value, objectMap);
                     db.replace(tableName, null, values);
                 }
             } else {
@@ -317,8 +319,7 @@ public class DBDaoManager implements DBDaoImp {
                     return false;
                 }
                 Map<String, Object> objectMap = DBReflectManager.getColumnNames(obj.getClass());
-                Map<String, Field> column_field = (Map<String, Field>) objectMap.get(COLUMN_FIELD);
-                ContentValues values = cntentValues(obj, column_field);
+                ContentValues values = cntentValues(obj, objectMap);
                 db.replace(tableName, null, values);
             }
             db.setTransactionSuccessful();
@@ -486,13 +487,16 @@ public class DBDaoManager implements DBDaoImp {
      * @param obj
      * @return
      */
-    private ContentValues cntentValues(Object obj, Map<String, Field> column_field) {
+    private ContentValues cntentValues(Object obj, Map<String, Object> objectMap) {
+        Map<String, Field> column_field = (Map<String, Field>) objectMap.get(COLUMN_FIELD);
+        Map<String, String> column_foreignKey = (Map<String, String>) objectMap.get(FOREIGN_KEY);
+
         ContentValues values = new ContentValues();
         try {
             for (String column : column_field.keySet()) {
                 Field field = column_field.get(column);
 //                field.setAccessible(true);
-//                String type = field.getGenericType().toString();
+                String type = field.getGenericType().toString();
                 Object value = field.get(obj);
                 if (value instanceof Character) {
                     values.put(column, (char) value + "");
@@ -514,14 +518,36 @@ public class DBDaoManager implements DBDaoImp {
                     values.put(column, (Boolean) value);
                 } else if (value instanceof Date) {
                     values.put(column, EasyUtil.DATA.format((Date) value));
-                }/* else if (type.contains(Constant.FieldType.MAP)) {
-                    EasyLog.e("Constant.FieldType.MAP");
-                } else if (type.contains(Constant.FieldType.ARRAY)) {
-                    EasyLog.e("Constant.FieldType.ARRAY");
-                } else if (type.contains(Constant.FieldType.CLASS)) {
-                    String clazzName = type.replace("class ", "").trim();
-                    Class clazz = Class.forName(clazzName);
-                }*/
+                } else if (column_foreignKey.containsKey(column)) {//其他类型用外键处理（比如：对象）
+                    if (type.contains(Constant.FieldType.MAP)) {
+                        EasyLog.e("Constant.FieldType.MAP");
+                    } else if (type.contains(Constant.FieldType.ARRAY)) {
+                        EasyLog.e("Constant.FieldType.ARRAY");
+                    } else if (value instanceof List) {
+                        List<Object> list = (List<Object>) value;
+                        StringBuffer foreignKeyValue = new StringBuffer("");
+                        for (int i = 0; i < list.size(); i++) {
+                            String foreignValue = DBReflectManager.getPrimaryKeyValue(list.get(i), column_foreignKey.get(column));
+                            if (foreignValue == null)
+                                break;
+                            if (i == 0) {
+                                foreignKeyValue.append(foreignValue);
+                            } else {
+                                foreignKeyValue.append(",");
+                                foreignKeyValue.append(foreignValue);
+                            }
+                        }
+                        String keyValue = foreignKeyValue.toString().trim();
+                        if (keyValue.length() > 0) {
+                            values.put(column, keyValue);
+                        }
+                    } else if (type.contains(Constant.FieldType.CLASS)) {
+                        String foreignValue = DBReflectManager.getPrimaryKeyValue(value, column_foreignKey.get(column));
+                        if (foreignValue != null) {
+                            values.put(column, foreignValue);
+                        }
+                    }
+                }
             }
         } catch (IllegalAccessException e) {
             e.printStackTrace();

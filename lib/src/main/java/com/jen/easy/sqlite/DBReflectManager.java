@@ -16,9 +16,13 @@ import java.util.Map;
 
 class DBReflectManager {
     /**
-     * 主键名List
+     * 主键名
      */
     static final String PRIMARY_KEY = "primary_key";
+    /**
+     * 外键名
+     */
+    static final String FOREIGN_KEY = "foreign_Key";
     /**
      * 全部列明和属性类型
      */
@@ -90,16 +94,19 @@ class DBReflectManager {
 
     /**
      * 获取字字段
+     *
      * @param clazz
      * @return
      */
     static Map<String, Object> getColumnNames(Class clazz) {
         Map<String, Object> objectMap = new HashMap<>();
         List<String> primaryKey = new ArrayList<>();
-        Map<String, String> column = new HashMap<>();
+        Map<String, String> column_foreignKey = new HashMap<>();
+        Map<String, String> column_type = new HashMap<>();
         Map<String, Field> fieldName = new HashMap<>();
         objectMap.put(PRIMARY_KEY, primaryKey);
-        objectMap.put(COLUMN_TYPE, column);
+        objectMap.put(FOREIGN_KEY, column_foreignKey);
+        objectMap.put(COLUMN_TYPE, column_type);
         objectMap.put(COLUMN_FIELD, fieldName);
         if (clazz == null) {
             EasyLog.e("clazz is not null");
@@ -114,6 +121,7 @@ class DBReflectManager {
             EasyMouse.DB.Column columnClass = fields[i].getAnnotation(EasyMouse.DB.Column.class);
             String coulumnName = columnClass.columnName();
             boolean isPrimary = columnClass.primaryKey();
+            String foreignKey = columnClass.foreignKey().trim();
             String type = fields[i].getGenericType().toString();
 
             if (coulumnName.trim().length() == 0) {
@@ -121,9 +129,42 @@ class DBReflectManager {
             }
             if (isPrimary)
                 primaryKey.add(coulumnName);
-            column.put(coulumnName, type);
+            if (foreignKey.length() > 0)
+                column_foreignKey.put(coulumnName, foreignKey);
+            column_type.put(coulumnName, type);
             fieldName.put(coulumnName, fields[i]);
         }
         return objectMap;
+    }
+
+    /**
+     * 获取字字段(只获取一个key)
+     *
+     * @param obj
+     * @return
+     */
+    static String getPrimaryKeyValue(Object obj, String primaryKey) {
+        if (obj == null || obj instanceof Class || primaryKey == null) {
+            EasyLog.e("clazz is not null");
+            return null;
+        }
+
+        Field[] fields = obj.getClass().getDeclaredFields();
+        for (int i = 0; i < fields.length; i++) {
+            boolean isAnno = fields[i].isAnnotationPresent(EasyMouse.DB.Column.class);
+            if (!isAnno)
+                continue;
+            EasyMouse.DB.Column columnClass = fields[i].getAnnotation(EasyMouse.DB.Column.class);
+            String columnName = columnClass.columnName().trim();
+            if (columnName.equals(primaryKey)) {
+                try {
+                    String value = fields[i].get(obj) + "";
+                    return value;
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
     }
 }

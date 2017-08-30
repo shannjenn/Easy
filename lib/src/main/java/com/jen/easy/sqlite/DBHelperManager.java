@@ -75,12 +75,12 @@ public class DBHelperManager implements DBHelperImp {
         EasyLog.d("createTB");
         Map<String, Object> fields = DBReflectManager.getColumnNames(clazz);
         List<String> primaryKey = (List<String>) fields.get(DBReflectManager.PRIMARY_KEY);
-        Map<String, String> column = (Map<String, String>) fields.get(DBReflectManager.COLUMN_TYPE);
+        Map<String, String> column_type = (Map<String, String>) fields.get(DBReflectManager.COLUMN_TYPE);
 
         if (tableName == null) {
             EasyLog.w("createTB error:tableName is null");
             return;
-        } else if (column.size() == 0) {
+        } else if (column_type.size() == 0) {
             EasyLog.w("createTB error:column is null");
             return;
         }
@@ -88,8 +88,8 @@ public class DBHelperManager implements DBHelperImp {
         StringBuffer primaryKeySql = new StringBuffer("");
         StringBuffer fieldSql = new StringBuffer("");
 
-        for (String fieldName : column.keySet()) {
-            String fieldType = column.get(fieldName);
+        for (String fieldName : column_type.keySet()) {
+            String fieldType = column_type.get(fieldName);
             String type = Constant.FieldType.getDBCoumnType(fieldType);
 
             fieldSql.append(fieldName);
