@@ -92,7 +92,7 @@
     public <fields>;
     public <methods>;
 }
--keep class com.jen.easy.http.HttpParam {
+-keep class com.jen.easy.http.HttpParam$* {
     public <fields>;
     public <methods>;
 }
