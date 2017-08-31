@@ -16,11 +16,12 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Map;
 
 class HttpURLConnectionDownloadRunable implements Runnable {
-    private EasyFactory.HTTP.DownloadParam param;
+    private EasyFactory.HTTP.DownloadParamRequest param;
 
-    HttpURLConnectionDownloadRunable(EasyFactory.HTTP.DownloadParam param) {
+    HttpURLConnectionDownloadRunable(EasyFactory.HTTP.DownloadParamRequest param) {
         super();
         this.param = param;
     }
@@ -28,23 +29,23 @@ class HttpURLConnectionDownloadRunable implements Runnable {
     @Override
     public void run() {
         int result = EasyFinal.HTTP.Code.FAIL;
-        if (TextUtils.isEmpty(param.httpParam.url)) {
+        if (TextUtils.isEmpty(param.http.url)) {
             EasyLog.e("URL地址错误");
             fail(EasyFinal.HTTP.Code.FAIL, "参数错误");
             return;
-        } else if (TextUtils.isEmpty(param.fileParam.filePath)) {
+        } else if (TextUtils.isEmpty(param.request.filePath)) {
             fail(EasyFinal.HTTP.Code.FAIL, "文件地址不能为空");
             return;
         }
 
-        File fileFolder = new File(param.fileParam.filePath.substring(0, param.fileParam.filePath.lastIndexOf("/")));
+        File fileFolder = new File(param.request.filePath.substring(0, param.request.filePath.lastIndexOf("/")));
         if (!fileFolder.exists()) {
             boolean ret = fileFolder.mkdirs();
             if (!ret)
                 EasyLog.w("创建文件夹失败");
         }
-        if (param.fileParam.deleteOldFile) {
-            File file = new File(param.fileParam.filePath);
+        if (param.request.deleteOldFile) {
+            File file = new File(param.request.filePath);
             if (file.exists()) {
                 boolean ret = file.delete();
                 if (!ret)
@@ -52,54 +53,56 @@ class HttpURLConnectionDownloadRunable implements Runnable {
             }
         }
 
-        if (param.fileParam.startPoit <= 1024 * 2) {
-            param.fileParam.startPoit = 0;
-        } else if (param.fileParam.startPoit > 1024 * 2) {
-            param.fileParam.startPoit = param.fileParam.startPoit - 1024 * 2;
+        if (param.request.startPoit <= 1024 * 2) {
+            param.request.startPoit = 0;
+        } else if (param.request.startPoit > 1024 * 2) {
+            param.request.startPoit = param.request.startPoit - 1024 * 2;
         }
 
-        long curbytes = param.fileParam.startPoit;
+        long curbytes = param.request.startPoit;
         HttpURLConnection connection = null;
         RandomAccessFile randFile = null;
         InputStream inStream = null;
+
+        Map<String, String> requestParams = HttpReflectManager.getParams(param);
 
         try {
             boolean hasParam = false;
             boolean isNotFirst = false;
             StringBuffer requestBuf = new StringBuffer("");
-            for (String name : param.baseParam.requestParam.keySet()) {
-                String value = param.baseParam.requestParam.get(name);
+            for (String name : requestParams.keySet()) {
+                String value = requestParams.get(name);
                 if (isNotFirst) {
                     requestBuf.append("&");
                 }
                 requestBuf.append(name);
                 requestBuf.append("=");
-                requestBuf.append(URLEncoder.encode(value, param.httpParam.charset));
+                requestBuf.append(URLEncoder.encode(value, param.http.charset));
                 isNotFirst = true;
                 hasParam = true;
             }
 
-            String urlStr = param.httpParam.url;
-            if (param.httpParam.method.toUpperCase().equals("GET") && hasParam) {
+            String urlStr = param.http.url;
+            if (param.http.method.toUpperCase().equals("GET") && hasParam) {
                 urlStr = urlStr + "?" + requestBuf.toString();
             }
 
             URL url = new URL(urlStr);
             connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(param.httpParam.doInput);
-            connection.setDoOutput(param.httpParam.doOutput);
-            connection.setUseCaches(param.httpParam.useCaches);
-            connection.setConnectTimeout(param.httpParam.timeout);
-            connection.setReadTimeout(param.httpParam.readTimeout);
-            connection.setRequestProperty("Charset", param.httpParam.charset);
-            connection.setRequestProperty("Content-Type", param.httpParam.contentType);
-            connection.setRequestProperty("Connection", param.httpParam.connection);
-            connection.setRequestMethod(param.httpParam.method);
-            if (param.fileParam.isBreak && param.fileParam.endPoit > param.fileParam.startPoit + 100) {
-                connection.setRequestProperty("Range", "bytes=" + param.fileParam.startPoit + "-" + param.fileParam.endPoit);
+            connection.setDoInput(param.http.doInput);
+            connection.setDoOutput(param.http.doOutput);
+            connection.setUseCaches(param.http.useCaches);
+            connection.setConnectTimeout(param.http.timeout);
+            connection.setReadTimeout(param.http.readTimeout);
+            connection.setRequestProperty("Charset", param.http.charset);
+            connection.setRequestProperty("Content-Type", param.http.contentType);
+            connection.setRequestProperty("Connection", param.http.connection);
+            connection.setRequestMethod(param.http.method);
+            if (param.request.isBreak && param.request.endPoit > param.request.startPoit + 100) {
+                connection.setRequestProperty("Range", "bytes=" + param.request.startPoit + "-" + param.request.endPoit);
             }
 
-            if (param.httpParam.method.toUpperCase().equals("POST") && hasParam) {
+            if (param.http.method.toUpperCase().equals("POST") && hasParam) {
                 connection.connect();
                 DataOutputStream out = new DataOutputStream(connection.getOutputStream());
                 out.writeBytes(requestBuf.toString());
@@ -107,27 +110,27 @@ class HttpURLConnectionDownloadRunable implements Runnable {
                 out.close();
             }
 
-            EasyLog.d("Http 请求地址：" + url.getPath() + "  " + param.httpParam.method);
+            EasyLog.d("Http 请求地址：" + url.getPath() + "  " + param.http.method);
             if ((connection.getResponseCode() == 200)) {
-                param.fileParam.endPoit = connection.getContentLength();
+                param.request.endPoit = connection.getContentLength();
                 inStream = connection.getInputStream();
                 byte[] buffer = new byte[1024];
-                randFile = new RandomAccessFile(param.fileParam.filePath, "rwd");
-                randFile.seek(param.fileParam.startPoit);
+                randFile = new RandomAccessFile(param.request.filePath, "rwd");
+                randFile.seek(param.request.startPoit);
                 int len = 0;
-                while ((len = inStream.read(buffer)) != -1 && !param.baseParam.userCancel) {
+                while ((len = inStream.read(buffer)) != -1 && !param.request.userCancel) {
                     randFile.write(buffer, 0, len);
                     curbytes += len;
-                    if (!param.baseParam.userCancel) {
-                        progress(curbytes, param.fileParam.endPoit);
+                    if (!param.request.userCancel) {
+                        progress(curbytes, param.request.endPoit);
                     } else {
                         break;
                     }
                 }
             }
-            if (param.baseParam.userCancel) {
+            if (param.request.userCancel) {
                 result = EasyFinal.HTTP.Code.USER_CANCEL;
-            } else if (curbytes == param.fileParam.endPoit) {
+            } else if (curbytes == param.request.endPoit) {
                 result = EasyFinal.HTTP.Code.SUCCESS;
             }
         } catch (MalformedURLException e) {
@@ -163,16 +166,16 @@ class HttpURLConnectionDownloadRunable implements Runnable {
 
     private void success() {
         if (param.getDownloadListener() != null)
-            param.getDownloadListener().success(param.baseParam.flagCode, param.baseParam.flag);
+            param.getDownloadListener().success(param.request.flagCode, param.request.flag);
     }
 
     private void fail(int code, String tag) {
         if (param.getDownloadListener() != null)
-            param.getDownloadListener().fail(param.baseParam.flagCode, param.baseParam.flag, code, tag);
+            param.getDownloadListener().fail(param.request.flagCode, param.request.flag, code, tag);
     }
 
     private void progress(long currentPoint, long endPoint) {
         if (param.getDownloadListener() != null)
-            param.getDownloadListener().progress(param.baseParam.flagCode, param.baseParam.flag, currentPoint, endPoint);
+            param.getDownloadListener().progress(param.request.flagCode, param.request.flag, currentPoint, endPoint);
     }
 }

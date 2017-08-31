@@ -4,9 +4,6 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.jen.easy.EasyMain;
-import com.jen.easytest.demo.Student;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -25,13 +22,7 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getTargetContext();
 
         assertEquals("com.jen.easytest", appContext.getPackageName());
-        testHttp();
-    }
-
-
-    private void testHttp(){
-        Student student = new Student();
-        student.httpParam.url = "http://47.92.134.67:83/product-type";
-        EasyMain.HTTP.start(student);
     }
 }
+
+

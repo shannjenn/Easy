@@ -3,7 +3,6 @@ package com.jen.easy.http;
 import com.jen.easy.EasyFactory;
 import com.jen.easy.constant.Constant;
 import com.jen.easy.http.imp.HttpImp;
-import com.jen.easy.http.param.factory.ParamFather;
 import com.jen.easy.log.EasyLog;
 
 import java.util.concurrent.ExecutorService;
@@ -36,7 +35,7 @@ public class HttpManager implements HttpImp {
      * @param param
      */
     @Override
-    public void start(ParamFather param) {
+    public void start(HttpParam param) {
         if (param == null) {
             EasyLog.w("参数为空");
             return;
@@ -45,11 +44,11 @@ public class HttpManager implements HttpImp {
         if (param instanceof EasyFactory.HTTP.UploadParam) {
             HttpURLConnectionUploadRunable upload = new HttpURLConnectionUploadRunable((EasyFactory.HTTP.UploadParam) param);
             pool.execute(upload);
-        } else if (param instanceof EasyFactory.HTTP.DownloadParam) {
-            HttpURLConnectionDownloadRunable download = new HttpURLConnectionDownloadRunable((EasyFactory.HTTP.DownloadParam) param);
+        } else if (param instanceof EasyFactory.HTTP.DownloadParamRequest) {
+            HttpURLConnectionDownloadRunable download = new HttpURLConnectionDownloadRunable((EasyFactory.HTTP.DownloadParamRequest) param);
             pool.execute(download);
         } else {
-            HttpURLConnectionRunable httpURLConnectionRunable = new HttpURLConnectionRunable((EasyFactory.HTTP.BaseParam) param);
+            HttpURLConnectionRunable httpURLConnectionRunable = new HttpURLConnectionRunable((EasyFactory.HTTP.BaseParamRequest) param);
             pool.execute(httpURLConnectionRunable);
         }
     }
@@ -59,19 +58,19 @@ public class HttpManager implements HttpImp {
      *
      * @param param
      */
-    private void setDefault(ParamFather param) {
-        if (param.httpParam.method == null)
-            param.httpParam.method = method;
-        if (param.httpParam.charset == null)
-            param.httpParam.charset = charset;
-        if (param.httpParam.contentType == null)
-            param.httpParam.contentType = contentType;
-        if (param.httpParam.connection == null)
-            param.httpParam.connection = connection;
-        if (param.httpParam.timeout == -1)
-            param.httpParam.timeout = timeout;
-        if (param.httpParam.readTimeout == -1)
-            param.httpParam.readTimeout = readTimeout;
+    private void setDefault(HttpParam param) {
+        if (param.http.method == null)
+            param.http.method = method;
+        if (param.http.charset == null)
+            param.http.charset = charset;
+        if (param.http.contentType == null)
+            param.http.contentType = contentType;
+        if (param.http.connection == null)
+            param.http.connection = connection;
+        if (param.http.timeout == -1)
+            param.http.timeout = timeout;
+        if (param.http.readTimeout == -1)
+            param.http.readTimeout = readTimeout;
     }
 
     /**

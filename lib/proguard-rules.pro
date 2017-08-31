@@ -88,27 +88,11 @@
     public <fields>;
     public <methods>;
 }
--keep class com.jen.easy.http.imp.HttpParseImp {
+-keep class com.jen.easy.parse.imp.HttpParseImp {
     public <fields>;
     public <methods>;
 }
--keep class com.jen.easy.http.param.factory.FinalHttpPram {
-    public <fields>;
-    public <methods>;
-}
--keep class com.jen.easy.http.param.factory.FinalBasePram {
-    public <fields>;
-    public <methods>;
-}
--keep class com.jen.easy.http.param.factory.FinalDownloadParam {
-    public <fields>;
-    public <methods>;
-}
--keep class com.jen.easy.http.param.factory.FinalUploadParam {
-    public <fields>;
-    public <methods>;
-}
--keep class com.jen.easy.http.param.factory.ParamFather {
+-keep class com.jen.easy.http.HttpParam {
     public <fields>;
     public <methods>;
 }

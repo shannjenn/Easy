@@ -7,9 +7,9 @@ import com.jen.easy.bind.BindManager;
 import com.jen.easy.bind.imp.BindImp;
 import com.jen.easy.constant.Constant;
 import com.jen.easy.http.HttpManager;
-import com.jen.easy.http.HttpParseManager;
+import com.jen.easy.parse.HttpParseManager;
 import com.jen.easy.http.imp.HttpImp;
-import com.jen.easy.http.imp.HttpParseImp;
+import com.jen.easy.parse.imp.HttpParseImp;
 import com.jen.easy.log.EasyLog;
 import com.jen.easy.log.LogcatHelperManager;
 import com.jen.easy.log.imp.LogcatHelperImp;
@@ -33,15 +33,15 @@ public final class EasyMain {
     /**
      * ID绑定
      */
-    public static final BindImp BIND;
+    public static final BindImp Bing;
     /**
      * 网络请求
      */
-    public static final HttpImp HTTP;
+    public static final HttpImp Http;
     /**
      * 网络数据解析
      */
-    public static final HttpParseImp HPARSE;
+    public static final HttpParseImp Parse;
     /**
      * 数据库操作
      */
@@ -49,30 +49,30 @@ public final class EasyMain {
     /**
      * 数据表操作
      */
-    public static final DBDaoImp DBD;
+    public static final DBDaoImp Dao;
     /**
      * 日志取
      */
-    public static final LogcatHelperImp LOG;
+    public static final LogcatHelperImp Log;
     /**
      * 数据存储SharedPreferences
      */
-    public static final ShareImp SHARE;
+    public static final ShareImp Share;
 
     static {
         EasyLog.d("init EasyMain -------");
 
-        BIND = new BindManager();
-        HTTP = new HttpManager();
-        HPARSE = new HttpParseManager();
-        LOG = new LogcatHelperManager();
+        Bing = new BindManager();
+        Http = new HttpManager();
+        Parse = new HttpParseManager();
+        Log = new LogcatHelperManager();
 
         if (EasyApplication.getAppContext() != null) {
-            SHARE = new ShareManager(EasyApplication.getAppContext());
+            Share = new ShareManager(EasyApplication.getAppContext());
 
             if (TextUtils.isEmpty(Constant.DB.PASSWORD)) {
                 DB = new DBHelperManager(EasyApplication.getAppContext());
-                DBD = new DBDaoManager(EasyApplication.getAppContext());
+                Dao = new DBDaoManager(EasyApplication.getAppContext());
             } else {
                 DBHelperImp DBtemp = new DBHelperManager(EasyApplication.getAppContext());
                 DBDaoImp DBDtemp = new DBDaoManager(EasyApplication.getAppContext());
@@ -86,14 +86,14 @@ public final class EasyMain {
                         .bind(DBtemp);
 
                 EasyClass.DynamicProxy proxyDBD = new EasyClass.DynamicProxy();
-                DBD = (DBDaoImp) proxyDBD.bind(DBDtemp);
+                Dao = (DBDaoImp) proxyDBD.bind(DBDtemp);
                 proxyDBD.setBeforeMethod(EasyClass.FileDecrypt.class, path, Constant.DB.PASSWORD);
                 proxyDBD.setAfterMethod(EasyClass.FileDecrypt.class, path, Constant.DB.PASSWORD);
             }
         } else {
-            SHARE = null;
+            Share = null;
             DB = null;
-            DBD = null;
+            Dao = null;
             EasyLog.e("请继承:" + EasyApplication.class.getSimpleName());
         }
     }

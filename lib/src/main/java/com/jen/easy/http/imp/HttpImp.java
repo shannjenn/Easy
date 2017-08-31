@@ -1,6 +1,6 @@
 package com.jen.easy.http.imp;
 
-import com.jen.easy.http.param.factory.ParamFather;
+import com.jen.easy.http.HttpParam;
 
 /**
  * Created by Jen on 2017/7/21.
@@ -13,7 +13,7 @@ public interface HttpImp {
      *
      * @param param
      */
-    void start(ParamFather param);
+    void start(HttpParam param);
 
     /**
      * 设置默认请求方式

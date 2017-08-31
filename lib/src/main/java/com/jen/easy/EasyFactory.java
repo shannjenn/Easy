@@ -1,8 +1,6 @@
 package com.jen.easy;
 
-import com.jen.easy.http.param.factory.FinalDownloadParam;
-import com.jen.easy.http.param.factory.FinalUploadParam;
-import com.jen.easy.http.param.factory.ParamFather;
+import com.jen.easy.http.HttpParam;
 
 /**
  * 参数类
@@ -14,9 +12,9 @@ public final class EasyFactory {
     private EasyFactory() {
     }
 
-    /**
-     * 网络请求********************
-     */
+    /*****************************************************************************************************
+     ★★★ 网络请求 ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+     ****************************************************************************************************/
     public static final class HTTP {
         private HTTP() {
         }
@@ -24,9 +22,31 @@ public final class EasyFactory {
         /**
          * 基本请求
          */
-        public static abstract class BaseParam extends ParamFather {
-
+        public static abstract class BaseParamRequest extends HttpParam {
             private EasyListener.HTTP.BaseListener bseListener;
+            public Request request = new Request();
+
+            public final class Request {
+                /**
+                 * 请求标识
+                 */
+                public int flagCode;
+
+                /**
+                 * 请求标识
+                 */
+                public String flag;
+
+                /**
+                 * 是否要解析返回结果(默认不解析)
+                 */
+                public Class JsonParseClass;
+                /**
+                 * 用户停止
+                 */
+                public boolean userCancel;
+
+            }
 
             public EasyListener.HTTP.BaseListener getBseListener() {
                 return bseListener;
@@ -41,13 +61,53 @@ public final class EasyFactory {
          * 下载参数
          */
 
-        public static abstract class DownloadParam extends ParamFather {
-
+        public static abstract class DownloadParamRequest extends HttpParam {
             private EasyListener.HTTP.DownloadListener downloadListener;
-            public FinalDownloadParam fileParam;
+            public Request request = new Request();
 
-            public DownloadParam() {
-                fileParam = new FinalDownloadParam();
+            public final class Request {
+                /**
+                 * 请求标识
+                 */
+                public int flagCode;
+
+                /**
+                 * 请求标识
+                 */
+                public String flag;
+
+                /**
+                 * 是否要解析返回结果(默认不解析)
+                 */
+                public boolean parse;
+                /**
+                 * 用户停止
+                 */
+                public boolean userCancel;
+
+
+                /**
+                 * 上传/下载文件位置
+                 */
+                public String filePath;
+                /**
+                 * 开始位置
+                 */
+                public long startPoit;
+                /**
+                 * 结束位置
+                 */
+                public long endPoit;
+
+                /**
+                 * 是否断点下载
+                 */
+                public boolean isBreak;
+
+                /**
+                 * 是否在下载删除旧文件
+                 */
+                public boolean deleteOldFile;
             }
 
             public EasyListener.HTTP.DownloadListener getDownloadListener() {
@@ -63,13 +123,48 @@ public final class EasyFactory {
          * 上传参数
          */
 
-        public static abstract class UploadParam extends ParamFather {
-
+        public static abstract class UploadParam extends HttpParam {
             private EasyListener.HTTP.UploadListener uploadListener;
-            public FinalUploadParam fileParam;
+            public Request request = new Request();
 
-            public UploadParam() {
-                fileParam = new FinalUploadParam();
+            public final class Request {
+                /**
+                 * 请求标识
+                 */
+                public int flagCode;
+
+                /**
+                 * 请求标识
+                 */
+                public String flag;
+
+                /**
+                 * 是否要解析返回结果(默认不解析)
+                 */
+                public boolean parse;
+                /**
+                 * 用户停止
+                 */
+                public boolean userCancel;
+
+
+                /**
+                 * 上传/下载文件位置
+                 */
+                public String filePath;
+                /**
+                 * 开始位置
+                 */
+                public long startPoit;
+                /**
+                 * 结束位置
+                 */
+                public long endPoit;
+
+                /**
+                 * 是否断点下载
+                 */
+                public boolean isBreak;
             }
 
             public EasyListener.HTTP.UploadListener getUploadListener() {

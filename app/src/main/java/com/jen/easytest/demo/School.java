@@ -10,7 +10,7 @@ import java.util.Map;
  * 时间：2017/8/20.
  */
 
-public class School extends EasyFactory.HTTP.BaseParam {
+public class School extends EasyFactory.HTTP.BaseParamRequest {
 
 
     private String id;

@@ -1,4 +1,4 @@
-package com.jen.easy.http.imp;
+package com.jen.easy.parse.imp;
 
 /**
  * Created by Jen on 2017/7/21.

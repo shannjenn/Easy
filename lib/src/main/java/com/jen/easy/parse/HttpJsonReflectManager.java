@@ -1,4 +1,4 @@
-package com.jen.easy.http;
+package com.jen.easy.parse;
 
 import android.text.TextUtils;
 
@@ -39,12 +39,12 @@ class HttpJsonReflectManager {
             EasyLog.e("clazz or jsonObject is null");
             return null;
         }
-        String modelName = getModelName(clazz);
+        String modelName = getJsonObjectName(clazz);
         if (TextUtils.isEmpty(modelName)) {
             EasyLog.e("parseJsonObject modelName is null");
             return null;
         }
-        Map<String, Object> objectMap = getFields(clazz);
+        Map<String, Object> objectMap = getJsonParamNames(clazz);
         Map<String, String> param_type = (Map<String, String>) objectMap.get(PARAM_TYPE);
         Map<String, Field> param_field = (Map<String, Field>) objectMap.get(PARAM_FIELD);
         if (param_type.size() == 0 || param_field.size() == 0) {
@@ -172,17 +172,17 @@ class HttpJsonReflectManager {
      * @param clazz
      * @return
      */
-    static String getModelName(Class clazz) {
+    static String getJsonObjectName(Class clazz) {
         if (clazz == null) {
             EasyLog.e("clazz is not null");
             return null;
         }
-        boolean isAnno = clazz.isAnnotationPresent(EasyMouse.HTTP.Model.class);
+        boolean isAnno = clazz.isAnnotationPresent(EasyMouse.JSON.JsonObjectName.class);
         if (!isAnno) {
-            EasyLog.e("getModelName clazz is not AnnotationPresent");
+            EasyLog.e("getJsonObjectName clazz is not AnnotationPresent");
             return null;
         }
-        EasyMouse.HTTP.Model model = (EasyMouse.HTTP.Model) clazz.getAnnotation(EasyMouse.HTTP.Model.class);
+        EasyMouse.JSON.JsonObjectName model = (EasyMouse.JSON.JsonObjectName) clazz.getAnnotation(EasyMouse.JSON.JsonObjectName.class);
         return model.value().trim();
     }
 
@@ -192,7 +192,7 @@ class HttpJsonReflectManager {
      * @param clazz
      * @return Map<String, List<String>>
      */
-    private static Map<String, Object> getFields(Class clazz) {
+    private static Map<String, Object> getJsonParamNames(Class clazz) {
         Map<String, Object> objectMap = new HashMap<>();
         Map<String, String> param_type = new HashMap<>();
         Map<String, Field> param_field = new HashMap<>();
@@ -205,10 +205,10 @@ class HttpJsonReflectManager {
 
         Field[] fields = clazz.getDeclaredFields();
         for (int i = 0; i < fields.length; i++) {
-            boolean isAnno = fields[i].isAnnotationPresent(EasyMouse.HTTP.Param.class);
+            boolean isAnno = fields[i].isAnnotationPresent(EasyMouse.JSON.JsonParamName.class);
             if (!isAnno)
                 continue;
-            EasyMouse.HTTP.Param param = fields[i].getAnnotation(EasyMouse.HTTP.Param.class);
+            EasyMouse.JSON.JsonParamName param = fields[i].getAnnotation(EasyMouse.JSON.JsonParamName.class);
             String paramName = param.value().trim();
             if (paramName.length() == 0) {
                 continue;

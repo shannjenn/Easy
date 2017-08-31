@@ -1,15 +1,15 @@
-package com.jen.easy.http;
+package com.jen.easy.parse;
 
 import android.text.TextUtils;
 
-import com.jen.easy.http.imp.HttpParseImp;
+import com.jen.easy.parse.imp.HttpParseImp;
 import com.jen.easy.log.EasyLog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.jen.easy.http.HttpJsonReflectManager.getModelName;
+import static com.jen.easy.parse.HttpJsonReflectManager.getJsonObjectName;
 
 /**
  * Created by Jen on 2017/7/24.
@@ -29,9 +29,9 @@ public class HttpParseManager implements HttpParseImp {
         if (obj == null || obj instanceof Class) {
             EasyLog.e("obj is null");
         }
-        String modelName = getModelName(clazz);
+        String modelName = getJsonObjectName(clazz);
         if (TextUtils.isEmpty(modelName)) {
-            EasyLog.e("请检查是否已经增加注释：EasyMouse.HTTP.Model、EasyMouse.HTTP.Param");
+            EasyLog.e("请检查是否已经增加注释：EasyMouse.Http.Model、EasyMouse.Http.Param");
             return null;
         }
         Object o = null;

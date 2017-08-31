@@ -51,7 +51,7 @@ public class FileDecryptManager {
             buffer.clear();
             channel.close();
             raf.close();
-            EasyMain.SHARE.setBoolean(strFile, false);
+            EasyMain.Share.setBoolean(strFile, false);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -101,7 +101,7 @@ public class FileDecryptManager {
             buffer.clear();
             channel.close();
             raf.close();
-            EasyMain.SHARE.setBoolean(strFile, true);
+            EasyMain.Share.setBoolean(strFile, true);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -117,7 +117,7 @@ public class FileDecryptManager {
      * @return
      */
     private boolean isDecripted(String strFile) {
-        boolean result = EasyMain.SHARE.getBoolean(strFile);//true为已经加密
+        boolean result = EasyMain.Share.getBoolean(strFile);//true为已经加密
         return result;
     }
 }
