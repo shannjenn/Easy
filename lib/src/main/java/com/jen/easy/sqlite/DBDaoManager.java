@@ -501,7 +501,7 @@ public class DBDaoManager implements DBDaoImp {
         try {
             for (String column : column_field.keySet()) {
                 Field field = column_field.get(column);
-//                field.setAccessible(true);
+                field.setAccessible(true);
                 String type = field.getGenericType().toString();
                 Object value = field.get(obj);
                 if (value instanceof Character) {
