@@ -1,6 +1,7 @@
 package com.jen.easytest.demo;
 
 import com.jen.easy.EasyFactory;
+import com.jen.easy.EasyMouse;
 
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import java.util.Map;
 public class Student extends EasyFactory.HTTP.BaseParamRequest {
 
 
+    @EasyMouse.HTTP.ResponseParam("name")
     private String id;
 
     School school;
@@ -24,4 +26,5 @@ public class Student extends EasyFactory.HTTP.BaseParamRequest {
     Map<String, School> map;
 
 
+    public Object obj;
 }

@@ -38,9 +38,13 @@ public final class EasyFactory {
                 public String flag;
 
                 /**
-                 * 是否要解析返回结果(默认不解析)
+                 * 返回实体
                  */
-                public Class resopseClass;
+                public Class resopseBaseClass;
+                /**
+                 * 返回实体中resopseBaseClass的对象
+                 */
+                public Class resopseBaseClassObject;
 
                 /**
                  * 用户停止
@@ -141,9 +145,14 @@ public final class EasyFactory {
                 public boolean userCancel;
 
                 /**
-                 * 是否要解析返回结果(默认不解析)
+                 * 返回实体
                  */
-                public Class resopseClass;
+                public Class resopseBaseClass;
+
+                /**
+                 * 返回实体中的对象
+                 */
+                public Class resopseBaseClassObject;
 
 
                 /**

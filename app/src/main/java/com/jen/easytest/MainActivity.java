@@ -8,6 +8,7 @@ import android.widget.RelativeLayout;
 import com.jen.easy.EasyMain;
 import com.jen.easy.EasyMouse;
 import com.jen.easy.log.Logcat;
+import com.jen.easytest.demo.School;
 import com.jen.easytest.demo.Student;
 import com.jen.easyui.listview.ItemLayout;
 
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         Logcat.d(list2.length + "");
 
         Student student = new Student();
+        student.obj = new School();
 
         Field[] fields = student.getClass().getDeclaredFields();
         String a = fields[0].getGenericType().toString();
@@ -52,11 +54,16 @@ public class MainActivity extends AppCompatActivity {
         String c = fields[2].getGenericType().toString();
         String d = fields[3].getGenericType().toString();
         String e = fields[4].getGenericType().toString();
+        String f = fields[5].getGenericType().toString();
 
         List<Student> list1 = new ArrayList<>();
 
-        Logcat.d(TextUtils.isEmpty(" ") + "");
-        Logcat.d(TextUtils.isEmpty(" ") + "");
+        Class clazz1 = Boolean.class;
+        boolean clazz2 = clazz1 == Boolean.class;
+        boolean clazz3 = clazz1 == Integer.class;
+
+        Logcat.d(TextUtils.isEmpty(" ") + " " + clazz2 + clazz3);
+        Logcat.d(TextUtils.isEmpty(" ") + " ");
 
 
     }

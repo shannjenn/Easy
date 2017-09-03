@@ -519,7 +519,9 @@ public class DBDaoManager implements DBDaoImp {
                 } else if (value instanceof Date) {
                     values.put(column, EasyUtil.DATA.format((Date) value));
                 } else if (column_foreignKey.containsKey(column)) {//其他类型用外键处理（比如：对象）
-                    if (type.contains(Constant.FieldType.MAP)) {
+                    if (type.contains(Constant.FieldType.OBJECT)) {
+                        EasyLog.e("class java.lang.Object");
+                    } else if (type.contains(Constant.FieldType.MAP)) {
                         EasyLog.e("Constant.FieldType.MAP");
                     } else if (type.contains(Constant.FieldType.ARRAY)) {
                         EasyLog.e("Constant.FieldType.ARRAY");

@@ -97,8 +97,8 @@ class HttpURLConnectionUploadRunable implements Runnable {
 
     private void success(String result) {
         if (param.getUploadListener() != null) {
-            if (param.request.resopseClass != null) {
-                Object object = HttpParseManager.parseJson(param.request.resopseClass, result);
+            if (param.request.resopseBaseClass != null) {
+                Object object = HttpParseManager.parseJson(param.request.resopseBaseClass, param.request.resopseBaseClassObject, result);
                 if (object == null) {
                     fail("数据j解析异常");
                 } else {

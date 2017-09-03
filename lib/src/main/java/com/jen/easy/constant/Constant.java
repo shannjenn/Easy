@@ -38,6 +38,7 @@ public final class Constant {
 
         public static final String DATE = "class java.util.Date";
 
+        public static final String OBJECT = "class java.lang.Object";
         public static final String LIST = "java.util.List";
         public static final String MAP = "java.util.Map";
         public static final String ARRAY = "class [L";//数组

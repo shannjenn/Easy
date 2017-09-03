@@ -29,7 +29,7 @@ class HttpParseManager {
      * @param obj
      * @return
      */
-    static Object parseJson(Class clazz, Object obj) {
+    static Object parseJson(Class clazz, Class objClass, Object obj) {
         if (obj == null || obj instanceof Class) {
             EasyLog.e("obj is null");
         }
@@ -37,9 +37,9 @@ class HttpParseManager {
         try {
             if (obj instanceof String) {
                 JSONObject object = new JSONObject((String) obj);
-                parseJson(clazz, object);
+                parseJson(clazz, objClass, object);
             } else if (obj instanceof JSONObject) {
-                result = parseJsonObject(clazz, (JSONObject) obj);
+                result = parseJsonObject(clazz, objClass, (JSONObject) obj);
             } else if (obj instanceof JSONArray) {
                 result = parseJsonArray(clazz, (JSONArray) obj);
             } else {
@@ -58,7 +58,7 @@ class HttpParseManager {
      * @param jsonObject
      * @return
      */
-    private static Object parseJsonObject(Class clazz, JSONObject jsonObject) {
+    private static Object parseJsonObject(Class clazz, Class objClass, JSONObject jsonObject) {
         Map<String, Object> objectMap = HttpReflectManager.getResponseParams(clazz);
         Map<String, String> param_type = (Map<String, String>) objectMap.get(PARAM_TYPE);
         Map<String, Field> param_field = (Map<String, Field>) objectMap.get(PARAM_FIELD);
@@ -94,11 +94,15 @@ class HttpParseManager {
                         EasyLog.e("Constant.FieldType.MAP 不支持Map类型");
                     } else if (type.contains(Constant.FieldType.ARRAY)) {
                         EasyLog.e("Constant.FieldType.ARRAY 不支持数组类型");
+                    } else if (type.contains(Constant.FieldType.OBJECT) && objClass != null) {
+                        JSONObject jsonObj = jsonObject.getJSONObject(param);
+                        Object obj = parseJsonObject(objClass, null, jsonObj);
+                        field.set(object, obj);
                     } else if (type.contains(Constant.FieldType.CLASS)) {
                         String clazzName = type.replace("class ", "").trim();
                         Class clazz2 = Class.forName(clazzName);
                         JSONObject jsonObj = jsonObject.getJSONObject(param);
-                        Object obj = parseJsonObject(clazz2, jsonObj);
+                        Object obj = parseJsonObject(clazz2, null, jsonObj);
                         field.set(object, obj);
                     } else {
                         EasyLog.e("不支持该类型：" + type);
@@ -139,7 +143,7 @@ class HttpParseManager {
             try {
                 Object jsonObj = jsonArray.get(i);
                 if (jsonObj instanceof JSONObject) {
-                    obj = parseJsonObject(clazz, (JSONObject) jsonObj);
+                    obj = parseJsonObject(clazz, null, (JSONObject) jsonObj);
                 } else {
                     EasyLog.e("jsonArray.get(i) is not JSONObject");
                 }
