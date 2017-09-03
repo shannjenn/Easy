@@ -16,9 +16,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 class HttpURLConnectionUploadRunable implements Runnable {
-    private EasyFactory.HTTP.UploadParam param;
+    private EasyFactory.HTTP.UploadParamRequest param;
 
-    HttpURLConnectionUploadRunable(EasyFactory.HTTP.UploadParam param) {
+    HttpURLConnectionUploadRunable(EasyFactory.HTTP.UploadParamRequest param) {
         super();
         this.param = param;
     }

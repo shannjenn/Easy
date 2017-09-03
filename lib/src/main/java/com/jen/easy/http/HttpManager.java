@@ -41,8 +41,8 @@ public class HttpManager implements HttpImp {
             return;
         }
         setDefault(param);
-        if (param instanceof EasyFactory.HTTP.UploadParam) {
-            HttpURLConnectionUploadRunable upload = new HttpURLConnectionUploadRunable((EasyFactory.HTTP.UploadParam) param);
+        if (param instanceof EasyFactory.HTTP.UploadParamRequest) {
+            HttpURLConnectionUploadRunable upload = new HttpURLConnectionUploadRunable((EasyFactory.HTTP.UploadParamRequest) param);
             pool.execute(upload);
         } else if (param instanceof EasyFactory.HTTP.DownloadParamRequest) {
             HttpURLConnectionDownloadRunable download = new HttpURLConnectionDownloadRunable((EasyFactory.HTTP.DownloadParamRequest) param);

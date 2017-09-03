@@ -120,7 +120,7 @@ public final class EasyFactory {
          * 上传参数
          */
 
-        public static abstract class UploadParam extends HttpParam {
+        public static abstract class UploadParamRequest extends HttpParam {
             private EasyListener.HTTP.UploadListener uploadListener;
             public Request request = new Request();
 
