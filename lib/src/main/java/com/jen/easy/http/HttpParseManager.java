@@ -72,17 +72,15 @@ class HttpParseManager {
             object = clazz.newInstance();
             for (String param : param_type.keySet()) {
                 Field field = param_field.get(param);
-                field.setAccessible(true);
 
                 if (jsonObject.has(param)) {
                     String type = param_type.get(param);
+                    Object value = jsonObject.get(param);
 
                     if (Constant.FieldType.isBaseicType(type)) {
-                        Object value = jsonObject.get(param);
                         field.set(object, value);
                     } else if (type.equals(Constant.FieldType.DATE)) {
-                        String value = jsonObject.getString(param);
-                        Date date = EasyUtil.DATA.parser(value);
+                        Date date = EasyUtil.DateFormat.parser(value.toString());
                         field.set(object, date);
                     } else if (type.contains(Constant.FieldType.LIST)) {
                         String clazzName = type.substring(type.indexOf("<") + 1, type.indexOf(">"));
@@ -95,14 +93,17 @@ class HttpParseManager {
                     } else if (type.contains(Constant.FieldType.ARRAY)) {
                         EasyLog.e("Constant.FieldType.ARRAY 不支持数组类型");
                     } else if (type.contains(Constant.FieldType.OBJECT) && objClass != null) {
-                        JSONObject jsonObj = jsonObject.getJSONObject(param);
-                        Object obj = parseJsonObject(objClass, null, jsonObj);
+                        Object obj = null;
+                        if (value instanceof JSONObject) {
+                            obj = parseJsonObject(objClass, null, (JSONObject) value);
+                        } else if (value instanceof JSONArray) {
+                            parseJsonArray(objClass, (JSONArray) value);
+                        }
                         field.set(object, obj);
                     } else if (type.contains(Constant.FieldType.CLASS)) {
                         String clazzName = type.replace("class ", "").trim();
                         Class clazz2 = Class.forName(clazzName);
-                        JSONObject jsonObj = jsonObject.getJSONObject(param);
-                        Object obj = parseJsonObject(clazz2, null, jsonObj);
+                        Object obj = parseJsonObject(clazz2, null, (JSONObject) value);
                         field.set(object, obj);
                     } else {
                         EasyLog.e("不支持该类型：" + type);

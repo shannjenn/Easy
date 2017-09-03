@@ -412,8 +412,8 @@ public class DBDaoManager implements DBDaoImp {
     }
 
     @Override
-    public boolean delete(Class clazz, String selection, String[] selectionArgs) {
-        if (clazz == null || selection == null || selectionArgs == null || selectionArgs.length == 0) {
+    public boolean delete(Class clazz, String whereCause, String[] selectionArgs) {
+        if (clazz == null || whereCause == null || selectionArgs == null || selectionArgs.length == 0) {
             EasyLog.w("obj or selection or selectionArgs is error");
             return false;
         }
@@ -425,7 +425,7 @@ public class DBDaoManager implements DBDaoImp {
         SQLiteDatabase db = database.getWritableDatabase();
         try {
             db.beginTransaction();
-            db.delete(tableName, selection, selectionArgs);
+            db.delete(tableName, whereCause, selectionArgs);
             db.setTransactionSuccessful();
             return true;
         } catch (Exception e) {
@@ -517,7 +517,7 @@ public class DBDaoManager implements DBDaoImp {
                 } else if (value instanceof Boolean) {
                     values.put(column, (Boolean) value);
                 } else if (value instanceof Date) {
-                    values.put(column, EasyUtil.DATA.format((Date) value));
+                    values.put(column, EasyUtil.DateFormat.format((Date) value));
                 } else if (column_foreignKey.containsKey(column)) {//其他类型用外键处理（比如：对象）
                     if (type.contains(Constant.FieldType.OBJECT)) {
                         EasyLog.e("class java.lang.Object");
@@ -604,7 +604,7 @@ public class DBDaoManager implements DBDaoImp {
                     field.set(obj, value);
                 } else if (type.equals(Constant.FieldType.DATE)) {
                     String value = cursor.getString(cursor.getColumnIndex(column));
-                    Date date = EasyUtil.DATA.parser(value);
+                    Date date = EasyUtil.DateFormat.parser(value);
                     field.set(obj, date);
                 }
             }

@@ -108,7 +108,7 @@ public class ShareManager implements ShareImp {
      */
     @Override
     public <T> boolean setList(String name, List<T> list) {
-        String value = EasyUtil.STRING.list2String(list);
+        String value = EasyUtil.StrList.list2String(list);
         if (value == null) {
             return false;
         }
@@ -129,7 +129,7 @@ public class ShareManager implements ShareImp {
         if (null == value) {
             return valueLlist;
         }
-        List<T> list = EasyUtil.STRING.string2List(value);
+        List<T> list = EasyUtil.StrList.string2List(value);
         valueLlist.addAll(list);
         return valueLlist;
     }
@@ -146,7 +146,7 @@ public class ShareManager implements ShareImp {
         if (null == value) {
             return null;
         }
-        Object obj = EasyUtil.STRING.string2Object(value);
+        Object obj = EasyUtil.StrList.string2Object(value);
         return obj;
     }
 
@@ -159,7 +159,7 @@ public class ShareManager implements ShareImp {
      */
     @Override
     public boolean setObject(String name, Object obj) {
-        String value = EasyUtil.STRING.object2String(obj);
+        String value = EasyUtil.StrList.object2String(obj);
         if (null == value) {
             return false;
         }
