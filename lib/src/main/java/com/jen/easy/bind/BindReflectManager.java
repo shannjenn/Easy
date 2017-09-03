@@ -13,6 +13,7 @@ import java.util.Map;
  */
 
 abstract class BindReflectManager {
+    private final static String TAG = BindManager.class.getSimpleName() + " : ";
     /**
      * 全部列明和属性类型
      */
@@ -35,7 +36,7 @@ abstract class BindReflectManager {
         objectMap.put(ID_TYPE, id_type);
         objectMap.put(ID_FIELD, id_field);
         if (clazz == null) {
-            EasyLog.e("clazz is null");
+            EasyLog.e(TAG + "getFields clazz is null");
             return objectMap;
         }
 
@@ -65,7 +66,7 @@ abstract class BindReflectManager {
     static Map<Method, int[]> getMethods(Class clazz) {
         Map<Method, int[]> method_ids = new HashMap<>();
         if (clazz == null) {
-            EasyLog.e("clazz is null");
+            EasyLog.e(TAG + "getMethods clazz is null");
             return method_ids;
         }
         Method[] methods = clazz.getDeclaredMethods();

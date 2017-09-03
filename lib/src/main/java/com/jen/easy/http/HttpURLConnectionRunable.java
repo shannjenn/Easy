@@ -16,6 +16,7 @@ import java.net.URLEncoder;
 import java.util.Map;
 
 class HttpURLConnectionRunable implements Runnable {
+    private final String TAG = HttpURLConnectionDownloadRunable.class.getSimpleName() + " : ";
     private EasyFactory.HTTP.BaseParamRequest param;
 
     HttpURLConnectionRunable(EasyFactory.HTTP.BaseParamRequest param) {
@@ -26,7 +27,7 @@ class HttpURLConnectionRunable implements Runnable {
     @Override
     public void run() {
         if (TextUtils.isEmpty(param.http.url)) {
-            EasyLog.e("URL地址错误");
+            EasyLog.e(TAG + "URL地址错误");
             fail("URL地址为空");
             return;
         }
@@ -92,6 +93,7 @@ class HttpURLConnectionRunable implements Runnable {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            EasyLog.e(TAG + "IOException");
         }
         fail("获取数据异常：" + resposeCode);
     }

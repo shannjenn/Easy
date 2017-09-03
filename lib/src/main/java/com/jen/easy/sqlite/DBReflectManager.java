@@ -15,6 +15,7 @@ import java.util.Map;
  */
 
 class DBReflectManager {
+    private static final String TAG = DBReflectManager.class.getSimpleName() + " : ";
     /**
      * 主键名
      */
@@ -41,13 +42,13 @@ class DBReflectManager {
      */
     static String getTableName(Class clazz) {
         if (clazz == null) {
-            EasyLog.e("clazz is not null");
+            EasyLog.e(TAG + "getTableName clazz is not null");
             return null;
         }
         String tbName = null;
         boolean isAnno = clazz.isAnnotationPresent(EasyMouse.DB.Table.class);
         if (!isAnno) {
-            EasyLog.e("getTableName clazz is not AnnotationPresent");
+            EasyLog.e(TAG + "getTableName clazz is not AnnotationPresent");
             return null;
         }
         EasyMouse.DB.Table table = (EasyMouse.DB.Table) clazz.getAnnotation(EasyMouse.DB.Table.class);
@@ -72,7 +73,7 @@ class DBReflectManager {
         objectMap.put(COLUMN_TYPE, column_type);
         objectMap.put(COLUMN_FIELD, fieldName);
         if (clazz == null) {
-            EasyLog.e("clazz is not null");
+            EasyLog.e(TAG + "getColumnNames clazz is not null");
             return objectMap;
         }
 
@@ -108,7 +109,7 @@ class DBReflectManager {
      */
     static String getPrimaryKeyValue(Object obj, String primaryKey) {
         if (obj == null || obj instanceof Class || primaryKey == null) {
-            EasyLog.e("clazz is not null");
+            EasyLog.e(TAG + "getPrimaryKeyValue clazz is not null");
             return null;
         }
 

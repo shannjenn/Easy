@@ -27,8 +27,7 @@ import static com.jen.easy.sqlite.DBReflectManager.getTableName;
  */
 
 public class DBDaoManager implements DBDaoImp {
-    private final String CONTENTVALUES = "ContentValues";
-    private final String OBJECT = "OBJECT";
+    private final String TAG = DBDaoManager.class.getSimpleName() + " : ";
     private Database database;
 
     public DBDaoManager(Context context) {
@@ -44,12 +43,12 @@ public class DBDaoManager implements DBDaoImp {
     @Override
     public Object searchById(Class clazz, String id) {
         if (clazz == null || id == null) {
-            EasyLog.w("clazz is null or id is null");
+            EasyLog.w(TAG + "searchById clazz is null or id is null");
             return null;
         }
         String tableName = getTableName(clazz);
         if (tableName == null) {
-            EasyLog.w("tableName is null");
+            EasyLog.w(TAG + "searchById tableName is null");
             return null;
         }
         Map<String, Object> objectMap = DBReflectManager.getColumnNames(clazz);
@@ -57,7 +56,7 @@ public class DBDaoManager implements DBDaoImp {
         Map<String, Field> column_field = (Map<String, Field>) objectMap.get(COLUMN_FIELD);
 
         if (primaryKey.size() == 0) {
-            EasyLog.w("primaryKey is null");
+            EasyLog.w(TAG + "searchById primaryKey is null");
             return null;
         }
         SQLiteDatabase db = database.getReadableDatabase();
@@ -89,12 +88,12 @@ public class DBDaoManager implements DBDaoImp {
     public List<Object> searchByWhere(Class clazz, String selection, String[] selectionArgs, String orderBy, int page, int pageNo) {
         List<Object> objs = new ArrayList<>();
         if (clazz == null) {
-            EasyLog.w("clazz is null or id is null");
+            EasyLog.w(TAG + "searchByWhere clazz is null or id is null");
             return objs;
         }
         String tableName = getTableName(clazz);
         if (tableName == null) {
-            EasyLog.w("tableName is null");
+            EasyLog.w(TAG + "searchByWhere tableName is null");
             return objs;
         }
         Map<String, Object> objectMap = DBReflectManager.getColumnNames(clazz);
@@ -167,7 +166,7 @@ public class DBDaoManager implements DBDaoImp {
     @Override
     public boolean insert(Object obj) {
         if (obj == null || obj instanceof Class) {
-            EasyLog.w("obj is null");
+            EasyLog.w(TAG + "insert obj is null");
             return false;
         }
         SQLiteDatabase db = database.getWritableDatabase();
@@ -176,12 +175,12 @@ public class DBDaoManager implements DBDaoImp {
             if (obj instanceof List) {
                 List<Object> list = (List<Object>) obj;
                 if (list.size() <= 0) {
-                    EasyLog.w("数据为空");
+                    EasyLog.w(TAG + "insert 数据为空");
                     return false;
                 }
                 String tableName = getTableName(list.get(0).getClass());
                 if (tableName == null) {
-                    EasyLog.w("插入表名为空，请检查是否已经注释表明");
+                    EasyLog.w(TAG + "insert 插入表名为空，请检查是否已经注释表明");
                     return false;
                 }
                 Map<String, Object> objectMap = DBReflectManager.getColumnNames(list.get(0).getClass());
@@ -192,12 +191,12 @@ public class DBDaoManager implements DBDaoImp {
             } else if (obj instanceof Object[]) {
                 Object[] objs = (Object[]) obj;
                 if (objs.length <= 0) {
-                    EasyLog.w("数据为空");
+                    EasyLog.w(TAG + "insert 数据为空");
                     return false;
                 }
                 String tableName = getTableName(objs[0].getClass());
                 if (tableName == null) {
-                    EasyLog.w("插入表名为空，请检查是否已经注释表明");
+                    EasyLog.w(TAG + "insert 插入表名为空，请检查是否已经注释表明");
                     return false;
                 }
                 Map<String, Object> objectMap = DBReflectManager.getColumnNames(objs[0].getClass());
@@ -208,7 +207,7 @@ public class DBDaoManager implements DBDaoImp {
             } else if (obj instanceof Map) {
                 Map<Object, Object> map = (Map<Object, Object>) obj;
                 if (map.size() <= 0) {
-                    EasyLog.w("数据为空");
+                    EasyLog.w(TAG + "insert 数据为空");
                     return false;
                 }
                 String tableName = null;
@@ -219,7 +218,7 @@ public class DBDaoManager implements DBDaoImp {
                         objectMap = DBReflectManager.getColumnNames(value.getClass());
                     }
                     if (tableName == null) {
-                        EasyLog.w("插入表名为空，请检查是否已经注释表明");
+                        EasyLog.w(TAG + "insert 插入表名为空，请检查是否已经注释表明");
                         return false;
                     }
                     ContentValues values = cntentValues(value, objectMap);
@@ -228,7 +227,7 @@ public class DBDaoManager implements DBDaoImp {
             } else {
                 String tableName = getTableName(obj.getClass());
                 if (tableName == null) {
-                    EasyLog.w("插入表名为空，请检查是否已经注释表明");
+                    EasyLog.w(TAG + "insert 插入表名为空，请检查是否已经注释表明");
                     return false;
                 }
                 Map<String, Object> objectMap = DBReflectManager.getColumnNames(obj.getClass());
@@ -239,6 +238,7 @@ public class DBDaoManager implements DBDaoImp {
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            EasyLog.e(TAG + "insert SQLException");
         } finally {
             db.endTransaction();
             db.close();
@@ -254,7 +254,7 @@ public class DBDaoManager implements DBDaoImp {
     @Override
     public boolean replace(Object obj) {
         if (obj == null || obj instanceof Class) {
-            EasyLog.w("obj is null");
+            EasyLog.w(TAG + "replace obj is null");
             return false;
         }
         SQLiteDatabase db = database.getWritableDatabase();
@@ -263,12 +263,12 @@ public class DBDaoManager implements DBDaoImp {
             if (obj instanceof List) {
                 List<Object> list = (List<Object>) obj;
                 if (list.size() <= 0) {
-                    EasyLog.w("数据为空");
+                    EasyLog.w(TAG + "replace 数据为空");
                     return false;
                 }
                 String tableName = getTableName(list.get(0).getClass());
                 if (tableName == null) {
-                    EasyLog.w("插入表名为空，请检查是否已经注释表明");
+                    EasyLog.w(TAG + "replace 插入表名为空，请检查是否已经注释表明");
                     return false;
                 }
                 Map<String, Object> objectMap = DBReflectManager.getColumnNames(list.get(0).getClass());
@@ -279,12 +279,12 @@ public class DBDaoManager implements DBDaoImp {
             } else if (obj instanceof Object[]) {
                 Object[] objs = (Object[]) obj;
                 if (objs.length <= 0) {
-                    EasyLog.w("数据为空");
+                    EasyLog.w(TAG + "replace 数据为空");
                     return false;
                 }
                 String tableName = getTableName(objs[0].getClass());
                 if (tableName == null) {
-                    EasyLog.w("插入表名为空，请检查是否已经注释表明");
+                    EasyLog.w(TAG + "replace 插入表名为空，请检查是否已经注释表明");
                     return false;
                 }
                 Map<String, Object> objectMap = DBReflectManager.getColumnNames(objs[0].getClass());
@@ -295,7 +295,7 @@ public class DBDaoManager implements DBDaoImp {
             } else if (obj instanceof Map) {
                 Map<Object, Object> map = (Map<Object, Object>) obj;
                 if (map.size() <= 0) {
-                    EasyLog.w("数据为空");
+                    EasyLog.w(TAG + "replace 数据为空");
                     return false;
                 }
                 String tableName = null;
@@ -306,7 +306,7 @@ public class DBDaoManager implements DBDaoImp {
                         objectMap = DBReflectManager.getColumnNames(value.getClass());
                     }
                     if (tableName == null) {
-                        EasyLog.w("插入表名为空，请检查是否已经注释表明");
+                        EasyLog.w(TAG + "replace 插入表名为空，请检查是否已经注释表明");
                         return false;
                     }
                     ContentValues values = cntentValues(value, objectMap);
@@ -315,7 +315,7 @@ public class DBDaoManager implements DBDaoImp {
             } else {
                 String tableName = getTableName(obj.getClass());
                 if (tableName == null) {
-                    EasyLog.w("插入表名为空，请检查是否已经注释表明");
+                    EasyLog.w(TAG + "replace 插入表名为空，请检查是否已经注释表明");
                     return false;
                 }
                 Map<String, Object> objectMap = DBReflectManager.getColumnNames(obj.getClass());
@@ -326,6 +326,7 @@ public class DBDaoManager implements DBDaoImp {
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            EasyLog.e(TAG + "replace SQLException");
         } finally {
             db.endTransaction();
             db.close();
@@ -342,18 +343,18 @@ public class DBDaoManager implements DBDaoImp {
     @Override
     public boolean delete(Class clazz, String id) {
         if (clazz == null || id == null) {
-            EasyLog.w("obj is null");
+            EasyLog.w(TAG + "delete obj is null");
             return false;
         }
         String tableName = getTableName(clazz);
         if (tableName == null) {
-            EasyLog.w("tableName is null");
+            EasyLog.w(TAG + "delete tableName is null");
             return false;
         }
         Map<String, Object> objectMap = DBReflectManager.getColumnNames(clazz);
         List<String> primarys = (List<String>) objectMap.get(DBReflectManager.PRIMARY_KEY);
         if (primarys.size() == 0) {
-            EasyLog.w("primary is null");
+            EasyLog.w(TAG + "delete primary is null");
             return false;
         }
         SQLiteDatabase db = database.getWritableDatabase();
@@ -364,6 +365,7 @@ public class DBDaoManager implements DBDaoImp {
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            EasyLog.e(TAG + "delete SQLException");
         } finally {
             db.endTransaction();
             db.close();
@@ -380,18 +382,18 @@ public class DBDaoManager implements DBDaoImp {
     @Override
     public boolean delete(Class clazz, List<Object> ids) {
         if (clazz == null || ids == null || ids.size() == 0) {
-            EasyLog.w("obj is null");
+            EasyLog.w(TAG + "delete obj is null");
             return false;
         }
         String tableName = getTableName(clazz);
         if (tableName == null) {
-            EasyLog.w("tableName is null");
+            EasyLog.w(TAG + "delete tableName is null");
             return false;
         }
         Map<String, Object> objectMap = DBReflectManager.getColumnNames(clazz);
         List<String> primarys = (List<String>) objectMap.get(DBReflectManager.PRIMARY_KEY);
         if (primarys.size() == 0) {
-            EasyLog.w("primary is null");
+            EasyLog.w(TAG + "delete primary is null");
             return false;
         }
         SQLiteDatabase db = database.getWritableDatabase();
@@ -404,6 +406,7 @@ public class DBDaoManager implements DBDaoImp {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
+            EasyLog.e(TAG + "delete SQLException");
         } finally {
             db.endTransaction();
             db.close();
@@ -414,12 +417,12 @@ public class DBDaoManager implements DBDaoImp {
     @Override
     public boolean delete(Class clazz, String whereCause, String[] selectionArgs) {
         if (clazz == null || whereCause == null || selectionArgs == null || selectionArgs.length == 0) {
-            EasyLog.w("obj or selection or selectionArgs is error");
+            EasyLog.w(TAG + "delete obj or selection or selectionArgs is error");
             return false;
         }
         String tableName = getTableName(clazz);
         if (tableName == null) {
-            EasyLog.w("tableName is null");
+            EasyLog.w(TAG + "delete tableName is null");
             return false;
         }
         SQLiteDatabase db = database.getWritableDatabase();
@@ -430,6 +433,7 @@ public class DBDaoManager implements DBDaoImp {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
+            EasyLog.e(TAG + "delete SQLException");
         } finally {
             db.endTransaction();
             db.close();
@@ -451,6 +455,7 @@ public class DBDaoManager implements DBDaoImp {
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             e.printStackTrace();
+            EasyLog.e(TAG + "execSQL SQLException");
         } finally {
             db.endTransaction();
             db.close();
@@ -473,6 +478,7 @@ public class DBDaoManager implements DBDaoImp {
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             e.printStackTrace();
+            EasyLog.e(TAG + "execSQL SQLException");
         } finally {
             db.endTransaction();
             db.close();
@@ -520,11 +526,11 @@ public class DBDaoManager implements DBDaoImp {
                     values.put(column, EasyUtil.DateFormat.format((Date) value));
                 } else if (column_foreignKey.containsKey(column)) {//其他类型用外键处理（比如：对象）
                     if (type.contains(Constant.FieldType.OBJECT)) {
-                        EasyLog.e("class java.lang.Object");
+                        EasyLog.e(TAG + "cntentValues class java.lang.Object");
                     } else if (type.contains(Constant.FieldType.MAP)) {
-                        EasyLog.e("Constant.FieldType.MAP");
+                        EasyLog.e(TAG + "cntentValues Constant.FieldType.MAP");
                     } else if (type.contains(Constant.FieldType.ARRAY)) {
-                        EasyLog.e("Constant.FieldType.ARRAY");
+                        EasyLog.e(TAG + "cntentValues Constant.FieldType.ARRAY");
                     } else if (value instanceof List) {
                         List<Object> list = (List<Object>) value;
                         StringBuffer foreignKeyValue = new StringBuffer("");
@@ -553,7 +559,7 @@ public class DBDaoManager implements DBDaoImp {
             }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-            EasyLog.e("cntentValues IllegalAccessException");
+            EasyLog.e(TAG + "cntentValues IllegalAccessException");
         }
         return values;
     }
@@ -610,8 +616,10 @@ public class DBDaoManager implements DBDaoImp {
             }
         } catch (InstantiationException e) {
             e.printStackTrace();
+            EasyLog.e(TAG + "valuation InstantiationException");
         } catch (IllegalAccessException e) {
             e.printStackTrace();
+            EasyLog.e(TAG + "valuation IllegalAccessException");
         }
         return obj;
     }

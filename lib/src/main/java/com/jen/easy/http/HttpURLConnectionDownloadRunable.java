@@ -18,6 +18,7 @@ import java.net.URLEncoder;
 import java.util.Map;
 
 class HttpURLConnectionDownloadRunable implements Runnable {
+    private final String TAG = HttpURLConnectionDownloadRunable.class.getSimpleName() + " : ";
     private EasyFactory.HTTP.DownloadParamRequest param;
 
     HttpURLConnectionDownloadRunable(EasyFactory.HTTP.DownloadParamRequest param) {
@@ -28,7 +29,7 @@ class HttpURLConnectionDownloadRunable implements Runnable {
     @Override
     public void run() {
         if (TextUtils.isEmpty(param.http.url)) {
-            EasyLog.e("URL地址错误");
+            EasyLog.w(TAG + "URL地址错误");
             fail("请求URL参数错误");
             return;
         } else if (TextUtils.isEmpty(param.request.filePath)) {
@@ -40,7 +41,7 @@ class HttpURLConnectionDownloadRunable implements Runnable {
         if (!fileFolder.exists()) {
             boolean ret = fileFolder.mkdirs();
             if (!ret)
-                EasyLog.w("创建文件夹失败");
+                EasyLog.w(TAG + "创建文件夹失败");
             fail("保存文件失败，请检查是否有文件权限");
             return;
         }
@@ -49,7 +50,7 @@ class HttpURLConnectionDownloadRunable implements Runnable {
             if (file.exists()) {
                 boolean ret = file.delete();
                 if (!ret) {
-                    EasyLog.w("删除旧文件失败");
+                    EasyLog.w(TAG + "删除旧文件失败");
                     fail("删除旧文件失败，请检查是否有文件权限");
                     return;
                 }
@@ -139,19 +140,19 @@ class HttpURLConnectionDownloadRunable implements Runnable {
                 return;
             }
         } catch (MalformedURLException e) {
-            EasyLog.e("MalformedURLException error --------");
+            EasyLog.e(TAG + "MalformedURLException error --------");
             e.printStackTrace();
             exception = "MalformedURLException error";
         } catch (ProtocolException e) {
-            EasyLog.e("ProtocolException error --------");
+            EasyLog.e(TAG + "ProtocolException error --------");
             e.printStackTrace();
             exception = "ProtocolException error";
         } catch (IOException e) {
-            EasyLog.e("IOException error --------");
+            EasyLog.e(TAG + "IOException error --------");
             e.printStackTrace();
             exception = "IOException error";
         } catch (IllegalStateException e) {
-            EasyLog.e("IllegalStateException error --------");
+            EasyLog.e(TAG + "IllegalStateException error --------");
             e.printStackTrace();
             exception = "IllegalStateException error";
         } finally {

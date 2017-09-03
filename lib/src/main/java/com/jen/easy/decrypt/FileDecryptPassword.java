@@ -6,11 +6,12 @@ import com.jen.easy.log.EasyLog;
 import java.io.UnsupportedEncodingException;
 
 class FileDecryptPassword {
+    private final static String TAG = FileDecryptManager.class.getSimpleName() + " : ";
     private static final String defautPassword = "louxiumeiwoaini520";
 
     static byte[] getPassword(String password) {
         if (password == null) {
-            EasyLog.e("密码不能为空");
+            EasyLog.e(TAG + "getPassword 密码不能为空");
             return null;
         }
         try {
@@ -24,7 +25,7 @@ class FileDecryptPassword {
             return psws;
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-            EasyLog.e("编码转换错误");
+            EasyLog.e(TAG + "getPassword 编码转换错误");
             return null;
         }
     }

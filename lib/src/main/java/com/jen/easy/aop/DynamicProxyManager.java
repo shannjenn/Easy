@@ -13,6 +13,7 @@ import java.lang.reflect.Proxy;
  * 时间：2017/8/14.
  */
 public class DynamicProxyManager implements InvocationHandler {
+    private final String TAG = DynamicProxyManager.class.getSimpleName() + " : ";
     private Object target;
 
     private Object beforeClzz;
@@ -24,7 +25,7 @@ public class DynamicProxyManager implements InvocationHandler {
 
     public Object bind(Object target) {
         if (target == null || target instanceof Class) {
-            EasyLog.e("绑定对象为空----");
+            EasyLog.e(TAG + "bind 绑定对象为空");
             return null;
         }
         this.target = target;
@@ -32,13 +33,14 @@ public class DynamicProxyManager implements InvocationHandler {
             return Proxy.newProxyInstance(target.getClass().getClassLoader(), target.getClass().getInterfaces(), this);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
+            EasyLog.e(TAG + "bind 切入对象为空");
         }
         return null;
     }
 
     public DynamicProxyManager setBeforeMethod(Class<?> beforeClzz, Object... beforeParams) {
         if (beforeClzz == null) {
-            EasyLog.e("切入对象为空----");
+            EasyLog.e(TAG + "bind 切入对象为空");
             return this;
         }
         try {
@@ -53,7 +55,9 @@ public class DynamicProxyManager implements InvocationHandler {
             }
         } catch (InstantiationException e) {
             e.printStackTrace();
+            EasyLog.e(TAG + "bind InstantiationException");
         } catch (IllegalAccessException e) {
+            EasyLog.e(TAG + "bind IllegalAccessException");
             e.printStackTrace();
         }
         return this;
@@ -61,7 +65,7 @@ public class DynamicProxyManager implements InvocationHandler {
 
     public DynamicProxyManager setAfterMethod(Class<?> afterClzz, Object... afterParams) {
         if (afterClzz == null) {
-            EasyLog.e("切入对象为空----");
+            EasyLog.e(TAG + "切入对象为空");
             return this;
         }
         try {
@@ -76,8 +80,11 @@ public class DynamicProxyManager implements InvocationHandler {
             }
         } catch (InstantiationException e) {
             e.printStackTrace();
+            EasyLog.e(TAG + "DynamicProxyManager InstantiationException");
         } catch (IllegalAccessException e) {
             e.printStackTrace();
+            EasyLog.e(TAG + "DynamicProxyManager IllegalAccessException");
+
         }
         return this;
     }
@@ -116,7 +123,7 @@ public class DynamicProxyManager implements InvocationHandler {
                                     beforeParams[6], beforeParams[7]);
                             break;
                         default:
-                            EasyLog.e("方法参数超过8个");
+                            EasyLog.e(TAG + "invoke 方法参数超过8个");
                             break;
                     }
                 } else {
@@ -153,7 +160,7 @@ public class DynamicProxyManager implements InvocationHandler {
                                     afterParams[7]);
                             break;
                         default:
-                            EasyLog.e("参数超过8个");
+                            EasyLog.e(TAG + "invoke 参数超过8个");
                             break;
                     }
                 } else {
@@ -162,10 +169,13 @@ public class DynamicProxyManager implements InvocationHandler {
             }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
+            EasyLog.e(TAG + "invoke IllegalAccessException");
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
+            EasyLog.e(TAG + "invoke IllegalArgumentException");
         } catch (InvocationTargetException e) {
             e.printStackTrace();
+            EasyLog.e(TAG + "invoke InvocationTargetException");
         }
         return result;
     }

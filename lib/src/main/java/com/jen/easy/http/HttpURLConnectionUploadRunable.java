@@ -16,6 +16,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 class HttpURLConnectionUploadRunable implements Runnable {
+    private final String TAG = HttpURLConnectionDownloadRunable.class.getSimpleName() + " : ";
     private EasyFactory.HTTP.UploadParamRequest param;
 
     HttpURLConnectionUploadRunable(EasyFactory.HTTP.UploadParamRequest param) {
@@ -26,7 +27,7 @@ class HttpURLConnectionUploadRunable implements Runnable {
     @Override
     public void run() {
         if (TextUtils.isEmpty(param.http.url)) {
-            EasyLog.e("URL地址错误");
+            EasyLog.e(TAG + "URL地址错误");
             fail("URL参数错误");
             return;
         } else if (TextUtils.isEmpty(param.request.filePath)) {
@@ -88,6 +89,7 @@ class HttpURLConnectionUploadRunable implements Runnable {
             success(buffer.toString());
         } catch (IOException e) {
             e.printStackTrace();
+            EasyLog.e(TAG + "IOException");
         } finally {
             if (connection != null) {
                 connection.disconnect();

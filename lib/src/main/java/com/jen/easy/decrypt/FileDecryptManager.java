@@ -9,6 +9,7 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
 public class FileDecryptManager {
+    private final String TAG = FileDecryptManager.class.getSimpleName() + " : ";
 
     /**
      * 解密
@@ -55,7 +56,7 @@ public class FileDecryptManager {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            EasyLog.d("数据解密异常");
+            EasyLog.e(TAG + "encrypt 数据解密异常");
         }
         return false;
     }
@@ -105,7 +106,7 @@ public class FileDecryptManager {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            EasyLog.d("数据加密异常");
+            EasyLog.e(TAG + "decrypt 数据加密异常");
         }
         return false;
     }

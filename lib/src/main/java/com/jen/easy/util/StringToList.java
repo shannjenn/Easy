@@ -3,6 +3,7 @@ package com.jen.easy.util;
 import android.util.Base64;
 
 import com.jen.easy.constant.Constant;
+import com.jen.easy.log.EasyLog;
 import com.jen.easy.util.imp.StringToListImp;
 
 import java.io.ByteArrayInputStream;
@@ -18,6 +19,7 @@ import java.util.List;
  */
 
 public class StringToList implements StringToListImp {
+    private final String TAG = StringToList.class.getSimpleName() + " : ";
 
     public <T> String list2String(List<T> list) {
         try {
@@ -28,6 +30,7 @@ public class StringToList implements StringToListImp {
             objectOutputStream.close();
             return str;
         } catch (IOException e) {
+            EasyLog.e(TAG + "list2String IOException");
             e.printStackTrace();
         }
         return null;
@@ -44,8 +47,10 @@ public class StringToList implements StringToListImp {
             objectInputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
+            EasyLog.e(TAG + "string2List IOException");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+            EasyLog.e(TAG + "string2List ClassNotFoundException");
         }
         return list;
     }
@@ -56,10 +61,11 @@ public class StringToList implements StringToListImp {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
             objectOutputStream.writeObject(obj);
-            String str = new String(Base64.encode(byteArrayOutputStream.toByteArray(), 0),Constant.Unicode.DEFAULT);
+            String str = new String(Base64.encode(byteArrayOutputStream.toByteArray(), 0), Constant.Unicode.DEFAULT);
             objectOutputStream.close();
             return str;
         } catch (IOException e) {
+            EasyLog.e(TAG + "object2String IOException");
             e.printStackTrace();
         }
         return null;
@@ -77,8 +83,10 @@ public class StringToList implements StringToListImp {
             return obj;
         } catch (IOException e) {
             e.printStackTrace();
+            EasyLog.e(TAG + "string2Object IOException");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+            EasyLog.e(TAG + "string2Object ClassNotFoundException");
         }
         return null;
     }

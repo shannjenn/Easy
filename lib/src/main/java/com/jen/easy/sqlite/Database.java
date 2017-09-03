@@ -11,6 +11,7 @@ import com.jen.easy.log.EasyLog;
 import java.io.File;
 
 class Database {
+    private final String TAG = Database.class.getSimpleName() + " : ";
     private static final String name = "easy.db";
     private String path;
     private EasyListener.DB.DatabaseListener listener;
@@ -21,7 +22,7 @@ class Database {
         if (!parent.exists()) {
             boolean ret = parent.mkdirs();
             if (!ret)
-                EasyLog.w("创建文件失败");
+                EasyLog.w(TAG + "创建文件失败");
         }
     }
 
@@ -58,7 +59,7 @@ class Database {
         SQLiteDatabase db = getWritableDatabase();
         int oldVersion = db.getVersion();
         if (version < oldVersion) {
-            EasyLog.w("升级版本不能小于当前版本：" + oldVersion);
+            EasyLog.w(TAG + "升级版本不能小于当前版本：" + oldVersion);
         }
         if (oldVersion == version) {
             return;

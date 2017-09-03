@@ -13,6 +13,7 @@ import java.util.concurrent.Executors;
  */
 
 public class HttpManager implements HttpImp {
+    private final String TAG = HttpManager.class.getSimpleName() + " : ";
     private ExecutorService pool;
     private int maxThreadSize = 100;
 
@@ -37,7 +38,7 @@ public class HttpManager implements HttpImp {
     @Override
     public void start(HttpParam param) {
         if (param == null) {
-            EasyLog.w("参数为空");
+            EasyLog.w(TAG + "start 参数为空");
             return;
         }
         setDefault(param);

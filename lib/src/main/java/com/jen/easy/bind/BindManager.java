@@ -17,6 +17,7 @@ import java.util.WeakHashMap;
  */
 
 public class BindManager implements BindImp {
+    private final String TAG = BindManager.class.getSimpleName() + " : ";
     private WeakHashMap<String, Activity> mapAct = new WeakHashMap<>();
 
     /**
@@ -25,7 +26,7 @@ public class BindManager implements BindImp {
     @Override
     public void bind(final Activity activity) {
         if (activity == null) {
-            EasyLog.e("activity is null");
+            EasyLog.e(TAG + "bind activity is null");
             return;
         }
         String name = activity.getClass().getName();
@@ -44,7 +45,7 @@ public class BindManager implements BindImp {
                 fild.set(activity, view);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
-                EasyLog.e("fild set value error");
+                EasyLog.e(TAG + "bind  fild set value error");
             }
         }
 
@@ -61,8 +62,10 @@ public class BindManager implements BindImp {
                             method.invoke(activity, view);
                         } catch (IllegalAccessException e) {
                             e.printStackTrace();
+                            EasyLog.e(TAG + "bind  IllegalAccessException");
                         } catch (InvocationTargetException e) {
                             e.printStackTrace();
+                            EasyLog.e(TAG + "bind  InvocationTargetException");
                         }
                     }
                 });
@@ -76,7 +79,7 @@ public class BindManager implements BindImp {
     @Override
     public void inject(final Object obj, final View parent) {
         if (obj == null || parent == null) {
-            EasyLog.e("obj or view is null");
+            EasyLog.e(TAG + "inject obj or view is null");
             return;
         }
 
@@ -91,7 +94,7 @@ public class BindManager implements BindImp {
                 fild.set(obj, view);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
-                EasyLog.e("fild set value error");
+                EasyLog.e(TAG + "inject fild set value error");
             }
         }
 
@@ -108,8 +111,10 @@ public class BindManager implements BindImp {
                             method.invoke(obj, view);
                         } catch (IllegalAccessException e) {
                             e.printStackTrace();
+                            EasyLog.e(TAG + "inject  IllegalAccessException");
                         } catch (InvocationTargetException e) {
                             e.printStackTrace();
+                            EasyLog.e(TAG + "inject  InvocationTargetException");
                         }
                     }
                 });
@@ -125,7 +130,7 @@ public class BindManager implements BindImp {
     @Override
     public void unbind(Activity activity) {
         if (activity == null) {
-            EasyLog.e("activity is null");
+            EasyLog.e(TAG + "activity is null");
             return;
         }
         String name = activity.getClass().getName();

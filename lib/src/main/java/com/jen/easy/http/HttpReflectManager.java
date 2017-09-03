@@ -13,6 +13,7 @@ import java.util.Map;
  */
 
 class HttpReflectManager {
+    private final static String TAG = HttpReflectManager.class.getSimpleName() + " : ";
     static String PARAM_TYPE = "param_type";
     static String PARAM_FIELD = "param_field";
 
@@ -25,7 +26,7 @@ class HttpReflectManager {
     static Map<String, String> getRequestParams(Object obj) {
         Map<String, String> params = new HashMap<>();
         if (obj == null || obj instanceof Class) {
-            EasyLog.e("getRequestParams obj is null");
+            EasyLog.e(TAG + "getRequestParams getRequestParams obj is null");
             return params;
         }
 
@@ -44,6 +45,7 @@ class HttpReflectManager {
                 params.put(paramName, value);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
+                EasyLog.e(TAG + "getRequestParams IllegalAccessException");
             }
         }
         return params;
@@ -62,7 +64,7 @@ class HttpReflectManager {
         objectMap.put(PARAM_TYPE, param_type);
         objectMap.put(PARAM_FIELD, param_field);
         if (clazz == null) {
-            EasyLog.e("clazz is not null");
+            EasyLog.e(TAG + "getResponseParams clazz is not null");
             return objectMap;
         }
 
