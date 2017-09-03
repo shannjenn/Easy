@@ -40,7 +40,8 @@ public final class EasyFactory {
                 /**
                  * 是否要解析返回结果(默认不解析)
                  */
-                public Class JsonParseClass;
+                public Class resopseClass;
+
                 /**
                  * 用户停止
                  */
@@ -76,10 +77,6 @@ public final class EasyFactory {
                  */
                 public String flag;
 
-                /**
-                 * 是否要解析返回结果(默认不解析)
-                 */
-                public boolean parse;
                 /**
                  * 用户停止
                  */
@@ -139,13 +136,14 @@ public final class EasyFactory {
                 public String flag;
 
                 /**
-                 * 是否要解析返回结果(默认不解析)
-                 */
-                public boolean parse;
-                /**
                  * 用户停止
                  */
                 public boolean userCancel;
+
+                /**
+                 * 是否要解析返回结果(默认不解析)
+                 */
+                public Class resopseClass;
 
 
                 /**

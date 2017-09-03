@@ -88,13 +88,12 @@ public final class EasyMouse {
         }
 
         /**
-         * 网络请求参数名
+         * 网络请求参数
          * Created by Jen on 2017/7/21.
          */
         @Target(ElementType.FIELD)
         @Retention(RetentionPolicy.RUNTIME)
-        public @interface Param {
-
+        public @interface RequestParam {
             /**
              * 参数名称
              *
@@ -102,33 +101,14 @@ public final class EasyMouse {
              */
             String value() default "";
         }
-    }
-
-    /*****************************************************************************************************
-     ★★★ JSON解析 ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-     ****************************************************************************************************/
-    public final static class JSON {
-        private JSON() {
-        }
-
-        @Target(ElementType.TYPE)
-        @Retention(RetentionPolicy.RUNTIME)
-        public @interface JsonObjectName {
-
-            /**
-             * 表名
-             */
-            String value();
-        }
 
         /**
-         * 参数名称
+         * 网络返回参数
          * Created by Jen on 2017/7/21.
          */
         @Target(ElementType.FIELD)
         @Retention(RetentionPolicy.RUNTIME)
-        public @interface JsonParamName {
-
+        public @interface ResponseParam {
             /**
              * 参数名称
              *

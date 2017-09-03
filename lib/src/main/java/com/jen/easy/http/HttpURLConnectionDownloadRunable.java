@@ -3,7 +3,6 @@ package com.jen.easy.http;
 import android.text.TextUtils;
 
 import com.jen.easy.EasyFactory;
-import com.jen.easy.EasyFinal;
 import com.jen.easy.log.EasyLog;
 
 import java.io.DataOutputStream;
@@ -28,13 +27,12 @@ class HttpURLConnectionDownloadRunable implements Runnable {
 
     @Override
     public void run() {
-        int result = EasyFinal.HTTP.Code.FAIL;
         if (TextUtils.isEmpty(param.http.url)) {
             EasyLog.e("URL地址错误");
-            fail(EasyFinal.HTTP.Code.FAIL, "参数错误");
+            fail("请求URL参数错误");
             return;
         } else if (TextUtils.isEmpty(param.request.filePath)) {
-            fail(EasyFinal.HTTP.Code.FAIL, "文件地址不能为空");
+            fail("文件地址不能为空");
             return;
         }
 
@@ -43,13 +41,18 @@ class HttpURLConnectionDownloadRunable implements Runnable {
             boolean ret = fileFolder.mkdirs();
             if (!ret)
                 EasyLog.w("创建文件夹失败");
+            fail("保存文件失败，请检查是否有文件权限");
+            return;
         }
         if (param.request.deleteOldFile) {
             File file = new File(param.request.filePath);
             if (file.exists()) {
                 boolean ret = file.delete();
-                if (!ret)
-                    EasyLog.w("删除文件失败");
+                if (!ret) {
+                    EasyLog.w("删除旧文件失败");
+                    fail("删除旧文件失败，请检查是否有文件权限");
+                    return;
+                }
             }
         }
 
@@ -64,8 +67,8 @@ class HttpURLConnectionDownloadRunable implements Runnable {
         RandomAccessFile randFile = null;
         InputStream inStream = null;
 
-        Map<String, String> requestParams = HttpReflectManager.getParams(param);
-
+        Map<String, String> requestParams = HttpReflectManager.getRequestParams(param);
+        String exception = null;
         try {
             boolean hasParam = false;
             boolean isNotFirst = false;
@@ -129,22 +132,28 @@ class HttpURLConnectionDownloadRunable implements Runnable {
                 }
             }
             if (param.request.userCancel) {
-                result = EasyFinal.HTTP.Code.USER_CANCEL;
+                fail("用户取消下载");
+                return;
             } else if (curbytes == param.request.endPoit) {
-                result = EasyFinal.HTTP.Code.SUCCESS;
+                success();
+                return;
             }
         } catch (MalformedURLException e) {
             EasyLog.e("MalformedURLException error --------");
             e.printStackTrace();
+            exception = "MalformedURLException error";
         } catch (ProtocolException e) {
             EasyLog.e("ProtocolException error --------");
             e.printStackTrace();
+            exception = "ProtocolException error";
         } catch (IOException e) {
             EasyLog.e("IOException error --------");
             e.printStackTrace();
+            exception = "IOException error";
         } catch (IllegalStateException e) {
             EasyLog.e("IllegalStateException error --------");
             e.printStackTrace();
+            exception = "IllegalStateException error";
         } finally {
             if (connection != null)
                 connection.disconnect();
@@ -157,11 +166,7 @@ class HttpURLConnectionDownloadRunable implements Runnable {
                 e.printStackTrace();
             }
         }
-        if (result == EasyFinal.HTTP.Code.SUCCESS) {
-            success();
-        } else {
-            fail(result, result == EasyFinal.HTTP.Code.USER_CANCEL ? "用户取消" : "下载异常");
-        }
+        fail("下载异常:" + exception);
     }
 
     private void success() {
@@ -169,9 +174,9 @@ class HttpURLConnectionDownloadRunable implements Runnable {
             param.getDownloadListener().success(param.request.flagCode, param.request.flag);
     }
 
-    private void fail(int code, String tag) {
+    private void fail(String msg) {
         if (param.getDownloadListener() != null)
-            param.getDownloadListener().fail(param.request.flagCode, param.request.flag, code, tag);
+            param.getDownloadListener().fail(param.request.flagCode, param.request.flag, msg);
     }
 
     private void progress(long currentPoint, long endPoint) {

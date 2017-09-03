@@ -56,43 +56,6 @@ class DBReflectManager {
     }
 
     /**
-     * 获取数据列
-     *
-     * @param clazz
-     * @return Map<String, List<String>>
-     */
-    /*static Map<String, Object> getColumnNames(Class clazz) {
-        Map<String, Object> objectMap = new HashMap<>();
-        List<String> primaryKey = new ArrayList<>();
-        Map<String, String> column = new HashMap<>();
-        objectMap.put(PRIMARY_KEY, primaryKey);
-        objectMap.put(COLUMN_TYPE, column);
-        if (clazz == null) {
-            EasyLog.e("clazz is not null");
-            return objectMap;
-        }
-
-        Field[] fields = clazz.getDeclaredFields();
-        for (int i = 0; i < fields.length; i++) {
-            boolean isAnno = fields[i].isAnnotationPresent(EasyMouse.DB.Column.class);
-            if (!isAnno)
-                continue;
-            EasyMouse.DB.Column columnClass = fields[i].getAnnotation(EasyMouse.DB.Column.class);
-            String coulumnName = columnClass.columnName();
-            boolean isPrimary = columnClass.primaryKey();
-            String type = fields[i].getGenericType().toString();
-
-            if (coulumnName.trim().length() == 0) {
-                continue;
-            }
-            if (isPrimary)
-                primaryKey.add(coulumnName);
-            column.put(coulumnName, type);
-        }
-        return objectMap;
-    }*/
-
-    /**
      * 获取字字段
      *
      * @param clazz

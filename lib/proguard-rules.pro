@@ -57,10 +57,6 @@
     public <fields>;
     public <methods>;
 }
--keep class com.jen.easy.EasyFinal$* {
-    public <fields>;
-    public <methods>;
-}
 -keep class com.jen.easy.EasyListener$* {
     public <fields>;
     public <methods>;
@@ -85,10 +81,6 @@
 
 ###网络模块
 -keep class com.jen.easy.http.imp.HttpImp {
-    public <fields>;
-    public <methods>;
-}
--keep class com.jen.easy.parse.imp.HttpParseImp {
     public <fields>;
     public <methods>;
 }

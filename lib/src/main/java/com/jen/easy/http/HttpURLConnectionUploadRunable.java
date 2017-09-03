@@ -3,8 +3,6 @@ package com.jen.easy.http;
 import android.text.TextUtils;
 
 import com.jen.easy.EasyFactory;
-import com.jen.easy.EasyFinal;
-import com.jen.easy.EasyMain;
 import com.jen.easy.log.EasyLog;
 
 import java.io.BufferedReader;
@@ -29,15 +27,15 @@ class HttpURLConnectionUploadRunable implements Runnable {
     public void run() {
         if (TextUtils.isEmpty(param.http.url)) {
             EasyLog.e("URL地址错误");
-            fail(EasyFinal.HTTP.Code.FAIL, "参数错误");
+            fail("URL参数错误");
             return;
         } else if (TextUtils.isEmpty(param.request.filePath)) {
-            fail(EasyFinal.HTTP.Code.FAIL, "文件地址不能为空");
+            fail("文件地址不能为空");
             return;
         }
         File file = new File(param.request.filePath);
         if (!file.isFile()) {
-            fail(EasyFinal.HTTP.Code.FAIL, "文件地址参数错误");
+            fail("文件地址参数错误");
             return;
         }
 
@@ -74,7 +72,7 @@ class HttpURLConnectionUploadRunable implements Runnable {
             out.close();
 
             if (param.request.userCancel) {
-                fail(EasyFinal.HTTP.Code.FAIL, "用户取消");
+                fail("用户取消上传");
                 return;
             }
 
@@ -99,10 +97,10 @@ class HttpURLConnectionUploadRunable implements Runnable {
 
     private void success(String result) {
         if (param.getUploadListener() != null) {
-            if (param.request.parse) {
-                Object object = EasyMain.Parse.parseJson(param.getClass(), result);
+            if (param.request.resopseClass != null) {
+                Object object = HttpParseManager.parseJson(param.request.resopseClass, result);
                 if (object == null) {
-                    fail(EasyFinal.HTTP.Code.FAIL, "数据异常");
+                    fail("数据j解析异常");
                 } else {
                     param.getUploadListener().success(param.request.flagCode, param.request.flag, object);
                 }
@@ -112,9 +110,9 @@ class HttpURLConnectionUploadRunable implements Runnable {
         }
     }
 
-    private void fail(int easyHttpCode, String tag) {
+    private void fail(String msg) {
         if (param.getUploadListener() != null)
-            param.getUploadListener().fail(param.request.flagCode, param.request.flag, easyHttpCode, tag);
+            param.getUploadListener().fail(param.request.flagCode, param.request.flag, msg);
     }
 
     private void progress(long currentPoint, long endPoint) {

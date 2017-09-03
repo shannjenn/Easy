@@ -7,9 +7,7 @@ import com.jen.easy.bind.BindManager;
 import com.jen.easy.bind.imp.BindImp;
 import com.jen.easy.constant.Constant;
 import com.jen.easy.http.HttpManager;
-import com.jen.easy.parse.HttpParseManager;
 import com.jen.easy.http.imp.HttpImp;
-import com.jen.easy.parse.imp.HttpParseImp;
 import com.jen.easy.log.EasyLog;
 import com.jen.easy.log.LogcatHelperManager;
 import com.jen.easy.log.imp.LogcatHelperImp;
@@ -41,7 +39,7 @@ public final class EasyMain {
     /**
      * 网络数据解析
      */
-    public static final HttpParseImp Parse;
+//    public static final HttpParseImp Parse;
     /**
      * 数据库操作
      */
@@ -64,7 +62,7 @@ public final class EasyMain {
 
         Bing = new BindManager();
         Http = new HttpManager();
-        Parse = new HttpParseManager();
+//        Parse = new HttpParseManager();
         Log = new LogcatHelperManager();
 
         if (EasyApplication.getAppContext() != null) {

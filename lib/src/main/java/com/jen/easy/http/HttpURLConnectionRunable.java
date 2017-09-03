@@ -3,8 +3,6 @@ package com.jen.easy.http;
 import android.text.TextUtils;
 
 import com.jen.easy.EasyFactory;
-import com.jen.easy.EasyFinal;
-import com.jen.easy.EasyMain;
 import com.jen.easy.log.EasyLog;
 
 import java.io.BufferedReader;
@@ -29,11 +27,11 @@ class HttpURLConnectionRunable implements Runnable {
     public void run() {
         if (TextUtils.isEmpty(param.http.url)) {
             EasyLog.e("URL地址错误");
-            fail(EasyFinal.HTTP.Code.FAIL, "参数错误");
+            fail("URL地址为空");
             return;
         }
-        Map<String, String> requestParams = HttpReflectManager.getParams(param);
-
+        Map<String, String> requestParams = HttpReflectManager.getRequestParams(param);
+        int resposeCode = -1;
         try {
             boolean hasParam = false;
             boolean isNotFirst = false;
@@ -76,7 +74,8 @@ class HttpURLConnectionRunable implements Runnable {
             }
 
             EasyLog.d("Http 请求地址：" + url.getPath() + "  " + param.http.method);
-            if ((connection.getResponseCode() == 200)) {
+            resposeCode = connection.getResponseCode();
+            if ((resposeCode == 200)) {
                 StringBuffer result = new StringBuffer("");
                 InputStream inStream = connection.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, param.http.charset));
@@ -94,15 +93,15 @@ class HttpURLConnectionRunable implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        fail(EasyFinal.HTTP.Code.FAIL, "获取数据异常");
+        fail("获取数据异常：" + resposeCode);
     }
 
     private void success(String result) {
         if (param.getBseListener() != null) {
-            if (param.request.JsonParseClass != null) {
-                Object object = EasyMain.Parse.parseJson(param.request.JsonParseClass, result);
+            if (param.request.resopseClass != null) {
+                Object object = HttpParseManager.parseJson(param.request.resopseClass, result);
                 if (object == null) {
-                    fail(EasyFinal.HTTP.Code.FAIL, "数据异常");
+                    fail("数据解析异常");
                 } else {
                     param.getBseListener().success(param.request.flagCode, param.request.flag, object);
                 }
@@ -112,8 +111,8 @@ class HttpURLConnectionRunable implements Runnable {
         }
     }
 
-    private void fail(int code, String result) {
+    private void fail(String result) {
         if (param.getBseListener() != null)
-            param.getBseListener().fail(param.request.flagCode, param.request.flag, code, result);
+            param.getBseListener().fail(param.request.flagCode, param.request.flag, result);
     }
 }

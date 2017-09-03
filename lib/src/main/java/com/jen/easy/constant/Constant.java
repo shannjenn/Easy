@@ -34,9 +34,10 @@ public final class Constant {
         public static final String FLOAT = "float";
         public static final String DOUBLE = "double";
         public static final String LONG = "class java.lang.Long";
-
         public static final String BOOLEAN = "boolean";
+
         public static final String DATE = "class java.util.Date";
+
         public static final String LIST = "java.util.List";
         public static final String MAP = "java.util.Map";
         public static final String ARRAY = "class [L";//数组
@@ -64,6 +65,19 @@ public final class Constant {
                 type = "TEXT";
             }
             return type;
+        }
+
+        /**
+         * 是否为基本类型
+         * @param type
+         * @return
+         */
+        public static boolean isBaseicType(String type) {
+            return type.equals(Constant.FieldType.CHAR) || type.equals(Constant.FieldType.STRING)
+                    || type.equals(Constant.FieldType.BYTE) || type.equals(Constant.FieldType.BYTE)
+                    || type.equals(Constant.FieldType.INTEGER) || type.equals(Constant.FieldType.FLOAT)
+                    || type.equals(Constant.FieldType.DOUBLE) || type.equals(Constant.FieldType.LONG)
+                    || type.equals(Constant.FieldType.BOOLEAN);
         }
     }
 

@@ -62,6 +62,7 @@ public final class EasyListener {
     public final static class HTTP {
         private HTTP() {
         }
+
         /**
          * 基本数据网络请求监听
          */
@@ -70,7 +71,7 @@ public final class EasyListener {
 
             void success(int flagCode, String flag, Object msg);
 
-            void fail(int flagCode, String flag, int easyHttpCode, String msg);
+            void fail(int flagCode, String flag, String msg);
         }
 
         /**
@@ -80,7 +81,7 @@ public final class EasyListener {
 
             void success(int flagCode, String flag);
 
-            void fail(int flagCode, String flag, int easyHttpCode, String msg);
+            void fail(int flagCode, String flag, String msg);
 
             void progress(int flagCode, String flag, long currentPoint, long endPoint);
         }
@@ -93,7 +94,7 @@ public final class EasyListener {
 
             void success(int flagCode, String flag, Object result);
 
-            void fail(int flagCode, String flag, int easyHttpCode, String msg);
+            void fail(int flagCode, String flag, String msg);
 
             void progress(int flagCode, String flag, long currentPoint, long endPoint);
         }
