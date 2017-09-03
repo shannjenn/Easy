@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
  */
 
 public class HttpManager implements HttpImp {
-    private final String TAG = HttpManager.class.getSimpleName() + " : ";
+    private final String TAG = "HttpManager : ";
     private ExecutorService pool;
     private int maxThreadSize = 100;
 

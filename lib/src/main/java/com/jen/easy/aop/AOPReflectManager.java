@@ -11,6 +11,7 @@ import java.lang.reflect.Method;
  */
 
 class AOPReflectManager {
+    private static final String TAG = "AOPReflectManager : ";
 
     /**
      * 获取方法
@@ -20,7 +21,7 @@ class AOPReflectManager {
      */
     static Method getBefore(Class clazz) {
         if (clazz == null) {
-            EasyLog.e("clazz is null");
+            EasyLog.e(TAG + "clazz is null");
             return null;
         }
         Method[] methods = clazz.getDeclaredMethods();
@@ -41,7 +42,7 @@ class AOPReflectManager {
      */
     static Method getAfter(Class clazz) {
         if (clazz == null) {
-            EasyLog.e("clazz is null");
+            EasyLog.e(TAG + "clazz is null");
             return null;
         }
         Method[] methods = clazz.getDeclaredMethods();

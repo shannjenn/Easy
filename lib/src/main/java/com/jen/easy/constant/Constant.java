@@ -67,19 +67,6 @@ public final class Constant {
             }
             return type;
         }
-
-        /**
-         * 是否为基本类型
-         * @param type
-         * @return
-         */
-        public static boolean isBaseicType(String type) {
-            return type.equals(Constant.FieldType.CHAR) || type.equals(Constant.FieldType.STRING)
-                    || type.equals(Constant.FieldType.BYTE) || type.equals(Constant.FieldType.BYTE)
-                    || type.equals(Constant.FieldType.INTEGER) || type.equals(Constant.FieldType.FLOAT)
-                    || type.equals(Constant.FieldType.DOUBLE) || type.equals(Constant.FieldType.LONG)
-                    || type.equals(Constant.FieldType.BOOLEAN);
-        }
     }
 
     /**

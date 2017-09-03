@@ -16,7 +16,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 class HttpURLConnectionUploadRunable implements Runnable {
-    private final String TAG = HttpURLConnectionDownloadRunable.class.getSimpleName() + " : ";
+    private final String TAG = "HttpURLConnectionUploadRunable : ";
     private EasyFactory.HTTP.UploadParamRequest param;
 
     HttpURLConnectionUploadRunable(EasyFactory.HTTP.UploadParamRequest param) {

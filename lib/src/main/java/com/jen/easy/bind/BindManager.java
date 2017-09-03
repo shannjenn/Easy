@@ -17,7 +17,7 @@ import java.util.WeakHashMap;
  */
 
 public class BindManager implements BindImp {
-    private final String TAG = BindManager.class.getSimpleName() + " : ";
+    private final String TAG = "BindManager : ";
     private WeakHashMap<String, Activity> mapAct = new WeakHashMap<>();
 
     /**

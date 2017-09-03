@@ -36,107 +36,91 @@
 
 ###application
 -keep class com.jen.easy.app.EasyApplication {
-    native <methods>;
-    public <fields>;
-    public <methods>;
-    protected <methods>;
+#    native <methods>;
+#    public <fields>;
+#    public <methods>;
+#    protected <methods>;
+    *;
 }
 -keep class com.jen.easy.app.EasyVersion {
-    public <fields>;
-    public <methods>;
+    *;
 }
 -keep class com.jen.easy.EasyMain {
-    public <fields>;
-    public <methods>;
+    *;
 }
 -keep class com.jen.easy.EasyMouse$* {
-    public <fields>;
-    public <methods>;
+    *;
 }
 -keep class com.jen.easy.EasyClass$* {
-    public <fields>;
-    public <methods>;
+    *;
 }
 -keep class com.jen.easy.EasyListener$* {
-    public <fields>;
-    public <methods>;
+    *;
 }
 -keep class com.jen.easy.EasyFactory$* {
-    public <fields>;
-    public <methods>;
+    *;
 }
 -keep class com.jen.easy.EasyUtil {
-    public <fields>;
-    public <methods>;
+    *;
 }
 ###application
 
 
 ###控件绑定模块
 -keep class com.jen.easy.bind.imp.BindImp {
-    public <fields>;
-    public <methods>;
+#    public <fields>;
+#    public <methods>;
+    *;
 }
 ###控件绑定模块
 
 ###网络模块
 -keep class com.jen.easy.http.imp.HttpImp {
-    public <fields>;
-    public <methods>;
+    *;
 }
 -keep class com.jen.easy.http.HttpParam$* {
-    public <fields>;
-    public <methods>;
+    *;
 }
 ###网络模块
 
 ###Log模块
 -keep class com.jen.easy.log.Logcat {
-    public <fields>;
-    public <methods>;
+    *;
 }
 -keep class com.jen.easy.log.EasyLog {
-    public <fields>;
-    public <methods>;
+    *;
 }
 -keep class com.jen.easy.log.imp.LogcatHelperImp {
-    public <fields>;
-    public <methods>;
+    *;
 }
 ###Log模块
 
 ###数据库模块
 -keep class com.jen.easy.sqlite.imp.DBHelperImp {
-    public <fields>;
-    public <methods>;
+    *;
 }
 -keep class com.jen.easy.sqlite.imp.DBDaoImp {
-    public <fields>;
-    public <methods>;
+    *;
 }
 ###数据库模块
 
 ###切面编程
 -keep class com.jen.easy.aop.imp.DynamicProxyImp {
-    public <fields>;
-    public <methods>;
+    *;
 }
 ###切面编程
 
 ###数据存储Share
 -keep class com.jen.easy.share.imp.ShareImp {
-    public <fields>;
-    public <methods>;
+    *;
 }
 ###数据存储Share
 
 ###工具类
 -keep class com.jen.easy.util.imp.DataFormatImp {
-    public <fields>;
-    public <methods>;
+    *;
 }
 -keep class com.jen.easy.util.imp.StringToListImp {
-    public <fields>;
-    public <methods>;
+    *;
 }
 ###工具类

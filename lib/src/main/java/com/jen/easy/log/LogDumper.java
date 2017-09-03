@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 import static com.jen.easy.constant.Constant.Unicode.DEFAULT;
 
 class LogDumper extends Thread {
-    private final String TAG = LogDumper.class.getSimpleName() + " : ";
+    private final String TAG = "LogDumper : ";
     private static LogDumper instance;
     private Process logcatProc;
     private BufferedReader reader;

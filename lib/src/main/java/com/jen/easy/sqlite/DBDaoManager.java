@@ -27,7 +27,7 @@ import static com.jen.easy.sqlite.DBReflectManager.getTableName;
  */
 
 public class DBDaoManager implements DBDaoImp {
-    private final String TAG = DBDaoManager.class.getSimpleName() + " : ";
+    private final String TAG = "DBDaoManager : ";
     private Database database;
 
     public DBDaoManager(Context context) {

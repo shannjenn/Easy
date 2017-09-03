@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 public class DBHelperManager implements DBHelperImp {
-    private final String TAG = DBHelperManager.class.getSimpleName() + " : ";
+    private final String TAG = "DBHelperManager : ";
     private Database database;
 
     public DBHelperManager(Context context) {

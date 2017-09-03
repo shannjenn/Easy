@@ -19,7 +19,7 @@ import java.util.List;
  */
 
 public class StringToList implements StringToListImp {
-    private final String TAG = StringToList.class.getSimpleName() + " : ";
+    private final String TAG = "StringToList : ";
 
     public <T> String list2String(List<T> list) {
         try {
