@@ -6,10 +6,10 @@ import com.jen.easy.constant.Constant;
 import com.jen.easy.log.EasyLog;
 
 /**
- * 继承该Application
- * Created by Jen on 2017/7/20.
+ * 作者：ShannJenn
+ * 时间：2017/8/12.
+ * 说明：Application类
  */
-
 public abstract class EasyApplication extends Application {
     private static EasyApplication instance;
 

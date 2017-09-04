@@ -3,7 +3,6 @@ package com.jen.easy.bind;
 import android.app.Activity;
 import android.view.View;
 
-import com.jen.easy.bind.imp.BindImp;
 import com.jen.easy.log.EasyLog;
 
 import java.lang.reflect.Field;
@@ -16,17 +15,16 @@ import java.util.WeakHashMap;
  * Created by Jen on 2017/7/26.
  */
 
-public class BindManager implements BindImp {
+abstract class BindManager {
     private final String TAG = "BindManager : ";
     private WeakHashMap<String, Activity> mapAct = new WeakHashMap<>();
 
     /**
      * 绑定
      */
-    @Override
-    public void bind(final Activity activity) {
+    protected void bind(final Activity activity) {
         if (activity == null) {
-            EasyLog.e(TAG + "bind activity is null");
+            EasyLog.e(TAG + "BIND activity is null");
             return;
         }
         String name = activity.getClass().getName();
@@ -45,7 +43,7 @@ public class BindManager implements BindImp {
                 fild.set(activity, view);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
-                EasyLog.e(TAG + "bind  fild set value error");
+                EasyLog.e(TAG + "BIND  fild set value error");
             }
         }
 
@@ -62,10 +60,10 @@ public class BindManager implements BindImp {
                             method.invoke(activity, view);
                         } catch (IllegalAccessException e) {
                             e.printStackTrace();
-                            EasyLog.e(TAG + "bind  IllegalAccessException");
+                            EasyLog.e(TAG + "BIND  IllegalAccessException");
                         } catch (InvocationTargetException e) {
                             e.printStackTrace();
-                            EasyLog.e(TAG + "bind  InvocationTargetException");
+                            EasyLog.e(TAG + "BIND  InvocationTargetException");
                         }
                     }
                 });
@@ -76,8 +74,7 @@ public class BindManager implements BindImp {
     /**
      * 注入
      */
-    @Override
-    public void inject(final Object obj, final View parent) {
+    protected void inject(final Object obj, final View parent) {
         if (obj == null || parent == null) {
             EasyLog.e(TAG + "inject obj or view is null");
             return;
@@ -127,8 +124,7 @@ public class BindManager implements BindImp {
      *
      * @param activity
      */
-    @Override
-    public void unbind(Activity activity) {
+    protected void unbind(Activity activity) {
         if (activity == null) {
             EasyLog.e(TAG + "activity is null");
             return;

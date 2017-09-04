@@ -1,9 +1,7 @@
 package com.jen.easy;
 
-import com.jen.easy.util.DataFormatManager;
+import com.jen.easy.util.DataFormat;
 import com.jen.easy.util.StringToList;
-import com.jen.easy.util.imp.DataFormatImp;
-import com.jen.easy.util.imp.StringToListImp;
 
 /**
  * 创建人：ShannJenn
@@ -16,15 +14,15 @@ public final class EasyUtil {
     /**
      * 时间格式化
      */
-    public static final DataFormatImp DateFormat;
+    public static final DataFormat dateFormat;
     /**
      * 字符串与List转换
      */
-    public static final StringToListImp StrList;
+    public static final StringToList StrList;
 
 
     static {
-        DateFormat = new DataFormatManager();
+        dateFormat = new DataFormat();
         StrList = new StringToList();
     }
 

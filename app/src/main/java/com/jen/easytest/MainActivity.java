@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.listview_footer);
-        EasyMain.Bing.bind(this);
+        EasyMain.BIND.bind(this);
     }
 
     @Override
@@ -71,6 +71,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EasyMain.Bing.unbind(this);
+        EasyMain.BIND.unbind(this);
     }
 }

@@ -2,7 +2,6 @@ package com.jen.easy.http;
 
 import android.text.TextUtils;
 
-import com.jen.easy.EasyFactory;
 import com.jen.easy.log.EasyLog;
 
 import java.io.BufferedReader;
@@ -17,9 +16,9 @@ import java.util.Map;
 
 class HttpURLConnectionRunable implements Runnable {
     private final String TAG = "HttpURLConnectionDownloadRunable : ";
-    private EasyFactory.HTTP.BaseParamRequest param;
+    private BaseParamRequest param;
 
-    HttpURLConnectionRunable(EasyFactory.HTTP.BaseParamRequest param) {
+    HttpURLConnectionRunable(BaseParamRequest param) {
         super();
         this.param = param;
     }

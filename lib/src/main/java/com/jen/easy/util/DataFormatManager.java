@@ -1,18 +1,12 @@
 package com.jen.easy.util;
 
-import com.jen.easy.util.imp.DataFormatImp;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-/**
- * Created by Jen on 2017/7/20.
- */
-
-public class DataFormatManager implements DataFormatImp {
+abstract class DataFormatManager {
     private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.SIMPLIFIED_CHINESE);
 
     /**
@@ -20,8 +14,7 @@ public class DataFormatManager implements DataFormatImp {
      *
      * @return
      */
-    @Override
-    public SimpleDateFormat getFormat() {
+    protected SimpleDateFormat getFormat() {
         return format;
     }
 
@@ -31,8 +24,7 @@ public class DataFormatManager implements DataFormatImp {
      * @param date
      * @return
      */
-    @Override
-    public String format(Date date) {
+    protected String format(Date date) {
         if (date == null)
             return null;
         return format.format(date);
@@ -45,8 +37,7 @@ public class DataFormatManager implements DataFormatImp {
      * @param str
      * @return
      */
-    @Override
-    public String format(String str) {
+    protected String format(String str) {
         if (str == null)
             return null;
         Date date = parser(str);
@@ -61,15 +52,13 @@ public class DataFormatManager implements DataFormatImp {
      * @param dateStr
      * @return
      */
-    @Override
-    public Date parser(String dateStr) {
+    protected Date parser(String dateStr) {
         if (dateStr == null)
             return null;
         return parse(dateStr);
     }
 
-    @Override
-    public long getTime(String dateStr) {
+    protected long getTime(String dateStr) {
         if (dateStr == null)
             return 0;
         Date date = parse(dateStr);
@@ -82,8 +71,7 @@ public class DataFormatManager implements DataFormatImp {
      * @param time
      * @return
      */
-    @Override
-    public String BJ2Loacl(String time) {
+    protected String BJ2Loacl(String time) {
         if (time == null)
             return null;
         Date date = parse(time);
@@ -107,8 +95,7 @@ public class DataFormatManager implements DataFormatImp {
      * @param date
      * @return
      */
-    @Override
-    public Date BJ2Loacl(Date date) {
+    protected Date BJ2Loacl(Date date) {
         if (date == null)
             return null;
 
@@ -127,8 +114,7 @@ public class DataFormatManager implements DataFormatImp {
      * @param time
      * @return
      */
-    @Override
-    public String locad2BJ(String time) {
+    protected String locad2BJ(String time) {
         if (time == null)
             return null;
         Date date = parse(time);
@@ -152,8 +138,7 @@ public class DataFormatManager implements DataFormatImp {
      * @param date
      * @return
      */
-    @Override
-    public Date locad2BJ(Date date) {
+    protected Date locad2BJ(Date date) {
         if (date == null)
             return null;
 
@@ -172,8 +157,7 @@ public class DataFormatManager implements DataFormatImp {
      *
      * @param dautformat
      */
-    @Override
-    public void setDefault(String dautformat) {
+    protected void setDefault(String dautformat) {
         if (dautformat == null)
             return;
         format = new SimpleDateFormat(dautformat, Locale.SIMPLIFIED_CHINESE);

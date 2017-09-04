@@ -1,10 +1,10 @@
 package com.jen.easy.app;
 
 /**
- * 版本信息
- * Created by Jen on 2017/7/29.
+ * 作者：ShannJenn
+ * 时间：2017/8/12.
+ * 说明：版本信息
  */
-
 public final class EasyVersion {
     /**
      * 版本号(初版：1)

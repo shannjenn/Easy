@@ -24,6 +24,11 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+#    native <methods>;
+#    public <fields>;
+#    public <methods>;
+#    protected <methods>;
+
 -libraryjars 'E:\Program Files\Java\jdk1.8.0_20\jre\lib\rt.jar'
 -libraryjars 'E:\Android\sdk\platforms\android-20\android.jar'
 
@@ -34,12 +39,10 @@
 -keepattributes *Annotation*
 -keep class * extends java.lang.annotation.Annotation { *; }
 
+##############################################################
 ###application
+##############################################################
 -keep class com.jen.easy.app.EasyApplication {
-#    native <methods>;
-#    public <fields>;
-#    public <methods>;
-#    protected <methods>;
     *;
 }
 -keep class com.jen.easy.app.EasyVersion {
@@ -51,76 +54,101 @@
 -keep class com.jen.easy.EasyMouse$* {
     *;
 }
--keep class com.jen.easy.EasyClass$* {
-    *;
-}
--keep class com.jen.easy.EasyListener$* {
-    *;
-}
--keep class com.jen.easy.EasyFactory$* {
-    *;
-}
 -keep class com.jen.easy.EasyUtil {
     *;
 }
-###application
 
-
+##############################################################
 ###控件绑定模块
--keep class com.jen.easy.bind.imp.BindImp {
-#    public <fields>;
-#    public <methods>;
+##############################################################
+-keep class com.jen.easy.bind.Bind {
     *;
 }
-###控件绑定模块
 
+##############################################################
 ###网络模块
--keep class com.jen.easy.http.imp.HttpImp {
+##############################################################
+-keep class com.jen.easy.http.Http {
     *;
 }
 -keep class com.jen.easy.http.HttpParam$* {
     *;
 }
-###网络模块
+-keep class com.jen.easy.http.BaseParamRequest$* {
+    *;
+}
+-keep class com.jen.easy.http.DownloadParamRequest$* {
+    *;
+}
+-keep class com.jen.easy.http.UploadParamRequest$* {
+    *;
+}
+-keep class com.jen.easy.http.imp.HttpBaseListener {
+    *;
+}
+-keep class com.jen.easy.http.imp.HtppDownloadListener {
+    *;
+}
+-keep class com.jen.easy.http.imp.HttpUploadListener {
+    *;
+}
 
+##############################################################
 ###Log模块
+##############################################################
 -keep class com.jen.easy.log.Logcat {
     *;
 }
 -keep class com.jen.easy.log.EasyLog {
     *;
 }
--keep class com.jen.easy.log.imp.LogcatHelperImp {
+-keep class com.jen.easy.log.LogcatHelper {
     *;
 }
-###Log模块
+-keep class com.jen.easy.log.imp.CrashListener {
+    *;
+}
 
+##############################################################
 ###数据库模块
--keep class com.jen.easy.sqlite.imp.DBHelperImp {
+##############################################################
+-keep class com.jen.easy.sqlite.DBHelper {
     *;
 }
--keep class com.jen.easy.sqlite.imp.DBDaoImp {
+-keep class com.jen.easy.sqlite.DBDao {
     *;
 }
-###数据库模块
+-keep class com.jen.easy.sqlite.imp.DatabaseListener {
+    *;
+}
 
+##############################################################
 ###切面编程
--keep class com.jen.easy.aop.imp.DynamicProxyImp {
+##############################################################
+-keep class com.jen.easy.aop.DynamicProxy {
     *;
 }
-###切面编程
 
-###数据存储Share
--keep class com.jen.easy.share.imp.ShareImp {
+##############################################################
+###文件加密解密
+##############################################################
+-keep class com.jen.easy.decrypt.FileDecrypt {
     *;
 }
-###数据存储Share
 
-###工具类
--keep class com.jen.easy.util.imp.DataFormatImp {
+##############################################################
+###数据存储Share
+##############################################################
+-keep class com.jen.easy.share.Share {
     *;
 }
--keep class com.jen.easy.util.imp.StringToListImp {
+
+##############################################################
+###工具类
+##############################################################
+-keep class com.jen.easy.util.DataFormat {
     *;
 }
-###工具类
+-keep class com.jen.easy.util.StringToList {
+    *;
+}

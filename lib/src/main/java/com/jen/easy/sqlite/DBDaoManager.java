@@ -9,7 +9,6 @@ import android.database.sqlite.SQLiteDatabase;
 import com.jen.easy.EasyUtil;
 import com.jen.easy.constant.Constant;
 import com.jen.easy.log.EasyLog;
-import com.jen.easy.sqlite.imp.DBDaoImp;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -26,22 +25,21 @@ import static com.jen.easy.sqlite.DBReflectManager.getTableName;
  * Created by Jen on 2017/7/20.
  */
 
-public class DBDaoManager implements DBDaoImp {
+abstract class DBDaoManager {
     private final String TAG = "DBDaoManager : ";
     private Database database;
 
-    public DBDaoManager(Context context) {
+    protected DBDaoManager(Context context) {
         database = new Database(context);
     }
 
 
     /**
-     * @param clazz 要查找的对象
-     * @param id
-     * @return
+     * param clazz 要查找的对象
+     * param id
+     * return
      */
-    @Override
-    public Object searchById(Class clazz, String id) {
+    protected Object searchById(Class clazz, String id) {
         if (clazz == null || id == null) {
             EasyLog.w(TAG + "searchById clazz is null or id is null");
             return null;
@@ -75,17 +73,16 @@ public class DBDaoManager implements DBDaoImp {
 
     /**
      * 按条件查询
-     *
-     * @param clazz         (not null)
-     * @param selection     查询条件(not null)
-     * @param selectionArgs 条件参数(not null)
-     * @param orderBy       排序
-     * @param page          页数
-     * @param pageNo        大于0分页,小于等于0不分页
-     * @return
+     * <p>
+     * param clazz         (not null)
+     * param selection     查询条件(not null)
+     * param selectionArgs 条件参数(not null)
+     * param orderBy       排序
+     * param page          页数
+     * param pageNo        大于0分页,小于等于0不分页
+     * return
      */
-    @Override
-    public List<Object> searchByWhere(Class clazz, String selection, String[] selectionArgs, String orderBy, int page, int pageNo) {
+    protected List<Object> searchByWhere(Class clazz, String selection, String[] selectionArgs, String orderBy, int page, int pageNo) {
         List<Object> objs = new ArrayList<>();
         if (clazz == null) {
             EasyLog.w(TAG + "searchByWhere clazz is null or id is null");
@@ -122,49 +119,45 @@ public class DBDaoManager implements DBDaoImp {
 
     /**
      * 按条件查询
-     *
-     * @param clazz         (not null)
-     * @param selection     查询条件(not null)
-     * @param selectionArgs 条件参数(not null)
-     * @param orderBy       排序
-     * @return
+     * <p>
+     * param clazz         (not null)
+     * param selection     查询条件(not null)
+     * param selectionArgs 条件参数(not null)
+     * param orderBy       排序
+     * return
      */
-    @Override
-    public List<Object> searchByWhere(Class clazz, String selection, String[] selectionArgs, String orderBy) {
+    protected List<Object> searchByWhere(Class clazz, String selection, String[] selectionArgs, String orderBy) {
         return searchByWhere(clazz, selection, selectionArgs, orderBy, 0, 0);
     }
 
     /**
      * 查询所有
-     *
-     * @param clazz
-     * @return
+     * <p>
+     * param clazz
+     * return
      */
-    @Override
-    public List<Object> searchAll(Class clazz) {
+    protected List<Object> searchAll(Class clazz) {
         return searchByWhere(clazz, null, null, null, 0, 0);
     }
 
     /**
      * 查询所有
-     *
-     * @param clazz
-     * @param orderBy
-     * @return
+     * <p>
+     * param clazz
+     * param orderBy
+     * return
      */
-    @Override
-    public List<Object> searchAll(Class clazz, String orderBy) {
+    protected List<Object> searchAll(Class clazz, String orderBy) {
         return searchByWhere(clazz, null, null, orderBy, 0, 0);
     }
 
 
     /**
      * 插入数据
-     *
-     * @param obj
+     * <p>
+     * param obj
      */
-    @Override
-    public boolean insert(Object obj) {
+    protected boolean insert(Object obj) {
         if (obj == null || obj instanceof Class) {
             EasyLog.w(TAG + "insert obj is null");
             return false;
@@ -248,11 +241,10 @@ public class DBDaoManager implements DBDaoImp {
 
     /**
      * 插入或者更新数据
-     *
-     * @param obj
+     * <p>
+     * param obj
      */
-    @Override
-    public boolean replace(Object obj) {
+    protected boolean replace(Object obj) {
         if (obj == null || obj instanceof Class) {
             EasyLog.w(TAG + "replace obj is null");
             return false;
@@ -336,12 +328,11 @@ public class DBDaoManager implements DBDaoImp {
 
     /**
      * 删除
-     *
-     * @param clazz
-     * @param id
+     * <p>
+     * param clazz
+     * param id
      */
-    @Override
-    public boolean delete(Class clazz, String id) {
+    protected boolean delete(Class clazz, String id) {
         if (clazz == null || id == null) {
             EasyLog.w(TAG + "delete obj is null");
             return false;
@@ -375,12 +366,11 @@ public class DBDaoManager implements DBDaoImp {
 
     /**
      * 删除
-     *
-     * @param clazz
-     * @param ids
+     * <p>
+     * param clazz
+     * param ids
      */
-    @Override
-    public boolean delete(Class clazz, List<Object> ids) {
+    protected boolean delete(Class clazz, List<String> ids) {
         if (clazz == null || ids == null || ids.size() == 0) {
             EasyLog.w(TAG + "delete obj is null");
             return false;
@@ -400,7 +390,7 @@ public class DBDaoManager implements DBDaoImp {
         try {
             db.beginTransaction();
             for (int i = 0; i < ids.size(); i++) {
-                db.delete(tableName, primarys.get(0) + "=?", new String[]{ids.get(i).toString()});
+                db.delete(tableName, primarys.get(0) + "=?", new String[]{ids.get(i)});
             }
             db.setTransactionSuccessful();
             return true;
@@ -414,8 +404,56 @@ public class DBDaoManager implements DBDaoImp {
         return false;
     }
 
-    @Override
-    public boolean delete(Class clazz, String whereCause, String[] selectionArgs) {
+    /**
+     * 删除对象
+     * <p>
+     * param clazz
+     * param ids
+     */
+    protected boolean delete(List<Object> objects) {
+        if (objects == null || objects.size() == 0) {
+            EasyLog.w(TAG + "delete obj is null");
+            return false;
+        }
+        String tableName = getTableName(objects.get(0).getClass());
+        if (tableName == null) {
+            EasyLog.w(TAG + "delete tableName is null");
+            return false;
+        }
+        SQLiteDatabase db = database.getWritableDatabase();
+        try {
+            db.beginTransaction();
+            for (int i = 0; i < objects.size(); i++) {
+                Map<String, String> primaryKeys_values = DBReflectManager.getPrimaryKeysValues(objects.get(i));
+                if (primaryKeys_values.size() == 0)
+                    continue;
+                int index = 0;
+                StringBuffer whereCause = new StringBuffer("");
+                String[] selectArg = new String[primaryKeys_values.size()];
+                for (String key : primaryKeys_values.keySet()) {
+                    if (index > 0) {
+                        whereCause.append(" and ");
+                    }
+                    whereCause.append(key + "=?");
+                    selectArg[index] = primaryKeys_values.get(key);
+                    index++;
+                }
+                db.delete(tableName, whereCause.toString(), selectArg);
+            }
+            db.setTransactionSuccessful();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            EasyLog.e(TAG + "delete SQLException");
+        } finally {
+            db.endTransaction();
+            db.close();
+        }
+        return false;
+    }
+
+
+    protected boolean delete(Class clazz, String whereCause, String[] selectionArgs) {
         if (clazz == null || whereCause == null || selectionArgs == null || selectionArgs.length == 0) {
             EasyLog.w(TAG + "delete obj or selection or selectionArgs is error");
             return false;
@@ -443,11 +481,10 @@ public class DBDaoManager implements DBDaoImp {
 
     /**
      * 自定义操作
-     *
-     * @param sql
+     * <p>
+     * param sql
      */
-    @Override
-    public boolean execSQL(String sql) {
+    protected boolean execSQL(String sql) {
         SQLiteDatabase db = database.getWritableDatabase();
         try {
             db.beginTransaction();
@@ -462,36 +499,12 @@ public class DBDaoManager implements DBDaoImp {
         }
         return false;
     }
-
-    /**
-     * 自定义操作
-     *
-     * @param sql
-     * @param bindArgs 参数的值
-     */
-    @Override
-    public boolean execSQL(String sql, String[] bindArgs) {
-        SQLiteDatabase db = database.getWritableDatabase();
-        try {
-            db.beginTransaction();
-            db.execSQL(sql);
-            db.setTransactionSuccessful();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            EasyLog.e(TAG + "execSQL SQLException");
-        } finally {
-            db.endTransaction();
-            db.close();
-        }
-        return false;
-    }
-
 
     /**
      * 数据库存值
-     *
-     * @param obj
-     * @return
+     * <p>
+     * param obj
+     * return
      */
     private ContentValues cntentValues(Object obj, Map<String, Object> objectMap) {
         Map<String, Field> column_field = (Map<String, Field>) objectMap.get(COLUMN_FIELD);
@@ -523,7 +536,7 @@ public class DBDaoManager implements DBDaoImp {
                 } else if (value instanceof Boolean) {
                     values.put(column, (Boolean) value);
                 } else if (value instanceof Date) {
-                    values.put(column, EasyUtil.DateFormat.format((Date) value));
+                    values.put(column, EasyUtil.dateFormat.format((Date) value));
                 } else if (column_foreignKey.containsKey(column)) {//其他类型用外键处理（比如：对象）
                     if (type.contains(Constant.FieldType.OBJECT)) {
                         EasyLog.e(TAG + "cntentValues class java.lang.Object");
@@ -566,11 +579,11 @@ public class DBDaoManager implements DBDaoImp {
 
     /**
      * cursor赋值到对象
-     *
-     * @param clazz
-     * @param column_field
-     * @param cursor
-     * @return
+     * <p>
+     * param clazz
+     * param column_field
+     * param cursor
+     * return
      */
     private Object valuation(Class clazz, Map<String, Field> column_field, Cursor cursor) {
         Object obj = null;
@@ -610,7 +623,7 @@ public class DBDaoManager implements DBDaoImp {
                     field.set(obj, value);
                 } else if (type.equals(Constant.FieldType.DATE)) {
                     String value = cursor.getString(cursor.getColumnIndex(column));
-                    Date date = EasyUtil.DateFormat.parser(value);
+                    Date date = EasyUtil.dateFormat.parser(value);
                     field.set(obj, date);
                 }
             }

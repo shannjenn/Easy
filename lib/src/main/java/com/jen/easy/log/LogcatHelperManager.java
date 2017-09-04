@@ -1,7 +1,6 @@
 package com.jen.easy.log;
 
-import com.jen.easy.EasyListener;
-import com.jen.easy.log.imp.LogcatHelperImp;
+import com.jen.easy.log.imp.CrashListener;
 
 /**
  * ClassName:LogcatHelperManager Function: log日志统计保存
@@ -11,9 +10,9 @@ import com.jen.easy.log.imp.LogcatHelperImp;
  * @see
  * @since Ver 1.1
  */
-public class LogcatHelperManager implements LogcatHelperImp {
+abstract class LogcatHelperManager {
 
-    public LogcatHelperManager() {
+    protected LogcatHelperManager() {
         init();
     }
 
@@ -27,8 +26,7 @@ public class LogcatHelperManager implements LogcatHelperImp {
      *
      * @param path
      */
-    @Override
-    public void setLogPath(String path) {
+    protected void setLogPath(String path) {
         LogcatPath.setLogPath(path);
     }
 
@@ -37,16 +35,14 @@ public class LogcatHelperManager implements LogcatHelperImp {
      *
      * @param level :'d','i','w','e'
      */
-    @Override
-    public void setLevel(char level) {
+    protected void setLevel(char level) {
         LogDumper.getInstance().setLogLevel(level);
     }
 
     /**
      * 开始日志记录
      */
-    @Override
-    public void start() {
+    protected void start() {
         if (LogcatPath.getLogPath() == null) {
             EasyLog.w("日志路径为空，LogcatHelper日志未能启动--------------------");
             return;
@@ -59,17 +55,15 @@ public class LogcatHelperManager implements LogcatHelperImp {
     /**
      * 停止日志记录
      */
-    @Override
-    public void stop() {
+    protected void stop() {
         LogDumper.getInstance().stopLogs();
         LogcatCrash.getInstance().stop();
     }
 
     /**
-     * 未抓取崩溃监听
+     * 抓取崩溃监听
      */
-    @Override
-    public void setListener(EasyListener.LOG.CrashListener listener) {
+    protected void setListener(CrashListener listener) {
         LogcatCrash.getInstance().setListener(listener);
     }
 }

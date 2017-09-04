@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.jen.easy.EasyUtil;
-import com.jen.easy.share.imp.ShareImp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +13,13 @@ import java.util.List;
  * 时间：2017/8/14.
  */
 
-public class ShareManager implements ShareImp {
+abstract class ShareManager {
     private static final String xmlFileName = "easyShare";
     private SharedPreferences config;
     private SharedPreferences.Editor editor;
 
 
-    public ShareManager(Context context) {
+    protected ShareManager(Context context) {
         config = context.getSharedPreferences(xmlFileName, Context.MODE_PRIVATE);
     }
 
@@ -31,8 +30,7 @@ public class ShareManager implements ShareImp {
      * @param defaultValue
      * @return
      */
-    @Override
-    public String getString(String name, String defaultValue) {
+    protected String getString(String name, String defaultValue) {
         return config.getString(name, defaultValue);
     }
 
@@ -42,8 +40,7 @@ public class ShareManager implements ShareImp {
      * @param name
      * @param value
      */
-    @Override
-    public void setString(String name, String value) {
+    protected void setString(String name, String value) {
         editor = config.edit();
         editor.putString(name, value);
         editor.apply();
@@ -56,8 +53,7 @@ public class ShareManager implements ShareImp {
      * @param name
      * @return
      */
-    @Override
-    public boolean getBoolean(String name) {
+    protected boolean getBoolean(String name) {
         return config.getBoolean(name, false);
     }
 
@@ -67,8 +63,7 @@ public class ShareManager implements ShareImp {
      * @param name
      * @param value
      */
-    @Override
-    public void setBoolean(String name, boolean value) {
+    protected void setBoolean(String name, boolean value) {
         editor = config.edit();
         editor.putBoolean(name, value);
         editor.apply();
@@ -81,8 +76,7 @@ public class ShareManager implements ShareImp {
      * @param defau
      * @return
      */
-    @Override
-    public int getInt(String name, int defau) {
+    protected int getInt(String name, int defau) {
         return config.getInt(name, defau);
     }
 
@@ -92,8 +86,7 @@ public class ShareManager implements ShareImp {
      * @param name
      * @param value
      */
-    @Override
-    public void setInt(String name, int value) {
+    protected void setInt(String name, int value) {
         editor = config.edit();
         editor.putInt(name, value);
         editor.apply();
@@ -106,8 +99,7 @@ public class ShareManager implements ShareImp {
      * @param list
      * @return
      */
-    @Override
-    public <T> boolean setList(String name, List<T> list) {
+    protected <T> boolean setList(String name, List<T> list) {
         String value = EasyUtil.StrList.list2String(list);
         if (value == null) {
             return false;
@@ -122,8 +114,7 @@ public class ShareManager implements ShareImp {
      * @param name
      * @return
      */
-    @Override
-    public <T> List<T> getList(String name) {
+    protected <T> List<T> getList(String name) {
         List<T> valueLlist = new ArrayList<T>();
         String value = getString(name, null);
         if (null == value) {
@@ -140,8 +131,7 @@ public class ShareManager implements ShareImp {
      * @param name
      * @return
      */
-    @Override
-    public Object getObject(String name) {
+    protected Object getObject(String name) {
         String value = getString(name, null);
         if (null == value) {
             return null;
@@ -157,8 +147,7 @@ public class ShareManager implements ShareImp {
      * @param obj
      * @return
      */
-    @Override
-    public boolean setObject(String name, Object obj) {
+    protected boolean setObject(String name, Object obj) {
         String value = EasyUtil.StrList.object2String(obj);
         if (null == value) {
             return false;
@@ -167,8 +156,7 @@ public class ShareManager implements ShareImp {
         return true;
     }
 
-    @Override
-    public void removeValue(String name) {
+    protected void removeValue(String name) {
         editor = config.edit();
         editor.remove(name);
         editor.apply();

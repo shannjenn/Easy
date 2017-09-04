@@ -8,7 +8,7 @@ import java.io.RandomAccessFile;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
-public class FileDecryptManager {
+abstract class FileDecryptManager {
     private final String TAG = "FileDecryptManager : ";
 
     /**
@@ -17,7 +17,7 @@ public class FileDecryptManager {
      * @param strFile 源文件绝对路径
      * @return
      */
-    public boolean encrypt(String strFile, String password) {
+    protected boolean encrypt(String strFile, String password) {
         File file = new File(strFile);
         if (!file.exists() || !isDecripted(strFile)) {
             return true;
@@ -52,7 +52,7 @@ public class FileDecryptManager {
             buffer.clear();
             channel.close();
             raf.close();
-            EasyMain.Share.setBoolean(strFile, false);
+            EasyMain.SHARE.setBoolean(strFile, false);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,7 +67,7 @@ public class FileDecryptManager {
      * @param strFile 源文件绝对路径
      * @return
      */
-    public boolean decrypt(String strFile, String password) {
+    protected boolean decrypt(String strFile, String password) {
         File file = new File(strFile);
         if (!file.exists() || isDecripted(strFile)) {
             return true;
@@ -102,7 +102,7 @@ public class FileDecryptManager {
             buffer.clear();
             channel.close();
             raf.close();
-            EasyMain.Share.setBoolean(strFile, true);
+            EasyMain.SHARE.setBoolean(strFile, true);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -118,7 +118,7 @@ public class FileDecryptManager {
      * @return
      */
     private boolean isDecripted(String strFile) {
-        boolean result = EasyMain.Share.getBoolean(strFile);//true为已经加密
+        boolean result = EasyMain.SHARE.getBoolean(strFile);//true为已经加密
         return result;
     }
 }

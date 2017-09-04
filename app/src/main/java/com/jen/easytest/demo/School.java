@@ -1,6 +1,6 @@
 package com.jen.easytest.demo;
 
-import com.jen.easy.EasyFactory;
+import com.jen.easy.http.BaseParamRequest;
 
 import java.util.List;
 import java.util.Map;
@@ -10,7 +10,7 @@ import java.util.Map;
  * 时间：2017/8/20.
  */
 
-public class School extends EasyFactory.HTTP.BaseParamRequest {
+public class School extends BaseParamRequest {
 
 
     private String id;

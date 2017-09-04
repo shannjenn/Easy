@@ -3,10 +3,9 @@ package com.jen.easy.log;
 import android.util.Log;
 
 /**
- * @author Jen
- * @Date 2017年7月13日 下午2:23:52
- * @see
- * @since 1.0.0
+ * 作者：ShannJenn
+ * 时间：2017/8/12.
+ * 说明：Easy框架日志输出
  */
 public class EasyLog {
     private static String TAG = EasyLog.class.getSimpleName();

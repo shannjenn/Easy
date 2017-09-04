@@ -5,33 +5,31 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
-import com.jen.easy.EasyListener;
 import com.jen.easy.constant.Constant;
 import com.jen.easy.log.EasyLog;
-import com.jen.easy.sqlite.imp.DBHelperImp;
+import com.jen.easy.sqlite.imp.DatabaseListener;
 
 import java.util.List;
 import java.util.Map;
 
-public class DBHelperManager implements DBHelperImp {
+abstract class DBHelperManager {
     private final String TAG = "DBHelperManager : ";
     private Database database;
 
-    public DBHelperManager(Context context) {
+    protected DBHelperManager(Context context) {
         if (database == null) {
             database = new Database(context);
         }
     }
 
-    @Override
-    public void create() {
+    protected void create() {
         SQLiteDatabase db = database.createDB();
         if (db != null)
             db.close();
     }
 
     /*@Override
-    public void create(String password) {
+    protected void create(String password) {
         database.createDB(password);
     }*/
 
@@ -40,8 +38,7 @@ public class DBHelperManager implements DBHelperImp {
      *
      * @return
      */
-    @Override
-    public SQLiteDatabase getReadDatabse() {
+    protected SQLiteDatabase getReadDatabse() {
         return database.getReadableDatabase();
     }
 
@@ -50,8 +47,7 @@ public class DBHelperManager implements DBHelperImp {
      *
      * @return
      */
-    @Override
-    public SQLiteDatabase getWtriteDatabse() {
+    protected SQLiteDatabase getWtriteDatabse() {
         return database.getWritableDatabase();
     }
 
@@ -60,8 +56,7 @@ public class DBHelperManager implements DBHelperImp {
      *
      * @param clazz 传入对象
      */
-    @Override
-    public void createTB(Class clazz) {
+    protected void createTB(Class clazz) {
         if (clazz == null) {
             EasyLog.w(TAG + "createTB error:classObj is null");
             return;
@@ -138,8 +133,7 @@ public class DBHelperManager implements DBHelperImp {
      *
      * @param tableName 表名
      */
-    @Override
-    public boolean deleteTB(String tableName) {
+    protected boolean deleteTB(String tableName) {
         if (TextUtils.isEmpty(tableName)) {
             return false;
         }
@@ -165,8 +159,7 @@ public class DBHelperManager implements DBHelperImp {
      *
      * @param clazz
      */
-    @Override
-    public void deleteTB(Class clazz) {
+    protected void deleteTB(Class clazz) {
         String tableName = DBReflectManager.getTableName(clazz);
         deleteTB(tableName);
     }
@@ -176,8 +169,7 @@ public class DBHelperManager implements DBHelperImp {
      *
      * @param clazz
      */
-    @Override
-    public void rebuildTB(Class clazz) {
+    protected void rebuildTB(Class clazz) {
         deleteTB(clazz);
         createTB(clazz);
     }
@@ -187,8 +179,7 @@ public class DBHelperManager implements DBHelperImp {
      * @param columnName 列名
      * @param fieldType  FieldType
      */
-    @Override
-    public void addColumn(String tableName, String columnName, String fieldType) {
+    protected void addColumn(String tableName, String columnName, String fieldType) {
         SQLiteDatabase db = getWtriteDatabse();
         boolean existTB = database.checkTableExist(db, tableName);
         if (!existTB) {
@@ -219,28 +210,19 @@ public class DBHelperManager implements DBHelperImp {
      *
      * @param databaseListener
      */
-    @Override
-    public void setDatabaseListener(EasyListener.DB.DatabaseListener databaseListener) {
+    protected void setDatabaseListener(DatabaseListener databaseListener) {
         database.setListener(databaseListener);
     }
 
-    @Override
-    public void setVersion(int version) {
+    protected void setVersion(int version) {
         database.setVersion(version);
     }
 
-    @Override
-    public int getVersion() {
+    protected int getVersion() {
         return database.getVersion();
     }
 
-    @Override
-    public String getTBName(Class clazz) {
-        return DBReflectManager.getTableName(clazz);
-    }
-
-    @Override
-    public String getDBName() {
+    protected String getDBName() {
         return database.getName();
     }
 }

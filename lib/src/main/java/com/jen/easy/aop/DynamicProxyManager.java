@@ -12,7 +12,7 @@ import java.lang.reflect.Proxy;
  * 创建人：ShannJenn
  * 时间：2017/8/14.
  */
-public class DynamicProxyManager implements InvocationHandler {
+abstract class DynamicProxyManager implements InvocationHandler {
     private final String TAG = "DynamicProxyManager : ";
     private Object target;
 
@@ -23,9 +23,9 @@ public class DynamicProxyManager implements InvocationHandler {
     private Object[] beforeParams;
     private Object[] afterParams;
 
-    public Object bind(Object target) {
+    protected Object bind(Object target) {
         if (target == null || target instanceof Class) {
-            EasyLog.e(TAG + "bind 绑定对象为空");
+            EasyLog.e(TAG + "BIND 绑定对象为空");
             return null;
         }
         this.target = target;
@@ -33,15 +33,15 @@ public class DynamicProxyManager implements InvocationHandler {
             return Proxy.newProxyInstance(target.getClass().getClassLoader(), target.getClass().getInterfaces(), this);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "bind 切入对象为空");
+            EasyLog.e(TAG + "BIND 切入对象为空");
         }
         return null;
     }
 
-    public DynamicProxyManager setBeforeMethod(Class<?> beforeClzz, Object... beforeParams) {
+    protected void setBeforeMethod(Class<?> beforeClzz, Object... beforeParams) {
         if (beforeClzz == null) {
-            EasyLog.e(TAG + "bind 切入对象为空");
-            return this;
+            EasyLog.e(TAG + "BIND 切入对象为空");
+            return;
         }
         try {
             beforeMethod = AOPReflectManager.getBefore(beforeClzz);
@@ -55,18 +55,17 @@ public class DynamicProxyManager implements InvocationHandler {
             }
         } catch (InstantiationException e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "bind InstantiationException");
+            EasyLog.e(TAG + "BIND InstantiationException");
         } catch (IllegalAccessException e) {
-            EasyLog.e(TAG + "bind IllegalAccessException");
+            EasyLog.e(TAG + "BIND IllegalAccessException");
             e.printStackTrace();
         }
-        return this;
     }
 
-    public DynamicProxyManager setAfterMethod(Class<?> afterClzz, Object... afterParams) {
+    protected void setAfterMethod(Class<?> afterClzz, Object... afterParams) {
         if (afterClzz == null) {
             EasyLog.e(TAG + "切入对象为空");
-            return this;
+            return;
         }
         try {
             afterMethod = AOPReflectManager.getAfter(afterClzz);
@@ -86,7 +85,6 @@ public class DynamicProxyManager implements InvocationHandler {
             EasyLog.e(TAG + "DynamicProxyManager IllegalAccessException");
 
         }
-        return this;
     }
 
     @Override

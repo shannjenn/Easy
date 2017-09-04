@@ -1,8 +1,6 @@
 package com.jen.easy.http;
 
-import com.jen.easy.EasyFactory;
 import com.jen.easy.constant.Constant;
-import com.jen.easy.http.imp.HttpImp;
 import com.jen.easy.log.EasyLog;
 
 import java.util.concurrent.ExecutorService;
@@ -12,7 +10,7 @@ import java.util.concurrent.Executors;
  * Created by Jen on 2017/7/21.
  */
 
-public class HttpManager implements HttpImp {
+abstract class HttpManager {
     private final String TAG = "HttpManager : ";
     private ExecutorService pool;
     private int maxThreadSize = 100;
@@ -26,7 +24,7 @@ public class HttpManager implements HttpImp {
     private int readTimeout = 30 * 1000;
 
 
-    public HttpManager() {
+    protected HttpManager() {
         pool = Executors.newFixedThreadPool(maxThreadSize);
     }
 
@@ -35,21 +33,20 @@ public class HttpManager implements HttpImp {
      *
      * @param param
      */
-    @Override
-    public void start(HttpParam param) {
+    protected void start(HttpParam param) {
         if (param == null) {
             EasyLog.w(TAG + "start 参数为空");
             return;
         }
         setDefault(param);
-        if (param instanceof EasyFactory.HTTP.UploadParamRequest) {
-            HttpURLConnectionUploadRunable upload = new HttpURLConnectionUploadRunable((EasyFactory.HTTP.UploadParamRequest) param);
+        if (param instanceof UploadParamRequest) {
+            HttpURLConnectionUploadRunable upload = new HttpURLConnectionUploadRunable((UploadParamRequest) param);
             pool.execute(upload);
-        } else if (param instanceof EasyFactory.HTTP.DownloadParamRequest) {
-            HttpURLConnectionDownloadRunable download = new HttpURLConnectionDownloadRunable((EasyFactory.HTTP.DownloadParamRequest) param);
+        } else if (param instanceof DownloadParamRequest) {
+            HttpURLConnectionDownloadRunable download = new HttpURLConnectionDownloadRunable((DownloadParamRequest) param);
             pool.execute(download);
         } else {
-            HttpURLConnectionRunable httpURLConnectionRunable = new HttpURLConnectionRunable((EasyFactory.HTTP.BaseParamRequest) param);
+            HttpURLConnectionRunable httpURLConnectionRunable = new HttpURLConnectionRunable((BaseParamRequest) param);
             pool.execute(httpURLConnectionRunable);
         }
     }
@@ -79,8 +76,7 @@ public class HttpManager implements HttpImp {
      *
      * @param method
      */
-    @Override
-    public void setDefaultMethod(String method) {
+    protected void setMethod(String method) {
         this.method = method;
     }
 
@@ -89,8 +85,7 @@ public class HttpManager implements HttpImp {
      *
      * @param charset
      */
-    @Override
-    public void setDefaultCharset(String charset) {
+    protected void setCharset(String charset) {
         this.charset = charset;
     }
 
@@ -100,8 +95,7 @@ public class HttpManager implements HttpImp {
      *
      * @param contentType
      */
-    @Override
-    public void setDefaultContentType(String contentType) {
+    protected void setContentType(String contentType) {
         this.contentType = contentType;
     }
 
@@ -110,8 +104,7 @@ public class HttpManager implements HttpImp {
      *
      * @param timeout
      */
-    @Override
-    public void setDefaultTimeout(int timeout) {
+    protected void setTimeout(int timeout) {
         this.timeout = timeout;
     }
 
@@ -120,8 +113,7 @@ public class HttpManager implements HttpImp {
      *
      * @param readTimeout
      */
-    @Override
-    public void setDefaultReadTimeout(int readTimeout) {
+    protected void setReadTimeout(int readTimeout) {
         this.readTimeout = readTimeout;
     }
 
@@ -130,8 +122,7 @@ public class HttpManager implements HttpImp {
      *
      * @param connection
      */
-    @Override
-    public void setDefaultConnection(String connection) {
+    protected void setConnection(String connection) {
         this.connection = connection;
     }
 
@@ -140,8 +131,7 @@ public class HttpManager implements HttpImp {
      *
      * @param maxThreadSize
      */
-    @Override
-    public void setMaxThreadSize(int maxThreadSize) {
+    protected void setMaxThreadSize(int maxThreadSize) {
         this.maxThreadSize = maxThreadSize;
     }
 

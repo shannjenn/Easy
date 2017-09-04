@@ -2,7 +2,6 @@ package com.jen.easy.http;
 
 import android.text.TextUtils;
 
-import com.jen.easy.EasyFactory;
 import com.jen.easy.log.EasyLog;
 
 import java.io.BufferedReader;
@@ -17,9 +16,9 @@ import java.net.URL;
 
 class HttpURLConnectionUploadRunable implements Runnable {
     private final String TAG = "HttpURLConnectionUploadRunable : ";
-    private EasyFactory.HTTP.UploadParamRequest param;
+    private UploadParamRequest param;
 
-    HttpURLConnectionUploadRunable(EasyFactory.HTTP.UploadParamRequest param) {
+    HttpURLConnectionUploadRunable(UploadParamRequest param) {
         super();
         this.param = param;
     }

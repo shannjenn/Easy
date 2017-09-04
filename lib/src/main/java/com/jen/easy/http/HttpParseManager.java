@@ -116,7 +116,7 @@ class HttpParseManager {
                         field.setBoolean(object, value);
                     } else if (type.equals(Constant.FieldType.DATE)) {
                         String value = jsonObject.getString(param);
-                        Date date = EasyUtil.DateFormat.parser(value);
+                        Date date = EasyUtil.dateFormat.parser(value);
                         field.set(object, date);
                     } else if (type.contains(Constant.FieldType.MAP)) {
                         EasyLog.e(TAG + "parseJsonObject Constant.FieldType.MAP 不支持Map类型");

@@ -4,10 +4,10 @@ package com.jen.easy.http;
  * Created by Jen on 2017/7/26.
  */
 
-public abstract class HttpParam {
+abstract class HttpParam {
     public HTTP http = new HTTP();
 
-    public final class HTTP {
+    protected final class HTTP {
         public String url;
         public String method;
         public String charset;

@@ -112,7 +112,6 @@ class DBReflectManager {
             EasyLog.e(TAG + "getPrimaryKeyValue clazz is not null");
             return null;
         }
-
         Field[] fields = obj.getClass().getDeclaredFields();
         for (int i = 0; i < fields.length; i++) {
             boolean isAnno = fields[i].isAnnotationPresent(EasyMouse.DB.Column.class);
@@ -122,6 +121,7 @@ class DBReflectManager {
             String columnName = columnClass.columnName().trim();
             if (columnName.equals(primaryKey)) {
                 try {
+                    fields[i].setAccessible(true);
                     String value = fields[i].get(obj) + "";
                     return value;
                 } catch (IllegalAccessException e) {
@@ -130,5 +130,37 @@ class DBReflectManager {
             }
         }
         return null;
+    }
+
+    /**
+     * 获取字字段(只获取一个key)
+     *
+     * @param obj
+     * @return
+     */
+    static Map<String, String> getPrimaryKeysValues(Object obj) {
+        Map<String, String> primaryKeys_values = new HashMap<>();
+        if (obj == null || obj instanceof Class) {
+            EasyLog.e(TAG + "getPrimaryKeyValue clazz is not null");
+            return primaryKeys_values;
+        }
+        Field[] fields = obj.getClass().getDeclaredFields();
+        for (int i = 0; i < fields.length; i++) {
+            boolean isAnno = fields[i].isAnnotationPresent(EasyMouse.DB.Column.class);
+            if (!isAnno)
+                continue;
+            EasyMouse.DB.Column columnClass = fields[i].getAnnotation(EasyMouse.DB.Column.class);
+            if (columnClass.primaryKey()) {
+                String columnName = columnClass.columnName().trim();
+                fields[i].setAccessible(true);
+                try {
+                    String value = fields[i].get(obj) + "";
+                    primaryKeys_values.put(columnName, value);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return primaryKeys_values;
     }
 }
