@@ -51,7 +51,7 @@
 -keep class com.jen.easy.EasyMain {
     *;
 }
--keep class com.jen.easy.EasyMouse$* {
+-keep class com.jen.easy.EasyMouse* {
     *;
 }
 -keep class com.jen.easy.EasyUtil {
@@ -71,16 +71,16 @@
 -keep class com.jen.easy.http.Http {
     *;
 }
--keep class com.jen.easy.http.HttpParam$* {
+-keep class com.jen.easy.http.HttpParam* {
     *;
 }
--keep class com.jen.easy.http.BaseParamRequest$* {
+-keep class com.jen.easy.http.BaseParamRequest* {
+     *;
+}
+-keep class com.jen.easy.http.DownloadParamRequest* {
     *;
 }
--keep class com.jen.easy.http.DownloadParamRequest$* {
-    *;
-}
--keep class com.jen.easy.http.UploadParamRequest$* {
+-keep class com.jen.easy.http.UploadParamRequest* {
     *;
 }
 -keep class com.jen.easy.http.imp.HttpBaseListener {
@@ -105,7 +105,7 @@
 -keep class com.jen.easy.log.LogcatHelper {
     *;
 }
--keep class com.jen.easy.log.imp.CrashListener {
+-keep class com.jen.easy.log.imp.LogCrashListener {
     *;
 }
 

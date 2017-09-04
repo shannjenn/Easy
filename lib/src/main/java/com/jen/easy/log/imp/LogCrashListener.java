@@ -5,7 +5,7 @@ package com.jen.easy.log.imp;
  * 时间：2017/9/4:21:39
  * 说明：日志抓取监听
  */
-public interface CrashListener {
+public interface LogCrashListener {
 
     /**
      * 崩溃信息抓取

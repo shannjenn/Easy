@@ -1,6 +1,6 @@
 package com.jen.easy.log;
 
-import com.jen.easy.log.imp.CrashListener;
+import com.jen.easy.log.imp.LogCrashListener;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,7 +10,7 @@ import java.lang.Thread.UncaughtExceptionHandler;
 
 class LogcatCrash implements UncaughtExceptionHandler {
     private static LogcatCrash instance; // 单例模式
-    private CrashListener mListener;
+    private LogCrashListener mListener;
     private UncaughtExceptionHandler defalutHandler; // 系统默认的UncaughtException处理类
 
     private LogcatCrash() {
@@ -82,7 +82,7 @@ class LogcatCrash implements UncaughtExceptionHandler {
         }
     }
 
-    void setListener(CrashListener listener) {
+    void setListener(LogCrashListener listener) {
         this.mListener = listener;
     }
 

@@ -222,6 +222,10 @@ abstract class DBHelperManager {
         return database.getVersion();
     }
 
+    protected String getTBName(Class clazz) {
+        return DBReflectManager.getTableName(clazz);
+    }
+
     protected String getDBName() {
         return database.getName();
     }

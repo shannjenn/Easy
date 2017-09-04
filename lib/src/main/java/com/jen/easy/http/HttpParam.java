@@ -7,7 +7,7 @@ package com.jen.easy.http;
 abstract class HttpParam {
     public HTTP http = new HTTP();
 
-    protected final class HTTP {
+    public final class HTTP {
         public String url;
         public String method;
         public String charset;

@@ -133,6 +133,16 @@ public class DBHelper extends DBHelperManager {
     }
 
     /**
+     * 获取表名称
+     *
+     * @return 表名称
+     */
+    @Override
+    public String getTBName(Class clazz) {
+        return super.getTBName(clazz);
+    }
+
+    /**
      * 获取数据库名称
      *
      * @return 数据库名称

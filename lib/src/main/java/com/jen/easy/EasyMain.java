@@ -47,7 +47,7 @@ public final class EasyMain {
     /**
      * 日志取
      */
-    public static final LogcatHelper Logcat;
+    public static final LogcatHelper Log;
     /**
      * 数据存储SharedPreferences
      */
@@ -59,7 +59,7 @@ public final class EasyMain {
         BIND = new Bind();
         HTTP = new Http();
 //        Parse = new HttpParseManager();
-        Logcat = new LogcatHelper();
+        Log = new LogcatHelper();
 
         if (EasyApplication.getAppContext() != null) {
             SHARE = new Share(EasyApplication.getAppContext());

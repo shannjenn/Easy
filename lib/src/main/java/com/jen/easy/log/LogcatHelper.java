@@ -1,6 +1,6 @@
 package com.jen.easy.log;
 
-import com.jen.easy.log.imp.CrashListener;
+import com.jen.easy.log.imp.LogCrashListener;
 
 /**
  * 作者：ShannJenn
@@ -56,7 +56,7 @@ public class LogcatHelper extends LogcatHelperManager {
      * 抓取崩溃监听
      */
     @Override
-    public void setListener(CrashListener listener) {
+    public void setListener(LogCrashListener listener) {
         super.setListener(listener);
     }
 }
