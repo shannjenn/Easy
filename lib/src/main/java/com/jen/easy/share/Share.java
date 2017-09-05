@@ -21,20 +21,20 @@ public class Share extends ShareManager {
     /**
      * 获取string
      *
-     * @param name
-     * @param defaultValue
-     * @return
+     * @param name         参数
+     * @param defaultValue 默认值
+     * @return 值
      */
     @Override
     public String getString(String name, String defaultValue) {
         return super.getString(name, defaultValue);
     }
 
-    /*
+    /**
      * 保存string
      *
-     * @param name
-     * @param value
+     * @param name  参数
+     * @param value 值
      */
     @Override
     public void setString(String name, String value) {
@@ -44,8 +44,8 @@ public class Share extends ShareManager {
     /**
      * 获取boolean
      *
-     * @param name
-     * @return
+     * @param name 参数
+     * @return 值
      */
     @Override
     public boolean getBoolean(String name) {
@@ -55,8 +55,8 @@ public class Share extends ShareManager {
     /**
      * 保存boolean
      *
-     * @param name
-     * @param value
+     * @param name  参数
+     * @param value 值
      */
     @Override
     public void setBoolean(String name, boolean value) {
@@ -66,20 +66,20 @@ public class Share extends ShareManager {
     /**
      * 获取int
      *
-     * @param name
-     * @param defau
-     * @return
+     * @param name  参数
+     * @param defaut 默认值
+     * @return 值
      */
     @Override
-    public int getInt(String name, int defau) {
-        return super.getInt(name, defau);
+    public int getInt(String name, int defaut) {
+        return super.getInt(name, defaut);
     }
 
     /**
      * 保存int
      *
-     * @param name
-     * @param value
+     * @param name 参数
+     * @param value 值
      */
     @Override
     public void setInt(String name, int value) {
@@ -89,9 +89,9 @@ public class Share extends ShareManager {
     /**
      * 保存list
      *
-     * @param name
-     * @param list
-     * @return
+     * @param name 参数
+     * @param list 值
+     * @return 是否成功
      */
     @Override
     public <T> boolean setList(String name, List<T> list) {
@@ -101,8 +101,8 @@ public class Share extends ShareManager {
     /**
      * 获取list
      *
-     * @param name
-     * @return
+     * @param name 参数
+     * @return 值
      */
     @Override
     public <T> List<T> getList(String name) {
@@ -112,8 +112,8 @@ public class Share extends ShareManager {
     /**
      * 获取object
      *
-     * @param name
-     * @return
+     * @param name 参数
+     * @return 值
      */
     @Override
     public Object getObject(String name) {
@@ -123,9 +123,9 @@ public class Share extends ShareManager {
     /**
      * 设置object
      *
-     * @param name
-     * @param obj
-     * @return
+     * @param name 参数
+     * @param obj  值
+     * @return 是否成功
      */
     @Override
     public boolean setObject(String name, Object obj) {
@@ -135,8 +135,7 @@ public class Share extends ShareManager {
     /**
      * 删除
      *
-     * @param name
-     * @return
+     * @param name 参数
      */
     @Override
     public void removeValue(String name) {

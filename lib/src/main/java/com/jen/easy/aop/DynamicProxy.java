@@ -10,8 +10,8 @@ public class DynamicProxy extends DynamicProxyManager {
     /**
      * 绑定对象
      *
-     * @param target
-     * @return
+     * @param target 对象
+     * @return 类
      */
     @Override
     public Object bind(Object target) {
@@ -21,9 +21,8 @@ public class DynamicProxy extends DynamicProxyManager {
     /**
      * 切入前执行
      *
-     * @param beforeClzz
-     * @param beforeParams
-     * @return
+     * @param beforeClzz   切入前类
+     * @param beforeParams 切入参数
      */
     @Override
     public void setBeforeMethod(Class<?> beforeClzz, Object... beforeParams) {
@@ -33,9 +32,8 @@ public class DynamicProxy extends DynamicProxyManager {
     /**
      * 切入后执行
      *
-     * @param afterClzz
-     * @param afterParams
-     * @return
+     * @param afterClzz   切入后类
+     * @param afterParams 切入参数
      */
     @Override
     public void setAfterMethod(Class<?> afterClzz, Object... afterParams) {

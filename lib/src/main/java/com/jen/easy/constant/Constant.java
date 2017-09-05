@@ -49,30 +49,36 @@ public final class Constant {
          * 获取表中字段类型
          *
          * @param fieldType 对象变量类型
-         * @return表中字段类型
+         * @return 表中字段类型
          */
         public static String getDBCoumnType(String fieldType) {
             String type = "TEXT";
-            if (fieldType.equals(CHAR) || fieldType.equals(STRING)) {
-                type = "TEXT";
-            } else if (fieldType.equals(BYTE) || fieldType.equals(SHORT)
-                    || fieldType.equals(INTEGER) || fieldType.equals(LONG)) {
-                type = "INTEEGER";
-            } else if (fieldType.equals(FLOAT) || fieldType.equals(DOUBLE)) {
-                type = "REAL";
-            } else if (fieldType.equals(BOOLEAN)) {
-                type = "INTEEGER";
-            } else if (fieldType.equals(DATE)) {
-                type = "TEXT";
+            switch (fieldType) {
+                case CHAR:
+                case STRING:
+                    type = "TEXT";
+                    break;
+                case BYTE:
+                case SHORT:
+                case INTEGER:
+                case LONG:
+                    type = "INTEEGER";
+                    break;
+                case FLOAT:
+                case DOUBLE:
+                    type = "REAL";
+                    break;
+                case BOOLEAN:
+                    type = "INTEEGER";
+                    break;
+                case DATE:
+                    type = "TEXT";
+                    break;
             }
             return type;
         }
     }
 
-    /**
-     * 创建人：ShannJenn
-     * 时间：2017/8/15.
-     */
 
     public static final class DB {
         /**

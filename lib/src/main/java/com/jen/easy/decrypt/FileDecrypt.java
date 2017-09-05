@@ -12,7 +12,7 @@ public class FileDecrypt extends FileDecryptManager {
      *
      * @param strFile  文件路径
      * @param password 密码
-     * @return
+     * @return 解密是否成功
      */
     @Override
     public boolean encrypt(String strFile, String password) {
@@ -24,7 +24,7 @@ public class FileDecrypt extends FileDecryptManager {
      *
      * @param strFile  文件路径
      * @param password 密码
-     * @return
+     * @return 加密是否成功
      */
     @Override
     public boolean decrypt(String strFile, String password) {

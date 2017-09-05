@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * 作者：ShannJenn
  * 时间：2017/8/12.
- * 说明：数据库表操作类
+ * 说明：数据库表操作类（结合注释@EasyMouse.DB使用）
  */
 public class DBDao extends DBDaoManager {
 
@@ -19,8 +19,8 @@ public class DBDao extends DBDaoManager {
      * 按ID查询
      *
      * @param clazz 要查找的类(如：Student.class)
-     * @param id
-     * @return
+     * @param id    ID
+     * @return 类
      */
     @Override
     public Object searchById(Class clazz, String id) {
@@ -37,7 +37,7 @@ public class DBDao extends DBDaoManager {
      * @param orderBy       排序
      * @param page          页数
      * @param pageNo        大于0分页,小于等于0不分页
-     * @return
+     * @return 类列表
      */
     @Override
     public List<Object> searchByWhere(Class clazz, String selection, String[] selectionArgs, String orderBy, int page, int pageNo) {
@@ -52,7 +52,7 @@ public class DBDao extends DBDaoManager {
      * @param selection     查询条件
      * @param selectionArgs 条件参数
      * @param orderBy       排序
-     * @return
+     * @return 类列表
      */
     @Override
     public List<Object> searchByWhere(Class clazz, String selection, String[] selectionArgs, String orderBy) {
@@ -64,7 +64,7 @@ public class DBDao extends DBDaoManager {
      * <p>
      *
      * @param clazz 要查找的类(如：Student.class)
-     * @return
+     * @return 类列表
      */
     @Override
     public List<Object> searchAll(Class clazz) {
@@ -77,7 +77,7 @@ public class DBDao extends DBDaoManager {
      *
      * @param clazz   要查找的类(如：Student.class)
      * @param orderBy 排序
-     * @return
+     * @return 类列表
      */
     @Override
     public List<Object> searchAll(Class clazz, String orderBy) {
@@ -88,7 +88,8 @@ public class DBDao extends DBDaoManager {
      * 插入数据
      * <p>
      *
-     * @param obj
+     * @param obj 类
+     * @return 是否要成功
      */
     @Override
     public boolean insert(Object obj) {
@@ -99,7 +100,8 @@ public class DBDao extends DBDaoManager {
      * 插入或者更新数据
      * <p>
      *
-     * @param obj
+     * @param obj 类
+     * @return 是否要成功
      */
     @Override
     public boolean replace(Object obj) {
@@ -111,7 +113,8 @@ public class DBDao extends DBDaoManager {
      * <p>
      *
      * @param clazz 类(如：Student.class)
-     * @param id
+     * @param id    ID
+     * @return 是否要成功
      */
     @Override
     public boolean delete(Class clazz, String id) {
@@ -123,7 +126,8 @@ public class DBDao extends DBDaoManager {
      * <p>
      *
      * @param clazz 类(如：Student.class)
-     * @param ids
+     * @param ids   IDS
+     * @return 是否要成功
      */
     @Override
     public boolean delete(Class clazz, List<String> ids) {
@@ -134,9 +138,9 @@ public class DBDao extends DBDaoManager {
      * 按条件删除
      *
      * @param clazz         类(如：Student.class)
-     * @param whereCause
-     * @param selectionArgs
-     * @return
+     * @param whereCause    条件语句
+     * @param selectionArgs 条件参数
+     * @return 是否要成功
      */
     @Override
     public boolean delete(Class clazz, String whereCause, String[] selectionArgs) {
@@ -147,7 +151,7 @@ public class DBDao extends DBDaoManager {
      * 删除多个对象
      *
      * @param objects 对象
-     * @return
+     * @return 是否要成功
      */
     @Override
     protected boolean delete(List<Object> objects) {
@@ -157,8 +161,8 @@ public class DBDao extends DBDaoManager {
     /**
      * 自定义SQL语句
      *
-     * @param sql
-     * @return
+     * @param sql 语句
+     * @return 是否要成功
      */
     @Override
     public boolean execSQL(String sql) {

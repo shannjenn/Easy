@@ -12,7 +12,7 @@ abstract class DataFormatManager {
     /**
      * 获取时间格式
      *
-     * @return
+     * @return SimpleDateFormat
      */
     protected SimpleDateFormat getFormat() {
         return format;
@@ -21,8 +21,8 @@ abstract class DataFormatManager {
     /**
      * 时间转字符串
      *
-     * @param date
-     * @return
+     * @param date 时间
+     * @return 时间字符串
      */
     protected String format(Date date) {
         if (date == null)
@@ -34,8 +34,8 @@ abstract class DataFormatManager {
     /**
      * 时间转字符串
      *
-     * @param str
-     * @return
+     * @param str 时间
+     * @return 格式化时间
      */
     protected String format(String str) {
         if (str == null)
@@ -49,8 +49,8 @@ abstract class DataFormatManager {
     /**
      * 时间转字符串
      *
-     * @param dateStr
-     * @return
+     * @param dateStr 时间
+     * @return 时间
      */
     protected Date parser(String dateStr) {
         if (dateStr == null)
@@ -68,8 +68,8 @@ abstract class DataFormatManager {
     /**
      * 将北京时间转为当前时区时间
      *
-     * @param time
-     * @return
+     * @param time 时间
+     * @return 格式化时间
      */
     protected String BJ2Loacl(String time) {
         if (time == null)
@@ -92,8 +92,8 @@ abstract class DataFormatManager {
     /**
      * 将北京时间转为当前时区时间
      *
-     * @param date
-     * @return
+     * @param date 时间
+     * @return 时间
      */
     protected Date BJ2Loacl(Date date) {
         if (date == null)
@@ -111,8 +111,8 @@ abstract class DataFormatManager {
     /**
      * 将当前时区时间转为北京时间
      *
-     * @param time
-     * @return
+     * @param time 时间
+     * @return 时间
      */
     protected String locad2BJ(String time) {
         if (time == null)
@@ -135,8 +135,8 @@ abstract class DataFormatManager {
     /**
      * 将当前时区时间转为北京时间
      *
-     * @param date
-     * @return
+     * @param date 时间
+     * @return 时间
      */
     protected Date locad2BJ(Date date) {
         if (date == null)
@@ -155,7 +155,7 @@ abstract class DataFormatManager {
     /**
      * 设置时间格式
      *
-     * @param dautformat
+     * @param dautformat 格式
      */
     protected void setDefault(String dautformat) {
         if (dautformat == null)

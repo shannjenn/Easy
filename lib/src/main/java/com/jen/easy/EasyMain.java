@@ -25,23 +25,19 @@ public final class EasyMain {
     }
 
     /**
-     * ID绑定
+     * ID绑定（结合注释@EasyMouse.BIND使用）
      */
     public static final Bind BIND;
     /**
-     * 网络请求
+     * 网络请求（结合注释@EasyMouse.HTTP使用）
      */
     public static final Http HTTP;
     /**
-     * 网络数据解析
-     */
-//    public static final HttpParseImp Parse;
-    /**
-     * 数据库操作
+     * 数据库操作（结合注释@EasyMouse.DB使用）
      */
     public static final DBHelper DB;
     /**
-     * 数据表操作
+     * 数据表操作（结合注释@EasyMouse.DB使用）
      */
     public static final DBDao Dao;
     /**

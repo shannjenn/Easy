@@ -36,7 +36,6 @@ abstract class DBHelperManager {
     /**
      * 读取数据库
      *
-     * @return
      */
     protected SQLiteDatabase getReadDatabse() {
         return database.getReadableDatabase();
@@ -45,7 +44,6 @@ abstract class DBHelperManager {
     /**
      * 写入数据库
      *
-     * @return
      */
     protected SQLiteDatabase getWtriteDatabse() {
         return database.getWritableDatabase();

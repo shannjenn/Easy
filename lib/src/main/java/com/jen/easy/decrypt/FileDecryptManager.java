@@ -15,7 +15,7 @@ abstract class FileDecryptManager {
      * 解密
      *
      * @param strFile 源文件绝对路径
-     * @return
+     * @return 解密是否成功
      */
     protected boolean encrypt(String strFile, String password) {
         File file = new File(strFile);
@@ -65,7 +65,7 @@ abstract class FileDecryptManager {
      * 加密
      *
      * @param strFile 源文件绝对路径
-     * @return
+     * @return 加密是否成功
      */
     protected boolean decrypt(String strFile, String password) {
         File file = new File(strFile);

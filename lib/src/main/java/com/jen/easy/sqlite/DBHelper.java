@@ -8,7 +8,7 @@ import com.jen.easy.sqlite.imp.DatabaseListener;
 /**
  * 作者：ShannJenn
  * 时间：2017/9/4:21:18
- * 说明：数据库助手
+ * 说明：数据库助手（结合注释@EasyMouse.HTTP使用）
  */
 public class DBHelper extends DBHelperManager {
 
@@ -21,8 +21,6 @@ public class DBHelper extends DBHelperManager {
 
     /**
      * 创建数据库
-     *
-     * @return
      */
     @Override
     public void create() {
@@ -31,8 +29,6 @@ public class DBHelper extends DBHelperManager {
 
     /**
      * 读取数据库
-     *
-     * @return
      */
     @Override
     public SQLiteDatabase getReadDatabse() {
@@ -41,8 +37,6 @@ public class DBHelper extends DBHelperManager {
 
     /**
      * 写入数据库
-     *
-     * @return
      */
     @Override
     public SQLiteDatabase getWtriteDatabse() {

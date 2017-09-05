@@ -26,19 +26,19 @@ abstract class ShareManager {
     /**
      * 获取string
      *
-     * @param name
-     * @param defaultValue
-     * @return
+     * @param name         参数
+     * @param defaultValue 默认值
+     * @return 值
      */
     protected String getString(String name, String defaultValue) {
         return config.getString(name, defaultValue);
     }
 
-    /*
+    /**
      * 保存string
      *
-     * @param name
-     * @param value
+     * @param name  参数
+     * @param value 值
      */
     protected void setString(String name, String value) {
         editor = config.edit();
@@ -50,8 +50,8 @@ abstract class ShareManager {
     /**
      * 获取boolean
      *
-     * @param name
-     * @return
+     * @param name 参数
+     * @return 值
      */
     protected boolean getBoolean(String name) {
         return config.getBoolean(name, false);
@@ -60,8 +60,8 @@ abstract class ShareManager {
     /**
      * 保存boolean
      *
-     * @param name
-     * @param value
+     * @param name  参数
+     * @param value 值
      */
     protected void setBoolean(String name, boolean value) {
         editor = config.edit();
@@ -72,19 +72,19 @@ abstract class ShareManager {
     /**
      * 获取int
      *
-     * @param name
-     * @param defau
-     * @return
+     * @param name   参数
+     * @param defaut 默认值
+     * @return 值
      */
-    protected int getInt(String name, int defau) {
-        return config.getInt(name, defau);
+    protected int getInt(String name, int defaut) {
+        return config.getInt(name, defaut);
     }
 
     /**
      * 保存int
      *
-     * @param name
-     * @param value
+     * @param name  参数
+     * @param value 值
      */
     protected void setInt(String name, int value) {
         editor = config.edit();
@@ -95,9 +95,9 @@ abstract class ShareManager {
     /**
      * 保存list
      *
-     * @param name
-     * @param list
-     * @return
+     * @param name 参数
+     * @param list 值
+     * @return 是否成功
      */
     protected <T> boolean setList(String name, List<T> list) {
         String value = EasyUtil.StrList.list2String(list);
@@ -111,8 +111,8 @@ abstract class ShareManager {
     /**
      * 获取list
      *
-     * @param name
-     * @return
+     * @param name 参数
+     * @return 值
      */
     protected <T> List<T> getList(String name) {
         List<T> valueLlist = new ArrayList<T>();
@@ -128,8 +128,8 @@ abstract class ShareManager {
     /**
      * 获取object
      *
-     * @param name
-     * @return
+     * @param name 参数
+     * @return 值
      */
     protected Object getObject(String name) {
         String value = getString(name, null);
@@ -143,9 +143,9 @@ abstract class ShareManager {
     /**
      * 设置object
      *
-     * @param name
-     * @param obj
-     * @return
+     * @param name 参数
+     * @param obj  值
+     * @return 是否成功
      */
     protected boolean setObject(String name, Object obj) {
         String value = EasyUtil.StrList.object2String(obj);
@@ -156,6 +156,11 @@ abstract class ShareManager {
         return true;
     }
 
+    /**
+     * 删除
+     *
+     * @param name 参数
+     */
     protected void removeValue(String name) {
         editor = config.edit();
         editor.remove(name);
