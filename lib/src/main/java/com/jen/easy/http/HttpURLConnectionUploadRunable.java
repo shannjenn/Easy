@@ -55,7 +55,7 @@ class HttpURLConnectionUploadRunable implements Runnable {
             if (param.request.isBreak && param.request.endPoit > param.request.startPoit + 100) {
                 connection.setRequestProperty("Range", "bytes=" + param.request.startPoit + "-" + param.request.endPoit);
             }
-            EasyLog.d("Http 请求地址：" + url.getPath() + "  " + param.http.method);
+            EasyLog.d("Http 请求地址：" + url.toString() + "  " + param.http.method);
 
             DataOutputStream out = new DataOutputStream(connection.getOutputStream());
             DataInputStream in = new DataInputStream(new FileInputStream(file));
@@ -84,11 +84,11 @@ class HttpURLConnectionUploadRunable implements Runnable {
                 buffer.append(line);
             }
             reader.close();
-            EasyLog.d(buffer.toString());
+            EasyLog.d("服务器完成，返回数据：" + buffer.toString());
             success(buffer.toString());
         } catch (IOException e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "IOException");
+            EasyLog.e("上传失败：IOException");
         } finally {
             if (connection != null) {
                 connection.disconnect();

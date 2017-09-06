@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import static android.R.attr.type;
 import static com.jen.easy.http.HttpReflectManager.PARAM_FIELD;
 import static com.jen.easy.http.HttpReflectManager.PARAM_TYPE;
 
@@ -35,22 +36,34 @@ class HttpParseManager {
             EasyLog.e(TAG + "parseJson obj is null");
         }
         Object result = null;
-        try {
-            if (obj instanceof String) {
-                JSONObject object = new JSONObject((String) obj);
-                result = parseJson(clazz, objClass, object);
-            } else if (obj instanceof JSONObject) {
-                EasyLog.d(TAG + "parseJson JSONObject");
-                result = parseJsonObject(clazz, objClass, (JSONObject) obj);
-            } else if (obj instanceof JSONArray) {
-                EasyLog.d(TAG + "parseJson parseJsonArray");
-                result = parseJsonArray(clazz, (JSONArray) obj);
-            } else {
-                EasyLog.e(TAG + "parseJson obj is not JSONObject or JSONArray");
+        if (obj instanceof String) {
+            JSONObject object = null;
+            boolean jsonexception = false;
+            try {
+                object = new JSONObject((String) obj);
+            } catch (JSONException e) {
+                jsonexception = true;
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-            EasyLog.e(TAG + "parseJson JSONException");
+            if (jsonexception) {
+                JSONArray objectArray = null;
+                try {
+                    objectArray = new JSONArray((String) obj);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    EasyLog.e(TAG + "parseJson JSONException String");
+                }
+                result = parseJsonArray(clazz, objectArray);
+            } else {
+                result = parseJson(clazz, objClass, object);
+            }
+        } else if (obj instanceof JSONObject) {
+            EasyLog.d(TAG + "parseJson JSONObject");
+            result = parseJsonObject(clazz, objClass, (JSONObject) obj);
+        } else if (obj instanceof JSONArray) {
+            EasyLog.d(TAG + "parseJson parseJsonArray");
+            result = parseJsonArray(clazz, (JSONArray) obj);
+        } else {
+            EasyLog.e(TAG + "parseJson obj is not JSONObject or JSONArray");
         }
         if (result == null) {
             EasyLog.e(TAG + "object == null");
@@ -73,57 +86,94 @@ class HttpParseManager {
             EasyLog.e(TAG + "parseJsonObject 网络请求返回参数请用@EasyMouse.HTTP.ResponseParam备注正确");
             return null;
         }
-//        EasyLog.d(TAG + "clazz=" + clazz + " objClass=" + objClass + " jsonObject=" + jsonObject);
+//        EasyLog.d(TAG + "clazz=" + clazz.getSimpleName() + " objClass=" + objClass + " jsonObject=" + jsonObject);
 
-        Object object = null;
+        Object object;
         try {
             object = clazz.newInstance();
-            for (String param : param_type.keySet()) {
-                Field field = param_field.get(param);
-                field.setAccessible(true);
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+            EasyLog.e(TAG + "parseJsonObject InstantiationException error object");
+            return null;
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            EasyLog.e(TAG + "parseJsonObject IllegalAccessException error object");
+            return null;
+        }
+
+        for (String param : param_type.keySet()) {
+            try {
                 if (jsonObject.has(param)) {
+                    Object value = jsonObject.get(param);
+                    if (value == null || value.toString().trim().length() == 0
+                            || (!(value instanceof String) && value.toString().equals("null"))) {
+                        continue;
+                    }
+                    Field field = param_field.get(param);
+                    field.setAccessible(true);
                     String type = param_type.get(param);
-                    if (type.equals(Constant.FieldType.CHAR)) {
-                        String value = jsonObject.getString(param);
-                        if (value.length() > 0) {
-                            field.setChar(object, value.charAt(0));
+
+                    if (type.equals(Constant.FieldType.STRING)) {
+                        if (!(value instanceof String)) {
+                            EasyLog.w(TAG + "value=" + value + " is not String ");
+                            continue;
                         }
-                    } else if (type.equals(Constant.FieldType.STRING)) {
-                        String value = jsonObject.getString(param);
                         field.set(object, value);
-                    } else if (type.equals(Constant.FieldType.BYTE)) {
-                        byte[] value = jsonObject.getString(param).getBytes();
-                        if (value.length > 0) {
-                            field.setByte(object, value[0]);
-                        }
-                    } else if (type.equals(Constant.FieldType.SHORT)) {
-                        int value = jsonObject.getInt(param);
-                        field.setShort(object, (short) value);
                     } else if (type.equals(Constant.FieldType.INTEGER)) {
-                        int value = jsonObject.getInt(param);
-                        field.setInt(object, value);
+                        if (value instanceof String) {
+                            value = Integer.parseInt((String) value);
+                        }
+                        if (!(value instanceof Integer)) {
+                            EasyLog.w(TAG + "param=" + param + " is not Integer ");
+                            continue;
+                        }
+                        field.setInt(object, (Integer) value);
                     } else if (type.equals(Constant.FieldType.FLOAT)) {
-                        double value = jsonObject.getDouble(param);
-                        field.setFloat(object, (float) value);
+                        if (value instanceof String) {
+                            value = Float.parseFloat((String) value);
+                        }
+                        if (!(value instanceof Float)) {
+                            EasyLog.w(TAG + "param=" + param + " is not Float ");
+                            continue;
+                        }
+                        field.setFloat(object, (Float) value);
                     } else if (type.equals(Constant.FieldType.DOUBLE)) {
-                        double value = jsonObject.getDouble(param);
-                        field.setDouble(object, value);
+                        if (value instanceof String) {
+                            value = Double.parseDouble((String) value);
+                        }
+                        if (!(value instanceof Double)) {
+                            EasyLog.w(TAG + "param=" + param + " is not Double ");
+                            continue;
+                        }
+                        field.setDouble(object, (Double) value);
                     } else if (type.equals(Constant.FieldType.LONG)) {
-                        long value = jsonObject.getLong(param);
-                        field.setLong(object, value);
+                        if (value instanceof String) {
+                            value = Long.parseLong((String) value);
+                        }
+                        if (!(value instanceof Long)) {
+                            EasyLog.w(TAG + "param=" + param + " is not Long ");
+                            continue;
+                        }
+                        field.setLong(object, (Long) value);
                     } else if (type.equals(Constant.FieldType.BOOLEAN)) {
-                        boolean value = jsonObject.getBoolean(param);
-                        field.setBoolean(object, value);
+                        if (value instanceof String) {
+                            value = Boolean.parseBoolean((String) value);
+                        }
+                        if (!(value instanceof Boolean)) {
+                            EasyLog.w(TAG + "param=" + param + " is not Boolean ");
+                            continue;
+                        }
+                        field.setBoolean(object, (Boolean) value);
                     } else if (type.equals(Constant.FieldType.DATE)) {
-                        String value = jsonObject.getString(param);
-                        Date date = EasyUtil.dateFormat.parser(value);
-                        field.set(object, date);
+                        if (value instanceof String) {
+                            Date date = EasyUtil.dateFormat.parser((String) value);
+                            field.set(object, date);
+                        }
                     } else if (type.contains(Constant.FieldType.MAP)) {
                         EasyLog.e(TAG + "parseJsonObject Constant.FieldType.MAP 不支持Map类型");
                     } else if (type.contains(Constant.FieldType.ARRAY)) {
                         EasyLog.e(TAG + "parseJsonObject Constant.FieldType.ARRAY 不支持数组类型");
                     } else if (type.contains(Constant.FieldType.LIST)) {
-                        Object value = jsonObject.get(param);
                         if (value instanceof JSONArray) {
                             String clazzName = type.substring(type.indexOf("<") + 1, type.indexOf(">"));
                             Class clazz2 = Class.forName(clazzName);
@@ -134,7 +184,6 @@ class HttpParseManager {
                         }
                     } else if (type.contains(Constant.FieldType.OBJECT)) {
                         if (objClass != null) {
-                            Object value = jsonObject.get(param);
                             Object obj = null;
                             if (value instanceof JSONObject) {
                                 obj = parseJsonObject(objClass, null, (JSONObject) value);
@@ -145,10 +194,9 @@ class HttpParseManager {
                             }
                             field.set(object, obj);
                         } else {
-                            EasyLog.d(TAG + "parseJsonObject Constant.FieldType.OBJECT error 2");
+                            EasyLog.w(TAG + "parseJsonObject Constant.FieldType.OBJECT error 2");
                         }
                     } else if (type.contains(Constant.FieldType.CLASS)) {
-                        Object value = jsonObject.get(param);
                         if (value instanceof JSONObject) {
                             String clazzName = type.replace("class ", "").trim();
                             Class clazz2 = Class.forName(clazzName);
@@ -161,20 +209,18 @@ class HttpParseManager {
                         EasyLog.e(TAG + "parseJsonObject 不支持该类型：" + type);
                     }
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                EasyLog.e(TAG + "parseJsonObject JSONException：type=" + type + " param=" + param);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+                EasyLog.e(TAG + "parseJsonObject IllegalAccessException：type=" + type + " param=" + param);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+                EasyLog.e(TAG + "parseJsonObject ClassNotFoundException：type=" + type + " param=" + param);
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-            EasyLog.e(TAG + "parseJsonObject JSONException error");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            EasyLog.e(TAG + "parseJsonObject ClassNotFoundException error");
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            EasyLog.e(TAG + "parseJsonObject IllegalAccessException error");
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-            EasyLog.e(TAG + "parseJsonObject InstantiationException error");
         }
+
         return object;
     }
 
@@ -185,7 +231,7 @@ class HttpParseManager {
      * @param jsonArray
      * @return
      */
-    private static List<Object> parseJsonArray(Class clazz, JSONArray jsonArray) throws JSONException {
+    private static List<Object> parseJsonArray(Class clazz, JSONArray jsonArray) {
         List<Object> list = new ArrayList<>();
         if (jsonArray == null) {
             EasyLog.e(TAG + "parseJsonArray clazz or jsonArray is null");
@@ -193,7 +239,14 @@ class HttpParseManager {
         }
         for (int i = 0; i < jsonArray.length(); i++) {
             Object obj = null;
-            Object jsonObj = jsonArray.get(i);
+            Object jsonObj = null;
+            try {
+                jsonObj = jsonArray.get(i);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                EasyLog.e(TAG + "parseJsonArray JSONException jsonObj");
+                continue;
+            }
             if (jsonObj instanceof JSONObject) {
                 obj = parseJsonObject(clazz, null, (JSONObject) jsonObj);
             } else {

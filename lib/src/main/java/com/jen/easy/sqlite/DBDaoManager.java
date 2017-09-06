@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import static android.R.attr.type;
 import static com.jen.easy.sqlite.DBReflectManager.COLUMN_FIELD;
 import static com.jen.easy.sqlite.DBReflectManager.FOREIGN_KEY;
 import static com.jen.easy.sqlite.DBReflectManager.getTableName;
@@ -97,7 +98,6 @@ abstract class DBDaoManager {
         Map<String, Field> column_field = (Map<String, Field>) objectMap.get(DBReflectManager.COLUMN_FIELD);
         if (column_field.size() == 0)
             return objs;
-
         String limit = null;
         if (pageNo > 0) {
             limit = page * pageNo + "," + pageNo;
@@ -594,45 +594,57 @@ abstract class DBDaoManager {
                 field.setAccessible(true);
                 String type = field.getGenericType().toString();
 
-                if (type.equals(Constant.FieldType.CHAR)) {
-                    String value = cursor.getString(cursor.getColumnIndex(column));
-                    field.set(obj, value);
-                } else if (type.equals(Constant.FieldType.STRING)) {
-                    String value = cursor.getString(cursor.getColumnIndex(column));
-                    field.set(obj, value);
-                } else if (type.equals(Constant.FieldType.BYTE)) {
-                    int value = cursor.getInt(cursor.getColumnIndex(column));
-                    field.set(obj, value);
-                } else if (type.equals(Constant.FieldType.SHORT)) {
-                    short value = cursor.getShort(cursor.getColumnIndex(column));
-                    field.set(obj, value);
-                } else if (type.equals(Constant.FieldType.INTEGER)) {
-                    String value = cursor.getString(cursor.getColumnIndex(column));
-                    field.set(obj, value);
-                } else if (type.equals(Constant.FieldType.FLOAT)) {
-                    float value = cursor.getFloat(cursor.getColumnIndex(column));
-                    field.set(obj, value);
-                } else if (type.equals(Constant.FieldType.DOUBLE)) {
-                    double value = cursor.getDouble(cursor.getColumnIndex(column));
-                    field.set(obj, value);
-                } else if (type.equals(Constant.FieldType.LONG)) {
-                    long value = cursor.getLong(cursor.getColumnIndex(column));
-                    field.set(obj, value);
-                } else if (type.equals(Constant.FieldType.BOOLEAN)) {
-                    boolean value = cursor.getInt(cursor.getColumnIndex(column)) > 0;
-                    field.set(obj, value);
-                } else if (type.equals(Constant.FieldType.DATE)) {
-                    String value = cursor.getString(cursor.getColumnIndex(column));
-                    Date date = EasyUtil.dateFormat.parser(value);
-                    field.set(obj, date);
+                switch (type) {
+                    case Constant.FieldType.STRING: {
+                        String value = cursor.getString(cursor.getColumnIndex(column));
+                        field.set(obj, value);
+                        break;
+                    }
+                    case Constant.FieldType.INTEGER: {
+                        int value = cursor.getInt(cursor.getColumnIndex(column));
+                        field.setInt(obj, value);
+                        break;
+                    }
+                    case Constant.FieldType.FLOAT: {
+                        float value = cursor.getFloat(cursor.getColumnIndex(column));
+                        field.setFloat(obj, value);
+                        break;
+                    }
+                    case Constant.FieldType.DOUBLE: {
+                        double value = cursor.getDouble(cursor.getColumnIndex(column));
+                        field.setDouble(obj, value);
+                        break;
+                    }
+                    case Constant.FieldType.LONG: {
+                        long value = cursor.getLong(cursor.getColumnIndex(column));
+                        field.setLong(obj, value);
+                        break;
+                    }
+                    case Constant.FieldType.BOOLEAN: {
+                        boolean value = cursor.getInt(cursor.getColumnIndex(column)) > 0;
+                        field.setBoolean(obj, value);
+                        break;
+                    }
+                    case Constant.FieldType.DATE: {
+                        String value = cursor.getString(cursor.getColumnIndex(column));
+                        Date date = EasyUtil.dateFormat.parser(value);
+                        field.set(obj, date);
+                        break;
+                    }
+                    default:
+                        EasyLog.e(TAG + "valuation 不支持该类型：" + type);
+                        break;
                 }
             }
         } catch (InstantiationException e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "valuation InstantiationException");
+            EasyLog.e(TAG + "valuation InstantiationException type=" + type);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "valuation IllegalAccessException");
+            EasyLog.e(TAG + "valuation IllegalAccessException type=" + type);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            EasyLog.e(TAG + "valuation IllegalArgumentException type=" + type);
         }
         return obj;
     }

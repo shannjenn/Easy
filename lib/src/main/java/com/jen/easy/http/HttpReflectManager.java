@@ -40,6 +40,7 @@ class HttpReflectManager {
             if (paramName.length() == 0) {
                 continue;
             }
+            fields[i].setAccessible(true);
             try {
                 String value = fields[i].get(obj) + "";
                 params.put(paramName, value);

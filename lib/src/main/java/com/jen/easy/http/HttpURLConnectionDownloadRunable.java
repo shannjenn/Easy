@@ -69,6 +69,7 @@ class HttpURLConnectionDownloadRunable implements Runnable {
 
         Map<String, String> requestParams = HttpReflectManager.getRequestParams(param);
         String exception = null;
+        int resposeCode = -1;
         try {
             boolean hasParam = false;
             boolean isNotFirst = false;
@@ -113,8 +114,10 @@ class HttpURLConnectionDownloadRunable implements Runnable {
                 out.close();
             }
 
-            EasyLog.d("Http 请求地址：" + url.getPath() + "  " + param.http.method);
-            if ((connection.getResponseCode() == 200)) {
+            EasyLog.d("Http 请求地址：" + url.toString() + "  " + param.http.method);
+            resposeCode = connection.getResponseCode();
+            EasyLog.d("Http请求返回码：" + resposeCode);
+            if ((resposeCode == 200)) {
                 param.request.endPoit = connection.getContentLength();
                 inStream = connection.getInputStream();
                 byte[] buffer = new byte[1024];

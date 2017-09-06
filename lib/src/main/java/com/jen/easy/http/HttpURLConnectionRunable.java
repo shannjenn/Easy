@@ -43,7 +43,9 @@ class HttpURLConnectionRunable implements Runnable {
                 }
                 requestBuf.append(name);
                 requestBuf.append("=");
+                requestBuf.append("\"");
                 requestBuf.append(URLEncoder.encode(value, param.http.charset));
+                requestBuf.append("\"");
                 isNotFirst = true;
                 hasParam = true;
             }
@@ -73,8 +75,14 @@ class HttpURLConnectionRunable implements Runnable {
                 out.close();
             }
 
-            EasyLog.d("Http 请求地址：" + url.getPath() + "  " + param.http.method);
+            if (param.http.method.toUpperCase().equals("GET")) {
+                EasyLog.d("Http请求地址：" + url.toString() + "  请求方式：" + param.http.method);
+            } else {
+                EasyLog.d("Http请求地址：" + url.toString() + "  请求方式：" + param.http.method);
+                EasyLog.d("Http请求参数：" + requestBuf.toString());
+            }
             resposeCode = connection.getResponseCode();
+            EasyLog.d("Http请求返回码：" + resposeCode);
             if ((resposeCode == 200)) {
                 StringBuffer result = new StringBuffer("");
                 InputStream inStream = connection.getInputStream();
@@ -94,7 +102,7 @@ class HttpURLConnectionRunable implements Runnable {
             e.printStackTrace();
             EasyLog.e(TAG + "IOException");
         }
-        fail("获取数据异常：" + resposeCode);
+        fail("网络请求异常：" + resposeCode);
     }
 
     private void success(String result) {
