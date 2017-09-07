@@ -8,69 +8,177 @@ import android.util.Log;
  * 说明：日志输出
  */
 public class Logcat {
-    private static String TAG = Logcat.class.getSimpleName();
+    private static final String TAG = Logcat.class.getSimpleName();
+    static final int length = 4000;
     /**
-     * 设置v-i级别Log是否打印
+     * 日志是否打印
      */
-    public static boolean debugLog_open = true;
-    /**
-     * 设置w-e级别Log是否打印
-     */
-    public static boolean error_log_open = true;
+    public static boolean Logcat_open = true;
     /**
      * 框架日志是否打印
      */
     public static boolean EasyLog_open = true;
 
-    public static void v(String msg) {
-        if (debugLog_open)
-            Log.v(TAG, msg);
-    }
-
     public static void d(String msg) {
-        if (debugLog_open)
-            Log.d(TAG, msg);
+        if (Logcat_open) {
+            if (msg != null && msg.length() > length) {
+                int part = 1;
+                for (int i = 0; i < msg.length(); i += length) {
+                    if (i + length < msg.length()) {
+                        Log.d(TAG + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
+                    } else {
+                        Log.d(TAG + "_" + part, msg.substring(i, msg.length()) + " --- " + TAG + " --- ");
+                    }
+                    part++;
+                }
+            } else {
+                Log.d(TAG, msg + " --- " + TAG + " --- ");
+            }
+        }
     }
 
     public static void i(String msg) {
-        if (debugLog_open)
-            Log.i(TAG, msg);
+        if (Logcat_open) {
+            if (msg != null && msg.length() > length) {
+                int part = 1;
+                for (int i = 0; i < msg.length(); i += length) {
+                    if (i + length < msg.length()) {
+                        Log.i(TAG + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
+                    } else {
+                        Log.i(TAG + "_" + part, msg.substring(i, msg.length()) + " --- " + TAG + " --- ");
+                    }
+                    part++;
+                }
+            } else {
+                Log.i(TAG, msg + " --- " + TAG + " --- ");
+            }
+        }
     }
 
     public static void w(String msg) {
-        if (error_log_open)
-            Log.w(TAG, msg);
+        if (Logcat_open) {
+            if (msg != null && msg.length() > length) {
+                int part = 1;
+                for (int i = 0; i < msg.length(); i += length) {
+                    if (i + length < msg.length()) {
+                        Log.w(TAG + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
+                    } else {
+                        Log.w(TAG + "_" + part, msg.substring(i, msg.length()) + " --- " + TAG + " --- ");
+                    }
+                    part++;
+                }
+            } else {
+                Log.w(TAG, msg + " --- " + TAG + " --- ");
+            }
+        }
     }
 
     public static void e(String msg) {
-        if (error_log_open)
-            Log.e(TAG, msg);
+        if (Logcat_open) {
+            if (msg != null && msg.length() > length) {
+                int part = 1;
+                for (int i = 0; i < msg.length(); i += length) {
+                    if (i + length < msg.length()) {
+                        Log.e(TAG + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
+                    } else {
+                        Log.e(TAG + "_" + part, msg.substring(i, msg.length()) + " --- " + TAG + " --- ");
+                    }
+                    part++;
+                }
+            } else {
+                Log.e(TAG, msg + " --- " + TAG + " --- ");
+            }
+        }
     }
-
 
 
     public static void v(String tag, String msg) {
-        if (debugLog_open)
-            Log.v(tag, msg);
+        if (Logcat_open) {
+            if (msg != null && msg.length() > length) {
+                int part = 1;
+                for (int i = 0; i < msg.length(); i += length) {
+                    if (i + length < msg.length()) {
+                        Log.e(tag + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
+                    } else {
+                        Log.e(tag + "_" + part, msg.substring(i, msg.length()) + " --- " + TAG + " --- ");
+                    }
+                    part++;
+                }
+            } else {
+                Log.e(tag, msg + " --- " + TAG + " --- ");
+            }
+        }
     }
 
     public static void d(String tag, String msg) {
-        if (debugLog_open)
-            Log.d(tag, msg);
+        if (Logcat_open) {
+            if (msg != null && msg.length() > length) {
+                int part = 1;
+                for (int i = 0; i < msg.length(); i += length) {
+                    if (i + length < msg.length()) {
+                        Log.e(tag + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
+                    } else {
+                        Log.e(tag + "_" + part, msg.substring(i, msg.length()) + " --- " + TAG + " --- ");
+                    }
+                    part++;
+                }
+            } else {
+                Log.e(tag, msg + " --- " + TAG + " --- ");
+            }
+        }
     }
 
     public static void i(String tag, String msg) {
-        if (debugLog_open)
-            Log.i(tag, msg);
+        if (Logcat_open) {
+            if (msg != null && msg.length() > length) {
+                int part = 1;
+                for (int i = 0; i < msg.length(); i += length) {
+                    if (i + length < msg.length()) {
+                        Log.e(tag + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
+                    } else {
+                        Log.e(tag + "_" + part, msg.substring(i, msg.length()) + " --- " + TAG + " --- ");
+                    }
+                    part++;
+                }
+            } else {
+                Log.e(tag, msg + " --- " + TAG + " --- ");
+            }
+        }
     }
 
     public static void w(String tag, String msg) {
-        if (error_log_open)
-            Log.w(tag, msg);
+        if (Logcat_open) {
+            if (msg != null && msg.length() > length) {
+                int part = 1;
+                for (int i = 0; i < msg.length(); i += length) {
+                    if (i + length < msg.length()) {
+                        Log.e(tag + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
+                    } else {
+                        Log.e(tag + "_" + part, msg.substring(i, msg.length()) + " --- " + TAG + " --- ");
+                    }
+                    part++;
+                }
+            } else {
+                Log.e(tag, msg + " --- " + TAG + " --- ");
+            }
+        }
     }
 
     public static void e(String tag, String msg) {
-        if (error_log_open)
-            Log.e(tag, msg);
+        if (Logcat_open) {
+            if (msg != null && msg.length() > length) {
+                int part = 1;
+                for (int i = 0; i < msg.length(); i += length) {
+                    if (i + length < msg.length()) {
+                        Log.e(tag + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
+                    } else {
+                        Log.e(tag + "_" + part, msg.substring(i, msg.length()) + " --- " + TAG + " --- ");
+                    }
+                    part++;
+                }
+            } else {
+                Log.e(tag, msg + " --- " + TAG + " --- ");
+            }
+        }
     }
 }

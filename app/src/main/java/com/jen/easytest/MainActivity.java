@@ -3,14 +3,14 @@ package com.jen.easytest;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.widget.RelativeLayout;
 
 import com.jen.easy.EasyMain;
 import com.jen.easy.EasyMouse;
 import com.jen.easy.log.Logcat;
 import com.jen.easytest.demo.School;
 import com.jen.easytest.demo.Student;
-import com.jen.easyui.listview.ItemLayout;
+import com.jen.easyui.listview.EasyListView;
+import com.jen.easyui.listview.ItemSource;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -18,14 +18,14 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    @ItemLayout(text = R.id.tv_item)
-    @EasyMouse.BIND.ID(R.id.listview_footer_content1)
-    RelativeLayout listview_footer_content;
+    @ItemSource(text = R.id.tv_item)
+    @EasyMouse.BIND.ID(R.id.list)
+    EasyListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.listview_footer);
+        setContentView(R.layout.activity_main);
         EasyMain.BIND.bind(this);
     }
 

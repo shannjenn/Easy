@@ -5,8 +5,8 @@ package com.jen.easyui.listview;
  */
 
 public enum ListStyle {
-    BASIC,
+    LIST_HORIZONTAL,
+    LIST_VERTICAL,
     GRID_HORIZONTAL,
-    GRID_VERTICAL,
-    Waterfall;
+    GRID_VERTICAL;
 }

@@ -45,11 +45,12 @@ public class LayoutReflectmanager {
         }
         Field[] fields = obj.getClass().getDeclaredFields();
         for (int i = 0; i < fields.length; i++) {
-            boolean isAnno = fields[i].isAnnotationPresent(ItemLayout.class);
+            boolean isAnno = fields[i].isAnnotationPresent(ItemSource.class);
             if (!isAnno)
                 continue;
             try {
-                ItemLayout itemLayout = fields[i].getAnnotation(ItemLayout.class);
+                ItemSource itemLayout = fields[i].getAnnotation(ItemSource.class);
+                fields[i].setAccessible(true);
                 Object value = fields[i].get(obj);
 
                 int txtId = itemLayout.text();
@@ -57,7 +58,7 @@ public class LayoutReflectmanager {
                     if (value instanceof Character || value instanceof Integer || value instanceof Short
                             || value instanceof Long || value instanceof Float || value instanceof Double ||
                             value instanceof String) {
-                        txtIds.put(txtId, txtId + "");
+                        txtIds.put(txtId, value + "");
                     }
                 }
 
@@ -65,7 +66,7 @@ public class LayoutReflectmanager {
                 if (imgId != -1) {
                     if (value instanceof Integer || value instanceof Drawable || value instanceof Bitmap
                             || value instanceof Uri) {
-                        imgIds.put(imgId, imgId);
+                        imgIds.put(imgId, value);
                     }
                 }
 
@@ -92,10 +93,10 @@ public class LayoutReflectmanager {
         }
         Field[] fields = object.getClass().getDeclaredFields();
         for (int i = 0; i < fields.length; i++) {
-            boolean isAnno = fields[i].isAnnotationPresent(ItemLayout.class);
+            boolean isAnno = fields[i].isAnnotationPresent(ItemSource.class);
             if (!isAnno)
                 continue;
-            ItemLayout itemLayout = fields[i].getAnnotation(ItemLayout.class);
+            ItemSource itemLayout = fields[i].getAnnotation(ItemSource.class);
             boolean isViewType = itemLayout.isViewType();
             if (isViewType) {
                 try {
@@ -103,7 +104,7 @@ public class LayoutReflectmanager {
                     if (value instanceof Integer) {
                         return (int) value;
                     } else {
-                        EasyUILog.e(ItemLayout.class.getSimpleName() + "必须为int类型");
+                        EasyUILog.e(ItemSource.class.getSimpleName() + "必须为int类型");
                         return (int) -1;
                     }
                 } catch (IllegalAccessException e) {

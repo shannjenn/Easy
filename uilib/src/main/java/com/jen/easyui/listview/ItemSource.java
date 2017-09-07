@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  */
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ItemLayout {
+public @interface ItemSource {
 
     boolean isViewType() default false;
 
