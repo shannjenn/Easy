@@ -83,7 +83,7 @@ abstract class DBDaoManager {
      * param pageNo        大于0分页,小于等于0不分页
      * return
      */
-    protected List<Object> searchByWhere(Class clazz, String selection, String[] selectionArgs, String orderBy, int page, int pageNo) {
+    protected Object searchByWhere(Class clazz, String selection, String[] selectionArgs, String orderBy, int page, int pageNo) {
         List<Object> objs = new ArrayList<>();
         if (clazz == null) {
             EasyLog.w(TAG + "searchByWhere clazz is null or id is null");
@@ -126,7 +126,7 @@ abstract class DBDaoManager {
      * param orderBy       排序
      * return
      */
-    protected List<Object> searchByWhere(Class clazz, String selection, String[] selectionArgs, String orderBy) {
+    protected Object searchByWhere(Class clazz, String selection, String[] selectionArgs, String orderBy) {
         return searchByWhere(clazz, selection, selectionArgs, orderBy, 0, 0);
     }
 
@@ -136,7 +136,7 @@ abstract class DBDaoManager {
      * param clazz
      * return
      */
-    protected List<Object> searchAll(Class clazz) {
+    protected Object searchAll(Class clazz) {
         return searchByWhere(clazz, null, null, null, 0, 0);
     }
 
@@ -147,7 +147,7 @@ abstract class DBDaoManager {
      * param orderBy
      * return
      */
-    protected List<Object> searchAll(Class clazz, String orderBy) {
+    protected Object searchAll(Class clazz, String orderBy) {
         return searchByWhere(clazz, null, null, orderBy, 0, 0);
     }
 

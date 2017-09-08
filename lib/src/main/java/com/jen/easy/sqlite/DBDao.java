@@ -40,7 +40,7 @@ public class DBDao extends DBDaoManager {
      * @return 类列表
      */
     @Override
-    public List<Object> searchByWhere(Class clazz, String selection, String[] selectionArgs, String orderBy, int page, int pageNo) {
+    public Object searchByWhere(Class clazz, String selection, String[] selectionArgs, String orderBy, int page, int pageNo) {
         return super.searchByWhere(clazz, selection, selectionArgs, orderBy, page, pageNo);
     }
 
@@ -55,7 +55,7 @@ public class DBDao extends DBDaoManager {
      * @return 类列表
      */
     @Override
-    public List<Object> searchByWhere(Class clazz, String selection, String[] selectionArgs, String orderBy) {
+    public Object searchByWhere(Class clazz, String selection, String[] selectionArgs, String orderBy) {
         return super.searchByWhere(clazz, selection, selectionArgs, orderBy);
     }
 
@@ -67,7 +67,7 @@ public class DBDao extends DBDaoManager {
      * @return 类列表
      */
     @Override
-    public List<Object> searchAll(Class clazz) {
+    public Object searchAll(Class clazz) {
         return super.searchAll(clazz);
     }
 
@@ -80,7 +80,7 @@ public class DBDao extends DBDaoManager {
      * @return 类列表
      */
     @Override
-    public List<Object> searchAll(Class clazz, String orderBy) {
+    public Object searchAll(Class clazz, String orderBy) {
         return super.searchAll(clazz, orderBy);
     }
 
