@@ -1,70 +1,55 @@
 package com.jen.easytest;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
+import android.widget.TextView;
 
 import com.jen.easy.EasyMain;
 import com.jen.easy.EasyMouse;
+import com.jen.easy.EasyUtil;
 import com.jen.easy.log.Logcat;
-import com.jen.easytest.demo.School;
 import com.jen.easytest.demo.Student;
 import com.jen.easyui.listview.EasyListView;
 import com.jen.easyui.listview.ItemSource;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     @ItemSource(text = R.id.tv_item)
+    TextView tv_View;
+
     @EasyMouse.BIND.ID(R.id.list)
     EasyListView listView;
+
+    @EasyMouse.BIND.ID(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         EasyMain.BIND.bind(this);
+
+        swipeRefreshLayout.setOnRefreshListener(this);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
-        Object[] list = new Object[3];
-        for (int i = 0; i < 3; i++) {
+        List<Student> list = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
             Student student = new Student();
-            list[i] = student;
+            student.id = i + "";
+            student.name = "测试";
+            list.add(student);
         }
+        listView.setAdaper(list,R.layout.item);
 
-        Object obj = list;
-
-        Object[] list2 = (Object[]) obj;
-        Logcat.d(list2.length + "");
-        Logcat.d(list2.length + "");
-
-        Student student = new Student();
-        student.obj = new School();
-
-        Field[] fields = student.getClass().getDeclaredFields();
-        String a = fields[0].getGenericType().toString();
-        String b = fields[1].getGenericType().toString();
-        String c = fields[2].getGenericType().toString();
-        String d = fields[3].getGenericType().toString();
-        String e = fields[4].getGenericType().toString();
-        String f = fields[5].getGenericType().toString();
-
-        List<Student> list1 = new ArrayList<>();
-
-        Class clazz1 = Boolean.class;
-        boolean clazz2 = clazz1 == Boolean.class;
-        boolean clazz3 = clazz1 == Integer.class;
-
-        Logcat.d(TextUtils.isEmpty(" ") + " " + clazz2 + clazz3);
-        Logcat.d(TextUtils.isEmpty(" ") + " ");
-
+        EasyUtil.dateFormat.getTime("2017-09-06 21:50:43");
+        EasyUtil.dateFormat.getTime("0");
 
     }
 
@@ -72,5 +57,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         EasyMain.BIND.unbind(this);
+    }
+
+    @Override
+    public void onRefresh() {
+        Logcat.d(" onRefresh --- ");
     }
 }

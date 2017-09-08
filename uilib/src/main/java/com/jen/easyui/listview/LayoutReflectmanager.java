@@ -16,7 +16,8 @@ import java.util.Map;
  * Created by Administrator on 2017/8/25.
  */
 
-public class LayoutReflectmanager {
+class LayoutReflectmanager {
+    private static final String TAG = LayoutReflectmanager.class.getSimpleName() + " ";
     static final String TEXT = "text";
     static final String IMAGE = "image";
     static final String ONCLICK = "onClick";
@@ -28,7 +29,7 @@ public class LayoutReflectmanager {
      * @param obj
      * @return
      */
-    public static Map bindItemLayout(Object obj) {
+    static Map bindItemLayout(Object obj) {
         Map<String, Object> map = new HashMap<>();
         Map<Integer, String> txtIds = new HashMap<>();
         Map<Integer, Object> imgIds = new HashMap<>();
@@ -40,7 +41,7 @@ public class LayoutReflectmanager {
         map.put(ONLONGCLICK, onLongClickIds);
 
         if (obj == null || obj instanceof Class) {
-            EasyUILog.e("clazz is null");
+            EasyUILog.e(TAG + "clazz is null");
             return map;
         }
         Field[] fields = obj.getClass().getDeclaredFields();
@@ -88,7 +89,7 @@ public class LayoutReflectmanager {
 
     static int getViewType(Object object) {
         if (object == null || object instanceof Class) {
-            EasyUILog.e("object is null");
+            EasyUILog.e(TAG + "object is null");
             return -1;
         }
         Field[] fields = object.getClass().getDeclaredFields();
@@ -104,12 +105,12 @@ public class LayoutReflectmanager {
                     if (value instanceof Integer) {
                         return (int) value;
                     } else {
-                        EasyUILog.e(ItemSource.class.getSimpleName() + "必须为int类型");
-                        return (int) -1;
+                        EasyUILog.e(TAG + ItemSource.class.getSimpleName() + "必须为int类型");
+                        return -1;
                     }
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
-                    return (int) -1;
+                    return -1;
                 }
             }
         }

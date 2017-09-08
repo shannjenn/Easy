@@ -1,10 +1,8 @@
 package com.jen.easytest.demo;
 
-import com.jen.easy.EasyMouse;
 import com.jen.easy.http.BaseParamRequest;
-
-import java.util.List;
-import java.util.Map;
+import com.jen.easytest.R;
+import com.jen.easyui.listview.ItemSource;
 
 /**
  * 创建人：ShannJenn
@@ -13,18 +11,13 @@ import java.util.Map;
 
 public class Student extends BaseParamRequest {
 
+    @ItemSource(text = R.id.tv_1)
+    public String id;
 
-    @EasyMouse.HTTP.ResponseParam("name")
-    private String id;
+    @ItemSource(text = R.id.tv_2)
+    public String name;
 
-    School school;
+    @ItemSource(isViewType = true)
+    public String viewType;
 
-    List<School> list;
-
-    School[] schools;
-
-    Map<String, School> map;
-
-
-    public Object obj;
 }

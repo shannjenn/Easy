@@ -62,7 +62,11 @@ abstract class DataFormatManager {
         if (dateStr == null)
             return 0;
         Date date = parse(dateStr);
-        return date.getTime();
+        if (date != null) {
+            return date.getTime();
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -85,8 +89,7 @@ abstract class DataFormatManager {
 
         int timeOffset = oldZone.getRawOffset() - (newZone.getRawOffset() + DST);
         Date dateTmp = new Date(date.getTime() - timeOffset);
-        String loacl = format.format(dateTmp);
-        return loacl;
+        return format.format(dateTmp);
     }
 
     /**
@@ -104,8 +107,7 @@ abstract class DataFormatManager {
         int DST = newZone.getDSTSavings();
 
         int timeOffset = oldZone.getRawOffset() - (newZone.getRawOffset() + DST);
-        Date dateTmp = new Date(date.getTime() - timeOffset);
-        return dateTmp;
+        return new Date(date.getTime() - timeOffset);
     }
 
     /**
@@ -128,8 +130,7 @@ abstract class DataFormatManager {
 
         int timeOffset = (loadZone.getRawOffset() + DST) - bjZone.getRawOffset();
         Date dateTmp = new Date(date.getTime() - timeOffset);
-        String BJTime = format(dateTmp);
-        return BJTime;
+        return format(dateTmp);
     }
 
     /**
@@ -147,8 +148,7 @@ abstract class DataFormatManager {
         int DST = loadZone.getDSTSavings();
 
         int timeOffset = (loadZone.getRawOffset() + DST) - bjZone.getRawOffset();
-        Date dateTmp = new Date(date.getTime() - timeOffset);
-        return dateTmp;
+        return new Date(date.getTime() - timeOffset);
     }
 
 
@@ -168,38 +168,38 @@ abstract class DataFormatManager {
             SimpleDateFormat myFmt = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分");
             return myFmt.parse(date);
         } catch (ParseException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         try {
             SimpleDateFormat myFmt1 = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒");
             return myFmt1.parse(date);
         } catch (ParseException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
 
         try {
             SimpleDateFormat myFmt2 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             return myFmt2.parse(date);
         } catch (ParseException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         try {
             SimpleDateFormat myFmt3 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             return myFmt3.parse(date);
         } catch (ParseException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         try {
             SimpleDateFormat myFmt4 = new SimpleDateFormat("yy/MM/dd HH:mm");
             return myFmt4.parse(date);
         } catch (ParseException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         try {
             SimpleDateFormat myFmt5 = new SimpleDateFormat("yy/MM/dd HH:mm:ss");
             return myFmt5.parse(date);
         } catch (ParseException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         return null;
     }

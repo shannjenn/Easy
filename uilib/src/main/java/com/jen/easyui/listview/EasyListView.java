@@ -7,17 +7,17 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
 import java.util.List;
-
-import static com.jen.easyui.listview.ListStyle.LIST_VERTICAL;
+import java.util.Map;
 
 /**
- * Created by Jen on 2017/8/24.
+ * 列表控件
+ * 作者：ShannJenn
+ * 时间：2017/09/08.
  */
 
 public class EasyListView extends RecyclerView {
     private EasyRecyclerAdapter adapter;
-    private ListStyle listStyle;
-    private int layout;
+    private boolean isSheLayoutManager;
 
     public EasyListView(Context context) {
         super(context);
@@ -27,55 +27,61 @@ public class EasyListView extends RecyclerView {
         super(context, attrs);
     }
 
-    @Override
+    /*@Override
     public void setLayoutManager(LayoutManager layout) {
         super.setLayoutManager(layout);
+        isSheLayoutManager = true;
+    }*/
+
+    /**
+     * item布局是否固定大小
+     *
+     * @param hasFixedSize 是否固定大小
+     */
+    @Override
+    public void setHasFixedSize(boolean hasFixedSize) {
+        super.setHasFixedSize(hasFixedSize);
     }
 
     public void setAdaper(List<?> datas, int layout) {
-        if (listStyle == null) {
-            setListStype(LIST_VERTICAL);
+        if (!isSheLayoutManager) {
+            setLinearLayoutManager(VERTICAL);
         }
         adapter = new EasyRecyclerAdapter(datas, layout);
         setAdapter(adapter);
     }
 
-    public void setListStype(ListStyle listStyle) {
-        setListStype(listStyle, 1);
+    public void setAdaper(List<?> datas, Map<Integer, Integer> viewType_layouts) {
+        if (!isSheLayoutManager) {
+            setLinearLayoutManager(VERTICAL);
+        }
+        adapter = new EasyRecyclerAdapter(datas, viewType_layouts);
+        setAdapter(adapter);
     }
 
-    public void setListStype(ListStyle listStyle, int size) {
-        this.listStyle = listStyle;
-        LayoutManager layoutManager;
-        switch (listStyle) {
-            case LIST_HORIZONTAL: {
-                layoutManager = new LinearLayoutManager(getContext());
-                ((LinearLayoutManager) layoutManager).setOrientation(HORIZONTAL);
-                super.setLayoutManager(layoutManager);
-                break;
-            }
-            case LIST_VERTICAL: {
-                layoutManager = new LinearLayoutManager(getContext());
-                ((LinearLayoutManager) layoutManager).setOrientation(VERTICAL);
-                super.setLayoutManager(layoutManager);
-                break;
-            }
-            case GRID_HORIZONTAL: {
-                layoutManager = new GridLayoutManager(getContext(), size);
-                ((GridLayoutManager) layoutManager).setOrientation(HORIZONTAL);
-                super.setLayoutManager(layoutManager);
-                break;
-            }
-            case GRID_VERTICAL: {
-                layoutManager = new GridLayoutManager(getContext(), size);
-                ((GridLayoutManager) layoutManager).setOrientation(VERTICAL);
-                super.setLayoutManager(layoutManager);
-                break;
-            }
-            default: {
 
-                break;
-            }
-        }
+    /**
+     * 设置List布局
+     *
+     * @param orientation 排列方式(VERTICAL、HORIZONTAL)
+     */
+    public void setLinearLayoutManager(int orientation) {
+        isSheLayoutManager = true;
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(orientation);
+        super.setLayoutManager(layoutManager);
+    }
+
+    /**
+     * 设置Grid布局
+     *
+     * @param orientation 排列方式(VERTICAL、HORIZONTAL)
+     * @param size        数量
+     */
+    public void setGridLayoutManager(int orientation, int size) {
+        isSheLayoutManager = true;
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), size);
+        layoutManager.setOrientation(orientation);
+        super.setLayoutManager(layoutManager);
     }
 }

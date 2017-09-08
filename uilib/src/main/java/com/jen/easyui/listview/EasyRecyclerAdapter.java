@@ -20,6 +20,7 @@ import java.util.Map;
  */
 
 public class EasyRecyclerAdapter extends RecyclerView.Adapter<EasyRecyclerAdapter.Holder> {
+    private final String TAG = EasyRecyclerAdapter.class.getSimpleName() + " ";
     private List<?> datas;
     private int layout;
     private boolean moreItem;//多种布局
@@ -34,6 +35,10 @@ public class EasyRecyclerAdapter extends RecyclerView.Adapter<EasyRecyclerAdapte
         }
     }
 
+    /**
+     * @param datas            数据
+     * @param viewType_layouts key: @ItemSource（isViewType） value：布局
+     */
     public EasyRecyclerAdapter(List<?> datas, Map<Integer, Integer> viewType_layouts) {
         this.datas = datas;
         this.layouts = viewType_layouts;
@@ -87,10 +92,17 @@ public class EasyRecyclerAdapter extends RecyclerView.Adapter<EasyRecyclerAdapte
 
         for (int key : txtIds.keySet()) {
             TextView tv = (TextView) view.findViewById(key);
+            if (tv == null) {
+//                EasyUILog.w(TAG + "找不到对应：txtId=" + key + " position=" + position);
+                continue;
+            }
             tv.setText(txtIds.get(key));
         }
         for (int key : imgIds.keySet()) {
             ImageView imageView = (ImageView) view.findViewById(key);
+            if (imageView == null) {
+//                EasyUILog.w(TAG + "找不到对应：imgId=" + key + " position=" + position);
+            }
             Object img = imgIds.get(key);
             if (img instanceof Integer) {
                 imageView.setImageResource((Integer) img);
@@ -103,10 +115,22 @@ public class EasyRecyclerAdapter extends RecyclerView.Adapter<EasyRecyclerAdapte
             }
         }
         for (int i = 0; i < onClickIds.size(); i++) {
-            view.findViewById(onClickIds.get(i)).setOnClickListener(adapterClickEvent);
+            int viewId = onClickIds.get(i);
+            View onClickView = view.findViewById(viewId);
+            if (onClickView == null) {
+//                EasyUILog.w(TAG + "找不到对应：onClickView viewId=" + viewId + " position=" + position);
+                continue;
+            }
+            onClickView.setOnClickListener(adapterClickEvent);
         }
         for (int i = 0; i < onLongClickIds.size(); i++) {
-            view.findViewById(onLongClickIds.get(i)).setOnLongClickListener(adapterClickEvent);
+            int viewId = onClickIds.get(i);
+            View onLongClickView = view.findViewById(viewId);
+            if (onLongClickView == null) {
+                EasyUILog.w(TAG + "找不到对应：onLongClickView viewId=" + viewId + " position=" + position);
+                continue;
+            }
+            onLongClickView.setOnLongClickListener(adapterClickEvent);
         }
 
     }

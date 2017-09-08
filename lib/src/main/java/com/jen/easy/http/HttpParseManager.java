@@ -114,11 +114,13 @@ class HttpParseManager {
                     String type = param_type.get(param);
 
                     if (type.equals(Constant.FieldType.STRING)) {
-                        if (!(value instanceof String)) {
-                            EasyLog.w(TAG + "value=" + value + " is not String ");
-                            continue;
+                        if (value instanceof String) {
+                            field.set(object, value);
+                        } else if (value instanceof Integer || value instanceof Long || value instanceof Float || value instanceof Double) {
+                            field.set(object, value + "");
+                        } else {
+                            EasyLog.w(TAG + "value=" + value + " is not String、Integer、Long、Float、Double type");
                         }
-                        field.set(object, value);
                     } else if (type.equals(Constant.FieldType.INTEGER)) {
                         if (value instanceof String) {
                             value = Integer.parseInt((String) value);
@@ -167,7 +169,9 @@ class HttpParseManager {
                     } else if (type.equals(Constant.FieldType.DATE)) {
                         if (value instanceof String) {
                             Date date = EasyUtil.dateFormat.parser((String) value);
-                            field.set(object, date);
+                            if (date != null) {
+                                field.set(object, date);
+                            }
                         }
                     } else if (type.contains(Constant.FieldType.MAP)) {
                         EasyLog.e(TAG + "parseJsonObject Constant.FieldType.MAP 不支持Map类型");
@@ -218,6 +222,9 @@ class HttpParseManager {
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
                 EasyLog.e(TAG + "parseJsonObject ClassNotFoundException：type=" + type + " param=" + param);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                EasyLog.e(TAG + "parseJsonObject NumberFormatException：type=" + type + " param=" + param);
             }
         }
 

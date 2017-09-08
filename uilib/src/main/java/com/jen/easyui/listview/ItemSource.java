@@ -14,7 +14,7 @@ public @interface ItemSource {
 
     boolean isViewType() default false;
 
-    int text();
+    int text() default -1;
 
     int image() default -1;
 

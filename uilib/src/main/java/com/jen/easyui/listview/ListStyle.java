@@ -8,5 +8,5 @@ public enum ListStyle {
     LIST_HORIZONTAL,
     LIST_VERTICAL,
     GRID_HORIZONTAL,
-    GRID_VERTICAL;
+    GRID_VERTICAL
 }

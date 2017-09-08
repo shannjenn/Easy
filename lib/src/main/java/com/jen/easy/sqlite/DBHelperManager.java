@@ -61,10 +61,10 @@ abstract class DBHelperManager {
         }
         SQLiteDatabase db = getWtriteDatabse();
         String tableName = DBReflectManager.getTableName(clazz);
-        boolean existTB = database.checkTableExist(db, tableName);
+        /*boolean existTB = database.checkTableExist(db, tableName);
         if (existTB) {
             return;
-        }
+        }*/
 
         Map<String, Object> fields = DBReflectManager.getColumnNames(clazz);
         List<String> primaryKey = (List<String>) fields.get(DBReflectManager.PRIMARY_KEY);
