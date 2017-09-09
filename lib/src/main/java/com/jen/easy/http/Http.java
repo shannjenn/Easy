@@ -17,11 +17,20 @@ public class Http extends HttpManager {
     /**
      * 开始
      *
-     * @param param 请求参数
+     * @param request 请求参数
      */
     @Override
-    public void start(HttpParam param) {
-        super.start(param);
+    public void start(HttpRequest request) {
+        super.start(request);
+    }
+
+    /**
+     * @param request  请求参数
+     * @param response 返回参数
+     */
+    @Override
+    public void start(HttpRequest request, HttpResponse response) {
+        super.start(request, response);
     }
 
     /**

@@ -36,11 +36,11 @@ abstract class DBDaoManager {
 
 
     /**
-     * param clazz 要查找的对象
-     * param id
-     * return
+     * @param clazz 要查找的对象
+     * @param id
+     * @return 对象
      */
-    protected Object searchById(Class clazz, String id) {
+    protected <T> T searchById(Class<T> clazz, String id) {
         if (clazz == null || id == null) {
             EasyLog.w(TAG + "searchById clazz is null or id is null");
             return null;
@@ -66,7 +66,7 @@ abstract class DBDaoManager {
             return null;
         }
         cursor.moveToFirst();
-        Object obj = valuation(clazz, column_field, cursor);
+        T obj = valuation(clazz, column_field, cursor);
         cursor.close();
         db.close();
         return obj;
@@ -75,16 +75,17 @@ abstract class DBDaoManager {
     /**
      * 按条件查询
      * <p>
-     * param clazz         (not null)
-     * param selection     查询条件(not null)
-     * param selectionArgs 条件参数(not null)
-     * param orderBy       排序
-     * param page          页数
-     * param pageNo        大于0分页,小于等于0不分页
-     * return
+     *
+     * @param clazz         要查找的对象(not null)
+     * @param selection     查询条件
+     * @param selectionArgs 条件参数
+     * @param orderBy       排序
+     * @param page          页数
+     * @param pageNo        大于0分页,小于等于0不分页
+     * @return 对象列表集合
      */
-    protected Object searchByWhere(Class clazz, String selection, String[] selectionArgs, String orderBy, int page, int pageNo) {
-        List<Object> objs = new ArrayList<>();
+    protected <T> List<T> searchByWhere(Class<T> clazz, String selection, String[] selectionArgs, String orderBy, int page, int pageNo) {
+        List<T> objs = new ArrayList<>();
         if (clazz == null) {
             EasyLog.w(TAG + "searchByWhere clazz is null or id is null");
             return objs;
@@ -109,7 +110,7 @@ abstract class DBDaoManager {
         }
         cursor.moveToFirst();
         do {
-            Object obj = valuation(clazz, column_field, cursor);
+            T obj = valuation(clazz, column_field, cursor);
             objs.add(obj);
         } while (cursor.moveToNext());
         cursor.close();
@@ -120,34 +121,37 @@ abstract class DBDaoManager {
     /**
      * 按条件查询
      * <p>
-     * param clazz         (not null)
-     * param selection     查询条件(not null)
-     * param selectionArgs 条件参数(not null)
-     * param orderBy       排序
-     * return
+     *
+     * @param clazz         要查找的对象(not null)
+     * @param selection     查询条件
+     * @param selectionArgs 条件参数
+     * @param orderBy       排序
+     * @return 对象列表集合
      */
-    protected Object searchByWhere(Class clazz, String selection, String[] selectionArgs, String orderBy) {
+    protected <T> List<T> searchByWhere(Class<T> clazz, String selection, String[] selectionArgs, String orderBy) {
         return searchByWhere(clazz, selection, selectionArgs, orderBy, 0, 0);
     }
 
     /**
      * 查询所有
      * <p>
-     * param clazz
-     * return
+     *
+     * @param clazz 对象
+     * @return 对象列表集合
      */
-    protected Object searchAll(Class clazz) {
+    protected <T> List<T> searchAll(Class<T> clazz) {
         return searchByWhere(clazz, null, null, null, 0, 0);
     }
 
     /**
      * 查询所有
      * <p>
-     * param clazz
-     * param orderBy
-     * return
+     *
+     * @param clazz   对象
+     * @param orderBy 排序
+     * @return 对象列表集合
      */
-    protected Object searchAll(Class clazz, String orderBy) {
+    protected <T> List<T> searchAll(Class<T> clazz, String orderBy) {
         return searchByWhere(clazz, null, null, orderBy, 0, 0);
     }
 
@@ -155,20 +159,22 @@ abstract class DBDaoManager {
     /**
      * 插入数据
      * <p>
-     * param obj
+     *
+     * @param t 如：对象List集合、对象数组、对象Map集合value值、单个对象
+     * @return 是否成功
      */
-    protected boolean insert(Object obj) {
-        if (obj == null || obj instanceof Class) {
+    protected <T> boolean insert(T t) {
+        if (t == null || t instanceof Class) {
             EasyLog.w(TAG + "insert obj is null");
             return false;
         }
         SQLiteDatabase db = database.getWritableDatabase();
         try {
             db.beginTransaction();
-            if (obj instanceof List) {
-                List<Object> list = (List<Object>) obj;
+            if (t instanceof List) {
+                List<Object> list = (List<Object>) t;
                 if (list.size() <= 0) {
-                    EasyLog.w(TAG + "insert 数据为空");
+                    EasyLog.w(TAG + "insert 插入数据为空");
                     return false;
                 }
                 String tableName = getTableName(list.get(0).getClass());
@@ -181,8 +187,8 @@ abstract class DBDaoManager {
                     ContentValues values = cntentValues(list.get(i), objectMap);
                     db.insert(tableName, null, values);
                 }
-            } else if (obj instanceof Object[]) {
-                Object[] objs = (Object[]) obj;
+            } else if (t instanceof Object[]) {
+                Object[] objs = (Object[]) t;
                 if (objs.length <= 0) {
                     EasyLog.w(TAG + "insert 数据为空");
                     return false;
@@ -197,8 +203,8 @@ abstract class DBDaoManager {
                     ContentValues values = cntentValues(objs[i], objectMap);
                     db.insert(tableName, null, values);
                 }
-            } else if (obj instanceof Map) {
-                Map<Object, Object> map = (Map<Object, Object>) obj;
+            } else if (t instanceof Map) {
+                Map<Object, Object> map = (Map<Object, Object>) t;
                 if (map.size() <= 0) {
                     EasyLog.w(TAG + "insert 数据为空");
                     return false;
@@ -218,13 +224,13 @@ abstract class DBDaoManager {
                     db.insert(tableName, null, values);
                 }
             } else {
-                String tableName = getTableName(obj.getClass());
+                String tableName = getTableName(t.getClass());
                 if (tableName == null) {
                     EasyLog.w(TAG + "insert 插入表名为空，请检查是否已经注释表明");
                     return false;
                 }
-                Map<String, Object> objectMap = DBReflectManager.getColumnNames(obj.getClass());
-                ContentValues values = cntentValues(obj, objectMap);
+                Map<String, Object> objectMap = DBReflectManager.getColumnNames(t.getClass());
+                ContentValues values = cntentValues(t, objectMap);
                 db.insert(tableName, null, values);
             }
             db.setTransactionSuccessful();
@@ -242,18 +248,20 @@ abstract class DBDaoManager {
     /**
      * 插入或者更新数据
      * <p>
-     * param obj
+     *
+     * @param t 如：对象List集合、对象数组、对象Map集合value值、单个对象
+     * @return 是否成功
      */
-    protected boolean replace(Object obj) {
-        if (obj == null || obj instanceof Class) {
+    protected <T> boolean replace(T t) {
+        if (t == null || t instanceof Class) {
             EasyLog.w(TAG + "replace obj is null");
             return false;
         }
         SQLiteDatabase db = database.getWritableDatabase();
         try {
             db.beginTransaction();
-            if (obj instanceof List) {
-                List<Object> list = (List<Object>) obj;
+            if (t instanceof List) {
+                List<Object> list = (List<Object>) t;
                 if (list.size() <= 0) {
                     EasyLog.w(TAG + "replace 数据为空");
                     return false;
@@ -268,8 +276,8 @@ abstract class DBDaoManager {
                     ContentValues values = cntentValues(list.get(i), objectMap);
                     db.replace(tableName, null, values);
                 }
-            } else if (obj instanceof Object[]) {
-                Object[] objs = (Object[]) obj;
+            } else if (t instanceof Object[]) {
+                Object[] objs = (Object[]) t;
                 if (objs.length <= 0) {
                     EasyLog.w(TAG + "replace 数据为空");
                     return false;
@@ -284,8 +292,8 @@ abstract class DBDaoManager {
                     ContentValues values = cntentValues(objs[i], objectMap);
                     db.replace(tableName, null, values);
                 }
-            } else if (obj instanceof Map) {
-                Map<Object, Object> map = (Map<Object, Object>) obj;
+            } else if (t instanceof Map) {
+                Map<Object, Object> map = (Map<Object, Object>) t;
                 if (map.size() <= 0) {
                     EasyLog.w(TAG + "replace 数据为空");
                     return false;
@@ -305,13 +313,13 @@ abstract class DBDaoManager {
                     db.replace(tableName, null, values);
                 }
             } else {
-                String tableName = getTableName(obj.getClass());
+                String tableName = getTableName(t.getClass());
                 if (tableName == null) {
                     EasyLog.w(TAG + "replace 插入表名为空，请检查是否已经注释表明");
                     return false;
                 }
-                Map<String, Object> objectMap = DBReflectManager.getColumnNames(obj.getClass());
-                ContentValues values = cntentValues(obj, objectMap);
+                Map<String, Object> objectMap = DBReflectManager.getColumnNames(t.getClass());
+                ContentValues values = cntentValues(t, objectMap);
                 db.replace(tableName, null, values);
             }
             db.setTransactionSuccessful();
@@ -407,15 +415,21 @@ abstract class DBDaoManager {
     /**
      * 删除对象
      * <p>
-     * param clazz
-     * param ids
+     *
+     * @param t 如：对象List集合、单个对象
+     * @return 是否删除成功
      */
-    protected boolean delete(List<Object> objects) {
-        if (objects == null || objects.size() == 0) {
+    protected <T> boolean delete(T t) {
+        if (t == null) {
             EasyLog.w(TAG + "delete obj is null");
             return false;
         }
-        String tableName = getTableName(objects.get(0).getClass());
+        String tableName = null;
+        if (t instanceof List && ((List) t).size() > 0) {
+            getTableName(((List) t).get(0).getClass());
+        } else {
+            getTableName(t.getClass());
+        }
         if (tableName == null) {
             EasyLog.w(TAG + "delete tableName is null");
             return false;
@@ -423,10 +437,28 @@ abstract class DBDaoManager {
         SQLiteDatabase db = database.getWritableDatabase();
         try {
             db.beginTransaction();
-            for (int i = 0; i < objects.size(); i++) {
-                Map<String, String> primaryKeys_values = DBReflectManager.getPrimaryKeysValues(objects.get(i));
+            if (t instanceof List) {
+                for (int i = 0; i < ((List) t).size(); i++) {
+                    Map<String, String> primaryKeys_values = DBReflectManager.getPrimaryKeysValues(((List) t).get(i));
+                    if (primaryKeys_values.size() == 0)
+                        continue;
+                    int index = 0;
+                    StringBuffer whereCause = new StringBuffer("");
+                    String[] selectArg = new String[primaryKeys_values.size()];
+                    for (String key : primaryKeys_values.keySet()) {
+                        if (index > 0) {
+                            whereCause.append(" and ");
+                        }
+                        whereCause.append(key + "=?");
+                        selectArg[index] = primaryKeys_values.get(key);
+                        index++;
+                    }
+                    db.delete(tableName, whereCause.toString(), selectArg);
+                }
+            } else {
+                Map<String, String> primaryKeys_values = DBReflectManager.getPrimaryKeysValues(t);
                 if (primaryKeys_values.size() == 0)
-                    continue;
+                    return false;
                 int index = 0;
                 StringBuffer whereCause = new StringBuffer("");
                 String[] selectArg = new String[primaryKeys_values.size()];
@@ -585,8 +617,8 @@ abstract class DBDaoManager {
      * param cursor
      * return
      */
-    private Object valuation(Class clazz, Map<String, Field> column_field, Cursor cursor) {
-        Object obj = null;
+    private <T> T valuation(Class<T> clazz, Map<String, Field> column_field, Cursor cursor) {
+        T obj = null;
         try {
             obj = clazz.newInstance();
             for (String column : column_field.keySet()) {

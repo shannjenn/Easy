@@ -1,6 +1,6 @@
 package com.jen.easytest.demo;
 
-import com.jen.easy.http.BaseParamRequest;
+import com.jen.easy.http.HttpBaseRequest;
 import com.jen.easytest.R;
 import com.jen.easyui.listview.ItemSource;
 
@@ -9,7 +9,7 @@ import com.jen.easyui.listview.ItemSource;
  * 时间：2017/8/20.
  */
 
-public class Student extends BaseParamRequest {
+public class Student extends HttpBaseRequest {
 
     @ItemSource(text = R.id.tv_1)
     public String id;

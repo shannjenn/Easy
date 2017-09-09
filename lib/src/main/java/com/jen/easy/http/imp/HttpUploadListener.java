@@ -7,7 +7,7 @@ package com.jen.easy.http.imp;
  */
 public interface HttpUploadListener {
 
-    void success(int flagCode, String flag, Object result);
+    void success(int flagCode, String flag, Object obj);
 
     void fail(int flagCode, String flag, String msg);
 

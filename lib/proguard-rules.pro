@@ -71,16 +71,19 @@
 -keep class com.jen.easy.http.Http {
     *;
 }
--keep class com.jen.easy.http.HttpParam* {
+-keep class com.jen.easy.http.HttpRequest* {
     *;
 }
--keep class com.jen.easy.http.BaseParamRequest* {
+-keep class com.jen.easy.http.HttpBaseRequest* {
      *;
 }
--keep class com.jen.easy.http.DownloadParamRequest* {
+-keep class com.jen.easy.http.HttpDownloadPRequest* {
     *;
 }
--keep class com.jen.easy.http.UploadParamRequest* {
+-keep class com.jen.easy.http.HttpUploadRequest* {
+    *;
+}
+-keep class com.jen.easy.http.HttpResponse {
     *;
 }
 -keep class com.jen.easy.http.imp.HttpBaseListener {

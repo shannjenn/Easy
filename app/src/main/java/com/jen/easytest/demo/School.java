@@ -1,6 +1,6 @@
 package com.jen.easytest.demo;
 
-import com.jen.easy.http.BaseParamRequest;
+import com.jen.easy.http.HttpResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -10,7 +10,11 @@ import java.util.Map;
  * 时间：2017/8/20.
  */
 
-public class School extends BaseParamRequest {
+public class School extends HttpResponse {
+
+    public School() {
+
+    }
 
 
     private String id;
@@ -23,5 +27,8 @@ public class School extends BaseParamRequest {
 
     Map<String, School> map;
 
+//    private T t;
+
+    public HttpResponse response;
 
 }

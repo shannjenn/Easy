@@ -31,23 +31,34 @@ abstract class HttpManager {
     /**
      * 开始
      *
-     * @param param
+     * @param request
      */
-    protected void start(HttpParam param) {
-        if (param == null) {
+    protected void start(HttpRequest request) {
+        start(request, null);
+    }
+
+    /**
+     * 开始
+     *
+     * @param request
+     */
+    protected void start(HttpRequest request, HttpResponse response) {
+        if (request == null) {
             EasyLog.w(TAG + "start 参数为空");
             return;
         }
-        setDefault(param);
-        if (param instanceof UploadParamRequest) {
-            HttpURLConnectionUploadRunable upload = new HttpURLConnectionUploadRunable((UploadParamRequest) param);
+        setDefault(request);
+        if (request instanceof HttpUploadRequest) {
+            HttpURLConnectionUploadRunable upload = new HttpURLConnectionUploadRunable((HttpUploadRequest) request);
+            upload.setResponse(response);
             pool.execute(upload);
-        } else if (param instanceof DownloadParamRequest) {
-            HttpURLConnectionDownloadRunable download = new HttpURLConnectionDownloadRunable((DownloadParamRequest) param);
+        } else if (request instanceof HttpDownloadPRequest) {
+            HttpURLConnectionDownloadRunable download = new HttpURLConnectionDownloadRunable((HttpDownloadPRequest) request);
             pool.execute(download);
         } else {
-            HttpURLConnectionRunable httpURLConnectionRunable = new HttpURLConnectionRunable((BaseParamRequest) param);
-            pool.execute(httpURLConnectionRunable);
+            HttpURLConnectionRunable base = new HttpURLConnectionRunable((HttpBaseRequest) request);
+            base.setResponse(response);
+            pool.execute(base);
         }
     }
 
@@ -56,7 +67,7 @@ abstract class HttpManager {
      *
      * @param param
      */
-    private void setDefault(HttpParam param) {
+    private void setDefault(HttpRequest param) {
         if (param.http.method == null)
             param.http.method = method;
         if (param.http.charset == null)

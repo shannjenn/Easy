@@ -18,9 +18,9 @@ import java.util.Map;
 
 class HttpURLConnectionDownloadRunable implements Runnable {
     private final String TAG = "HttpURLConnectionDownloadRunable : ";
-    private DownloadParamRequest param;
+    private HttpDownloadPRequest param;
 
-    HttpURLConnectionDownloadRunable(DownloadParamRequest param) {
+    HttpURLConnectionDownloadRunable(HttpDownloadPRequest param) {
         super();
         this.param = param;
     }

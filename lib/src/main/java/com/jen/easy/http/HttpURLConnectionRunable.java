@@ -16,21 +16,22 @@ import java.util.Map;
 
 class HttpURLConnectionRunable implements Runnable {
     private final String TAG = "HttpURLConnectionDownloadRunable : ";
-    private BaseParamRequest param;
+    private HttpBaseRequest request;
+    private HttpResponse response;
 
-    HttpURLConnectionRunable(BaseParamRequest param) {
+    HttpURLConnectionRunable(HttpBaseRequest param) {
         super();
-        this.param = param;
+        this.request = param;
     }
 
     @Override
     public void run() {
-        if (TextUtils.isEmpty(param.http.url)) {
+        if (TextUtils.isEmpty(request.http.url)) {
             EasyLog.e(TAG + "URL地址错误");
             fail("URL地址为空");
             return;
         }
-        Map<String, String> requestParams = HttpReflectManager.getRequestParams(param);
+        Map<String, String> requestParams = HttpReflectManager.getRequestParams(request);
         int resposeCode = -1;
         try {
             boolean hasParam = false;
@@ -44,30 +45,30 @@ class HttpURLConnectionRunable implements Runnable {
                 requestBuf.append(name);
                 requestBuf.append("=");
                 requestBuf.append("\"");
-                requestBuf.append(URLEncoder.encode(value, param.http.charset));
+                requestBuf.append(URLEncoder.encode(value, request.http.charset));
                 requestBuf.append("\"");
                 isNotFirst = true;
                 hasParam = true;
             }
 
-            String urlStr = param.http.url;
-            if (param.http.method.toUpperCase().equals("GET") && hasParam) {
+            String urlStr = request.http.url;
+            if (request.http.method.toUpperCase().equals("GET") && hasParam) {
                 urlStr = urlStr + "?" + requestBuf.toString();
             }
 
             URL url = new URL(urlStr);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(param.http.doInput);
-            connection.setDoOutput(param.http.doOutput);
-            connection.setUseCaches(param.http.useCaches);
-            connection.setConnectTimeout(param.http.timeout);
-            connection.setReadTimeout(param.http.readTimeout);
-            connection.setRequestProperty("Charset", param.http.charset);
-            connection.setRequestProperty("Content-Type", param.http.contentType);
-            connection.setRequestProperty("Connection", param.http.connection);
-            connection.setRequestMethod(param.http.method);
+            connection.setDoInput(request.http.doInput);
+            connection.setDoOutput(request.http.doOutput);
+            connection.setUseCaches(request.http.useCaches);
+            connection.setConnectTimeout(request.http.timeout);
+            connection.setReadTimeout(request.http.readTimeout);
+            connection.setRequestProperty("Charset", request.http.charset);
+            connection.setRequestProperty("Content-Type", request.http.contentType);
+            connection.setRequestProperty("Connection", request.http.connection);
+            connection.setRequestMethod(request.http.method);
 
-            if (param.http.method.toUpperCase().equals("POST") && hasParam) {
+            if (request.http.method.toUpperCase().equals("POST") && hasParam) {
                 connection.connect();
                 DataOutputStream out = new DataOutputStream(connection.getOutputStream());
                 out.writeBytes(requestBuf.toString());
@@ -75,10 +76,10 @@ class HttpURLConnectionRunable implements Runnable {
                 out.close();
             }
 
-            if (param.http.method.toUpperCase().equals("GET")) {
-                EasyLog.d("Http请求地址：" + url.toString() + "  请求方式：" + param.http.method);
+            if (request.http.method.toUpperCase().equals("GET")) {
+                EasyLog.d("Http请求地址：" + url.toString() + "  请求方式：" + request.http.method);
             } else {
-                EasyLog.d("Http请求地址：" + url.toString() + "  请求方式：" + param.http.method);
+                EasyLog.d("Http请求地址：" + url.toString() + "  请求方式：" + request.http.method);
                 EasyLog.d("Http请求参数：" + requestBuf.toString());
             }
             resposeCode = connection.getResponseCode();
@@ -86,7 +87,7 @@ class HttpURLConnectionRunable implements Runnable {
             if ((resposeCode == 200)) {
                 StringBuffer result = new StringBuffer("");
                 InputStream inStream = connection.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, param.http.charset));
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, request.http.charset));
                 String s = null;
                 while ((s = reader.readLine()) != null) {
                     result.append(s);
@@ -106,22 +107,26 @@ class HttpURLConnectionRunable implements Runnable {
     }
 
     private void success(String result) {
-        if (param.getBseListener() != null) {
-            if (param.request.resopseBaseClass != null) {
-                Object object = HttpParseManager.parseJson(param.request.resopseBaseClass, param.request.resopseBaseClassObject, result);
+        if (request.getBseListener() != null) {
+            if (response != null) {
+                HttpResponse object = HttpParseManager.parseJson(response, result);
                 if (object == null) {
                     fail("数据解析异常");
                 } else {
-                    param.getBseListener().success(param.request.flagCode, param.request.flag, object);
+                    request.getBseListener().success(request.request.flagCode, request.request.flag, object);
                 }
             } else {
-                param.getBseListener().success(param.request.flagCode, param.request.flag, result);
+                request.getBseListener().success(request.request.flagCode, request.request.flag, result);
             }
         }
     }
 
     private void fail(String result) {
-        if (param.getBseListener() != null)
-            param.getBseListener().fail(param.request.flagCode, param.request.flag, result);
+        if (request.getBseListener() != null)
+            request.getBseListener().fail(request.request.flagCode, request.request.flag, result);
+    }
+
+    public void setResponse(HttpResponse response) {
+        this.response = response;
     }
 }

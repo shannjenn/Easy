@@ -7,7 +7,7 @@ import com.jen.easy.http.imp.HtppDownloadListener;
  * 时间：2017/8/12.
  * 说明：下载文件请求参数
  */
-public class DownloadParamRequest extends HttpParam {
+public abstract class HttpDownloadPRequest extends HttpRequest {
     private HtppDownloadListener downloadListener;
     public Request request = new Request();
 

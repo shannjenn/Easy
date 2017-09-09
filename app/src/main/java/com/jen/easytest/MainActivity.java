@@ -13,8 +13,13 @@ import com.jen.easytest.demo.Student;
 import com.jen.easyui.listview.EasyListView;
 import com.jen.easyui.listview.ItemSource;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
@@ -44,13 +49,43 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             Student student = new Student();
             student.id = i + "";
             student.name = "测试";
+            String cl = list.getClass().toString();
+            String cl2 = student.getClass().toString();
+//            String cl3 = List<Student>
+
+            List<Student> unmodifiedList = Collections.unmodifiableList(list);
             list.add(student);
+
+            try {
+                Method m = MainActivity.class.getMethod("test01", Map.class, List.class);
+                Type[] t = m.getGenericParameterTypes();//获取参数泛型
+                for (Type paramType : t) {
+                    System.out.println("#" + paramType);
+                    if (paramType instanceof ParameterizedType) {
+                        Type[] genericTypes = ((ParameterizedType) paramType).getActualTypeArguments();
+                        for (Type genericType : genericTypes) {
+                            System.out.println("泛型类型" + genericType);
+                            System.out.println("泛型类型" + genericType);
+                        }
+                    }
+                }
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+
         }
-        listView.setAdaper(list,R.layout.item);
+        listView.setAdaper(list, R.layout.item);
 
         EasyUtil.dateFormat.getTime("2017-09-06 21:50:43");
         EasyUtil.dateFormat.getTime("0");
 
+        Student student = new Student();
+
+        Logcat.d("a=");
+    }
+
+    public static void test01(Map<String, Student> map, List<Student> list) {
+        System.out.println("Generic.test01()");
     }
 
     @Override

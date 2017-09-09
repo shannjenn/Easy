@@ -16,24 +16,25 @@ import java.net.URL;
 
 class HttpURLConnectionUploadRunable implements Runnable {
     private final String TAG = "HttpURLConnectionUploadRunable : ";
-    private UploadParamRequest param;
+    private HttpUploadRequest request;
+    private HttpResponse response;
 
-    HttpURLConnectionUploadRunable(UploadParamRequest param) {
+    HttpURLConnectionUploadRunable(HttpUploadRequest param) {
         super();
-        this.param = param;
+        this.request = param;
     }
 
     @Override
     public void run() {
-        if (TextUtils.isEmpty(param.http.url)) {
+        if (TextUtils.isEmpty(request.http.url)) {
             EasyLog.e(TAG + "URL地址错误");
             fail("URL参数错误");
             return;
-        } else if (TextUtils.isEmpty(param.request.filePath)) {
+        } else if (TextUtils.isEmpty(request.request.filePath)) {
             fail("文件地址不能为空");
             return;
         }
-        File file = new File(param.request.filePath);
+        File file = new File(request.request.filePath);
         if (!file.isFile()) {
             fail("文件地址参数错误");
             return;
@@ -41,44 +42,47 @@ class HttpURLConnectionUploadRunable implements Runnable {
 
         HttpURLConnection connection = null;
         try {
-            URL url = new URL(param.http.url);
+            URL url = new URL(request.http.url);
             connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(param.http.doInput);
-            connection.setDoOutput(param.http.doOutput);
-            connection.setUseCaches(param.http.useCaches);
-            connection.setConnectTimeout(param.http.timeout);
-            connection.setReadTimeout(param.http.readTimeout);
-            connection.setRequestProperty("Charset", param.http.charset);
-            connection.setRequestProperty("Content-Type", param.http.contentType);
-            connection.setRequestProperty("Connection", param.http.connection);
-            connection.setRequestMethod(param.http.method);
-            if (param.request.isBreak && param.request.endPoit > param.request.startPoit + 100) {
-                connection.setRequestProperty("Range", "bytes=" + param.request.startPoit + "-" + param.request.endPoit);
+            connection.setDoInput(request.http.doInput);
+            connection.setDoOutput(request.http.doOutput);
+            connection.setUseCaches(request.http.useCaches);
+            connection.setConnectTimeout(request.http.timeout);
+            connection.setReadTimeout(request.http.readTimeout);
+            connection.setRequestProperty("Charset", request.http.charset);
+            connection.setRequestProperty("Content-Type", request.http.contentType);
+            connection.setRequestProperty("Connection", request.http.connection);
+            connection.setRequestMethod(request.http.method);
+            if (request.request.isBreak && request.request.endPoit > request.request.startPoit + 100) {
+                connection.setRequestProperty("Range", "bytes=" + request.request.startPoit + "-" + request.request.endPoit);
             }
-            EasyLog.d("Http 请求地址：" + url.toString() + "  " + param.http.method);
+            EasyLog.d("Http 请求地址：" + url.toString() + "  " + request.http.method);
 
             DataOutputStream out = new DataOutputStream(connection.getOutputStream());
             DataInputStream in = new DataInputStream(new FileInputStream(file));
-            int bytes = 0;
+            long curbytes = request.request.startPoit;
+            int len = 0;
             byte[] bufferOut = new byte[1024];
-            while ((bytes = in.read(bufferOut)) != -1 && !param.request.userCancel) {
-                out.write(bufferOut, 0, bytes);
-                if (param.request.userCancel) {
+            while ((len = in.read(bufferOut)) != -1 && !request.request.userCancel) {
+                out.write(bufferOut, 0, len);
+                if (request.request.userCancel) {
                     break;
+                } else {
+                    progress(curbytes, request.request.endPoit);
                 }
             }
             in.close();
             out.flush();
             out.close();
 
-            if (param.request.userCancel) {
+            if (request.request.userCancel) {
                 fail("用户取消上传");
                 return;
             }
 
             // 读取返回数据
             StringBuffer buffer = new StringBuffer();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), param.http.charset));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), request.http.charset));
             String line = null;
             while ((line = reader.readLine()) != null) {
                 buffer.append(line);
@@ -97,27 +101,31 @@ class HttpURLConnectionUploadRunable implements Runnable {
     }
 
     private void success(String result) {
-        if (param.getUploadListener() != null) {
-            if (param.request.resopseBaseClass != null) {
-                Object object = HttpParseManager.parseJson(param.request.resopseBaseClass, param.request.resopseBaseClassObject, result);
+        if (request.getUploadListener() != null) {
+            if (response != null) {
+                HttpResponse object = HttpParseManager.parseJson(response, result);
                 if (object == null) {
                     fail("数据j解析异常");
                 } else {
-                    param.getUploadListener().success(param.request.flagCode, param.request.flag, object);
+                    request.getUploadListener().success(request.request.flagCode, request.request.flag, object);
                 }
             } else {
-                param.getUploadListener().success(param.request.flagCode, param.request.flag, result);
+//                request.getUploadListener().success(request.request.flagCode, request.request.flag, result);
             }
         }
     }
 
     private void fail(String msg) {
-        if (param.getUploadListener() != null)
-            param.getUploadListener().fail(param.request.flagCode, param.request.flag, msg);
+        if (request.getUploadListener() != null)
+            request.getUploadListener().fail(request.request.flagCode, request.request.flag, msg);
     }
 
     private void progress(long currentPoint, long endPoint) {
-        if (param.getUploadListener() != null)
-            param.getUploadListener().progress(param.request.flagCode, param.request.flag, currentPoint, endPoint);
+        if (request.getUploadListener() != null)
+            request.getUploadListener().progress(request.request.flagCode, request.request.flag, currentPoint, endPoint);
+    }
+
+    public void setResponse(HttpResponse response) {
+        this.response = response;
     }
 }

@@ -7,7 +7,7 @@ import com.jen.easy.http.imp.HttpUploadListener;
  * 作者：ShannJenn
  * 时间：2017/8/12.
  */
-public class UploadParamRequest extends HttpParam {
+public abstract class HttpUploadRequest extends HttpRequest {
     private HttpUploadListener uploadListener;
     public Request request = new Request();
 
@@ -26,17 +26,6 @@ public class UploadParamRequest extends HttpParam {
          * 用户停止
          */
         public boolean userCancel;
-
-        /**
-         * 返回实体
-         */
-        public Class resopseBaseClass;
-
-        /**
-         * 返回实体中的对象
-         */
-        public Class resopseBaseClassObject;
-
 
         /**
          * 上传/下载文件位置

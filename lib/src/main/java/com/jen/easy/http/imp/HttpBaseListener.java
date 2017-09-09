@@ -7,7 +7,7 @@ package com.jen.easy.http.imp;
  */
 public interface HttpBaseListener {
 
-    void success(int flagCode, String flag, Object msg);
+    void success(int flagCode, String flag, Object obj);
 
     void fail(int flagCode, String flag, String msg);
 }

@@ -18,29 +18,29 @@ public class DBDao extends DBDaoManager {
     /**
      * 按ID查询
      *
-     * @param clazz 要查找的类(如：Student.class)
-     * @param id    ID
-     * @return 类
+     * @param clazz 要查找的对象
+     * @param id
+     * @return 对象
      */
     @Override
-    public Object searchById(Class clazz, String id) {
+    public <T> T searchById(Class<T> clazz, String id) {
         return super.searchById(clazz, id);
     }
 
     /**
-     * 按条件分页查询
+     * 按条件查询
      * <p>
      *
-     * @param clazz         要查找的类(如：Student.class)
+     * @param clazz         要查找的对象
      * @param selection     查询条件
      * @param selectionArgs 条件参数
      * @param orderBy       排序
      * @param page          页数
      * @param pageNo        大于0分页,小于等于0不分页
-     * @return 类列表
+     * @return 对象列表集合
      */
     @Override
-    public Object searchByWhere(Class clazz, String selection, String[] selectionArgs, String orderBy, int page, int pageNo) {
+    public <T> List<T> searchByWhere(Class<T> clazz, String selection, String[] selectionArgs, String orderBy, int page, int pageNo) {
         return super.searchByWhere(clazz, selection, selectionArgs, orderBy, page, pageNo);
     }
 
@@ -48,14 +48,14 @@ public class DBDao extends DBDaoManager {
      * 按条件查询
      * <p>
      *
-     * @param clazz         要查找的类(如：Student.class)
+     * @param clazz         要查找的对象
      * @param selection     查询条件
      * @param selectionArgs 条件参数
      * @param orderBy       排序
-     * @return 类列表
+     * @return 对象列表集合
      */
     @Override
-    public Object searchByWhere(Class clazz, String selection, String[] selectionArgs, String orderBy) {
+    public <T> List<T> searchByWhere(Class<T> clazz, String selection, String[] selectionArgs, String orderBy) {
         return super.searchByWhere(clazz, selection, selectionArgs, orderBy);
     }
 
@@ -63,24 +63,24 @@ public class DBDao extends DBDaoManager {
      * 查询所有
      * <p>
      *
-     * @param clazz 要查找的类(如：Student.class)
-     * @return 类列表
+     * @param clazz 对象
+     * @return 对象列表集合
      */
     @Override
-    public Object searchAll(Class clazz) {
+    public <T> List<T> searchAll(Class<T> clazz) {
         return super.searchAll(clazz);
     }
 
     /**
-     * 查询所有并排序
+     * 查询所有
      * <p>
      *
-     * @param clazz   要查找的类(如：Student.class)
+     * @param clazz   对象
      * @param orderBy 排序
-     * @return 类列表
+     * @return 对象列表集合
      */
     @Override
-    public Object searchAll(Class clazz, String orderBy) {
+    public <T> List<T> searchAll(Class<T> clazz, String orderBy) {
         return super.searchAll(clazz, orderBy);
     }
 
@@ -88,24 +88,24 @@ public class DBDao extends DBDaoManager {
      * 插入数据
      * <p>
      *
-     * @param obj 类
+     * @param t 类
      * @return 是否要成功
      */
     @Override
-    public boolean insert(Object obj) {
-        return super.insert(obj);
+    public boolean insert(Object t) {
+        return super.insert(t);
     }
 
     /**
      * 插入或者更新数据
      * <p>
      *
-     * @param obj 类
+     * @param t 类
      * @return 是否要成功
      */
     @Override
-    public boolean replace(Object obj) {
-        return super.replace(obj);
+    public boolean replace(Object t) {
+        return super.replace(t);
     }
 
     /**
@@ -148,14 +148,14 @@ public class DBDao extends DBDaoManager {
     }
 
     /**
-     * 删除多个对象
+     * 删除对象
      *
-     * @param objects 对象
-     * @return 是否要成功
+     * @param t 如：对象List集合、单个对象
+     * @return 是否删除成功
      */
     @Override
-    protected boolean delete(List<Object> objects) {
-        return super.delete(objects);
+    protected <T> boolean delete(T t) {
+        return super.delete(t);
     }
 
     /**

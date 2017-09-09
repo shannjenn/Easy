@@ -7,7 +7,7 @@ import com.jen.easy.http.imp.HttpBaseListener;
  * 时间：2017/8/12.
  * 说明：基本数据请求参数
  */
-public class BaseParamRequest extends HttpParam {
+public abstract class HttpBaseRequest extends HttpRequest {
     private HttpBaseListener bseListener;
     public Request request = new Request();
 
@@ -21,21 +21,6 @@ public class BaseParamRequest extends HttpParam {
          * 请求标识
          */
         public String flag;
-
-        /**
-         * 返回实体
-         */
-        public Class resopseBaseClass;
-
-        /**
-         * 返回实体中resopseBaseClass的对象
-         */
-        public Class resopseBaseClassObject;
-
-        /**
-         * 用户停止
-         */
-        public boolean userCancel;
 
     }
 
