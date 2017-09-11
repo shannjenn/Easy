@@ -13,5 +13,5 @@ public abstract class HttpResponse {
      * （@EasyMouse.HTTP.ResponseParam("data") 注释返回参数）
      * （@private Object data; 实体变量）
      */
-    public Class ObjClass;
+    public Class objClass;
 }

@@ -60,8 +60,6 @@ class HttpParseManager {
             EasyLog.e(TAG + "parseJsonObject 网络请求返回参数请用@EasyMouse.HTTP.ResponseParam备注正确");
             return null;
         }
-        if (tObj instanceof HttpResponse && ((HttpResponse) tObj).ObjClass != null) {
-        }
 //        EasyLog.d(TAG + "clazz=" + clazz.getSimpleName() + " objClass=" + objClass + " jsonObject=" + jsonObject);
 
         /*T tObj;
@@ -156,11 +154,11 @@ class HttpParseManager {
                     } else if (type.contains(Constant.FieldType.OBJECT)) {
                         if (tObj instanceof HttpResponse) {
                             if (value instanceof JSONArray) {
-                                Class clazz2 = Class.forName(((HttpResponse) tObj).ObjClass.getName());
-                                List<Object> objList = parseJsonArray(clazz2.newInstance(), (JSONArray) value);
+//                                Class clazz2 = Class.forName(((HttpResponse) tObj).objClass.getName());
+                                List objList = parseJsonArray(((HttpResponse) tObj).objClass, (JSONArray) value);
                                 field.set(tObj, objList);
                             } else if (value instanceof JSONObject) {
-                                Class clazz2 = Class.forName(((HttpResponse) tObj).ObjClass.getName());
+                                Class clazz2 = Class.forName(((HttpResponse) tObj).objClass.getName());
                                 Object object = parseJsonObject(clazz2.newInstance(), (JSONObject) value);
                                 field.set(tObj, object);
                             } else {
@@ -173,7 +171,7 @@ class HttpParseManager {
                         if (value instanceof JSONArray) {
                             String clazzName = type.substring(type.indexOf("<") + 1, type.indexOf(">"));
                             Class clazz2 = Class.forName(clazzName);
-                            List<Object> objList = parseJsonArray(clazz2.newInstance(), (JSONArray) value);
+                            List objList = parseJsonArray(clazz2, (JSONArray) value);
                             field.set(tObj, objList);
                         } else {
                             EasyLog.e(TAG + "parseJsonObject Constant.FieldType.LIST error");
@@ -214,19 +212,30 @@ class HttpParseManager {
     /**
      * 解析jsonArray
      *
-     * @param tObj
+     * @param TClass
      * @param jsonArray
      * @return
      */
-    private static <T> List<T> parseJsonArray(T tObj, JSONArray jsonArray) {
+    private static <T> List<T> parseJsonArray(Class<T> TClass, JSONArray jsonArray) {
         List<T> list = new ArrayList<>();
         if (jsonArray == null) {
             EasyLog.e(TAG + "parseJsonArray clazz or jsonArray is null");
             return list;
         }
         for (int i = 0; i < jsonArray.length(); i++) {
-            T obj = null;
-            Object jsonObj = null;
+            T TObj;
+            try {
+                TObj = TClass.newInstance();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+                EasyLog.e(TAG + "parseJsonArray InstantiationException");
+                continue;
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+                EasyLog.e(TAG + "parseJsonArray IllegalAccessException");
+                continue;
+            }
+            Object jsonObj;
             try {
                 jsonObj = jsonArray.get(i);
             } catch (JSONException e) {
@@ -235,12 +244,12 @@ class HttpParseManager {
                 continue;
             }
             if (jsonObj instanceof JSONObject) {
-                obj = parseJsonObject(tObj, (JSONObject) jsonObj);
+                TObj = parseJsonObject(TObj, (JSONObject) jsonObj);
             } else {
                 EasyLog.e(TAG + "parseJsonArray jsonArray.get(i) is not JSONObject");
             }
-            if (obj != null)
-                list.add(obj);
+            if (TObj != null)
+                list.add(TObj);
         }
         return list;
     }
