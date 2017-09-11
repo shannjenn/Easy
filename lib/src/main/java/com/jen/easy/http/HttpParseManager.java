@@ -22,7 +22,7 @@ import static com.jen.easy.http.HttpReflectManager.PARAM_TYPE;
  * Created by Jen on 2017/7/24.
  */
 class HttpParseManager {
-    private final static String TAG = "HttpParseManager : ";
+    private final static String TAG = HttpParseManager.class.getSimpleName() + " : ";
 
     /**
      * json解析

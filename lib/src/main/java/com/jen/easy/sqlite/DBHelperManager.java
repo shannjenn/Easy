@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 abstract class DBHelperManager {
-    private final String TAG = "DBHelperManager : ";
+    private final String TAG = DBHelperManager.class.getSimpleName() + " : ";
     private Database database;
 
     protected DBHelperManager(Context context) {
@@ -35,7 +35,6 @@ abstract class DBHelperManager {
 
     /**
      * 读取数据库
-     *
      */
     protected SQLiteDatabase getReadDatabse() {
         return database.getReadableDatabase();
@@ -43,7 +42,6 @@ abstract class DBHelperManager {
 
     /**
      * 写入数据库
-     *
      */
     protected SQLiteDatabase getWtriteDatabse() {
         return database.getWritableDatabase();

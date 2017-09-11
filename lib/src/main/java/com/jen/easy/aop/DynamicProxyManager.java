@@ -13,7 +13,7 @@ import java.lang.reflect.Proxy;
  * 时间：2017/8/14.
  */
 abstract class DynamicProxyManager implements InvocationHandler {
-    private final String TAG = "DynamicProxyManager : ";
+    private final String TAG = DynamicProxyManager.class.getSimpleName() + " : ";
     private Object target;
 
     private Object beforeClzz;

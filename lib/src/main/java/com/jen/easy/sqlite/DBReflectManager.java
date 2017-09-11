@@ -15,7 +15,7 @@ import java.util.Map;
  */
 
 class DBReflectManager {
-    private static final String TAG = "DBReflectManager : ";
+    private static final String TAG = DBReflectManager.class.getSimpleName() + " : ";
     /**
      * 主键名
      */

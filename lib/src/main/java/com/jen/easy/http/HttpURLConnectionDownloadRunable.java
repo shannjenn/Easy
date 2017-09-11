@@ -17,7 +17,7 @@ import java.net.URLEncoder;
 import java.util.Map;
 
 class HttpURLConnectionDownloadRunable implements Runnable {
-    private final String TAG = "HttpURLConnectionDownloadRunable : ";
+    private final String TAG = HttpURLConnectionDownloadRunable.class.getSimpleName() + " : ";
     private HttpDownloadPRequest param;
 
     HttpURLConnectionDownloadRunable(HttpDownloadPRequest param) {

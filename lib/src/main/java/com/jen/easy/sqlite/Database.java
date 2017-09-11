@@ -11,7 +11,7 @@ import com.jen.easy.sqlite.imp.DatabaseListener;
 import java.io.File;
 
 class Database {
-    private final String TAG = "Database : ";
+    private final String TAG = Database.class.getSimpleName() + " : ";
     private static final String name = "easy.db";
     private String path;
     private DatabaseListener listener;

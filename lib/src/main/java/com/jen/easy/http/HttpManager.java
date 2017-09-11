@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
  */
 
 abstract class HttpManager {
-    private final String TAG = "HttpManager : ";
+    private final String TAG = HttpManager.class.getSimpleName() + " : ";
     private ExecutorService pool;
     private int maxThreadSize = 100;
 
