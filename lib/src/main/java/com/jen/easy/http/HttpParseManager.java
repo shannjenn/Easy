@@ -31,7 +31,7 @@ class HttpParseManager {
      * @param obj
      * @return
      */
-    static HttpResponse parseJson(HttpResponse tObj, String obj) {
+    static <T> T parseJson(T tObj, String obj) {
         if (obj == null) {
             EasyLog.e(TAG + "parseJson obj is null");
         }
@@ -165,7 +165,7 @@ class HttpParseManager {
                                 EasyLog.e(TAG + "parseJsonObject Constant.FieldType.OBJECT error");
                             }
                         } else {
-                            EasyLog.e(TAG + "object类型请继承HttpResponse");
+                            EasyLog.e(TAG + "要解析object类型请继承HttpResponse");
                         }
                     } else if (type.contains(Constant.FieldType.LIST)) {
                         if (value instanceof JSONArray) {

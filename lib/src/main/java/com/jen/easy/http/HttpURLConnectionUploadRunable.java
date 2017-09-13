@@ -107,10 +107,10 @@ class HttpURLConnectionUploadRunable implements Runnable {
                 if (object == null) {
                     fail("数据j解析异常");
                 } else {
-                    request.getUploadListener().success(request.request.flagCode, request.request.flag, object);
+                    request.getUploadListener().success(request.request.flagCode, request.request.flag, object, result);
                 }
             } else {
-//                request.getUploadListener().success(request.request.flagCode, request.request.flag, result);
+                request.getUploadListener().success(request.request.flagCode, request.request.flag, null, result);
             }
         }
     }

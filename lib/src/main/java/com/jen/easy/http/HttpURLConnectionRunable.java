@@ -113,10 +113,10 @@ class HttpURLConnectionRunable implements Runnable {
                 if (object == null) {
                     fail("数据解析异常");
                 } else {
-                    request.getBseListener().success(request.request.flagCode, request.request.flag, object);
+                    request.getBseListener().success(request.request.flagCode, request.request.flag, object, result);
                 }
             } else {
-                request.getBseListener().success(request.request.flagCode, request.request.flag, result);
+                request.getBseListener().success(request.request.flagCode, request.request.flag, null, result);
             }
         }
     }
