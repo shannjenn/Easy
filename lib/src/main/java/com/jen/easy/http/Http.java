@@ -25,15 +25,6 @@ public class Http extends HttpManager {
     }
 
     /**
-     * @param request  请求参数
-     * @param response 返回参数
-     */
-    @Override
-    public void start(HttpRequest request, HttpResponse response) {
-        super.start(request, response);
-    }
-
-    /**
      * 设置默认请求方式
      *
      * @param method get/post

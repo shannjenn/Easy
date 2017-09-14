@@ -7,9 +7,9 @@ import com.jen.easy.http.HttpResponse;
  * 时间：2017/9/4:21:44
  * 说明：上传监听
  */
-public interface HttpUploadListener {
+public interface HttpUploadListener<T extends HttpResponse> {
 
-    void success(int flagCode, String flag, HttpResponse response, String result);
+    void success(int flagCode, String flag, T response);
 
     void fail(int flagCode, String flag, String msg);
 

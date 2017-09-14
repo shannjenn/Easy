@@ -7,9 +7,17 @@ import com.jen.easy.http.imp.HttpUploadListener;
  * 作者：ShannJenn
  * 时间：2017/8/12.
  */
-public abstract class HttpUploadRequest extends HttpRequest {
-    private HttpUploadListener uploadListener;
+public abstract class HttpUploadRequest<T extends HttpResponse> extends HttpRequest {
+    private HttpUploadListener<T> uploadListener;
     public Request request = new Request();
+
+    /**
+     * 设置返回Object变量实体：List集合实体、单实体
+     * 如：
+     * （@EasyMouse.HTTP.ResponseParam("data") 注释返回参数）
+     * （@private Object data; 实体变量）
+     */
+    public Class ResponseObjClass;
 
     public final class Request {
         /**
@@ -46,11 +54,11 @@ public abstract class HttpUploadRequest extends HttpRequest {
         public boolean isBreak;
     }
 
-    public HttpUploadListener getUploadListener() {
+    public HttpUploadListener<T> getUploadListener() {
         return uploadListener;
     }
 
-    public void setEasyHttpUploadFileListener(HttpUploadListener uploadListener) {
+    public void setEasyHttpUploadFileListener(HttpUploadListener<T> uploadListener) {
         this.uploadListener = uploadListener;
     }
 }

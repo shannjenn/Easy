@@ -158,8 +158,8 @@ class HttpParseManager {
                                 List objList = parseJsonArray(((HttpResponse) tObj).objClass, (JSONArray) value);
                                 field.set(tObj, objList);
                             } else if (value instanceof JSONObject) {
-                                Class clazz2 = Class.forName(((HttpResponse) tObj).objClass.getName());
-                                Object object = parseJsonObject(clazz2.newInstance(), (JSONObject) value);
+//                                Class clazz2 = Class.forName(((HttpResponse) tObj).objClass.getName());
+                                Object object = parseJsonObject(((HttpResponse) tObj).objClass.newInstance(), (JSONObject) value);
                                 field.set(tObj, object);
                             } else {
                                 EasyLog.e(TAG + "parseJsonObject Constant.FieldType.OBJECT error");

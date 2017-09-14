@@ -11,13 +11,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 class HttpURLConnectionUploadRunable implements Runnable {
     private final String TAG = HttpURLConnectionUploadRunable.class.getSimpleName() + " : ";
     private HttpUploadRequest request;
-    private HttpResponse response;
 
     HttpURLConnectionUploadRunable(HttpUploadRequest param) {
         super();
@@ -102,15 +103,51 @@ class HttpURLConnectionUploadRunable implements Runnable {
 
     private void success(String result) {
         if (request.getUploadListener() != null) {
-            if (response != null) {
-                HttpResponse object = HttpParseManager.parseJson(response, result);
-                if (object == null) {
-                    fail("数据j解析异常");
-                } else {
-                    request.getUploadListener().success(request.request.flagCode, request.request.flag, object, result);
+            Type type = request.getClass().getGenericSuperclass();
+            if (!(type instanceof ParameterizedType)) {
+                EasyLog.e(TAG + "请求参数未指定泛型返回类型");
+                fail("请求参数未指定返回类型");
+                return;
+            }
+            Type classType = ((ParameterizedType) type).getActualTypeArguments()[0];
+            if (!(classType instanceof Class)) {
+                EasyLog.e(TAG + classType + "泛型不是Class类型");
+                fail(classType + "不是Class类型");
+                return;
+            }
+            HttpResponse response;
+            try {
+                Class clazz = Class.forName(((Class) classType).getName());
+                Object object = clazz.newInstance();
+                if (!(object instanceof HttpResponse)) {
+                    EasyLog.e(TAG + classType + "泛型不是HttpResponse类型");
+                    fail(classType + "HttpResponse类型");
+                    return;
                 }
+                response = (HttpResponse) object;
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+                EasyLog.e(TAG + "InstantiationException");
+                fail("不存在泛型：" + ((Class) classType).getName());
+                return;
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+                EasyLog.e(TAG + "IllegalAccessException");
+                fail("不存在泛型：" + ((Class) classType).getName());
+                return;
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+                EasyLog.e(TAG + "ClassNotFoundException");
+                fail("不存在泛型：" + ((Class) classType).getName());
+                return;
+            }
+
+            response.objClass = request.ResponseObjClass;
+            Object parseObject = HttpParseManager.parseJson(response, result);
+            if (parseObject == null) {
+                fail("数据解析异常");
             } else {
-                request.getUploadListener().success(request.request.flagCode, request.request.flag, null, result);
+                request.getUploadListener().success(request.request.flagCode, request.request.flag, response);
             }
         }
     }
@@ -123,9 +160,5 @@ class HttpURLConnectionUploadRunable implements Runnable {
     private void progress(long currentPoint, long endPoint) {
         if (request.getUploadListener() != null)
             request.getUploadListener().progress(request.request.flagCode, request.request.flag, currentPoint, endPoint);
-    }
-
-    public void setResponse(HttpResponse response) {
-        this.response = response;
     }
 }

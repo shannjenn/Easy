@@ -34,15 +34,6 @@ abstract class HttpManager {
      * @param request
      */
     protected void start(HttpRequest request) {
-        start(request, null);
-    }
-
-    /**
-     * 开始
-     *
-     * @param request
-     */
-    protected void start(HttpRequest request, HttpResponse response) {
         if (request == null) {
             EasyLog.w(TAG + "start 参数为空");
             return;
@@ -50,14 +41,12 @@ abstract class HttpManager {
         setDefault(request);
         if (request instanceof HttpUploadRequest) {
             HttpURLConnectionUploadRunable upload = new HttpURLConnectionUploadRunable((HttpUploadRequest) request);
-            upload.setResponse(response);
             pool.execute(upload);
         } else if (request instanceof HttpDownloadPRequest) {
             HttpURLConnectionDownloadRunable download = new HttpURLConnectionDownloadRunable((HttpDownloadPRequest) request);
             pool.execute(download);
         } else {
             HttpURLConnectionRunable base = new HttpURLConnectionRunable((HttpBaseRequest) request);
-            base.setResponse(response);
             pool.execute(base);
         }
     }
