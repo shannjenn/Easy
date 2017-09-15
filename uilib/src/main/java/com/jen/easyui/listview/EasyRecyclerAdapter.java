@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -19,15 +20,16 @@ import java.util.Map;
  * Created by Jen on 2017/8/24.
  */
 
-public class EasyRecyclerAdapter extends RecyclerView.Adapter<EasyRecyclerAdapter.Holder> {
+public class EasyRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final String TAG = EasyRecyclerAdapter.class.getSimpleName() + " ";
-    private List<?> datas;
+    private List<T> datas;
     private int layout;
     private boolean moreItem;//多种布局
     private Map<Integer, Integer> layouts;
     private AdapterClickEvent adapterClickEvent;
+    private ClickEvent clickEvent = new ClickEvent();
 
-    public EasyRecyclerAdapter(List<?> datas, int layout) {
+    public EasyRecyclerAdapter(List<T> datas, int layout) {
         this.datas = datas;
         this.layout = layout;
         if (datas == null || datas.size() == 0) {
@@ -39,7 +41,7 @@ public class EasyRecyclerAdapter extends RecyclerView.Adapter<EasyRecyclerAdapte
      * @param datas            数据
      * @param viewType_layouts key: @ItemSource（isViewType） value：布局
      */
-    public EasyRecyclerAdapter(List<?> datas, Map<Integer, Integer> viewType_layouts) {
+    public EasyRecyclerAdapter(List<T> datas, Map<Integer, Integer> viewType_layouts) {
         this.datas = datas;
         this.layouts = viewType_layouts;
         moreItem = true;
@@ -78,7 +80,7 @@ public class EasyRecyclerAdapter extends RecyclerView.Adapter<EasyRecyclerAdapte
     }
 
     @Override
-    public void onBindViewHolder(Holder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder == null) {
             return;
         }
@@ -121,7 +123,7 @@ public class EasyRecyclerAdapter extends RecyclerView.Adapter<EasyRecyclerAdapte
 //                EasyUILog.w(TAG + "找不到对应：onClickView viewId=" + viewId + " position=" + position);
                 continue;
             }
-            onClickView.setOnClickListener(adapterClickEvent);
+            onClickView.setOnClickListener(clickEvent);
         }
         for (int i = 0; i < onLongClickIds.size(); i++) {
             int viewId = onClickIds.get(i);
@@ -130,9 +132,15 @@ public class EasyRecyclerAdapter extends RecyclerView.Adapter<EasyRecyclerAdapte
                 EasyUILog.w(TAG + "找不到对应：onLongClickView viewId=" + viewId + " position=" + position);
                 continue;
             }
-            onLongClickView.setOnLongClickListener(adapterClickEvent);
+            onLongClickView.setOnLongClickListener(clickEvent);
         }
 
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapterClickEvent.onItemClick(v, position);
+            }
+        });
     }
 
     @Override
@@ -157,6 +165,24 @@ public class EasyRecyclerAdapter extends RecyclerView.Adapter<EasyRecyclerAdapte
 
     public void setAdapterClickEvent(AdapterClickEvent adapterClickEvent) {
         this.adapterClickEvent = adapterClickEvent;
+    }
+
+    public class ClickEvent implements View.OnClickListener, View.OnLongClickListener, View.OnTouchListener {
+
+        @Override
+        public void onClick(View v) {
+            adapterClickEvent.onClick(v);
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            return adapterClickEvent.onLongClick(v);
+        }
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            return adapterClickEvent.onTouch(v, event);
+        }
     }
 
 }

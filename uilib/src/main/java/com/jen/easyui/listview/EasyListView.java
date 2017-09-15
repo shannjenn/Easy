@@ -43,7 +43,7 @@ public class EasyListView extends RecyclerView {
         super.setHasFixedSize(hasFixedSize);
     }
 
-    public void setAdaper(List<?> datas, int layout) {
+    public <T> void setAdaper(List<T> datas, int layout) {
         if (!isSheLayoutManager) {
             setLinearLayoutManager(VERTICAL);
         }
@@ -51,7 +51,7 @@ public class EasyListView extends RecyclerView {
         setAdapter(adapter);
     }
 
-    public void setAdaper(List<?> datas, Map<Integer, Integer> viewType_layouts) {
+    public <T> void setAdaper(List<T> datas, Map<Integer, Integer> viewType_layouts) {
         if (!isSheLayoutManager) {
             setLinearLayoutManager(VERTICAL);
         }

@@ -39,10 +39,11 @@ class HttpURLConnectionDownloadRunable implements Runnable {
         File fileFolder = new File(param.request.filePath.substring(0, param.request.filePath.lastIndexOf("/")));
         if (!fileFolder.exists()) {
             boolean ret = fileFolder.mkdirs();
-            if (!ret)
+            if (!ret) {
                 EasyLog.w(TAG + "创建文件夹失败");
-            fail("保存文件失败，请检查是否有文件权限");
-            return;
+                fail("保存文件失败，请检查文件路径是否正确");
+                return;
+            }
         }
         if (param.request.deleteOldFile) {
             File file = new File(param.request.filePath);
@@ -50,7 +51,7 @@ class HttpURLConnectionDownloadRunable implements Runnable {
                 boolean ret = file.delete();
                 if (!ret) {
                     EasyLog.w(TAG + "删除旧文件失败");
-                    fail("删除旧文件失败，请检查是否有文件权限");
+                    fail("删除旧文件失败，请检查文件路径是否正确");
                     return;
                 }
             }

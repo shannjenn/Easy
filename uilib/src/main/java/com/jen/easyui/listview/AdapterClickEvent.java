@@ -2,31 +2,18 @@ package com.jen.easyui.listview;
 
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
 
 /**
  * Created by Administrator on 2017/8/25.
  */
 
-public class AdapterClickEvent implements View.OnClickListener, View.OnLongClickListener, View.OnTouchListener, AdapterView.OnItemClickListener {
+public interface AdapterClickEvent {
 
-    @Override
-    public void onClick(View view) {
+    void onClick(View view);
 
-    }
+    boolean onLongClick(View view);
 
-    @Override
-    public boolean onLongClick(View view) {
-        return false;
-    }
+    boolean onTouch(View view, MotionEvent motionEvent);
 
-    @Override
-    public boolean onTouch(View view, MotionEvent motionEvent) {
-        return false;
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-    }
+    void onItemClick(View view, int pos);
 }
