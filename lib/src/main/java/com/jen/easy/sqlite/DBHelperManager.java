@@ -1,6 +1,7 @@
 package com.jen.easy.sqlite;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.text.TextUtils;
@@ -35,14 +36,26 @@ abstract class DBHelperManager {
      * 读取数据库
      */
     protected SQLiteDatabase getReadDatabse() {
-        return database.getReadableDatabase();
+        try {
+            return database.getReadableDatabase();
+        } catch (SQLiteCantOpenDatabaseException e) {
+            e.printStackTrace();
+            EasyLog.e(TAG + "SQLiteCantOpenDatabaseException");
+            return null;
+        }
     }
 
     /**
      * 写入数据库
      */
     protected SQLiteDatabase getWtriteDatabse() {
-        return database.getWritableDatabase();
+        try {
+            return database.getWritableDatabase();
+        } catch (SQLiteCantOpenDatabaseException e) {
+            e.printStackTrace();
+            EasyLog.e(TAG + "SQLiteCantOpenDatabaseException");
+            return null;
+        }
     }
 
     /**

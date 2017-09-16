@@ -2,6 +2,7 @@ package com.jen.easy.sqlite;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
@@ -65,8 +66,15 @@ class Database {
      * @param version
      */
     void setVersion(int version) {
+        SQLiteDatabase db;
         try {
-            SQLiteDatabase db = getWritableDatabase();
+            db = getWritableDatabase();
+        } catch (SQLiteCantOpenDatabaseException e) {
+            e.printStackTrace();
+            EasyLog.e(TAG + "SQLiteCantOpenDatabaseException");
+            return;
+        }
+        try {
             int oldVersion = db.getVersion();
             if (version < oldVersion) {
                 EasyLog.w(TAG + "升级版本不能小于当前版本：" + oldVersion);
@@ -78,25 +86,34 @@ class Database {
             if (listener != null) {
                 listener.onUpgrade(db, oldVersion, oldVersion);
             }
-            db.close();
+
         } catch (SQLiteException e) {
             e.printStackTrace();
+            EasyLog.e(TAG + "SQLiteException");
+        } finally {
+            db.close();
         }
     }
 
     int getVersion() {
-        return getReadableDatabase().getVersion();
+        try {
+            return getReadableDatabase().getVersion();
+        } catch (SQLiteCantOpenDatabaseException e) {
+            e.printStackTrace();
+            EasyLog.e(TAG + "SQLiteCantOpenDatabaseException");
+            return -1;
+        }
     }
 
     String getName() {
         return name;
     }
 
-    SQLiteDatabase getReadableDatabase() {
+    SQLiteDatabase getReadableDatabase() throws SQLiteCantOpenDatabaseException {
         return SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.OPEN_READONLY);
     }
 
-    SQLiteDatabase getWritableDatabase() {
+    SQLiteDatabase getWritableDatabase() throws SQLiteCantOpenDatabaseException {
         return SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.OPEN_READWRITE);
     }
 

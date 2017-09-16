@@ -3,6 +3,7 @@ package com.jen.easy.sqlite;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
@@ -59,7 +60,14 @@ abstract class DBDaoManager {
             return null;
         }
 
-        SQLiteDatabase db = database.getReadableDatabase();
+        SQLiteDatabase db;
+        try {
+            db = database.getReadableDatabase();
+        } catch (SQLiteCantOpenDatabaseException e) {
+            e.printStackTrace();
+            EasyLog.e(TAG + "SQLiteCantOpenDatabaseException");
+            return null;
+        }
         try {
             String selection = primaryKey.get(0) + "=?";
             String[] selectionArgs = {id};
@@ -113,7 +121,14 @@ abstract class DBDaoManager {
             limit = page * pageNo + "," + pageNo;
         }
 
-        SQLiteDatabase db = database.getReadableDatabase();
+        SQLiteDatabase db;
+        try {
+            db = database.getReadableDatabase();
+        } catch (SQLiteCantOpenDatabaseException e) {
+            e.printStackTrace();
+            EasyLog.e(TAG + "SQLiteCantOpenDatabaseException");
+            return objs;
+        }
         try {
             Cursor cursor = db.query(tableName, null, selection, selectionArgs, null, null, orderBy, limit);
             if (cursor == null || cursor.getCount() == 0) {
@@ -185,7 +200,14 @@ abstract class DBDaoManager {
             EasyLog.e(TAG + "insert obj is null");
             return false;
         }
-        SQLiteDatabase db = database.getWritableDatabase();
+        SQLiteDatabase db;
+        try {
+            db = database.getWritableDatabase();
+        } catch (SQLiteCantOpenDatabaseException e) {
+            e.printStackTrace();
+            EasyLog.e(TAG + "SQLiteCantOpenDatabaseException");
+            return false;
+        }
         try {
             db.beginTransaction();
             if (t instanceof List) {
@@ -274,7 +296,14 @@ abstract class DBDaoManager {
             EasyLog.e(TAG + "replace obj is null");
             return false;
         }
-        SQLiteDatabase db = database.getWritableDatabase();
+        SQLiteDatabase db;
+        try {
+            db = database.getWritableDatabase();
+        } catch (SQLiteCantOpenDatabaseException e) {
+            e.printStackTrace();
+            EasyLog.e(TAG + "SQLiteCantOpenDatabaseException");
+            return false;
+        }
         try {
             db.beginTransaction();
             if (t instanceof List) {
@@ -373,7 +402,14 @@ abstract class DBDaoManager {
             EasyLog.e(TAG + "delete primary is null");
             return false;
         }
-        SQLiteDatabase db = database.getWritableDatabase();
+        SQLiteDatabase db;
+        try {
+            db = database.getWritableDatabase();
+        } catch (SQLiteCantOpenDatabaseException e) {
+            e.printStackTrace();
+            EasyLog.e(TAG + "SQLiteCantOpenDatabaseException");
+            return false;
+        }
         try {
             db.beginTransaction();
             db.delete(tableName, primarys.get(0) + "=?", new String[]{id});
@@ -411,7 +447,14 @@ abstract class DBDaoManager {
             EasyLog.e(TAG + "delete primary is null");
             return false;
         }
-        SQLiteDatabase db = database.getWritableDatabase();
+        SQLiteDatabase db;
+        try {
+            db = database.getWritableDatabase();
+        } catch (SQLiteCantOpenDatabaseException e) {
+            e.printStackTrace();
+            EasyLog.e(TAG + "SQLiteCantOpenDatabaseException");
+            return false;
+        }
         try {
             db.beginTransaction();
             for (int i = 0; i < ids.size(); i++) {
@@ -451,7 +494,14 @@ abstract class DBDaoManager {
             EasyLog.e(TAG + "delete tableName is null");
             return false;
         }
-        SQLiteDatabase db = database.getWritableDatabase();
+        SQLiteDatabase db;
+        try {
+            db = database.getWritableDatabase();
+        } catch (SQLiteCantOpenDatabaseException e) {
+            e.printStackTrace();
+            EasyLog.e(TAG + "SQLiteCantOpenDatabaseException");
+            return false;
+        }
         try {
             db.beginTransaction();
             if (t instanceof List) {
@@ -512,7 +562,14 @@ abstract class DBDaoManager {
             EasyLog.e(TAG + "delete tableName is null");
             return false;
         }
-        SQLiteDatabase db = database.getWritableDatabase();
+        SQLiteDatabase db;
+        try {
+            db = database.getWritableDatabase();
+        } catch (SQLiteCantOpenDatabaseException e) {
+            e.printStackTrace();
+            EasyLog.e(TAG + "SQLiteCantOpenDatabaseException");
+            return false;
+        }
         try {
             db.beginTransaction();
             db.delete(tableName, whereCause, selectionArgs);
@@ -534,7 +591,14 @@ abstract class DBDaoManager {
      * param sql
      */
     protected boolean execSQL(String sql) {
-        SQLiteDatabase db = database.getWritableDatabase();
+        SQLiteDatabase db;
+        try {
+            db = database.getWritableDatabase();
+        } catch (SQLiteCantOpenDatabaseException e) {
+            e.printStackTrace();
+            EasyLog.e(TAG + "SQLiteCantOpenDatabaseException");
+            return false;
+        }
         try {
             db.beginTransaction();
             db.execSQL(sql);
