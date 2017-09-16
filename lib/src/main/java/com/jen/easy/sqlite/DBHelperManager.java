@@ -1,8 +1,8 @@
 package com.jen.easy.sqlite;
 
 import android.content.Context;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.text.TextUtils;
 
 import com.jen.easy.constant.Constant;
@@ -113,8 +113,8 @@ abstract class DBHelperManager {
             db.setTransactionSuccessful();
             EasyLog.d("create table name : " + tableName + " column : " + fieldSql.toString()
                     + " primaryKey : " + primaryKeySql + " SUCCESS");
-        } catch (SQLException e) {
-            EasyLog.w(TAG + "createTB SQLException");
+        } catch (SQLiteException e) {
+            EasyLog.w(TAG + "createTB SQLiteException");
             e.printStackTrace();
         } finally {
             db.endTransaction();
@@ -138,8 +138,8 @@ abstract class DBHelperManager {
             db.setTransactionSuccessful();
             EasyLog.d(TAG + "delete table name : " + tableName + " SUCCESS");
             return true;
-        } catch (SQLException e) {
-            EasyLog.w(TAG + "deleteTB SQLException");
+        } catch (SQLiteException e) {
+            EasyLog.w(TAG + "deleteTB SQLiteException");
             e.printStackTrace();
         } finally {
             db.endTransaction();
@@ -190,8 +190,8 @@ abstract class DBHelperManager {
             db.execSQL("alter table " + tableName + " add " + columnName + Constant.FieldType.getDBCoumnType(fieldType));
             db.setTransactionSuccessful();
             EasyLog.d("add table name : " + tableName + " column : " + columnName + " SUCCESS");
-        } catch (SQLException e) {
-            EasyLog.w(TAG + "addColumn SQLException");
+        } catch (SQLiteException e) {
+            EasyLog.w(TAG + "addColumn SQLiteException");
             e.printStackTrace();
         } finally {
             db.endTransaction();

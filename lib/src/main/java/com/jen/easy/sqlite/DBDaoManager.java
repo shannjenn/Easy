@@ -3,8 +3,8 @@ package com.jen.easy.sqlite;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 
 import com.jen.easy.EasyUtil;
 import com.jen.easy.constant.Constant;
@@ -72,9 +72,9 @@ abstract class DBDaoManager {
             cursor.close();
             db.close();
             return obj;
-        } catch (SQLException e) {
+        } catch (SQLiteException e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "SQLException");
+            EasyLog.e(TAG + "SQLiteException");
         } finally {
             db.close();
         }
@@ -126,9 +126,9 @@ abstract class DBDaoManager {
             } while (cursor.moveToNext());
             cursor.close();
             db.close();
-        } catch (SQLException e) {
+        } catch (SQLiteException e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "SQLException");
+            EasyLog.e(TAG + "SQLiteException");
         } finally {
             db.close();
         }
@@ -252,9 +252,9 @@ abstract class DBDaoManager {
             }
             db.setTransactionSuccessful();
             return true;
-        } catch (SQLException e) {
+        } catch (SQLiteException e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "insert SQLException");
+            EasyLog.e(TAG + "insert SQLiteException");
         } finally {
             db.endTransaction();
             db.close();
@@ -341,9 +341,9 @@ abstract class DBDaoManager {
             }
             db.setTransactionSuccessful();
             return true;
-        } catch (SQLException e) {
+        } catch (SQLiteException e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "replace SQLException");
+            EasyLog.e(TAG + "replace SQLiteException");
         } finally {
             db.endTransaction();
             db.close();
@@ -379,9 +379,9 @@ abstract class DBDaoManager {
             db.delete(tableName, primarys.get(0) + "=?", new String[]{id});
             db.setTransactionSuccessful();
             return true;
-        } catch (SQLException e) {
+        } catch (SQLiteException e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "delete SQLException");
+            EasyLog.e(TAG + "delete SQLiteException");
         } finally {
             db.endTransaction();
             db.close();
@@ -421,7 +421,7 @@ abstract class DBDaoManager {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "delete SQLException");
+            EasyLog.e(TAG + "delete SQLiteException");
         } finally {
             db.endTransaction();
             db.close();
@@ -493,7 +493,7 @@ abstract class DBDaoManager {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "delete SQLException");
+            EasyLog.e(TAG + "delete SQLiteException");
         } finally {
             db.endTransaction();
             db.close();
@@ -520,7 +520,7 @@ abstract class DBDaoManager {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "delete SQLException");
+            EasyLog.e(TAG + "delete SQLiteException");
         } finally {
             db.endTransaction();
             db.close();
@@ -539,9 +539,9 @@ abstract class DBDaoManager {
             db.beginTransaction();
             db.execSQL(sql);
             db.setTransactionSuccessful();
-        } catch (SQLException e) {
+        } catch (SQLiteException e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "execSQL SQLException");
+            EasyLog.e(TAG + "execSQL SQLiteException");
         } finally {
             db.endTransaction();
             db.close();
