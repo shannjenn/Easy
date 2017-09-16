@@ -21,21 +21,30 @@ class Database {
         File parent = new File(path).getParentFile();
         if (!parent.exists()) {
             boolean ret = parent.mkdirs();
-            if (!ret)
-                EasyLog.w(TAG + "创建文件失败");
+            if (!ret) {
+                EasyLog.w(TAG + "创建数据库文件夹失败");
+            }
         }
     }
 
     /**
      * 创建数据库
      */
-    SQLiteDatabase createDB() {
+    boolean createDB() {
         File file = new File(path);
         if (file.exists()) {
-            return null;
+            EasyLog.i(TAG + "数据库已经存在");
+            return true;
         }
-        SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(path, null);
-        return db;
+        try {
+            SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(path, null);
+            db.close();
+            return true;
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+            EasyLog.e(TAG + "数据库创建失败");
+        }
+        return false;
     }
 
     /**
@@ -56,19 +65,23 @@ class Database {
      * @param version
      */
     void setVersion(int version) {
-        SQLiteDatabase db = getWritableDatabase();
-        int oldVersion = db.getVersion();
-        if (version < oldVersion) {
-            EasyLog.w(TAG + "升级版本不能小于当前版本：" + oldVersion);
+        try {
+            SQLiteDatabase db = getWritableDatabase();
+            int oldVersion = db.getVersion();
+            if (version < oldVersion) {
+                EasyLog.w(TAG + "升级版本不能小于当前版本：" + oldVersion);
+            }
+            if (oldVersion == version) {
+                return;
+            }
+            db.setVersion(version);
+            if (listener != null) {
+                listener.onUpgrade(db, oldVersion, oldVersion);
+            }
+            db.close();
+        } catch (SQLiteException e) {
+            e.printStackTrace();
         }
-        if (oldVersion == version) {
-            return;
-        }
-        db.setVersion(version);
-        if (listener != null) {
-            listener.onUpgrade(db, oldVersion, oldVersion);
-        }
-        db.close();
     }
 
     int getVersion() {
@@ -95,18 +108,18 @@ class Database {
      * @return
      */
     boolean checkTableExist(SQLiteDatabase db, String tableName) {
-        boolean exist = false;
         try {
             Cursor cursor = db.rawQuery("SELECT * FROM " + tableName + " LIMIT 0", null);
-            exist = cursor != null;
-            if (cursor != null)
+            if (cursor != null) {
                 cursor.close();
-            return exist;
+                return true;
+            } else {
+                return false;
+            }
         } catch (SQLiteException e) {
 //            e.printStackTrace();
-            exist = false;
+            return false;
         }
-        return exist;
     }
 
     /**

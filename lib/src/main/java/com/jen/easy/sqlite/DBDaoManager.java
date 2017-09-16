@@ -42,12 +42,12 @@ abstract class DBDaoManager {
      */
     protected <T> T searchById(Class<T> clazz, String id) {
         if (clazz == null || id == null) {
-            EasyLog.w(TAG + "searchById clazz is null or id is null");
+            EasyLog.e(TAG + "searchById clazz is null or id is null");
             return null;
         }
         String tableName = getTableName(clazz);
         if (tableName == null) {
-            EasyLog.w(TAG + "searchById tableName is null");
+            EasyLog.e(TAG + "searchById tableName is null");
             return null;
         }
         Map<String, Object> objectMap = DBReflectManager.getColumnNames(clazz);
@@ -55,21 +55,30 @@ abstract class DBDaoManager {
         Map<String, Field> column_field = (Map<String, Field>) objectMap.get(COLUMN_FIELD);
 
         if (primaryKey.size() == 0) {
-            EasyLog.w(TAG + "searchById primaryKey is null");
+            EasyLog.e(TAG + "searchById primaryKey is null");
             return null;
         }
+
         SQLiteDatabase db = database.getReadableDatabase();
-        String selection = primaryKey.get(0) + "=?";
-        String[] selectionArgs = {id};
-        Cursor cursor = db.query(tableName, null, selection, selectionArgs, null, null, null);
-        if (cursor == null || cursor.getCount() == 0) {
-            return null;
+        try {
+            String selection = primaryKey.get(0) + "=?";
+            String[] selectionArgs = {id};
+            Cursor cursor = db.query(tableName, null, selection, selectionArgs, null, null, null);
+            if (cursor == null || cursor.getCount() == 0) {
+                return null;
+            }
+            cursor.moveToFirst();
+            T obj = valuation(clazz, column_field, cursor);
+            cursor.close();
+            db.close();
+            return obj;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            EasyLog.e(TAG + "SQLException");
+        } finally {
+            db.close();
         }
-        cursor.moveToFirst();
-        T obj = valuation(clazz, column_field, cursor);
-        cursor.close();
-        db.close();
-        return obj;
+        return null;
     }
 
     /**
@@ -87,12 +96,12 @@ abstract class DBDaoManager {
     protected <T> List<T> searchByWhere(Class<T> clazz, String selection, String[] selectionArgs, String orderBy, int page, int pageNo) {
         List<T> objs = new ArrayList<>();
         if (clazz == null) {
-            EasyLog.w(TAG + "searchByWhere clazz is null or id is null");
+            EasyLog.e(TAG + "searchByWhere clazz is null or id is null");
             return objs;
         }
         String tableName = getTableName(clazz);
         if (tableName == null) {
-            EasyLog.w(TAG + "searchByWhere tableName is null");
+            EasyLog.e(TAG + "searchByWhere tableName is null");
             return objs;
         }
         Map<String, Object> objectMap = DBReflectManager.getColumnNames(clazz);
@@ -103,18 +112,26 @@ abstract class DBDaoManager {
         if (pageNo > 0) {
             limit = page * pageNo + "," + pageNo;
         }
+
         SQLiteDatabase db = database.getReadableDatabase();
-        Cursor cursor = db.query(tableName, null, selection, selectionArgs, null, null, orderBy, limit);
-        if (cursor == null || cursor.getCount() == 0) {
-            return objs;
+        try {
+            Cursor cursor = db.query(tableName, null, selection, selectionArgs, null, null, orderBy, limit);
+            if (cursor == null || cursor.getCount() == 0) {
+                return objs;
+            }
+            cursor.moveToFirst();
+            do {
+                T obj = valuation(clazz, column_field, cursor);
+                objs.add(obj);
+            } while (cursor.moveToNext());
+            cursor.close();
+            db.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            EasyLog.e(TAG + "SQLException");
+        } finally {
+            db.close();
         }
-        cursor.moveToFirst();
-        do {
-            T obj = valuation(clazz, column_field, cursor);
-            objs.add(obj);
-        } while (cursor.moveToNext());
-        cursor.close();
-        db.close();
         return objs;
     }
 
@@ -165,7 +182,7 @@ abstract class DBDaoManager {
      */
     protected <T> boolean insert(T t) {
         if (t == null || t instanceof Class) {
-            EasyLog.w(TAG + "insert obj is null");
+            EasyLog.e(TAG + "insert obj is null");
             return false;
         }
         SQLiteDatabase db = database.getWritableDatabase();
@@ -174,12 +191,12 @@ abstract class DBDaoManager {
             if (t instanceof List) {
                 List<Object> list = (List<Object>) t;
                 if (list.size() <= 0) {
-                    EasyLog.w(TAG + "insert 插入数据为空");
+                    EasyLog.e(TAG + "insert 插入数据为空");
                     return false;
                 }
                 String tableName = getTableName(list.get(0).getClass());
                 if (tableName == null) {
-                    EasyLog.w(TAG + "insert 插入表名为空，请检查是否已经注释表明");
+                    EasyLog.e(TAG + "insert 插入表名为空，请检查是否已经注释表明");
                     return false;
                 }
                 Map<String, Object> objectMap = DBReflectManager.getColumnNames(list.get(0).getClass());
@@ -190,12 +207,12 @@ abstract class DBDaoManager {
             } else if (t instanceof Object[]) {
                 Object[] objs = (Object[]) t;
                 if (objs.length <= 0) {
-                    EasyLog.w(TAG + "insert 数据为空");
+                    EasyLog.e(TAG + "insert 数据为空");
                     return false;
                 }
                 String tableName = getTableName(objs[0].getClass());
                 if (tableName == null) {
-                    EasyLog.w(TAG + "insert 插入表名为空，请检查是否已经注释表明");
+                    EasyLog.e(TAG + "insert 插入表名为空，请检查是否已经注释表明");
                     return false;
                 }
                 Map<String, Object> objectMap = DBReflectManager.getColumnNames(objs[0].getClass());
@@ -206,7 +223,7 @@ abstract class DBDaoManager {
             } else if (t instanceof Map) {
                 Map<Object, Object> map = (Map<Object, Object>) t;
                 if (map.size() <= 0) {
-                    EasyLog.w(TAG + "insert 数据为空");
+                    EasyLog.e(TAG + "insert 数据为空");
                     return false;
                 }
                 String tableName = null;
@@ -217,7 +234,7 @@ abstract class DBDaoManager {
                         objectMap = DBReflectManager.getColumnNames(value.getClass());
                     }
                     if (tableName == null) {
-                        EasyLog.w(TAG + "insert 插入表名为空，请检查是否已经注释表明");
+                        EasyLog.e(TAG + "insert 插入表名为空，请检查是否已经注释表明");
                         return false;
                     }
                     ContentValues values = cntentValues(value, objectMap);
@@ -226,7 +243,7 @@ abstract class DBDaoManager {
             } else {
                 String tableName = getTableName(t.getClass());
                 if (tableName == null) {
-                    EasyLog.w(TAG + "insert 插入表名为空，请检查是否已经注释表明");
+                    EasyLog.e(TAG + "insert 插入表名为空，请检查是否已经注释表明");
                     return false;
                 }
                 Map<String, Object> objectMap = DBReflectManager.getColumnNames(t.getClass());
@@ -254,7 +271,7 @@ abstract class DBDaoManager {
      */
     protected <T> boolean replace(T t) {
         if (t == null || t instanceof Class) {
-            EasyLog.w(TAG + "replace obj is null");
+            EasyLog.e(TAG + "replace obj is null");
             return false;
         }
         SQLiteDatabase db = database.getWritableDatabase();
@@ -263,12 +280,12 @@ abstract class DBDaoManager {
             if (t instanceof List) {
                 List<Object> list = (List<Object>) t;
                 if (list.size() <= 0) {
-                    EasyLog.w(TAG + "replace 数据为空");
+                    EasyLog.e(TAG + "replace 数据为空");
                     return false;
                 }
                 String tableName = getTableName(list.get(0).getClass());
                 if (tableName == null) {
-                    EasyLog.w(TAG + "replace 插入表名为空，请检查是否已经注释表明");
+                    EasyLog.e(TAG + "replace 插入表名为空，请检查是否已经注释表明");
                     return false;
                 }
                 Map<String, Object> objectMap = DBReflectManager.getColumnNames(list.get(0).getClass());
@@ -279,12 +296,12 @@ abstract class DBDaoManager {
             } else if (t instanceof Object[]) {
                 Object[] objs = (Object[]) t;
                 if (objs.length <= 0) {
-                    EasyLog.w(TAG + "replace 数据为空");
+                    EasyLog.e(TAG + "replace 数据为空");
                     return false;
                 }
                 String tableName = getTableName(objs[0].getClass());
                 if (tableName == null) {
-                    EasyLog.w(TAG + "replace 插入表名为空，请检查是否已经注释表明");
+                    EasyLog.e(TAG + "replace 插入表名为空，请检查是否已经注释表明");
                     return false;
                 }
                 Map<String, Object> objectMap = DBReflectManager.getColumnNames(objs[0].getClass());
@@ -295,7 +312,7 @@ abstract class DBDaoManager {
             } else if (t instanceof Map) {
                 Map<Object, Object> map = (Map<Object, Object>) t;
                 if (map.size() <= 0) {
-                    EasyLog.w(TAG + "replace 数据为空");
+                    EasyLog.e(TAG + "replace 数据为空");
                     return false;
                 }
                 String tableName = null;
@@ -306,7 +323,7 @@ abstract class DBDaoManager {
                         objectMap = DBReflectManager.getColumnNames(value.getClass());
                     }
                     if (tableName == null) {
-                        EasyLog.w(TAG + "replace 插入表名为空，请检查是否已经注释表明");
+                        EasyLog.e(TAG + "replace 插入表名为空，请检查是否已经注释表明");
                         return false;
                     }
                     ContentValues values = cntentValues(value, objectMap);
@@ -315,7 +332,7 @@ abstract class DBDaoManager {
             } else {
                 String tableName = getTableName(t.getClass());
                 if (tableName == null) {
-                    EasyLog.w(TAG + "replace 插入表名为空，请检查是否已经注释表明");
+                    EasyLog.e(TAG + "replace 插入表名为空，请检查是否已经注释表明");
                     return false;
                 }
                 Map<String, Object> objectMap = DBReflectManager.getColumnNames(t.getClass());
@@ -342,18 +359,18 @@ abstract class DBDaoManager {
      */
     protected boolean delete(Class clazz, String id) {
         if (clazz == null || id == null) {
-            EasyLog.w(TAG + "delete obj is null");
+            EasyLog.e(TAG + "delete obj is null");
             return false;
         }
         String tableName = getTableName(clazz);
         if (tableName == null) {
-            EasyLog.w(TAG + "delete tableName is null");
+            EasyLog.e(TAG + "delete tableName is null");
             return false;
         }
         Map<String, Object> objectMap = DBReflectManager.getColumnNames(clazz);
         List<String> primarys = (List<String>) objectMap.get(DBReflectManager.PRIMARY_KEY);
         if (primarys.size() == 0) {
-            EasyLog.w(TAG + "delete primary is null");
+            EasyLog.e(TAG + "delete primary is null");
             return false;
         }
         SQLiteDatabase db = database.getWritableDatabase();
@@ -380,18 +397,18 @@ abstract class DBDaoManager {
      */
     protected boolean delete(Class clazz, List<String> ids) {
         if (clazz == null || ids == null || ids.size() == 0) {
-            EasyLog.w(TAG + "delete obj is null");
+            EasyLog.e(TAG + "delete obj is null");
             return false;
         }
         String tableName = getTableName(clazz);
         if (tableName == null) {
-            EasyLog.w(TAG + "delete tableName is null");
+            EasyLog.e(TAG + "delete tableName is null");
             return false;
         }
         Map<String, Object> objectMap = DBReflectManager.getColumnNames(clazz);
         List<String> primarys = (List<String>) objectMap.get(DBReflectManager.PRIMARY_KEY);
         if (primarys.size() == 0) {
-            EasyLog.w(TAG + "delete primary is null");
+            EasyLog.e(TAG + "delete primary is null");
             return false;
         }
         SQLiteDatabase db = database.getWritableDatabase();
@@ -421,7 +438,7 @@ abstract class DBDaoManager {
      */
     protected <T> boolean delete(T t) {
         if (t == null) {
-            EasyLog.w(TAG + "delete obj is null");
+            EasyLog.e(TAG + "delete obj is null");
             return false;
         }
         String tableName = null;
@@ -431,7 +448,7 @@ abstract class DBDaoManager {
             getTableName(t.getClass());
         }
         if (tableName == null) {
-            EasyLog.w(TAG + "delete tableName is null");
+            EasyLog.e(TAG + "delete tableName is null");
             return false;
         }
         SQLiteDatabase db = database.getWritableDatabase();
@@ -487,12 +504,12 @@ abstract class DBDaoManager {
 
     protected boolean delete(Class clazz, String whereCause, String[] selectionArgs) {
         if (clazz == null || whereCause == null || selectionArgs == null || selectionArgs.length == 0) {
-            EasyLog.w(TAG + "delete obj or selection or selectionArgs is error");
+            EasyLog.e(TAG + "delete obj or selection or selectionArgs is error");
             return false;
         }
         String tableName = getTableName(clazz);
         if (tableName == null) {
-            EasyLog.w(TAG + "delete tableName is null");
+            EasyLog.e(TAG + "delete tableName is null");
             return false;
         }
         SQLiteDatabase db = database.getWritableDatabase();

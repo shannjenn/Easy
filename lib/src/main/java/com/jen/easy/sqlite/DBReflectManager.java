@@ -78,15 +78,15 @@ class DBReflectManager {
         }
 
         Field[] fields = clazz.getDeclaredFields();
-        for (int i = 0; i < fields.length; i++) {
-            boolean isAnno = fields[i].isAnnotationPresent(EasyMouse.DB.Column.class);
+        for (Field field : fields) {
+            boolean isAnno = field.isAnnotationPresent(EasyMouse.DB.Column.class);
             if (!isAnno)
                 continue;
-            EasyMouse.DB.Column columnClass = fields[i].getAnnotation(EasyMouse.DB.Column.class);
+            EasyMouse.DB.Column columnClass = field.getAnnotation(EasyMouse.DB.Column.class);
             String coulumnName = columnClass.columnName();
             boolean isPrimary = columnClass.primaryKey();
             String foreignKey = columnClass.foreignKey().trim();
-            String type = fields[i].getGenericType().toString();
+            String type = field.getGenericType().toString();
 
             if (coulumnName.trim().length() == 0) {
                 continue;
@@ -96,7 +96,7 @@ class DBReflectManager {
             if (foreignKey.length() > 0)
                 column_foreignKey.put(coulumnName, foreignKey);
             column_type.put(coulumnName, type);
-            fieldName.put(coulumnName, fields[i]);
+            fieldName.put(coulumnName, field);
         }
         return objectMap;
     }
@@ -113,16 +113,16 @@ class DBReflectManager {
             return null;
         }
         Field[] fields = obj.getClass().getDeclaredFields();
-        for (int i = 0; i < fields.length; i++) {
-            boolean isAnno = fields[i].isAnnotationPresent(EasyMouse.DB.Column.class);
+        for (Field field : fields) {
+            boolean isAnno = field.isAnnotationPresent(EasyMouse.DB.Column.class);
             if (!isAnno)
                 continue;
-            EasyMouse.DB.Column columnClass = fields[i].getAnnotation(EasyMouse.DB.Column.class);
+            EasyMouse.DB.Column columnClass = field.getAnnotation(EasyMouse.DB.Column.class);
             String columnName = columnClass.columnName().trim();
             if (columnName.equals(primaryKey)) {
                 try {
-                    fields[i].setAccessible(true);
-                    String value = fields[i].get(obj) + "";
+                    field.setAccessible(true);
+                    String value = field.get(obj) + "";
                     return value;
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
@@ -145,16 +145,16 @@ class DBReflectManager {
             return primaryKeys_values;
         }
         Field[] fields = obj.getClass().getDeclaredFields();
-        for (int i = 0; i < fields.length; i++) {
-            boolean isAnno = fields[i].isAnnotationPresent(EasyMouse.DB.Column.class);
+        for (Field field : fields) {
+            boolean isAnno = field.isAnnotationPresent(EasyMouse.DB.Column.class);
             if (!isAnno)
                 continue;
-            EasyMouse.DB.Column columnClass = fields[i].getAnnotation(EasyMouse.DB.Column.class);
+            EasyMouse.DB.Column columnClass = field.getAnnotation(EasyMouse.DB.Column.class);
             if (columnClass.primaryKey()) {
                 String columnName = columnClass.columnName().trim();
-                fields[i].setAccessible(true);
+                field.setAccessible(true);
                 try {
-                    String value = fields[i].get(obj) + "";
+                    String value = field.get(obj) + "";
                     primaryKeys_values.put(columnName, value);
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();

@@ -22,10 +22,8 @@ abstract class DBHelperManager {
         }
     }
 
-    protected void create() {
-        SQLiteDatabase db = database.createDB();
-        if (db != null)
-            db.close();
+    protected boolean create() {
+        return database.createDB();
     }
 
     /*@Override
@@ -57,7 +55,6 @@ abstract class DBHelperManager {
             EasyLog.w(TAG + "createTB error:classObj is null");
             return;
         }
-        SQLiteDatabase db = getWtriteDatabse();
         String tableName = DBReflectManager.getTableName(clazz);
         /*boolean existTB = database.checkTableExist(db, tableName);
         if (existTB) {
@@ -109,6 +106,7 @@ abstract class DBHelperManager {
                 primaryKeySql.toString() +
                 ")";
 
+        SQLiteDatabase db = getWtriteDatabse();
         try {
             db.beginTransaction();
             db.execSQL(sql);

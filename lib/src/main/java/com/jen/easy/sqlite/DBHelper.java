@@ -23,8 +23,8 @@ public class DBHelper extends DBHelperManager {
      * 创建数据库
      */
     @Override
-    public void create() {
-        super.create();
+    public boolean create() {
+        return super.create();
     }
 
     /**
