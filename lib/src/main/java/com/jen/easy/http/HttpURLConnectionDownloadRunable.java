@@ -175,7 +175,7 @@ class HttpURLConnectionDownloadRunable implements Runnable {
 
     private void success() {
         if (param.getDownloadListener() != null)
-            param.getDownloadListener().success(param.request.flagCode, param.request.flag);
+            param.getDownloadListener().success(param.request.flagCode, param.request.flag, param.request.filePath);
     }
 
     private void fail(String msg) {

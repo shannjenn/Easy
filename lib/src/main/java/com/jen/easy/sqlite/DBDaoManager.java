@@ -38,7 +38,7 @@ abstract class DBDaoManager {
 
     /**
      * @param clazz 要查找的对象
-     * @param id
+     * @param id ID
      * @return 对象
      */
     protected <T> T searchById(Class<T> clazz, String id) {

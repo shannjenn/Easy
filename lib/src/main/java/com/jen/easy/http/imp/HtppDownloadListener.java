@@ -7,7 +7,7 @@ package com.jen.easy.http.imp;
  */
 public interface HtppDownloadListener {
 
-    void success(int flagCode, String flag);
+    void success(int flagCode, String flag, String filePath);
 
     void fail(int flagCode, String flag, String msg);
 
