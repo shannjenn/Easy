@@ -3,6 +3,7 @@ package com.jen.easytest;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.jen.easy.EasyMain;
@@ -12,6 +13,7 @@ import com.jen.easy.log.Logcat;
 import com.jen.easytest.demo.Student;
 import com.jen.easyui.listview.EasyListView;
 import com.jen.easyui.listview.ItemSource;
+import com.jen.easyui.dialog.EasyLoading;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -31,6 +33,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     @EasyMouse.BIND.ID(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
+
+    @EasyMouse.BIND.ID(R.id.pb_bar)
+    ProgressBar pb_bar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +85,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         EasyUtil.dateFormat.getTime("0");
 
         Student student = new Student();
+
+        EasyLoading loading = new EasyLoading(this);
+        loading.show();
 
         Logcat.d("a=");
     }
