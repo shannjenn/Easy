@@ -17,7 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Jen on 2017/8/24.
+ * 作者：ShannJenn
+ * 时间：2017/8/12.
  */
 
 public class EasyRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

@@ -6,7 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Created by Jen on 2017/8/24.
+ * Item布局注释
+ * 作者：ShannJenn
+ * 时间：2017/8/12.
  */
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)

@@ -4,9 +4,10 @@ import android.view.MotionEvent;
 import android.view.View;
 
 /**
- * Created by Administrator on 2017/8/25.
+ * Adapter点击事件
+ * 作者：ShannJenn
+ * 时间：2017/8/12.
  */
-
 public interface AdapterClickEvent {
 
     void onClick(View view);

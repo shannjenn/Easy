@@ -2,7 +2,8 @@ package com.jen.easyui;
 
 /**
  * 版本信息
- * Created by Jen on 2017/7/29.
+ * 作者：ShannJenn
+ * 时间：2017/8/12.
  */
 
 public final class EasyUIVersion {
