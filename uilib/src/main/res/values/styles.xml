@@ -1,11 +1,9 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="_easy_AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/_easy_colorPrimary</item>
+        <item name="colorPrimaryDark">@color/_easy_colorPrimaryDark</item>
+        <item name="colorAccent">@color/_easy_colorAccent</item>
     </style>
 
     /*******************************************************************************
@@ -29,13 +27,22 @@
         <!-- 背景是否模糊显示 -->
     </style>
 
+    <style name="_easy_dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
 
     /*******************************************************************************
     ★★★ ProgressBar ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
     *******************************************************************************/
     <!--ProgressBar加载中-->
     <style name="_easy_progressBar_loading" parent="android:Widget.ProgressBar.Large">
-        <item name="android:indeterminateDrawable">@drawable/_easy_share_cirle</item>
+        <item name="android:indeterminateDrawable">@drawable/_easy_progress_bar_loading</item>
         <item name="android:minWidth">76dip</item>
         <item name="android:maxWidth">76dip</item>
         <item name="android:minHeight">76dip</item>
@@ -59,4 +66,20 @@
         <attr name="showLeftFaceImage" format="boolean" />
         <attr name="isShowBottomLine" format="boolean" />
     </declare-styleable>
+
+    /*******************************************************************************
+    ★★★ 分割线cutline ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+    *******************************************************************************/
+
+    <style name="_easy_cutline_horizontal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1px</item>
+        <item name="android:background">#E0E0E0</item>
+    </style>
+
+    <style name="_easy_cutline_vertical">
+        <item name="android:layout_width">1px</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">#E0E0E0</item>
+    </style>
 </resources>

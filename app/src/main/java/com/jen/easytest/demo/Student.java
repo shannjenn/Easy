@@ -1,8 +1,6 @@
 package com.jen.easytest.demo;
 
 import com.jen.easy.http.HttpBaseRequest;
-import com.jen.easytest.R;
-import com.jen.easyui.listview.ItemSource;
 
 /**
  * 创建人：ShannJenn
@@ -11,13 +9,10 @@ import com.jen.easyui.listview.ItemSource;
 
 public class Student extends HttpBaseRequest {
 
-    @ItemSource(text = R.id.tv_1)
     public String id;
 
-    @ItemSource(text = R.id.tv_2)
     public String name;
 
-    @ItemSource(isViewType = true)
     public String viewType;
 
 }

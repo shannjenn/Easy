@@ -1,0 +1,93 @@
+package com.jen.easyui.listview;
+
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.jen.easyui.EasyUILog;
+
+import java.util.List;
+
+/**
+ * 瀑布布局（多种Item）
+ * 作者：ShannJenn
+ * 时间：2017/8/12.
+ */
+
+abstract class EasyRecyclerWaterfallAdapterImp<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private List<T> data;
+    private ItemOnClickEvent itemOnClickEvent;
+
+    /**
+     * @param data 数据
+     */
+    protected EasyRecyclerWaterfallAdapterImp(List<T> data) {
+        this.data = data;
+    }
+
+    @Override
+    public int getItemCount() {
+        int count = 0;
+        if (data == null) {
+            return count;
+        }
+        count = data.size();
+        return count;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return getViewType(position);
+    }
+
+    /**
+     * 获取布局类型
+     *
+     * @param position 下标
+     * @return
+     */
+    protected abstract int getViewType(int position);
+
+    @Override
+    public EasyHloderImp onCreateViewHolder(ViewGroup parent, int viewType) {
+        int[] layouts = onBindLayout();
+        if (layouts == null) {
+            EasyUILog.e("布局为空");
+            return null;
+        }
+        if (viewType < 0 || layouts.length > viewType) {
+            EasyUILog.e("viewType：" + viewType + "错误");
+            return null;
+        }
+        View view = LayoutInflater.from(parent.getContext()).inflate(layouts[viewType], parent, false);
+        if (view == null) {
+            EasyUILog.e("找不到该值对应item布局R.layout.id：" + layouts[viewType]);
+            return null;
+        }
+        EasyHloderImp hloderImp = onCreateEasyHolder(view);
+        hloderImp.setItemOnClickEvent(itemOnClickEvent);
+        return hloderImp;
+    }
+
+    protected abstract int[] onBindLayout();
+
+    /**
+     * Holder
+     *
+     * @return
+     */
+    protected abstract EasyHloderImp onCreateEasyHolder(View view);
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        if (holder == null) {
+            return;
+        }
+        ((EasyHloderImp) holder).onBindViewHolder(position);
+    }
+
+    public void setItemOnClickEvent(ItemOnClickEvent itemOnClickEvent) {
+        this.itemOnClickEvent = itemOnClickEvent;
+    }
+}

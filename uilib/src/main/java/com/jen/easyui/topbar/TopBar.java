@@ -117,10 +117,10 @@ public class TopBar extends RelativeLayout {
                 mRightImage = a.getDrawable(attr);
 
             } else if (attr == R.styleable.TopBar_leftTextColor) {
-                mLeftTextColor = a.getColor(attr, ActivityCompat.getColor(mContext, R.color.blue_text));
+                mLeftTextColor = a.getColor(attr, ActivityCompat.getColor(mContext, R.color._easy_blue_text));
 
             } else if (attr == R.styleable.TopBar_rightTextColor) {
-                mRightTextColor = a.getColor(attr, ActivityCompat.getColor(mContext, R.color.blue_text));
+                mRightTextColor = a.getColor(attr, ActivityCompat.getColor(mContext, R.color._easy_blue_text));
 
             } else if (attr == R.styleable.TopBar_isShowBottomLine) {
                 isShowBottomLine = a.getBoolean(attr, true);

@@ -12,7 +12,6 @@ import com.jen.easy.EasyUtil;
 import com.jen.easy.log.Logcat;
 import com.jen.easytest.demo.Student;
 import com.jen.easyui.listview.EasyListView;
-import com.jen.easyui.listview.ItemSource;
 import com.jen.easyui.dialog.EasyLoading;
 
 import java.lang.reflect.Method;
@@ -25,7 +24,6 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
-    @ItemSource(text = R.id.tv_item)
     TextView tv_View;
 
     @EasyMouse.BIND.ID(R.id.list)
@@ -79,7 +77,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
 
         }
-        listView.setAdaper(list, R.layout.item);
 
         EasyUtil.dateFormat.getTime("2017-09-06 21:50:43");
         EasyUtil.dateFormat.getTime("0");

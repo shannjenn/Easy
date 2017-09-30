@@ -6,16 +6,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
-import java.util.List;
-import java.util.Map;
-
 /**
  * 作者：ShannJenn
  * 时间：2017/09/08.
  */
 
 public class EasyListView extends RecyclerView {
-    private EasyRecyclerAdapter adapter;
+    private EasyRecyclerAdapterImp adapter;
     private boolean isSheLayoutManager;
 
     public EasyListView(Context context) {
@@ -26,12 +23,6 @@ public class EasyListView extends RecyclerView {
         super(context, attrs);
     }
 
-    /*@Override
-    public void setLayoutManager(LayoutManager layout) {
-        super.setLayoutManager(layout);
-        isSheLayoutManager = true;
-    }*/
-
     /**
      * item布局是否固定大小
      *
@@ -41,23 +32,6 @@ public class EasyListView extends RecyclerView {
     public void setHasFixedSize(boolean hasFixedSize) {
         super.setHasFixedSize(hasFixedSize);
     }
-
-    public <T> void setAdaper(List<T> datas, int layout) {
-        if (!isSheLayoutManager) {
-            setLinearLayoutManager(VERTICAL);
-        }
-        adapter = new EasyRecyclerAdapter(datas, layout);
-        setAdapter(adapter);
-    }
-
-    public <T> void setAdaper(List<T> datas, Map<Integer, Integer> viewType_layouts) {
-        if (!isSheLayoutManager) {
-            setLinearLayoutManager(VERTICAL);
-        }
-        adapter = new EasyRecyclerAdapter(datas, viewType_layouts);
-        setAdapter(adapter);
-    }
-
 
     /**
      * 设置List布局
