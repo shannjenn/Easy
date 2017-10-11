@@ -1,5 +1,6 @@
-package com.jen.easyui.listview;
+package com.jen.easyui.recyclerview;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,13 +16,15 @@ import java.util.List;
  */
 
 abstract class EasyRecyclerAdapterImp<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private List<T> data;
-    private ItemOnClickEvent itemOnClickEvent;
+    protected Context context;
+    protected List<T> data;
+    private EasyItemOnClickEvent itemOnClickEvent;
 
     /**
      * @param data 数据
      */
-    protected EasyRecyclerAdapterImp(List<T> data) {
+    protected EasyRecyclerAdapterImp(Context context, List<T> data) {
+        this.context = context;
         this.data = data;
     }
 
@@ -62,10 +65,11 @@ abstract class EasyRecyclerAdapterImp<T> extends RecyclerView.Adapter<RecyclerVi
         if (holder == null) {
             return;
         }
-        ((EasyHloderImp) holder).onBindViewHolder(position);
+        T t = data.get(position);
+        ((EasyHloderImp) holder).onBindViewHolder(t, position);
     }
 
-    public void setItemOnClickEvent(ItemOnClickEvent itemOnClickEvent) {
+    public void setItemOnClickEvent(EasyItemOnClickEvent itemOnClickEvent) {
         this.itemOnClickEvent = itemOnClickEvent;
     }
 

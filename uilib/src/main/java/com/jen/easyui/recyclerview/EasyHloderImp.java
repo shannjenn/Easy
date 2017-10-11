@@ -1,4 +1,4 @@
-package com.jen.easyui.listview;
+package com.jen.easyui.recyclerview;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -10,9 +10,9 @@ import com.jen.easyui.EasyUILog;
  * 时间：2017/09/30.
  */
 
-abstract class EasyHloderImp extends RecyclerView.ViewHolder {
+abstract class EasyHloderImp<T> extends RecyclerView.ViewHolder {
     public View itemView;
-    private ItemOnClickEvent itemOnClickEvent;
+    private EasyItemOnClickEvent itemOnClickEvent;
 
     public EasyHloderImp(final View itemView) {
         super(itemView);
@@ -80,13 +80,13 @@ abstract class EasyHloderImp extends RecyclerView.ViewHolder {
 
     public abstract boolean getItemClick();
 
-    void setItemOnClickEvent(ItemOnClickEvent itemOnClickEvent) {
+    void setItemOnClickEvent(EasyItemOnClickEvent itemOnClickEvent) {
         this.itemOnClickEvent = itemOnClickEvent;
     }
 
-    void onBindViewHolder(int pos) {
+    void onBindViewHolder(T item, int pos) {
         itemView.setTag(pos, null);//pos作为tag
-        onBindEasyHolder(pos);
+        onBindEasyHolder(item, pos);
     }
 
     /**
@@ -94,5 +94,5 @@ abstract class EasyHloderImp extends RecyclerView.ViewHolder {
      *
      * @return
      */
-    public abstract boolean onBindEasyHolder(int pos);
+    public abstract void onBindEasyHolder(T item, int pos);
 }

@@ -1,5 +1,6 @@
-package com.jen.easyui.listview;
+package com.jen.easyui.recyclerview;
 
+import android.content.Context;
 import android.view.View;
 
 import java.util.List;
@@ -14,8 +15,8 @@ public abstract class EasyRecyclerAdapter<T> extends EasyRecyclerAdapterImp<T> {
     /**
      * @param data 数据
      */
-    protected EasyRecyclerAdapter(List<T> data) {
-        super(data);
+    protected EasyRecyclerAdapter(Context context, List<T> data) {
+        super(context, data);
     }
 
     @Override

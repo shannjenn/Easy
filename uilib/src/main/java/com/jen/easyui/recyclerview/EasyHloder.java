@@ -1,4 +1,4 @@
-package com.jen.easyui.listview;
+package com.jen.easyui.recyclerview;
 
 import android.view.View;
 
@@ -18,7 +18,7 @@ public abstract class EasyHloder extends EasyHloderImp {
      *
      * @return
      */
-    public abstract boolean onBindEasyHolder(int pos);
+    public abstract void onBindEasyHolder(int pos);
 
     /**
      * 控件点击事件

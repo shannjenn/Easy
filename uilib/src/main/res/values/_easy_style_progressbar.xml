@@ -1,0 +1,10 @@
+<resources>
+    <!--ProgressBar加载中-->
+    <style name="_easy_progressBar_loading" parent="android:Widget.ProgressBar.Large">
+        <item name="android:indeterminateDrawable">@drawable/_easy_progress_bar_loading</item>
+        <item name="android:minWidth">76dip</item>
+        <item name="android:maxWidth">76dip</item>
+        <item name="android:minHeight">76dip</item>
+        <item name="android:maxHeight">76dip</item>
+    </style>
+</resources>

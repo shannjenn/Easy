@@ -1,5 +1,6 @@
-package com.jen.easyui.listview;
+package com.jen.easyui.recyclerview;
 
+import android.content.Context;
 import android.view.View;
 
 import java.util.List;
@@ -14,10 +15,14 @@ public abstract class EasyRecyclerWaterfallAdapter<T> extends EasyRecyclerWaterf
     /**
      * @param data 数据
      */
-    protected EasyRecyclerWaterfallAdapter(List<T> data) {
-        super(data);
+    protected EasyRecyclerWaterfallAdapter(Context context, List<T> data) {
+        super(context, data);
     }
 
+    /**
+     * @param position 下标(对应onBindLayout返回数组下标：0、1、2...)
+     * @return
+     */
     @Override
     protected abstract int getViewType(int position);
 

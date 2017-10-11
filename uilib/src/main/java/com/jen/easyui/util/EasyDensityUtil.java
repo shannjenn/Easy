@@ -8,7 +8,7 @@ import android.content.Context;
  * 时间：2017/8/12.
  */
 
-public class DensityUtil {
+public class EasyDensityUtil {
     /**
      * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
      *

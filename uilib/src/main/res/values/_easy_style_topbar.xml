@@ -1,0 +1,16 @@
+<resources>
+    <declare-styleable name="EasyTopBar">
+        <attr name="title" format="string" />
+        <attr name="leftText" format="string" />
+        <attr name="leftTextColor" format="color" />
+        <attr name="leftTextWithLeftImg" format="reference" />
+        <attr name="rightText" format="string" />
+        <attr name="rightTextColor" format="color" />
+        <attr name="rightImage" format="reference" />
+        <attr name="leftImage" format="reference" />
+        <attr name="leftImageBackground" format="reference" />
+        <attr name="showLeftImage" format="boolean" />
+        <attr name="showLeftFaceImage" format="boolean" />
+        <attr name="isShowBottomLine" format="boolean" />
+    </declare-styleable>
+</resources>

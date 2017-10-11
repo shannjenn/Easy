@@ -1,4 +1,4 @@
-package com.jen.easyui.listview;
+package com.jen.easyui.recyclerview;
 
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
@@ -11,15 +11,13 @@ import android.util.AttributeSet;
  * 时间：2017/09/08.
  */
 
-public class EasyListView extends RecyclerView {
-    private EasyRecyclerAdapterImp adapter;
-    private boolean isSheLayoutManager;
+public class EasyRecyclerView extends RecyclerView {
 
-    public EasyListView(Context context) {
+    public EasyRecyclerView(Context context) {
         super(context);
     }
 
-    public EasyListView(Context context, AttributeSet attrs) {
+    public EasyRecyclerView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -39,7 +37,6 @@ public class EasyListView extends RecyclerView {
      * @param orientation 排列方式(VERTICAL、HORIZONTAL)
      */
     public void setLinearLayoutManager(int orientation) {
-        isSheLayoutManager = true;
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(orientation);
         super.setLayoutManager(layoutManager);
@@ -52,7 +49,6 @@ public class EasyListView extends RecyclerView {
      * @param size        数量
      */
     public void setGridLayoutManager(int orientation, int size) {
-        isSheLayoutManager = true;
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), size);
         layoutManager.setOrientation(orientation);
         super.setLayoutManager(layoutManager);
