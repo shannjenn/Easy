@@ -85,44 +85,44 @@ public class EasyTopBar extends RelativeLayout {
     }
 
     private void initAttrs(AttributeSet attrs, int defStyleAttr) {
-        TypedArray a = mContext.getTheme().obtainStyledAttributes(attrs, R.styleable.EasyTopBar, defStyleAttr, 0);
+        TypedArray a = mContext.getTheme().obtainStyledAttributes(attrs, R.styleable._easy_style_topbar, defStyleAttr, 0);
         int n = a.getIndexCount();
         for (int i = 0; i < n; i++) {
             int attr = a.getIndex(i);
-            if (attr == R.styleable.EasyTopBar_title) {
+            if (attr == R.styleable._easy_style_topbar_title) {
                 mTitle = a.getString(attr);
 
-            } else if (attr == R.styleable.EasyTopBar_leftText) {
+            } else if (attr == R.styleable._easy_style_topbar_leftText) {
                 mLeftText = a.getString(attr);
 
-            } else if (attr == R.styleable.EasyTopBar_leftTextWithLeftImg) {
+            } else if (attr == R.styleable._easy_style_topbar_leftTextWithLeftImg) {
                 mLeftTextWithLeftImg = a.getDrawable(attr);
 
-            } else if (attr == R.styleable.EasyTopBar_rightText) {
+            } else if (attr == R.styleable._easy_style_topbar_rightText) {
                 mRightText = a.getString(attr);
 
-            } else if (attr == R.styleable.EasyTopBar_showLeftImage) {
+            } else if (attr == R.styleable._easy_style_topbar_showLeftImage) {
                 isShowLeftImage = a.getBoolean(attr, false);
 
-            } else if (attr == R.styleable.EasyTopBar_showLeftFaceImage) {
+            } else if (attr == R.styleable._easy_style_topbar_showLeftFaceImage) {
                 isShowFaceLeftImage = a.getBoolean(attr, false);
 
-            } else if (attr == R.styleable.EasyTopBar_leftImageBackground) {
+            } else if (attr == R.styleable._easy_style_topbar_leftImageBackground) {
                 mLeftImageBackground = a.getDrawable(attr);
 
-            } else if (attr == R.styleable.EasyTopBar_leftImage) {
+            } else if (attr == R.styleable._easy_style_topbar_leftImage) {
                 mLeftImage = a.getDrawable(attr);
 
-            } else if (attr == R.styleable.EasyTopBar_rightImage) {
+            } else if (attr == R.styleable._easy_style_topbar_rightImage) {
                 mRightImage = a.getDrawable(attr);
 
-            } else if (attr == R.styleable.EasyTopBar_leftTextColor) {
+            } else if (attr == R.styleable._easy_style_topbar_leftTextColor) {
                 mLeftTextColor = a.getColor(attr, ActivityCompat.getColor(mContext, R.color._easy_blue_text));
 
-            } else if (attr == R.styleable.EasyTopBar_rightTextColor) {
+            } else if (attr == R.styleable._easy_style_topbar_rightTextColor) {
                 mRightTextColor = a.getColor(attr, ActivityCompat.getColor(mContext, R.color._easy_blue_text));
 
-            } else if (attr == R.styleable.EasyTopBar_isShowBottomLine) {
+            } else if (attr == R.styleable._easy_style_topbar_isShowBottomLine) {
                 isShowBottomLine = a.getBoolean(attr, true);
 
             }
@@ -132,7 +132,7 @@ public class EasyTopBar extends RelativeLayout {
 
     private void initView() {
         LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        RelativeLayout mMainContainer = (RelativeLayout) mInflater.inflate(R.layout._easy_view_topbar, null);
+        RelativeLayout mMainContainer = (RelativeLayout) mInflater.inflate(R.layout._easy_topbar, null);
 
         ivLeft = (ImageView) mMainContainer.findViewById(R.id.iv_left);
         ivFace = (ImageView) mMainContainer.findViewById(R.id.iv_face);

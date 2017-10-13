@@ -68,10 +68,10 @@ abstract class EasyImageViewPagerImp extends RelativeLayout {
                 return;
             }
             if (mPreSelectedPoit != null) {
-                mPreSelectedPoit.setBackgroundResource(R.drawable._easy_num_poit_bg_defaut);
+                mPreSelectedPoit.setBackgroundResource(R.drawable._easy_viewpager_num_defaut);
             }
             View currentView = numLayout.getChildAt(position);
-            currentView.setBackgroundResource(R.drawable._easy_num_poit_bg_select);
+            currentView.setBackgroundResource(R.drawable._easy_viewpager_num_select);
             mPreSelectedPoit = currentView;
             if (pagerChageListener != null) {
                 pagerChageListener.onPageSelected(position);
@@ -114,9 +114,9 @@ abstract class EasyImageViewPagerImp extends RelativeLayout {
         poit.setLayoutParams(poitParams);
         for (int i = 0; i < numCount; i++) {
             if (i == 0) {
-                poit.setBackgroundResource(R.drawable._easy_num_poit_bg_select);
+                poit.setBackgroundResource(R.drawable._easy_viewpager_num_select);
             } else {
-                poit.setBackgroundResource(R.drawable._easy_num_poit_bg_defaut);
+                poit.setBackgroundResource(R.drawable._easy_viewpager_num_defaut);
             }
             numLayout.addView(poit);
         }

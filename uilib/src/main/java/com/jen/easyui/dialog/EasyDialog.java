@@ -28,8 +28,8 @@ public class EasyDialog extends Dialog {
 
         private DialogOnclick dialogOnclick;
 
-        private int flag = -1;
-        private int pos = -1;
+        private int flagCode = -1;
+        private String flag;
 
         public Builder(Context context) {
             this.context = context;
@@ -50,20 +50,20 @@ public class EasyDialog extends Dialog {
             return this;
         }
 
-        public Builder setFlag(int flag) {
+        public Builder setFlagCode(int flagCode) {
+            this.flagCode = flagCode;
+            return this;
+        }
+
+        public Builder setFlag(String flag) {
             this.flag = flag;
             return this;
         }
 
-        public Builder setPos(int pos) {
-            this.pos = pos;
-            return this;
-        }
-
         public interface DialogOnclick {
-            void positiveButton(int flag, int pos);
+            void positiveButton(String flag, int flagCode);
 
-            void negativeButton(int flag);
+            void negativeButton(String flag, int flagCode);
         }
 
         public void setDialogOnclick(DialogOnclick dialogOnclick) {
@@ -103,16 +103,14 @@ public class EasyDialog extends Dialog {
                 dialog.cancel();
                 return;
             }
-            /*switch (view.getId()) {
-                case R.id.tv_yes:
-                    dialogOnclick.positiveButton(flag, pos);
-                    break;
-                case R.id.tv_no:
-                    dialogOnclick.negativeButton(flag);
-                    break;
-                default:
-                    break;
-            }*/
+            int i = view.getId();
+            if (i == R.id.tv_yes) {
+                dialogOnclick.positiveButton(flag, flagCode);
+
+            } else if (i == R.id.tv_no) {
+                dialogOnclick.negativeButton(flag, flagCode);
+            } else {
+            }
             dialog.cancel();
         }
     }

@@ -1,5 +1,5 @@
 <resources>
-    <declare-styleable name="EasyTopBar">
+    <declare-styleable name="_easy_style_topbar">
         <attr name="title" format="string" />
         <attr name="leftText" format="string" />
         <attr name="leftTextColor" format="color" />

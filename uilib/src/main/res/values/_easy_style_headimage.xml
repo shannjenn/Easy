@@ -1,0 +1,29 @@
+<resources>
+    <!--自定义-->
+    <declare-styleable name="_easy_style_headimage_custom">
+        <attr name="type">
+            <enum name="none" value="0" /><!--默认-->
+            <enum name="circle" value="1" /><!--圆形-->
+            <enum name="rounded_rect" value="2" /><!--圆角-->
+        </attr>
+        <attr name="borderColor" format="color" />
+        <attr name="borderWidth" format="dimension" />
+        <attr name="rectRoundRadius" format="dimension" />
+    </declare-styleable>
+
+    <!--<attr name="type">
+        <enum name="none" value="0" />
+        <enum name="circle" value="1" />
+        <enum name="rounded_rect" value="2" />
+    </attr>
+    <attr name="borderColor" format="color" />
+    <attr name="borderWidth" format="dimension" />
+    <attr name="rectRoundRadius" format="dimension" />
+
+    <declare-styleable name="ImageViewPlus">
+        <attr name="type" />
+        <attr name="borderColor" />
+        <attr name="borderWidth" />
+        <attr name="rectRoundRadius" />
+    </declare-styleable>-->
+</resources>
