@@ -11,8 +11,8 @@ import com.jen.easy.EasyMouse;
 import com.jen.easy.EasyUtil;
 import com.jen.easy.log.Logcat;
 import com.jen.easytest.demo.Student;
-import com.jen.easyui.listview.EasyListView;
 import com.jen.easyui.dialog.EasyLoading;
+import com.jen.easyui.recyclerview.EasyRecyclerView;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     TextView tv_View;
 
     @EasyMouse.BIND.ID(R.id.list)
-    EasyListView listView;
+    EasyRecyclerView listView;
 
     @EasyMouse.BIND.ID(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;

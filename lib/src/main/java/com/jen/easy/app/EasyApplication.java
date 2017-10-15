@@ -27,5 +27,13 @@ public abstract class EasyApplication extends Application {
             Constant.DB.PASSWORD = setDBPassword();
     }
 
-    protected abstract String setDBPassword();
+
+    /**
+     * 设置数据库密码
+     *
+     * @return 密码
+     */
+    protected String setDBPassword() {
+        return null;
+    }
 }
