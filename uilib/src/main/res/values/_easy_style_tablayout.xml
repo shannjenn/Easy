@@ -1,0 +1,43 @@
+<resources>
+    <!--导航布局-->
+    <declare-styleable name="EasyTabLayout">
+        <attr name="topLineColor" format="color" />
+        <attr name="topLineSize" format="dimension" />
+        <attr name="bottomLineColor" format="color" />
+        <attr name="bottomLineSize" format="dimension" />
+        <attr name="leftLineColor" format="color" />
+        <attr name="leftLineSize" format="dimension" />
+        <attr name="rightLineColor" format="color" />
+        <attr name="rightLineSize" format="dimension" />
+
+        <attr name="android:layout_width" />
+        <attr name="android:layout_height" />
+        <attr name="orientation">
+            <enum name="HORIZONTAL" value="0" />
+            <enum name="VERTICAL" value="1" />
+        </attr>
+    </declare-styleable>
+
+    <!--导航选项-->
+    <declare-styleable name="EasyTabItem">
+        <attr name="image" format="reference" />
+        <attr name="imageWidth" format="dimension" />
+        <attr name="imageHeight" format="dimension" />
+        <attr name="imageAdjustViewBounds" format="boolean" />
+        <attr name="imageScaleType">
+            <enum name="matrix" value="0" />
+            <enum name="fitXY" value="1" />
+            <enum name="fitStart" value="2" />
+            <enum name="fitCenter" value="3" />
+            <enum name="fitEnd" value="4" />
+            <enum name="center" value="5" />
+            <enum name="centerCrop" value="6" />
+            <enum name="centerInside" value="7" />
+        </attr>
+        <attr name="text" format="string" />
+        <attr name="textSize" format="dimension" />
+        <attr name="textColor" format="dimension" />
+        <attr name="imageTextMargin" format="dimension" />
+        <attr name="layout_weight" format="integer" />
+    </declare-styleable>
+</resources>

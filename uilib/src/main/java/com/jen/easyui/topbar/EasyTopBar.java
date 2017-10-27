@@ -20,6 +20,7 @@ import com.jen.easyui.R;
 
 /**
  * 顶上标题栏控件
+ * xmlns:app="http://schemas.android.com/apk/res-auto"
  * 作者：ShannJenn
  * 时间：2017/8/12.
  */
@@ -85,44 +86,44 @@ public class EasyTopBar extends RelativeLayout {
     }
 
     private void initAttrs(AttributeSet attrs, int defStyleAttr) {
-        TypedArray a = mContext.getTheme().obtainStyledAttributes(attrs, R.styleable._easy_style_topbar, defStyleAttr, 0);
+        TypedArray a = mContext.getTheme().obtainStyledAttributes(attrs, R.styleable.EasyTopBar, defStyleAttr, 0);
         int n = a.getIndexCount();
         for (int i = 0; i < n; i++) {
             int attr = a.getIndex(i);
-            if (attr == R.styleable._easy_style_topbar_title) {
+            if (attr == R.styleable.EasyTopBar_title) {
                 mTitle = a.getString(attr);
 
-            } else if (attr == R.styleable._easy_style_topbar_leftText) {
+            } else if (attr == R.styleable.EasyTopBar_leftText) {
                 mLeftText = a.getString(attr);
 
-            } else if (attr == R.styleable._easy_style_topbar_leftTextWithLeftImg) {
+            } else if (attr == R.styleable.EasyTopBar_leftTextWithLeftImg) {
                 mLeftTextWithLeftImg = a.getDrawable(attr);
 
-            } else if (attr == R.styleable._easy_style_topbar_rightText) {
+            } else if (attr == R.styleable.EasyTopBar_rightText) {
                 mRightText = a.getString(attr);
 
-            } else if (attr == R.styleable._easy_style_topbar_showLeftImage) {
+            } else if (attr == R.styleable.EasyTopBar_showLeftImage) {
                 isShowLeftImage = a.getBoolean(attr, false);
 
-            } else if (attr == R.styleable._easy_style_topbar_showLeftFaceImage) {
+            } else if (attr == R.styleable.EasyTopBar_showLeftFaceImage) {
                 isShowFaceLeftImage = a.getBoolean(attr, false);
 
-            } else if (attr == R.styleable._easy_style_topbar_leftImageBackground) {
+            } else if (attr == R.styleable.EasyTopBar_leftImageBackground) {
                 mLeftImageBackground = a.getDrawable(attr);
 
-            } else if (attr == R.styleable._easy_style_topbar_leftImage) {
+            } else if (attr == R.styleable.EasyTopBar_leftImage) {
                 mLeftImage = a.getDrawable(attr);
 
-            } else if (attr == R.styleable._easy_style_topbar_rightImage) {
+            } else if (attr == R.styleable.EasyTopBar_rightImage) {
                 mRightImage = a.getDrawable(attr);
 
-            } else if (attr == R.styleable._easy_style_topbar_leftTextColor) {
+            } else if (attr == R.styleable.EasyTopBar_leftTextColor) {
                 mLeftTextColor = a.getColor(attr, ActivityCompat.getColor(mContext, R.color._easy_blue_text));
 
-            } else if (attr == R.styleable._easy_style_topbar_rightTextColor) {
+            } else if (attr == R.styleable.EasyTopBar_rightTextColor) {
                 mRightTextColor = a.getColor(attr, ActivityCompat.getColor(mContext, R.color._easy_blue_text));
 
-            } else if (attr == R.styleable._easy_style_topbar_isShowBottomLine) {
+            } else if (attr == R.styleable.EasyTopBar_isShowBottomLine) {
                 isShowBottomLine = a.getBoolean(attr, true);
 
             }

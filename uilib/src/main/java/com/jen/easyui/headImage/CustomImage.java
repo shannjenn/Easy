@@ -62,11 +62,11 @@ public class CustomImage extends AppCompatImageView {
     public CustomImage(Context context, AttributeSet attrs) {
         super(context, attrs);
         //取xml文件中设定的参数
-        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable._easy_style_headimage_custom);
-        mType = ta.getInt(R.styleable._easy_style_headimage_custom_type, DEFAULT_TYPE);
-        mBorderColor = ta.getColor(R.styleable._easy_style_headimage_custom_borderColor, DEFAULT_BORDER_COLOR);
-        mBorderWidth = ta.getDimensionPixelSize(R.styleable._easy_style_headimage_custom_borderWidth, dip2px(DEFAULT_BORDER_WIDTH));
-        mRectRoundRadius = ta.getDimensionPixelSize(R.styleable._easy_style_headimage_custom_rectRoundRadius, dip2px(DEFAULT_RECT_ROUND_RADIUS));
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.CustomImage);
+        mType = ta.getInt(R.styleable.CustomImage_type, DEFAULT_TYPE);
+        mBorderColor = ta.getColor(R.styleable.CustomImage_borderColor, DEFAULT_BORDER_COLOR);
+        mBorderWidth = ta.getDimensionPixelSize(R.styleable.CustomImage_borderWidth, dip2px(DEFAULT_BORDER_WIDTH));
+        mRectRoundRadius = ta.getDimensionPixelSize(R.styleable.CustomImage_rectRoundRadius, dip2px(DEFAULT_RECT_ROUND_RADIUS));
         ta.recycle();
     }
 

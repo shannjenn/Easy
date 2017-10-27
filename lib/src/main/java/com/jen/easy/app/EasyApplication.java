@@ -2,7 +2,6 @@ package com.jen.easy.app;
 
 import android.app.Application;
 
-import com.jen.easy.constant.Constant;
 import com.jen.easy.log.EasyLog;
 
 /**
@@ -23,17 +22,9 @@ public abstract class EasyApplication extends Application {
         EasyLog.d("EasyApplication onCreate----");
         if (instance == null)
             instance = this;
-        if (Constant.DB.PASSWORD == null)
-            Constant.DB.PASSWORD = setDBPassword();
+//        if (Constant.DB.PASSWORD == null)
+//            Constant.DB.PASSWORD = setDBPassword();
     }
 
-
-    /**
-     * 设置数据库密码
-     *
-     * @return 密码
-     */
-    protected String setDBPassword() {
-        return null;
-    }
+//    protected abstract String setDBPassword();
 }

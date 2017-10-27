@@ -9,6 +9,11 @@ import android.content.Context;
  */
 
 public class EasyDensityUtil {
+	/**
+     * TypedValue.applyDimension是一个将各种单位的值转换为像素的方法(源码)
+     * TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 16, getResources().getDisplayMetrics())
+     */
+	
     /**
      * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
      *
