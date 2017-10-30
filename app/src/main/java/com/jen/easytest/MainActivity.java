@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.jen.easy.EasyMain;
 import com.jen.easy.EasyMouse;
 import com.jen.easytest.activity.TabBarActivity;
 
@@ -14,7 +13,6 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        EasyMain.BIND.bind(this);
     }
 
     @EasyMouse.BIND.Method({R.id.tabBar})

@@ -1,11 +1,11 @@
 package com.jen.easytest.activity;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
 
+import com.jen.easy.EasyMouse;
 import com.jen.easytest.BaseActivity;
 import com.jen.easytest.R;
+import com.jen.easyui.tabbar.EasyTabBarTxtImg;
 
 /**
  * 作者：ShannJenn
@@ -14,10 +14,8 @@ import com.jen.easytest.R;
 
 public class TabBarActivity extends BaseActivity {
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
-    }
+    @EasyMouse.BIND.ID(R.id.easy_tabbar)
+    EasyTabBarTxtImg easy_tabbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
