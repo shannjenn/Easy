@@ -2,7 +2,7 @@ package com.jen.easy.http;
 
 import com.jen.easy.EasyUtil;
 import com.jen.easy.constant.Constant;
-import com.jen.easy.log.EasyLog;
+import com.jen.easy.log.EasyLibLog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,14 +33,14 @@ class HttpParseManager {
      */
     static <T> T parseJson(T tObj, String obj) {
         if (obj == null) {
-            EasyLog.e(TAG + "parseJson obj is null");
+            EasyLibLog.e(TAG + "parseJson obj is null");
         }
         try {
             JSONObject object = new JSONObject(obj);
             tObj = parseJsonObject(tObj, object);
         } catch (JSONException e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "parseJson JSONException error");
+            EasyLibLog.e(TAG + "parseJson JSONException error");
         }
         return tObj;
     }
@@ -57,21 +57,21 @@ class HttpParseManager {
         Map<String, String> param_type = (Map<String, String>) objectMap.get(PARAM_TYPE);
         Map<String, Field> param_field = (Map<String, Field>) objectMap.get(PARAM_FIELD);
         if (param_type.size() == 0) {
-            EasyLog.e(TAG + "parseJsonObject 网络请求返回参数请用@EasyMouse.HTTP.ResponseParam备注正确");
+            EasyLibLog.e(TAG + "parseJsonObject 网络请求返回参数请用@EasyMouse.HTTP.ResponseParam备注正确");
             return null;
         }
-//        EasyLog.d(TAG + "clazz=" + clazz.getSimpleName() + " objClass=" + objClass + " jsonObject=" + jsonObject);
+//        EasyLibLog.d(TAG + "clazz=" + clazz.getSimpleName() + " objClass=" + objClass + " jsonObject=" + jsonObject);
 
         /*T tObj;
         try {
             tObj = tClass.newInstance();
         } catch (InstantiationException e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "parseJsonObject InstantiationException error object");
+            EasyLibLog.e(TAG + "parseJsonObject InstantiationException error object");
             return null;
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "parseJsonObject IllegalAccessException error object");
+            EasyLibLog.e(TAG + "parseJsonObject IllegalAccessException error object");
             return null;
         }*/
 
@@ -93,14 +93,14 @@ class HttpParseManager {
                         } else if (value instanceof Integer || value instanceof Long || value instanceof Float || value instanceof Double) {
                             field.set(tObj, value + "");
                         } else {
-                            EasyLog.w(TAG + "value=" + value + " is not String、Integer、Long、Float、Double type");
+                            EasyLibLog.w(TAG + "value=" + value + " is not String、Integer、Long、Float、Double type");
                         }
                     } else if (type.equals(Constant.FieldType.INTEGER)) {
                         if (value instanceof String) {
                             value = Integer.parseInt((String) value);
                         }
                         if (!(value instanceof Integer)) {
-                            EasyLog.w(TAG + "param=" + param + " is not Integer ");
+                            EasyLibLog.w(TAG + "param=" + param + " is not Integer ");
                             continue;
                         }
                         field.setInt(tObj, (Integer) value);
@@ -109,7 +109,7 @@ class HttpParseManager {
                             value = Float.parseFloat((String) value);
                         }
                         if (!(value instanceof Float)) {
-                            EasyLog.w(TAG + "param=" + param + " is not Float ");
+                            EasyLibLog.w(TAG + "param=" + param + " is not Float ");
                             continue;
                         }
                         field.setFloat(tObj, (Float) value);
@@ -118,7 +118,7 @@ class HttpParseManager {
                             value = Double.parseDouble((String) value);
                         }
                         if (!(value instanceof Double)) {
-                            EasyLog.w(TAG + "param=" + param + " is not Double ");
+                            EasyLibLog.w(TAG + "param=" + param + " is not Double ");
                             continue;
                         }
                         field.setDouble(tObj, (Double) value);
@@ -127,7 +127,7 @@ class HttpParseManager {
                             value = Long.parseLong((String) value);
                         }
                         if (!(value instanceof Long)) {
-                            EasyLog.w(TAG + "param=" + param + " is not Long ");
+                            EasyLibLog.w(TAG + "param=" + param + " is not Long ");
                             continue;
                         }
                         field.setLong(tObj, (Long) value);
@@ -136,7 +136,7 @@ class HttpParseManager {
                             value = Boolean.parseBoolean((String) value);
                         }
                         if (!(value instanceof Boolean)) {
-                            EasyLog.w(TAG + "param=" + param + " is not Boolean ");
+                            EasyLibLog.w(TAG + "param=" + param + " is not Boolean ");
                             continue;
                         }
                         field.setBoolean(tObj, (Boolean) value);
@@ -148,9 +148,9 @@ class HttpParseManager {
                             }
                         }
                     } else if (type.contains(Constant.FieldType.MAP)) {
-                        EasyLog.e(TAG + "parseJsonObject Constant.FieldType.MAP 不支持Map类型");
+                        EasyLibLog.e(TAG + "parseJsonObject Constant.FieldType.MAP 不支持Map类型");
                     } else if (type.contains(Constant.FieldType.ARRAY)) {
-                        EasyLog.e(TAG + "parseJsonObject Constant.FieldType.ARRAY 不支持数组类型");
+                        EasyLibLog.e(TAG + "parseJsonObject Constant.FieldType.ARRAY 不支持数组类型");
                     } else if (type.contains(Constant.FieldType.OBJECT)) {
                         if (tObj instanceof HttpResponse) {
                             if (value instanceof JSONArray) {
@@ -162,10 +162,10 @@ class HttpParseManager {
                                 Object object = parseJsonObject(((HttpResponse) tObj).objClass.newInstance(), (JSONObject) value);
                                 field.set(tObj, object);
                             } else {
-                                EasyLog.e(TAG + "parseJsonObject Constant.FieldType.OBJECT error");
+                                EasyLibLog.e(TAG + "parseJsonObject Constant.FieldType.OBJECT error");
                             }
                         } else {
-                            EasyLog.e(TAG + "要解析object类型请继承HttpResponse");
+                            EasyLibLog.e(TAG + "要解析object类型请继承HttpResponse");
                         }
                     } else if (type.contains(Constant.FieldType.LIST)) {
                         if (value instanceof JSONArray) {
@@ -174,7 +174,7 @@ class HttpParseManager {
                             List objList = parseJsonArray(clazz2, (JSONArray) value);
                             field.set(tObj, objList);
                         } else {
-                            EasyLog.e(TAG + "parseJsonObject Constant.FieldType.LIST error");
+                            EasyLibLog.e(TAG + "parseJsonObject Constant.FieldType.LIST error");
                         }
                     } else if (type.contains(Constant.FieldType.CLASS)) {
                         if (value instanceof JSONObject) {
@@ -183,27 +183,27 @@ class HttpParseManager {
                             Object obj = parseJsonObject(field.getDeclaringClass(), (JSONObject) value);
                             field.set(tObj, obj);
                         } else {
-                            EasyLog.e(TAG + "parseJsonObject Constant.FieldType.CLASS error");
+                            EasyLibLog.e(TAG + "parseJsonObject Constant.FieldType.CLASS error");
                         }
                     } else {
-                        EasyLog.e(TAG + "parseJsonObject 不支持该类型：" + type);
+                        EasyLibLog.e(TAG + "parseJsonObject 不支持该类型：" + type);
                     }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-                EasyLog.e(TAG + "parseJsonObject JSONException：type=" + type + " param=" + param);
+                EasyLibLog.e(TAG + "parseJsonObject JSONException：type=" + type + " param=" + param);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
-                EasyLog.e(TAG + "parseJsonObject IllegalAccessException：type=" + type + " param=" + param);
+                EasyLibLog.e(TAG + "parseJsonObject IllegalAccessException：type=" + type + " param=" + param);
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
-                EasyLog.e(TAG + "parseJsonObject ClassNotFoundException：type=" + type + " param=" + param);
+                EasyLibLog.e(TAG + "parseJsonObject ClassNotFoundException：type=" + type + " param=" + param);
             } catch (NumberFormatException e) {
                 e.printStackTrace();
-                EasyLog.e(TAG + "parseJsonObject NumberFormatException：type=" + type + " param=" + param);
+                EasyLibLog.e(TAG + "parseJsonObject NumberFormatException：type=" + type + " param=" + param);
             } catch (InstantiationException e) {
                 e.printStackTrace();
-                EasyLog.e(TAG + "parseJsonObject InstantiationException：type=" + type + " param=" + param);
+                EasyLibLog.e(TAG + "parseJsonObject InstantiationException：type=" + type + " param=" + param);
             }
         }
         return tObj;
@@ -219,7 +219,7 @@ class HttpParseManager {
     private static <T> List<T> parseJsonArray(Class<T> TClass, JSONArray jsonArray) {
         List<T> list = new ArrayList<>();
         if (jsonArray == null) {
-            EasyLog.e(TAG + "parseJsonArray clazz or jsonArray is null");
+            EasyLibLog.e(TAG + "parseJsonArray clazz or jsonArray is null");
             return list;
         }
         for (int i = 0; i < jsonArray.length(); i++) {
@@ -228,11 +228,11 @@ class HttpParseManager {
                 TObj = TClass.newInstance();
             } catch (InstantiationException e) {
                 e.printStackTrace();
-                EasyLog.e(TAG + "parseJsonArray InstantiationException");
+                EasyLibLog.e(TAG + "parseJsonArray InstantiationException");
                 continue;
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
-                EasyLog.e(TAG + "parseJsonArray IllegalAccessException");
+                EasyLibLog.e(TAG + "parseJsonArray IllegalAccessException");
                 continue;
             }
             Object jsonObj;
@@ -240,13 +240,13 @@ class HttpParseManager {
                 jsonObj = jsonArray.get(i);
             } catch (JSONException e) {
                 e.printStackTrace();
-                EasyLog.e(TAG + "parseJsonArray JSONException jsonObj");
+                EasyLibLog.e(TAG + "parseJsonArray JSONException jsonObj");
                 continue;
             }
             if (jsonObj instanceof JSONObject) {
                 TObj = parseJsonObject(TObj, (JSONObject) jsonObj);
             } else {
-                EasyLog.e(TAG + "parseJsonArray jsonArray.get(i) is not JSONObject");
+                EasyLibLog.e(TAG + "parseJsonArray jsonArray.get(i) is not JSONObject");
             }
             if (TObj != null)
                 list.add(TObj);

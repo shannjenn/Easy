@@ -5,10 +5,42 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.jen.easyui.tabbar.EasyTabBarTxtImg
-        android:id="@+id/easy_tabbar"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="64dp"
-        app:topLineSize="1dp"
-        app:itemSize="five"/>
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <com.jen.easyui.tabbar.EasyTabBarTxtImg
+            android:id="@+id/easy_tabbar_txtimg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:itemSize="five"
+            app:text0="标题1"
+            app:text1="标题2"
+            app:text2="标题3"
+            app:text3="标题4"
+            app:text4="标题5"
+            android:background="#ff0000"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <com.jen.easyui.tabbar.EasyTabBarTxtScroll
+            android:id="@+id/easy_tabar_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"/>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+
 </LinearLayout>

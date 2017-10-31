@@ -1,6 +1,6 @@
 package com.jen.easy.aop;
 
-import com.jen.easy.log.EasyLog;
+import com.jen.easy.log.EasyLibLog;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -25,7 +25,7 @@ abstract class DynamicProxyManager implements InvocationHandler {
 
     protected Object bind(Object target) {
         if (target == null || target instanceof Class) {
-            EasyLog.e(TAG + "BIND 绑定对象为空");
+            EasyLibLog.e(TAG + "BIND 绑定对象为空");
             return null;
         }
         this.target = target;
@@ -33,14 +33,14 @@ abstract class DynamicProxyManager implements InvocationHandler {
             return Proxy.newProxyInstance(target.getClass().getClassLoader(), target.getClass().getInterfaces(), this);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "BIND 切入对象为空");
+            EasyLibLog.e(TAG + "BIND 切入对象为空");
         }
         return null;
     }
 
     protected void setBeforeMethod(Class<?> beforeClzz, Object... beforeParams) {
         if (beforeClzz == null) {
-            EasyLog.e(TAG + "BIND 切入对象为空");
+            EasyLibLog.e(TAG + "BIND 切入对象为空");
             return;
         }
         try {
@@ -55,16 +55,16 @@ abstract class DynamicProxyManager implements InvocationHandler {
             }
         } catch (InstantiationException e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "BIND InstantiationException");
+            EasyLibLog.e(TAG + "BIND InstantiationException");
         } catch (IllegalAccessException e) {
-            EasyLog.e(TAG + "BIND IllegalAccessException");
+            EasyLibLog.e(TAG + "BIND IllegalAccessException");
             e.printStackTrace();
         }
     }
 
     protected void setAfterMethod(Class<?> afterClzz, Object... afterParams) {
         if (afterClzz == null) {
-            EasyLog.e(TAG + "切入对象为空");
+            EasyLibLog.e(TAG + "切入对象为空");
             return;
         }
         try {
@@ -79,10 +79,10 @@ abstract class DynamicProxyManager implements InvocationHandler {
             }
         } catch (InstantiationException e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "DynamicProxyManager InstantiationException");
+            EasyLibLog.e(TAG + "DynamicProxyManager InstantiationException");
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "DynamicProxyManager IllegalAccessException");
+            EasyLibLog.e(TAG + "DynamicProxyManager IllegalAccessException");
 
         }
     }
@@ -121,7 +121,7 @@ abstract class DynamicProxyManager implements InvocationHandler {
                                     beforeParams[6], beforeParams[7]);
                             break;
                         default:
-                            EasyLog.e(TAG + "invoke 方法参数超过8个");
+                            EasyLibLog.e(TAG + "invoke 方法参数超过8个");
                             break;
                     }
                 } else {
@@ -158,7 +158,7 @@ abstract class DynamicProxyManager implements InvocationHandler {
                                     afterParams[7]);
                             break;
                         default:
-                            EasyLog.e(TAG + "invoke 参数超过8个");
+                            EasyLibLog.e(TAG + "invoke 参数超过8个");
                             break;
                     }
                 } else {
@@ -167,13 +167,13 @@ abstract class DynamicProxyManager implements InvocationHandler {
             }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "invoke IllegalAccessException");
+            EasyLibLog.e(TAG + "invoke IllegalAccessException");
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "invoke IllegalArgumentException");
+            EasyLibLog.e(TAG + "invoke IllegalArgumentException");
         } catch (InvocationTargetException e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "invoke InvocationTargetException");
+            EasyLibLog.e(TAG + "invoke InvocationTargetException");
         }
         return result;
     }

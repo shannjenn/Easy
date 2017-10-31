@@ -15,6 +15,16 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
     }
 
+    @Override
+    protected void initViews() {
+
+    }
+
+    @Override
+    protected void initDatas() {
+
+    }
+
     @EasyMouse.BIND.Method({R.id.tabBar})
     private void onClick(View view) {
         Class clazz = null;

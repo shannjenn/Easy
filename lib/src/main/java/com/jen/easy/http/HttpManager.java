@@ -1,7 +1,7 @@
 package com.jen.easy.http;
 
 import com.jen.easy.constant.Constant;
-import com.jen.easy.log.EasyLog;
+import com.jen.easy.log.EasyLibLog;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -35,7 +35,7 @@ abstract class HttpManager {
      */
     protected void start(HttpRequest request) {
         if (request == null) {
-            EasyLog.w(TAG + "start 参数为空");
+            EasyLibLog.w(TAG + "start 参数为空");
             return;
         }
         setDefault(request);

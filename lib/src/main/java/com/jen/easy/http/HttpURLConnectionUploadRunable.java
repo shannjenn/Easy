@@ -2,7 +2,7 @@ package com.jen.easy.http;
 
 import android.text.TextUtils;
 
-import com.jen.easy.log.EasyLog;
+import com.jen.easy.log.EasyLibLog;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -28,7 +28,7 @@ class HttpURLConnectionUploadRunable implements Runnable {
     @Override
     public void run() {
         if (TextUtils.isEmpty(request.http.url)) {
-            EasyLog.e(TAG + "URL地址错误");
+            EasyLibLog.e(TAG + "URL地址错误");
             fail("URL参数错误");
             return;
         } else if (TextUtils.isEmpty(request.request.filePath)) {
@@ -57,7 +57,7 @@ class HttpURLConnectionUploadRunable implements Runnable {
             if (request.request.isBreak && request.request.endPoit > request.request.startPoit + 100) {
                 connection.setRequestProperty("Range", "bytes=" + request.request.startPoit + "-" + request.request.endPoit);
             }
-            EasyLog.d("Http 请求地址：" + url.toString() + "  " + request.http.method);
+            EasyLibLog.d("Http 请求地址：" + url.toString() + "  " + request.http.method);
 
             DataOutputStream out = new DataOutputStream(connection.getOutputStream());
             DataInputStream in = new DataInputStream(new FileInputStream(file));
@@ -89,11 +89,11 @@ class HttpURLConnectionUploadRunable implements Runnable {
                 buffer.append(line);
             }
             reader.close();
-            EasyLog.d("服务器完成，返回数据：" + buffer.toString());
+            EasyLibLog.d("服务器完成，返回数据：" + buffer.toString());
             success(buffer.toString());
         } catch (IOException e) {
             e.printStackTrace();
-            EasyLog.e("上传失败：IOException");
+            EasyLibLog.e("上传失败：IOException");
         } finally {
             if (connection != null) {
                 connection.disconnect();
@@ -105,13 +105,13 @@ class HttpURLConnectionUploadRunable implements Runnable {
         if (request.getUploadListener() != null) {
             Type type = request.getClass().getGenericSuperclass();
             if (!(type instanceof ParameterizedType)) {
-                EasyLog.e(TAG + "请求参数未指定泛型返回类型");
+                EasyLibLog.e(TAG + "请求参数未指定泛型返回类型");
                 fail("请求参数未指定返回类型");
                 return;
             }
             Type classType = ((ParameterizedType) type).getActualTypeArguments()[0];
             if (!(classType instanceof Class)) {
-                EasyLog.e(TAG + classType + "泛型不是Class类型");
+                EasyLibLog.e(TAG + classType + "泛型不是Class类型");
                 fail(classType + "不是Class类型");
                 return;
             }
@@ -120,24 +120,24 @@ class HttpURLConnectionUploadRunable implements Runnable {
                 Class clazz = Class.forName(((Class) classType).getName());
                 Object object = clazz.newInstance();
                 if (!(object instanceof HttpResponse)) {
-                    EasyLog.e(TAG + classType + "泛型不是HttpResponse类型");
+                    EasyLibLog.e(TAG + classType + "泛型不是HttpResponse类型");
                     fail(classType + "HttpResponse类型");
                     return;
                 }
                 response = (HttpResponse) object;
             } catch (InstantiationException e) {
                 e.printStackTrace();
-                EasyLog.e(TAG + "InstantiationException");
+                EasyLibLog.e(TAG + "InstantiationException");
                 fail("不存在泛型：" + ((Class) classType).getName());
                 return;
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
-                EasyLog.e(TAG + "IllegalAccessException");
+                EasyLibLog.e(TAG + "IllegalAccessException");
                 fail("不存在泛型：" + ((Class) classType).getName());
                 return;
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
-                EasyLog.e(TAG + "ClassNotFoundException");
+                EasyLibLog.e(TAG + "ClassNotFoundException");
                 fail("不存在泛型：" + ((Class) classType).getName());
                 return;
             }

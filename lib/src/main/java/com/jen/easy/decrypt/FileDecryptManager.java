@@ -1,7 +1,7 @@
 package com.jen.easy.decrypt;
 
 import com.jen.easy.EasyMain;
-import com.jen.easy.log.EasyLog;
+import com.jen.easy.log.EasyLibLog;
 
 import java.io.File;
 import java.io.RandomAccessFile;
@@ -56,7 +56,7 @@ abstract class FileDecryptManager {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "encrypt 数据解密异常");
+            EasyLibLog.e(TAG + "encrypt 数据解密异常");
         }
         return false;
     }
@@ -106,7 +106,7 @@ abstract class FileDecryptManager {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "decrypt 数据加密异常");
+            EasyLibLog.e(TAG + "decrypt 数据加密异常");
         }
         return false;
     }

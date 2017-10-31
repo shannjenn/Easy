@@ -98,7 +98,7 @@ class LogDumper extends Thread {
 
         } catch (IOException e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "IOException");
+            EasyLibLog.e(TAG + "IOException");
         } finally {
             if (logcatProc != null) {
                 logcatProc.destroy();

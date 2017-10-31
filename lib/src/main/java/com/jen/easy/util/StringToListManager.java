@@ -3,7 +3,7 @@ package com.jen.easy.util;
 import android.util.Base64;
 
 import com.jen.easy.constant.Constant;
-import com.jen.easy.log.EasyLog;
+import com.jen.easy.log.EasyLibLog;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -29,7 +29,7 @@ abstract class StringToListManager {
             objectOutputStream.close();
             return str;
         } catch (IOException e) {
-            EasyLog.e(TAG + "list2String IOException");
+            EasyLibLog.e(TAG + "list2String IOException");
             e.printStackTrace();
         }
         return null;
@@ -45,10 +45,10 @@ abstract class StringToListManager {
             objectInputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "string2List IOException");
+            EasyLibLog.e(TAG + "string2List IOException");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "string2List ClassNotFoundException");
+            EasyLibLog.e(TAG + "string2List ClassNotFoundException");
         }
         return list;
     }
@@ -62,7 +62,7 @@ abstract class StringToListManager {
             objectOutputStream.close();
             return str;
         } catch (IOException e) {
-            EasyLog.e(TAG + "object2String IOException");
+            EasyLibLog.e(TAG + "object2String IOException");
             e.printStackTrace();
         }
         return null;
@@ -79,10 +79,10 @@ abstract class StringToListManager {
             return obj;
         } catch (IOException e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "string2Object IOException");
+            EasyLibLog.e(TAG + "string2Object IOException");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "string2Object ClassNotFoundException");
+            EasyLibLog.e(TAG + "string2Object ClassNotFoundException");
         }
         return null;
     }

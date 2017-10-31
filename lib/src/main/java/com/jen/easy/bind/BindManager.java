@@ -3,7 +3,7 @@ package com.jen.easy.bind;
 import android.app.Activity;
 import android.view.View;
 
-import com.jen.easy.log.EasyLog;
+import com.jen.easy.log.EasyLibLog;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -24,7 +24,7 @@ abstract class BindManager {
      */
     protected void bind(final Activity activity) {
         if (activity == null) {
-            EasyLog.e(TAG + "BIND activity is null");
+            EasyLibLog.e(TAG + "BIND activity is null");
             return;
         }
         String name = activity.getClass().getName();
@@ -43,7 +43,7 @@ abstract class BindManager {
                 fild.set(activity, view);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
-                EasyLog.e(TAG + "BIND  fild set value error");
+                EasyLibLog.e(TAG + "BIND  fild set value error");
             }
         }
 
@@ -60,10 +60,10 @@ abstract class BindManager {
                             method.invoke(activity, view);
                         } catch (IllegalAccessException e) {
                             e.printStackTrace();
-                            EasyLog.e(TAG + "BIND  IllegalAccessException");
+                            EasyLibLog.e(TAG + "BIND  IllegalAccessException");
                         } catch (InvocationTargetException e) {
                             e.printStackTrace();
-                            EasyLog.e(TAG + "BIND  InvocationTargetException");
+                            EasyLibLog.e(TAG + "BIND  InvocationTargetException");
                         }
                     }
                 });
@@ -76,7 +76,7 @@ abstract class BindManager {
      */
     protected void inject(final Object obj, final View parent) {
         if (obj == null || parent == null) {
-            EasyLog.e(TAG + "inject obj or view is null");
+            EasyLibLog.e(TAG + "inject obj or view is null");
             return;
         }
 
@@ -91,7 +91,7 @@ abstract class BindManager {
                 fild.set(obj, view);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
-                EasyLog.e(TAG + "inject fild set value error");
+                EasyLibLog.e(TAG + "inject fild set value error");
             }
         }
 
@@ -108,10 +108,10 @@ abstract class BindManager {
                             method.invoke(obj, view);
                         } catch (IllegalAccessException e) {
                             e.printStackTrace();
-                            EasyLog.e(TAG + "inject  IllegalAccessException");
+                            EasyLibLog.e(TAG + "inject  IllegalAccessException");
                         } catch (InvocationTargetException e) {
                             e.printStackTrace();
-                            EasyLog.e(TAG + "inject  InvocationTargetException");
+                            EasyLibLog.e(TAG + "inject  InvocationTargetException");
                         }
                     }
                 });
@@ -126,7 +126,7 @@ abstract class BindManager {
      */
     protected void unbind(Activity activity) {
         if (activity == null) {
-            EasyLog.e(TAG + "activity is null");
+            EasyLibLog.e(TAG + "activity is null");
             return;
         }
         String name = activity.getClass().getName();

@@ -99,12 +99,9 @@
 ##############################################################
 ###Log模块
 ##############################################################
--keep class com.jen.easy.log.Logcat {
+-keep class com.jen.easy.log.EasyLog {
     *;
 }
-#-keep class com.jen.easy.log.EasyLog {
-#    *;
-#}
 -keep class com.jen.easy.log.LogcatHelper {
     *;
 }

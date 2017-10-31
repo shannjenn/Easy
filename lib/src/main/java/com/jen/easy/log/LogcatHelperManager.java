@@ -17,7 +17,7 @@ abstract class LogcatHelperManager {
     }
 
     private void init() {
-        EasyLog.d("LogcatHelperManager init");
+        EasyLibLog.d("LogcatHelperManager init");
         LogcatPath.setDefaultPath();
     }
 
@@ -44,10 +44,10 @@ abstract class LogcatHelperManager {
      */
     protected void start() {
         if (LogcatPath.getLogPath() == null) {
-            EasyLog.w("日志路径为空，LogcatHelper日志未能启动--------------------");
+            EasyLibLog.w("日志路径为空，LogcatHelper日志未能启动--------------------");
             return;
         }
-        EasyLog.w("日志路径为:" + LogcatPath.getLogPath());
+        EasyLibLog.w("日志路径为:" + LogcatPath.getLogPath());
         LogDumper.getInstance().startLogs();
         LogcatCrash.getInstance().start();
     }

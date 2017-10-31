@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteException;
 import android.text.TextUtils;
 
 import com.jen.easy.constant.Constant;
-import com.jen.easy.log.EasyLog;
+import com.jen.easy.log.EasyLibLog;
 import com.jen.easy.sqlite.imp.DatabaseListener;
 
 import java.util.List;
@@ -40,7 +40,7 @@ abstract class DBHelperManager {
             return database.getReadableDatabase();
         } catch (SQLiteCantOpenDatabaseException e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "SQLiteCantOpenDatabaseException");
+            EasyLibLog.e(TAG + "SQLiteCantOpenDatabaseException");
             return null;
         }
     }
@@ -53,7 +53,7 @@ abstract class DBHelperManager {
             return database.getWritableDatabase();
         } catch (SQLiteCantOpenDatabaseException e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "SQLiteCantOpenDatabaseException");
+            EasyLibLog.e(TAG + "SQLiteCantOpenDatabaseException");
             return null;
         }
     }
@@ -65,7 +65,7 @@ abstract class DBHelperManager {
      */
     protected void createTB(Class clazz) {
         if (clazz == null) {
-            EasyLog.w(TAG + "createTB error:classObj is null");
+            EasyLibLog.w(TAG + "createTB error:classObj is null");
             return;
         }
         String tableName = DBReflectManager.getTableName(clazz);
@@ -79,10 +79,10 @@ abstract class DBHelperManager {
         Map<String, String> column_type = (Map<String, String>) fields.get(DBReflectManager.COLUMN_TYPE);
 
         if (tableName == null) {
-            EasyLog.w(TAG + "createTB error:tableName is null");
+            EasyLibLog.w(TAG + "createTB error:tableName is null");
             return;
         } else if (column_type.size() == 0) {
-            EasyLog.w(TAG + "createTB error:column is null");
+            EasyLibLog.w(TAG + "createTB error:column is null");
             return;
         }
 
@@ -124,10 +124,10 @@ abstract class DBHelperManager {
             db.beginTransaction();
             db.execSQL(sql);
             db.setTransactionSuccessful();
-            EasyLog.d("create table name : " + tableName + " column : " + fieldSql.toString()
+            EasyLibLog.d("create table name : " + tableName + " column : " + fieldSql.toString()
                     + " primaryKey : " + primaryKeySql + " SUCCESS");
         } catch (SQLiteException e) {
-            EasyLog.w(TAG + "createTB SQLiteException");
+            EasyLibLog.w(TAG + "createTB SQLiteException");
             e.printStackTrace();
         } finally {
             db.endTransaction();
@@ -149,10 +149,10 @@ abstract class DBHelperManager {
             db.beginTransaction();
             db.execSQL("deleteTB DROP TABLE " + tableName);
             db.setTransactionSuccessful();
-            EasyLog.d(TAG + "delete table name : " + tableName + " SUCCESS");
+            EasyLibLog.d(TAG + "delete table name : " + tableName + " SUCCESS");
             return true;
         } catch (SQLiteException e) {
-            EasyLog.w(TAG + "deleteTB SQLiteException");
+            EasyLibLog.w(TAG + "deleteTB SQLiteException");
             e.printStackTrace();
         } finally {
             db.endTransaction();
@@ -190,21 +190,21 @@ abstract class DBHelperManager {
         SQLiteDatabase db = getWtriteDatabse();
         boolean existTB = database.checkTableExist(db, tableName);
         if (!existTB) {
-            EasyLog.w(TAG + "table : " + tableName + " is not exist");
+            EasyLibLog.w(TAG + "table : " + tableName + " is not exist");
             return;
         }
         boolean existClumn = database.checkCloumnExist(db, tableName, columnName);
         if (existClumn) {
-            EasyLog.w(TAG + "columnName : " + columnName + " is exist");
+            EasyLibLog.w(TAG + "columnName : " + columnName + " is exist");
             return;
         }
         try {
             db.beginTransaction();
             db.execSQL("alter table " + tableName + " add " + columnName + Constant.FieldType.getDBCoumnType(fieldType));
             db.setTransactionSuccessful();
-            EasyLog.d("add table name : " + tableName + " column : " + columnName + " SUCCESS");
+            EasyLibLog.d("add table name : " + tableName + " column : " + columnName + " SUCCESS");
         } catch (SQLiteException e) {
-            EasyLog.w(TAG + "addColumn SQLiteException");
+            EasyLibLog.w(TAG + "addColumn SQLiteException");
             e.printStackTrace();
         } finally {
             db.endTransaction();

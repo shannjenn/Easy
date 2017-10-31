@@ -8,7 +8,7 @@ import com.jen.easy.bind.Bind;
 import com.jen.easy.constant.Constant;
 import com.jen.easy.decrypt.FileDecrypt;
 import com.jen.easy.http.Http;
-import com.jen.easy.log.EasyLog;
+import com.jen.easy.log.EasyLibLog;
 import com.jen.easy.log.LogcatHelper;
 import com.jen.easy.share.Share;
 import com.jen.easy.sqlite.DBDao;
@@ -50,7 +50,7 @@ public final class EasyMain {
     public static final Share SHARE;
 
     static {
-        EasyLog.d("init EasyMain -------");
+        EasyLibLog.d("init EasyMain -------");
 
         BIND = new Bind();
         HTTP = new Http();
@@ -83,7 +83,7 @@ public final class EasyMain {
             SHARE = null;
             DB = null;
             Dao = null;
-            EasyLog.e("请继承:" + EasyApplication.class.getSimpleName());
+            EasyLibLog.e("请继承:" + EasyApplication.class.getSimpleName());
         }
     }
 }

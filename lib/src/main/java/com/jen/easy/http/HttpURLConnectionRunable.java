@@ -2,7 +2,7 @@ package com.jen.easy.http;
 
 import android.text.TextUtils;
 
-import com.jen.easy.log.EasyLog;
+import com.jen.easy.log.EasyLibLog;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -28,7 +28,7 @@ class HttpURLConnectionRunable implements Runnable {
     @Override
     public void run() {
         if (TextUtils.isEmpty(request.http.url)) {
-            EasyLog.e(TAG + "URL地址错误");
+            EasyLibLog.e(TAG + "URL地址错误");
             fail("URL地址为空");
             return;
         }
@@ -78,13 +78,13 @@ class HttpURLConnectionRunable implements Runnable {
             }
 
             if (request.http.method.toUpperCase().equals("GET")) {
-                EasyLog.d("Http请求地址：" + url.toString() + "  请求方式：" + request.http.method);
+                EasyLibLog.d("Http请求地址：" + url.toString() + "  请求方式：" + request.http.method);
             } else {
-                EasyLog.d("Http请求地址：" + url.toString() + "  请求方式：" + request.http.method);
-                EasyLog.d("Http请求参数：" + requestBuf.toString());
+                EasyLibLog.d("Http请求地址：" + url.toString() + "  请求方式：" + request.http.method);
+                EasyLibLog.d("Http请求参数：" + requestBuf.toString());
             }
             resposeCode = connection.getResponseCode();
-            EasyLog.d("Http请求返回码：" + resposeCode);
+            EasyLibLog.d("Http请求返回码：" + resposeCode);
             if ((resposeCode == 200)) {
                 StringBuffer result = new StringBuffer("");
                 InputStream inStream = connection.getInputStream();
@@ -96,13 +96,13 @@ class HttpURLConnectionRunable implements Runnable {
                 reader.close();
                 inStream.close();
                 connection.disconnect();
-                EasyLog.d(result.toString());
+                EasyLibLog.d(result.toString());
                 success(result.toString());
                 return;
             }
         } catch (IOException e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "IOException");
+            EasyLibLog.e(TAG + "IOException");
         }
         fail("网络请求异常：" + resposeCode);
     }
@@ -111,13 +111,13 @@ class HttpURLConnectionRunable implements Runnable {
         if (request.getBseListener() != null) {
             Type type = request.getClass().getGenericSuperclass();
             if (!(type instanceof ParameterizedType)) {
-                EasyLog.e(TAG + "请求参数未指定泛型返回类型");
+                EasyLibLog.e(TAG + "请求参数未指定泛型返回类型");
                 fail("请求参数未指定返回类型");
                 return;
             }
             Type classType = ((ParameterizedType) type).getActualTypeArguments()[0];
             if (!(classType instanceof Class)) {
-                EasyLog.e(TAG + classType + "泛型不是Class类型");
+                EasyLibLog.e(TAG + classType + "泛型不是Class类型");
                 fail(classType + "不是Class类型");
                 return;
             }
@@ -126,24 +126,24 @@ class HttpURLConnectionRunable implements Runnable {
                 Class clazz = Class.forName(((Class) classType).getName());
                 Object object = clazz.newInstance();
                 if (!(object instanceof HttpResponse)) {
-                    EasyLog.e(TAG + classType + "泛型不是HttpResponse类型");
+                    EasyLibLog.e(TAG + classType + "泛型不是HttpResponse类型");
                     fail(classType + "HttpResponse类型");
                     return;
                 }
                 response = (HttpResponse) object;
             } catch (InstantiationException e) {
                 e.printStackTrace();
-                EasyLog.e(TAG + "InstantiationException");
+                EasyLibLog.e(TAG + "InstantiationException");
                 fail("不存在泛型：" + ((Class) classType).getName());
                 return;
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
-                EasyLog.e(TAG + "IllegalAccessException");
+                EasyLibLog.e(TAG + "IllegalAccessException");
                 fail("不存在泛型：" + ((Class) classType).getName());
                 return;
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
-                EasyLog.e(TAG + "ClassNotFoundException");
+                EasyLibLog.e(TAG + "ClassNotFoundException");
                 fail("不存在泛型：" + ((Class) classType).getName());
                 return;
             }

@@ -1,7 +1,7 @@
 package com.jen.easy.bind;
 
 import com.jen.easy.EasyMouse;
-import com.jen.easy.log.EasyLog;
+import com.jen.easy.log.EasyLibLog;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -36,7 +36,7 @@ abstract class BindReflectManager {
         objectMap.put(ID_TYPE, id_type);
         objectMap.put(ID_FIELD, id_field);
         if (clazz == null) {
-            EasyLog.e(TAG + "getFields clazz is null");
+            EasyLibLog.e(TAG + "getFields clazz is null");
             return objectMap;
         }
 
@@ -66,7 +66,7 @@ abstract class BindReflectManager {
     static Map<Method, int[]> getMethods(Class clazz) {
         Map<Method, int[]> method_ids = new HashMap<>();
         if (clazz == null) {
-            EasyLog.e(TAG + "getMethods clazz is null");
+            EasyLibLog.e(TAG + "getMethods clazz is null");
             return method_ids;
         }
         Method[] methods = clazz.getDeclaredMethods();

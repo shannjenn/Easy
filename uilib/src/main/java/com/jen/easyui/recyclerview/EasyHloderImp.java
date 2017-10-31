@@ -3,7 +3,7 @@ package com.jen.easyui.recyclerview;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.jen.easyui.EasyUILog;
+import com.jen.easy.log.EasyUILog;
 
 /**
  * 作者：ShannJenn

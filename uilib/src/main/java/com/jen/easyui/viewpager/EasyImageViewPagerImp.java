@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.jen.easyui.EasyUILog;
+import com.jen.easy.log.EasyUILog;
 import com.jen.easyui.R;
 import com.jen.easyui.util.EasyDensityUtil;
 

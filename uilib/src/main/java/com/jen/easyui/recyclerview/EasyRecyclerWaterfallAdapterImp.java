@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jen.easyui.EasyUILog;
+import com.jen.easy.log.EasyUILog;
 
 import java.util.List;
 

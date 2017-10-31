@@ -2,7 +2,7 @@ package com.jen.easy.http;
 
 import android.text.TextUtils;
 
-import com.jen.easy.log.EasyLog;
+import com.jen.easy.log.EasyLibLog;
 
 import java.io.DataOutputStream;
 import java.io.File;
@@ -28,7 +28,7 @@ class HttpURLConnectionDownloadRunable implements Runnable {
     @Override
     public void run() {
         if (TextUtils.isEmpty(param.http.url)) {
-            EasyLog.w(TAG + "URL地址错误");
+            EasyLibLog.w(TAG + "URL地址错误");
             fail("请求URL参数错误");
             return;
         } else if (TextUtils.isEmpty(param.request.filePath)) {
@@ -40,7 +40,7 @@ class HttpURLConnectionDownloadRunable implements Runnable {
         if (!fileFolder.exists()) {
             boolean ret = fileFolder.mkdirs();
             if (!ret) {
-                EasyLog.w(TAG + "创建文件夹失败");
+                EasyLibLog.w(TAG + "创建文件夹失败");
                 fail("保存文件失败，请检查文件路径是否正确");
                 return;
             }
@@ -50,7 +50,7 @@ class HttpURLConnectionDownloadRunable implements Runnable {
             if (file.exists()) {
                 boolean ret = file.delete();
                 if (!ret) {
-                    EasyLog.w(TAG + "删除旧文件失败");
+                    EasyLibLog.w(TAG + "删除旧文件失败");
                     fail("删除旧文件失败，请检查文件路径是否正确");
                     return;
                 }
@@ -115,9 +115,9 @@ class HttpURLConnectionDownloadRunable implements Runnable {
                 out.close();
             }
 
-            EasyLog.d("Http 请求地址：" + url.toString() + "  " + param.http.method);
+            EasyLibLog.d("Http 请求地址：" + url.toString() + "  " + param.http.method);
             resposeCode = connection.getResponseCode();
-            EasyLog.d("Http请求返回码：" + resposeCode);
+            EasyLibLog.d("Http请求返回码：" + resposeCode);
             if ((resposeCode == 200)) {
                 param.request.endPoit = connection.getContentLength();
                 inStream = connection.getInputStream();
@@ -143,19 +143,19 @@ class HttpURLConnectionDownloadRunable implements Runnable {
                 return;
             }
         } catch (MalformedURLException e) {
-            EasyLog.e(TAG + "MalformedURLException error --------");
+            EasyLibLog.e(TAG + "MalformedURLException error --------");
             e.printStackTrace();
             exception = "MalformedURLException error";
         } catch (ProtocolException e) {
-            EasyLog.e(TAG + "ProtocolException error --------");
+            EasyLibLog.e(TAG + "ProtocolException error --------");
             e.printStackTrace();
             exception = "ProtocolException error";
         } catch (IOException e) {
-            EasyLog.e(TAG + "IOException error --------");
+            EasyLibLog.e(TAG + "IOException error --------");
             e.printStackTrace();
             exception = "IOException error";
         } catch (IllegalStateException e) {
-            EasyLog.e(TAG + "IllegalStateException error --------");
+            EasyLibLog.e(TAG + "IllegalStateException error --------");
             e.printStackTrace();
             exception = "IllegalStateException error";
         } finally {

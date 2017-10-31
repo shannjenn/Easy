@@ -17,6 +17,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
         EasyMain.BIND.bind(this);
+        initViews();
+        initDatas();
     }
 
     @Override
@@ -24,5 +26,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onDestroy();
         EasyMain.BIND.unbind(this);
     }
+
+    protected abstract void initViews();
+    protected abstract void initDatas();
 
 }

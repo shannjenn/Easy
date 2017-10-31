@@ -1,6 +1,8 @@
-package com.jen.easyui;
+package com.jen.easy.log;
 
 import android.util.Log;
+
+import static com.jen.easy.log.EasyLog.length;
 
 /**
  * 作者：ShannJenn
@@ -8,12 +10,10 @@ import android.util.Log;
  */
 
 public class EasyUILog {
-    private static final String TAG = EasyUILog.class.getSimpleName();
-    private static final int length = 4000;
-    public static final boolean EASY_UI_LOG = true;
+    private static final String TAG = "EasyUILog";
 
     public static void d(String msg) {
-        if (EASY_UI_LOG) {
+        if (EasyLog.EASY_UI_LOG) {
             if (msg != null && msg.length() > length) {
                 int part = 1;
                 for (int i = 0; i < msg.length(); i += length) {
@@ -31,7 +31,7 @@ public class EasyUILog {
     }
 
     public static void i(String msg) {
-        if (EASY_UI_LOG) {
+        if (EasyLog.EASY_UI_LOG) {
             if (msg != null && msg.length() > length) {
                 int part = 1;
                 for (int i = 0; i < msg.length(); i += length) {
@@ -49,7 +49,7 @@ public class EasyUILog {
     }
 
     public static void w(String msg) {
-        if (EASY_UI_LOG) {
+        if (EasyLog.EASY_UI_LOG) {
             if (msg != null && msg.length() > length) {
                 int part = 1;
                 for (int i = 0; i < msg.length(); i += length) {
@@ -67,7 +67,7 @@ public class EasyUILog {
     }
 
     public static void e(String msg) {
-        if (EASY_UI_LOG) {
+        if (EasyLog.EASY_UI_LOG) {
             if (msg != null && msg.length() > length) {
                 int part = 1;
                 for (int i = 0; i < msg.length(); i += length) {

@@ -36,26 +36,40 @@
         <attr name="android:layout_height" />
     </declare-styleable>
 
-    <!--导航选项-->
-    <declare-styleable name="EasyTabItem">
-        <attr name="image" format="reference" />
-        <attr name="imageWidth" format="dimension" />
-        <attr name="imageHeight" format="dimension" />
-        <attr name="imageAdjustViewBounds" format="boolean" />
-        <attr name="imageScaleType">
-            <enum name="matrix" value="0" />
-            <enum name="fitXY" value="1" />
-            <enum name="fitStart" value="2" />
-            <enum name="fitCenter" value="3" />
-            <enum name="fitEnd" value="4" />
-            <enum name="center" value="5" />
-            <enum name="centerCrop" value="6" />
-            <enum name="centerInside" value="7" />
+    <!--导航布局:可以滚动-->
+    <declare-styleable name="EasyTabBarTxtScroll">
+        <!-- indicator -->
+        <attr name="indicator_color" format="color"/>
+        <attr name="indicator_height" format="dimension"/>
+        <attr name="indicator_width" format="dimension"/>
+        <attr name="indicator_margin_top" format="dimension"/>
+        <attr name="indicator_margin_bottom" format="dimension"/>
+        <attr name="indicator_corner_radius" format="dimension"/>
+        <attr name="indicator_gravity">
+            <enum name="top" value="0" />
+            <enum name="center" value="1" />
+            <enum name="bottom" value="2" />
         </attr>
-        <attr name="text" format="string" />
-        <attr name="textSize" format="dimension" />
-        <attr name="textColor" format="dimension" />
-        <attr name="imageTextMargin" format="dimension" />
-        <attr name="layout_weight" format="integer" />
+
+        <!-- underline -->
+        <attr name="underline_color" format="color"/>
+        <attr name="underline_height" format="dimension"/>
+        <attr name="underline_gravity">
+            <enum name="top" value="0" />
+            <enum name="center" value="1" />
+            <enum name="bottom" value="2" />
+        </attr>
+
+        <!-- title -->
+        <attr name="textsize" format="dimension"/>
+        <attr name="textSelColor" format="color"/>
+        <attr name="textUnselColor" format="color"/>
+        <attr name="textStyleBold" format="boolean"/>
+        <attr name="textStyleItalic" format="boolean"/>
+
+        <attr name="android:layout_width" />
+        <attr name="android:layout_height" />
+
     </declare-styleable>
+
 </resources>

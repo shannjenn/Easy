@@ -33,7 +33,7 @@ public class EasyTabBarTxtImg extends RelativeLayout {
     /*文字默认颜色*/
     private static final int DEFAULT_TEXT_COLOR = Color.BLACK;
     /*默认文字大小12sp*/
-    private static final int DEFAULT_TEXT_SIZE = 12;
+    private static final int DEFAULT_TEXT_SIZE = 16;
     /*item最大个数*/
     private final int MAX_SIZE = 5;
 

@@ -69,12 +69,12 @@ class LogcatCrash implements UncaughtExceptionHandler {
             // 如果用户没有处理则让系统默认的异常处理器来处理
             defalutHandler.uncaughtException(thread, ex);
         } else {
-            EasyLog.w("用户来处理异常");
+            EasyLibLog.w("用户来处理异常");
             /*try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-                EasyLog.e("LogcatCrash InterruptedException");
+                EasyLibLog.e("LogcatCrash InterruptedException");
             }*/
             // 退出程序
             android.os.Process.killProcess(android.os.Process.myPid());

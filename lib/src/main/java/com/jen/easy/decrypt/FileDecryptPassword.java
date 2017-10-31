@@ -1,7 +1,7 @@
 package com.jen.easy.decrypt;
 
 import com.jen.easy.constant.Constant;
-import com.jen.easy.log.EasyLog;
+import com.jen.easy.log.EasyLibLog;
 
 import java.io.UnsupportedEncodingException;
 
@@ -11,7 +11,7 @@ class FileDecryptPassword {
 
     static byte[] getPassword(String password) {
         if (password == null) {
-            EasyLog.e(TAG + "getPassword 密码不能为空");
+            EasyLibLog.e(TAG + "getPassword 密码不能为空");
             return null;
         }
         try {
@@ -25,7 +25,7 @@ class FileDecryptPassword {
             return psws;
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-            EasyLog.e(TAG + "getPassword 编码转换错误");
+            EasyLibLog.e(TAG + "getPassword 编码转换错误");
             return null;
         }
     }

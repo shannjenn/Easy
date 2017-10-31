@@ -2,7 +2,7 @@ package com.jen.easy.app;
 
 import android.app.Application;
 
-import com.jen.easy.log.EasyLog;
+import com.jen.easy.log.EasyLibLog;
 
 /**
  * 作者：ShannJenn
@@ -19,7 +19,7 @@ public abstract class EasyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        EasyLog.d("EasyApplication onCreate----");
+        EasyLibLog.d("EasyApplication onCreate----");
         if (instance == null)
             instance = this;
 //        if (Constant.DB.PASSWORD == null)

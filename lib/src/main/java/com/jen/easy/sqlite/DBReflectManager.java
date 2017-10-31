@@ -1,7 +1,7 @@
 package com.jen.easy.sqlite;
 
 import com.jen.easy.EasyMouse;
-import com.jen.easy.log.EasyLog;
+import com.jen.easy.log.EasyLibLog;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -42,13 +42,13 @@ class DBReflectManager {
      */
     static String getTableName(Class clazz) {
         if (clazz == null) {
-            EasyLog.e(TAG + "getTableName clazz is not null");
+            EasyLibLog.e(TAG + "getTableName clazz is not null");
             return null;
         }
         String tbName = null;
         boolean isAnno = clazz.isAnnotationPresent(EasyMouse.DB.Table.class);
         if (!isAnno) {
-            EasyLog.e(TAG + "getTableName clazz is not AnnotationPresent");
+            EasyLibLog.e(TAG + "getTableName clazz is not AnnotationPresent");
             return null;
         }
         EasyMouse.DB.Table table = (EasyMouse.DB.Table) clazz.getAnnotation(EasyMouse.DB.Table.class);
@@ -73,7 +73,7 @@ class DBReflectManager {
         objectMap.put(COLUMN_TYPE, column_type);
         objectMap.put(COLUMN_FIELD, fieldName);
         if (clazz == null) {
-            EasyLog.e(TAG + "getColumnNames clazz is not null");
+            EasyLibLog.e(TAG + "getColumnNames clazz is not null");
             return objectMap;
         }
 
@@ -109,7 +109,7 @@ class DBReflectManager {
      */
     static String getPrimaryKeyValue(Object obj, String primaryKey) {
         if (obj == null || obj instanceof Class || primaryKey == null) {
-            EasyLog.e(TAG + "getPrimaryKeyValue clazz is not null");
+            EasyLibLog.e(TAG + "getPrimaryKeyValue clazz is not null");
             return null;
         }
         Field[] fields = obj.getClass().getDeclaredFields();
@@ -141,7 +141,7 @@ class DBReflectManager {
     static Map<String, String> getPrimaryKeysValues(Object obj) {
         Map<String, String> primaryKeys_values = new HashMap<>();
         if (obj == null || obj instanceof Class) {
-            EasyLog.e(TAG + "getPrimaryKeyValue clazz is not null");
+            EasyLibLog.e(TAG + "getPrimaryKeyValue clazz is not null");
             return primaryKeys_values;
         }
         Field[] fields = obj.getClass().getDeclaredFields();

@@ -1,7 +1,7 @@
 package com.jen.easy.http;
 
 import com.jen.easy.EasyMouse;
-import com.jen.easy.log.EasyLog;
+import com.jen.easy.log.EasyLibLog;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -26,7 +26,7 @@ class HttpReflectManager {
     static Map<String, String> getRequestParams(Object obj) {
         Map<String, String> params = new HashMap<>();
         if (obj == null || obj instanceof Class) {
-            EasyLog.e(TAG + "getRequestParams getRequestParams obj is null");
+            EasyLibLog.e(TAG + "getRequestParams getRequestParams obj is null");
             return params;
         }
 
@@ -46,7 +46,7 @@ class HttpReflectManager {
                 params.put(paramName, value);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
-                EasyLog.e(TAG + "getRequestParams IllegalAccessException");
+                EasyLibLog.e(TAG + "getRequestParams IllegalAccessException");
             }
         }
         return params;
@@ -65,7 +65,7 @@ class HttpReflectManager {
         objectMap.put(PARAM_TYPE, param_type);
         objectMap.put(PARAM_FIELD, param_field);
         if (clazz == null) {
-            EasyLog.e(TAG + "getResponseParams clazz is not null");
+            EasyLibLog.e(TAG + "getResponseParams clazz is not null");
             return objectMap;
         }
 
