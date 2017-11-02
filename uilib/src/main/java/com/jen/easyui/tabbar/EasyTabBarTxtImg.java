@@ -163,7 +163,7 @@ public class EasyTabBarTxtImg extends RelativeLayout {
 
         LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         for (int i = 0; i < itemSize; i++) {
-            LinearLayout mainContainer = (LinearLayout) mInflater.inflate(R.layout._easy_tabbar_imgtxt, null);
+            LinearLayout mainContainer = (LinearLayout) mInflater.inflate(R.layout._easy_tabbar_txtimg, null);
             LinearLayout.LayoutParams linerParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT, 1);
             mainContainer.setLayoutParams(linerParams);
             linearLayout.addView(mainContainer);

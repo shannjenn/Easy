@@ -33,7 +33,12 @@
         <com.jen.easyui.tabbar.EasyTabBarTxtScroll
             android:id="@+id/easy_tabar_scroll"
             android:layout_width="match_parent"
-            android:layout_height="200dp"/>
+            android:layout_height="100dp"
+            app:tab_padding_left="15dp"
+            app:tab_padding_right="15dp"
+            app:tab_padding_top="5dp"
+            app:tab_padding_bottom="5dp"
+            app:tab_textSize="18sp"/>
 
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager_scroll"
