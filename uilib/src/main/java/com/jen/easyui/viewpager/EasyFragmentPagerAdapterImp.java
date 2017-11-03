@@ -2,10 +2,13 @@ package com.jen.easyui.viewpager;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
+import android.view.ViewGroup;
 
 import com.jen.easy.log.EasyUILog;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,41 +16,71 @@ import java.util.List;
  * 时间：2017/9/11.
  */
 
-abstract class EasyFragmentPagerAdapterImp extends FragmentStatePagerAdapter {
+abstract class EasyFragmentPagerAdapterImp extends FragmentPagerAdapter {
     private final String TAG = EasyFragmentPagerAdapterImp.class.getSimpleName() + " ";
-    protected List<String> title;
-    protected List<Fragment> fragments;
+    protected FragmentManager fm;
+    protected final List<String> mTitles = new ArrayList<>();
+    protected final List<Fragment> mFragments = new ArrayList<>();
 
     protected EasyFragmentPagerAdapterImp(FragmentManager fm, List<String> title, List<Fragment> fragments) {
         super(fm);
-        this.title = title;
-        this.fragments = fragments;
+        this.fm = fm;
+        mTitles.clear();
+        mTitles.addAll(title);
+        mFragments.clear();
+        mFragments.addAll(fragments);
     }
 
     @Override
     public Fragment getItem(int position) {
-        if (position >= fragments.size()) {
-            EasyUILog.e(TAG + "position >= fragments.size()");
-            return null;
-        }
-        return fragments.get(position);
+        return mFragments.get(position);
     }
 
     @Override
     public int getCount() {
         int count = 0;
-        if (fragments == null) {
-            EasyUILog.e(TAG + "fragments is null");
-            return count;
-        }
-        if (title != null) {
-            count = title.size();
+        if (mFragments != null) {
+            count = mFragments.size();
         }
         return count;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return title.get(position);
+        if (mTitles.size() <= position) {
+            EasyUILog.d(TAG + "getPageTitle mTitles.size() <= position");
+            return "";
+        }
+        return mTitles.get(position);
+    }
+
+    @Override
+    public void finishUpdate(ViewGroup container) {
+        try {
+            super.finishUpdate(container);
+        } catch (NullPointerException nullPointerException) {
+            EasyUILog.d("Catch the NullPointerException in EasyFragmentPagerAdapterImp.finishUpdate");
+        }
+    }
+
+    public void upDatas(List<String> titles, List<Fragment> fragments) {
+        FragmentTransaction ft = fm.beginTransaction();
+        for (Fragment f : mFragments) {
+            ft.remove(f);
+        }
+        ft.commit();
+        ft = null;
+        fm.executePendingTransactions();
+
+        mTitles.clear();
+        mTitles.addAll(titles);
+        mFragments.clear();
+        mFragments.addAll(fragments);
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
     }
 }

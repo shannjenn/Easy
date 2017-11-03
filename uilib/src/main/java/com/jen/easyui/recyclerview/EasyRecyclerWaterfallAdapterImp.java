@@ -19,7 +19,7 @@ import java.util.List;
 abstract class EasyRecyclerWaterfallAdapterImp<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     protected Context context;
     protected List<T> data;
-    private EasyItemOnClickEvent itemOnClickEvent;
+    private EasyAdapterClickEvent easyAdapterClickEvent;
 
     /**
      * @param data 数据
@@ -69,7 +69,7 @@ abstract class EasyRecyclerWaterfallAdapterImp<T> extends RecyclerView.Adapter<R
             return null;
         }
         EasyHloderImp hloderImp = onCreateEasyHolder(view);
-        hloderImp.setItemOnClickEvent(itemOnClickEvent);
+        hloderImp.setAdapterClickEvent(easyAdapterClickEvent);
         return hloderImp;
     }
 
@@ -91,7 +91,7 @@ abstract class EasyRecyclerWaterfallAdapterImp<T> extends RecyclerView.Adapter<R
         ((EasyHloderImp) holder).onBindViewHolder(t, position);
     }
 
-    public void setItemOnClickEvent(EasyItemOnClickEvent itemOnClickEvent) {
-        this.itemOnClickEvent = itemOnClickEvent;
+    public void setEasyAdapterClickEvent(EasyAdapterClickEvent easyAdapterClickEvent) {
+        this.easyAdapterClickEvent = easyAdapterClickEvent;
     }
 }

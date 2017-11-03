@@ -7,7 +7,7 @@ import android.view.View;
  * 作者：ShannJenn
  * 时间：2017/8/12.
  */
-public interface EasyItemOnClickEvent {
+public interface EasyAdapterClickEvent {
 
     void onClick(View view, int pos);
 

@@ -18,6 +18,7 @@ import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 
 import com.jen.easyui.R;
+import com.jen.easyui.util.EasyDensityUtil;
 
 /**
  * 自定义(圆形或者圆角)
@@ -25,7 +26,7 @@ import com.jen.easyui.R;
  * 时间：2017/8/12.
  */
 
-public class CustomImage extends AppCompatImageView {
+abstract class EasyCustomImageImp extends AppCompatImageView {
     /**
      * (默认)android.widget.ImageView
      */
@@ -41,8 +42,8 @@ public class CustomImage extends AppCompatImageView {
 
     private static final int DEFAULT_TYPE = TYPE_NONE;
     private static final int DEFAULT_BORDER_COLOR = Color.TRANSPARENT;
-    private static final int DEFAULT_BORDER_WIDTH = 0;
-    private static final int DEFAULT_RECT_ROUND_RADIUS = 0;
+    private static final float DEFAULT_BORDER_WIDTH = 0;
+    private static final float DEFAULT_RECT_ROUND_RADIUS = 0;
 
     private int mType;
     private int mBorderColor;
@@ -59,14 +60,19 @@ public class CustomImage extends AppCompatImageView {
     private BitmapShader mShader;
     private Matrix mMatrix = new Matrix();
 
-    public CustomImage(Context context, AttributeSet attrs) {
+    public EasyCustomImageImp(Context context, AttributeSet attrs) {
         super(context, attrs);
-        //取xml文件中设定的参数
-        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.CustomImage);
-        mType = ta.getInt(R.styleable.CustomImage_type, DEFAULT_TYPE);
-        mBorderColor = ta.getColor(R.styleable.CustomImage_borderColor, DEFAULT_BORDER_COLOR);
-        mBorderWidth = ta.getDimensionPixelSize(R.styleable.CustomImage_borderWidth, dip2px(DEFAULT_BORDER_WIDTH));
-        mRectRoundRadius = ta.getDimensionPixelSize(R.styleable.CustomImage_rectRoundRadius, dip2px(DEFAULT_RECT_ROUND_RADIUS));
+        initAttrs(context, attrs);
+    }
+
+    private void initAttrs(Context context, AttributeSet attrs) {
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.EasyCustomImage);
+        mType = ta.getInt(R.styleable.EasyCustomImage_type, DEFAULT_TYPE);
+        mBorderColor = ta.getColor(R.styleable.EasyCustomImage_borderColor, DEFAULT_BORDER_COLOR);
+        mBorderWidth = ta.getDimensionPixelSize(R.styleable.EasyCustomImage_borderWidth,
+                EasyDensityUtil.dip2px(context, DEFAULT_BORDER_WIDTH));
+        mRectRoundRadius = ta.getDimensionPixelSize(R.styleable.EasyCustomImage_rectRoundRadius,
+                EasyDensityUtil.dip2px(context, DEFAULT_RECT_ROUND_RADIUS));
         ta.recycle();
     }
 
@@ -114,11 +120,6 @@ public class CustomImage extends AppCompatImageView {
         } else {
             super.onDraw(canvas);
         }
-    }
-
-    private int dip2px(int dipVal) {
-        float scale = getResources().getDisplayMetrics().density;
-        return (int) (dipVal * scale + 0.5f);
     }
 
     private Bitmap getBitmap(Drawable drawable) {

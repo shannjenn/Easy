@@ -1,6 +1,6 @@
 <resources>
     <!--自定义-->
-    <declare-styleable name="CustomImage">
+    <declare-styleable name="EasyCustomImage">
         <attr name="type">
             <enum name="none" value="0" /><!--默认-->
             <enum name="circle" value="1" /><!--圆形-->

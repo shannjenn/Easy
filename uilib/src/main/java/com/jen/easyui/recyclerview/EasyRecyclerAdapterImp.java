@@ -11,6 +11,7 @@ import com.jen.easy.log.EasyUILog;
 import java.util.List;
 
 /**
+ * list或者grid模式
  * 作者：ShannJenn
  * 时间：2017/8/12.
  */
@@ -18,7 +19,7 @@ import java.util.List;
 abstract class EasyRecyclerAdapterImp<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     protected Context context;
     protected List<T> data;
-    private EasyItemOnClickEvent itemOnClickEvent;
+    private EasyAdapterClickEvent easyAdapterClickEvent;
 
     /**
      * @param data 数据
@@ -47,7 +48,7 @@ abstract class EasyRecyclerAdapterImp<T> extends RecyclerView.Adapter<RecyclerVi
             return null;
         }
         EasyHloderImp hloderImp = onCreateEasyHolder(view);
-        hloderImp.setItemOnClickEvent(itemOnClickEvent);
+        hloderImp.setAdapterClickEvent(easyAdapterClickEvent);
         return hloderImp;
     }
 
@@ -69,8 +70,7 @@ abstract class EasyRecyclerAdapterImp<T> extends RecyclerView.Adapter<RecyclerVi
         ((EasyHloderImp) holder).onBindViewHolder(t, position);
     }
 
-    public void setItemOnClickEvent(EasyItemOnClickEvent itemOnClickEvent) {
-        this.itemOnClickEvent = itemOnClickEvent;
+    public void setEasyAdapterClickEvent(EasyAdapterClickEvent easyAdapterClickEvent) {
+        this.easyAdapterClickEvent = easyAdapterClickEvent;
     }
-
 }

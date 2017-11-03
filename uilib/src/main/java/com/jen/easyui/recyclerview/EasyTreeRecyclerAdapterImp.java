@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 树形模式
  * 作者：ShannJenn
  * 时间：2017/8/12.
  */
@@ -23,7 +24,7 @@ abstract class EasyTreeRecyclerAdapterImp<T extends EasyTreeItem> extends Recycl
     private boolean showTopLevel = true;//展示的最高等级
     protected T tree;
     protected List<T> expadData = new ArrayList<>();
-    private EasyItemOnClickEvent itemOnClickEvent;
+    private EasyAdapterClickEvent easyAdapterClickEvent;
 
     /**
      * @param tree 数据
@@ -112,7 +113,7 @@ abstract class EasyTreeRecyclerAdapterImp<T extends EasyTreeItem> extends Recycl
         float size = itemSpaceSize();
         view.setPadding(EasyDensityUtil.dip2px(context, size), 0, 0, 0);
         EasyHloderImp hloderImp = onCreateEasyHolder(view);
-        hloderImp.setItemOnClickEvent(itemOnClickEvent);
+        hloderImp.setAdapterClickEvent(easyAdapterClickEvent);
         return hloderImp;
     }
 
@@ -136,7 +137,7 @@ abstract class EasyTreeRecyclerAdapterImp<T extends EasyTreeItem> extends Recycl
         ((EasyHloderImp) holder).onBindViewHolder(t, position);
     }
 
-    public void setItemOnClickEvent(EasyItemOnClickEvent itemOnClickEvent) {
-        this.itemOnClickEvent = itemOnClickEvent;
+    public void setEasyAdapterClickEvent(EasyAdapterClickEvent easyAdapterClickEvent) {
+        this.easyAdapterClickEvent = easyAdapterClickEvent;
     }
 }

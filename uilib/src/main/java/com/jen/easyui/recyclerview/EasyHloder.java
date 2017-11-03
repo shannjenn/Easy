@@ -9,12 +9,16 @@ import android.view.View;
 
 public abstract class EasyHloder extends EasyHloderImp {
 
+    /**
+     * bind ID在这处理
+     * @param itemView
+     */
     public EasyHloder(View itemView) {
         super(itemView);
     }
 
     /**
-     * 初始化item数据
+     * 初始化item数据在这里处理
      *
      * @return
      */
@@ -23,21 +27,21 @@ public abstract class EasyHloder extends EasyHloderImp {
     /**
      * 控件点击事件
      *
-     * @return
+     * @return 控件IDs
      */
     public abstract int[] getOnClick();
 
     /**
      * 控件长按事件
      *
-     * @return
+     * @return 控件IDs
      */
     public abstract int[] getOnLongClick();
 
     /**
      * item点击事件
      *
-     * @return
+     * @return 是否设置item点击事件
      */
     public abstract boolean getItemClick();
 

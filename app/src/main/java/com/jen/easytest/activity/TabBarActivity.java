@@ -85,7 +85,7 @@ public class TabBarActivity extends BaseActivity {
         viewpager_scroll.setAdapter(scrollFragmentPagerAdapter);
         easy_tabar_scroll.setViewPager(viewpager_scroll,mScrollTitles);
 
-        handler.postDelayed(new Runnable() {
+        /*handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 mScrollTitles.remove(0);
@@ -96,7 +96,7 @@ public class TabBarActivity extends BaseActivity {
                 mScrollFragments.remove(0);
                 scrollFragmentPagerAdapter.notifyDataSetChanged();
             }
-        },5000);
+        },5000);*/
     }
 
     @Override

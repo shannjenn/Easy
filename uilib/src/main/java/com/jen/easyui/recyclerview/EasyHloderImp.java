@@ -12,12 +12,12 @@ import com.jen.easy.log.EasyUILog;
 
 abstract class EasyHloderImp<T> extends RecyclerView.ViewHolder {
     public View itemView;
-    private EasyItemOnClickEvent itemOnClickEvent;
+    private EasyAdapterClickEvent easyAdapterClickEvent;
 
     public EasyHloderImp(final View itemView) {
         super(itemView);
         this.itemView = itemView;
-        if (itemOnClickEvent == null) {
+        if (easyAdapterClickEvent == null) {
             return;
         }
         int[] clicks = getOnClick();
@@ -34,7 +34,7 @@ abstract class EasyHloderImp<T> extends RecyclerView.ViewHolder {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    itemOnClickEvent.onItemClick(v, pos);
+                    easyAdapterClickEvent.onItemClick(v, pos);
                 }
             });
         }
@@ -50,7 +50,7 @@ abstract class EasyHloderImp<T> extends RecyclerView.ViewHolder {
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        itemOnClickEvent.onClick(v, pos);
+                        easyAdapterClickEvent.onClick(v, pos);
                     }
                 });
             }
@@ -67,7 +67,7 @@ abstract class EasyHloderImp<T> extends RecyclerView.ViewHolder {
                 view.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        return itemOnClickEvent.onLongClick(v, pos);
+                        return easyAdapterClickEvent.onLongClick(v, pos);
                     }
                 });
             }
@@ -80,8 +80,8 @@ abstract class EasyHloderImp<T> extends RecyclerView.ViewHolder {
 
     public abstract boolean getItemClick();
 
-    void setItemOnClickEvent(EasyItemOnClickEvent itemOnClickEvent) {
-        this.itemOnClickEvent = itemOnClickEvent;
+    void setAdapterClickEvent(EasyAdapterClickEvent easyAdapterClickEvent) {
+        this.easyAdapterClickEvent = easyAdapterClickEvent;
     }
 
     void onBindViewHolder(T item, int pos) {
