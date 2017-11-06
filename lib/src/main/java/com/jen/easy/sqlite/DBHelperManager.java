@@ -124,10 +124,10 @@ abstract class DBHelperManager {
             db.beginTransaction();
             db.execSQL(sql);
             db.setTransactionSuccessful();
-            EasyLibLog.d("create table name : " + tableName + " column : " + fieldSql.toString()
-                    + " primaryKey : " + primaryKeySql + " SUCCESS");
+            EasyLibLog.d("创建表 if not exists:" + tableName + " column:" + fieldSql.toString()
+                    + " primaryKey:" + primaryKeySql + " 成功");
         } catch (SQLiteException e) {
-            EasyLibLog.w(TAG + "createTB SQLiteException");
+            EasyLibLog.e("创建表：+" + tableName + " 失败  SQLiteException");
             e.printStackTrace();
         } finally {
             db.endTransaction();
@@ -149,10 +149,10 @@ abstract class DBHelperManager {
             db.beginTransaction();
             db.execSQL("deleteTB DROP TABLE " + tableName);
             db.setTransactionSuccessful();
-            EasyLibLog.d(TAG + "delete table name : " + tableName + " SUCCESS");
+            EasyLibLog.d("删除表: " + tableName + " 成功");
             return true;
         } catch (SQLiteException e) {
-            EasyLibLog.w(TAG + "deleteTB SQLiteException");
+            EasyLibLog.d("删除表: " + tableName + " 失败 SQLiteException");
             e.printStackTrace();
         } finally {
             db.endTransaction();
