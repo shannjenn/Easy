@@ -11,8 +11,8 @@ import com.jen.easytest.BaseActivity;
 import com.jen.easytest.R;
 import com.jen.easytest.fragment.EmptyFragmentBlue;
 import com.jen.easytest.fragment.EmptyFragmentRed;
-import com.jen.easyui.tabbar.EasyTabBarTxtImg;
-import com.jen.easyui.tabbar.EasyTabBarTxtScroll;
+import com.jen.easyui.tabbar.EasyTabBarBottom;
+import com.jen.easyui.tabbar.EasyTabBarTopCenter;
 import com.jen.easyui.viewpager.EasyFragmentPagerAdapter;
 
 import java.util.ArrayList;
@@ -26,10 +26,10 @@ import java.util.List;
 public class TabBarActivity extends BaseActivity {
 
     @EasyMouse.BIND.ID(R.id.easy_tabbar_txtimg)
-    EasyTabBarTxtImg easy_tabbar_txtimg;
+    EasyTabBarBottom easy_tabbar_txtimg;
 
-    @EasyMouse.BIND.ID(R.id.easy_tabar_scroll)
-    EasyTabBarTxtScroll easy_tabar_scroll;
+    @EasyMouse.BIND.ID(R.id.easy_tabar_center)
+    EasyTabBarTopCenter easy_tabar_scroll;
 
     @EasyMouse.BIND.ID(R.id.viewpager_scroll)
     ViewPager viewpager_scroll;
@@ -51,12 +51,13 @@ public class TabBarActivity extends BaseActivity {
         mScrollTitles.add("标题2");
         mScrollTitles.add("标题3");
         mScrollTitles.add("标题4");
-        mScrollTitles.add("标题6");
-        mScrollTitles.add("标题7");
-        mScrollTitles.add("标题8");
-        mScrollTitles.add("标题9");
-        mScrollTitles.add("标题10");
-        mScrollTitles.add("标题11");
+        mScrollTitles.add("标题5");
+//        mScrollTitles.add("标题6");
+//        mScrollTitles.add("标题7");
+//        mScrollTitles.add("标题8");
+//        mScrollTitles.add("标题9");
+//        mScrollTitles.add("标题10");
+//        mScrollTitles.add("标题11");
 
         Fragment fragment1 = new EmptyFragmentBlue();
         Fragment fragment2 = new EmptyFragmentRed();
@@ -74,12 +75,12 @@ public class TabBarActivity extends BaseActivity {
         mScrollFragments.add(fragment3);
         mScrollFragments.add(fragment4);
         mScrollFragments.add(fragment5);
-        mScrollFragments.add(fragment6);
-        mScrollFragments.add(fragment7);
-        mScrollFragments.add(fragment8);
-        mScrollFragments.add(fragment9);
-        mScrollFragments.add(fragment10);
-        mScrollFragments.add(fragment11);
+//        mScrollFragments.add(fragment6);
+//        mScrollFragments.add(fragment7);
+//        mScrollFragments.add(fragment8);
+//        mScrollFragments.add(fragment9);
+//        mScrollFragments.add(fragment10);
+//        mScrollFragments.add(fragment11);
 
         scrollFragmentPagerAdapter = new ScrollFragmentPagerAdapter(getSupportFragmentManager(),mScrollTitles,mScrollFragments);
         viewpager_scroll.setAdapter(scrollFragmentPagerAdapter);

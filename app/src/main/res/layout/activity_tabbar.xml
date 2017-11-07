@@ -11,7 +11,7 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <com.jen.easyui.tabbar.EasyTabBarTxtImg
+        <com.jen.easyui.tabbar.EasyTabBarBottom
             android:id="@+id/easy_tabbar_txtimg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,15 +30,20 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <com.jen.easyui.tabbar.EasyTabBarTxtScroll
-            android:id="@+id/easy_tabar_scroll"
+        <com.jen.easyui.tabbar.EasyTabBarTopCenter
+            android:id="@+id/easy_tabar_center"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            app:tab_padding_left="15dp"
-            app:tab_padding_right="15dp"
-            app:tab_padding_top="5dp"
-            app:tab_padding_bottom="5dp"
-            app:tab_textSize="18sp"/>
+            app:tab_padding_left_center="15dp"
+            app:tab_padding_right_center="15dp"
+            app:tab_padding_top_center="5dp"
+            app:tab_padding_bottom_center="5dp"
+            app:tab_textSize_center="18sp"
+            app:underline_color_center="#ff0000"
+            app:underline_height_center="1dp"
+            app:indicator_color_center="#0000ff"
+            app:indicator_type_center="line"
+            app:indicator_height_center="5dp"/>
 
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager_scroll"
