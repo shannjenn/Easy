@@ -109,13 +109,13 @@ class HttpURLConnectionRunable implements Runnable {
 
     private void success(String result) {
         if (request.getBseListener() != null) {
-            Type type = request.getClass().getGenericSuperclass();
+            Type type = request.getClass().getGenericSuperclass();//获取超类T类型
             if (!(type instanceof ParameterizedType)) {
                 EasyLibLog.e(request.http.url + "请求参数未指定泛型返回类型");
                 fail("请求参数未指定返回类型");
                 return;
             }
-            Type classType = ((ParameterizedType) type).getActualTypeArguments()[0];
+            Type classType = ((ParameterizedType) type).getActualTypeArguments()[0];//获取T值实体类型
             if (!(classType instanceof Class)) {
                 EasyLibLog.e(request.http.url + classType + "泛型不是Class类型");
                 fail(classType + "不是Class类型");

@@ -5,7 +5,7 @@ package com.jen.easy.http;
  * 时间：2017/9/9.
  * 说明：网络请求返回
  */
-public abstract class HttpResponse {
+public class HttpResponse {
 
     /**
      * 设置返回Object变量实体：List集合实体、单实体

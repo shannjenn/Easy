@@ -1,0 +1,34 @@
+<resources>
+    <!--导航布局:可以滚动-->
+    <declare-styleable name="EasyTabBarTopCenter">
+        <!-- 游标indicator -->
+        <attr name="indicator_color_center" format="color" />
+        <attr name="indicator_height_center" format="dimension" />
+        <attr name="indicator_corner_radius_center" format="dimension" />
+        <attr name="indicator_type_center">
+            <enum name="line" value="0" />
+            <enum name="block" value="1" />
+        </attr>
+
+        <!-- 下划线underline -->
+        <attr name="underline_color_center" format="color" />
+        <attr name="underline_height_center" format="dimension" />
+
+        <!-- 标题title -->
+        <attr name="tab_textSize_center" format="dimension" />
+        <attr name="tab_select_textColor_center" format="color" />
+        <attr name="tab_unSelect_textColor_center" format="color" />
+        <attr name="tab_textBold_center" format="boolean" />
+        <attr name="tab_textItalic_center" format="boolean" />
+        <attr name="tab_height_center" format="dimension" />
+        <attr name="tab_padding_left_center" format="dimension" />
+        <attr name="tab_padding_right_center" format="dimension" />
+        <attr name="tab_padding_top_center" format="dimension" />
+        <attr name="tab_padding_bottom_center" format="dimension" />
+
+        <attr name="android:layout_width" />
+        <attr name="android:layout_height" />
+
+    </declare-styleable>
+
+</resources>

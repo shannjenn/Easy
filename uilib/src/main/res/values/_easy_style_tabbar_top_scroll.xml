@@ -1,0 +1,46 @@
+<resources>
+    <!--导航布局:可以滚动-->
+    <declare-styleable name="EasyTabBarTopScroll">
+        <!-- 游标indicator -->
+        <attr name="indicator_color_scroll" format="color" />
+        <attr name="indicator_height_scroll" format="dimension" />
+        <!--<attr name="indicator_margin_top" format="dimension" />-->
+        <!--<attr name="indicator_margin_bottom" format="dimension" />-->
+        <attr name="indicator_corner_radius_scroll" format="dimension" />
+        <!--<attr name="indicator_gravity">
+            <enum name="top" value="0" />
+            <enum name="center" value="1" />
+            <enum name="bottom" value="2" />
+        </attr>-->
+        <attr name="indicator_type_scroll">
+            <enum name="line" value="0" />
+            <enum name="block" value="1" />
+        </attr>
+
+        <!-- 下划线underline -->
+        <attr name="underline_color_scroll" format="color" />
+        <attr name="underline_height_scroll" format="dimension" />
+        <!--<attr name="underline_gravity">
+            <enum name="top" value="0" />
+            <enum name="center" value="1" />
+            <enum name="bottom" value="2" />
+        </attr>-->
+
+        <!-- 标题title -->
+        <attr name="tab_textSize_scroll" format="dimension" />
+        <attr name="tab_select_textColor_scroll" format="color" />
+        <attr name="tab_unSelect_textColor_scroll" format="color" />
+        <attr name="tab_textBold_scroll" format="boolean" />
+        <attr name="tab_textItalic_scroll" format="boolean" />
+        <attr name="tab_width_scroll" format="dimension" />
+        <attr name="tab_height_scroll" format="dimension" />
+        <attr name="tab_padding_left_scroll" format="dimension" />
+        <attr name="tab_padding_right_scroll" format="dimension" />
+        <attr name="tab_padding_top_scroll" format="dimension" />
+        <attr name="tab_padding_bottom_scroll" format="dimension" />
+
+        <attr name="android:layout_width" />
+        <attr name="android:layout_height" />
+
+    </declare-styleable>
+</resources>

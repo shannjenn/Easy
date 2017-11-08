@@ -7,7 +7,7 @@ import com.jen.easy.http.imp.HttpUploadListener;
  * 作者：ShannJenn
  * 时间：2017/8/12.
  */
-public abstract class HttpUploadRequest<T extends HttpResponse> extends HttpRequest {
+public class HttpUploadRequest<T extends HttpResponse> extends HttpRequest {
     private HttpUploadListener<T> uploadListener;
     public Request request = new Request();
 
