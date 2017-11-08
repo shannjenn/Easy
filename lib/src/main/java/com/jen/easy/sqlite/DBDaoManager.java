@@ -649,7 +649,7 @@ abstract class DBDaoManager {
                 } else if (value instanceof Boolean) {
                     values.put(column, (Boolean) value);
                 } else if (value instanceof Date) {
-                    values.put(column, EasyUtil.dateFormat.format((Date) value));
+                    values.put(column, EasyUtil.mDateFormat.format((Date) value));
                 } else if (column_foreignKey.containsKey(column)) {//其他类型用外键处理（比如：对象）
                     if (type.contains(Constant.FieldType.OBJECT)) {
                         EasyLibLog.e(TAG + "cntentValues class java.lang.Object");
@@ -740,7 +740,7 @@ abstract class DBDaoManager {
                     }
                     case Constant.FieldType.DATE: {
                         String value = cursor.getString(cursor.getColumnIndex(column));
-                        Date date = EasyUtil.dateFormat.parser(value);
+                        Date date = EasyUtil.mDateFormat.parser(value);
                         field.set(obj, date);
                         break;
                     }

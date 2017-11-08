@@ -4,13 +4,13 @@ import android.text.TextUtils;
 
 import com.jen.easy.aop.DynamicProxy;
 import com.jen.easy.app.EasyApplication;
-import com.jen.easy.bind.Bind;
+import com.jen.easy.bind.BindView;
 import com.jen.easy.constant.Constant;
 import com.jen.easy.decrypt.FileDecrypt;
 import com.jen.easy.http.Http;
 import com.jen.easy.log.EasyLibLog;
 import com.jen.easy.log.LogcatHelper;
-import com.jen.easy.share.Share;
+import com.jen.easy.share.Shared;
 import com.jen.easy.sqlite.DBDao;
 import com.jen.easy.sqlite.DBHelper;
 
@@ -27,62 +27,62 @@ public final class EasyMain {
     /**
      * ID绑定（结合注释@EasyMouse.BIND使用）
      */
-    public static final Bind BIND;
+    public static final BindView mBindView;
     /**
      * 网络请求（结合注释@EasyMouse.HTTP使用）
      */
-    public static final Http HTTP;
+    public static final Http mHttp;
     /**
      * 数据库操作（结合注释@EasyMouse.DB使用）
      */
-    public static final DBHelper DB;
+    public static final DBHelper mDBHelper;
     /**
      * 数据表操作（结合注释@EasyMouse.DB使用）
      */
-    public static final DBDao Dao;
+    public static final DBDao mDBDao;
     /**
      * 日志取
      */
-    public static final LogcatHelper Log;
+    public static final LogcatHelper mLog;
     /**
      * 数据存储SharedPreferences
      */
-    public static final Share SHARE;
+    public static final Shared mShared;
 
     static {
         EasyLibLog.d("init EasyMain -------");
 
-        BIND = new Bind();
-        HTTP = new Http();
+        mBindView = new BindView();
+        mHttp = new Http();
 //        Parse = new HttpParseManager();
-        Log = new LogcatHelper();
+        mLog = new LogcatHelper();
 
         if (EasyApplication.getAppContext() != null) {
-            SHARE = new Share(EasyApplication.getAppContext());
+            mShared = new Shared(EasyApplication.getAppContext());
 
             if (TextUtils.isEmpty(Constant.DB.PASSWORD)) {
-                DB = new DBHelper(EasyApplication.getAppContext());
-                Dao = new DBDao(EasyApplication.getAppContext());
+                mDBHelper = new DBHelper(EasyApplication.getAppContext());
+                mDBDao = new DBDao(EasyApplication.getAppContext());
             } else {
                 DBHelper DBtemp = new DBHelper(EasyApplication.getAppContext());
                 DBDao DBDtemp = new DBDao(EasyApplication.getAppContext());
 
                 DynamicProxy proxyDB = new DynamicProxy();
-                DB = (DBHelper) proxyDB.bind(DBtemp);
-                String path = EasyApplication.getAppContext().getDatabasePath(DB.getDBName()).getPath();
+                mDBHelper = (DBHelper) proxyDB.bind(DBtemp);
+                String path = EasyApplication.getAppContext().getDatabasePath(mDBHelper.getDBName()).getPath();
 
                 proxyDB.setBeforeMethod(FileDecrypt.class, path, Constant.DB.PASSWORD);
                 proxyDB.setAfterMethod(FileDecrypt.class, path, Constant.DB.PASSWORD);
 
                 DynamicProxy proxyDBD = new DynamicProxy();
-                Dao = (DBDao) proxyDBD.bind(DBDtemp);
+                mDBDao = (DBDao) proxyDBD.bind(DBDtemp);
                 proxyDBD.setBeforeMethod(FileDecrypt.class, path, Constant.DB.PASSWORD);
                 proxyDBD.setAfterMethod(FileDecrypt.class, path, Constant.DB.PASSWORD);
             }
         } else {
-            SHARE = null;
-            DB = null;
-            Dao = null;
+            mShared = null;
+            mDBHelper = null;
+            mDBDao = null;
             EasyLibLog.e("请继承:" + EasyApplication.class.getSimpleName());
         }
     }

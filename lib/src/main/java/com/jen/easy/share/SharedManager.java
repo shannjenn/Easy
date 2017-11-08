@@ -13,13 +13,13 @@ import java.util.List;
  * 时间：2017/8/14.
  */
 
-abstract class ShareManager {
+abstract class SharedManager {
     private static final String xmlFileName = "easyShare";
     private SharedPreferences config;
     private SharedPreferences.Editor editor;
 
 
-    protected ShareManager(Context context) {
+    protected SharedManager(Context context) {
         config = context.getSharedPreferences(xmlFileName, Context.MODE_PRIVATE);
     }
 
@@ -100,7 +100,7 @@ abstract class ShareManager {
      * @return 是否成功
      */
     protected <T> boolean setList(String name, List<T> list) {
-        String value = EasyUtil.StrList.list2String(list);
+        String value = EasyUtil.mStrList.list2String(list);
         if (value == null) {
             return false;
         }
@@ -120,7 +120,7 @@ abstract class ShareManager {
         if (null == value) {
             return valueLlist;
         }
-        List<T> list = EasyUtil.StrList.string2List(value);
+        List<T> list = EasyUtil.mStrList.string2List(value);
         valueLlist.addAll(list);
         return valueLlist;
     }
@@ -136,7 +136,7 @@ abstract class ShareManager {
         if (null == value) {
             return null;
         }
-        Object obj = EasyUtil.StrList.string2Object(value);
+        Object obj = EasyUtil.mStrList.string2Object(value);
         return obj;
     }
 
@@ -148,7 +148,7 @@ abstract class ShareManager {
      * @return 是否成功
      */
     protected boolean setObject(String name, Object obj) {
-        String value = EasyUtil.StrList.object2String(obj);
+        String value = EasyUtil.mStrList.object2String(obj);
         if (null == value) {
             return false;
         }

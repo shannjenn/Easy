@@ -22,8 +22,8 @@ public abstract class EasyApplication extends Application {
         EasyLibLog.d("EasyApplication onCreate----");
         if (instance == null)
             instance = this;
-//        if (Constant.DB.PASSWORD == null)
-//            Constant.DB.PASSWORD = setDBPassword();
+//        if (Constant.mDBHelper.PASSWORD == null)
+//            Constant.mDBHelper.PASSWORD = setDBPassword();
     }
 
 //    protected abstract String setDBPassword();

@@ -57,7 +57,7 @@ class Database {
             return;
         }
         SQLiteDatabase.openOrCreateDatabase(path, null);
-        DB.PASSWORD = password;
+        mDBHelper.PASSWORD = password;
     }*/
 
     /**

@@ -57,7 +57,7 @@ class HttpParseManager {
         Map<String, String> param_type = (Map<String, String>) objectMap.get(PARAM_TYPE);
         Map<String, Field> param_field = (Map<String, Field>) objectMap.get(PARAM_FIELD);
         if (param_type.size() == 0) {
-            EasyLibLog.e(TAG + "parseJsonObject 网络请求返回参数请用@EasyMouse.HTTP.ResponseParam备注正确");
+            EasyLibLog.e(TAG + "parseJsonObject 网络请求返回参数请用@EasyMouse.mHttp.ResponseParam备注正确");
             return null;
         }
 //        EasyLibLog.d(TAG + "clazz=" + clazz.getSimpleName() + " objClass=" + objClass + " jsonObject=" + jsonObject);
@@ -142,7 +142,7 @@ class HttpParseManager {
                         field.setBoolean(tObj, (Boolean) value);
                     } else if (type.equals(Constant.FieldType.DATE)) {
                         if (value instanceof String) {
-                            Date date = EasyUtil.dateFormat.parser((String) value);
+                            Date date = EasyUtil.mDateFormat.parser((String) value);
                             if (date != null) {
                                 field.set(tObj, date);
                             }

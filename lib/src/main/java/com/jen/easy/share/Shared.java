@@ -9,12 +9,12 @@ import java.util.List;
  * 时间：2017/8/12.
  * 说明：SharedPreferences实现类
  */
-public class Share extends ShareManager {
+public class Shared extends SharedManager {
 
     /**
      * 新建实例
      */
-    public Share(Context context) {
+    public Shared(Context context) {
         super(context);
     }
 

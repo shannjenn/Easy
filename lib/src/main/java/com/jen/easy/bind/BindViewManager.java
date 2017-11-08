@@ -15,8 +15,8 @@ import java.util.WeakHashMap;
  * Created by Jen on 2017/7/26.
  */
 
-abstract class BindManager {
-    private final String TAG = BindManager.class.getSimpleName() + " : ";
+abstract class BindViewManager {
+    private final String TAG = BindViewManager.class.getSimpleName() + " : ";
     private WeakHashMap<String, Activity> mapAct = new WeakHashMap<>();
 
     /**
@@ -24,7 +24,7 @@ abstract class BindManager {
      */
     protected void bind(final Activity activity) {
         if (activity == null) {
-            EasyLibLog.e(TAG + "BIND activity is null");
+            EasyLibLog.e(TAG + "mBindView activity is null");
             return;
         }
         String name = activity.getClass().getName();
@@ -43,7 +43,7 @@ abstract class BindManager {
                 fild.set(activity, view);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
-                EasyLibLog.e(TAG + "BIND  fild set value error");
+                EasyLibLog.e(TAG + "mBindView  fild set value error");
             }
         }
 
@@ -60,10 +60,10 @@ abstract class BindManager {
                             method.invoke(activity, view);
                         } catch (IllegalAccessException e) {
                             e.printStackTrace();
-                            EasyLibLog.e(TAG + "BIND  IllegalAccessException");
+                            EasyLibLog.e(TAG + "mBindView  IllegalAccessException");
                         } catch (InvocationTargetException e) {
                             e.printStackTrace();
-                            EasyLibLog.e(TAG + "BIND  InvocationTargetException");
+                            EasyLibLog.e(TAG + "mBindView  InvocationTargetException");
                         }
                     }
                 });

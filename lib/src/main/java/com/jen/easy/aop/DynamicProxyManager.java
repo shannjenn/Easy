@@ -25,7 +25,7 @@ abstract class DynamicProxyManager implements InvocationHandler {
 
     protected Object bind(Object target) {
         if (target == null || target instanceof Class) {
-            EasyLibLog.e(TAG + "BIND 绑定对象为空");
+            EasyLibLog.e(TAG + "mBindView 绑定对象为空");
             return null;
         }
         this.target = target;
@@ -33,14 +33,14 @@ abstract class DynamicProxyManager implements InvocationHandler {
             return Proxy.newProxyInstance(target.getClass().getClassLoader(), target.getClass().getInterfaces(), this);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "BIND 切入对象为空");
+            EasyLibLog.e(TAG + "mBindView 切入对象为空");
         }
         return null;
     }
 
     protected void setBeforeMethod(Class<?> beforeClzz, Object... beforeParams) {
         if (beforeClzz == null) {
-            EasyLibLog.e(TAG + "BIND 切入对象为空");
+            EasyLibLog.e(TAG + "mBindView 切入对象为空");
             return;
         }
         try {
@@ -55,9 +55,9 @@ abstract class DynamicProxyManager implements InvocationHandler {
             }
         } catch (InstantiationException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "BIND InstantiationException");
+            EasyLibLog.e(TAG + "mBindView InstantiationException");
         } catch (IllegalAccessException e) {
-            EasyLibLog.e(TAG + "BIND IllegalAccessException");
+            EasyLibLog.e(TAG + "mBindView IllegalAccessException");
             e.printStackTrace();
         }
     }
