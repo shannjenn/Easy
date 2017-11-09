@@ -8,7 +8,7 @@ import android.os.Bundle;
  * 作者：ShannJenn
  * 时间：2017/8/12.
  */
-public class EasyLoading extends EasyLoadingImp {
+public class EasyLoading extends EasyLoadingManager {
 
     public EasyLoading(Context context) {
         super(context);

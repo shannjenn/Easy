@@ -12,7 +12,7 @@ import java.util.List;
  * 作者：ShannJenn
  * 时间：2017/10/31.
  */
-public class EasyTabBarTopCenter extends EasyTabBarTopCenterImp {
+public class EasyTabBarTopCenter extends EasyTabBarTopCenterManager {
     public EasyTabBarTopCenter(Context context) {
         super(context);
     }

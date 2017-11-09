@@ -16,13 +16,13 @@ import java.util.List;
  * 时间：2017/9/11.
  */
 
-abstract class EasyFragmentPagerAdapterImp extends FragmentPagerAdapter {
-    private final String TAG = EasyFragmentPagerAdapterImp.class.getSimpleName() + " ";
+abstract class EasyFragmentPagerAdapterManager extends FragmentPagerAdapter {
+    private final String TAG = EasyFragmentPagerAdapterManager.class.getSimpleName() + " ";
     protected FragmentManager fm;
     protected final List<String> mTitles = new ArrayList<>();
     protected final List<Fragment> mFragments = new ArrayList<>();
 
-    protected EasyFragmentPagerAdapterImp(FragmentManager fm, List<String> title, List<Fragment> fragments) {
+    protected EasyFragmentPagerAdapterManager(FragmentManager fm, List<String> title, List<Fragment> fragments) {
         super(fm);
         this.fm = fm;
         mTitles.clear();
@@ -59,7 +59,7 @@ abstract class EasyFragmentPagerAdapterImp extends FragmentPagerAdapter {
         try {
             super.finishUpdate(container);
         } catch (NullPointerException nullPointerException) {
-            EasyUILog.d("Catch the NullPointerException in EasyFragmentPagerAdapterImp.finishUpdate");
+            EasyUILog.d("Catch the NullPointerException in EasyFragmentPagerAdapterManager.finishUpdate");
         }
     }
 
@@ -68,7 +68,8 @@ abstract class EasyFragmentPagerAdapterImp extends FragmentPagerAdapter {
         for (Fragment f : mFragments) {
             ft.remove(f);
         }
-        ft.commit();
+//        ft.commit();
+        ft.commitAllowingStateLoss();
         ft = null;
         fm.executePendingTransactions();
 

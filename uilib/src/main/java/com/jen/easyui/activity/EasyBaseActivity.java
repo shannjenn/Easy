@@ -1,4 +1,4 @@
-package com.jen.easytest;
+package com.jen.easyui.activity;
 
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.jen.easy.EasyMain;
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class EasyBaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,8 +17,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
         EasyMain.mBindView.bind(this);
+        intBaseDatas();
         initViews();
-        initDatas();
+        loadDatas();
     }
 
     @Override
@@ -27,7 +28,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         EasyMain.mBindView.unbind(this);
     }
 
+    protected abstract void intBaseDatas();
+
     protected abstract void initViews();
-    protected abstract void initDatas();
+
+    protected abstract void loadDatas();
 
 }

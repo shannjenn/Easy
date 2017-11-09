@@ -26,7 +26,7 @@ import com.jen.easyui.util.EasyDensityUtil;
  * 时间：2017/8/12.
  */
 
-abstract class EasyCustomImageImp extends AppCompatImageView {
+abstract class EasyCustomImageManager extends AppCompatImageView {
     /**
      * (默认)android.widget.ImageView
      */
@@ -60,7 +60,7 @@ abstract class EasyCustomImageImp extends AppCompatImageView {
     private BitmapShader mShader;
     private Matrix mMatrix = new Matrix();
 
-    public EasyCustomImageImp(Context context, AttributeSet attrs) {
+    public EasyCustomImageManager(Context context, AttributeSet attrs) {
         super(context, attrs);
         initAttrs(context, attrs);
     }

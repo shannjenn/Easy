@@ -17,8 +17,8 @@ import com.jen.easyui.util.EasyDensityUtil;
  * 时间：2017/9/11.
  */
 
-abstract class EasyImageViewPagerImp extends RelativeLayout {
-    private final String TAG = EasyImageViewPagerImp.class.getSimpleName() + " ";
+abstract class EasyImageViewPagerManager extends RelativeLayout {
+    private final String TAG = EasyImageViewPagerManager.class.getSimpleName() + " ";
     /*小圆点离底部距离db*/
     private final float DB_BOTTOM_MARGIN = 20.0f;
     /*小圆点大小db*/
@@ -36,12 +36,12 @@ abstract class EasyImageViewPagerImp extends RelativeLayout {
 
     private EasyImagePagerChageListener pagerChageListener;
 
-    public EasyImageViewPagerImp(Context context) {
+    public EasyImageViewPagerManager(Context context) {
         super(context);
         initLayout();
     }
 
-    public EasyImageViewPagerImp(Context context, AttributeSet attrs) {
+    public EasyImageViewPagerManager(Context context, AttributeSet attrs) {
         super(context, attrs);
         initLayout();
     }

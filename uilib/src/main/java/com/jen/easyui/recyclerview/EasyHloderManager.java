@@ -10,11 +10,11 @@ import com.jen.easy.log.EasyUILog;
  * 时间：2017/09/30.
  */
 
-abstract class EasyHloderImp<T> extends RecyclerView.ViewHolder {
+abstract class EasyHloderManager<T> extends RecyclerView.ViewHolder {
     public View itemView;
     private EasyAdapterClickEvent easyAdapterClickEvent;
 
-    public EasyHloderImp(final View itemView) {
+    public EasyHloderManager(final View itemView) {
         super(itemView);
         this.itemView = itemView;
         if (easyAdapterClickEvent == null) {

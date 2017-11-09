@@ -16,7 +16,7 @@ import java.util.List;
  * 时间：2017/8/12.
  */
 
-abstract class EasyRecyclerWaterfallAdapterImp<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+abstract class EasyRecyclerWaterfallAdapterManager<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     protected Context context;
     protected List<T> data;
     private EasyAdapterClickEvent easyAdapterClickEvent;
@@ -24,7 +24,7 @@ abstract class EasyRecyclerWaterfallAdapterImp<T> extends RecyclerView.Adapter<R
     /**
      * @param data 数据
      */
-    protected EasyRecyclerWaterfallAdapterImp(Context context, List<T> data) {
+    protected EasyRecyclerWaterfallAdapterManager(Context context, List<T> data) {
         this.context = context;
         this.data = data;
     }
@@ -53,7 +53,7 @@ abstract class EasyRecyclerWaterfallAdapterImp<T> extends RecyclerView.Adapter<R
     protected abstract int getViewType(int position);
 
     @Override
-    public EasyHloderImp onCreateViewHolder(ViewGroup parent, int viewType) {
+    public EasyHloderManager onCreateViewHolder(ViewGroup parent, int viewType) {
         int[] layouts = onBindLayout();
         if (layouts == null) {
             EasyUILog.e("布局为空");
@@ -68,7 +68,7 @@ abstract class EasyRecyclerWaterfallAdapterImp<T> extends RecyclerView.Adapter<R
             EasyUILog.e("找不到该值对应item布局R.layout.id：" + layouts[viewType]);
             return null;
         }
-        EasyHloderImp hloderImp = onCreateEasyHolder(view);
+        EasyHloderManager hloderImp = onCreateEasyHolder(view);
         hloderImp.setAdapterClickEvent(easyAdapterClickEvent);
         return hloderImp;
     }
@@ -80,7 +80,7 @@ abstract class EasyRecyclerWaterfallAdapterImp<T> extends RecyclerView.Adapter<R
      *
      * @return
      */
-    protected abstract EasyHloderImp onCreateEasyHolder(View view);
+    protected abstract EasyHloderManager onCreateEasyHolder(View view);
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
@@ -88,7 +88,7 @@ abstract class EasyRecyclerWaterfallAdapterImp<T> extends RecyclerView.Adapter<R
             return;
         }
         T t = data.get(position);
-        ((EasyHloderImp) holder).onBindViewHolder(t, position);
+        ((EasyHloderManager) holder).onBindViewHolder(t, position);
     }
 
     public void setEasyAdapterClickEvent(EasyAdapterClickEvent easyAdapterClickEvent) {

@@ -12,7 +12,7 @@ import com.jen.easyui.R;
  * Created by Administrator on 2017/11/3.
  */
 
-abstract class EasyDialogBuilderImp implements View.OnClickListener {
+abstract class EasyDialogBuilderManager implements View.OnClickListener {
     private Context context;
     private Dialog dialog;
 
@@ -25,31 +25,31 @@ abstract class EasyDialogBuilderImp implements View.OnClickListener {
     private int flagCode = -1;
     private String flag;
 
-    public EasyDialogBuilderImp(Context context) {
+    public EasyDialogBuilderManager(Context context) {
         this.context = context;
     }
 
-    public EasyDialogBuilderImp setContent(String txt) {
+    public EasyDialogBuilderManager setContent(String txt) {
         txtContent = txt;
         return this;
     }
 
-    public EasyDialogBuilderImp setPositiveButton(String txt) {
+    public EasyDialogBuilderManager setPositiveButton(String txt) {
         txtYes = txt;
         return this;
     }
 
-    public EasyDialogBuilderImp setNegativeButton(String txt) {
+    public EasyDialogBuilderManager setNegativeButton(String txt) {
         txtNo = txt;
         return this;
     }
 
-    public EasyDialogBuilderImp setFlagCode(int flagCode) {
+    public EasyDialogBuilderManager setFlagCode(int flagCode) {
         this.flagCode = flagCode;
         return this;
     }
 
-    public EasyDialogBuilderImp setFlag(String flag) {
+    public EasyDialogBuilderManager setFlag(String flag) {
         this.flag = flag;
         return this;
     }

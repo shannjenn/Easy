@@ -15,11 +15,11 @@ import java.util.List;
  * 时间：2017/9/11.
  */
 
-abstract class EasyImagePagerAdapterImp<T> extends PagerAdapter {
+abstract class EasyImagePagerAdapterManager<T> extends PagerAdapter {
     protected Context context;
     protected List<T> data;
 
-    EasyImagePagerAdapterImp(Context context, List<T> data) {
+    EasyImagePagerAdapterManager(Context context, List<T> data) {
         super();
         this.context = context;
         this.data = data;

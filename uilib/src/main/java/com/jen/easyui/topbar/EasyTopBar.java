@@ -14,7 +14,7 @@ import android.widget.TextView;
  * 作者：ShannJenn
  * 时间：2017/8/12.
  */
-public class EasyTopBar extends EasyTopBarImp {
+public class EasyTopBar extends EasyTopBarManager {
 
     public EasyTopBar(Context context) {
         super(context);

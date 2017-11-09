@@ -12,7 +12,7 @@ import java.util.List;
  * 作者：ShannJenn
  * 时间：2017/10/31.
  */
-public class EasyTabBarTopScroll extends EasyTabBarTopScrollImp {
+public class EasyTabBarTopScroll extends EasyTabBarTopScrollManager {
     public EasyTabBarTopScroll(Context context) {
         super(context);
     }

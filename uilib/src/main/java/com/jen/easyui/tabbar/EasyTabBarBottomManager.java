@@ -26,7 +26,7 @@ import com.jen.easyui.util.EasyDensityUtil;
  * 时间：2017/8/12.
  */
 
-abstract class EasyTabBarBottomImp extends RelativeLayout {
+abstract class EasyTabBarBottomManager extends RelativeLayout {
     private Context context;
     /*分割线默认颜色*/
     private final int LINE_DEFAULT_COLOR = 0xffE0E0E0;
@@ -68,19 +68,19 @@ abstract class EasyTabBarBottomImp extends RelativeLayout {
     private ViewPager mViewPager;
     private int mCurrentItem;
 
-    public EasyTabBarBottomImp(Context context) {
+    public EasyTabBarBottomManager(Context context) {
         super(context);
         this.context = context;
     }
 
-    public EasyTabBarBottomImp(Context context, @Nullable AttributeSet attrs) {
+    public EasyTabBarBottomManager(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
         initAttrs(attrs, 0);
         initView();
     }
 
-    public EasyTabBarBottomImp(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public EasyTabBarBottomManager(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
         initAttrs(attrs, defStyleAttr);

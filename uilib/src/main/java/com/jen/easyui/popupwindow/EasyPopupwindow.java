@@ -8,7 +8,7 @@ import android.content.Context;
  * 时间：2017/09/09.
  */
 
-public abstract class EasyPopupwindow extends EasyPopupwindowImp {
+public abstract class EasyPopupwindow extends EasyPopupwindowManager {
 
     public EasyPopupwindow(Context context) {
         super(context);

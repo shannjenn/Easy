@@ -8,7 +8,7 @@ import android.util.AttributeSet;
  * 时间：2017/9/11.
  */
 
-public class EasyImageViewPager extends EasyImageViewPagerImp {
+public class EasyImageViewPager extends EasyImageViewPagerManager {
 
     public EasyImageViewPager(Context context) {
         super(context);

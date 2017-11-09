@@ -12,8 +12,6 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -24,13 +22,15 @@ import com.jen.easyui.util.EasyDensityUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.view.Gravity.CENTER;
+
 /**
- * 导航布局,说明：文字导航栏，滑动游标效果、标题可以滑动
+ * 导航布局,说明：文字居中导航栏，滑动游标效果
  * xmlns:app="http://schemas.android.com/apk/res-auto"
  * 作者：ShannJenn
  * 时间：2017/10/31.
  */
-abstract class EasyTabBarTopScrollImp extends HorizontalScrollView {
+abstract class EasyTabBarTopCenterManager extends LinearLayout {
     private Context mContext;
     /*默认颜色*/
     private int COLOR_DEFAULT = 0xff000000;
@@ -63,7 +63,7 @@ abstract class EasyTabBarTopScrollImp extends HorizontalScrollView {
     private float mUnderlineHeight;
 
     private float mTabTextsize;
-    private int mTabWidth;
+    //    private int mTabWidth;
     private int mTabHeith;
     private int mTabPaddingLeft;
     private int mTabPaddingRight;
@@ -76,7 +76,6 @@ abstract class EasyTabBarTopScrollImp extends HorizontalScrollView {
 
     private ViewPager mViewPager;
     private PagerAdapter mAdapter;
-    private LinearLayout mTabsContainer;
     private final List<String> mTitles = new ArrayList<>();
     /*是否带标题传入*/
     private boolean isWithTitles;
@@ -93,63 +92,56 @@ abstract class EasyTabBarTopScrollImp extends HorizontalScrollView {
     private RectF mRect = new RectF();
 
 
-    public EasyTabBarTopScrollImp(Context context) {
+    public EasyTabBarTopCenterManager(Context context) {
         this(context, null, 0);
     }
 
-    public EasyTabBarTopScrollImp(Context context, AttributeSet attrs) {
+    public EasyTabBarTopCenterManager(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
         this.mContext = context;
         initAttrs(attrs);
     }
 
-    public EasyTabBarTopScrollImp(Context context, AttributeSet attrs, int defStyleAttr) {
+    public EasyTabBarTopCenterManager(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.mContext = context;
         initAttrs(attrs);
     }
 
     private void initAttrs(AttributeSet attrs) {
-        setFillViewport(true);//填满横向
         setWillNotDraw(false);//重写onDraw方法,需要调用这个方法来清除flag
         setClipChildren(false);//是否限制子View在其范围内
         setClipToPadding(false);//控件的绘制区域是否在padding里面
 
-        TypedArray ta = mContext.obtainStyledAttributes(attrs, R.styleable.EasyTabBarTopScroll);
+        TypedArray ta = mContext.obtainStyledAttributes(attrs, R.styleable.EasyTabBarTopCenter);
 
-        mHeight = ta.getLayoutDimension(R.styleable.EasyTabBarTopScroll_android_layout_height, 0);
-        mWidth = ta.getLayoutDimension(R.styleable.EasyTabBarTopScroll_android_layout_width, 0);
+        mHeight = ta.getLayoutDimension(R.styleable.EasyTabBarTopCenter_android_layout_height, 0);
+        mWidth = ta.getLayoutDimension(R.styleable.EasyTabBarTopCenter_android_layout_width, 0);
 
-        mIndicatorColor = ta.getColor(R.styleable.EasyTabBarTopScroll_indicator_color_scroll, INDICATOR_COLOR_DEFAULT);
-        mIndicatorHeight = ta.getDimension(R.styleable.EasyTabBarTopScroll_indicator_height_scroll, 0);
-        mIndicatorCornerRadius = ta.getDimension(R.styleable.EasyTabBarTopScroll_indicator_corner_radius_scroll, -1);
-//        mIndicatorMarginTop = ta.getDimension(R.styleable.EasyTabBarTopScroll_indicator_margin_top, 0);
-//        mIndicatorMarginBottom = ta.getDimension(R.styleable.EasyTabBarTopScroll_indicator_margin_bottom, 0);
-//        mIndicatorGravity = ta.getInt(R.styleable.EasyTabBarTopScroll_indicator_gravity, Gravity.BOTTOM);
-        mIndicatorType = ta.getInt(R.styleable.EasyTabBarTopScroll_indicator_type_scroll, INDICATOR_TYPE_LINE);
+        mIndicatorColor = ta.getColor(R.styleable.EasyTabBarTopCenter_indicator_color_center, INDICATOR_COLOR_DEFAULT);
+        mIndicatorHeight = ta.getDimension(R.styleable.EasyTabBarTopCenter_indicator_height_center, 0);
+        mIndicatorCornerRadius = ta.getDimension(R.styleable.EasyTabBarTopCenter_indicator_corner_radius_center, -1);
+//        mIndicatorMarginTop = ta.getDimension(R.styleable.EasyTabBarTop_indicator_margin_top, 0);
+//        mIndicatorMarginBottom = ta.getDimension(R.styleable.EasyTabBarTop_indicator_margin_bottom, 0);
+//        mIndicatorGravity = ta.getInt(R.styleable.EasyTabBarTop_indicator_gravity, Gravity.BOTTOM);
+        mIndicatorType = ta.getInt(R.styleable.EasyTabBarTopCenter_indicator_type_center, INDICATOR_TYPE_LINE);
 
-        mUnderlineColor = ta.getColor(R.styleable.EasyTabBarTopScroll_underline_color_scroll, COLOR_DEFAULT);
-        mUnderlineHeight = ta.getDimension(R.styleable.EasyTabBarTopScroll_underline_height_scroll, 0);
+        mUnderlineColor = ta.getColor(R.styleable.EasyTabBarTopCenter_underline_color_center, COLOR_DEFAULT);
+        mUnderlineHeight = ta.getDimension(R.styleable.EasyTabBarTopCenter_underline_height_center, 0);
 
-        mTabTextsize = ta.getDimension(R.styleable.EasyTabBarTopScroll_tab_textSize_scroll, EasyDensityUtil.sp2px(mContext, TEXT_SIZE_DEFAULT));
-        mTabWidth = (int) ta.getDimension(R.styleable.EasyTabBarTopScroll_tab_width_scroll, -2f);//-2为WRAP_CONTENT属性
-        mTabHeith = (int) ta.getDimension(R.styleable.EasyTabBarTopScroll_tab_height_scroll, -2f);
-        mTabPaddingLeft = (int) ta.getDimension(R.styleable.EasyTabBarTopScroll_tab_padding_left_scroll, 0);
-        mTabPaddingRight = (int) ta.getDimension(R.styleable.EasyTabBarTopScroll_tab_padding_right_scroll, 0);
-        mTabPaddingTop = (int) ta.getDimension(R.styleable.EasyTabBarTopScroll_tab_padding_top_scroll, 0);
-        mTabPaddingBottom = (int) ta.getDimension(R.styleable.EasyTabBarTopScroll_tab_padding_bottom_scroll, 0);
-        mTabSelectTextColor = ta.getColor(R.styleable.EasyTabBarTopScroll_tab_select_textColor_scroll, TEXT_COLOR_SELECT_DEFAULT);
-        mTabUnSelectTextColor = ta.getColor(R.styleable.EasyTabBarTopScroll_tab_unSelect_textColor_scroll, TEXT_COLOR_UNSELECT_DEFAULT);
-        mTabTextBold = ta.getBoolean(R.styleable.EasyTabBarTopScroll_tab_textBold_scroll, false);
-        mTabTextItalic = ta.getBoolean(R.styleable.EasyTabBarTopScroll_tab_textItalic_scroll, false);
+        mTabTextsize = ta.getDimension(R.styleable.EasyTabBarTopCenter_tab_textSize_center, EasyDensityUtil.sp2px(mContext, TEXT_SIZE_DEFAULT));
+//        mTabWidth = (int) ta.getDimension(R.styleable.EasyTabBarTopCenter_tab_width, -2f);//-2为WRAP_CONTENT属性
+        mTabHeith = (int) ta.getDimension(R.styleable.EasyTabBarTopCenter_tab_height_center, -2f);
+        mTabPaddingLeft = (int) ta.getDimension(R.styleable.EasyTabBarTopCenter_tab_padding_left_center, 0);
+        mTabPaddingRight = (int) ta.getDimension(R.styleable.EasyTabBarTopCenter_tab_padding_right_center, 0);
+        mTabPaddingTop = (int) ta.getDimension(R.styleable.EasyTabBarTopCenter_tab_padding_top_center, 0);
+        mTabPaddingBottom = (int) ta.getDimension(R.styleable.EasyTabBarTopCenter_tab_padding_bottom_center, 0);
+        mTabSelectTextColor = ta.getColor(R.styleable.EasyTabBarTopCenter_tab_select_textColor_center, TEXT_COLOR_SELECT_DEFAULT);
+        mTabUnSelectTextColor = ta.getColor(R.styleable.EasyTabBarTopCenter_tab_unSelect_textColor_center, TEXT_COLOR_UNSELECT_DEFAULT);
+        mTabTextBold = ta.getBoolean(R.styleable.EasyTabBarTopCenter_tab_textBold_center, false);
+        mTabTextItalic = ta.getBoolean(R.styleable.EasyTabBarTopCenter_tab_textItalic_center, false);
 
         ta.recycle();
-
-        removeAllViews();
-        mTabsContainer = new LinearLayout(mContext);
-        mTabsContainer.setOrientation(LinearLayout.HORIZONTAL);
-        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        addView(mTabsContainer, layoutParams);
     }
 
     public void setViewPager(ViewPager viewPager) {
@@ -206,20 +198,24 @@ abstract class EasyTabBarTopScrollImp extends HorizontalScrollView {
     }
 
     private void initTabViews() {
-        mTabsContainer.removeAllViews();
+        removeAllViews();
+        setOrientation(HORIZONTAL);
+        setGravity(Gravity.CENTER);
+        getLayoutParams().width = getLayoutParams().MATCH_PARENT;
+
         for (int i = 0; i < mTabCount; i++) {
             TextView textView = new TextView(mContext);
             textView.setText(mTitles.get(i));
             textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTabTextsize);
             textView.setTextColor(i == mCurrentTab ? mTabSelectTextColor : mTabUnSelectTextColor);
             textView.setPadding(mTabPaddingLeft, mTabPaddingTop, mTabPaddingRight, mTabPaddingBottom);
-            textView.setGravity(Gravity.CENTER);
+            textView.setGravity(CENTER);
             textView.getPaint().setFakeBoldText(mTabTextBold);//加粗
             textView.getPaint().setTextSkewX(mTabTextItalic ? -0.25f : 0);//斜体因子
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(mTabWidth, mTabHeith);
+            LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, mTabHeith);
             params.weight = 1;
-            params.gravity = Gravity.CENTER;
-            mTabsContainer.addView(textView, params);
+            params.gravity = CENTER;
+            addView(textView, params);
 
             textView.setTag(i);
             textView.setOnClickListener(onClickListener);
@@ -229,87 +225,9 @@ abstract class EasyTabBarTopScrollImp extends HorizontalScrollView {
 
     private void updtaeTabText(int position) {
         for (int i = 0; i < mTabCount; i++) {
-            TextView textView = (TextView) mTabsContainer.getChildAt(i);
+            TextView textView = (TextView) getChildAt(i);
             textView.setTextColor(i == position ? mTabSelectTextColor : mTabUnSelectTextColor);
         }
-    }
-
-    /**
-     * 滚动到中间
-     */
-    private void scrollTabToCenter() {
-        if (mWidth <= 0) {//控件未初始化完成
-            return;
-        }
-
-        int pos;
-        if (mPositionOffset == 0) {//已经静止不做处理
-            pos = mScrollPostion;
-        } else if (mCurrentTab == mScrollPostion) {//（左滑）向右pos++
-            pos = mScrollPostion + 1;
-        } else {
-            pos = mScrollPostion;
-        }
-        View newTv = mTabsContainer.getChildAt(pos);
-        TextView scrollTv = (TextView) mTabsContainer.getChildAt(mScrollPostion);
-
-        float left;
-        if (mPositionOffset == 0) {
-            left = scrollTv.getX();
-        } else {
-            float lfetOffset = mTabsContainer.getChildAt(mScrollPostion + 1).getX()
-                    - mTabsContainer.getChildAt(mScrollPostion).getX();
-            left = scrollTv.getX() + lfetOffset * mPositionOffset;
-        }
-
-        int x = (int) (left + newTv.getWidth() / 2 - mWidth / 2);
-        scrollTo(x, 0);
-    }
-
-    /**
-     * 如果超出屏幕滚动一个tab
-     */
-    private void scrollTabIfEdge() {
-        if (mWidth <= 0) {//控件未初始化完成
-            return;
-        }
-        boolean isToRight = false;
-        int pos;
-        if (mPositionOffset == 0) {//已经静止不做处理
-            pos = mScrollPostion;
-            return;
-        } else if (mCurrentTab == mScrollPostion) {//（左滑）向右pos++
-            pos = mScrollPostion + 1;
-            isToRight = true;
-        } else {
-            pos = mScrollPostion;
-            isToRight = false;
-        }
-
-        View newTv = mTabsContainer.getChildAt(pos);
-        TextView scrollTv = (TextView) mTabsContainer.getChildAt(mScrollPostion);
-
-        int scrollX = getScrollX();
-        if (newTv.getX() > scrollX && newTv.getX() - scrollX < mWidth + newTv.getWidth()) {
-            return;
-        }
-
-        float left;
-        if (mPositionOffset == 0) {
-            left = scrollTv.getX();
-        } else {
-            float lfetOffset = mTabsContainer.getChildAt(mScrollPostion + 1).getX()
-                    - mTabsContainer.getChildAt(mScrollPostion).getX();
-            left = scrollTv.getX() + lfetOffset * mPositionOffset;
-        }
-
-        int x;
-        if (isToRight) {
-            x = (int) (left + newTv.getWidth() + scrollTv.getWidth() - mWidth);
-        } else {
-            x = (int) (left);
-        }
-        scrollTo(x, 0);
     }
 
     @Override
@@ -357,7 +275,7 @@ abstract class EasyTabBarTopScrollImp extends HorizontalScrollView {
             EasyUILog.e("drawIndicatorRoundRect mTabCount=" + mTabCount);
             return;
         }
-        TextView textView = (TextView) mTabsContainer.getChildAt(mScrollPostion);
+        TextView textView = (TextView) getChildAt(mScrollPostion);
         float left;
         float right;
         float top;
@@ -368,10 +286,9 @@ abstract class EasyTabBarTopScrollImp extends HorizontalScrollView {
             top = textView.getY();
             bottom = textView.getHeight() + top;
         } else {
-            float lfetOffset = mTabsContainer.getChildAt(mScrollPostion + 1).getX()
-                    - mTabsContainer.getChildAt(mScrollPostion).getX();
-            float rightOffset = lfetOffset + (mTabsContainer.getChildAt(mScrollPostion + 1).getWidth()
-                    - mTabsContainer.getChildAt(mScrollPostion).getWidth());
+            float lfetOffset = getChildAt(mScrollPostion + 1).getX() - getChildAt(mScrollPostion).getX();
+            float rightOffset = lfetOffset + (getChildAt(mScrollPostion + 1).getWidth()
+                    - getChildAt(mScrollPostion).getWidth());
 
             left = textView.getX() + lfetOffset * mPositionOffset;
             right = textView.getX() + textView.getWidth() + rightOffset * mPositionOffset;
@@ -403,31 +320,12 @@ abstract class EasyTabBarTopScrollImp extends HorizontalScrollView {
         canvas.drawRoundRect(mRect, 5, 5, mPaint);
     }
 
-    /*@Override
-    protected Parcelable onSaveInstanceState() {
-        Bundle bundle = new Bundle();
-        bundle.putInt("mCurrentTab", mCurrentTab);
-        bundle.putParcelable("instanceState", super.onSaveInstanceState());
-        return bundle;
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Parcelable state) {
-        if (state instanceof Bundle) {
-            Bundle bundle = (Bundle) state;
-            mCurrentTab = bundle.getInt("mCurrentTab");
-            state = bundle.getParcelable("instanceState");
-        }
-        super.onRestoreInstanceState(state);
-    }*/
-
     OnClickListener onClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
             mCurrentTab = (int) v.getTag();
             mViewPager.setCurrentItem(mCurrentTab);
             updtaeTabText(mCurrentTab);
-            scrollTabToCenter();
         }
     };
 
@@ -444,7 +342,6 @@ abstract class EasyTabBarTopScrollImp extends HorizontalScrollView {
 //                    + " positionOffset=" + positionOffset + " positionOffsetPixels=" + positionOffsetPixels);
             mScrollPostion = position;
             mPositionOffset = positionOffset;
-            scrollTabToCenter();
             invalidate();
         }
 

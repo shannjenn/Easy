@@ -24,8 +24,8 @@ import com.jen.easyui.R;
  * 作者：ShannJenn
  * 时间：2017/8/12.
  */
-abstract class EasyTopBarImp extends RelativeLayout {
-    private static final String TAG = EasyTopBarImp.class.getSimpleName();
+abstract class EasyTopBarManager extends RelativeLayout {
+    private static final String TAG = EasyTopBarManager.class.getSimpleName();
 
     private Context mContext;
     //左侧图片布局
@@ -70,15 +70,15 @@ abstract class EasyTopBarImp extends RelativeLayout {
     //显示显示底部的分割线。默认为显示
     private boolean isShowBottomLine = true;
 
-    public EasyTopBarImp(Context context) {
+    public EasyTopBarManager(Context context) {
         this(context, null);
     }
 
-    public EasyTopBarImp(Context context, AttributeSet attrs) {
+    public EasyTopBarManager(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public EasyTopBarImp(Context context, AttributeSet attrs, int defStyleAttr) {
+    public EasyTopBarManager(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.mContext = context;
         initAttrs(attrs, defStyleAttr);

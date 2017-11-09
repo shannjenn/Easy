@@ -10,7 +10,7 @@ import java.util.List;
  * 时间：2017/9/11.
  */
 
-public abstract class EasyImagePagerAdapter<T> extends EasyImagePagerAdapterImp<T> {
+public abstract class EasyImagePagerAdapter<T> extends EasyImagePagerAdapterManager<T> {
 
 
     public EasyImagePagerAdapter(Context context, List<T> data) {

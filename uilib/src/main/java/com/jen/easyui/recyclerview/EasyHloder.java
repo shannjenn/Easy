@@ -7,7 +7,7 @@ import android.view.View;
  * 时间：2017/09/30.
  */
 
-public abstract class EasyHloder extends EasyHloderImp {
+public abstract class EasyHloder extends EasyHloderManager {
 
     /**
      * bind ID在这处理

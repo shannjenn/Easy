@@ -6,8 +6,9 @@ import android.view.View;
 
 import com.jen.easy.EasyMouse;
 import com.jen.easytest.activity.TabBarActivity;
+import com.jen.easyui.activity.EasyBaseActivity;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends EasyBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,12 +17,17 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    protected void intBaseDatas() {
+
+    }
+
+    @Override
     protected void initViews() {
 
     }
 
     @Override
-    protected void initDatas() {
+    protected void loadDatas() {
 
     }
 

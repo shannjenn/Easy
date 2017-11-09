@@ -12,7 +12,7 @@ import android.util.AttributeSet;
  * 时间：2017/8/12.
  */
 
-public class EasyTabBarBottom extends EasyTabBarBottomImp {
+public class EasyTabBarBottom extends EasyTabBarBottomManager {
 
     public EasyTabBarBottom(Context context) {
         super(context);

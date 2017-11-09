@@ -9,7 +9,7 @@ import android.util.AttributeSet;
  * 时间：2017/8/12.
  */
 
-public class EasyCustomImage extends EasyCustomImageImp {
+public class EasyCustomImage extends EasyCustomImageManager {
 
     public EasyCustomImage(Context context, AttributeSet attrs) {
         super(context, attrs);

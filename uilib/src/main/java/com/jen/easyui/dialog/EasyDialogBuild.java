@@ -8,7 +8,7 @@ import android.view.View;
  * 作者：ShannJenn
  * 时间：2017/8/12.
  */
-public class EasyDialogBuild extends EasyDialogBuilderImp {
+public class EasyDialogBuild extends EasyDialogBuilderManager {
 
 
     public EasyDialogBuild(Context context) {
@@ -16,27 +16,27 @@ public class EasyDialogBuild extends EasyDialogBuilderImp {
     }
 
     @Override
-    public EasyDialogBuilderImp setContent(String txt) {
+    public EasyDialogBuilderManager setContent(String txt) {
         return super.setContent(txt);
     }
 
     @Override
-    public EasyDialogBuilderImp setPositiveButton(String txt) {
+    public EasyDialogBuilderManager setPositiveButton(String txt) {
         return super.setPositiveButton(txt);
     }
 
     @Override
-    public EasyDialogBuilderImp setNegativeButton(String txt) {
+    public EasyDialogBuilderManager setNegativeButton(String txt) {
         return super.setNegativeButton(txt);
     }
 
     @Override
-    public EasyDialogBuilderImp setFlagCode(int flagCode) {
+    public EasyDialogBuilderManager setFlagCode(int flagCode) {
         return super.setFlagCode(flagCode);
     }
 
     @Override
-    public EasyDialogBuilderImp setFlag(String flag) {
+    public EasyDialogBuilderManager setFlag(String flag) {
         return super.setFlag(flag);
     }
 

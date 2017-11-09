@@ -10,7 +10,7 @@ import java.util.List;
  * 时间：2017/9/11.
  */
 
-public abstract class EasyFragmentPagerAdapter extends EasyFragmentPagerAdapterImp {
+public abstract class EasyFragmentPagerAdapter extends EasyFragmentPagerAdapterManager {
 
     protected EasyFragmentPagerAdapter(FragmentManager fm, List<String> title, List<Fragment> fragments) {
         super(fm, title, fragments);

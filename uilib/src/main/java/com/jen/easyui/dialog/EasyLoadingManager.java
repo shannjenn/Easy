@@ -14,11 +14,11 @@ import com.jen.easyui.R;
  * 作者：ShannJenn
  * 时间：2017/8/12.
  */
-abstract class EasyLoadingImp extends Dialog {
+abstract class EasyLoadingManager extends Dialog {
     private Context context;
     private ProgressBar progressBar;
 
-    public EasyLoadingImp(Context context) {
+    public EasyLoadingManager(Context context) {
         super(context, R.style._easy_dialog_loading);
         this.context = context;
     }

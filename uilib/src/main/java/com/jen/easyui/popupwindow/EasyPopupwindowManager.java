@@ -18,15 +18,15 @@ import com.jen.easyui.util.EasyDisplayUtil;
  * 时间：2017/09/09.
  */
 
-abstract class EasyPopupwindowImp extends PopupWindow {
-    private final String TAG = EasyPopupwindowImp.class.getSimpleName() + " ";
+abstract class EasyPopupwindowManager extends PopupWindow {
+    private final String TAG = EasyPopupwindowManager.class.getSimpleName() + " ";
 
     private Context mContext;
     private float mShowAlpha = 0.88f;
     private Drawable mBackgroundDrawable;
     private RecyclerView recyclerView;
 
-    public EasyPopupwindowImp(Context context) {
+    public EasyPopupwindowManager(Context context) {
         this.mContext = context;
         initBasePopupWindow();
     }

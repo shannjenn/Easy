@@ -18,8 +18,8 @@ import java.util.List;
  * 时间：2017/8/12.
  */
 
-abstract class EasyTreeRecyclerAdapterImp<T extends EasyTreeItem> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private final String TAG = EasyTreeRecyclerAdapterImp.class.getSimpleName() + " ";
+abstract class EasyTreeRecyclerAdapterManager<T extends EasyTreeItem> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private final String TAG = EasyTreeRecyclerAdapterManager.class.getSimpleName() + " ";
     protected Context context;
     private boolean showTopLevel = true;//展示的最高等级
     protected T tree;
@@ -29,7 +29,7 @@ abstract class EasyTreeRecyclerAdapterImp<T extends EasyTreeItem> extends Recycl
     /**
      * @param tree 数据
      */
-    protected EasyTreeRecyclerAdapterImp(Context context, T tree) {
+    protected EasyTreeRecyclerAdapterManager(Context context, T tree) {
         this.context = context;
         this.tree = tree;
         showTopLevel = showTopLevel();
@@ -95,7 +95,7 @@ abstract class EasyTreeRecyclerAdapterImp<T extends EasyTreeItem> extends Recycl
     }
 
     @Override
-    public EasyHloderImp onCreateViewHolder(ViewGroup parent, int viewType) {
+    public EasyHloderManager onCreateViewHolder(ViewGroup parent, int viewType) {
         int[] layouts = onBindLevelLayout();
         if (layouts == null) {
             EasyUILog.e("布局为空");
@@ -112,7 +112,7 @@ abstract class EasyTreeRecyclerAdapterImp<T extends EasyTreeItem> extends Recycl
         }
         float size = itemSpaceSize();
         view.setPadding(EasyDensityUtil.dip2px(context, size), 0, 0, 0);
-        EasyHloderImp hloderImp = onCreateEasyHolder(view);
+        EasyHloderManager hloderImp = onCreateEasyHolder(view);
         hloderImp.setAdapterClickEvent(easyAdapterClickEvent);
         return hloderImp;
     }
@@ -126,7 +126,7 @@ abstract class EasyTreeRecyclerAdapterImp<T extends EasyTreeItem> extends Recycl
      *
      * @return
      */
-    protected abstract EasyHloderImp onCreateEasyHolder(View view);
+    protected abstract EasyHloderManager onCreateEasyHolder(View view);
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
@@ -134,7 +134,7 @@ abstract class EasyTreeRecyclerAdapterImp<T extends EasyTreeItem> extends Recycl
             return;
         }
         T t = expadData.get(position);
-        ((EasyHloderImp) holder).onBindViewHolder(t, position);
+        ((EasyHloderManager) holder).onBindViewHolder(t, position);
     }
 
     public void setEasyAdapterClickEvent(EasyAdapterClickEvent easyAdapterClickEvent) {

@@ -9,7 +9,7 @@ import android.view.View;
  * 时间：2017/8/12.
  */
 
-public abstract class EasyTreeRecyclerAdapter<T extends EasyTreeItem> extends EasyTreeRecyclerAdapterImp<T> {
+public abstract class EasyTreeRecyclerAdapter<T extends EasyTreeItem> extends EasyTreeRecyclerAdapterManager<T> {
 
     /**
      * @param context
@@ -29,5 +29,5 @@ public abstract class EasyTreeRecyclerAdapter<T extends EasyTreeItem> extends Ea
     protected abstract float itemSpaceSize();
 
     @Override
-    protected abstract EasyHloderImp onCreateEasyHolder(View view);
+    protected abstract EasyHloderManager onCreateEasyHolder(View view);
 }

@@ -11,7 +11,7 @@ import java.util.List;
  * 时间：2017/8/12.
  */
 
-public abstract class EasyRecyclerAdapter<T> extends EasyRecyclerAdapterImp<T> {
+public abstract class EasyRecyclerAdapter<T> extends EasyRecyclerAdapterManager<T> {
 
     /**
      * @param data 数据
