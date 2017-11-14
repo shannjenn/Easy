@@ -12,10 +12,9 @@ public class HttpUploadRequest<T extends HttpResponse> extends HttpRequest {
     public Request request = new Request();
 
     /**
-     * 设置返回Object变量实体：List集合实体、单实体
-     * 如：
-     * （@EasyMouse.mHttp.ResponseParam("data") 注释返回参数）
-     * （@private Object data; 实体变量）
+     * 公共数据返回，以免创建多个HttpResponse对象
+     * 与HttpResponse中objClass对应，设置返回的实体对象的class类
+     * 如：ResponseObjClass = Student.class,则在HttpResponse返回Student或List<Student>（取决于服务器数据）
      */
     public Class ResponseObjClass;
 
