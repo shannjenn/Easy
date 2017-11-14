@@ -84,7 +84,7 @@ class HttpURLConnectionRunable implements Runnable {
                         + " 请求参数：" + requestBuf.toString());
             }
             resposeCode = connection.getResponseCode();
-            EasyLibLog.d(url + "Http请求返回码：" + resposeCode);
+            EasyLibLog.d(url + "  Http请求返回码：" + resposeCode);
             if ((resposeCode == 200)) {
                 StringBuffer result = new StringBuffer("");
                 InputStream inStream = connection.getInputStream();
