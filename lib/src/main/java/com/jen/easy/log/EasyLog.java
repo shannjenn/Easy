@@ -26,7 +26,7 @@ public class EasyLog {
     public static void d(String msg) {
         if (LOGCAT_OPEN) {
             if (msg != null && msg.length() > length) {
-                int part = 1;
+                int part = 0;
                 for (int i = 0; i < msg.length(); i += length) {
                     if (i + length < msg.length()) {
                         Log.d(TAG + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
@@ -44,7 +44,7 @@ public class EasyLog {
     public static void i(String msg) {
         if (LOGCAT_OPEN) {
             if (msg != null && msg.length() > length) {
-                int part = 1;
+                int part = 0;
                 for (int i = 0; i < msg.length(); i += length) {
                     if (i + length < msg.length()) {
                         Log.i(TAG + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
@@ -62,7 +62,7 @@ public class EasyLog {
     public static void w(String msg) {
         if (LOGCAT_OPEN) {
             if (msg != null && msg.length() > length) {
-                int part = 1;
+                int part = 0;
                 for (int i = 0; i < msg.length(); i += length) {
                     if (i + length < msg.length()) {
                         Log.w(TAG + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
@@ -80,7 +80,7 @@ public class EasyLog {
     public static void e(String msg) {
         if (LOGCAT_OPEN) {
             if (msg != null && msg.length() > length) {
-                int part = 1;
+                int part = 0;
                 for (int i = 0; i < msg.length(); i += length) {
                     if (i + length < msg.length()) {
                         Log.e(TAG + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
@@ -99,7 +99,7 @@ public class EasyLog {
     public static void v(String tag, String msg) {
         if (LOGCAT_OPEN) {
             if (msg != null && msg.length() > length) {
-                int part = 1;
+                int part = 0;
                 for (int i = 0; i < msg.length(); i += length) {
                     if (i + length < msg.length()) {
                         Log.e(tag + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
@@ -117,7 +117,7 @@ public class EasyLog {
     public static void d(String tag, String msg) {
         if (LOGCAT_OPEN) {
             if (msg != null && msg.length() > length) {
-                int part = 1;
+                int part = 0;
                 for (int i = 0; i < msg.length(); i += length) {
                     if (i + length < msg.length()) {
                         Log.e(tag + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
@@ -135,7 +135,7 @@ public class EasyLog {
     public static void i(String tag, String msg) {
         if (LOGCAT_OPEN) {
             if (msg != null && msg.length() > length) {
-                int part = 1;
+                int part = 0;
                 for (int i = 0; i < msg.length(); i += length) {
                     if (i + length < msg.length()) {
                         Log.e(tag + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
@@ -153,7 +153,7 @@ public class EasyLog {
     public static void w(String tag, String msg) {
         if (LOGCAT_OPEN) {
             if (msg != null && msg.length() > length) {
-                int part = 1;
+                int part = 0;
                 for (int i = 0; i < msg.length(); i += length) {
                     if (i + length < msg.length()) {
                         Log.e(tag + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
@@ -171,7 +171,7 @@ public class EasyLog {
     public static void e(String tag, String msg) {
         if (LOGCAT_OPEN) {
             if (msg != null && msg.length() > length) {
-                int part = 1;
+                int part = 0;
                 for (int i = 0; i < msg.length(); i += length) {
                     if (i + length < msg.length()) {
                         Log.e(tag + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");

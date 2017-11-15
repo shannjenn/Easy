@@ -16,7 +16,7 @@ public class EasyLibLog {
     public static void d(String msg) {
         if (EASY_LIB_LOG) {
             if (msg != null && msg.length() > length) {
-                int part = 1;
+                int part = 0;
                 for (int i = 0; i < msg.length(); i += length) {
                     if (i + length < msg.length()) {
                         Log.d(TAG + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
@@ -34,7 +34,7 @@ public class EasyLibLog {
     public static void i(String msg) {
         if (EASY_LIB_LOG) {
             if (msg != null && msg.length() > length) {
-                int part = 1;
+                int part = 0;
                 for (int i = 0; i < msg.length(); i += length) {
                     if (i + length < msg.length()) {
                         Log.i(TAG + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
@@ -52,7 +52,7 @@ public class EasyLibLog {
     public static void w(String msg) {
         if (EASY_LIB_LOG) {
             if (msg != null && msg.length() > length) {
-                int part = 1;
+                int part = 0;
                 for (int i = 0; i < msg.length(); i += length) {
                     if (i + length < msg.length()) {
                         Log.w(TAG + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
@@ -70,7 +70,7 @@ public class EasyLibLog {
     public static void e(String msg) {
         if (EASY_LIB_LOG) {
             if (msg != null && msg.length() > length) {
-                int part = 1;
+                int part = 0;
                 for (int i = 0; i < msg.length(); i += length) {
                     if (i + length < msg.length()) {
                         Log.e(TAG + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
