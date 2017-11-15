@@ -14,7 +14,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import static android.R.attr.type;
 import static com.jen.easy.http.HttpReflectManager.PARAM_FIELD;
 import static com.jen.easy.http.HttpReflectManager.PARAM_TYPE;
 
@@ -22,7 +21,7 @@ import static com.jen.easy.http.HttpReflectManager.PARAM_TYPE;
  * Created by Jen on 2017/7/24.
  */
 class HttpParseManager {
-    private final static String TAG = HttpParseManager.class.getSimpleName() + " : ";
+    private final static String TAG = "HttpParseManager : ";
 
     /**
      * json解析
@@ -35,6 +34,12 @@ class HttpParseManager {
         if (obj == null) {
             EasyLibLog.e(TAG + "parseJson obj is null");
         }
+        String className = tObj.getClass().getName();
+        if (tObj instanceof HttpResponse) {
+            className = className + " 通用实体类：" + ((HttpResponse) tObj).objClass.getName();
+        }
+        EasyLibLog.d(TAG + "解析：" + className);
+
         try {
             JSONObject object = new JSONObject(obj);
             tObj = parseJsonObject(tObj, object);
@@ -76,6 +81,7 @@ class HttpParseManager {
         }*/
 
         for (String param : param_type.keySet()) {
+            String type = null;
             try {
                 if (jsonObject.has(param)) {
                     Object value = jsonObject.get(param);
@@ -85,7 +91,7 @@ class HttpParseManager {
                     }
                     Field field = param_field.get(param);
                     field.setAccessible(true);
-                    String type = param_type.get(param);
+                    type = param_type.get(param);
 
                     if (type.equals(Constant.FieldType.STRING)) {
                         if (value instanceof String) {

@@ -17,7 +17,7 @@ import java.net.URLEncoder;
 import java.util.Map;
 
 class HttpURLConnectionDownloadRunable implements Runnable {
-//    private final String TAG = HttpURLConnectionDownloadRunable.class.getSimpleName() + " : ";
+    private final String TAG = "HttpDownload : ";
     private HttpDownloadPRequest param;
 
     HttpURLConnectionDownloadRunable(HttpDownloadPRequest param) {
@@ -28,7 +28,7 @@ class HttpURLConnectionDownloadRunable implements Runnable {
     @Override
     public void run() {
         if (TextUtils.isEmpty(param.http.url)) {
-            EasyLibLog.w(param.http.url + "URL地址错误");
+            EasyLibLog.w(TAG + param.http.url + " URL地址错误");
             fail("请求URL参数错误");
             return;
         } else if (TextUtils.isEmpty(param.request.filePath)) {
@@ -40,7 +40,7 @@ class HttpURLConnectionDownloadRunable implements Runnable {
         if (!fileFolder.exists()) {
             boolean ret = fileFolder.mkdirs();
             if (!ret) {
-                EasyLibLog.w(param.http.url + "创建文件夹失败");
+                EasyLibLog.w(TAG + param.http.url + " 创建文件夹失败");
                 fail("保存文件失败，请检查文件路径是否正确");
                 return;
             }
@@ -50,7 +50,7 @@ class HttpURLConnectionDownloadRunable implements Runnable {
             if (file.exists()) {
                 boolean ret = file.delete();
                 if (!ret) {
-                    EasyLibLog.w(param.http.url + "删除旧文件失败");
+                    EasyLibLog.w(TAG + param.http.url + " 删除旧文件失败");
                     fail("删除旧文件失败，请检查文件路径是否正确");
                     return;
                 }
@@ -116,8 +116,8 @@ class HttpURLConnectionDownloadRunable implements Runnable {
             }
 
             resposeCode = connection.getResponseCode();
-            EasyLibLog.d("Http 请求地址：" + url.toString() + "  请求方法：" + param.http.method
-                    + "Http请求返回码：" + resposeCode);
+            EasyLibLog.d(TAG + "Http 请求地址：" + url.toString() + "  请求方法：" + param.http.method
+                    + " Http请求返回码：" + resposeCode);
             if ((resposeCode == 200)) {
                 param.request.endPoit = connection.getContentLength();
                 inStream = connection.getInputStream();
@@ -143,19 +143,19 @@ class HttpURLConnectionDownloadRunable implements Runnable {
                 return;
             }
         } catch (MalformedURLException e) {
-            EasyLibLog.e(param.http.url + "MalformedURLException error --------");
+            EasyLibLog.e(TAG + param.http.url + " MalformedURLException error --------");
             e.printStackTrace();
             exception = "MalformedURLException error";
         } catch (ProtocolException e) {
-            EasyLibLog.e(param.http.url + "ProtocolException error --------");
+            EasyLibLog.e(TAG + param.http.url + " ProtocolException error --------");
             e.printStackTrace();
             exception = "ProtocolException error";
         } catch (IOException e) {
-            EasyLibLog.e(param.http.url + "IOException error --------");
+            EasyLibLog.e(TAG + param.http.url + " IOException error --------");
             e.printStackTrace();
             exception = "IOException error";
         } catch (IllegalStateException e) {
-            EasyLibLog.e(param.http.url + "IllegalStateException error --------");
+            EasyLibLog.e(TAG + param.http.url + " IllegalStateException error --------");
             e.printStackTrace();
             exception = "IllegalStateException error";
         } finally {

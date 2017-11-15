@@ -102,6 +102,9 @@
 -keep class com.jen.easy.log.EasyLog {
     *;
 }
+-keep class com.jen.easy.log.EasyUILog {
+    *;
+}
 -keep class com.jen.easy.log.LogcatHelper {
     *;
 }

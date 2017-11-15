@@ -13,7 +13,7 @@ import java.util.Map;
  */
 
 class HttpReflectManager {
-    private final static String TAG = HttpReflectManager.class.getSimpleName() + " : ";
+    private final static String TAG = "HttpReflectManager : ";
     static String PARAM_TYPE = "param_type";
     static String PARAM_FIELD = "param_field";
 

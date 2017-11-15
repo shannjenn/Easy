@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 abstract class DBHelperManager {
-    private final String TAG = DBHelperManager.class.getSimpleName() + " : ";
+    private final String TAG = "DBHelperManager : ";
     private Database database;
 
     protected DBHelperManager(Context context) {

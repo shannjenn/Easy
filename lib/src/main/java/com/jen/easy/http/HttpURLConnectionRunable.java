@@ -17,7 +17,7 @@ import java.net.URLEncoder;
 import java.util.Map;
 
 class HttpURLConnectionRunable implements Runnable {
-    //    private final String TAG = HttpURLConnectionDownloadRunable.class.getSimpleName() + " : ";
+    private final String TAG = "HttpBase : ";
     private HttpBaseRequest request;
 
     HttpURLConnectionRunable(HttpBaseRequest param) {
@@ -28,7 +28,7 @@ class HttpURLConnectionRunable implements Runnable {
     @Override
     public void run() {
         if (TextUtils.isEmpty(request.http.url)) {
-            EasyLibLog.e(request.http.url + "URL地址错误");
+            EasyLibLog.e(TAG + request.http.url + " URL地址错误");
             fail("URL地址为空");
             return;
         }
@@ -78,13 +78,13 @@ class HttpURLConnectionRunable implements Runnable {
             }
 
             if (request.http.method.toUpperCase().equals("GET")) {
-                EasyLibLog.d("Http请求地址：" + url + "  请求方式：" + request.http.method);
+                EasyLibLog.d(TAG + "Http请求地址：" + url + "  请求方式：" + request.http.method);
             } else {
-                EasyLibLog.d("Http请求地址：" + url + "  请求方式：" + request.http.method
+                EasyLibLog.d(TAG + "Http请求地址：" + url + "  请求方式：" + request.http.method
                         + " 请求参数：" + requestBuf.toString());
             }
             resposeCode = connection.getResponseCode();
-            EasyLibLog.d(url + "  Http请求返回码：" + resposeCode);
+            EasyLibLog.d(TAG + url + "  Http请求返回码：" + resposeCode);
             if ((resposeCode == 200)) {
                 StringBuffer result = new StringBuffer("");
                 InputStream inStream = connection.getInputStream();
@@ -96,29 +96,29 @@ class HttpURLConnectionRunable implements Runnable {
                 reader.close();
                 inStream.close();
                 connection.disconnect();
-                EasyLibLog.d(url + " 返回数据：" + result.toString());
+                EasyLibLog.d(TAG + url + " 返回数据：" + result.toString());
                 success(result.toString());
                 return;
             }
         } catch (IOException e) {
             e.printStackTrace();
-            EasyLibLog.e(request.http.url + "IOException");
+            EasyLibLog.e(TAG + request.http.url + " IOException");
         }
-        fail("网络请求异常：" + resposeCode);
+        fail(" 网络请求异常：" + resposeCode);
     }
 
     private void success(String result) {
         if (request.getBseListener() != null) {
             Type type = request.getClass().getGenericSuperclass();//获取超类T类型
             if (!(type instanceof ParameterizedType)) {
-                EasyLibLog.e(request.http.url + "请求参数未指定泛型返回类型");
-                fail("请求参数未指定返回类型");
+                EasyLibLog.e(TAG + request.http.url + " 请求参数未指定泛型返回类型");
+                fail(" 请求参数未指定返回类型");
                 return;
             }
             Type classType = ((ParameterizedType) type).getActualTypeArguments()[0];//获取T值实体类型
             if (!(classType instanceof Class)) {
-                EasyLibLog.e(request.http.url + classType + "泛型不是Class类型");
-                fail(classType + "不是Class类型");
+                EasyLibLog.e(TAG + request.http.url + classType + " 泛型不是Class类型");
+                fail(classType + " 不是Class类型");
                 return;
             }
             HttpResponse response;
@@ -126,24 +126,24 @@ class HttpURLConnectionRunable implements Runnable {
                 Class clazz = Class.forName(((Class) classType).getName());
                 Object object = clazz.newInstance();
                 if (!(object instanceof HttpResponse)) {
-                    EasyLibLog.e(request.http.url + classType + "泛型不是HttpResponse类型");
-                    fail(classType + "HttpResponse类型");
+                    EasyLibLog.e(TAG + request.http.url + classType + " 泛型不是HttpResponse类型");
+                    fail(classType + " HttpResponse类型");
                     return;
                 }
                 response = (HttpResponse) object;
             } catch (InstantiationException e) {
                 e.printStackTrace();
-                EasyLibLog.e(request.http.url + "InstantiationException");
+                EasyLibLog.e(TAG + request.http.url + " InstantiationException");
                 fail("不存在泛型：" + ((Class) classType).getName());
                 return;
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
-                EasyLibLog.e(request.http.url + "IllegalAccessException");
+                EasyLibLog.e(TAG + request.http.url + " IllegalAccessException");
                 fail("不存在泛型：" + ((Class) classType).getName());
                 return;
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
-                EasyLibLog.e(request.http.url + "ClassNotFoundException");
+                EasyLibLog.e(TAG + request.http.url + " ClassNotFoundException");
                 fail("不存在泛型：" + ((Class) classType).getName());
                 return;
             }

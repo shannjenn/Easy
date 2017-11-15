@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
  */
 
 class AOPReflectManager {
-    private static final String TAG = AOPReflectManager.class.getSimpleName() + " : ";
+    private static final String TAG = "AOPReflectManager : ";
 
     /**
      * 获取方法

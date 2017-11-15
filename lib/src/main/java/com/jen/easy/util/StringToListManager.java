@@ -18,7 +18,7 @@ import java.util.List;
  */
 
 abstract class StringToListManager {
-    private final String TAG = StringToListManager.class.getSimpleName() + " : ";
+    private final String TAG = "StringToListManager : ";
 
     protected <T> String list2String(List<T> list) {
         try {

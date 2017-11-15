@@ -9,7 +9,7 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
 abstract class FileDecryptManager {
-    private final String TAG = FileDecryptManager.class.getSimpleName() + " : ";
+    private final String TAG = "FileDecryptManager : ";
 
     /**
      * 解密

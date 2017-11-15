@@ -39,7 +39,7 @@ public final class EasyMain {
     /**
      * 数据表操作（结合注释@EasyMouse.DB使用）
      */
-    public static final DBDao mDBDao;
+    public static final DBDao mDao;
     /**
      * 日志取
      */
@@ -62,7 +62,7 @@ public final class EasyMain {
 
             if (TextUtils.isEmpty(Constant.DB.PASSWORD)) {
                 mDBHelper = new DBHelper(EasyApplication.getAppContext());
-                mDBDao = new DBDao(EasyApplication.getAppContext());
+                mDao = new DBDao(EasyApplication.getAppContext());
             } else {
                 DBHelper DBtemp = new DBHelper(EasyApplication.getAppContext());
                 DBDao DBDtemp = new DBDao(EasyApplication.getAppContext());
@@ -75,14 +75,14 @@ public final class EasyMain {
                 proxyDB.setAfterMethod(FileDecrypt.class, path, Constant.DB.PASSWORD);
 
                 DynamicProxy proxyDBD = new DynamicProxy();
-                mDBDao = (DBDao) proxyDBD.bind(DBDtemp);
+                mDao = (DBDao) proxyDBD.bind(DBDtemp);
                 proxyDBD.setBeforeMethod(FileDecrypt.class, path, Constant.DB.PASSWORD);
                 proxyDBD.setAfterMethod(FileDecrypt.class, path, Constant.DB.PASSWORD);
             }
         } else {
             mShared = null;
             mDBHelper = null;
-            mDBDao = null;
+            mDao = null;
             EasyLibLog.e("请继承:" + EasyApplication.class.getSimpleName());
         }
     }

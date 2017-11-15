@@ -13,7 +13,7 @@ import java.util.Map;
  */
 
 abstract class BindReflectManager {
-    private final static String TAG = BindReflectManager.class.getSimpleName() + " : ";
+    private final static String TAG = "BindReflectManager : ";
     /**
      * 全部列明和属性类型
      */
