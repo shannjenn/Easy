@@ -19,7 +19,6 @@ public abstract class EasyBaseActivity extends AppCompatActivity {
         EasyMain.mBindView.bind(this);
         intDataBeforeView();
         initViews();
-        onClick();
         loadDataAfterView();
     }
 
@@ -35,6 +34,6 @@ public abstract class EasyBaseActivity extends AppCompatActivity {
 
     protected abstract void loadDataAfterView();
 
-    protected abstract void onClick();
+    protected abstract void onBindClick();
 
 }
