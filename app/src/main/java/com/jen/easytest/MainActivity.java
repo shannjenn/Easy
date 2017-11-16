@@ -17,7 +17,7 @@ public class MainActivity extends EasyBaseActivity {
     }
 
     @Override
-    protected void intDataBefreView() {
+    protected void intDataBeforeView() {
 
     }
 

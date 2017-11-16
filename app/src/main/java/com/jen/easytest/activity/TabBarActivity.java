@@ -52,7 +52,7 @@ public class TabBarActivity extends EasyBaseActivity {
     }
 
     @Override
-    protected void intDataBefreView() {
+    protected void intDataBeforeView() {
 
     }
 
