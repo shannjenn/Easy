@@ -17,9 +17,10 @@ public abstract class EasyBaseActivity extends AppCompatActivity {
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
         EasyMain.mBindView.bind(this);
-        intBaseDatas();
+        intDataBefreView();
         initViews();
-        loadDatas();
+        onClick();
+        loadDataAfterView();
     }
 
     @Override
@@ -28,10 +29,12 @@ public abstract class EasyBaseActivity extends AppCompatActivity {
         EasyMain.mBindView.unbind(this);
     }
 
-    protected abstract void intBaseDatas();
+    protected abstract void intDataBefreView();
 
     protected abstract void initViews();
 
-    protected abstract void loadDatas();
+    protected abstract void loadDataAfterView();
+
+    protected abstract void onClick();
 
 }

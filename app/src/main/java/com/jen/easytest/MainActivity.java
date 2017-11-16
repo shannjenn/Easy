@@ -17,7 +17,7 @@ public class MainActivity extends EasyBaseActivity {
     }
 
     @Override
-    protected void intBaseDatas() {
+    protected void intDataBefreView() {
 
     }
 
@@ -27,7 +27,12 @@ public class MainActivity extends EasyBaseActivity {
     }
 
     @Override
-    protected void loadDatas() {
+    protected void loadDataAfterView() {
+
+    }
+
+    @Override
+    protected void onClick() {
 
     }
 
