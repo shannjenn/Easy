@@ -1,0 +1,19 @@
+<resources>
+    <declare-styleable name="EasyRelativeLayout">
+        <attr name="stroke_width" />
+        <attr name="stroke_color" />
+        <attr name="stroke_click_color" />
+
+        <attr name="corners" />
+        <attr name="corners_half_circle" />
+
+        <attr name="solid_color" />
+        <attr name="solid_click_color" />
+
+        <attr name="android:paddingLeft"/>
+        <attr name="android:paddingRight"/>
+        <attr name="android:paddingTop"/>
+        <attr name="android:paddingBottom"/>
+        <attr name="android:padding"/>
+    </declare-styleable>
+</resources>

@@ -19,6 +19,8 @@
 
         <activity android:name=".activity.TabBarActivity">
         </activity>
+        <activity android:name=".activity.DrawableActivity">
+        </activity>
 
     </application>
 

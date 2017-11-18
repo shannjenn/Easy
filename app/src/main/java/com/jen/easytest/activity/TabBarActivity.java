@@ -68,7 +68,7 @@ public class TabBarActivity extends EasyBaseActivity {
     }
 
     @Override
-    protected void onClick() {
+    protected void onBindClick() {
 
     }
 

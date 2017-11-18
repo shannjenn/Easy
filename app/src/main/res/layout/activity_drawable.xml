@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.jen.easyui.button.EasyButton
+        android:id="@+id/easyButon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="20dp"
+        android:text="EasyButton"
+        app:corners="5dp"
+        app:corners_half_circle="true"
+        app:solid_click_color="#0000ff"
+        app:solid_color="#ff0000"
+        app:stroke_click_color="#ff0000"
+        app:stroke_color="#0000ff"
+        app:stroke_width="2dp"
+
+        />
+
+    <com.jen.easyui.textview.EasyTextView
+        android:id="@+id/easyTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        android:clickable="true"
+        android:text="EasyButton"
+        app:corners="5dp"
+        app:solid_click_color="#0000ff"
+        app:solid_color="#ff0000"
+        app:stroke_click_color="#ff0000"
+        app:stroke_color="#0000ff"
+        app:stroke_width="2dp" />
+
+    <com.jen.easyui.edittext.EasyEditText
+        android:id="@+id/easyEditText"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:clickable="true"
+        android:text="EasyButton"
+        app:corners="5dp"
+        app:solid_color="#ff0000"
+        app:solid_focus_color="#0000ff"
+        app:stroke_color="#0000ff"
+        app:stroke_focus_color="#ff0000"
+        app:stroke_width="2dp" />
+
+    <com.jen.easyui.edittext.EasyEditText
+        android:id="@+id/easyEditText2"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:clickable="true"
+        android:text="EasyButton"
+        app:corners="5dp"
+        app:solid_color="#ff0000"
+        app:solid_focus_color="#0000ff"
+        app:stroke_color="#0000ff"
+        app:stroke_focus_color="#ff0000"
+        app:stroke_width="2dp" />
+
+    <com.jen.easyui.linearlayout.EasyLinearLayout
+        android:id="@+id/easyLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginLeft="20dp"
+        android:paddingLeft="50dp"
+        app:corners="5dp"
+        app:corners_half_circle="true"
+        app:solid_click_color="#0000ff"
+        app:solid_color="#ff0000"
+        app:stroke_click_color="#ff0000"
+        app:stroke_color="#0000ff"
+        android:gravity="left|center_vertical"
+        app:stroke_width="2dp">
+
+        <EditText
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:background="@android:color/white"
+            android:text="输入框输入框输入框输入框" />
+    </com.jen.easyui.linearlayout.EasyLinearLayout>
+
+    <!--<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp">
+
+        <EditText
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:background="@android:color/white" />
+    </LinearLayout>-->
+
+</LinearLayout>

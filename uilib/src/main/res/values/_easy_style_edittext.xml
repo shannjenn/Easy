@@ -1,0 +1,22 @@
+<resources>
+    <declare-styleable name="EasyEditText">
+        <attr name="stroke_width" />
+        <attr name="stroke_color" />
+        <attr name="stroke_focus_color" format="color" />
+
+        <attr name="corners" />
+        <attr name="corners_half_circle" />
+
+        <attr name="solid_color" />
+        <attr name="solid_focus_color" format="color" />
+
+        <attr name="android:textColor" />
+        <attr name="text_focus_color" format="color" />
+
+        <attr name="android:paddingLeft"/>
+        <attr name="android:paddingRight"/>
+        <attr name="android:paddingTop"/>
+        <attr name="android:paddingBottom"/>
+        <attr name="android:padding"/>
+    </declare-styleable>
+</resources>
