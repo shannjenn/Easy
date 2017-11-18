@@ -38,6 +38,8 @@ abstract class EasyRelativeLayoutManager extends RelativeLayout {
     private int mPaddingTop;
     private int mPaddingBottom;
 
+    private boolean mChangeClickColor;
+
     public EasyRelativeLayoutManager(Context context) {
         super(context);
         initAttrs(context, null);
@@ -67,6 +69,8 @@ abstract class EasyRelativeLayoutManager extends RelativeLayout {
 
         mSolidColor = ta.getColor(R.styleable.EasyRelativeLayout_solid_color, 0);
         mSolidClickColor = ta.getColor(R.styleable.EasyRelativeLayout_solid_click_color, 0);
+
+        mChangeClickColor = ta.getBoolean(R.styleable.EasyRelativeLayout_change_click_color, false);
 
         int padding = (int) ta.getDimension(R.styleable.EasyRelativeLayout_android_padding, 0);
         if (padding == 0) {
@@ -129,6 +133,8 @@ abstract class EasyRelativeLayoutManager extends RelativeLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (!mChangeClickColor)
+            return super.onTouchEvent(event);
         if (isClickable()) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN: {

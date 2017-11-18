@@ -40,6 +40,8 @@ abstract class EasyButtonManager extends android.support.v7.widget.AppCompatButt
     private int mPaddingTop;
     private int mPaddingBottom;
 
+    private boolean mChangeClickColor;
+
     public EasyButtonManager(Context context) {
         super(context);
         initAttrs(context, null);
@@ -73,6 +75,8 @@ abstract class EasyButtonManager extends android.support.v7.widget.AppCompatButt
         mTextColor = ta.getColor(R.styleable.EasyButton_android_textColor, 0xFF000000);
         mTextClickColor = ta.getColor(R.styleable.EasyButton_text_click_color, 0xFF000000);
 
+        mChangeClickColor = ta.getBoolean(R.styleable.EasyButton_change_click_color, false);
+
         int padding = (int) ta.getDimension(R.styleable.EasyButton_android_padding, 0);
         if (padding == 0) {
             mPaddingLeft = (int) ta.getDimension(R.styleable.EasyButton_android_paddingLeft, 0);
@@ -95,10 +99,10 @@ abstract class EasyButtonManager extends android.support.v7.widget.AppCompatButt
         mDrawable = (GradientDrawable) getBackground();
         mDrawable.setStroke(mStrokeWidth, mStrokeColor);
         mDrawable.setColor(mSolidColor);
-        if(!mCornersHalfCircle){
+        if (!mCornersHalfCircle) {
             mDrawable.setCornerRadius(mCorners);
         }
-        setPadding(mPaddingLeft,mPaddingTop,mPaddingRight,mPaddingBottom);
+        setPadding(mPaddingLeft, mPaddingTop, mPaddingRight, mPaddingBottom);
     }
 
     @Override
@@ -134,6 +138,8 @@ abstract class EasyButtonManager extends android.support.v7.widget.AppCompatButt
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (!mChangeClickColor)
+            return super.onTouchEvent(event);
         if (isClickable()) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN: {

@@ -13,6 +13,8 @@
         <attr name="android:textColor"/>
         <attr name="text_click_color" format="color" />
 
+        <attr name="change_click_color" format="boolean" />
+
         <attr name="android:paddingLeft"/>
         <attr name="android:paddingRight"/>
         <attr name="android:paddingTop"/>
