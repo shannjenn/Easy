@@ -8,7 +8,6 @@ import android.support.annotation.ColorInt;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-import com.jen.easy.log.EasyUILog;
 import com.jen.easyui.R;
 
 /**
@@ -116,19 +115,19 @@ abstract class EasyButtonManager extends android.support.v7.widget.AppCompatButt
     @Override
     public void setBackground(Drawable background) {
 //        super.setBackground(background);
-        EasyUILog.w(TAG + "setBackground 已经被拦截，该功能失效，请在xml布局用自定义设置");
+
     }
 
     @Override
     public void setBackgroundColor(@ColorInt int color) {
 //        super.setBackgroundColor(color);
-        EasyUILog.w(TAG + "setBackground 已经被拦截，该功能失效，请在xml布局用自定义设置");
+
     }
 
     @Override
     public void setBackgroundDrawable(Drawable background) {
 //        super.setBackgroundDrawable(background);
-        EasyUILog.w(TAG + "setBackground 已经被拦截，该功能失效，请在xml布局用自定义设置");
+
     }
 
     @Override

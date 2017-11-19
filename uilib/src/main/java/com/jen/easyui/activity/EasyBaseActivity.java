@@ -3,6 +3,7 @@ package com.jen.easyui.activity;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.jen.easy.EasyMain;
 
@@ -34,6 +35,6 @@ public abstract class EasyBaseActivity extends AppCompatActivity {
 
     protected abstract void loadDataAfterView();
 
-    protected abstract void onBindClick();
+    protected abstract void onBindClick(View view);
 
 }

@@ -111,19 +111,19 @@ abstract class EasyLinearLayoutManager extends LinearLayout {
     @Override
     public void setBackground(Drawable background) {
 //        super.setBackground(background);
-        EasyUILog.w(TAG + "setBackground 已经被拦截，该功能失效，请在xml布局用自定义设置");
+
     }
 
     @Override
     public void setBackgroundColor(@ColorInt int color) {
 //        super.setBackgroundColor(color);
-        EasyUILog.w(TAG + "setBackground 已经被拦截，该功能失效，请在xml布局用自定义设置");
+
     }
 
     @Override
     public void setBackgroundDrawable(Drawable background) {
 //        super.setBackgroundDrawable(background);
-        EasyUILog.w(TAG + "setBackground 已经被拦截，该功能失效，请在xml布局用自定义设置");
+
     }
 
     @Override

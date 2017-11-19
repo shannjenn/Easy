@@ -36,7 +36,7 @@ abstract class EasyTopBarManager extends RelativeLayout {
     // 左侧文字颜色
     private int mLeftTextColor = -1; //颜色没有负值，初始化设置为-1，使用默认颜色
     //左侧文字附带图片
-    private Drawable mLeftTextWithLeftImg;
+//    private Drawable mLeftTextWithLeftImg;
 
     //左侧图片布局
     private ImageView ivLeft;
@@ -44,13 +44,6 @@ abstract class EasyTopBarManager extends RelativeLayout {
     private Drawable mLeftImage;
     //左侧图片背景
     private Drawable mLeftImageBackground;
-    //是否显示左侧图片
-    private boolean isShowLeftImage;
-
-    //左侧头像布局
-    private ImageView ivFace;
-    //是否显示左侧头像图片
-    private boolean isShowFaceLeftImage;
 
     //中间标题布局
     private TextView tvTitle;
@@ -107,15 +100,16 @@ abstract class EasyTopBarManager extends RelativeLayout {
         mLeftText = ta.getString(R.styleable.EasyTopBar_leftText);
         mLeftTextSize = ta.getDimensionPixelOffset(R.styleable.EasyTopBar_leftTextSize, EasyDensityUtil.sp2px(mContext, 16.0f));
         mLeftTextColor = ta.getColor(R.styleable.EasyTopBar_leftTextColor, 0xFF000000);
-        mLeftTextWithLeftImg = ta.getDrawable(R.styleable.EasyTopBar_leftTextWithImg);
-        isShowLeftImage = ta.getBoolean(R.styleable.EasyTopBar_showLeftImage, false);
-        mLeftImageBackground = ta.getDrawable(R.styleable.EasyTopBar_leftImageBackground);
+//        mLeftTextWithLeftImg = ta.getDrawable(R.styleable.EasyTopBar_leftTextWithImg);
+
+//        isShowLeftImage = ta.getBoolean(R.styleable.EasyTopBar_showLeftImage, false);
         mLeftImage = ta.getDrawable(R.styleable.EasyTopBar_leftImage);
+        mLeftImageBackground = ta.getDrawable(R.styleable.EasyTopBar_leftImageBackground);
 
         mRightText = ta.getString(R.styleable.EasyTopBar_rightText);
         mRightTextSize = ta.getDimensionPixelOffset(R.styleable.EasyTopBar_rightTextSize, EasyDensityUtil.sp2px(mContext, 16.0f));
         mRightTextColor = ta.getColor(R.styleable.EasyTopBar_rightTextColor, 0xFF000000);
-        isShowFaceLeftImage = ta.getBoolean(R.styleable.EasyTopBar_showLeftFaceImage, false);
+//        isShowFaceLeftImage = ta.getBoolean(R.styleable.EasyTopBar_showLeftFaceImage, false);
         mRightImage = ta.getDrawable(R.styleable.EasyTopBar_rightImage);
 
         mTitle = ta.getString(R.styleable.EasyTopBar_titleText);
@@ -134,7 +128,6 @@ abstract class EasyTopBarManager extends RelativeLayout {
 
         ivLeft = (ImageView) mMainContainer.findViewById(R.id.iv_left);
         tvLeft = (TextView) mMainContainer.findViewById(R.id.tv_left);
-        ivFace = (ImageView) mMainContainer.findViewById(R.id.iv_face);
 
         tvTitle = (TextView) mMainContainer.findViewById(R.id.tv_title);
 
@@ -151,17 +144,17 @@ abstract class EasyTopBarManager extends RelativeLayout {
             tvLeft.setText(mLeftText);
             tvLeft.setTextSize(TypedValue.COMPLEX_UNIT_PX, mLeftTextSize);
             tvLeft.setTextColor(mLeftTextColor);
-            if (mLeftTextWithLeftImg != null) {
+            /*if (mLeftTextWithLeftImg != null) {
                 mLeftTextWithLeftImg.setBounds(0, 0, mLeftTextWithLeftImg.getMinimumWidth(), mLeftTextWithLeftImg.getMinimumHeight());
                 tvLeft.setCompoundDrawables(mLeftTextWithLeftImg, null, null, null);
                 tvLeft.setCompoundDrawablePadding(6);
                 tvLeft.setVisibility(View.VISIBLE);
                 tvLeft.setClickable(true);
-            }
+            }*/
         }
 
 
-        if (TextUtils.isEmpty(mLeftText)) {
+        if (mLeftImage == null) {
             ivLeft.setVisibility(GONE);
         } else {
             ivLeft.setVisibility(VISIBLE);

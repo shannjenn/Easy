@@ -12,24 +12,14 @@
         android:paddingRight="8dp">
 
         <ImageView
-            android:id="@+id/iv_face"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:visibility="gone" />
-
-        <ImageView
             android:id="@+id/iv_left"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            android:visibility="gone" />
+            android:src="@mipmap/ic_launcher" />
 
         <TextView
             android:id="@+id/tv_left"
