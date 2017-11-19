@@ -1,5 +1,6 @@
 package com.jen.easyui.viewpager;
 
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
@@ -14,6 +15,10 @@ public abstract class EasyFragmentPagerAdapter extends EasyFragmentPagerAdapterM
 
     protected EasyFragmentPagerAdapter(FragmentManager fm, List<String> title, List<Fragment> fragments) {
         super(fm, title, fragments);
+    }
+
+    public EasyFragmentPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
+        super(fm, fragments);
     }
 
     /**

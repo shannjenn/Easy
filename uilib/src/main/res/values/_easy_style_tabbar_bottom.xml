@@ -3,8 +3,11 @@
     <declare-styleable name="EasyTabBarBottom">
         <attr name="topLineColor" format="color" />
         <attr name="topLineSize" format="dimension" />
+        <attr name="topLineSpace" format="dimension" />
         <attr name="bottomLineColor" format="color" />
         <attr name="bottomLineSize" format="dimension" />
+        <attr name="bottomLineSpace" format="dimension" />
+
         <attr name="itemSize">
             <enum name="one" value="1" />
             <enum name="two" value="2" />

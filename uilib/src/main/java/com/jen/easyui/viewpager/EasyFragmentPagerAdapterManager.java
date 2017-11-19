@@ -2,7 +2,7 @@ package com.jen.easyui.viewpager;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.view.ViewGroup;
 
@@ -16,7 +16,7 @@ import java.util.List;
  * 时间：2017/9/11.
  */
 
-abstract class EasyFragmentPagerAdapterManager extends FragmentPagerAdapter {
+abstract class EasyFragmentPagerAdapterManager extends FragmentStatePagerAdapter {
     private final String TAG = EasyFragmentPagerAdapterManager.class.getSimpleName() + " ";
     protected FragmentManager fm;
     protected final List<String> mTitles = new ArrayList<>();
@@ -27,6 +27,13 @@ abstract class EasyFragmentPagerAdapterManager extends FragmentPagerAdapter {
         this.fm = fm;
         mTitles.clear();
         mTitles.addAll(title);
+        mFragments.clear();
+        mFragments.addAll(fragments);
+    }
+
+    protected EasyFragmentPagerAdapterManager(FragmentManager fm, List<Fragment> fragments) {
+        super(fm);
+        this.fm = fm;
         mFragments.clear();
         mFragments.addAll(fragments);
     }
@@ -75,6 +82,21 @@ abstract class EasyFragmentPagerAdapterManager extends FragmentPagerAdapter {
 
         mTitles.clear();
         mTitles.addAll(titles);
+        mFragments.clear();
+        mFragments.addAll(fragments);
+        notifyDataSetChanged();
+    }
+
+    public void upDatas(List<Fragment> fragments) {
+        FragmentTransaction ft = fm.beginTransaction();
+        for (Fragment f : mFragments) {
+            ft.remove(f);
+        }
+//        ft.commit();
+        ft.commitAllowingStateLoss();
+        ft = null;
+        fm.executePendingTransactions();
+
         mFragments.clear();
         mFragments.addAll(fragments);
         notifyDataSetChanged();

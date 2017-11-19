@@ -40,9 +40,11 @@ abstract class EasyTabBarBottomManager extends RelativeLayout {
     //分割线属性
     private int topLineColor;
     private int topLineSize;
+    private int topLineSpace;
 
     private int bottomLineColor;
     private int bottomLineSize;
+    private int bottomLineSpace;
 
     /*高度 LayoutParams.MATCH_PARENT=-1 LayoutParams.FILL_PARENT=-1 LayoutParams.WRAP_PARENT=-2*/
     private int height;
@@ -106,8 +108,10 @@ abstract class EasyTabBarBottomManager extends RelativeLayout {
         TypedArray a = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.EasyTabBarBottom, defStyleAttr, 0);
         topLineColor = a.getColor(R.styleable.EasyTabBarBottom_topLineColor, LINE_DEFAULT_COLOR);
         topLineSize = a.getDimensionPixelOffset(R.styleable.EasyTabBarBottom_topLineSize, 0);
+        topLineSpace = a.getDimensionPixelOffset(R.styleable.EasyTabBarBottom_topLineSpace, 0);
         bottomLineColor = a.getColor(R.styleable.EasyTabBarBottom_bottomLineColor, LINE_DEFAULT_COLOR);
         bottomLineSize = a.getDimensionPixelOffset(R.styleable.EasyTabBarBottom_bottomLineSize, 0);
+        bottomLineSpace = a.getDimensionPixelOffset(R.styleable.EasyTabBarBottom_bottomLineSpace, 0);
         height = a.getLayoutDimension(R.styleable.EasyTabBarBottom_android_layout_height, 0);
         width = a.getLayoutDimension(R.styleable.EasyTabBarBottom_android_layout_width, 0);
         itemSize = a.getInt(R.styleable.EasyTabBarBottom_itemSize, 0);
@@ -155,7 +159,7 @@ abstract class EasyTabBarBottomManager extends RelativeLayout {
         textViews = new TextView[itemSize];
         imageViews = new ImageView[itemSize];
         LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-        params.setMargins(0, topLineSize, 0, bottomLineSize);
+        params.setMargins(0, topLineSize + topLineSpace, 0, bottomLineSize + bottomLineSpace);
         LinearLayout linearLayout = new LinearLayout(context);
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
         linearLayout.setLayoutParams(params);
@@ -215,6 +219,7 @@ abstract class EasyTabBarBottomManager extends RelativeLayout {
 
         @Override
         public void onPageSelected(int position) {
+            mViewPager.setCurrentItem(position);
             setSelectState(position);
         }
 
