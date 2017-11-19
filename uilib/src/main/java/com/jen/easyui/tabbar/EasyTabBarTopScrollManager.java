@@ -120,28 +120,28 @@ abstract class EasyTabBarTopScrollManager extends HorizontalScrollView {
         mHeight = ta.getLayoutDimension(R.styleable.EasyTabBarTopScroll_android_layout_height, 0);
         mWidth = ta.getLayoutDimension(R.styleable.EasyTabBarTopScroll_android_layout_width, 0);
 
-        mIndicatorColor = ta.getColor(R.styleable.EasyTabBarTopScroll_indicator_color_scroll, INDICATOR_COLOR_DEFAULT);
-        mIndicatorHeight = ta.getDimension(R.styleable.EasyTabBarTopScroll_indicator_height_scroll, 0);
-        mIndicatorCornerRadius = ta.getDimension(R.styleable.EasyTabBarTopScroll_indicator_corner_radius_scroll, -1);
+        mIndicatorColor = ta.getColor(R.styleable.EasyTabBarTopScroll_indicatorColor, INDICATOR_COLOR_DEFAULT);
+        mIndicatorHeight = ta.getDimension(R.styleable.EasyTabBarTopScroll_indicatorSize, 0);
+        mIndicatorCornerRadius = ta.getDimension(R.styleable.EasyTabBarTopScroll_indicatorCornerRadius, -1);
 //        mIndicatorMarginTop = ta.getDimension(R.styleable.EasyTabBarTopScroll_indicator_margin_top, 0);
 //        mIndicatorMarginBottom = ta.getDimension(R.styleable.EasyTabBarTopScroll_indicator_margin_bottom, 0);
 //        mIndicatorGravity = ta.getInt(R.styleable.EasyTabBarTopScroll_indicator_gravity, Gravity.BOTTOM);
-        mIndicatorType = ta.getInt(R.styleable.EasyTabBarTopScroll_indicator_type_scroll, INDICATOR_TYPE_LINE);
+        mIndicatorType = ta.getInt(R.styleable.EasyTabBarTopScroll_indicatorType, INDICATOR_TYPE_LINE);
 
-        mUnderlineColor = ta.getColor(R.styleable.EasyTabBarTopScroll_underline_color_scroll, COLOR_DEFAULT);
-        mUnderlineHeight = ta.getDimension(R.styleable.EasyTabBarTopScroll_underline_height_scroll, 0);
+        mUnderlineColor = ta.getColor(R.styleable.EasyTabBarTopScroll_underlineColor, COLOR_DEFAULT);
+        mUnderlineHeight = ta.getDimension(R.styleable.EasyTabBarTopScroll_underlineSize, 0);
 
-        mTabTextsize = ta.getDimension(R.styleable.EasyTabBarTopScroll_tab_textSize_scroll, EasyDensityUtil.sp2px(mContext, TEXT_SIZE_DEFAULT));
-        mTabWidth = (int) ta.getDimension(R.styleable.EasyTabBarTopScroll_tab_width_scroll, -2f);//-2为WRAP_CONTENT属性
-        mTabHeith = (int) ta.getDimension(R.styleable.EasyTabBarTopScroll_tab_height_scroll, -2f);
-        mTabPaddingLeft = (int) ta.getDimension(R.styleable.EasyTabBarTopScroll_tab_padding_left_scroll, 0);
-        mTabPaddingRight = (int) ta.getDimension(R.styleable.EasyTabBarTopScroll_tab_padding_right_scroll, 0);
-        mTabPaddingTop = (int) ta.getDimension(R.styleable.EasyTabBarTopScroll_tab_padding_top_scroll, 0);
-        mTabPaddingBottom = (int) ta.getDimension(R.styleable.EasyTabBarTopScroll_tab_padding_bottom_scroll, 0);
-        mTabSelectTextColor = ta.getColor(R.styleable.EasyTabBarTopScroll_tab_select_textColor_scroll, TEXT_COLOR_SELECT_DEFAULT);
-        mTabUnSelectTextColor = ta.getColor(R.styleable.EasyTabBarTopScroll_tab_unSelect_textColor_scroll, TEXT_COLOR_UNSELECT_DEFAULT);
-        mTabTextBold = ta.getBoolean(R.styleable.EasyTabBarTopScroll_tab_textBold_scroll, false);
-        mTabTextItalic = ta.getBoolean(R.styleable.EasyTabBarTopScroll_tab_textItalic_scroll, false);
+        mTabTextsize = ta.getDimension(R.styleable.EasyTabBarTopScroll_tabTextSize, EasyDensityUtil.sp2px(mContext, TEXT_SIZE_DEFAULT));
+        mTabWidth = (int) ta.getDimension(R.styleable.EasyTabBarTopScroll_tabWidth, -2f);//-2为WRAP_CONTENT属性
+        mTabHeith = (int) ta.getDimension(R.styleable.EasyTabBarTopScroll_tabHeight, -2f);
+        mTabPaddingLeft = (int) ta.getDimension(R.styleable.EasyTabBarTopScroll_tabPaddingLeft, 0);
+        mTabPaddingRight = (int) ta.getDimension(R.styleable.EasyTabBarTopScroll_tabPaddingRight, 0);
+        mTabPaddingTop = (int) ta.getDimension(R.styleable.EasyTabBarTopScroll_tabPaddingTop, 0);
+        mTabPaddingBottom = (int) ta.getDimension(R.styleable.EasyTabBarTopScroll_tabPaddingBottom, 0);
+        mTabSelectTextColor = ta.getColor(R.styleable.EasyTabBarTopScroll_tabSelectTextColor, TEXT_COLOR_SELECT_DEFAULT);
+        mTabUnSelectTextColor = ta.getColor(R.styleable.EasyTabBarTopScroll_tabUnSelectTextColor, TEXT_COLOR_UNSELECT_DEFAULT);
+        mTabTextBold = ta.getBoolean(R.styleable.EasyTabBarTopScroll_tabTextBold, false);
+        mTabTextItalic = ta.getBoolean(R.styleable.EasyTabBarTopScroll_tabTextItalic, false);
 
         ta.recycle();
 

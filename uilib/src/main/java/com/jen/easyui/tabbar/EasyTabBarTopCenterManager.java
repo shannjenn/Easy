@@ -51,7 +51,7 @@ abstract class EasyTabBarTopCenterManager extends LinearLayout {
     private int mWidth;
 
     private int mIndicatorColor;
-    private float mIndicatorHeight;
+    private float mIndicatorSzie;
     /*不设置时，默认为半圆角*/
     private float mIndicatorCornerRadius;
     //    private int mIndicatorGravity;
@@ -60,7 +60,7 @@ abstract class EasyTabBarTopCenterManager extends LinearLayout {
     private int mIndicatorType;
 
     private int mUnderlineColor;
-    private float mUnderlineHeight;
+    private float mUnderlineSize;
 
     private float mTabTextsize;
     //    private int mTabWidth;
@@ -118,28 +118,25 @@ abstract class EasyTabBarTopCenterManager extends LinearLayout {
         mHeight = ta.getLayoutDimension(R.styleable.EasyTabBarTopCenter_android_layout_height, 0);
         mWidth = ta.getLayoutDimension(R.styleable.EasyTabBarTopCenter_android_layout_width, 0);
 
-        mIndicatorColor = ta.getColor(R.styleable.EasyTabBarTopCenter_indicator_color_center, INDICATOR_COLOR_DEFAULT);
-        mIndicatorHeight = ta.getDimension(R.styleable.EasyTabBarTopCenter_indicator_height_center, 0);
-        mIndicatorCornerRadius = ta.getDimension(R.styleable.EasyTabBarTopCenter_indicator_corner_radius_center, -1);
-//        mIndicatorMarginTop = ta.getDimension(R.styleable.EasyTabBarTop_indicator_margin_top, 0);
-//        mIndicatorMarginBottom = ta.getDimension(R.styleable.EasyTabBarTop_indicator_margin_bottom, 0);
-//        mIndicatorGravity = ta.getInt(R.styleable.EasyTabBarTop_indicator_gravity, Gravity.BOTTOM);
-        mIndicatorType = ta.getInt(R.styleable.EasyTabBarTopCenter_indicator_type_center, INDICATOR_TYPE_LINE);
+        mIndicatorColor = ta.getColor(R.styleable.EasyTabBarTopCenter_indicatorColor, INDICATOR_COLOR_DEFAULT);
+        mIndicatorSzie = ta.getDimension(R.styleable.EasyTabBarTopCenter_indicatorSize, 0);
+        mIndicatorCornerRadius = ta.getDimension(R.styleable.EasyTabBarTopCenter_indicatorCornerRadius, -1);
+        mIndicatorType = ta.getInt(R.styleable.EasyTabBarTopCenter_indicatorType, INDICATOR_TYPE_LINE);
 
-        mUnderlineColor = ta.getColor(R.styleable.EasyTabBarTopCenter_underline_color_center, COLOR_DEFAULT);
-        mUnderlineHeight = ta.getDimension(R.styleable.EasyTabBarTopCenter_underline_height_center, 0);
+        mUnderlineColor = ta.getColor(R.styleable.EasyTabBarTopCenter_underlineColor, COLOR_DEFAULT);
+        mUnderlineSize = ta.getDimension(R.styleable.EasyTabBarTopCenter_underlineSize, 0);
 
-        mTabTextsize = ta.getDimension(R.styleable.EasyTabBarTopCenter_tab_textSize_center, EasyDensityUtil.sp2px(mContext, TEXT_SIZE_DEFAULT));
+        mTabTextsize = ta.getDimension(R.styleable.EasyTabBarTopCenter_tabTextSize, EasyDensityUtil.sp2px(mContext, TEXT_SIZE_DEFAULT));
 //        mTabWidth = (int) ta.getDimension(R.styleable.EasyTabBarTopCenter_tab_width, -2f);//-2为WRAP_CONTENT属性
-        mTabHeith = (int) ta.getDimension(R.styleable.EasyTabBarTopCenter_tab_height_center, -2f);
-        mTabPaddingLeft = (int) ta.getDimension(R.styleable.EasyTabBarTopCenter_tab_padding_left_center, 0);
-        mTabPaddingRight = (int) ta.getDimension(R.styleable.EasyTabBarTopCenter_tab_padding_right_center, 0);
-        mTabPaddingTop = (int) ta.getDimension(R.styleable.EasyTabBarTopCenter_tab_padding_top_center, 0);
-        mTabPaddingBottom = (int) ta.getDimension(R.styleable.EasyTabBarTopCenter_tab_padding_bottom_center, 0);
-        mTabSelectTextColor = ta.getColor(R.styleable.EasyTabBarTopCenter_tab_select_textColor_center, TEXT_COLOR_SELECT_DEFAULT);
-        mTabUnSelectTextColor = ta.getColor(R.styleable.EasyTabBarTopCenter_tab_unSelect_textColor_center, TEXT_COLOR_UNSELECT_DEFAULT);
-        mTabTextBold = ta.getBoolean(R.styleable.EasyTabBarTopCenter_tab_textBold_center, false);
-        mTabTextItalic = ta.getBoolean(R.styleable.EasyTabBarTopCenter_tab_textItalic_center, false);
+        mTabHeith = (int) ta.getDimension(R.styleable.EasyTabBarTopCenter_tabHeight, -2f);
+        mTabPaddingLeft = (int) ta.getDimension(R.styleable.EasyTabBarTopCenter_tabPaddingLeft, 0);
+        mTabPaddingRight = (int) ta.getDimension(R.styleable.EasyTabBarTopCenter_tabPaddingRight, 0);
+        mTabPaddingTop = (int) ta.getDimension(R.styleable.EasyTabBarTopCenter_tabPaddingTop, 0);
+        mTabPaddingBottom = (int) ta.getDimension(R.styleable.EasyTabBarTopCenter_tabPaddingBottom, 0);
+        mTabSelectTextColor = ta.getColor(R.styleable.EasyTabBarTopCenter_tabSelectTextColor, TEXT_COLOR_SELECT_DEFAULT);
+        mTabUnSelectTextColor = ta.getColor(R.styleable.EasyTabBarTopCenter_tabUnSelectTextColor, TEXT_COLOR_UNSELECT_DEFAULT);
+        mTabTextBold = ta.getBoolean(R.styleable.EasyTabBarTopCenter_tabTextBold, false);
+        mTabTextItalic = ta.getBoolean(R.styleable.EasyTabBarTopCenter_tabTextItalic, false);
 
         ta.recycle();
     }
@@ -299,7 +296,7 @@ abstract class EasyTabBarTopCenterManager extends LinearLayout {
         mPaint.setColor(mIndicatorColor);
         mRect.left = left;
         mRect.right = right;
-        mRect.top = mIndicatorType == INDICATOR_TYPE_BLOCK ? top : mHeight - mIndicatorHeight;
+        mRect.top = mIndicatorType == INDICATOR_TYPE_BLOCK ? top : mHeight - mIndicatorSzie;
         mRect.bottom = mIndicatorType == INDICATOR_TYPE_BLOCK ? bottom : mHeight;
         if (mIndicatorCornerRadius == -1) {
             mIndicatorCornerRadius = (mRect.bottom - mRect.top) / 2;
@@ -308,13 +305,13 @@ abstract class EasyTabBarTopCenterManager extends LinearLayout {
     }
 
     private void drawUnderline(Canvas canvas) {
-        if (mUnderlineHeight <= 0) {
+        if (mUnderlineSize <= 0) {
             return;
         }
         mPaint.setColor(mUnderlineColor);
         mRect.left = 0;
         mRect.right = mWidth + getScrollX();
-        mRect.top = mHeight - mUnderlineHeight;
+        mRect.top = mHeight - mUnderlineSize;
         mRect.bottom = mHeight;
 
         canvas.drawRoundRect(mRect, 5, 5, mPaint);
