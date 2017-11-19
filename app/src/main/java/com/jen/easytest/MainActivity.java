@@ -33,7 +33,7 @@ public class MainActivity extends EasyBaseActivity {
     }
 
     @Override
-    protected void onBindClick() {
+    protected void onBindClick(View view) {
 
     }
 
