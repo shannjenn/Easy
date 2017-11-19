@@ -87,6 +87,30 @@ public final class EasyMouse {
         }
 
         /**
+         * GET网络请求地址
+         */
+        @Target(ElementType.TYPE)
+        @Retention(RetentionPolicy.RUNTIME)
+        public @interface GET {
+            /**
+             * 参数名称
+             */
+            String value() default "";
+        }
+
+        /**
+         * POST网络请求地址
+         */
+        @Target(ElementType.TYPE)
+        @Retention(RetentionPolicy.RUNTIME)
+        public @interface POST {
+            /**
+             * 参数名称
+             */
+            String value() default "";
+        }
+
+        /**
          * 网络请求参数
          */
         @Target(ElementType.FIELD)

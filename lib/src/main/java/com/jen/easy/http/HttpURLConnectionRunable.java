@@ -27,6 +27,11 @@ class HttpURLConnectionRunable implements Runnable {
 
     @Override
     public void run() {
+        String[] method_url = HttpReflectManager.getUrl(request);
+        if (method_url != null) {
+            request.http.method = method_url[0];
+            request.http.url = method_url[1];
+        }
         if (TextUtils.isEmpty(request.http.url)) {
             EasyLibLog.e(TAG + request.http.url + " URL地址错误");
             fail("URL地址为空");
@@ -153,13 +158,13 @@ class HttpURLConnectionRunable implements Runnable {
             if (parseObject == null) {
                 fail("数据解析异常");
             } else {
-                request.getBseListener().success(request.request.flagCode, request.request.flag, response);
+                request.getBseListener().success(request.flag.code, request.flag.str, response);
             }
         }
     }
 
     private void fail(String result) {
         if (request.getBseListener() != null)
-            request.getBseListener().fail(request.request.flagCode, request.request.flag, result);
+            request.getBseListener().fail(request.flag.code, request.flag.str, result);
     }
 }

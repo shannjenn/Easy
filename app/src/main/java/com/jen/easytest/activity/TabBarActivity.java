@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 
 import com.jen.easy.EasyMouse;
 import com.jen.easytest.R;
@@ -68,7 +69,7 @@ public class TabBarActivity extends EasyBaseActivity {
     }
 
     @Override
-    protected void onBindClick() {
+    protected void onBindClick(View view) {
 
     }
 

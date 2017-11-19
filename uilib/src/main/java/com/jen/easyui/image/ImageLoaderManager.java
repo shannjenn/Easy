@@ -126,8 +126,8 @@ abstract class ImageLoaderManager {
         String name = urlChangeToName(imageUrl);
         String filePath = LOCAL_PATH + File.separator + name;
         mHttpRequest.http.url = imageUrl;
-        mHttpRequest.request.filePath = filePath;
-        mHttpRequest.request.flag = imageUrl;
+        mHttpRequest.flag.filePath = filePath;
+        mHttpRequest.flag.str = imageUrl;
         mHttpRequest.setDownloadListener(mHttpListener);
         EasyMain.mHttp.start(mHttpRequest);
     }

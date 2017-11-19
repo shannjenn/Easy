@@ -9,7 +9,7 @@ import com.jen.easy.http.imp.HttpUploadListener;
  */
 public class HttpUploadRequest<T extends HttpResponse> extends HttpRequest {
     private HttpUploadListener<T> uploadListener;
-    public Request request = new Request();
+    public Flag flag = new Flag();
 
     /**
      * 公共数据返回，以免创建多个HttpResponse对象
@@ -18,16 +18,16 @@ public class HttpUploadRequest<T extends HttpResponse> extends HttpRequest {
      */
     public Class ResponseObjClass;
 
-    public final class Request {
+    public final class Flag {
         /**
          * 请求标识
          */
-        public int flagCode;
+        public int code;
 
         /**
          * 请求标识
          */
-        public String flag;
+        public String str;
 
         /**
          * 用户停止

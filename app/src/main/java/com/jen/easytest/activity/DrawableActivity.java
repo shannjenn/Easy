@@ -1,6 +1,7 @@
 package com.jen.easytest.activity;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.jen.easy.EasyMouse;
 import com.jen.easytest.R;
@@ -39,9 +40,8 @@ public class DrawableActivity extends EasyBaseActivity {
     }
 
     @Override
-    protected void onBindClick() {
+    protected void onBindClick(View view) {
 
     }
-
 
 }

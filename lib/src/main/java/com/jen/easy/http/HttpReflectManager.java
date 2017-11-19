@@ -18,6 +18,34 @@ class HttpReflectManager {
     static String PARAM_FIELD = "param_field";
 
     /**
+     * 获取地址
+     *
+     * @return
+     */
+    static String[] getUrl(Object obj) {
+        String[] values = new String[2];
+        if (obj == null) {
+            EasyLibLog.e(TAG + "getTableName obj is null");
+            return null;
+        }
+        boolean isAnnoGet = obj.getClass().isAnnotationPresent(EasyMouse.HTTP.GET.class);
+        if (isAnnoGet) {
+            EasyMouse.HTTP.GET url =  obj.getClass().getAnnotation(EasyMouse.HTTP.GET.class);
+            values[0] = "GET";
+            values[1] = url.value();
+            return values;
+        }
+        boolean isAnnoPost = obj.getClass().isAnnotationPresent(EasyMouse.HTTP.POST.class);
+        if (isAnnoPost) {
+            EasyMouse.HTTP.POST url =  obj.getClass().getAnnotation(EasyMouse.HTTP.POST.class);
+            values[0] = "POST";
+            values[1] = url.value();
+            return values;
+        }
+        return null;
+    }
+
+    /**
      * 获取网络请求参数
      *
      * @param obj

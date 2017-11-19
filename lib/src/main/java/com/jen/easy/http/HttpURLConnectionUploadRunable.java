@@ -27,15 +27,20 @@ class HttpURLConnectionUploadRunable implements Runnable {
 
     @Override
     public void run() {
+        String[] method_url = HttpReflectManager.getUrl(request);
+        if (method_url != null) {
+            request.http.method = method_url[0];
+            request.http.url = method_url[1];
+        }
         if (TextUtils.isEmpty(request.http.url)) {
             EasyLibLog.e(TAG + request.http.url + " URL地址错误");
             fail("URL参数错误");
             return;
-        } else if (TextUtils.isEmpty(request.request.filePath)) {
+        } else if (TextUtils.isEmpty(request.flag.filePath)) {
             fail("文件地址不能为空");
             return;
         }
-        File file = new File(request.request.filePath);
+        File file = new File(request.flag.filePath);
         if (!file.isFile()) {
             fail("文件地址参数错误");
             return;
@@ -54,29 +59,29 @@ class HttpURLConnectionUploadRunable implements Runnable {
             connection.setRequestProperty("Content-Type", request.http.contentType);
             connection.setRequestProperty("Connection", request.http.connection);
             connection.setRequestMethod(request.http.method);
-            if (request.request.isBreak && request.request.endPoit > request.request.startPoit + 100) {
-                connection.setRequestProperty("Range", "bytes=" + request.request.startPoit + "-" + request.request.endPoit);
+            if (request.flag.isBreak && request.flag.endPoit > request.flag.startPoit + 100) {
+                connection.setRequestProperty("Range", "bytes=" + request.flag.startPoit + "-" + request.flag.endPoit);
             }
             EasyLibLog.d(TAG + "Http 请求地址：" + url + "  " + request.http.method);
 
             DataOutputStream out = new DataOutputStream(connection.getOutputStream());
             DataInputStream in = new DataInputStream(new FileInputStream(file));
-            long curbytes = request.request.startPoit;
+            long curbytes = request.flag.startPoit;
             int len = 0;
             byte[] bufferOut = new byte[1024];
-            while ((len = in.read(bufferOut)) != -1 && !request.request.userCancel) {
+            while ((len = in.read(bufferOut)) != -1 && !request.flag.userCancel) {
                 out.write(bufferOut, 0, len);
-                if (request.request.userCancel) {
+                if (request.flag.userCancel) {
                     break;
                 } else {
-                    progress(curbytes, request.request.endPoit);
+                    progress(curbytes, request.flag.endPoit);
                 }
             }
             in.close();
             out.flush();
             out.close();
 
-            if (request.request.userCancel) {
+            if (request.flag.userCancel) {
                 fail("用户取消上传");
                 return;
             }
@@ -147,18 +152,18 @@ class HttpURLConnectionUploadRunable implements Runnable {
             if (parseObject == null) {
                 fail("数据解析异常");
             } else {
-                request.getUploadListener().success(request.request.flagCode, request.request.flag, response);
+                request.getUploadListener().success(request.flag.code, request.flag.str, response);
             }
         }
     }
 
     private void fail(String msg) {
         if (request.getUploadListener() != null)
-            request.getUploadListener().fail(request.request.flagCode, request.request.flag, msg);
+            request.getUploadListener().fail(request.flag.code, request.flag.str, msg);
     }
 
     private void progress(long currentPoint, long endPoint) {
         if (request.getUploadListener() != null)
-            request.getUploadListener().progress(request.request.flagCode, request.request.flag, currentPoint, endPoint);
+            request.getUploadListener().progress(request.flag.code, request.flag.str, currentPoint, endPoint);
     }
 }

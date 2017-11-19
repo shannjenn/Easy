@@ -9,7 +9,7 @@ import com.jen.easy.http.imp.HttpBaseListener;
  */
 public class HttpBaseRequest<T extends HttpResponse/*返回的参数*/> extends HttpRequest {
     private HttpBaseListener<T> bseListener;
-    public Request request = new Request();
+    public Flag flag = new Flag();
 
     /**
      * 通用数据返回
@@ -21,16 +21,16 @@ public class HttpBaseRequest<T extends HttpResponse/*返回的参数*/> extends 
     public Class ResponseObjClass;
 
 
-    public final class Request {
+    public final class Flag {
         /**
          * 请求标识
          */
-        public int flagCode;
+        public int code;
 
         /**
          * 请求标识
          */
-        public String flag;
+        public String str;
 
     }
 

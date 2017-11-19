@@ -9,18 +9,18 @@ import com.jen.easy.http.imp.HtppDownloadListener;
  */
 public class HttpDownloadPRequest extends HttpRequest {
     private HtppDownloadListener downloadListener;
-    public Request request = new Request();
+    public Flag flag = new Flag();
 
-    public final class Request {
+    public final class Flag {
         /**
          * 请求标识
          */
-        public int flagCode;
+        public int code;
 
         /**
          * 请求标识
          */
-        public String flag;
+        public String str;
 
         /**
          * 用户停止
