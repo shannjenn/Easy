@@ -7,21 +7,21 @@ import android.util.AttributeSet;
 import java.util.List;
 
 /**
- * 导航布局,说明：文字居中导航栏
+ * 导航布局,说明：文字导航栏，滑动游标效果、标题可以滑动
  * xmlns:app="http://schemas.android.com/apk/res-auto"
  * 作者：ShannJenn
  * 时间：2017/10/31.
  */
-public class EasyTabBarTopCenter extends EasyTabBarTopCenterManager {
-    public EasyTabBarTopCenter(Context context) {
+public class EasyTabBarTop extends EasyTabBarTopManager {
+    public EasyTabBarTop(Context context) {
         super(context);
     }
 
-    public EasyTabBarTopCenter(Context context, AttributeSet attrs) {
+    public EasyTabBarTop(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public EasyTabBarTopCenter(Context context, AttributeSet attrs, int defStyleAttr) {
+    public EasyTabBarTop(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 

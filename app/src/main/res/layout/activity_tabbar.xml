@@ -11,53 +11,28 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <com.jen.easyui.tabbar.EasyTabBarTopCenter
-            android:id="@+id/easy_tabar_center"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            app:tab_padding_left_center="15dp"
-            app:tab_padding_right_center="15dp"
-            app:tab_padding_top_center="5dp"
-            app:tab_padding_bottom_center="5dp"
-            app:tab_textSize_center="18sp"
-            app:underline_color_center="#ff0000"
-            app:underline_height_center="1dp"
-            app:indicator_color_center="#0000ff"
-            app:indicator_type_center="block"
-            app:indicator_height_center="5dp"/>
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewpager_center"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-        <com.jen.easyui.tabbar.EasyTabBarTopScroll
+        <com.jen.easyui.tabbar.EasyTabBarTop
             android:id="@+id/easy_tabar_scroll"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            app:tab_padding_left_scroll="15dp"
-            app:tab_padding_right_scroll="15dp"
-            app:tab_padding_top_scroll="5dp"
-            app:tab_padding_bottom_scroll="5dp"
-            app:tab_textSize_scroll="18sp"
-            app:underline_color_scroll="#ff0000"
-            app:underline_height_scroll="1dp"
-            app:indicator_color_scroll="#0000ff"
-            app:indicator_type_scroll="block"
-            app:indicator_height_scroll="5dp"/>
+            app:indicatorColor="#0000ff"
+            app:indicatorFit="tabText"
+            app:indicatorPaddingLeft="10dp"
+            app:indicatorPaddingRight="10dp"
+            app:indicatorType="block"
+            app:tabPaddingBottom="5dp"
+            app:tabPaddingLeft="15dp"
+            app:tabPaddingRight="15dp"
+            app:tabPaddingTop="5dp"
+            app:tabTextSize="18sp"
+            app:tabWeight="true"
+            app:underlineColor="#ff0000"
+            app:underlineHeight="1dp" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager_scroll"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 
@@ -71,12 +46,12 @@
             android:id="@+id/easy_tabbar_txtimg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#ff0000"
             app:itemSize="five"
             app:text0="标题1"
             app:text1="标题2"
             app:text2="标题3"
             app:text3="标题4"
-            app:text4="标题5"
-            android:background="#ff0000"/>
+            app:text4="标题5" />
     </LinearLayout>
 </LinearLayout>
