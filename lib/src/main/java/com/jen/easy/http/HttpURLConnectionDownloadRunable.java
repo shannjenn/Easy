@@ -27,10 +27,10 @@ class HttpURLConnectionDownloadRunable implements Runnable {
 
     @Override
     public void run() {
-        String[] method_url = HttpReflectManager.getUrl(request);
+        Object[] method_url = HttpReflectManager.getUrl(request);
         if (method_url != null) {
-            request.http.method = method_url[0];
-            request.http.url = method_url[1];
+            request.http.method = (String) method_url[0];
+            request.http.url = (String) method_url[1];
         }
         if (TextUtils.isEmpty(request.http.url)) {
             EasyLibLog.w(TAG + request.http.url + " URL地址错误");

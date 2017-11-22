@@ -95,7 +95,12 @@ public final class EasyMouse {
             /**
              * 参数名称
              */
-            String value() default "";
+            String URL() default "";
+
+            /**
+             * 返回实体类
+             */
+            Class Response() default Object.class;
         }
 
         /**
@@ -107,7 +112,12 @@ public final class EasyMouse {
             /**
              * 参数名称
              */
-            String value() default "";
+            String URL() default "";
+
+            /**
+             * 返回实体类
+             */
+            Class Response() default Object.class;
         }
 
         /**
@@ -133,6 +143,13 @@ public final class EasyMouse {
              * 参数名称
              */
             String value() default "";
+
+            /**
+             * Object类型变量指定具体类型(解析是可以为List获取对象)
+             * （@EasyMouse.mHttp.ResponseParam(clazz="Student.class") 注释返回参数）
+             *  （@private Object student;）
+             */
+            Class clazz() default Object.class;
         }
     }
 

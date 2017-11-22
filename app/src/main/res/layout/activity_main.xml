@@ -9,10 +9,17 @@
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:text="tabBar" />
+
     <Button
         android:id="@+id/drawable"
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:text="drawable" />
+
+    <Button
+        android:id="@+id/http"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:text="http" />
 
 </LinearLayout>

@@ -7,16 +7,9 @@ import com.jen.easy.http.imp.HttpUploadListener;
  * 作者：ShannJenn
  * 时间：2017/8/12.
  */
-public class HttpUploadRequest<T extends HttpResponse> extends HttpRequest {
-    private HttpUploadListener<T> uploadListener;
+public class HttpUploadRequest extends HttpRequest {
+    private HttpUploadListener uploadListener;
     public Flag flag = new Flag();
-
-    /**
-     * 公共数据返回，以免创建多个HttpResponse对象
-     * 与HttpResponse中objClass对应，设置返回的实体对象的class类
-     * 如：ResponseObjClass = Student.class,则在HttpResponse返回Student或List<Student>（取决于服务器数据）
-     */
-    public Class ResponseObjClass;
 
     public final class Flag {
         /**
@@ -53,11 +46,11 @@ public class HttpUploadRequest<T extends HttpResponse> extends HttpRequest {
         public boolean isBreak;
     }
 
-    public HttpUploadListener<T> getUploadListener() {
+    public HttpUploadListener getUploadListener() {
         return uploadListener;
     }
 
-    public void setEasyHttpUploadFileListener(HttpUploadListener<T> uploadListener) {
+    public void setEasyHttpUploadFileListener(HttpUploadListener uploadListener) {
         this.uploadListener = uploadListener;
     }
 }

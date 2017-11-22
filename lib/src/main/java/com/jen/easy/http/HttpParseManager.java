@@ -26,38 +26,48 @@ class HttpParseManager {
     /**
      * json解析
      *
-     * @param tObj
+     * @param tClass
      * @param obj
      * @return
      */
-    static <T> T parseJson(T tObj, String obj) {
-        if (obj == null) {
-            EasyLibLog.e(TAG + "parseJson obj is null");
-        }
-        String className = tObj.getClass().getName();
-        if (tObj instanceof HttpResponse) {
-            className = className + " 通用实体类：" + ((HttpResponse) tObj).objClass.getName();
-        }
-        EasyLibLog.d(TAG + "解析：" + className);
-
+    static <T> T parseJson(Class<T> tClass, String obj) {
+        EasyLibLog.d(TAG + "解析：" + tClass.getName());
         try {
             JSONObject object = new JSONObject(obj);
-            tObj = parseJsonObject(tObj, object);
+            T response = parseJsonObject(tClass, object);
+            return response;
         } catch (JSONException e) {
             e.printStackTrace();
             EasyLibLog.e(TAG + "parseJson JSONException error");
         }
-        return tObj;
+        return null;
     }
 
     /**
      * 解析接口返回json格式值
      *
-     * @param tObj
+     * @param tClass     类
      * @param jsonObject
      * @return
      */
-    private static <T> T parseJsonObject(T tObj, JSONObject jsonObject) {
+    private static <T> T parseJsonObject(Class<T> tClass, JSONObject jsonObject) {
+        if (tClass == null || jsonObject == null) {
+            EasyLibLog.e(TAG + "tClass == null || jsonObject == null");
+            return null;
+        }
+        T tObj;
+        try {
+            tObj = tClass.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+            EasyLibLog.e(TAG + "parseJsonObject InstantiationException 创建对象出错");
+            return null;
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            EasyLibLog.e(TAG + "parseJsonObject IllegalAccessException 创建对象出错");
+            return null;
+        }
+
         Map<String, Object> objectMap = HttpReflectManager.getResponseParams(tObj.getClass());
         Map<String, String> param_type = (Map<String, String>) objectMap.get(PARAM_TYPE);
         Map<String, Field> param_field = (Map<String, Field>) objectMap.get(PARAM_FIELD);
@@ -65,21 +75,6 @@ class HttpParseManager {
             EasyLibLog.e(TAG + "parseJsonObject 网络请求返回参数请用@EasyMouse.mHttp.ResponseParam备注正确");
             return null;
         }
-//        EasyLibLog.d(TAG + "clazz=" + clazz.getSimpleName() + " objClass=" + objClass + " jsonObject=" + jsonObject);
-
-        /*T tObj;
-        try {
-            tObj = tClass.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-            EasyLibLog.e(TAG + "parseJsonObject InstantiationException error object");
-            return null;
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            EasyLibLog.e(TAG + "parseJsonObject IllegalAccessException error object");
-            return null;
-        }*/
-
         for (String param : param_type.keySet()) {
             String type = null;
             try {
@@ -158,20 +153,19 @@ class HttpParseManager {
                     } else if (type.contains(Constant.FieldType.ARRAY)) {
                         EasyLibLog.e(TAG + "parseJsonObject Constant.FieldType.ARRAY 不支持数组类型");
                     } else if (type.contains(Constant.FieldType.OBJECT)) {
-                        if (tObj instanceof HttpResponse) {
+                        Class objClass = HttpReflectManager.getObjClass(field);
+                        if (!objClass.getName().equals(Object.class.getName())) {
                             if (value instanceof JSONArray) {
-//                                Class clazz2 = Class.forName(((HttpResponse) tObj).objClass.getName());
-                                List objList = parseJsonArray(((HttpResponse) tObj).objClass, (JSONArray) value);
+                                List objList = parseJsonArray(objClass, (JSONArray) value);
                                 field.set(tObj, objList);
                             } else if (value instanceof JSONObject) {
-//                                Class clazz2 = Class.forName(((HttpResponse) tObj).objClass.getName());
-                                Object object = parseJsonObject(((HttpResponse) tObj).objClass.newInstance(), (JSONObject) value);
+                                Object object = parseJsonObject(objClass, (JSONObject) value);
                                 field.set(tObj, object);
                             } else {
                                 EasyLibLog.e(TAG + "parseJsonObject Constant.FieldType.OBJECT error");
                             }
                         } else {
-                            EasyLibLog.e(TAG + "要解析object类型请继承HttpResponse");
+                            EasyLibLog.e(TAG + "parseJsonObject Constant.FieldType.OBJECT 请指定转换的类");
                         }
                     } else if (type.contains(Constant.FieldType.LIST)) {
                         if (value instanceof JSONArray) {
@@ -207,9 +201,6 @@ class HttpParseManager {
             } catch (NumberFormatException e) {
                 e.printStackTrace();
                 EasyLibLog.e(TAG + "parseJsonObject NumberFormatException：type=" + type + " param=" + param);
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-                EasyLibLog.e(TAG + "parseJsonObject InstantiationException：type=" + type + " param=" + param);
             }
         }
         return tObj;
@@ -229,18 +220,6 @@ class HttpParseManager {
             return list;
         }
         for (int i = 0; i < jsonArray.length(); i++) {
-            T TObj;
-            try {
-                TObj = TClass.newInstance();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-                EasyLibLog.e(TAG + "parseJsonArray InstantiationException");
-                continue;
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-                EasyLibLog.e(TAG + "parseJsonArray IllegalAccessException");
-                continue;
-            }
             Object jsonObj;
             try {
                 jsonObj = jsonArray.get(i);
@@ -250,12 +229,12 @@ class HttpParseManager {
                 continue;
             }
             if (jsonObj instanceof JSONObject) {
-                TObj = parseJsonObject(TObj, (JSONObject) jsonObj);
+                T tObj = parseJsonObject(TClass, (JSONObject) jsonObj);
+                if (tObj != null)
+                    list.add(tObj);
             } else {
                 EasyLibLog.e(TAG + "parseJsonArray jsonArray.get(i) is not JSONObject");
             }
-            if (TObj != null)
-                list.add(TObj);
         }
         return list;
     }

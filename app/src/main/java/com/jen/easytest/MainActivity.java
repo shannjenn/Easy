@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.jen.easy.EasyMouse;
 import com.jen.easytest.activity.DrawableActivity;
+import com.jen.easytest.activity.HttpActivity;
 import com.jen.easytest.activity.TabBarActivity;
 import com.jen.easyui.activity.EasyBaseActivity;
 
@@ -37,7 +38,7 @@ public class MainActivity extends EasyBaseActivity {
 
     }
 
-    @EasyMouse.BIND.Method({R.id.tabBar, R.id.drawable})
+    @EasyMouse.BIND.Method({R.id.tabBar, R.id.drawable, R.id.http})
     private void onClick(View view) {
         Class clazz = null;
         switch (view.getId()) {
@@ -47,6 +48,10 @@ public class MainActivity extends EasyBaseActivity {
             }
             case R.id.drawable: {
                 clazz = DrawableActivity.class;
+                break;
+            }
+            case R.id.http: {
+                clazz = HttpActivity.class;
                 break;
             }
             default: {

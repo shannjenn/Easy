@@ -7,19 +7,9 @@ import com.jen.easy.http.imp.HttpBaseListener;
  * 时间：2017/8/12.
  * 说明：基本数据请求参数
  */
-public class HttpBaseRequest<T extends HttpResponse/*返回的参数*/> extends HttpRequest {
-    private HttpBaseListener<T> bseListener;
+public class HttpBaseRequest extends HttpRequest {
+    private HttpBaseListener bseListener;
     public Flag flag = new Flag();
-
-    /**
-     * 通用数据返回
-     * 设置返回Object变量实体：List集合实体、单实体
-     * 如：
-     * （@EasyMouse.mHttp.ResponseParam("data") 注释返回参数）
-     * （@private Object data; 实体变量）
-     */
-    public Class ResponseObjClass;
-
 
     public final class Flag {
         /**
@@ -34,11 +24,11 @@ public class HttpBaseRequest<T extends HttpResponse/*返回的参数*/> extends 
 
     }
 
-    public HttpBaseListener<T> getBseListener() {
+    public HttpBaseListener getBseListener() {
         return bseListener;
     }
 
-    public void setBseListener(HttpBaseListener<T> bseListener) {
+    public void setBseListener(HttpBaseListener bseListener) {
         this.bseListener = bseListener;
     }
 }

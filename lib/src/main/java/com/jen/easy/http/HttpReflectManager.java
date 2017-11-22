@@ -22,8 +22,8 @@ class HttpReflectManager {
      *
      * @return
      */
-    static String[] getUrl(Object obj) {
-        String[] values = new String[2];
+    static Object[] getUrl(Object obj) {
+        Object[] values = new Object[3];
         if (obj == null) {
             EasyLibLog.e(TAG + "getTableName obj is null");
             return null;
@@ -32,14 +32,16 @@ class HttpReflectManager {
         if (isAnnoGet) {
             EasyMouse.HTTP.GET url =  obj.getClass().getAnnotation(EasyMouse.HTTP.GET.class);
             values[0] = "GET";
-            values[1] = url.value();
+            values[1] = url.URL();
+            values[2] = url.Response();
             return values;
         }
         boolean isAnnoPost = obj.getClass().isAnnotationPresent(EasyMouse.HTTP.POST.class);
         if (isAnnoPost) {
             EasyMouse.HTTP.POST url =  obj.getClass().getAnnotation(EasyMouse.HTTP.POST.class);
             values[0] = "POST";
-            values[1] = url.value();
+            values[1] = url.URL();
+            values[2] = url.Response();
             return values;
         }
         return null;
@@ -112,5 +114,15 @@ class HttpReflectManager {
             param_field.put(paramName, fields[i]);
         }
         return objectMap;
+    }
+
+    static Class getObjClass(Field field) {
+        Class objClass = Object.class;
+        boolean isAnno = field.isAnnotationPresent(EasyMouse.HTTP.ResponseParam.class);
+        if (isAnno) {
+            EasyMouse.HTTP.ResponseParam param = field.getAnnotation(EasyMouse.HTTP.ResponseParam.class);
+            objClass = param.clazz();
+        }
+        return objClass;
     }
 }

@@ -9,8 +9,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -19,6 +17,7 @@ import java.util.Map;
 class HttpURLConnectionRunable implements Runnable {
     private final String TAG = "HttpBase : ";
     private HttpBaseRequest request;
+    private Class responseClass;
 
     HttpURLConnectionRunable(HttpBaseRequest param) {
         super();
@@ -27,10 +26,11 @@ class HttpURLConnectionRunable implements Runnable {
 
     @Override
     public void run() {
-        String[] method_url = HttpReflectManager.getUrl(request);
+        Object[] method_url = HttpReflectManager.getUrl(request);
         if (method_url != null) {
-            request.http.method = method_url[0];
-            request.http.url = method_url[1];
+            request.http.method = (String) method_url[0];
+            request.http.url = (String) method_url[1];
+            responseClass = (Class) method_url[2];
         }
         if (TextUtils.isEmpty(request.http.url)) {
             EasyLibLog.e(TAG + request.http.url + " URL地址错误");
@@ -114,51 +114,11 @@ class HttpURLConnectionRunable implements Runnable {
 
     private void success(String result) {
         if (request.getBseListener() != null) {
-            Type type = request.getClass().getGenericSuperclass();//获取超类T类型
-            if (!(type instanceof ParameterizedType)) {
-                EasyLibLog.e(TAG + request.http.url + " 请求参数未指定泛型返回类型");
-                fail(" 请求参数未指定返回类型");
-                return;
-            }
-            Type classType = ((ParameterizedType) type).getActualTypeArguments()[0];//获取T值实体类型
-            if (!(classType instanceof Class)) {
-                EasyLibLog.e(TAG + request.http.url + classType + " 泛型不是Class类型");
-                fail(classType + " 不是Class类型");
-                return;
-            }
-            HttpResponse response;
-            try {
-                Class clazz = Class.forName(((Class) classType).getName());
-                Object object = clazz.newInstance();
-                if (!(object instanceof HttpResponse)) {
-                    EasyLibLog.e(TAG + request.http.url + classType + " 泛型不是HttpResponse类型");
-                    fail(classType + " HttpResponse类型");
-                    return;
-                }
-                response = (HttpResponse) object;
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-                EasyLibLog.e(TAG + request.http.url + " InstantiationException");
-                fail("不存在泛型：" + ((Class) classType).getName());
-                return;
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-                EasyLibLog.e(TAG + request.http.url + " IllegalAccessException");
-                fail("不存在泛型：" + ((Class) classType).getName());
-                return;
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-                EasyLibLog.e(TAG + request.http.url + " ClassNotFoundException");
-                fail("不存在泛型：" + ((Class) classType).getName());
-                return;
-            }
-
-            response.objClass = request.ResponseObjClass;
-            Object parseObject = HttpParseManager.parseJson(response, result);
+            Object parseObject = HttpParseManager.parseJson(responseClass, result);
             if (parseObject == null) {
                 fail("数据解析异常");
             } else {
-                request.getBseListener().success(request.flag.code, request.flag.str, response);
+                request.getBseListener().success(request.flag.code, request.flag.str, parseObject);
             }
         }
     }
