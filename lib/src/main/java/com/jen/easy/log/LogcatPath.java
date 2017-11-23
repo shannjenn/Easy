@@ -13,7 +13,7 @@ class LogcatPath {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {// 优先保存到SD卡中
             logPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "_LogcatHelper";
         } else {// 如果SD卡不存在，就保存到本应用的目录下
-            logPath = EasyApplication.getAppContext().getFilesDir().getAbsolutePath() + File.separator + "WeCareLoveLog";
+            logPath = EasyApplication.getAppContext().getFilesDir().getAbsolutePath() + File.separator + "_LogcatHelper";
         }
         /*if (logPath == null)
             return;*/

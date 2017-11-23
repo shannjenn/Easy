@@ -5,7 +5,9 @@
         <attr name="stroke_click_color" format="color" />
 
         <attr name="corners" format="dimension" />
-        <attr name="corners_half_circle" format="boolean" />
+        <attr name="corners_half_round" format="boolean" />
+        <attr name="cornersShowLeft" format="boolean" />
+        <attr name="cornersShowRight" format="boolean" />
 
         <attr name="solid_color" format="color" />
         <attr name="solid_click_color" format="color" />

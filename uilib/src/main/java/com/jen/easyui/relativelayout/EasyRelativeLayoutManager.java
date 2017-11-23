@@ -9,7 +9,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.RelativeLayout;
 
-import com.jen.easy.log.EasyUILog;
 import com.jen.easyui.R;
 
 /**
@@ -28,7 +27,9 @@ abstract class EasyRelativeLayoutManager extends RelativeLayout {
 
     private int mCorners;
     /*是否半圆*/
-    private boolean mCornersHalfCircle;
+    private boolean mCornersHalfRound;
+    private boolean mCornersShowLeft;
+    private boolean mCornersShowRight;
 
     private int mSolidColor;
     private int mSolidClickColor;
@@ -65,7 +66,9 @@ abstract class EasyRelativeLayoutManager extends RelativeLayout {
         mStrokeClickColor = ta.getColor(R.styleable.EasyRelativeLayout_stroke_click_color, 0);
 
         mCorners = (int) ta.getDimension(R.styleable.EasyRelativeLayout_corners, 0);
-        mCornersHalfCircle = ta.getBoolean(R.styleable.EasyRelativeLayout_corners_half_circle, false);
+        mCornersHalfRound = ta.getBoolean(R.styleable.EasyRelativeLayout_corners_half_round, false);
+        mCornersShowLeft = ta.getBoolean(R.styleable.EasyRelativeLayout_cornersShowLeft, true);
+        mCornersShowRight = ta.getBoolean(R.styleable.EasyRelativeLayout_cornersShowRight, true);
 
         mSolidColor = ta.getColor(R.styleable.EasyRelativeLayout_solid_color, 0);
         mSolidClickColor = ta.getColor(R.styleable.EasyRelativeLayout_solid_click_color, 0);
@@ -94,17 +97,31 @@ abstract class EasyRelativeLayoutManager extends RelativeLayout {
         mDrawable = (GradientDrawable) getBackground();
         mDrawable.setStroke(mStrokeWidth, mStrokeColor);
         mDrawable.setColor(mSolidColor);
-        if (!mCornersHalfCircle) {
-            mDrawable.setCornerRadius(mCorners);
+        if (!mCornersHalfRound) {
+            if (mCornersShowLeft && mCornersShowRight) {
+                mDrawable.setCornerRadius(mCorners);
+            } else {
+                int cornerLeft = mCornersShowLeft ? mCorners : 0;
+                int cornerRight = mCornersShowRight ? mCorners : 0;
+                mDrawable.setCornerRadii(new float[]{cornerLeft, cornerLeft, cornerRight, cornerRight,
+                        cornerRight, cornerRight, cornerLeft, cornerLeft});
+            }
         }
-        setPadding(mPaddingLeft,mPaddingTop,mPaddingRight,mPaddingBottom);
+        setPadding(mPaddingLeft, mPaddingTop, mPaddingRight, mPaddingBottom);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        if (mCornersHalfCircle) {
-            mDrawable.setCornerRadius(getHeight() / 2);
+        if (mCornersHalfRound) {
+            if (mCornersShowLeft && mCornersShowRight) {
+                mDrawable.setCornerRadius(getHeight() / 2);
+            } else {
+                int cornerLeft = mCornersShowLeft ? getHeight() / 2 : 0;
+                int cornerRight = mCornersShowRight ? getHeight() / 2 : 0;
+                mDrawable.setCornerRadii(new float[]{cornerLeft, cornerLeft, cornerRight, cornerRight,
+                        cornerRight, cornerRight, cornerLeft, cornerLeft});
+            }
         }
     }
 

@@ -5,7 +5,9 @@
         <attr name="stroke_focus_color" format="color" />
 
         <attr name="corners" />
-        <attr name="corners_half_circle" />
+        <attr name="corners_half_round" />
+        <attr name="cornersShowLeft" />
+        <attr name="cornersShowRight" />
 
         <attr name="solid_color" />
         <attr name="solid_focus_color" format="color" />
@@ -15,10 +17,10 @@
 
         <attr name="change_focus_color" format="boolean" />
 
-        <attr name="android:paddingLeft"/>
-        <attr name="android:paddingRight"/>
-        <attr name="android:paddingTop"/>
-        <attr name="android:paddingBottom"/>
-        <attr name="android:padding"/>
+        <attr name="android:paddingLeft" />
+        <attr name="android:paddingRight" />
+        <attr name="android:paddingTop" />
+        <attr name="android:paddingBottom" />
+        <attr name="android:padding" />
     </declare-styleable>
 </resources>
