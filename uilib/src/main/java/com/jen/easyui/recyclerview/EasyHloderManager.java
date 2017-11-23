@@ -85,7 +85,7 @@ abstract class EasyHloderManager<T> extends RecyclerView.ViewHolder {
     }
 
     void onBindViewHolder(T item, int pos) {
-        itemView.setTag(pos, null);//pos作为tag
+        itemView.setTag(pos);//pos作为tag
         onBindEasyHolder(item, pos);
     }
 
