@@ -19,7 +19,8 @@ import com.jen.easyui.R;
 
 abstract class EasyLinearLayoutManager extends LinearLayout {
     private final String TAG = "EasyLinearLayoutManager : ";
-    GradientDrawable mDrawable;
+    private GradientDrawable mDrawable;
+    private int mHeight;
 
     private int mStrokeWidth;
     private int mStrokeColor;
@@ -93,10 +94,10 @@ abstract class EasyLinearLayoutManager extends LinearLayout {
 
 
     private void init() {
-        super.setBackgroundDrawable(getResources().getDrawable(R.drawable._easy_linearlayout));
-        mDrawable = (GradientDrawable) getBackground();
+        mDrawable = new GradientDrawable();
         mDrawable.setStroke(mStrokeWidth, mStrokeColor);
         mDrawable.setColor(mSolidColor);
+        mDrawable.setGradientType(GradientDrawable.LINEAR_GRADIENT);
         if (!mCornersHalfRound) {
             if (mCornersShowLeft && mCornersShowRight) {
                 mDrawable.setCornerRadius(mCorners);
@@ -107,21 +108,28 @@ abstract class EasyLinearLayoutManager extends LinearLayout {
                         cornerRight, cornerRight, cornerLeft, cornerLeft});
             }
         }
-        setPadding(mPaddingLeft, mPaddingTop, mPaddingRight, mPaddingBottom);
+        super.setBackgroundDrawable(mDrawable);
+    }
+
+    private void setHalfRound() {
+        if (mCornersHalfRound) {
+            if (mCornersShowLeft && mCornersShowRight) {
+                mDrawable.setCornerRadius(mHeight / 2);
+            } else {
+                int cornerLeft = mCornersShowLeft ? mHeight / 2 : 0;
+                int cornerRight = mCornersShowRight ? mHeight / 2 : 0;
+                mDrawable.setCornerRadii(new float[]{cornerLeft, cornerLeft, cornerRight, cornerRight,
+                        cornerRight, cornerRight, cornerLeft, cornerLeft});
+            }
+        }
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        if (mCornersHalfRound) {
-            if (mCornersShowLeft && mCornersShowRight) {
-                mDrawable.setCornerRadius(getHeight() / 2);
-            } else {
-                int cornerLeft = mCornersShowLeft ? getHeight() / 2 : 0;
-                int cornerRight = mCornersShowRight ? getHeight() / 2 : 0;
-                mDrawable.setCornerRadii(new float[]{cornerLeft, cornerLeft, cornerRight, cornerRight,
-                        cornerRight, cornerRight, cornerLeft, cornerLeft});
-            }
+        if (mHeight == 0) {
+            mHeight = getHeight();
+            setHalfRound();
         }
     }
 
@@ -150,7 +158,7 @@ abstract class EasyLinearLayoutManager extends LinearLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if(!mChangeClickColor)
+        if (!mChangeClickColor)
             return super.onTouchEvent(event);
         if (isClickable()) {
             switch (event.getAction()) {
