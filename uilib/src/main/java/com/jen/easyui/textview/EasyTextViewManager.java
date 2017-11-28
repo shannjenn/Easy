@@ -37,10 +37,10 @@ abstract class EasyTextViewManager extends android.support.v7.widget.AppCompatTe
     private int mTextColor;
     private int mTextClickColor;
 
-    private int mPaddingLeft;
-    private int mPaddingRight;
-    private int mPaddingTop;
-    private int mPaddingBottom;
+//    private int mPaddingLeft;
+//    private int mPaddingRight;
+//    private int mPaddingTop;
+//    private int mPaddingBottom;
 
     private boolean mChangeClickColor;
 
@@ -81,7 +81,7 @@ abstract class EasyTextViewManager extends android.support.v7.widget.AppCompatTe
 
         mChangeClickColor = ta.getBoolean(R.styleable.EasyTextView_change_click_color, false);
 
-        int padding = (int) ta.getDimension(R.styleable.EasyTextView_android_padding, 0);
+        /*int padding = (int) ta.getDimension(R.styleable.EasyTextView_android_padding, 0);
         if (padding == 0) {
             mPaddingLeft = (int) ta.getDimension(R.styleable.EasyTextView_android_paddingLeft, 0);
             mPaddingRight = (int) ta.getDimension(R.styleable.EasyTextView_android_paddingRight, 0);
@@ -92,7 +92,7 @@ abstract class EasyTextViewManager extends android.support.v7.widget.AppCompatTe
             mPaddingRight = padding;
             mPaddingTop = padding;
             mPaddingBottom = padding;
-        }
+        }*/
 
         ta.recycle();
     }

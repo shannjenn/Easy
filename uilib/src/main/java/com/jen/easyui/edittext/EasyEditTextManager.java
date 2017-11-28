@@ -37,10 +37,10 @@ abstract class EasyEditTextManager extends android.support.v7.widget.AppCompatEd
     private int mTextColor;
     private int mTextFocusColor;
 
-    private int mPaddingLeft;
-    private int mPaddingRight;
-    private int mPaddingTop;
-    private int mPaddingBottom;
+//    private int mPaddingLeft;
+//    private int mPaddingRight;
+//    private int mPaddingTop;
+//    private int mPaddingBottom;
 
     /*是否触摸变色*/
     private boolean mChangeFocusColor;
@@ -82,7 +82,7 @@ abstract class EasyEditTextManager extends android.support.v7.widget.AppCompatEd
 
         mChangeFocusColor = ta.getBoolean(R.styleable.EasyEditText_change_focus_color, false);
 
-        int padding = (int) ta.getDimension(R.styleable.EasyEditText_android_padding, 0);
+        /*int padding = (int) ta.getDimension(R.styleable.EasyEditText_android_padding, 0);
         if (padding == 0) {
             mPaddingLeft = (int) ta.getDimension(R.styleable.EasyEditText_android_paddingLeft, 0);
             mPaddingRight = (int) ta.getDimension(R.styleable.EasyEditText_android_paddingRight, 0);
@@ -93,7 +93,7 @@ abstract class EasyEditTextManager extends android.support.v7.widget.AppCompatEd
             mPaddingRight = padding;
             mPaddingTop = padding;
             mPaddingBottom = padding;
-        }
+        }*/
 
         ta.recycle();
     }
