@@ -61,18 +61,18 @@ class HttpReflectManager {
         }
 
         Field[] fields = obj.getClass().getDeclaredFields();
-        for (int i = 0; i < fields.length; i++) {
-            boolean isAnno = fields[i].isAnnotationPresent(EasyMouse.HTTP.RequestParam.class);
+        for (Field field : fields) {
+            boolean isAnno = field.isAnnotationPresent(EasyMouse.HTTP.RequestParam.class);
             if (!isAnno)
                 continue;
-            EasyMouse.HTTP.RequestParam param = fields[i].getAnnotation(EasyMouse.HTTP.RequestParam.class);
+            EasyMouse.HTTP.RequestParam param = field.getAnnotation(EasyMouse.HTTP.RequestParam.class);
             String paramName = param.value().trim();
             if (paramName.length() == 0) {
                 continue;
             }
-            fields[i].setAccessible(true);
+            field.setAccessible(true);
             try {
-                String value = fields[i].get(obj) + "";
+                String value = field.get(obj) + "";
                 params.put(paramName, value);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
@@ -100,18 +100,18 @@ class HttpReflectManager {
         }
 
         Field[] fields = clazz.getDeclaredFields();
-        for (int i = 0; i < fields.length; i++) {
-            boolean isAnno = fields[i].isAnnotationPresent(EasyMouse.HTTP.ResponseParam.class);
+        for (Field field : fields) {
+            boolean isAnno = field.isAnnotationPresent(EasyMouse.HTTP.ResponseParam.class);
             if (!isAnno)
                 continue;
-            EasyMouse.HTTP.ResponseParam param = fields[i].getAnnotation(EasyMouse.HTTP.ResponseParam.class);
+            EasyMouse.HTTP.ResponseParam param = field.getAnnotation(EasyMouse.HTTP.ResponseParam.class);
             String paramName = param.value().trim();
             if (paramName.length() == 0) {
                 continue;
             }
-            String type = fields[i].getGenericType().toString();
+            String type = field.getGenericType().toString();
             param_type.put(paramName, type);
-            param_field.put(paramName, fields[i]);
+            param_field.put(paramName, field);
         }
         return objectMap;
     }

@@ -9,6 +9,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
+import java.util.Set;
 import java.util.WeakHashMap;
 
 /**
@@ -35,7 +36,8 @@ abstract class BindViewManager {
         Map<String, Object> objectMap = BindReflectManager.getFields(activity.getClass());
         Map<Integer, String> id_type = (Map<Integer, String>) objectMap.get(BindReflectManager.ID_TYPE);
         Map<Integer, Field> id_field = (Map<Integer, Field>) objectMap.get(BindReflectManager.ID_FIELD);
-        for (int id : id_type.keySet()) {
+        Set<Integer> sets = id_type.keySet();
+        for (int id : sets) {
             View view = activity.findViewById(id);
             Field fild = id_field.get(id);
             fild.setAccessible(true);
@@ -48,7 +50,8 @@ abstract class BindViewManager {
         }
 
         Map<Method, int[]> method_ids = BindReflectManager.getMethods(activity.getClass());
-        for (final Method method : method_ids.keySet()) {
+        Set<Method> methodSet = method_ids.keySet();
+        for (final Method method : methodSet) {
             int[] ids = method_ids.get(method);
             for (int i = 0; i < ids.length; i++) {
                 final View view = activity.findViewById(ids[i]);
@@ -83,7 +86,8 @@ abstract class BindViewManager {
         Map<String, Object> objectMap = BindReflectManager.getFields(obj.getClass());
         Map<Integer, String> id_type = (Map<Integer, String>) objectMap.get(BindReflectManager.ID_TYPE);
         Map<Integer, Field> id_field = (Map<Integer, Field>) objectMap.get(BindReflectManager.ID_FIELD);
-        for (int id : id_type.keySet()) {
+        Set<Integer> sets = id_type.keySet();
+        for (int id : sets) {
             View view = parent.findViewById(id);
             Field fild = id_field.get(id);
             fild.setAccessible(true);
@@ -96,10 +100,11 @@ abstract class BindViewManager {
         }
 
         Map<Method, int[]> method_ids = BindReflectManager.getMethods(obj.getClass());
-        for (final Method method : method_ids.keySet()) {
+        Set<Method> methodSet = method_ids.keySet();
+        for (final Method method : methodSet) {
             int[] ids = method_ids.get(method);
-            for (int i = 0; i < ids.length; i++) {
-                final View view = parent.findViewById(ids[i]);
+            for (int id : ids) {
+                final View view = parent.findViewById(id);
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

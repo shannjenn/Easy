@@ -41,18 +41,18 @@ abstract class BindReflectManager {
         }
 
         Field[] fields = clazz.getDeclaredFields();
-        for (int i = 0; i < fields.length; i++) {
-            boolean isAnno = fields[i].isAnnotationPresent(EasyMouse.BIND.ID.class);
+        for (Field field : fields) {
+            boolean isAnno = field.isAnnotationPresent(EasyMouse.BIND.ID.class);
             if (!isAnno)
                 continue;
-            EasyMouse.BIND.ID easyID = fields[i].getAnnotation(EasyMouse.BIND.ID.class);
+            EasyMouse.BIND.ID easyID = field.getAnnotation(EasyMouse.BIND.ID.class);
             int id = easyID.value();
             if (id == -1)
                 continue;
-            String type = fields[i].getGenericType().toString();
+            String type = field.getGenericType().toString();
 
             id_type.put(id, type);
-            id_field.put(id, fields[i]);
+            id_field.put(id, field);
         }
         return objectMap;
     }
@@ -70,13 +70,13 @@ abstract class BindReflectManager {
             return method_ids;
         }
         Method[] methods = clazz.getDeclaredMethods();
-        for (int i = 0; i < methods.length; i++) {
-            boolean isAnno = methods[i].isAnnotationPresent(EasyMouse.BIND.Method.class);
+        for (Method method : methods) {
+            boolean isAnno = method.isAnnotationPresent(EasyMouse.BIND.Method.class);
             if (!isAnno)
                 continue;
-            EasyMouse.BIND.Method easyID = methods[i].getAnnotation(EasyMouse.BIND.Method.class);
+            EasyMouse.BIND.Method easyID = method.getAnnotation(EasyMouse.BIND.Method.class);
             int[] ids = easyID.value();
-            method_ids.put(methods[i], ids);
+            method_ids.put(method, ids);
         }
         return method_ids;
     }

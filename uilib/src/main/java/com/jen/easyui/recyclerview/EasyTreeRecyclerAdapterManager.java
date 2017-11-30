@@ -67,7 +67,8 @@ abstract class EasyTreeRecyclerAdapterManager<T extends EasyTreeItem> extends Re
             return list;
         } else {
             list.addAll(chilren);
-            for (int i = 0; i < chilren.size(); i++) {
+            int size = chilren.size();
+            for (int i = 0; i < size; i++) {
                 list.addAll(getAllExpandItem(chilren.get(i)));
             }
             return list;

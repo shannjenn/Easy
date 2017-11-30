@@ -12,6 +12,7 @@ import com.jen.easy.sqlite.imp.DatabaseListener;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 abstract class DBHelperManager {
     private final String TAG = "DBHelperManager : ";
@@ -89,7 +90,8 @@ abstract class DBHelperManager {
         StringBuffer primaryKeySql = new StringBuffer("");
         StringBuffer fieldSql = new StringBuffer("");
 
-        for (String fieldName : column_type.keySet()) {
+        Set<String> sets = column_type.keySet();
+        for (String fieldName : sets) {
             String fieldType = column_type.get(fieldName);
             String type = Constant.FieldType.getDBCoumnType(fieldType);
 
@@ -99,7 +101,8 @@ abstract class DBHelperManager {
             fieldSql.append(",");
         }
 
-        for (int i = 0; i < primaryKey.size(); i++) {
+        int size = primaryKey.size();
+        for (int i = 0; i < size; i++) {
             if (i == 0) {
                 primaryKeySql.append("primary key (");
                 primaryKeySql.append(primaryKey.get(i));

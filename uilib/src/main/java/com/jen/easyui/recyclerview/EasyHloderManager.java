@@ -40,8 +40,7 @@ abstract class EasyHloderManager<T> extends RecyclerView.ViewHolder {
         }
 
         if (clicks != null) {
-            for (int i = 0; i < clicks.length; i++) {
-                int id = clicks[i];
+            for (int id : clicks) {
                 View view = itemView.findViewById(id);
                 if (view == null) {
                     EasyUILog.e("点击设置事件失败，请检查ID是否正确id=" + id);
@@ -57,8 +56,7 @@ abstract class EasyHloderManager<T> extends RecyclerView.ViewHolder {
         }
 
         if (longClicks != null) {
-            for (int i = 0; i < longClicks.length; i++) {
-                int id = longClicks[i];
+            for (int id : longClicks) {
                 View view = itemView.findViewById(id);
                 if (view == null) {
                     EasyUILog.e("点击设置事件失败，请检查ID是否正确id=" + id);

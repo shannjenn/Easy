@@ -13,9 +13,11 @@ import com.jen.easy.log.EasyLibLog;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static android.R.attr.type;
 import static com.jen.easy.sqlite.DBReflectManager.COLUMN_FIELD;
@@ -38,7 +40,7 @@ abstract class DBDaoManager {
 
     /**
      * @param clazz 要查找的对象
-     * @param id ID
+     * @param id    ID
      * @return 对象
      */
     protected <T> T searchById(Class<T> clazz, String id) {
@@ -222,7 +224,8 @@ abstract class DBDaoManager {
                     return false;
                 }
                 Map<String, Object> objectMap = DBReflectManager.getColumnNames(list.get(0).getClass());
-                for (int i = 0; i < list.size(); i++) {
+                int size = list.size();
+                for (int i = 0; i < size; i++) {
                     ContentValues values = cntentValues(list.get(i), objectMap);
                     db.insert(tableName, null, values);
                 }
@@ -238,8 +241,8 @@ abstract class DBDaoManager {
                     return false;
                 }
                 Map<String, Object> objectMap = DBReflectManager.getColumnNames(objs[0].getClass());
-                for (int i = 0; i < objs.length; i++) {
-                    ContentValues values = cntentValues(objs[i], objectMap);
+                for (Object obj : objs) {
+                    ContentValues values = cntentValues(obj, objectMap);
                     db.insert(tableName, null, values);
                 }
             } else if (t instanceof Map) {
@@ -250,7 +253,8 @@ abstract class DBDaoManager {
                 }
                 String tableName = null;
                 Map<String, Object> objectMap = null;
-                for (Object value : map.values()) {
+                Collection<Object> collection = map.values();
+                for (Object value : collection) {
                     if (tableName == null) {
                         tableName = DBReflectManager.getTableName(value.getClass());
                         objectMap = DBReflectManager.getColumnNames(value.getClass());
@@ -318,7 +322,8 @@ abstract class DBDaoManager {
                     return false;
                 }
                 Map<String, Object> objectMap = DBReflectManager.getColumnNames(list.get(0).getClass());
-                for (int i = 0; i < list.size(); i++) {
+                int size = list.size();
+                for (int i = 0; i < size; i++) {
                     ContentValues values = cntentValues(list.get(i), objectMap);
                     db.replace(tableName, null, values);
                 }
@@ -334,8 +339,8 @@ abstract class DBDaoManager {
                     return false;
                 }
                 Map<String, Object> objectMap = DBReflectManager.getColumnNames(objs[0].getClass());
-                for (int i = 0; i < objs.length; i++) {
-                    ContentValues values = cntentValues(objs[i], objectMap);
+                for (Object obj : objs) {
+                    ContentValues values = cntentValues(obj, objectMap);
                     db.replace(tableName, null, values);
                 }
             } else if (t instanceof Map) {
@@ -346,7 +351,8 @@ abstract class DBDaoManager {
                 }
                 String tableName = null;
                 Map<String, Object> objectMap = null;
-                for (Object value : map.values()) {
+                Collection<Object> collection = map.values();
+                for (Object value : collection) {
                     if (tableName == null) {
                         tableName = DBReflectManager.getTableName(value.getClass());
                         objectMap = DBReflectManager.getColumnNames(value.getClass());
@@ -457,7 +463,8 @@ abstract class DBDaoManager {
         }
         try {
             db.beginTransaction();
-            for (int i = 0; i < ids.size(); i++) {
+            int size = ids.size();
+            for (int i = 0; i < size; i++) {
                 db.delete(tableName, primarys.get(0) + "=?", new String[]{ids.get(i)});
             }
             db.setTransactionSuccessful();
@@ -505,14 +512,16 @@ abstract class DBDaoManager {
         try {
             db.beginTransaction();
             if (t instanceof List) {
-                for (int i = 0; i < ((List) t).size(); i++) {
+                int size = ((List) t).size();
+                for (int i = 0; i < size; i++) {
                     Map<String, String> primaryKeys_values = DBReflectManager.getPrimaryKeysValues(((List) t).get(i));
                     if (primaryKeys_values.size() == 0)
                         continue;
                     int index = 0;
                     StringBuffer whereCause = new StringBuffer("");
                     String[] selectArg = new String[primaryKeys_values.size()];
-                    for (String key : primaryKeys_values.keySet()) {
+                    Set<String> sets = primaryKeys_values.keySet();
+                    for (String key : sets) {
                         if (index > 0) {
                             whereCause.append(" and ");
                         }
@@ -529,7 +538,8 @@ abstract class DBDaoManager {
                 int index = 0;
                 StringBuffer whereCause = new StringBuffer("");
                 String[] selectArg = new String[primaryKeys_values.size()];
-                for (String key : primaryKeys_values.keySet()) {
+                Set<String> sets = primaryKeys_values.keySet();
+                for (String key : sets) {
                     if (index > 0) {
                         whereCause.append(" and ");
                     }
@@ -625,7 +635,8 @@ abstract class DBDaoManager {
 
         ContentValues values = new ContentValues();
         try {
-            for (String column : column_field.keySet()) {
+            Set<String> sets = column_field.keySet();
+            for (String column : sets) {
                 Field field = column_field.get(column);
                 field.setAccessible(true);
                 String type = field.getGenericType().toString();
@@ -660,7 +671,8 @@ abstract class DBDaoManager {
                     } else if (value instanceof List) {
                         List<Object> list = (List<Object>) value;
                         StringBuffer foreignKeyValue = new StringBuffer("");
-                        for (int i = 0; i < list.size(); i++) {
+                        int size = list.size();
+                        for (int i = 0; i < size; i++) {
                             String foreignValue = DBReflectManager.getPrimaryKeyValue(list.get(i), column_foreignKey.get(column));
                             if (foreignValue == null)
                                 break;
@@ -702,7 +714,8 @@ abstract class DBDaoManager {
         T obj = null;
         try {
             obj = clazz.newInstance();
-            for (String column : column_field.keySet()) {
+            Set<String> sets = column_field.keySet();
+            for (String column : sets) {
                 Field field = column_field.get(column);
                 field.setAccessible(true);
                 String type = field.getGenericType().toString();

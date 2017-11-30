@@ -27,7 +27,8 @@ public class EasyLog {
         if (LOGCAT_OPEN) {
             if (msg != null && msg.length() > length) {
                 int part = 0;
-                for (int i = 0; i < msg.length(); i += length) {
+                int length = msg.length();
+                for (int i = 0; i < length; i += length) {
                     if (i + length < msg.length()) {
                         Log.d(TAG + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
                     } else {
@@ -45,7 +46,8 @@ public class EasyLog {
         if (LOGCAT_OPEN) {
             if (msg != null && msg.length() > length) {
                 int part = 0;
-                for (int i = 0; i < msg.length(); i += length) {
+                int length = msg.length();
+                for (int i = 0; i < length; i += length) {
                     if (i + length < msg.length()) {
                         Log.i(TAG + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
                     } else {
@@ -63,7 +65,8 @@ public class EasyLog {
         if (LOGCAT_OPEN) {
             if (msg != null && msg.length() > length) {
                 int part = 0;
-                for (int i = 0; i < msg.length(); i += length) {
+                int length = msg.length();
+                for (int i = 0; i < length; i += length) {
                     if (i + length < msg.length()) {
                         Log.w(TAG + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
                     } else {
@@ -81,7 +84,8 @@ public class EasyLog {
         if (LOGCAT_OPEN) {
             if (msg != null && msg.length() > length) {
                 int part = 0;
-                for (int i = 0; i < msg.length(); i += length) {
+                int length = msg.length();
+                for (int i = 0; i < length; i += length) {
                     if (i + length < msg.length()) {
                         Log.e(TAG + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
                     } else {
@@ -100,7 +104,8 @@ public class EasyLog {
         if (LOGCAT_OPEN) {
             if (msg != null && msg.length() > length) {
                 int part = 0;
-                for (int i = 0; i < msg.length(); i += length) {
+                int length = msg.length();
+                for (int i = 0; i < length; i += length) {
                     if (i + length < msg.length()) {
                         Log.e(tag + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
                     } else {
@@ -118,7 +123,8 @@ public class EasyLog {
         if (LOGCAT_OPEN) {
             if (msg != null && msg.length() > length) {
                 int part = 0;
-                for (int i = 0; i < msg.length(); i += length) {
+                int length = msg.length();
+                for (int i = 0; i < length; i += length) {
                     if (i + length < msg.length()) {
                         Log.e(tag + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
                     } else {
@@ -136,7 +142,8 @@ public class EasyLog {
         if (LOGCAT_OPEN) {
             if (msg != null && msg.length() > length) {
                 int part = 0;
-                for (int i = 0; i < msg.length(); i += length) {
+                int length = msg.length();
+                for (int i = 0; i < length; i += length) {
                     if (i + length < msg.length()) {
                         Log.e(tag + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
                     } else {
@@ -154,7 +161,8 @@ public class EasyLog {
         if (LOGCAT_OPEN) {
             if (msg != null && msg.length() > length) {
                 int part = 0;
-                for (int i = 0; i < msg.length(); i += length) {
+                int length = msg.length();
+                for (int i = 0; i < length; i += length) {
                     if (i + length < msg.length()) {
                         Log.e(tag + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
                     } else {
@@ -172,7 +180,8 @@ public class EasyLog {
         if (LOGCAT_OPEN) {
             if (msg != null && msg.length() > length) {
                 int part = 0;
-                for (int i = 0; i < msg.length(); i += length) {
+                int length = msg.length();
+                for (int i = 0; i < length; i += length) {
                     if (i + length < msg.length()) {
                         Log.e(tag + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
                     } else {

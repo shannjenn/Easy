@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static com.jen.easy.http.HttpReflectManager.PARAM_FIELD;
 import static com.jen.easy.http.HttpReflectManager.PARAM_TYPE;
@@ -75,7 +76,8 @@ class HttpParseManager {
             EasyLibLog.e(TAG + "parseJsonObject 网络请求返回参数请用@EasyMouse.mHttp.ResponseParam备注正确");
             return null;
         }
-        for (String param : param_type.keySet()) {
+        Set<String> sets = param_type.keySet();
+        for (String param : sets) {
             String type = null;
             try {
                 if (jsonObject.has(param)) {
@@ -219,7 +221,8 @@ class HttpParseManager {
             EasyLibLog.e(TAG + "parseJsonArray clazz or jsonArray is null");
             return list;
         }
-        for (int i = 0; i < jsonArray.length(); i++) {
+        int length = jsonArray.length();
+        for (int i = 0; i < length; i++) {
             Object jsonObj;
             try {
                 jsonObj = jsonArray.get(i);

@@ -25,11 +25,11 @@ class AOPReflectManager {
             return null;
         }
         Method[] methods = clazz.getDeclaredMethods();
-        for (int i = 0; i < methods.length; i++) {
-            boolean isAnno = methods[i].isAnnotationPresent(EasyMouse.AOP.before.class);
+        for (Method method : methods) {
+            boolean isAnno = method.isAnnotationPresent(EasyMouse.AOP.before.class);
             if (!isAnno)
                 continue;
-            return methods[i];
+            return method;
         }
         return null;
     }
@@ -46,11 +46,11 @@ class AOPReflectManager {
             return null;
         }
         Method[] methods = clazz.getDeclaredMethods();
-        for (int i = 0; i < methods.length; i++) {
-            boolean isAnno = methods[i].isAnnotationPresent(EasyMouse.AOP.after.class);
+        for (Method method : methods) {
+            boolean isAnno = method.isAnnotationPresent(EasyMouse.AOP.after.class);
             if (!isAnno)
                 continue;
-            return methods[i];
+            return method;
         }
         return null;
     }

@@ -47,8 +47,8 @@ abstract class DynamicProxyManager implements InvocationHandler {
             beforeMethod = AOPReflectManager.getBefore(beforeClzz);
             this.beforeClzz = beforeClzz.newInstance();
             this.beforeParams = beforeParams;
-            for (int i = 0; i < beforeParams.length; i++) {
-                if (beforeParams[i] == null) {
+            for (Object beforeParam : beforeParams) {
+                if (beforeParam == null) {
                     this.beforeClzz = null;
                     break;
                 }
@@ -71,8 +71,8 @@ abstract class DynamicProxyManager implements InvocationHandler {
             afterMethod = AOPReflectManager.getAfter(afterClzz);
             this.afterClzz = afterClzz.newInstance();
             this.afterParams = afterParams;
-            for (int i = 0; i < afterParams.length; i++) {
-                if (afterParams[i] == null) {
+            for (Object afterParam : afterParams) {
+                if (afterParam == null) {
                     this.afterClzz = null;
                     break;
                 }

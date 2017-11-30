@@ -15,6 +15,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
+import java.util.Set;
 
 class HttpURLConnectionDownloadRunable implements Runnable {
     private final String TAG = "HttpDownload : ";
@@ -80,7 +81,8 @@ class HttpURLConnectionDownloadRunable implements Runnable {
             boolean hasParam = false;
             boolean isNotFirst = false;
             StringBuffer requestBuf = new StringBuffer("");
-            for (String name : requestParams.keySet()) {
+            Set<String> sets = requestParams.keySet();
+            for (String name : sets) {
                 String value = requestParams.get(name);
                 if (isNotFirst) {
                     requestBuf.append("&");
