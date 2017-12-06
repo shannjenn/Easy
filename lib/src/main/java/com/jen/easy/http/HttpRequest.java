@@ -1,17 +1,20 @@
 package com.jen.easy.http;
 
-/**
- * Created by Jen on 2017/7/26.
- */
+import java.util.HashMap;
+import java.util.Map;
 
+/**
+ * 作者：ShannJenn
+ * 时间：2017/8/12.
+ * 说明：http请求参数
+ */
 abstract class HttpRequest {
     public HTTP http = new HTTP();
+
     public final class HTTP {
         public String url;
         public String method;
-        public String charset;
-        public String contentType;
-        public String connection;
+        public final Map<String, String> propertys = new HashMap<>();
 
         public int timeout = -1;
         public int readTimeout = -1;

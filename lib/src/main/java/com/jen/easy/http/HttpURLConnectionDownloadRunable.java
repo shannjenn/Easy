@@ -2,6 +2,7 @@ package com.jen.easy.http;
 
 import android.text.TextUtils;
 
+import com.jen.easy.constant.Constant;
 import com.jen.easy.log.EasyLibLog;
 
 import java.io.DataOutputStream;
@@ -63,6 +64,26 @@ class HttpURLConnectionDownloadRunable implements Runnable {
             }
         }
 
+        //设置基本Property参数
+        String CHARSET_KEY = "Charset";
+        String charset = request.http.propertys.get(CHARSET_KEY);
+        if (TextUtils.isEmpty(charset)){
+            charset = Constant.Unicode.DEFAULT;
+            request.http.propertys.put(CHARSET_KEY, charset);
+        }
+        String CONTENT_TYPE_KEY = "Content-Type";
+        String contentType = request.http.propertys.get(CONTENT_TYPE_KEY);
+        if (TextUtils.isEmpty(contentType)){
+            contentType = "text/html";
+            request.http.propertys.put(CONTENT_TYPE_KEY, contentType);
+        }
+        String CONNECTION_KEY = "Connection";
+        String connectionType = request.http.propertys.get(CONNECTION_KEY);
+        if (TextUtils.isEmpty(connectionType)){
+            connectionType = "Keep-Alive";
+            request.http.propertys.put(CONNECTION_KEY, connectionType);
+        }
+
         if (request.flag.startPoit <= 1024 * 2) {
             request.flag.startPoit = 0;
         } else if (request.flag.startPoit > 1024 * 2) {
@@ -89,7 +110,7 @@ class HttpURLConnectionDownloadRunable implements Runnable {
                 }
                 requestBuf.append(name);
                 requestBuf.append("=");
-                requestBuf.append(URLEncoder.encode(value, request.http.charset));
+                requestBuf.append(URLEncoder.encode(value, charset));
                 isNotFirst = true;
                 hasParam = true;
             }
@@ -106,10 +127,10 @@ class HttpURLConnectionDownloadRunable implements Runnable {
             connection.setUseCaches(request.http.useCaches);
             connection.setConnectTimeout(request.http.timeout);
             connection.setReadTimeout(request.http.readTimeout);
-            connection.setRequestProperty("Charset", request.http.charset);
-            connection.setRequestProperty("Content-Type", request.http.contentType);
-            connection.setRequestProperty("Connection", request.http.connection);
-            connection.setRequestMethod(request.http.method);
+            for (String key : request.http.propertys.keySet()) {//设置Property
+                connection.setRequestProperty(key, request.http.propertys.get(key));
+            }
+
             if (request.flag.isBreak && request.flag.endPoit > request.flag.startPoit + 100) {
                 connection.setRequestProperty("Range", "bytes=" + request.flag.startPoit + "-" + request.flag.endPoit);
             }

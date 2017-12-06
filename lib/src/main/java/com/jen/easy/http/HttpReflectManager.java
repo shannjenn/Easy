@@ -116,7 +116,7 @@ class HttpReflectManager {
         return objectMap;
     }
 
-    static Class getObjClass(Field field) {
+    /*static Class getObjClass(Field field) {
         Class objClass = Object.class;
         boolean isAnno = field.isAnnotationPresent(EasyMouse.HTTP.ResponseParam.class);
         if (isAnno) {
@@ -124,5 +124,5 @@ class HttpReflectManager {
             objClass = param.clazz();
         }
         return objClass;
-    }
+    }*/
 }

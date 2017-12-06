@@ -8,6 +8,15 @@ import com.jen.easy.http.imp.HttpUploadListener;
  * 时间：2017/8/12.
  */
 public class HttpUploadRequest extends HttpRequest {
+    /**
+     * 通用数据返回
+     * 设置返回Object变量实体：List集合实体、单实体
+     * 如：
+     * （@EasyMouse.mHttp.ResponseParam("data") 注释返回参数）
+     * （@private Object data; 实体变量）
+     */
+    public Class responseObjectType;
+
     private HttpUploadListener uploadListener;
     public Flag flag = new Flag();
 

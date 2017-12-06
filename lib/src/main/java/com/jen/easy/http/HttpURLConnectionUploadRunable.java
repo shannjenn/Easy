@@ -2,6 +2,7 @@ package com.jen.easy.http;
 
 import android.text.TextUtils;
 
+import com.jen.easy.constant.Constant;
 import com.jen.easy.log.EasyLibLog;
 
 import java.io.BufferedReader;
@@ -11,8 +12,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -48,6 +47,26 @@ class HttpURLConnectionUploadRunable implements Runnable {
             return;
         }
 
+        //设置基本Property参数
+        String CHARSET_KEY = "Charset";
+        String charset = request.http.propertys.get(CHARSET_KEY);
+        if (TextUtils.isEmpty(charset)){
+            charset = Constant.Unicode.DEFAULT;
+            request.http.propertys.put(CHARSET_KEY, charset);
+        }
+        String CONTENT_TYPE_KEY = "Content-Type";
+        String contentType = request.http.propertys.get(CONTENT_TYPE_KEY);
+        if (TextUtils.isEmpty(contentType)){
+            contentType = "text/html";
+            request.http.propertys.put(CONTENT_TYPE_KEY, contentType);
+        }
+        String CONNECTION_KEY = "Connection";
+        String connectionType = request.http.propertys.get(CONNECTION_KEY);
+        if (TextUtils.isEmpty(connectionType)){
+            connectionType = "Keep-Alive";
+            request.http.propertys.put(CONNECTION_KEY, connectionType);
+        }
+
         HttpURLConnection connection = null;
         try {
             URL url = new URL(request.http.url);
@@ -57,10 +76,11 @@ class HttpURLConnectionUploadRunable implements Runnable {
             connection.setUseCaches(request.http.useCaches);
             connection.setConnectTimeout(request.http.timeout);
             connection.setReadTimeout(request.http.readTimeout);
-            connection.setRequestProperty("Charset", request.http.charset);
-            connection.setRequestProperty("Content-Type", request.http.contentType);
-            connection.setRequestProperty("Connection", request.http.connection);
             connection.setRequestMethod(request.http.method);
+            for (String key : request.http.propertys.keySet()) {//设置Property
+                connection.setRequestProperty(key, request.http.propertys.get(key));
+            }
+
             if (request.flag.isBreak && request.flag.endPoit > request.flag.startPoit + 100) {
                 connection.setRequestProperty("Range", "bytes=" + request.flag.startPoit + "-" + request.flag.endPoit);
             }
@@ -90,7 +110,7 @@ class HttpURLConnectionUploadRunable implements Runnable {
 
             // 读取返回数据
             StringBuffer buffer = new StringBuffer();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), request.http.charset));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), charset));
             String line = null;
             while ((line = reader.readLine()) != null) {
                 buffer.append(line);
@@ -110,7 +130,9 @@ class HttpURLConnectionUploadRunable implements Runnable {
 
     private void success(String result) {
         if (request.getUploadListener() != null) {
-            Object parseObject = HttpParseManager.parseJson(responseClass, result);
+            HttpParseManager parseManager = new HttpParseManager();
+            parseManager.setResponseObjectType(request.responseObjectType);
+            Object parseObject = parseManager.parseJson(responseClass, result);
             if (parseObject == null) {
                 fail("数据解析异常");
             } else {

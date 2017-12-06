@@ -23,6 +23,18 @@ import static com.jen.easy.http.HttpReflectManager.PARAM_TYPE;
  */
 class HttpParseManager {
     private final static String TAG = "HttpParseManager : ";
+    /**
+     * 通用数据返回
+     * 设置返回Object变量实体：List集合实体、单实体
+     * 如：
+     * （@EasyMouse.mHttp.ResponseParam("data") 注释返回参数）
+     * （@private Object data; 实体变量）
+     */
+    private Class responseObjectType;//由HttpBaseRequest传递过来
+
+    public void setResponseObjectType(Class responseObjectType) {
+        this.responseObjectType = responseObjectType;
+    }
 
     /**
      * json解析
@@ -31,12 +43,11 @@ class HttpParseManager {
      * @param obj
      * @return
      */
-    static <T> T parseJson(Class<T> tClass, String obj) {
+    <T> T parseJson(Class<T> tClass, String obj) {
         EasyLibLog.d(TAG + "解析：" + tClass.getName());
         try {
             JSONObject object = new JSONObject(obj);
-            T response = parseJsonObject(tClass, object);
-            return response;
+            return parseJsonObject(tClass, object);
         } catch (JSONException e) {
             e.printStackTrace();
             EasyLibLog.e(TAG + "parseJson JSONException error");
@@ -51,7 +62,7 @@ class HttpParseManager {
      * @param jsonObject
      * @return
      */
-    private static <T> T parseJsonObject(Class<T> tClass, JSONObject jsonObject) {
+    private <T> T parseJsonObject(Class<T> tClass, JSONObject jsonObject) {
         if (tClass == null || jsonObject == null) {
             EasyLibLog.e(TAG + "tClass == null || jsonObject == null");
             return null;
@@ -150,18 +161,18 @@ class HttpParseManager {
                                 field.set(tObj, date);
                             }
                         }
-                    } else if (type.contains(Constant.FieldType.MAP)) {
+                    } else if (type.contains(Constant.FieldType.MAP)) {//解析Map
                         EasyLibLog.e(TAG + "parseJsonObject Constant.FieldType.MAP 不支持Map类型");
-                    } else if (type.contains(Constant.FieldType.ARRAY)) {
+                    } else if (type.contains(Constant.FieldType.ARRAY)) {//解析数组
                         EasyLibLog.e(TAG + "parseJsonObject Constant.FieldType.ARRAY 不支持数组类型");
-                    } else if (type.contains(Constant.FieldType.OBJECT)) {
-                        Class objClass = HttpReflectManager.getObjClass(field);
-                        if (!objClass.getName().equals(Object.class.getName())) {
+                    } else if (type.contains(Constant.FieldType.OBJECT)) {//解析Object通用类型
+//                        Class objClass = HttpReflectManager.getObjClass(field);
+                        if (responseObjectType != null) {
                             if (value instanceof JSONArray) {
-                                List objList = parseJsonArray(objClass, (JSONArray) value);
+                                List objList = parseJsonArray(responseObjectType, (JSONArray) value);
                                 field.set(tObj, objList);
                             } else if (value instanceof JSONObject) {
-                                Object object = parseJsonObject(objClass, (JSONObject) value);
+                                Object object = parseJsonObject(responseObjectType, (JSONObject) value);
                                 field.set(tObj, object);
                             } else {
                                 EasyLibLog.e(TAG + "parseJsonObject Constant.FieldType.OBJECT error");
@@ -169,7 +180,7 @@ class HttpParseManager {
                         } else {
                             EasyLibLog.e(TAG + "parseJsonObject Constant.FieldType.OBJECT 请指定转换的类");
                         }
-                    } else if (type.contains(Constant.FieldType.LIST)) {
+                    } else if (type.contains(Constant.FieldType.LIST)) {//解析list
                         if (value instanceof JSONArray) {
                             String clazzName = type.substring(type.indexOf("<") + 1, type.indexOf(">"));
                             Class clazz2 = Class.forName(clazzName);
@@ -178,7 +189,7 @@ class HttpParseManager {
                         } else {
                             EasyLibLog.e(TAG + "parseJsonObject Constant.FieldType.LIST error");
                         }
-                    } else if (type.contains(Constant.FieldType.CLASS)) {
+                    } else if (type.contains(Constant.FieldType.CLASS)) {//解析指定class
                         if (value instanceof JSONObject) {
                             /*String clazzName = type.replace("class ", "").trim();
                             Class clazz2 = Class.forName(clazzName);*/
@@ -215,7 +226,7 @@ class HttpParseManager {
      * @param jsonArray
      * @return
      */
-    private static <T> List<T> parseJsonArray(Class<T> TClass, JSONArray jsonArray) {
+    private <T> List<T> parseJsonArray(Class<T> TClass, JSONArray jsonArray) {
         List<T> list = new ArrayList<>();
         if (jsonArray == null) {
             EasyLibLog.e(TAG + "parseJsonArray clazz or jsonArray is null");

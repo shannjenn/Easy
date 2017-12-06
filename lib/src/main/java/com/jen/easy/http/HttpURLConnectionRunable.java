@@ -2,6 +2,7 @@ package com.jen.easy.http;
 
 import android.text.TextUtils;
 
+import com.jen.easy.constant.Constant;
 import com.jen.easy.log.EasyLibLog;
 
 import java.io.BufferedReader;
@@ -38,6 +39,27 @@ class HttpURLConnectionRunable implements Runnable {
             fail("URL地址为空");
             return;
         }
+
+        //设置基本Property参数
+        String CHARSET_KEY = "Charset";
+        String charset = request.http.propertys.get(CHARSET_KEY);
+        if (TextUtils.isEmpty(charset)){
+            charset = Constant.Unicode.DEFAULT;
+            request.http.propertys.put(CHARSET_KEY, charset);
+        }
+        String CONTENT_TYPE_KEY = "Content-Type";
+        String contentType = request.http.propertys.get(CONTENT_TYPE_KEY);
+        if (TextUtils.isEmpty(contentType)){
+            contentType = "text/html";
+            request.http.propertys.put(CONTENT_TYPE_KEY, contentType);
+        }
+        String CONNECTION_KEY = "Connection";
+        String connectionType = request.http.propertys.get(CONNECTION_KEY);
+        if (TextUtils.isEmpty(connectionType)){
+            connectionType = "Keep-Alive";
+            request.http.propertys.put(CONNECTION_KEY, connectionType);
+        }
+
         Map<String, String> requestParams = HttpReflectManager.getRequestParams(request);
         int resposeCode = -1;
         try {
@@ -53,7 +75,7 @@ class HttpURLConnectionRunable implements Runnable {
                 requestBuf.append(name);
                 requestBuf.append("=");
                 requestBuf.append("\"");
-                requestBuf.append(URLEncoder.encode(value, request.http.charset));
+                requestBuf.append(URLEncoder.encode(value, charset));
                 requestBuf.append("\"");
                 isNotFirst = true;
                 hasParam = true;
@@ -71,10 +93,10 @@ class HttpURLConnectionRunable implements Runnable {
             connection.setUseCaches(request.http.useCaches);
             connection.setConnectTimeout(request.http.timeout);
             connection.setReadTimeout(request.http.readTimeout);
-            connection.setRequestProperty("Charset", request.http.charset);
-            connection.setRequestProperty("Content-Type", request.http.contentType);
-            connection.setRequestProperty("Connection", request.http.connection);
             connection.setRequestMethod(request.http.method);
+            for (String key : request.http.propertys.keySet()) {//设置Property
+                connection.setRequestProperty(key, request.http.propertys.get(key));
+            }
 
             if (request.http.method.toUpperCase().equals("POST") && hasParam) {
                 connection.connect();
@@ -95,7 +117,7 @@ class HttpURLConnectionRunable implements Runnable {
             if ((resposeCode == 200)) {
                 StringBuffer result = new StringBuffer("");
                 InputStream inStream = connection.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, request.http.charset));
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, charset));
                 String s = null;
                 while ((s = reader.readLine()) != null) {
                     result.append(s);
@@ -116,7 +138,9 @@ class HttpURLConnectionRunable implements Runnable {
 
     private void success(String result) {
         if (request.getBseListener() != null) {
-            Object parseObject = HttpParseManager.parseJson(responseClass, result);
+            HttpParseManager parseManager = new HttpParseManager();
+            parseManager.setResponseObjectType(request.responseObjectType);
+            Object parseObject = parseManager.parseJson(responseClass, result);
             if (parseObject == null) {
                 fail("数据解析异常");
             } else {

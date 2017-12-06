@@ -149,7 +149,7 @@ public final class EasyMouse {
              * （@EasyMouse.mHttp.ResponseParam(clazz="Student.class") 注释返回参数）
              *  （@private Object student;）
              */
-            Class clazz() default Object.class;
+            //Class clazz() default Object.class;
         }
     }
 

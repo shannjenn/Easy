@@ -39,20 +39,20 @@ public class Http extends HttpManager {
      *
      * @param charset 编码(如：UTF-8)
      */
-    @Override
+    /*@Override
     public void setCharset(String charset) {
         super.setCharset(charset);
-    }
+    }*/
 
     /**
      * 设置默认
      *
      * @param contentType 传输类型
      */
-    @Override
+    /*@Override
     public void setContentType(String contentType) {
         super.setContentType(contentType);
-    }
+    }*/
 
     /**
      * 设置默认超时
@@ -79,10 +79,10 @@ public class Http extends HttpManager {
      *
      * @param connection 连接参数
      */
-    @Override
+    /*@Override
     public void setConnection(String connection) {
         super.setConnection(connection);
-    }
+    }*/
 
     /**
      * 设置线程池最大数量

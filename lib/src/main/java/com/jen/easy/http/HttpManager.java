@@ -1,24 +1,24 @@
 package com.jen.easy.http;
 
-import com.jen.easy.constant.Constant;
 import com.jen.easy.log.EasyLibLog;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Created by Jen on 2017/7/21.
+ * 作者：ShannJenn
+ * 时间：2017/8/12.
+ * 说明：网络请求
  */
-
 abstract class HttpManager {
     private final String TAG = "HttpManager : ";
     private ExecutorService pool;
     private int maxThreadSize = 100;
 
     private String method = "GET";
-    private String charset = Constant.Unicode.DEFAULT;
-    private String contentType = "text/html";
-    private String connection = "Keep-Alive";
+//    private String charset = Constant.Unicode.DEFAULT;
+//    private String contentType = "text/html";
+//    private String connection = "Keep-Alive";
 
     private int timeout = 30 * 1000;
     private int readTimeout = 30 * 1000;
@@ -59,12 +59,12 @@ abstract class HttpManager {
     private void setDefault(HttpRequest param) {
         if (param.http.method == null)
             param.http.method = method;
-        if (param.http.charset == null)
+        /*if (param.http.charset == null)
             param.http.charset = charset;
         if (param.http.contentType == null)
             param.http.contentType = contentType;
         if (param.http.connection == null)
-            param.http.connection = connection;
+            param.http.connection = connection;*/
         if (param.http.timeout == -1)
             param.http.timeout = timeout;
         if (param.http.readTimeout == -1)
@@ -85,9 +85,9 @@ abstract class HttpManager {
      *
      * @param charset
      */
-    protected void setCharset(String charset) {
+    /*protected void setCharset(String charset) {
         this.charset = charset;
-    }
+    }*/
 
 
     /**
@@ -95,9 +95,9 @@ abstract class HttpManager {
      *
      * @param contentType
      */
-    protected void setContentType(String contentType) {
+    /*protected void setContentType(String contentType) {
         this.contentType = contentType;
-    }
+    }*/
 
     /**
      * 设置默认超时
@@ -122,9 +122,9 @@ abstract class HttpManager {
      *
      * @param connection
      */
-    protected void setConnection(String connection) {
+    /*protected void setConnection(String connection) {
         this.connection = connection;
-    }
+    }*/
 
     /**
      * 设置线程池最大数量
