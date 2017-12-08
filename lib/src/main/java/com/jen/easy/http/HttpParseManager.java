@@ -193,7 +193,7 @@ class HttpParseManager {
                         if (value instanceof JSONObject) {
                             /*String clazzName = type.replace("class ", "").trim();
                             Class clazz2 = Class.forName(clazzName);*/
-                            Object obj = parseJsonObject(field.getDeclaringClass(), (JSONObject) value);
+                            Object obj = parseJsonObject(field.getType(), (JSONObject) value);
                             field.set(tObj, obj);
                         } else {
                             EasyLibLog.e(TAG + "parseJsonObject Constant.FieldType.CLASS error");
