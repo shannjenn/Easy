@@ -4,6 +4,7 @@ import com.jen.easy.EasyMouse;
 import com.jen.easy.log.EasyLibLog;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,7 +31,7 @@ class HttpReflectManager {
         }
         boolean isAnnoGet = obj.getClass().isAnnotationPresent(EasyMouse.HTTP.GET.class);
         if (isAnnoGet) {
-            EasyMouse.HTTP.GET url =  obj.getClass().getAnnotation(EasyMouse.HTTP.GET.class);
+            EasyMouse.HTTP.GET url = obj.getClass().getAnnotation(EasyMouse.HTTP.GET.class);
             values[0] = "GET";
             values[1] = url.URL();
             values[2] = url.Response();
@@ -38,7 +39,7 @@ class HttpReflectManager {
         }
         boolean isAnnoPost = obj.getClass().isAnnotationPresent(EasyMouse.HTTP.POST.class);
         if (isAnnoPost) {
-            EasyMouse.HTTP.POST url =  obj.getClass().getAnnotation(EasyMouse.HTTP.POST.class);
+            EasyMouse.HTTP.POST url = obj.getClass().getAnnotation(EasyMouse.HTTP.POST.class);
             values[0] = "POST";
             values[1] = url.URL();
             values[2] = url.Response();
@@ -97,6 +98,25 @@ class HttpReflectManager {
         if (clazz == null) {
             EasyLibLog.e(TAG + "getResponseParams clazz is not null");
             return objectMap;
+        }
+
+        //父类变量（public、protected修饰）
+        Field[] fieldsSuper = clazz.getSuperclass().getDeclaredFields();
+        for (Field field : fieldsSuper) {
+            int modifierType = field.getModifiers();
+            if (modifierType != Modifier.PUBLIC && modifierType != Modifier.PROTECTED)
+                continue;
+            boolean isAnno = field.isAnnotationPresent(EasyMouse.HTTP.ResponseParam.class);
+            if (!isAnno)
+                continue;
+            EasyMouse.HTTP.ResponseParam param = field.getAnnotation(EasyMouse.HTTP.ResponseParam.class);
+            String paramName = param.value().trim();
+            if (paramName.length() == 0) {
+                continue;
+            }
+            String type = field.getGenericType().toString();
+            param_type.put(paramName, type);
+            param_field.put(paramName, field);
         }
 
         Field[] fields = clazz.getDeclaredFields();

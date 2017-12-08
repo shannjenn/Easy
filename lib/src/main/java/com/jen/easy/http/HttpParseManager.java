@@ -214,6 +214,9 @@ class HttpParseManager {
             } catch (NumberFormatException e) {
                 e.printStackTrace();
                 EasyLibLog.e(TAG + "parseJsonObject NumberFormatException：type=" + type + " param=" + param);
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+                EasyLibLog.e(TAG + "class类型错误 parseJsonObject IllegalArgumentException：type=" + type + " param=" + param);
             }
         }
         return tObj;

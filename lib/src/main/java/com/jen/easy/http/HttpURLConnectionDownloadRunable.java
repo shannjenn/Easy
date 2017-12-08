@@ -45,7 +45,7 @@ class HttpURLConnectionDownloadRunable extends HttpURLConnectionRunable {
             byte[] buffer = new byte[1024];
             RandomAccessFile randFile = new RandomAccessFile(request.flag.filePath, "rwd");
             randFile.seek(request.flag.startPoit);
-            int len = 0;
+            int len;
             while ((len = inStream.read(buffer)) != -1 && !request.flag.userCancel) {
                 randFile.write(buffer, 0, len);
                 curBytes += len;

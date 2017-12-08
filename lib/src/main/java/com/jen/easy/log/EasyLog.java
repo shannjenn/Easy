@@ -113,7 +113,7 @@ public class EasyLog {
                     part++;
                 }
             } else {
-                Log.e(tag, msg + " --- " + tag + " --- ");
+                Log.d(tag, msg + " --- " + tag + " --- ");
             }
         }
     }
@@ -132,7 +132,7 @@ public class EasyLog {
                     part++;
                 }
             } else {
-                Log.e(tag, msg + " --- " + tag + " --- ");
+                Log.i(tag, msg + " --- " + tag + " --- ");
             }
         }
     }
@@ -151,7 +151,7 @@ public class EasyLog {
                     part++;
                 }
             } else {
-                Log.e(tag, msg + " --- " + tag + " --- ");
+                Log.w(tag, msg + " --- " + tag + " --- ");
             }
         }
     }
