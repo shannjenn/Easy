@@ -1,5 +1,7 @@
 package com.jen.easy.http;
 
+import com.jen.easy.constant.Constant;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,11 +18,10 @@ abstract class HttpRequest {
         public String method;
         public final Map<String, String> propertys = new HashMap<>();
 
-        public int timeout = -1;
-        public int readTimeout = -1;
+        public int timeout = 30000;
+        public int readTimeout = 30000;
+        public String charset = Constant.Unicode.DEFAULT;
 
-        public boolean doOutput = false;
-        public boolean doInput = true;
         public boolean useCaches = false;
     }
 

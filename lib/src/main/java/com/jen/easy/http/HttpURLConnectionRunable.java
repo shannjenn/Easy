@@ -2,68 +2,102 @@ package com.jen.easy.http;
 
 import android.text.TextUtils;
 
-import com.jen.easy.constant.Constant;
 import com.jen.easy.log.EasyLibLog;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
 import java.util.Set;
 
-class HttpURLConnectionRunable implements Runnable {
-    private final String TAG = "HttpBase : ";
-    private HttpBaseRequest request;
-    private Class responseClass;
+abstract class HttpURLConnectionRunable implements Runnable {
+    protected final String TAG = "Http:";
+    protected HttpRequest mRequest;
+    protected Class mResponseClass;
 
-    HttpURLConnectionRunable(HttpBaseRequest param) {
+    protected String mUrlStr;
+    protected int mResposeCode = -1;//返回码
+    protected boolean mHasParam = false;//是否有参数
+    protected String mCharset;//编码
+    protected boolean mIsGet = true;
+    protected String mRequestParam;
+
+    HttpURLConnectionRunable(HttpRequest param) {
         super();
-        this.request = param;
+        this.mRequest = param;
     }
 
     @Override
     public void run() {
-        Object[] method_url = HttpReflectManager.getUrl(request);
+        Object[] method_url = HttpReflectManager.getUrl(mRequest);
         if (method_url != null) {
-            request.http.method = (String) method_url[0];
-            request.http.url = (String) method_url[1];
-            responseClass = (Class) method_url[2];
+            mRequest.http.method = (String) method_url[0];
+            mRequest.http.url = (String) method_url[1];
+            mResponseClass = (Class) method_url[2];
         }
-        if (TextUtils.isEmpty(request.http.url)) {
-            EasyLibLog.e(TAG + request.http.url + " URL地址错误");
+        mUrlStr = mRequest.http.url;
+        if (TextUtils.isEmpty(mUrlStr)) {
+            EasyLibLog.e(TAG + mRequest.http.url + " URL地址错误");
             fail("URL地址为空");
             return;
         }
-
-        //设置基本Property参数
-        String CHARSET_KEY = "Charset";
-        String charset = request.http.propertys.get(CHARSET_KEY);
-        if (TextUtils.isEmpty(charset)){
-            charset = Constant.Unicode.DEFAULT;
-            request.http.propertys.put(CHARSET_KEY, charset);
-        }
-        String CONTENT_TYPE_KEY = "Content-Type";
-        String contentType = request.http.propertys.get(CONTENT_TYPE_KEY);
-        if (TextUtils.isEmpty(contentType)){
-            contentType = "text/html";
-            request.http.propertys.put(CONTENT_TYPE_KEY, contentType);
-        }
-        String CONNECTION_KEY = "Connection";
-        String connectionType = request.http.propertys.get(CONNECTION_KEY);
-        if (TextUtils.isEmpty(connectionType)){
-            connectionType = "Keep-Alive";
-            request.http.propertys.put(CONNECTION_KEY, connectionType);
+        if (mResponseClass == null) {
+            EasyLibLog.e(TAG + "返回class为空");
+            fail("返回class为空");
+            return;
         }
 
-        Map<String, String> requestParams = HttpReflectManager.getRequestParams(request);
-        int resposeCode = -1;
+        if (mRequest instanceof HttpBaseRequest) {//===============基本数据处理
+
+        } else if (mRequest instanceof HttpUploadRequest) {//===============上传请求处理
+            HttpUploadRequest uploadRequest = (HttpUploadRequest) mRequest;
+            if (TextUtils.isEmpty(uploadRequest.flag.filePath)) {
+                fail("文件地址不能为空");
+                return;
+            }
+            File file = new File(uploadRequest.flag.filePath);
+            if (!file.isFile()) {
+                fail("文件地址参数错误");
+                return;
+            }
+        } else if (mRequest instanceof HttpDownloadRequest) {//===============下载请求处理
+            HttpDownloadRequest downloadRequest = (HttpDownloadRequest) mRequest;
+            if (downloadRequest.flag.deleteOldFile) {
+                File file = new File(downloadRequest.flag.filePath);
+                if (file.exists()) {
+                    boolean ret = file.delete();
+                    if (!ret) {
+                        EasyLibLog.w(TAG + mUrlStr + " 删除旧文件失败");
+                        fail("删除旧文件失败，请检查文件路径是否正确");
+                        return;
+                    }
+                }
+            }
+
+            if (TextUtils.isEmpty(downloadRequest.flag.filePath)) {
+                fail("文件地址不能为空");
+                return;
+            }
+
+            File fileFolder = new File(downloadRequest.flag.filePath.substring(0, downloadRequest.flag.filePath.lastIndexOf("/")));
+            if (!fileFolder.exists()) {
+                boolean ret = fileFolder.mkdirs();
+                if (!ret) {
+                    EasyLibLog.w(TAG + mRequest.http.url + " 创建文件夹失败");
+                    fail("保存文件失败，请检查文件路径是否正确");
+                    return;
+                }
+            }
+        }
+
+        mResposeCode = -1;//返回码
+        mHasParam = false;//是否有参数
+        mCharset = mRequest.http.charset;//编码
+        mIsGet = mRequest.http.method.toUpperCase().equals("GET");
         try {
-            boolean hasParam = false;
+            Map<String, String> requestParams = HttpReflectManager.getRequestParams(mRequest);
             boolean isNotFirst = false;
             StringBuffer requestBuf = new StringBuffer("");
             Set<String> sets = requestParams.keySet();
@@ -74,83 +108,49 @@ class HttpURLConnectionRunable implements Runnable {
                 }
                 requestBuf.append(name);
                 requestBuf.append("=");
-                requestBuf.append("\"");
-                requestBuf.append(URLEncoder.encode(value, charset));
-                requestBuf.append("\"");
+                if (mIsGet)//get方式加转译符
+                    requestBuf.append("\"");
+                requestBuf.append(URLEncoder.encode(value, mCharset));
+                if (mIsGet)//get方式加转译符
+                    requestBuf.append("\"");
                 isNotFirst = true;
-                hasParam = true;
+            }
+            mRequestParam = requestBuf.toString();
+            mHasParam = mRequestParam.length() > 0;
+
+            if (mIsGet && mHasParam) {//get请求参数拼接
+                mUrlStr = mUrlStr + "?" + mRequestParam;
             }
 
-            String urlStr = request.http.url;
-            if (request.http.method.toUpperCase().equals("GET") && hasParam) {
-                urlStr = urlStr + "?" + requestBuf.toString();
-            }
-
-            URL url = new URL(urlStr);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(request.http.doInput);
-            connection.setDoOutput(request.http.doOutput);
-            connection.setUseCaches(request.http.useCaches);
-            connection.setConnectTimeout(request.http.timeout);
-            connection.setReadTimeout(request.http.readTimeout);
-            connection.setRequestMethod(request.http.method);
-            for (String key : request.http.propertys.keySet()) {//设置Property
-                connection.setRequestProperty(key, request.http.propertys.get(key));
-            }
-
-            if (request.http.method.toUpperCase().equals("POST") && hasParam) {
-                connection.connect();
-                DataOutputStream out = new DataOutputStream(connection.getOutputStream());
-                out.writeBytes(requestBuf.toString());
-                out.flush();
-                out.close();
-            }
-
-            if (request.http.method.toUpperCase().equals("GET")) {
-                EasyLibLog.d(TAG + "Http请求地址：" + url + "  请求方式：" + request.http.method);
+            if (mIsGet) {
+                EasyLibLog.d(TAG + "Http请求地址：" + mUrlStr + "  请求方式：GET");
             } else {
-                EasyLibLog.d(TAG + "Http请求地址：" + url + "  请求方式：" + request.http.method
-                        + " 请求参数：" + requestBuf.toString());
+                EasyLibLog.d(TAG + "Http请求地址：" + mUrlStr + "  请求方式：POST" + " 请求参数：" + mRequestParam);
             }
-            resposeCode = connection.getResponseCode();
-            EasyLibLog.d(TAG + url + "  Http请求返回码：" + resposeCode);
-            if ((resposeCode == 200)) {
-                StringBuffer result = new StringBuffer("");
-                InputStream inStream = connection.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, charset));
-                String s = null;
-                while ((s = reader.readLine()) != null) {
-                    result.append(s);
-                }
-                reader.close();
-                inStream.close();
-                connection.disconnect();
-                EasyLibLog.d(TAG + url + " 返回数据：" + result.toString());
-                success(result.toString());
-                return;
+
+            URL url = new URL(mUrlStr);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.setDoOutput(mIsGet ? false : true);
+            connection.setUseCaches(mRequest.http.useCaches);
+            connection.setConnectTimeout(mRequest.http.timeout);
+            connection.setReadTimeout(mRequest.http.readTimeout);
+            connection.setRequestMethod(mRequest.http.method);
+            for (String key : mRequest.http.propertys.keySet()) {//设置Property
+                connection.setRequestProperty(key, mRequest.http.propertys.get(key));
             }
+            childRun(connection);
+            connection.disconnect();
         } catch (IOException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + request.http.url + " IOException");
-        }
-        fail(" 网络请求异常：" + resposeCode);
-    }
-
-    private void success(String result) {
-        if (request.getBseListener() != null) {
-            HttpParseManager parseManager = new HttpParseManager();
-            parseManager.setResponseObjectType(request.responseObjectType);
-            Object parseObject = parseManager.parseJson(responseClass, result);
-            if (parseObject == null) {
-                fail("数据解析异常");
-            } else {
-                request.getBseListener().success(request.flag.code, request.flag.str, parseObject);
-            }
+            EasyLibLog.e(TAG + mRequest.http.url + " IOException");
+            fail("IOException 网络请求异常：" + mResposeCode);
         }
     }
 
-    private void fail(String result) {
-        if (request.getBseListener() != null)
-            request.getBseListener().fail(request.flag.code, request.flag.str, result);
-    }
+    protected abstract void childRun(HttpURLConnection connection) throws IOException;
+
+    protected abstract void success(String result);
+
+    protected abstract void fail(String msg);
 }

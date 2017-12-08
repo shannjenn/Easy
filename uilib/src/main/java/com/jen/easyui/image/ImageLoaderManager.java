@@ -9,7 +9,7 @@ import android.widget.ImageView;
 
 import com.jen.easy.EasyMain;
 import com.jen.easy.app.EasyApplication;
-import com.jen.easy.http.HttpDownloadPRequest;
+import com.jen.easy.http.HttpDownloadRequest;
 import com.jen.easy.http.imp.HtppDownloadListener;
 import com.jen.easy.log.EasyUILog;
 
@@ -30,7 +30,7 @@ abstract class ImageLoaderManager {
     /*图片缓存*/
     private final Map<String, SoftReference<Drawable>> mImageCache = new HashMap<>();
     /*网络获取图片请求参数*/
-    private HttpDownloadPRequest mHttpRequest = new HttpDownloadPRequest();
+    private HttpDownloadRequest mHttpRequest = new HttpDownloadRequest();
     /*ImageView缓存*/
     private final Map<String, ImageView> mViewCache = new HashMap<>();
 

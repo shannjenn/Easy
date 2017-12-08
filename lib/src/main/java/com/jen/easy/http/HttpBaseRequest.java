@@ -7,7 +7,7 @@ import com.jen.easy.http.imp.HttpBaseListener;
  * 时间：2017/8/12.
  * 说明：基本数据请求参数
  */
-public class HttpBaseRequest extends HttpRequest {
+public abstract class HttpBaseRequest extends HttpRequest {
     /**
      * 通用数据返回
      * 设置返回Object变量实体：List集合实体、单实体

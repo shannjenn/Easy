@@ -34,7 +34,10 @@
 
 -optimizationpasses 5
 -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
--dontusemixedcaseclassnames
+-dontusemixedcaseclassnames#混淆时不会产生形形色色的类名
+-dontoptimize    #不优化输入的类文件
+#-assumenosideeffects {class com.jen.easy.app.EasyVersion}    #优化时假设指定的方法，没有任何副作用
+-allowaccessmodification    #优化时允许访问并修改有修饰符的类和类的成员
 
 -keepattributes *Annotation*
 -keep class * extends java.lang.annotation.Annotation { *; }
@@ -77,7 +80,7 @@
 -keep class com.jen.easy.http.HttpBaseRequest* {
      *;
 }
--keep class com.jen.easy.http.HttpDownloadPRequest* {
+-keep class com.jen.easy.http.HttpDownloadRequest* {
     *;
 }
 -keep class com.jen.easy.http.HttpUploadRequest* {

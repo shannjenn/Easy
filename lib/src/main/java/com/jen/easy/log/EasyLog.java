@@ -9,7 +9,7 @@ import android.util.Log;
  */
 public class EasyLog {
     private static final String TAG = "EasyLog";
-    static final int length = 4000;
+    private static final int maxLength = 4000;
     /**
      * 日志是否打印
      */
@@ -21,18 +21,18 @@ public class EasyLog {
     /**
      * UI框架日志是否打印
      */
-    public static final boolean EASY_UI_LOG = true;
+    public static boolean EASY_UI_LOG = true;
 
     public static void d(String msg) {
         if (LOGCAT_OPEN) {
-            if (msg != null && msg.length() > length) {
+            if (msg != null && msg.length() > maxLength) {
                 int part = 0;
                 int length = msg.length();
-                for (int i = 0; i < length; i += length) {
-                    if (i + length < msg.length()) {
-                        Log.d(TAG + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
+                for (int i = 0; i < length; i += maxLength) {
+                    if (i + maxLength < length) {
+                        Log.d(TAG + "_" + part, msg.substring(i, i + maxLength) + " --- " + TAG + " --- ");
                     } else {
-                        Log.d(TAG + "_" + part, msg.substring(i, msg.length()) + " --- " + TAG + " --- ");
+                        Log.d(TAG + "_" + part, msg.substring(i, length) + " --- " + TAG + " --- ");
                     }
                     part++;
                 }
@@ -44,14 +44,14 @@ public class EasyLog {
 
     public static void i(String msg) {
         if (LOGCAT_OPEN) {
-            if (msg != null && msg.length() > length) {
+            if (msg != null && msg.length() > maxLength) {
                 int part = 0;
                 int length = msg.length();
-                for (int i = 0; i < length; i += length) {
-                    if (i + length < msg.length()) {
-                        Log.i(TAG + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
+                for (int i = 0; i < length; i += maxLength) {
+                    if (i + maxLength < length) {
+                        Log.i(TAG + "_" + part, msg.substring(i, i + maxLength) + " --- " + TAG + " --- ");
                     } else {
-                        Log.i(TAG + "_" + part, msg.substring(i, msg.length()) + " --- " + TAG + " --- ");
+                        Log.i(TAG + "_" + part, msg.substring(i, length) + " --- " + TAG + " --- ");
                     }
                     part++;
                 }
@@ -63,14 +63,14 @@ public class EasyLog {
 
     public static void w(String msg) {
         if (LOGCAT_OPEN) {
-            if (msg != null && msg.length() > length) {
+            if (msg != null && msg.length() > maxLength) {
                 int part = 0;
                 int length = msg.length();
-                for (int i = 0; i < length; i += length) {
-                    if (i + length < msg.length()) {
-                        Log.w(TAG + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
+                for (int i = 0; i < length; i += maxLength) {
+                    if (i + maxLength < length) {
+                        Log.w(TAG + "_" + part, msg.substring(i, i + maxLength) + " --- " + TAG + " --- ");
                     } else {
-                        Log.w(TAG + "_" + part, msg.substring(i, msg.length()) + " --- " + TAG + " --- ");
+                        Log.w(TAG + "_" + part, msg.substring(i, length) + " --- " + TAG + " --- ");
                     }
                     part++;
                 }
@@ -82,14 +82,14 @@ public class EasyLog {
 
     public static void e(String msg) {
         if (LOGCAT_OPEN) {
-            if (msg != null && msg.length() > length) {
+            if (msg != null && msg.length() > maxLength) {
                 int part = 0;
                 int length = msg.length();
-                for (int i = 0; i < length; i += length) {
-                    if (i + length < msg.length()) {
-                        Log.e(TAG + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
+                for (int i = 0; i < length; i += maxLength) {
+                    if (i + maxLength < length) {
+                        Log.e(TAG + "_" + part, msg.substring(i, i + maxLength) + " --- " + TAG + " --- ");
                     } else {
-                        Log.e(TAG + "_" + part, msg.substring(i, msg.length()) + " --- " + TAG + " --- ");
+                        Log.e(TAG + "_" + part, msg.substring(i, length) + " --- " + TAG + " --- ");
                     }
                     part++;
                 }
@@ -99,98 +99,78 @@ public class EasyLog {
         }
     }
 
-
-    public static void v(String tag, String msg) {
-        if (LOGCAT_OPEN) {
-            if (msg != null && msg.length() > length) {
-                int part = 0;
-                int length = msg.length();
-                for (int i = 0; i < length; i += length) {
-                    if (i + length < msg.length()) {
-                        Log.e(tag + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
-                    } else {
-                        Log.e(tag + "_" + part, msg.substring(i, msg.length()) + " --- " + TAG + " --- ");
-                    }
-                    part++;
-                }
-            } else {
-                Log.e(tag, msg + " --- " + TAG + " --- ");
-            }
-        }
-    }
-
     public static void d(String tag, String msg) {
         if (LOGCAT_OPEN) {
-            if (msg != null && msg.length() > length) {
+            if (msg != null && msg.length() > maxLength) {
                 int part = 0;
                 int length = msg.length();
-                for (int i = 0; i < length; i += length) {
-                    if (i + length < msg.length()) {
-                        Log.e(tag + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
+                for (int i = 0; i < length; i += maxLength) {
+                    if (i + maxLength < length) {
+                        Log.d(tag + "_" + part, msg.substring(i, i + maxLength) + " --- " + tag + " --- ");
                     } else {
-                        Log.e(tag + "_" + part, msg.substring(i, msg.length()) + " --- " + TAG + " --- ");
+                        Log.d(tag + "_" + part, msg.substring(i, length) + " --- " + tag + " --- ");
                     }
                     part++;
                 }
             } else {
-                Log.e(tag, msg + " --- " + TAG + " --- ");
+                Log.e(tag, msg + " --- " + tag + " --- ");
             }
         }
     }
 
     public static void i(String tag, String msg) {
         if (LOGCAT_OPEN) {
-            if (msg != null && msg.length() > length) {
+            if (msg != null && msg.length() > maxLength) {
                 int part = 0;
                 int length = msg.length();
-                for (int i = 0; i < length; i += length) {
-                    if (i + length < msg.length()) {
-                        Log.e(tag + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
+                for (int i = 0; i < length; i += maxLength) {
+                    if (i + maxLength < length) {
+                        Log.i(tag + "_" + part, msg.substring(i, i + maxLength) + " --- " + tag + " --- ");
                     } else {
-                        Log.e(tag + "_" + part, msg.substring(i, msg.length()) + " --- " + TAG + " --- ");
+                        Log.i(tag + "_" + part, msg.substring(i, length) + " --- " + tag + " --- ");
                     }
                     part++;
                 }
             } else {
-                Log.e(tag, msg + " --- " + TAG + " --- ");
+                Log.e(tag, msg + " --- " + tag + " --- ");
             }
         }
     }
 
     public static void w(String tag, String msg) {
         if (LOGCAT_OPEN) {
-            if (msg != null && msg.length() > length) {
+            if (msg != null && msg.length() > maxLength) {
                 int part = 0;
                 int length = msg.length();
-                for (int i = 0; i < length; i += length) {
-                    if (i + length < msg.length()) {
-                        Log.e(tag + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
+                for (int i = 0; i < length; i += maxLength) {
+                    if (i + maxLength < length) {
+                        Log.w(tag + "_" + part, msg.substring(i, i + maxLength) + " --- " + tag + " --- ");
                     } else {
-                        Log.e(tag + "_" + part, msg.substring(i, msg.length()) + " --- " + TAG + " --- ");
+                        Log.w(tag + "_" + part, msg.substring(i, length) + " --- " + tag + " --- ");
                     }
                     part++;
                 }
             } else {
-                Log.e(tag, msg + " --- " + TAG + " --- ");
+                Log.e(tag, msg + " --- " + tag + " --- ");
             }
         }
     }
 
     public static void e(String tag, String msg) {
         if (LOGCAT_OPEN) {
-            if (msg != null && msg.length() > length) {
+            if (msg != null && msg.length() > maxLength) {
                 int part = 0;
                 int length = msg.length();
-                for (int i = 0; i < length; i += length) {
-                    if (i + length < msg.length()) {
-                        Log.e(tag + "_" + part, msg.substring(i, i + length) + " --- " + TAG + " --- ");
+                for (int i = 0; i < length; i += maxLength) {
+                    if (i + maxLength < length) {
+                        Log.e(tag + "_" + part, msg.substring(i, i + maxLength) + " --- " + tag + " --- ");
                     } else {
-                        Log.e(tag + "_" + part, msg.substring(i, msg.length()) + " --- " + TAG + " --- ");
+                        Log.e(tag + "_" + part, msg.substring(i, length) + " --- " + tag + " --- ");
                     }
                     part++;
                 }
             } else {
-                Log.e(tag, msg + " --- " + TAG + " --- ");
+                Log.e(tag, msg + " --- " + tag + " --- ");
             }
         }
     }
