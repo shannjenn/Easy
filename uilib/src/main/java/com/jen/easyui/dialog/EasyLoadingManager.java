@@ -32,12 +32,14 @@ abstract class EasyLoadingManager extends Dialog {
 
     @Override
     public void show() {
-        super.show();
+        if (!isShowing())
+            super.show();
     }
 
     @Override
     public void dismiss() {
-        super.dismiss();
+        if (isShowing())
+            super.dismiss();
     }
 
     @Override

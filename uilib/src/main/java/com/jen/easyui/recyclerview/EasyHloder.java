@@ -7,7 +7,7 @@ import android.view.View;
  * 时间：2017/09/30.
  */
 
-public abstract class EasyHloder extends EasyHloderManager {
+public abstract class EasyHloder<T> extends EasyHloderManager<T> {
 
     /**
      * bind ID在这处理
@@ -22,13 +22,15 @@ public abstract class EasyHloder extends EasyHloderManager {
      *
      * @return
      */
-    public abstract void onBindEasyHolder(int pos);
+    @Override
+    public abstract void onBindEasyHolder(T item, int pos);
 
     /**
      * 控件点击事件
      *
      * @return 控件IDs
      */
+    @Override
     public abstract int[] getOnClick();
 
     /**
@@ -36,6 +38,7 @@ public abstract class EasyHloder extends EasyHloderManager {
      *
      * @return 控件IDs
      */
+    @Override
     public abstract int[] getOnLongClick();
 
     /**
@@ -43,6 +46,7 @@ public abstract class EasyHloder extends EasyHloderManager {
      *
      * @return 是否设置item点击事件
      */
+    @Override
     public abstract boolean getItemClick();
 
 }
