@@ -108,11 +108,11 @@ abstract class HttpURLConnectionRunable implements Runnable {
                 }
                 requestBuf.append(name);
                 requestBuf.append("=");
-                if (mIsGet)//get方式加转译符
-                    requestBuf.append("\"");
+//                if (mIsGet)//get方式加转译符
+//                    requestBuf.append("\"");
                 requestBuf.append(URLEncoder.encode(value, mCharset));
-                if (mIsGet)//get方式加转译符
-                    requestBuf.append("\"");
+//                if (mIsGet)//get方式加转译符
+//                    requestBuf.append("\"");
                 isNotFirst = true;
             }
             mRequestParam = requestBuf.toString();

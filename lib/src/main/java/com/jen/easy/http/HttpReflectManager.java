@@ -1,6 +1,7 @@
 package com.jen.easy.http;
 
 import com.jen.easy.EasyMouse;
+import com.jen.easy.constant.Constant;
 import com.jen.easy.log.EasyLibLog;
 
 import java.lang.reflect.Field;
@@ -71,10 +72,24 @@ class HttpReflectManager {
             if (paramName.length() == 0) {
                 continue;
             }
+            String type = field.getGenericType().toString();
             field.setAccessible(true);
             try {
-                String value = field.get(obj) + "";
-                params.put(paramName, value);
+                switch (type) {
+                    case Constant.FieldType.STRING: {//string类型
+                        String value = field.get(obj) + "";
+                        params.put(paramName, value);
+                        break;
+                    }
+                    case Constant.FieldType.INTEGER: {//int类型
+                        int value = field.getInt(obj);
+                        params.put(paramName, value + "");
+                        break;
+                    }
+                    default:
+                        EasyLibLog.e(TAG + "参数必须为int或者string类型 field=" + field.getName());
+                        break;
+                }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
                 EasyLibLog.e(TAG + "getRequestParams IllegalAccessException");
