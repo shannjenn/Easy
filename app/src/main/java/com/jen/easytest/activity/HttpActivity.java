@@ -1,7 +1,6 @@
 package com.jen.easytest.activity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.jen.easy.EasyMain;
@@ -75,7 +74,7 @@ public class HttpActivity extends EasyBaseActivity {
         String nowDate = smdf.format(new Date());
         String signString = cid + fromCity + fromCityName + arriveCity + arriveCityName + carrier + codeLevel + goDate + backDate + userCode + signType
                 + signKey + nowDate;
-        Log.d("jen", "signString=" + signString);
+        EasyLog.d("signString=" + signString);
         String sign = MD5Util.encrypt(signString);
 //        sign = "6D715C3DACEC16D640852DAC6272FB6B";
 
@@ -96,7 +95,10 @@ public class HttpActivity extends EasyBaseActivity {
 
         airRequest.setBseListener(airRequestListener);
         EasyMain.mHttp.start(airRequest);
+        EasyLog.d("mAirResponse mAirResponse:");
     }
+
+    private AirResponse mAirResponse;
 
     @Override
     protected void onBindClick(View view) {
@@ -115,6 +117,7 @@ public class HttpActivity extends EasyBaseActivity {
         @Override
         public void success(int flagCode, String flag, AirResponse airResponse) {
             EasyLog.d("airRequestListener success");
+            mAirResponse = airResponse;
         }
     };
 

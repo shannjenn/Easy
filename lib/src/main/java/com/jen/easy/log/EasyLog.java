@@ -9,7 +9,7 @@ import android.util.Log;
  */
 public class EasyLog {
     private static final String TAG = "EasyLog";
-    private static final int maxLength = 4000;
+    private static final int maxLength = 2000;
     /**
      * 日志是否打印
      */
@@ -26,18 +26,18 @@ public class EasyLog {
     public static void d(String msg) {
         if (LOGCAT_OPEN) {
             if (msg != null && msg.length() > maxLength) {
-                int part = 0;
+                Log.d(TAG, "超长Log打印：开始 ------------------------------ ");
                 int length = msg.length();
                 for (int i = 0; i < length; i += maxLength) {
                     if (i + maxLength < length) {
-                        Log.d(TAG + "_" + part, msg.substring(i, i + maxLength) + " --- " + TAG + " --- ");
+                        Log.d(TAG, msg.substring(i, i + maxLength));
                     } else {
-                        Log.d(TAG + "_" + part, msg.substring(i, length) + " --- " + TAG + " --- ");
+                        Log.d(TAG, msg.substring(i, length));
                     }
-                    part++;
                 }
+                Log.d(TAG, "超长Log打印：结束 ------------------------------ ");
             } else {
-                Log.d(TAG, msg + " --- " + TAG + " --- ");
+                Log.d(TAG, msg);
             }
         }
     }
@@ -45,18 +45,18 @@ public class EasyLog {
     public static void i(String msg) {
         if (LOGCAT_OPEN) {
             if (msg != null && msg.length() > maxLength) {
-                int part = 0;
+                Log.i(TAG, "超长Log打印：开始 ------------------------------ ");
                 int length = msg.length();
                 for (int i = 0; i < length; i += maxLength) {
                     if (i + maxLength < length) {
-                        Log.i(TAG + "_" + part, msg.substring(i, i + maxLength) + " --- " + TAG + " --- ");
+                        Log.i(TAG, msg.substring(i, i + maxLength));
                     } else {
-                        Log.i(TAG + "_" + part, msg.substring(i, length) + " --- " + TAG + " --- ");
+                        Log.i(TAG, msg.substring(i, length));
                     }
-                    part++;
                 }
+                Log.i(TAG, "超长Log打印：结束 ------------------------------ ");
             } else {
-                Log.i(TAG, msg + " --- " + TAG + " --- ");
+                Log.i(TAG, msg);
             }
         }
     }
@@ -64,18 +64,18 @@ public class EasyLog {
     public static void w(String msg) {
         if (LOGCAT_OPEN) {
             if (msg != null && msg.length() > maxLength) {
-                int part = 0;
+                Log.w(TAG, "超长Log打印：开始 ------------------------------ ");
                 int length = msg.length();
                 for (int i = 0; i < length; i += maxLength) {
                     if (i + maxLength < length) {
-                        Log.w(TAG + "_" + part, msg.substring(i, i + maxLength) + " --- " + TAG + " --- ");
+                        Log.w(TAG, msg.substring(i, i + maxLength));
                     } else {
-                        Log.w(TAG + "_" + part, msg.substring(i, length) + " --- " + TAG + " --- ");
+                        Log.w(TAG, msg.substring(i, length));
                     }
-                    part++;
                 }
+                Log.w(TAG, "超长Log打印：结束 ------------------------------ ");
             } else {
-                Log.w(TAG, msg + " --- " + TAG + " --- ");
+                Log.w(TAG, msg);
             }
         }
     }
@@ -83,18 +83,18 @@ public class EasyLog {
     public static void e(String msg) {
         if (LOGCAT_OPEN) {
             if (msg != null && msg.length() > maxLength) {
-                int part = 0;
+                Log.e(TAG, "超长Log打印：开始 ------------------------------ ");
                 int length = msg.length();
                 for (int i = 0; i < length; i += maxLength) {
                     if (i + maxLength < length) {
-                        Log.e(TAG + "_" + part, msg.substring(i, i + maxLength) + " --- " + TAG + " --- ");
+                        Log.e(TAG, msg.substring(i, i + maxLength));
                     } else {
-                        Log.e(TAG + "_" + part, msg.substring(i, length) + " --- " + TAG + " --- ");
+                        Log.e(TAG, msg.substring(i, length));
                     }
-                    part++;
                 }
+                Log.e(TAG, "超长Log打印：结束 ------------------------------ ");
             } else {
-                Log.e(TAG, msg + " --- " + TAG + " --- ");
+                Log.e(TAG, msg);
             }
         }
     }
@@ -102,18 +102,18 @@ public class EasyLog {
     public static void d(String tag, String msg) {
         if (LOGCAT_OPEN) {
             if (msg != null && msg.length() > maxLength) {
-                int part = 0;
+                Log.d(tag, "超长Log打印：开始 ------------------------------ ");
                 int length = msg.length();
                 for (int i = 0; i < length; i += maxLength) {
                     if (i + maxLength < length) {
-                        Log.d(tag + "_" + part, msg.substring(i, i + maxLength) + " --- " + tag + " --- ");
+                        Log.d(tag, msg.substring(i, i + maxLength));
                     } else {
-                        Log.d(tag + "_" + part, msg.substring(i, length) + " --- " + tag + " --- ");
+                        Log.d(tag, msg.substring(i, length));
                     }
-                    part++;
                 }
+                Log.d(tag, "超长Log打印：结束 ------------------------------ ");
             } else {
-                Log.d(tag, msg + " --- " + tag + " --- ");
+                Log.d(tag, msg);
             }
         }
     }
@@ -121,18 +121,18 @@ public class EasyLog {
     public static void i(String tag, String msg) {
         if (LOGCAT_OPEN) {
             if (msg != null && msg.length() > maxLength) {
-                int part = 0;
+                Log.i(tag, "超长Log打印：开始 ------------------------------ ");
                 int length = msg.length();
                 for (int i = 0; i < length; i += maxLength) {
                     if (i + maxLength < length) {
-                        Log.i(tag + "_" + part, msg.substring(i, i + maxLength) + " --- " + tag + " --- ");
+                        Log.i(tag, msg.substring(i, i + maxLength));
                     } else {
-                        Log.i(tag + "_" + part, msg.substring(i, length) + " --- " + tag + " --- ");
+                        Log.i(tag, msg.substring(i, length));
                     }
-                    part++;
                 }
+                Log.i(tag, "超长Log打印：结束 ------------------------------ ");
             } else {
-                Log.i(tag, msg + " --- " + tag + " --- ");
+                Log.i(tag, msg);
             }
         }
     }
@@ -140,18 +140,18 @@ public class EasyLog {
     public static void w(String tag, String msg) {
         if (LOGCAT_OPEN) {
             if (msg != null && msg.length() > maxLength) {
-                int part = 0;
+                Log.w(tag, "超长Log打印：开始 ------------------------------ ");
                 int length = msg.length();
                 for (int i = 0; i < length; i += maxLength) {
                     if (i + maxLength < length) {
-                        Log.w(tag + "_" + part, msg.substring(i, i + maxLength) + " --- " + tag + " --- ");
+                        Log.w(tag, msg.substring(i, i + maxLength));
                     } else {
-                        Log.w(tag + "_" + part, msg.substring(i, length) + " --- " + tag + " --- ");
+                        Log.w(tag, msg.substring(i, length));
                     }
-                    part++;
                 }
+                Log.w(tag, "超长Log打印：结束 ------------------------------ ");
             } else {
-                Log.w(tag, msg + " --- " + tag + " --- ");
+                Log.w(tag, msg);
             }
         }
     }
@@ -159,18 +159,18 @@ public class EasyLog {
     public static void e(String tag, String msg) {
         if (LOGCAT_OPEN) {
             if (msg != null && msg.length() > maxLength) {
-                int part = 0;
+                Log.i(tag, "超长Log打印：开始 ------------------------------ ");
                 int length = msg.length();
                 for (int i = 0; i < length; i += maxLength) {
                     if (i + maxLength < length) {
-                        Log.e(tag + "_" + part, msg.substring(i, i + maxLength) + " --- " + tag + " --- ");
+                        Log.e(tag, msg.substring(i, i + maxLength));
                     } else {
-                        Log.e(tag + "_" + part, msg.substring(i, length) + " --- " + tag + " --- ");
+                        Log.e(tag, msg.substring(i, length));
                     }
-                    part++;
                 }
+                Log.i(tag, "超长Log打印：结束 ------------------------------ ");
             } else {
-                Log.e(tag, msg + " --- " + tag + " --- ");
+                Log.e(tag, msg);
             }
         }
     }
