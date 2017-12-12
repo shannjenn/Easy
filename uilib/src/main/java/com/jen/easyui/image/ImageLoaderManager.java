@@ -25,6 +25,7 @@ import java.util.Map;
  */
 
 abstract class ImageLoaderManager {
+    private final String TAG = "ImageLoaderManager";
     /*本地缓存目录*/
     private String LOCAL_PATH;
     /*图片缓存*/
@@ -79,13 +80,19 @@ abstract class ImageLoaderManager {
             LOCAL_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + ".EasyImageLoaderCache";
             File file = new File(LOCAL_PATH);
             if (!file.exists()) {
-                file.mkdirs();
+                boolean result = file.mkdirs();
+                if (!result) {
+                    EasyUILog.e(TAG + "创建图片缓存目录失败1");
+                }
             }
         } else if (LOCAL_PATH == null) {
             LOCAL_PATH = EasyApplication.getAppContext().getFilesDir().getAbsolutePath() + File.separator + "EasyImageLoaderCache";
             File file = new File(LOCAL_PATH);
             if (!file.exists()) {
-                file.mkdirs();
+                boolean result = file.mkdirs();
+                if (!result) {
+                    EasyUILog.e(TAG + "创建图片缓存目录失败2");
+                }
             }
         }
     }
@@ -113,8 +120,17 @@ abstract class ImageLoaderManager {
         mViewCache.put(imageUrl, imageView);
     }
 
+    /**
+     * 从SD卡获取
+     * @param imageUrl
+     * @return
+     */
     private Drawable getFromFile(String imageUrl) {
         String name = urlChangeToName(imageUrl);
+        File file = new File(LOCAL_PATH + File.separator + name);
+        if(!file.exists()){
+            return null;
+        }
         Drawable drawable = Drawable.createFromPath(LOCAL_PATH + File.separator + name);
         if (drawable != null) {
             return drawable;
@@ -122,6 +138,10 @@ abstract class ImageLoaderManager {
         return null;
     }
 
+    /**
+     * 从网络获取
+     * @param imageUrl
+     */
     private void getFromHttp(String imageUrl) {
         String name = urlChangeToName(imageUrl);
         String filePath = LOCAL_PATH + File.separator + name;
@@ -132,6 +152,11 @@ abstract class ImageLoaderManager {
         EasyMain.mHttp.start(mHttpRequest);
     }
 
+    /**
+     * 图片地址转保存到SD卡的名称（包括后缀）
+     * @param imageUrl
+     * @return
+     */
     private String urlChangeToName(String imageUrl) {
         String name = imageUrl;
         if (name.length() > 20) {

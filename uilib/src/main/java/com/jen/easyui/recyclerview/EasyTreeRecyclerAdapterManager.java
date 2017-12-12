@@ -118,8 +118,14 @@ abstract class EasyTreeRecyclerAdapterManager<T extends EasyTreeItem> extends Re
         return hloderImp;
     }
 
+    /**
+     * @return 绑定布局，第一个为第一层，第二个为第二层
+     */
     protected abstract int[] onBindLevelLayout();
 
+    /**
+     * @return 每一层缩进大小
+     */
     protected abstract float itemSpaceSize();
 
     /**
