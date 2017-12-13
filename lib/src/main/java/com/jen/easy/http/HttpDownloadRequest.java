@@ -1,5 +1,6 @@
 package com.jen.easy.http;
 
+import com.jen.easy.EasyMouse;
 import com.jen.easy.http.imp.HtppDownloadListener;
 
 /**
@@ -7,6 +8,7 @@ import com.jen.easy.http.imp.HtppDownloadListener;
  * 时间：2017/8/12.
  * 说明：下载文件请求参数
  */
+@EasyMouse.HTTP.GET
 public class HttpDownloadRequest extends HttpRequest {
     private HtppDownloadListener downloadListener;
     public Flag flag = new Flag();
@@ -47,9 +49,9 @@ public class HttpDownloadRequest extends HttpRequest {
         public boolean isBreak;
 
         /**
-         * 是否在下载删除旧文件
+         * 是否在下载删除旧文件，默认删除
          */
-        public boolean deleteOldFile;
+        public boolean deleteOldFile = true;
     }
 
     public HtppDownloadListener getDownloadListener() {

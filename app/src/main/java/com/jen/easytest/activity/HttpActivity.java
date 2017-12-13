@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.jen.easy.EasyMain;
+import com.jen.easy.EasyMouse;
 import com.jen.easy.http.imp.HttpBaseListener;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
@@ -39,35 +40,41 @@ public class HttpActivity extends EasyBaseActivity {
 
     @Override
     protected void loadDataAfterView() {
-//        String signKey = "zteNTHVcBQ[UDpVoF^4";// 用户名+密码
-//        String cid = "88867";// 测试公司编号
-//        String signType = "MD5";
 
-//        String fromCity = "SZX";
-//        String fromCityName = "深圳";
-//        String arriveCity = "WUH";
-//        String arriveCityName = "武汉";
-//        String carrier = "";
-//        String codeLevel = "Y";
-//        String goDate = "2017-12-22";
-//        String level = "";
-//        String backDate = "";
-//        String userCode = "10045462";
+    }
 
+    @EasyMouse.BIND.Method({R.id.base, R.id.upload, R.id.download})
+    @Override
+    protected void onBindClick(View view) {
+        switch (view.getId()) {
+            case R.id.base:
+                base();
+                break;
+            case R.id.upload:
+
+                break;
+            case R.id.download:
+                download();
+                break;
+
+        }
+    }
+
+    private void base() {
         String signKey = "zteNTHVcBQ[UDpVoF^4";//用户名+密码
         String cid = "39189";//测试公司编号
-        String signType="MD5";
+        String signType = "MD5";
 
-        String fromCity="SZX";
-        String fromCityName="深圳";
-        String arriveCity="PEK";
-        String arriveCityName="北京";
-        String carrier="";
-        String codeLevel="";
-        String goDate="2017-12-20";
+        String fromCity = "SZX";
+        String fromCityName = "深圳";
+        String arriveCity = "PEK";
+        String arriveCityName = "北京";
+        String carrier = "";
+        String codeLevel = "";
+        String goDate = "2017-12-20";
         String level = "";
-        String backDate="";
-        String userCode="30999901";
+        String backDate = "";
+        String userCode = "30999901";
 
 
         SimpleDateFormat smdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -98,10 +105,7 @@ public class HttpActivity extends EasyBaseActivity {
         EasyLog.d("mAirResponse mAirResponse:");
     }
 
-    private AirResponse mAirResponse;
-
-    @Override
-    protected void onBindClick(View view) {
+    private void download(){
 
     }
 
@@ -117,7 +121,6 @@ public class HttpActivity extends EasyBaseActivity {
         @Override
         public void success(int flagCode, String flag, AirResponse airResponse) {
             EasyLog.d("airRequestListener success");
-            mAirResponse = airResponse;
         }
     };
 

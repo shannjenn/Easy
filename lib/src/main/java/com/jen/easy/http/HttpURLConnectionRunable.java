@@ -23,6 +23,7 @@ abstract class HttpURLConnectionRunable implements Runnable {
     protected String mCharset;//编码
     protected boolean mIsGet = true;
     protected String mRequestParam;
+    protected String mMethod;
 
     HttpURLConnectionRunable(HttpRequest param) {
         super();
@@ -33,7 +34,7 @@ abstract class HttpURLConnectionRunable implements Runnable {
     public void run() {
         Object[] method_url = HttpReflectManager.getUrl(mRequest);
         if (method_url != null) {
-            mRequest.http.method = (String) method_url[0];
+            mMethod = (String) method_url[0];
             mRequest.http.url = (String) method_url[1];
             mResponseClass = (Class) method_url[2];
         }
@@ -43,15 +44,19 @@ abstract class HttpURLConnectionRunable implements Runnable {
             fail("URL地址为空");
             return;
         }
-        if (mResponseClass == null) {
-            EasyLibLog.e(TAG + "返回class为空");
-            fail("返回class为空");
-            return;
-        }
 
         if (mRequest instanceof HttpBaseRequest) {//===============基本数据处理
-
+            if (mResponseClass == null) {
+                EasyLibLog.e(TAG + "返回class为空");
+                fail("返回class不能为空");
+                return;
+            }
         } else if (mRequest instanceof HttpUploadRequest) {//===============上传请求处理
+            if (mResponseClass == null) {
+                EasyLibLog.e(TAG + "返回class为空");
+                fail("返回class不能为空");
+                return;
+            }
             HttpUploadRequest uploadRequest = (HttpUploadRequest) mRequest;
             if (TextUtils.isEmpty(uploadRequest.flag.filePath)) {
                 fail("文件地址不能为空");
@@ -95,7 +100,7 @@ abstract class HttpURLConnectionRunable implements Runnable {
         mResposeCode = -1;//返回码
         mHasParam = false;//是否有参数
         mCharset = mRequest.http.charset;//编码
-        mIsGet = mRequest.http.method.toUpperCase().equals("GET");
+        mIsGet = mMethod.toUpperCase().equals("GET");
         try {
             Map<String, String> requestParams = HttpReflectManager.getRequestParams(mRequest);
             boolean isNotFirst = false;
@@ -131,11 +136,11 @@ abstract class HttpURLConnectionRunable implements Runnable {
             URL url = new URL(mUrlStr);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoInput(true);
-            connection.setDoOutput(mIsGet ? false : true);
+            connection.setDoOutput(!mIsGet);
             connection.setUseCaches(mRequest.http.useCaches);
             connection.setConnectTimeout(mRequest.http.timeout);
             connection.setReadTimeout(mRequest.http.readTimeout);
-            connection.setRequestMethod(mRequest.http.method);
+            connection.setRequestMethod(mMethod);
             for (String key : mRequest.http.propertys.keySet()) {//设置Property
                 connection.setRequestProperty(key, mRequest.http.propertys.get(key));
             }

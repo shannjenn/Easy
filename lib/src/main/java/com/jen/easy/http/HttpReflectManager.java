@@ -24,25 +24,26 @@ class HttpReflectManager {
      *
      * @return
      */
-    static Object[] getUrl(Object obj) {
+    static Object[] getUrl(HttpRequest request) {
         Object[] values = new Object[3];
-        if (obj == null) {
+        if (request == null) {
             EasyLibLog.e(TAG + "getTableName obj is null");
             return null;
         }
-        boolean isAnnoGet = obj.getClass().isAnnotationPresent(EasyMouse.HTTP.GET.class);
+
+        boolean isAnnoGet = request.getClass().isAnnotationPresent(EasyMouse.HTTP.GET.class);
         if (isAnnoGet) {
-            EasyMouse.HTTP.GET url = obj.getClass().getAnnotation(EasyMouse.HTTP.GET.class);
+            EasyMouse.HTTP.GET url = request.getClass().getAnnotation(EasyMouse.HTTP.GET.class);
             values[0] = "GET";
-            values[1] = url.URL();
+            values[1] = request.http.url != null ? request.http.url : url.URL();
             values[2] = url.Response();
             return values;
         }
-        boolean isAnnoPost = obj.getClass().isAnnotationPresent(EasyMouse.HTTP.POST.class);
+        boolean isAnnoPost = request.getClass().isAnnotationPresent(EasyMouse.HTTP.POST.class);
         if (isAnnoPost) {
-            EasyMouse.HTTP.POST url = obj.getClass().getAnnotation(EasyMouse.HTTP.POST.class);
+            EasyMouse.HTTP.POST url = request.getClass().getAnnotation(EasyMouse.HTTP.POST.class);
             values[0] = "POST";
-            values[1] = url.URL();
+            values[1] = request.http.url != null ? request.http.url : url.URL();
             values[2] = url.Response();
             return values;
         }

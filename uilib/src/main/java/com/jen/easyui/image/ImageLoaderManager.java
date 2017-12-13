@@ -77,7 +77,7 @@ abstract class ImageLoaderManager {
 
     private void init() {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {// 优先保存到SD卡中
-            LOCAL_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + ".EasyImageLoaderCache";
+            LOCAL_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "EasyImageLoaderCache";
             File file = new File(LOCAL_PATH);
             if (!file.exists()) {
                 boolean result = file.mkdirs();
@@ -97,13 +97,19 @@ abstract class ImageLoaderManager {
         }
     }
 
-    public void setImage(String imageUrl, ImageView imageView) {
+    public void setImage(String imageUrl, final ImageView imageView) {
         Drawable drawable;
         if (mImageCache.containsKey(imageUrl)) {
             SoftReference<Drawable> softReference = mImageCache.get(imageUrl);
             drawable = softReference.get();
             if (drawable != null) {
-                imageView.setImageDrawable(drawable);
+                final Drawable finalDrawable = drawable;
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        imageView.setImageDrawable(finalDrawable);
+                    }
+                });
                 return;
             }
         }
@@ -112,7 +118,13 @@ abstract class ImageLoaderManager {
         if (drawable != null) {
             SoftReference<Drawable> softReference = new SoftReference<>(drawable);
             mImageCache.put(imageUrl, softReference);
-            imageView.setImageDrawable(drawable);
+            final Drawable finalDrawable = drawable;
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    imageView.setImageDrawable(finalDrawable);
+                }
+            });
             return;
         }
 
@@ -122,13 +134,14 @@ abstract class ImageLoaderManager {
 
     /**
      * 从SD卡获取
+     *
      * @param imageUrl
      * @return
      */
     private Drawable getFromFile(String imageUrl) {
         String name = urlChangeToName(imageUrl);
         File file = new File(LOCAL_PATH + File.separator + name);
-        if(!file.exists()){
+        if (!file.exists()) {
             return null;
         }
         Drawable drawable = Drawable.createFromPath(LOCAL_PATH + File.separator + name);
@@ -140,6 +153,7 @@ abstract class ImageLoaderManager {
 
     /**
      * 从网络获取
+     *
      * @param imageUrl
      */
     private void getFromHttp(String imageUrl) {
@@ -154,6 +168,7 @@ abstract class ImageLoaderManager {
 
     /**
      * 图片地址转保存到SD卡的名称（包括后缀）
+     *
      * @param imageUrl
      * @return
      */

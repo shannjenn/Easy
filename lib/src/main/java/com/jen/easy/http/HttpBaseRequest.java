@@ -10,7 +10,7 @@ import com.jen.easy.http.imp.HttpBaseListener;
 public abstract class HttpBaseRequest extends HttpRequest {
     /**
      * 通用数据返回
-     * 设置返回Object变量实体：List集合实体、单实体
+     * 设置Response类中Object变量的值：List集合实体、单实体
      * 如：
      * （@EasyMouse.mHttp.ResponseParam("data") 注释返回参数）
      * （@private Object data; 实体变量，必须为Object）

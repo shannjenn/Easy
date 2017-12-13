@@ -14,8 +14,8 @@ abstract class HttpRequest {
     public HTTP http = new HTTP();
 
     public final class HTTP {
-        public String url;
-        public String method;
+        public String url;//可以动态改变
+//        public String method;
         public final Map<String, String> propertys = new HashMap<>();
 
         public int timeout = 30000;

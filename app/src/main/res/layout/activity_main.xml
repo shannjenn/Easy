@@ -22,4 +22,10 @@
         android:layout_height="46dp"
         android:text="http" />
 
+    <Button
+        android:id="@+id/imageLoader"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:text="imageLoader" />
+
 </LinearLayout>

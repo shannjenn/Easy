@@ -4,4 +4,21 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <Button
+        android:id="@+id/base"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:text="基本数据请求" />
+
+    <Button
+        android:id="@+id/download"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:text="下载请求" />
+
+    <Button
+        android:id="@+id/upload"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:text="上传请求" />
 </LinearLayout>
