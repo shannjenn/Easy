@@ -2,8 +2,6 @@ package com.jen.easyui.image;
 
 import android.widget.ImageView;
 
-import com.jen.easy.log.EasyUILog;
-
 /**
  * 图片加载工具
  * 作者：ShannJenn
@@ -29,14 +27,7 @@ public class ImageLoader extends ImageLoaderManager {
     @Override
     public void setImage(String imageUrl, ImageView imageView) {
         synchronized (ImageLoader.class) {
-            EasyUILog.d("setImage ------0");
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             super.setImage(imageUrl, imageView);
-            EasyUILog.d("setImage ------1");
         }
     }
 }

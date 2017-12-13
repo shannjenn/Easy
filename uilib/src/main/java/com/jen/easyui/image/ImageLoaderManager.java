@@ -35,6 +35,8 @@ abstract class ImageLoaderManager {
     /*ImageView缓存*/
     private final Map<String, ImageView> mViewCache = new HashMap<>();
 
+    private int mDefautImageId;
+
 
     private final int SUCCESS = 100;
     private final int FAIL = 101;
@@ -60,7 +62,16 @@ abstract class ImageLoaderManager {
                     break;
                 }
                 case FAIL: {
-
+                    String imageUrl = (String) msg.obj;
+                    ImageView imageView = mViewCache.get(imageUrl);
+                    if (EasyApplication.getAppContext() == null) {
+                        EasyUILog.e("Application请继承EasyApplication再使用");
+                    } else if (imageView != null) {
+                        Drawable defautDrawable = EasyApplication.getAppContext().getResources().getDrawable(mDefautImageId);
+                        imageView.setImageDrawable(defautDrawable);
+                    } else {
+                        EasyUILog.e("mHandler imageView is null");
+                    }
                     break;
                 }
                 default: {
@@ -77,7 +88,7 @@ abstract class ImageLoaderManager {
 
     private void init() {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {// 优先保存到SD卡中
-            LOCAL_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "EasyImageLoaderCache";
+            LOCAL_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + ".EasyImageLoaderCache";
             File file = new File(LOCAL_PATH);
             if (!file.exists()) {
                 boolean result = file.mkdirs();
@@ -188,7 +199,6 @@ abstract class ImageLoaderManager {
             boolean success = true;
             Drawable drawable = Drawable.createFromPath(filePath);
             if (drawable == null) {
-                EasyUILog.e("mHttpListener success error");
                 success = false;
             } else {
                 SoftReference<Drawable> softReference = new SoftReference<>(drawable);
@@ -203,7 +213,10 @@ abstract class ImageLoaderManager {
 
         @Override
         public void fail(int flagCode, String flag, String msg) {
-            EasyUILog.e("mHttpListener fail");
+            Message message = mHandler.obtainMessage();
+            message.what = FAIL;
+            message.obj = flag;
+            mHandler.sendMessage(message);
         }
 
         @Override
@@ -211,4 +224,8 @@ abstract class ImageLoaderManager {
 
         }
     };
+
+    public void setDefautImage(int defautImageId) {
+        mDefautImageId = defautImageId;
+    }
 }
