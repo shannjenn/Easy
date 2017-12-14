@@ -155,3 +155,6 @@
 -keep class com.jen.easy.util.StringToList {
     *;
 }
+-keep class com.jen.easy.util.FileUtil {
+    *;
+}
