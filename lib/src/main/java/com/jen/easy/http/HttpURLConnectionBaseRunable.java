@@ -26,7 +26,7 @@ class HttpURLConnectionBaseRunable extends HttpURLConnectionRunable {
         }
 
         mResposeCode = connection.getResponseCode();
-        EasyLibLog.d(TAG + mUrlStr + "  Http请求返回码：" + mResposeCode);
+        EasyLibLog.d(TAG + mUrlStr + " Http请求返回码：" + mResposeCode);
         if ((mResposeCode == 200)) {
             StringBuffer resultBuffer = new StringBuffer("");
             InputStream inStream = connection.getInputStream();
@@ -54,8 +54,9 @@ class HttpURLConnectionBaseRunable extends HttpURLConnectionRunable {
             parseManager.setResponseObjectType(baseRequest.responseObjectType);
             Object parseObject = parseManager.parseJson(mResponseClass, result);
             if (parseObject == null) {
-                fail("数据解析异常");
+                fail("解析数据解析出错");
             } else {
+                EasyLibLog.d(TAG + mUrlStr + " 成功!");
                 baseRequest.getBseListener().success(baseRequest.flag.code, baseRequest.flag.str, parseObject);
             }
         }
@@ -63,6 +64,7 @@ class HttpURLConnectionBaseRunable extends HttpURLConnectionRunable {
 
     @Override
     protected void fail(String result) {
+        EasyLibLog.e(TAG + mUrlStr + result);
         HttpBaseRequest baseRequest = (HttpBaseRequest) mRequest;
         if (baseRequest.getBseListener() != null)
             baseRequest.getBseListener().fail(baseRequest.flag.code, baseRequest.flag.str, result);

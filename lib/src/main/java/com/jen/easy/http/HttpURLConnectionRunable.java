@@ -41,20 +41,17 @@ abstract class HttpURLConnectionRunable implements Runnable {
         }
         mUrlStr = mRequest.http.url;
         if (TextUtils.isEmpty(mUrlStr)) {
-            EasyLibLog.e(TAG + mRequest.http.url + " URL地址错误");
             fail("URL地址为空");
             return;
         }
 
         if (mRequest instanceof HttpBaseRequest) {//===============基本数据处理
             if (mResponseClass == null) {
-                EasyLibLog.e(TAG + "返回class为空");
                 fail("返回class不能为空");
                 return;
             }
         } else if (mRequest instanceof HttpUploadRequest) {//===============上传请求处理
             if (mResponseClass == null) {
-                EasyLibLog.e(TAG + "返回class为空");
                 fail("返回class不能为空");
                 return;
             }
@@ -75,7 +72,6 @@ abstract class HttpURLConnectionRunable implements Runnable {
                 if (file.exists()) {
                     boolean ret = file.delete();
                     if (!ret) {
-                        EasyLibLog.w(TAG + mUrlStr + " 删除旧文件失败");
                         fail("删除旧文件失败，请检查文件路径是否正确");
                         return;
                     }
@@ -91,7 +87,6 @@ abstract class HttpURLConnectionRunable implements Runnable {
             if (!fileFolder.exists()) {
                 boolean ret = fileFolder.mkdirs();
                 if (!ret) {
-                    EasyLibLog.w(TAG + mRequest.http.url + " 创建文件夹失败");
                     fail("保存文件失败，请检查文件路径是否正确");
                     return;
                 }
@@ -149,7 +144,6 @@ abstract class HttpURLConnectionRunable implements Runnable {
             connection.disconnect();
         } catch (IOException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + mRequest.http.url + " IOException");
             fail("IOException 网络请求异常：" + mResposeCode);
         }
     }

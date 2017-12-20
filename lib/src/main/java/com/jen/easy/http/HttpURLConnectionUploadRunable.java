@@ -43,7 +43,7 @@ class HttpURLConnectionUploadRunable extends HttpURLConnectionRunable {
         out.close();
 
         if (request.flag.userCancel) {
-            fail("用户取消上传");
+            fail("上传失败：用户取消上传");
             return;
         }
 
@@ -56,7 +56,7 @@ class HttpURLConnectionUploadRunable extends HttpURLConnectionRunable {
         }
         reader.close();
         String result = buffer.toString();
-        EasyLibLog.d(TAG + mUrlStr + " 服务器完成，返回数据：" + result);
+        EasyLibLog.d(TAG + mUrlStr + " 完成，返回数据：" + result);
         success(result);
     }
 
@@ -69,7 +69,7 @@ class HttpURLConnectionUploadRunable extends HttpURLConnectionRunable {
             parseManager.setResponseObjectType(request.responseObjectType);
             Object parseObject = parseManager.parseJson(mResponseClass, result);
             if (parseObject == null) {
-                fail("返回数据解析异常");
+                fail("上传成功,返回数据解析异常");
             } else {
                 request.getUploadListener().success(request.flag.code, request.flag.str, parseObject);
             }
@@ -78,7 +78,7 @@ class HttpURLConnectionUploadRunable extends HttpURLConnectionRunable {
 
     @Override
     protected void fail(String msg) {
-        EasyLibLog.e(TAG + mUrlStr + "上传失败：" + msg);
+        EasyLibLog.e(TAG + mUrlStr + msg);
         HttpUploadRequest request = (HttpUploadRequest) mRequest;
         if (request.getUploadListener() != null)
             request.getUploadListener().fail(request.flag.code, request.flag.str, msg);

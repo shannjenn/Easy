@@ -55,14 +55,14 @@ class HttpURLConnectionDownloadRunable extends HttpURLConnectionRunable {
                 }
             }
             if (request.flag.userCancel) {
-                fail("用户取消下载");
+                fail("下载失败：用户取消下载");
             } else if (curBytes == request.flag.endPoit) {
                 success(null);
             } else {
-                fail(" 下载失败：" + mResposeCode);
+                fail("下载失败：" + mResposeCode);
             }
         } else {
-            fail(" 网络请求异常：" + mResposeCode);
+            fail("下载失败：" + mResposeCode);
         }
     }
 
@@ -76,7 +76,7 @@ class HttpURLConnectionDownloadRunable extends HttpURLConnectionRunable {
 
     @Override
     protected void fail(String msg) {
-        EasyLibLog.e(TAG + mUrlStr + "下载失败：" + msg);
+        EasyLibLog.e(TAG + mUrlStr + msg);
         HttpDownloadRequest request = (HttpDownloadRequest) mRequest;
         if (request.getDownloadListener() != null)
             request.getDownloadListener().fail(request.flag.code, request.flag.str, msg);
