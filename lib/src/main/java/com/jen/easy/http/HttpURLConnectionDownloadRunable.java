@@ -68,6 +68,7 @@ class HttpURLConnectionDownloadRunable extends HttpURLConnectionRunable {
 
     @Override
     protected void success(String result) {
+        EasyLibLog.d(TAG + mUrlStr + "下载成功！");
         HttpDownloadRequest request = (HttpDownloadRequest) mRequest;
         if (request.getDownloadListener() != null)
             request.getDownloadListener().success(request.flag.code, request.flag.str, request.flag.filePath);
@@ -75,6 +76,7 @@ class HttpURLConnectionDownloadRunable extends HttpURLConnectionRunable {
 
     @Override
     protected void fail(String msg) {
+        EasyLibLog.d(TAG + mUrlStr + msg);
         HttpDownloadRequest request = (HttpDownloadRequest) mRequest;
         if (request.getDownloadListener() != null)
             request.getDownloadListener().fail(request.flag.code, request.flag.str, msg);

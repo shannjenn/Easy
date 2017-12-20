@@ -62,13 +62,14 @@ class HttpURLConnectionUploadRunable extends HttpURLConnectionRunable {
 
     @Override
     protected void success(String result) {
+        EasyLibLog.d(TAG + mUrlStr + "上传成功！");
         HttpUploadRequest request = (HttpUploadRequest) mRequest;
         if (request.getUploadListener() != null) {
             HttpParseManager parseManager = new HttpParseManager();
             parseManager.setResponseObjectType(request.responseObjectType);
             Object parseObject = parseManager.parseJson(mResponseClass, result);
             if (parseObject == null) {
-                fail("数据解析异常");
+                fail("返回数据解析异常");
             } else {
                 request.getUploadListener().success(request.flag.code, request.flag.str, parseObject);
             }
@@ -77,6 +78,7 @@ class HttpURLConnectionUploadRunable extends HttpURLConnectionRunable {
 
     @Override
     protected void fail(String msg) {
+        EasyLibLog.d(TAG + mUrlStr + msg);
         HttpUploadRequest request = (HttpUploadRequest) mRequest;
         if (request.getUploadListener() != null)
             request.getUploadListener().fail(request.flag.code, request.flag.str, msg);
