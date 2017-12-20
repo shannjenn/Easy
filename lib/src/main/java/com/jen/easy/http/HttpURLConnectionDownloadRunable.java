@@ -76,7 +76,7 @@ class HttpURLConnectionDownloadRunable extends HttpURLConnectionRunable {
 
     @Override
     protected void fail(String msg) {
-        EasyLibLog.d(TAG + mUrlStr + msg);
+        EasyLibLog.e(TAG + mUrlStr + "下载失败：" + msg);
         HttpDownloadRequest request = (HttpDownloadRequest) mRequest;
         if (request.getDownloadListener() != null)
             request.getDownloadListener().fail(request.flag.code, request.flag.str, msg);

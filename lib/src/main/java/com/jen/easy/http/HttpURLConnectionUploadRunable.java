@@ -78,7 +78,7 @@ class HttpURLConnectionUploadRunable extends HttpURLConnectionRunable {
 
     @Override
     protected void fail(String msg) {
-        EasyLibLog.d(TAG + mUrlStr + msg);
+        EasyLibLog.e(TAG + mUrlStr + "上传失败：" + msg);
         HttpUploadRequest request = (HttpUploadRequest) mRequest;
         if (request.getUploadListener() != null)
             request.getUploadListener().fail(request.flag.code, request.flag.str, msg);
