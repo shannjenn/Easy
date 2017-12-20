@@ -9,10 +9,9 @@ import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
 
 class HttpURLConnectionDownloadRunable extends HttpURLConnectionRunable {
-    private final String TAG = "HttpDownload : ";
 
     HttpURLConnectionDownloadRunable(HttpDownloadRequest request) {
-        super(request);
+        super(request, "HttpDownload : ");
     }
 
     @Override

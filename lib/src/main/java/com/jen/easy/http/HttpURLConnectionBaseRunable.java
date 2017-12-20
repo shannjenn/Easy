@@ -12,7 +12,7 @@ import java.net.HttpURLConnection;
 class HttpURLConnectionBaseRunable extends HttpURLConnectionRunable {
 
     HttpURLConnectionBaseRunable(HttpBaseRequest request) {
-        super(request);
+        super(request, "HttpBase :");
     }
 
     @Override

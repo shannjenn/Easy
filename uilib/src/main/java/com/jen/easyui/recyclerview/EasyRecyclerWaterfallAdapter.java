@@ -19,16 +19,38 @@ public abstract class EasyRecyclerWaterfallAdapter<T> extends EasyRecyclerWaterf
         super(context, data);
     }
 
-    /**
-     * @param position 下标(对应onBindLayout返回数组下标：0、1、2...)
-     * @return
-     */
     @Override
-    protected abstract int getViewType(int position);
+    protected int getViewType(int position) {
+        return 0;
+    }
 
     @Override
-    protected abstract int[] onBindLayout();
+    protected int[] onBindLayout() {
+        return new int[0];
+    }
 
     @Override
-    protected abstract EasyHloder onCreateEasyHolder(View view);
+    protected int[] bindClick() {
+        return new int[0];
+    }
+
+    @Override
+    protected int[] bindLongClick() {
+        return new int[0];
+    }
+
+    @Override
+    protected boolean bindItemClick() {
+        return false;
+    }
+
+    @Override
+    protected void onBindView(View view, Object data, int pos) {
+
+    }
+
+    @Override
+    public void setEasyAdapterClickEvent(EasyAdapterClickEvent easyAdapterClickEvent) {
+        super.setEasyAdapterClickEvent(easyAdapterClickEvent);
+    }
 }

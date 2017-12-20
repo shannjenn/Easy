@@ -3,6 +3,8 @@ package com.jen.easyui.recyclerview;
 import android.content.Context;
 import android.view.View;
 
+import java.util.List;
+
 /**
  * 树形模式
  * 作者：ShannJenn
@@ -13,21 +15,49 @@ public abstract class EasyTreeRecyclerAdapter<T extends EasyTreeItem> extends Ea
 
     /**
      * @param context
-     * @param tree    数据
+     * @param data
      */
-    protected EasyTreeRecyclerAdapter(Context context, T tree) {
-        super(context, tree);
+    protected EasyTreeRecyclerAdapter(Context context, List<T> data) {
+        super(context, data);
     }
 
     @Override
-    protected abstract boolean showTopLevel();
+    protected int getViewType(int position) {
+        return 0;
+    }
 
     @Override
-    protected abstract int[] onBindLevelLayout();
+    protected int[] onBindLayout() {
+        return new int[0];
+    }
 
     @Override
-    protected abstract float itemSpaceSize();
+    protected int[] bindClick() {
+        return new int[0];
+    }
 
     @Override
-    protected abstract EasyHloderManager onCreateEasyHolder(View view);
+    protected int[] bindLongClick() {
+        return new int[0];
+    }
+
+    @Override
+    protected boolean bindItemClick() {
+        return false;
+    }
+
+    @Override
+    protected void onBindView(View view, T data, int pos) {
+
+    }
+
+    @Override
+    public void setEasyAdapterClickEvent(EasyAdapterClickEvent easyAdapterClickEvent) {
+        super.setEasyAdapterClickEvent(easyAdapterClickEvent);
+    }
+
+    @Override
+    protected float itemSpaceSize() {
+        return 0;
+    }
 }

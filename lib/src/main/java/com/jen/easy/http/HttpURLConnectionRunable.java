@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Set;
 
 abstract class HttpURLConnectionRunable implements Runnable {
-    protected final String TAG = "Http:";
+    protected String TAG;
     protected HttpRequest mRequest;
     protected Class mResponseClass;
 
@@ -25,8 +25,9 @@ abstract class HttpURLConnectionRunable implements Runnable {
     protected String mRequestParam;
     protected String mMethod;
 
-    HttpURLConnectionRunable(HttpRequest param) {
+    HttpURLConnectionRunable(HttpRequest param, String TAG) {
         super();
+        this.TAG = TAG;
         this.mRequest = param;
     }
 

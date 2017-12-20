@@ -12,24 +12,41 @@ import java.util.List;
  */
 
 public abstract class EasyRecyclerAdapter<T> extends EasyRecyclerAdapterManager<T> {
-
     /**
-     * @param data 数据
+     * @param context
+     * @param data    数据
      */
     protected EasyRecyclerAdapter(Context context, List<T> data) {
         super(context, data);
     }
 
-    /**
-     * @return item布局
-     */
     @Override
-    protected abstract int onBindLayout();
+    protected int onBindLayout() {
+        return 0;
+    }
 
-    /**
-     * @param view itemView
-     * @return 返回：new EasyHloder(view)
-     */
     @Override
-    protected abstract EasyHloder onCreateEasyHolder(View view);
+    protected int[] bindClick() {
+        return new int[0];
+    }
+
+    @Override
+    protected int[] bindLongClick() {
+        return new int[0];
+    }
+
+    @Override
+    protected boolean bindItemClick() {
+        return false;
+    }
+
+    @Override
+    protected void onBindView(View view, T data, int pos) {
+
+    }
+
+    @Override
+    public void setEasyAdapterClickEvent(EasyAdapterClickEvent easyAdapterClickEvent) {
+        super.setEasyAdapterClickEvent(easyAdapterClickEvent);
+    }
 }

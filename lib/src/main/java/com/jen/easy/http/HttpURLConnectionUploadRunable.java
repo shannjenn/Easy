@@ -12,10 +12,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 
 class HttpURLConnectionUploadRunable extends HttpURLConnectionRunable {
-    private final String TAG = "HttpUpload : ";
 
     HttpURLConnectionUploadRunable(HttpUploadRequest request) {
-        super(request);
+        super(request, "HttpUpload : ");
     }
 
     @Override

@@ -3,15 +3,16 @@ package com.jen.easyui.recyclerview;
 import java.util.List;
 
 /**
+ * 0为最高级
  * 作者：ShannJenn
  * 时间：2017/8/12.
  */
 
-public abstract class EasyTreeItem<D> {
+public abstract class EasyTreeItem {
     /**
-     * 当前item的数据
+     * 父级
      */
-    private D data;
+    private EasyTreeItem parent;
 
     /**
      * 持有的子数据(注意：不可以同时为父数据)
@@ -27,25 +28,12 @@ public abstract class EasyTreeItem<D> {
      */
     private int level;
 
-    public EasyTreeItem(D data) {
-        this.data = data;
+    public EasyTreeItem getParent() {
+        return parent;
     }
 
-    /**
-     * 是否持有子数据
-     *
-     * @return
-     */
-    public boolean isParent() {
-        return children != null && children.size() > 0;
-    }
-
-    public D getData() {
-        return data;
-    }
-
-    public void setData(D data) {
-        this.data = data;
+    public void setParent(EasyTreeItem parent) {
+        this.parent = parent;
     }
 
     public List<EasyTreeItem> getChildren() {
