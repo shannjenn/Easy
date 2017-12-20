@@ -41,6 +41,7 @@ abstract class HttpURLConnectionRunable implements Runnable {
         }
         mUrlStr = mRequest.http.url;
         if (TextUtils.isEmpty(mUrlStr)) {
+            mUrlStr = "";
             fail("URL地址为空");
             return;
         }
