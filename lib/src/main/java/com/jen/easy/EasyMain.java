@@ -27,34 +27,33 @@ public final class EasyMain {
     /**
      * ID绑定（结合注释@EasyMouse.BIND使用）
      */
-    public static final BindView mBindView;
+    public static BindView mBindView;
     /**
      * 网络请求（结合注释@EasyMouse.HTTP使用）
      */
-    public static final Http mHttp;
+    public static Http mHttp;
     /**
      * 数据库操作（结合注释@EasyMouse.DB使用）
      */
-    public static final DBHelper mDBHelper;
+    public static DBHelper mDBHelper;
     /**
      * 数据表操作（结合注释@EasyMouse.DB使用）
      */
-    public static final DBDao mDao;
+    public static DBDao mDao;
     /**
      * 日志取
      */
-    public static final LogcatHelper mLog;
+    public static LogcatHelper mLog;
     /**
      * 数据存储SharedPreferences
      */
-    public static final Shared mShared;
+    public static Shared mShared;
 
     static {
         EasyLibLog.d("init EasyMain -------");
 
         mBindView = new BindView();
-        mHttp = new Http();
-//        Parse = new HttpParseManager();
+        mHttp = new Http(10);//默认最大10个线程
         mLog = new LogcatHelper();
 
         if (EasyApplication.getAppContext() != null) {

@@ -9,9 +9,11 @@ public class Http extends HttpManager {
 
     /**
      * 新建实例
+     *
+     * @param maxThreadSize 设置线程池最大数量
      */
-    public Http() {
-        super();
+    public Http(int maxThreadSize) {
+        super(maxThreadSize);
     }
 
     /**
@@ -25,12 +27,12 @@ public class Http extends HttpManager {
     }
 
     /**
-     * 设置线程池最大数量
+     * 获取线程数
      *
-     * @param maxThreadSize 数量
+     * @return 线程数
      */
-    @Override
-    public void setMaxThreadSize(int maxThreadSize) {
-        super.setMaxThreadSize(maxThreadSize);
+    protected int getMaxThreadSize() {
+        return maxThreadSize;
     }
+
 }

@@ -13,9 +13,10 @@ import java.util.concurrent.Executors;
 abstract class HttpManager {
     private final String TAG = "HttpManager : ";
     private ExecutorService pool;
-    private int maxThreadSize = 100;
+    protected int maxThreadSize;
 
-    protected HttpManager() {
+    protected HttpManager(int maxThreadSize) {
+        this.maxThreadSize = maxThreadSize;
         pool = Executors.newFixedThreadPool(maxThreadSize);
     }
 
@@ -41,13 +42,7 @@ abstract class HttpManager {
         }
     }
 
-    /**
-     * 设置线程池最大数量
-     *
-     * @param maxThreadSize
-     */
-    protected void setMaxThreadSize(int maxThreadSize) {
-        this.maxThreadSize = maxThreadSize;
+    protected int getMaxThreadSize() {
+        return maxThreadSize;
     }
-
 }
