@@ -23,7 +23,7 @@ abstract class EasyRecyclerBaseAdapterManager<T> extends RecyclerView.Adapter<Re
     /**
      * @param data 数据
      */
-    protected EasyRecyclerBaseAdapterManager(Context context, List<T> data) {
+    EasyRecyclerBaseAdapterManager(Context context, List<T> data) {
         this.mContext = context;
         this.mData = data;
     }

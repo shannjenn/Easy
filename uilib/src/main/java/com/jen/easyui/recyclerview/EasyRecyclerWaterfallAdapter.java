@@ -11,7 +11,7 @@ import java.util.List;
  * 时间：2017/8/12.
  */
 
-public abstract class EasyRecyclerWaterfallAdapter<T> extends EasyRecyclerWaterfallAdapterManager<T> {
+public class EasyRecyclerWaterfallAdapter<T> extends EasyRecyclerWaterfallAdapterManager<T> {
     /**
      * @param data 数据
      */

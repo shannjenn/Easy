@@ -11,7 +11,8 @@ import java.util.List;
  * 时间：2017/8/12.
  */
 
-public abstract class EasyTreeRecyclerAdapter<T extends EasyTreeItem> extends EasyTreeRecyclerAdapterManager<T> {
+public class EasyTreeRecyclerAdapter<T extends EasyTreeItem> extends EasyTreeRecyclerAdapterManager<T> {
+
 
     /**
      * @param context
@@ -22,13 +23,23 @@ public abstract class EasyTreeRecyclerAdapter<T extends EasyTreeItem> extends Ea
     }
 
     @Override
-    protected int getViewType(int position) {
+    protected int getViewType(int level) {
         return 0;
+    }
+
+    @Override
+    protected boolean isSameView() {
+        return false;
     }
 
     @Override
     protected int[] onBindLayout() {
         return new int[0];
+    }
+
+    @Override
+    protected float itemSpacedb() {
+        return 0;
     }
 
     @Override
@@ -54,10 +65,5 @@ public abstract class EasyTreeRecyclerAdapter<T extends EasyTreeItem> extends Ea
     @Override
     public void setEasyAdapterClickEvent(EasyAdapterClickEvent easyAdapterClickEvent) {
         super.setEasyAdapterClickEvent(easyAdapterClickEvent);
-    }
-
-    @Override
-    protected float itemSpaceSize() {
-        return 0;
     }
 }

@@ -7,8 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jen.easy.log.EasyUILog;
+import com.jen.easyui.util.EasyDensityUtil;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 树形模式
@@ -18,99 +21,55 @@ import java.util.List;
 
 abstract class EasyTreeRecyclerAdapterManager<T extends EasyTreeItem> extends EasyRecyclerBaseAdapterManager<T> {
     private final String TAG = EasyTreeRecyclerAdapterManager.class.getSimpleName() + " ";
-//    protected Context context;
-//    private boolean showTopLevel = true;//展示的最高等级
-//    protected T tree;
-//    protected List<T> expadData = new ArrayList<>();
-//    private EasyAdapterClickEvent easyAdapterClickEvent;
+    private int spaceSize;
+    private Map<Integer, int[]> mLayoutParam = new HashMap<>();
 
     /**
      * @param context
      * @param data
      */
-    protected EasyTreeRecyclerAdapterManager(Context context, List<T> data) {
+    EasyTreeRecyclerAdapterManager(Context context, List<T> data) {
         super(context, data);
-//        this.context = context;
-//        this.tree = tree;
-//        showTopLevel = showTopLevel();
-//        initExpadData();
+        spaceSize = EasyDensityUtil.dip2px(mContext, itemSpacedb());
     }
 
-    /*@Override
-    public void registerAdapterDataObserver(RecyclerView.AdapterDataObserver observer) {
-//        initExpadData();
-        super.registerAdapterDataObserver(observer);
-    }*/
-
-    /**
-     * 展示最高等级等级(默认最高等级0)
-     *
-     * @return
-     */
-//    protected abstract boolean showTopLevel();
-
-    /*private void initExpadData() {
-        if (tree == null) {
-            EasyUILog.e(TAG + "tree is null");
-            return;
-        }
-        if (showTopLevel) {
-            expadData.add(tree);
-        }
-        expadData.addAll(getAllExpandItem(tree));
-    }*/
-
-    /*private List<T> getAllExpandItem(T item) {
-        List<T> list = new ArrayList<>();
-        List<T> chilren = item.getChildren();
-        if (chilren == null || !item.isExpand()) {
-            return list;
-        } else {
-            list.addAll(chilren);
-            int size = chilren.size();
-            for (int i = 0; i < size; i++) {
-                list.addAll(getAllExpandItem(chilren.get(i)));
-            }
-            return list;
-        }
-    }*/
-
-/*    @Override
-    public int getItemCount() {
-        int count = 0;
-        if (expadData == null) {
-            return count;
-        }
-        count = expadData.size();
-        return count;
-    }*/
     @Override
     public int getItemViewType(int position) {
-        return getViewType(position);
+        int level = mData.get(position).getLevel();
+        return getViewType(level);
     }
 
     /**
      * 获取布局类型
      *
-     * @param position 下标
+     * @param level 层级
      * @return
      */
-    protected abstract int getViewType(int position);
+    protected abstract int getViewType(int level);
+
+    /**
+     * @return 是否相同布局
+     */
+    protected abstract boolean isSameView();
 
     @Override
-    public EasyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public EasyHolder onCreateViewHolder(ViewGroup parent, int level) {
+        boolean isSameView = isSameView();
         int[] layouts = onBindLayout();
         if (layouts == null) {
             EasyUILog.e("布局为空");
             return null;
         }
-        if (viewType < 0 || layouts.length > viewType) {
-            EasyUILog.e("viewType：" + viewType + "错误");
+        if (isSameView) {
+            level = 0;
+        }
+        if (level < 0 || layouts.length <= level) {
+            EasyUILog.e("viewType：" + level + "错误");
             return null;
         }
-        View view = LayoutInflater.from(parent.getContext()).inflate(layouts[viewType], parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(layouts[level], parent, false);
         if (view == null) {
-            EasyUILog.e("找不到该值对应item布局R.layout.id：" + layouts[viewType]);
+            EasyUILog.e("找不到该值对应item布局R.layout.id：" + layouts[level]);
             return null;
         }
         return new EasyHolder(view);
@@ -119,55 +78,38 @@ abstract class EasyTreeRecyclerAdapterManager<T extends EasyTreeItem> extends Ea
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         EasyTreeItem data = mData.get(position);
-        EasyTreeItem parent = data.getParent();
-        if (parent != null && parent.isExpand()) {//展开显示
+        if (!mLayoutParam.containsKey(data.getLevel())) {
+            ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
+            int height = layoutParams.height;
+            int width = layoutParams.width;
+            mLayoutParam.put(data.getLevel(), new int[]{height, width});
+        }
+        holder.itemView.setVisibility(data.isParentExpand() ? View.VISIBLE : View.GONE);
+        setVisibility(data.getLevel(), holder.itemView);
+        if (data.isParentExpand()) {//展开显示
+            View view = holder.itemView;
+            int space = data.getLevel() * spaceSize + view.getPaddingLeft();
+            view.setPadding(space, view.getPaddingTop(), view.getPaddingRight(), view.getPaddingBottom());
             super.onBindViewHolder(holder, position);
         }
     }
 
+    private void setVisibility(int level, View itemView) {
+        RecyclerView.LayoutParams param = (RecyclerView.LayoutParams) itemView.getLayoutParams();
+        if (itemView.getVisibility() == View.VISIBLE) {
+//            param.height = RelativeLayout.LayoutParams.WRAP_CONTENT;// 这里注意使用自己布局的根布局类型
+//            param.width = RelativeLayout.LayoutParams.MATCH_PARENT;// 这里注意使用自己布局的根布局类型
+            param.height = mLayoutParam.get(level)[0];
+            param.width = mLayoutParam.get(level)[1];
+        } else {
+            param.height = 0;
+            param.width = 0;
+        }
+        itemView.setLayoutParams(param);
+    }
+
     protected abstract int[] onBindLayout();
 
-    /*@Override
-    public int getItemViewType(int position) {
-        EasyTreeItem item = expadData.get(position);
-        if (item != null) {
-            return item.getLevel();
-        } else {
-            return -1;
-        }
-    }*/
-
-    /*@Override
-    public EasyHloderManager onCreateViewHolder(ViewGroup parent, int viewType) {
-        int[] layouts = onBindLevelLayout();
-        if (layouts == null) {
-            EasyUILog.e("布局为空");
-            return null;
-        }
-        if (viewType < 0 || layouts.length > viewType) {
-            EasyUILog.e("viewType：" + viewType + "错误");
-            return null;
-        }
-        View view = LayoutInflater.from(parent.getContext()).inflate(layouts[viewType], parent, false);
-        if (view == null) {
-            EasyUILog.e("找不到该值对应item布局R.layout.id：" + layouts[viewType]);
-            return null;
-        }
-        float size = itemSpaceSize();
-        view.setPadding(EasyDensityUtil.dip2px(context, size), 0, 0, 0);
-        EasyHloderManager hloderImp = onCreateEasyHolder(view);
-        hloderImp.setAdapterClickEvent(easyAdapterClickEvent);
-        return hloderImp;
-    }*/
-
-    /**
-     * @return 绑定布局，第一个为第一层，第二个为第二层
-     */
-//    protected abstract int[] onBindLevelLayout();
-
-    /**
-     * @return 每一层缩进大小
-     */
-    protected abstract float itemSpaceSize();
+    protected abstract float itemSpacedb();
 
 }

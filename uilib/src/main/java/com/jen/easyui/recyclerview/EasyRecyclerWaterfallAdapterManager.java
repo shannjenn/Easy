@@ -19,7 +19,7 @@ abstract class EasyRecyclerWaterfallAdapterManager<T> extends EasyRecyclerBaseAd
     /**
      * @param data 数据
      */
-    protected EasyRecyclerWaterfallAdapterManager(Context context, List<T> data) {
+    EasyRecyclerWaterfallAdapterManager(Context context, List<T> data) {
         super(context, data);
     }
 
