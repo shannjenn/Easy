@@ -1,0 +1,10 @@
+<resources>
+    <declare-styleable name="EasyFlowLayout">
+        <attr name="childSpaceH" format="dimension" />
+        <attr name="childSpaceV" format="dimension" />
+
+        <attr name="android:layout_width" />
+        <attr name="android:layout_height" />
+    </declare-styleable>
+
+</resources>
