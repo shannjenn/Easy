@@ -61,11 +61,13 @@ abstract class EasyRecyclerBaseAdapterManager<T> extends RecyclerView.Adapter<Re
      * ViewHolder
      */
     class EasyHolder extends RecyclerView.ViewHolder {
-        public View itemView;
 
-        public EasyHolder(final View itemView) {
+        EasyHolder(View itemView) {
             super(itemView);
-            this.itemView = itemView;
+            initListener();
+        }
+
+        private void initListener() {
             if (easyAdapterClickEvent == null) {
                 return;
             }
@@ -73,17 +75,11 @@ abstract class EasyRecyclerBaseAdapterManager<T> extends RecyclerView.Adapter<Re
             int[] longClicks = bindLongClick();
             boolean itemClick = bindItemClick();
 
-            Object obj = itemView.getTag();
-            if (obj == null || !(obj instanceof Integer)) {
-                EasyUILog.e("itemView=" + itemView + " 点击事件失败，请检查是否重复设置该控件Tag");
-            }
-            final int pos = (int) obj;
-
             if (itemClick) {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        easyAdapterClickEvent.onItemClick(v, pos);
+                        easyAdapterClickEvent.onItemClick(v, getAdapterPosition());
                     }
                 });
             }
@@ -98,7 +94,7 @@ abstract class EasyRecyclerBaseAdapterManager<T> extends RecyclerView.Adapter<Re
                     view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            easyAdapterClickEvent.onClick(v, pos);
+                            easyAdapterClickEvent.onClick(v, getAdapterPosition());
                         }
                     });
                 }
@@ -114,7 +110,7 @@ abstract class EasyRecyclerBaseAdapterManager<T> extends RecyclerView.Adapter<Re
                     view.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {
-                            return easyAdapterClickEvent.onLongClick(v, pos);
+                            return easyAdapterClickEvent.onLongClick(v, getAdapterPosition());
                         }
                     });
                 }
