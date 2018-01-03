@@ -66,12 +66,19 @@ class HttpReflectManager {
         Field[] fields = obj.getClass().getDeclaredFields();
         for (Field field : fields) {
             boolean isAnno = field.isAnnotationPresent(EasyMouse.HTTP.RequestParam.class);
-            if (!isAnno)
-                continue;
-            EasyMouse.HTTP.RequestParam param = field.getAnnotation(EasyMouse.HTTP.RequestParam.class);
-            String paramName = param.value().trim();
+            /*if (!isAnno)
+                continue;*/
+            String paramName = "";
+            if (isAnno) {
+                EasyMouse.HTTP.RequestParam param = field.getAnnotation(EasyMouse.HTTP.RequestParam.class);
+                boolean noReq = param.noReq();
+                if (noReq) {//不做参数传递
+                    continue;
+                }
+                paramName = param.value().trim();
+            }
             if (paramName.length() == 0) {
-                continue;
+                paramName = field.getName();
             }
             String type = field.getGenericType().toString();
             field.setAccessible(true);
@@ -138,12 +145,19 @@ class HttpReflectManager {
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
             boolean isAnno = field.isAnnotationPresent(EasyMouse.HTTP.ResponseParam.class);
-            if (!isAnno)
-                continue;
-            EasyMouse.HTTP.ResponseParam param = field.getAnnotation(EasyMouse.HTTP.ResponseParam.class);
-            String paramName = param.value().trim();
+            /*if (!isAnno)
+                continue;*/
+            String paramName = "";
+            if (isAnno) {
+                EasyMouse.HTTP.ResponseParam param = field.getAnnotation(EasyMouse.HTTP.ResponseParam.class);
+                boolean noResp = param.noResp();
+                if (noResp) {//不做参数返回
+                    continue;
+                }
+                paramName = param.value().trim();
+            }
             if (paramName.length() == 0) {
-                continue;
+                paramName = field.getName();
             }
             String type = field.getGenericType().toString();
             param_type.put(paramName, type);

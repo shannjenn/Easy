@@ -130,6 +130,11 @@ public final class EasyMouse {
              * 参数名称
              */
             String value() default "";
+
+            /**
+             * 不做请求参数
+             */
+            boolean noReq() default false;
         }
 
         /**
@@ -143,6 +148,11 @@ public final class EasyMouse {
              * 参数名称
              */
             String value() default "";
+
+            /**
+             * 不做返回值
+             */
+            boolean noResp() default false;
 
             /**
              * Object类型变量指定具体类型(解析是可以为List获取对象)

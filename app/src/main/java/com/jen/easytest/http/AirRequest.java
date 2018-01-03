@@ -6,25 +6,25 @@ import com.jen.easy.http.HttpBaseRequest;
 @EasyMouse.HTTP.POST(URL = "http://apics.baoku.com/api/air/query", Response = AirResponse.class)
 public class AirRequest extends HttpBaseRequest {
 
-	@EasyMouse.HTTP.RequestParam("cid")
+	@EasyMouse.HTTP.RequestParam(noReq = true)
 	String cid;// 商户公司编号
 
-	@EasyMouse.HTTP.RequestParam("fromCity")
+	@EasyMouse.HTTP.RequestParam(noReq = true)
 	String fromCity;// 起飞城市代码
 
-	@EasyMouse.HTTP.RequestParam("fromCityName")
+	@EasyMouse.HTTP.RequestParam(noReq = true)
 	String fromCityName;// 起飞城市名称
 
-	@EasyMouse.HTTP.RequestParam("arriveCity")
+//	@EasyMouse.HTTP.RequestParam("arriveCity")
 	String arriveCity;// 到达城市代码
 
-	@EasyMouse.HTTP.RequestParam("arriveCityName")
+//	@EasyMouse.HTTP.RequestParam("arriveCityName")
 	String arriveCityName;// 到达城市名称
 
-//	@EasyMouse.HTTP.RequestParam("carrier")
+	@EasyMouse.HTTP.RequestParam(noReq = true)
 	String carrier;// 航空公司 (可选)
 
-//	@EasyMouse.HTTP.RequestParam("codeLevel")
+	@EasyMouse.HTTP.RequestParam(noReq = true)
 	String codeLevel;// 仓位级别 (可选)
 
 	@EasyMouse.HTTP.RequestParam("goDate")
