@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.jen.easy.EasyMouse;
+import com.jen.easytest.activity.DialogActivity;
 import com.jen.easytest.activity.DrawableActivity;
 import com.jen.easytest.activity.HttpActivity;
 import com.jen.easytest.activity.ImageLoaderActivity;
@@ -34,13 +35,10 @@ public class MainActivity extends EasyBaseActivity {
 
     }
 
+
+    @EasyMouse.BIND.Method({R.id.tabBar, R.id.drawable, R.id.http, R.id.imageLoader, R.id.dialog})
     @Override
     protected void onBindClick(View view) {
-
-    }
-
-    @EasyMouse.BIND.Method({R.id.tabBar, R.id.drawable, R.id.http, R.id.imageLoader})
-    private void onClick(View view) {
         Class clazz = null;
         switch (view.getId()) {
             case R.id.tabBar: {
@@ -57,6 +55,10 @@ public class MainActivity extends EasyBaseActivity {
             }
             case R.id.imageLoader: {
                 clazz = ImageLoaderActivity.class;
+                break;
+            }
+            case R.id.dialog: {
+                clazz = DialogActivity.class;
                 break;
             }
             default: {

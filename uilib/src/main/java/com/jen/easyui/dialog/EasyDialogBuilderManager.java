@@ -1,32 +1,43 @@
 package com.jen.easyui.dialog;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
+import android.graphics.drawable.Drawable;
 
 import com.jen.easyui.R;
+import com.jen.easyui.dialog.imp.EasyDialogListener;
 
 /**
- * Created by Administrator on 2017/11/3.
+ * 作者：ShannJenn
+ * 时间：2018/1/15.
  */
 
-abstract class EasyDialogBuilderManager implements View.OnClickListener {
+abstract class EasyDialogBuilderManager {
     private Context context;
-    private Dialog dialog;
 
+    private float width;//宽度(db)
+    private float height;//高度(db)
+
+    private Drawable icon;
+    private String txtTitle;
     private String txtContent;
-    private String txtYes;
-    private String txtNo;
+    private String txtLeft;
+    private String txtMiddle;
+    private String txtRight;
 
-    private DialogOnclick dialogOnclick;
-
-    private int flagCode = -1;
-    private String flag;
+    private EasyDialogListener easyDialogListener;
 
     public EasyDialogBuilderManager(Context context) {
         this.context = context;
+    }
+
+    public EasyDialogBuilderManager setIcon(Drawable icon) {
+        this.icon = icon;
+        return this;
+    }
+
+    public EasyDialogBuilderManager setTitle(String txt) {
+        txtTitle = txt;
+        return this;
     }
 
     public EasyDialogBuilderManager setContent(String txt) {
@@ -34,77 +45,51 @@ abstract class EasyDialogBuilderManager implements View.OnClickListener {
         return this;
     }
 
-    public EasyDialogBuilderManager setPositiveButton(String txt) {
-        txtYes = txt;
+    public EasyDialogBuilderManager setLeftButton(String txt) {
+        txtLeft = txt;
         return this;
     }
 
-    public EasyDialogBuilderManager setNegativeButton(String txt) {
-        txtNo = txt;
+    public EasyDialogBuilderManager setMiddleButton(String txt) {
+        txtMiddle = txt;
         return this;
     }
 
-    public EasyDialogBuilderManager setFlagCode(int flagCode) {
-        this.flagCode = flagCode;
+    public EasyDialogBuilderManager setRightButton(String txt) {
+        txtRight = txt;
         return this;
     }
 
-    public EasyDialogBuilderManager setFlag(String flag) {
-        this.flag = flag;
+    public EasyDialogBuilderManager setEasyDialogListener(EasyDialogListener easyDialogListener) {
+        this.easyDialogListener = easyDialogListener;
         return this;
     }
 
-    public interface DialogOnclick {
-        void positiveButton(String flag, int flagCode);
-
-        void negativeButton(String flag, int flagCode);
+    public EasyDialogBuilderManager setWidth(float width) {
+        this.width = width;
+        return this;
     }
 
-    public void setDialogOnclick(DialogOnclick dialogOnclick) {
-        this.dialogOnclick = dialogOnclick;
+    public EasyDialogBuilderManager setHeight(float height) {
+        this.height = height;
+        return this;
     }
 
-    public Dialog create() {
-        View layout = LayoutInflater.from(context).inflate(R.layout._easy_dialog, null);
-        initViews(layout);
-//			dialog.addContentView(layout, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-        if (dialog == null)
-            dialog = new Dialog(context);
-        dialog.setContentView(layout);
+    public EasyDialog create() {
+        EasyDialog dialog = new EasyDialog(context, R.style._easy_dialog);
+        dialog.setIcon(icon);
+        dialog.setTxtTile(txtTitle);
+        dialog.setTxtContent(txtContent);
+        dialog.setTxtLeft(txtLeft);
+        dialog.setTxtMiddle(txtMiddle);
+        dialog.setTxtRight(txtRight);
+        dialog.setEasyDialogListener(easyDialogListener);
+
+        dialog.setWidth(width);
+        dialog.setHeight(height);
+
+        dialog.initViews();
         return dialog;
     }
 
-    private void initViews(View layout) {
-        TextView tvContent = (TextView) layout.findViewById(R.id.tv_content);
-        TextView tvYes = (TextView) layout.findViewById(R.id.tv_yes);
-        TextView tvNo = (TextView) layout.findViewById(R.id.tv_no);
-
-        if (txtContent != null)
-            tvContent.setText(txtContent);
-        if (txtYes != null)
-            tvYes.setText(txtYes);
-        if (txtNo != null)
-            tvNo.setText(txtNo);
-
-        tvContent.setOnClickListener(this);
-        tvYes.setOnClickListener(this);
-        tvNo.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View view) {
-        if (dialogOnclick == null) {
-            dialog.cancel();
-            return;
-        }
-        int i = view.getId();
-        if (i == R.id.tv_yes) {
-            dialogOnclick.positiveButton(flag, flagCode);
-
-        } else if (i == R.id.tv_no) {
-            dialogOnclick.negativeButton(flag, flagCode);
-        } else {
-        }
-        dialog.cancel();
-    }
 }

@@ -127,12 +127,12 @@ abstract class EasyTopBarManager extends RelativeLayout {
         addView(mMainContainer);
 
         ivLeft = (ImageView) mMainContainer.findViewById(R.id.iv_left);
-        tvLeft = (TextView) mMainContainer.findViewById(R.id.tv_left);
+        tvLeft = (TextView) mMainContainer.findViewById(R.id.btn_left);
 
         tvTitle = (TextView) mMainContainer.findViewById(R.id.tv_title);
 
         ivRight = (ImageView) mMainContainer.findViewById(R.id.iv_right);
-        tvRight = (TextView) mMainContainer.findViewById(R.id.tv_right);
+        tvRight = (TextView) mMainContainer.findViewById(R.id.btn_right);
 
         viewLine = mMainContainer.findViewById(R.id.line_view_topbar);
 

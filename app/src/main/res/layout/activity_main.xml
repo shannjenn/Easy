@@ -8,24 +8,35 @@
         android:id="@+id/tabBar"
         android:layout_width="match_parent"
         android:layout_height="46dp"
-        android:text="tabBar" />
+        android:text="tabBar"
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/drawable"
         android:layout_width="match_parent"
         android:layout_height="46dp"
-        android:text="drawable" />
+        android:text="drawable"
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/http"
         android:layout_width="match_parent"
         android:layout_height="46dp"
-        android:text="http" />
+        android:text="http"
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/imageLoader"
         android:layout_width="match_parent"
         android:layout_height="46dp"
-        android:text="imageLoader" />
+        android:text="imageLoader"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/dialog"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:text="dialog"
+        android:textAllCaps="false" />
 
 </LinearLayout>

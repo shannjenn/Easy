@@ -10,7 +10,7 @@
         android:thicknessRatio="10"
         android:useLevel="false">
         <gradient
-            android:endColor="#999999"
+            android:endColor="#029ED7"
             android:startColor="#eeeeee"
             android:type="sweep"
             android:useLevel="false" />

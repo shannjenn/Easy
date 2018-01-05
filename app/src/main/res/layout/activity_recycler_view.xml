@@ -20,7 +20,9 @@
         app:solid_color="#ff0000"
         app:stroke_click_color="#ff0000"
         app:stroke_color="#0000ff"
-        app:stroke_width="2dp"/>
+        app:stroke_width="2dp"
+
+        />
 
     <com.jen.easyui.textview.EasyTextView
         android:id="@+id/easyTextView"
@@ -66,7 +68,6 @@
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:layout_marginLeft="20dp"
-        android:gravity="left|center_vertical"
         android:paddingLeft="50dp"
         app:corners="5dp"
         app:corners_half_round="true"
@@ -74,6 +75,7 @@
         app:solid_color="#ff0000"
         app:stroke_click_color="#ff0000"
         app:stroke_color="#0000ff"
+        android:gravity="left|center_vertical"
         app:stroke_width="2dp">
 
         <EditText
@@ -82,5 +84,15 @@
             android:background="@android:color/white"
             android:text="输入框输入框输入框输入框" />
     </com.jen.easyui.linearlayout.EasyLinearLayout>
+
+    <!--<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp">
+
+        <EditText
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:background="@android:color/white" />
+    </LinearLayout>-->
 
 </LinearLayout>

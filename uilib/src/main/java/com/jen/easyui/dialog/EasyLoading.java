@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 /**
  * 作者：ShannJenn
- * 时间：2017/8/12.
+ * 时间：2018/1/15.
  */
 public class EasyLoading extends EasyLoadingManager {
 
