@@ -170,7 +170,7 @@ abstract class ImageLoaderManager {
     private void getFromHttp(String imageUrl) {
         String name = urlChangeToName(imageUrl);
         String filePath = LOCAL_PATH + File.separator + name;
-        mHttpRequest.http.url = imageUrl;
+        mHttpRequest.httpParam.url = imageUrl;
         mHttpRequest.flag.filePath = filePath;
         mHttpRequest.flag.str = imageUrl;
         mHttpRequest.setDownloadListener(mHttpListener);

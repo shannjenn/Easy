@@ -36,10 +36,10 @@ abstract class HttpURLConnectionRunable implements Runnable {
         Object[] method_url = HttpReflectManager.getUrl(mRequest);
         if (method_url != null) {
             mMethod = (String) method_url[0];
-            mRequest.http.url = (String) method_url[1];
+            mRequest.httpParam.url = (String) method_url[1];
             mResponseClass = (Class) method_url[2];
         }
-        mUrlStr = mRequest.http.url;
+        mUrlStr = mRequest.httpParam.url;
         if (TextUtils.isEmpty(mUrlStr)) {
             mUrlStr = "";
             fail("URL地址为空");
@@ -96,7 +96,7 @@ abstract class HttpURLConnectionRunable implements Runnable {
 
         mResposeCode = -1;//返回码
         mHasParam = false;//是否有参数
-        mCharset = mRequest.http.charset;//编码
+        mCharset = mRequest.httpParam.charset;//编码
         mIsGet = mMethod.toUpperCase().equals("GET");
         try {
             Map<String, String> requestParams = HttpReflectManager.getRequestParams(mRequest);
@@ -134,12 +134,12 @@ abstract class HttpURLConnectionRunable implements Runnable {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoInput(true);
             connection.setDoOutput(!mIsGet);
-            connection.setUseCaches(mRequest.http.useCaches);
-            connection.setConnectTimeout(mRequest.http.timeout);
-            connection.setReadTimeout(mRequest.http.readTimeout);
+            connection.setUseCaches(mRequest.httpParam.useCaches);
+            connection.setConnectTimeout(mRequest.httpParam.timeout);
+            connection.setReadTimeout(mRequest.httpParam.readTimeout);
             connection.setRequestMethod(mMethod);
-            for (String key : mRequest.http.propertys.keySet()) {//设置Property
-                connection.setRequestProperty(key, mRequest.http.propertys.get(key));
+            for (String key : mRequest.httpParam.propertys.keySet()) {//设置Property
+                connection.setRequestProperty(key, mRequest.httpParam.propertys.get(key));
             }
             childRun(connection);
             connection.disconnect();

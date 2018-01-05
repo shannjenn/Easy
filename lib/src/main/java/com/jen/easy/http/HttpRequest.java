@@ -11,19 +11,42 @@ import java.util.Map;
  * 说明：http请求参数
  */
 abstract class HttpRequest {
-    public HTTP http = new HTTP();
+    public HttpParam httpParam = new HttpParam();
 
-    public final class HTTP {
-        public String url;//可以动态改变
+    /**
+     * http请求参数
+     */
+    public final class HttpParam {
+        /**
+         * 可以动态设置
+         */
+        public String url;
 //        public String method;
+
+        /**
+         * 请求参数设置，包括请求头
+         */
         public final Map<String, String> propertys = new HashMap<>();
 
+        /**
+         * 请求超时
+         */
         public int timeout = 30000;
+
+        /**
+         * 读取超时
+         */
         public int readTimeout = 30000;
+
+        /**
+         * 默认编码(默认ut-8)
+         */
         public String charset = Constant.Unicode.DEFAULT;
 
+        /**
+         * 是否使用caches(默认false)
+         */
         public boolean useCaches = false;
     }
-
 
 }

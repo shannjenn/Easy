@@ -35,7 +35,7 @@ class HttpReflectManager {
         if (isAnnoGet) {
             EasyMouse.HTTP.GET url = request.getClass().getAnnotation(EasyMouse.HTTP.GET.class);
             values[0] = "GET";
-            values[1] = request.http.url != null ? request.http.url : url.URL();
+            values[1] = request.httpParam.url != null ? request.httpParam.url : url.URL();
             values[2] = url.Response();
             return values;
         }
@@ -43,7 +43,7 @@ class HttpReflectManager {
         if (isAnnoPost) {
             EasyMouse.HTTP.POST url = request.getClass().getAnnotation(EasyMouse.HTTP.POST.class);
             values[0] = "POST";
-            values[1] = request.http.url != null ? request.http.url : url.URL();
+            values[1] = request.httpParam.url != null ? request.httpParam.url : url.URL();
             values[2] = url.Response();
             return values;
         }
@@ -165,14 +165,4 @@ class HttpReflectManager {
         }
         return objectMap;
     }
-
-    /*static Class getObjClass(Field field) {
-        Class objClass = Object.class;
-        boolean isAnno = field.isAnnotationPresent(EasyMouse.HTTP.ResponseParam.class);
-        if (isAnno) {
-            EasyMouse.HTTP.ResponseParam param = field.getAnnotation(EasyMouse.HTTP.ResponseParam.class);
-            objClass = param.clazz();
-        }
-        return objClass;
-    }*/
 }
