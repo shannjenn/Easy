@@ -1,5 +1,7 @@
 package com.jen.easy.http;
 
+import android.text.TextUtils;
+
 import com.jen.easy.EasyMouse;
 import com.jen.easy.constant.Constant;
 import com.jen.easy.log.EasyLibLog;
@@ -33,18 +35,26 @@ class HttpReflectManager {
 
         boolean isAnnoGet = request.getClass().isAnnotationPresent(EasyMouse.HTTP.GET.class);
         if (isAnnoGet) {
-            EasyMouse.HTTP.GET url = request.getClass().getAnnotation(EasyMouse.HTTP.GET.class);
+            EasyMouse.HTTP.GET get = request.getClass().getAnnotation(EasyMouse.HTTP.GET.class);
             values[0] = "GET";
-            values[1] = request.httpParam.url != null ? request.httpParam.url : url.URL();
-            values[2] = url.Response();
+            String url = request.httpParam.url != null ? request.httpParam.url : get.URL();
+            if (!TextUtils.isEmpty(url) && request.httpParam.urlAppend != null) {
+                url = url + request.httpParam.urlAppend;
+            }
+            values[1] = url;
+            values[2] = get.Response();
             return values;
         }
         boolean isAnnoPost = request.getClass().isAnnotationPresent(EasyMouse.HTTP.POST.class);
         if (isAnnoPost) {
-            EasyMouse.HTTP.POST url = request.getClass().getAnnotation(EasyMouse.HTTP.POST.class);
+            EasyMouse.HTTP.POST post = request.getClass().getAnnotation(EasyMouse.HTTP.POST.class);
             values[0] = "POST";
-            values[1] = request.httpParam.url != null ? request.httpParam.url : url.URL();
-            values[2] = url.Response();
+            String url = request.httpParam.url != null ? request.httpParam.url : post.URL();
+            if (!TextUtils.isEmpty(url) && request.httpParam.urlAppend != null) {
+                url = url + request.httpParam.urlAppend;
+            }
+            values[1] = url;
+            values[2] = post.Response();
             return values;
         }
         return null;

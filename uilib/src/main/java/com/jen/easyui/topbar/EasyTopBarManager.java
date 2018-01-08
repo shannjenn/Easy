@@ -177,4 +177,16 @@ abstract class EasyTopBarManager extends RelativeLayout {
         viewLine.setVisibility(isShowBottomLine ? VISIBLE : GONE);
     }
 
+    public void setTitle(String text) {
+        tvTitle.setText(text);
+    }
+
+    public void setLeftText(String text) {
+        tvLeft.setText(text);
+    }
+
+    public void setRightText(String text) {
+        tvRight.setText(text);
+    }
+
 }
