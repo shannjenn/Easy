@@ -10,9 +10,9 @@ import com.jen.easytest.activity.DrawableActivity;
 import com.jen.easytest.activity.HttpActivity;
 import com.jen.easytest.activity.ImageLoaderActivity;
 import com.jen.easytest.activity.TabBarActivity;
-import com.jen.easyui.activity.EasyBaseActivity;
+import com.jen.easytest.base.BaseActivity;
 
-public class MainActivity extends EasyBaseActivity {
+public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,4 +70,13 @@ public class MainActivity extends EasyBaseActivity {
         startActivity(intent);
     }
 
+    @Override
+    public void httpSuccess(int flagCode, String flag, Object response) {
+
+    }
+
+    @Override
+    public void httpFail(int flagCode, String flag, String msg) {
+
+    }
 }

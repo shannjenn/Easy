@@ -8,10 +8,10 @@ import com.jen.easy.EasyMouse;
 import com.jen.easy.http.imp.HttpBaseListener;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
+import com.jen.easytest.base.BaseActivity;
 import com.jen.easytest.http.AirRequest;
 import com.jen.easytest.http.AirResponse;
 import com.jen.easytest.http.MD5Util;
-import com.jen.easyui.activity.EasyBaseActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,7 +21,7 @@ import java.util.Date;
  * 时间：2017/10/26.
  */
 
-public class HttpActivity extends EasyBaseActivity {
+public class HttpActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,4 +124,13 @@ public class HttpActivity extends EasyBaseActivity {
         }
     };
 
+    @Override
+    public void httpSuccess(int flagCode, String flag, Object response) {
+
+    }
+
+    @Override
+    public void httpFail(int flagCode, String flag, String msg) {
+
+    }
 }

@@ -9,9 +9,9 @@ import android.view.View;
 
 import com.jen.easy.EasyMouse;
 import com.jen.easytest.R;
+import com.jen.easytest.base.BaseActivity;
 import com.jen.easytest.fragment.EmptyFragmentBlue;
 import com.jen.easytest.fragment.EmptyFragmentRed;
-import com.jen.easyui.activity.EasyBaseActivity;
 import com.jen.easyui.tabbar.EasyTabBarBottom;
 import com.jen.easyui.tabbar.EasyTabBarTop;
 import com.jen.easyui.viewpager.EasyFragmentPagerAdapter;
@@ -24,7 +24,7 @@ import java.util.List;
  * 时间：2017/10/26.
  */
 
-public class TabBarActivity extends EasyBaseActivity {
+public class TabBarActivity extends BaseActivity {
 
     @EasyMouse.BIND.ID(R.id.easy_tabbar_txtimg)
     EasyTabBarBottom easy_tabbar_txtimg;
@@ -108,6 +108,16 @@ public class TabBarActivity extends EasyBaseActivity {
         scrollFragmentPagerAdapter = new ScrollFragmentPagerAdapter(getSupportFragmentManager(),titles,fragments);
         viewpager_scroll.setAdapter(scrollFragmentPagerAdapter);
         easy_tabar_scroll.setViewPager(viewpager_scroll,titles);
+    }
+
+    @Override
+    public void httpSuccess(int flagCode, String flag, Object response) {
+
+    }
+
+    @Override
+    public void httpFail(int flagCode, String flag, String msg) {
+
     }
 
 

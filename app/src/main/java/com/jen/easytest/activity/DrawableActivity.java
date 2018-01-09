@@ -5,7 +5,7 @@ import android.view.View;
 
 import com.jen.easy.EasyMouse;
 import com.jen.easytest.R;
-import com.jen.easyui.activity.EasyBaseActivity;
+import com.jen.easytest.base.BaseActivity;
 import com.jen.easyui.button.EasyButton;
 
 /**
@@ -13,7 +13,7 @@ import com.jen.easyui.button.EasyButton;
  * 时间：2017/10/26.
  */
 
-public class DrawableActivity extends EasyBaseActivity {
+public class DrawableActivity extends BaseActivity {
 
     @EasyMouse.BIND.ID(R.id.easyButon)
     EasyButton easyButon;
@@ -44,4 +44,13 @@ public class DrawableActivity extends EasyBaseActivity {
 
     }
 
+    @Override
+    public void httpSuccess(int flagCode, String flag, Object response) {
+
+    }
+
+    @Override
+    public void httpFail(int flagCode, String flag, String msg) {
+
+    }
 }

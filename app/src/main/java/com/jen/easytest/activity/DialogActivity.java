@@ -5,7 +5,7 @@ import android.view.View;
 
 import com.jen.easy.EasyMouse;
 import com.jen.easytest.R;
-import com.jen.easyui.activity.EasyBaseActivity;
+import com.jen.easytest.base.BaseActivity;
 import com.jen.easyui.dialog.EasyDialog;
 import com.jen.easyui.dialog.EasyLoading;
 import com.jen.easyui.dialog.imp.EasyDialogListener;
@@ -16,7 +16,7 @@ import com.jen.easyui.toast.EasyToast;
  * 时间：2017/10/26.
  */
 
-public class DialogActivity extends EasyBaseActivity {
+public class DialogActivity extends BaseActivity {
 
     EasyLoading loading;
     EasyDialog dialog;
@@ -87,4 +87,13 @@ public class DialogActivity extends EasyBaseActivity {
         }
     }
 
+    @Override
+    public void httpSuccess(int flagCode, String flag, Object response) {
+
+    }
+
+    @Override
+    public void httpFail(int flagCode, String flag, String msg) {
+
+    }
 }

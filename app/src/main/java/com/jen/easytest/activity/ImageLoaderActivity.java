@@ -6,7 +6,7 @@ import android.widget.ImageView;
 
 import com.jen.easy.EasyMouse;
 import com.jen.easytest.R;
-import com.jen.easyui.activity.EasyBaseActivity;
+import com.jen.easytest.base.BaseActivity;
 import com.jen.easyui.image.ImageLoader;
 
 /**
@@ -14,7 +14,7 @@ import com.jen.easyui.image.ImageLoader;
  * 时间：2017/10/26.
  */
 
-public class ImageLoaderActivity extends EasyBaseActivity {
+public class ImageLoaderActivity extends BaseActivity {
 
     @EasyMouse.BIND.ID(R.id.iv_pic)
     ImageView iv_pic;
@@ -55,4 +55,13 @@ public class ImageLoaderActivity extends EasyBaseActivity {
 
     }
 
+    @Override
+    public void httpSuccess(int flagCode, String flag, Object response) {
+
+    }
+
+    @Override
+    public void httpFail(int flagCode, String flag, String msg) {
+
+    }
 }
