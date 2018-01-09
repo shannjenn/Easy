@@ -20,7 +20,7 @@ import com.jen.easyui.dialog.EasyLoading;
  * 时间：2017/01/09.
  */
 
-public abstract class BaseFragment<T> extends Fragment implements HttpListenerImp<T> {
+public abstract class BaseFragment<T> extends Fragment implements HttpListener<T> {
     private View rootView;
     private Context mContext;
     private Handler mHandler = new Handler(Looper.getMainLooper());

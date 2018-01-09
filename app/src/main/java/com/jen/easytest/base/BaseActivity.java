@@ -16,7 +16,7 @@ import com.jen.easyui.dialog.EasyLoading;
  * 作者：ShannJenn
  * 时间：2017/10/26.
  */
-public abstract class BaseActivity<T> extends AppCompatActivity implements HttpListenerImp<T> {
+public abstract class BaseActivity<T> extends AppCompatActivity implements HttpListener<T> {
     private Context mContext;
     private Handler mHandler = new Handler(Looper.getMainLooper());
     private EasyLoading mLoading;
