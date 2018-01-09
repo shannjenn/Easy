@@ -105,7 +105,7 @@ class HttpReflectManager {
                         break;
                     }
                     default:
-                        EasyLibLog.e(TAG + "参数必须为int或者string类型 field=" + field.getName());
+                        EasyLibLog.e(TAG + "请求参数必须为int或者string类型：" + field.getName());
                         break;
                 }
             } catch (IllegalAccessException e) {
