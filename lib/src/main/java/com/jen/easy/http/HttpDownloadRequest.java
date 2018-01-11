@@ -10,7 +10,11 @@ import com.jen.easy.http.imp.HtppDownloadListener;
  */
 @EasyMouse.HTTP.GET
 public class HttpDownloadRequest extends HttpRequest {
+
+    @EasyMouse.HTTP.RequestParam(noReq = true)
     private HtppDownloadListener downloadListener;
+
+    @EasyMouse.HTTP.RequestParam(noReq = true)
     public Flag flag = new Flag();
 
     public final class Flag {

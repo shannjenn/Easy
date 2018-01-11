@@ -1,5 +1,8 @@
 package com.jen.easyui.image;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.os.Handler;
@@ -150,16 +153,28 @@ abstract class ImageLoaderManager {
      * @return
      */
     private Drawable getFromFile(String imageUrl) {
-        String name = urlChangeToName(imageUrl);
-        File file = new File(LOCAL_PATH + File.separator + name);
-        if (!file.exists()) {
-            return null;
-        }
-        Drawable drawable = Drawable.createFromPath(LOCAL_PATH + File.separator + name);
-        if (drawable != null) {
+        Bitmap bmp = null;
+        try {
+            String name = urlChangeToName(imageUrl);
+            File file = new File(LOCAL_PATH + File.separator + name);
+            if (!file.exists()) {
+                return null;
+            }
+//        Drawable drawable = Drawable.createFromPath(LOCAL_PATH + File.separator + name);
+            String filePath = LOCAL_PATH + File.separator + name;
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize = 2;
+            bmp = BitmapFactory.decodeFile(filePath, options);
+            if(bmp == null){
+                return null;
+            }
+            Drawable drawable = new BitmapDrawable(bmp);
             return drawable;
+        } finally {
+            /*if(bmp != null && !bmp.isRecycled()){
+                bmp.recycle();
+            }*/
         }
-        return null;
     }
 
     /**

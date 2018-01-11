@@ -1,5 +1,6 @@
 package com.jen.easy.http;
 
+import com.jen.easy.EasyMouse;
 import com.jen.easy.constant.Constant;
 
 import java.util.HashMap;
@@ -11,6 +12,8 @@ import java.util.Map;
  * 说明：http请求参数
  */
 abstract class HttpRequest {
+
+    @EasyMouse.HTTP.RequestParam(noReq = true)
     public HttpParam httpParam = new HttpParam();
 
     /**

@@ -1,5 +1,6 @@
 package com.jen.easy.http;
 
+import com.jen.easy.EasyMouse;
 import com.jen.easy.http.imp.HttpUploadListener;
 
 /**
@@ -15,9 +16,13 @@ public class HttpUploadRequest extends HttpRequest {
      * （@EasyMouse.mHttp.ResponseParam("data") 注释返回参数）
      * （@private Object data; 实体变量）
      */
+    @EasyMouse.HTTP.RequestParam(noReq = true)
     public Class responseObjectType;
 
+    @EasyMouse.HTTP.RequestParam(noReq = true)
     private HttpUploadListener uploadListener;
+
+    @EasyMouse.HTTP.RequestParam(noReq = true)
     public Flag flag = new Flag();
 
     public final class Flag {
