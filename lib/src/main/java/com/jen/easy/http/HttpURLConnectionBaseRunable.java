@@ -64,7 +64,7 @@ class HttpURLConnectionBaseRunable extends HttpURLConnectionRunable {
 
     @Override
     protected void fail(String result) {
-        EasyLibLog.e(TAG + mUrlStr + result);
+        EasyLibLog.e(TAG + mUrlStr + " " + result);
         HttpBaseRequest baseRequest = (HttpBaseRequest) mRequest;
         if (baseRequest.getBseListener() != null)
             baseRequest.getBseListener().fail(baseRequest.flag.code, baseRequest.flag.str, result);
