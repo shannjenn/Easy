@@ -32,6 +32,8 @@ abstract class ImageLoaderManager {
     private final String TAG = "ImageLoaderManager ";
     /*本地缓存目录*/
     private String LOCAL_PATH;
+    /*保存文件名最长长度*/
+    private final int NAME_LENG = 100;
     /*图片缓存*/
 //    private final Map<String, SoftReference<Drawable>> mImageCache = new HashMap<>();
     private LruCache<String, Bitmap> mImageCache;
@@ -193,11 +195,11 @@ abstract class ImageLoaderManager {
      */
     private String urlChangeToName(String imageUrl) {
         String name = imageUrl;
-        if (name.length() > 20) {
-            name = name.substring(name.length() - 20, name.length());
+        if (name.length() > NAME_LENG) {
+            name = name.substring(name.length() - NAME_LENG, name.length());
         }
-        name.replaceAll(":", "_");
-        name.replaceAll("/", "_");
+        name = name.replaceAll(":", "_");
+        name = name.replaceAll("/", "_");
         return name;
     }
 
