@@ -8,9 +8,9 @@ import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
 
-class HttpURLConnectionDownloadRunable extends HttpURLConnectionRunable {
+class HttpURLConnectionDownloadRunnable extends HttpURLConnectionRunnable {
 
-    HttpURLConnectionDownloadRunable(HttpDownloadRequest request) {
+    HttpURLConnectionDownloadRunnable(HttpDownloadRequest request) {
         super(request, "HttpDownload : ");
     }
 
@@ -35,9 +35,9 @@ class HttpURLConnectionDownloadRunable extends HttpURLConnectionRunable {
             out.close();
         }
 
-        mResposeCode = connection.getResponseCode();
-        EasyLibLog.d(TAG + mUrlStr + "  Http请求返回码：" + mResposeCode);
-        if (mResposeCode == 200) {
+        mResponseCode = connection.getResponseCode();
+        EasyLibLog.d(TAG + mUrlStr + "  Http请求返回码：" + mResponseCode);
+        if (mResponseCode == 200) {
             long curBytes = request.flag.startPoit;
             request.flag.endPoit = connection.getContentLength();
             InputStream inStream = connection.getInputStream();
@@ -59,10 +59,10 @@ class HttpURLConnectionDownloadRunable extends HttpURLConnectionRunable {
             } else if (curBytes == request.flag.endPoit) {
                 success(null);
             } else {
-                fail("下载失败：" + mResposeCode);
+                fail("下载失败：" + mResponseCode);
             }
         } else {
-            fail("下载失败：" + mResposeCode);
+            fail("下载失败：" + mResponseCode);
         }
     }
 

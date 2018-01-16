@@ -2,12 +2,12 @@ package com.jen.easyui.image;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
+import android.support.v4.util.LruCache;
+import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.jen.easy.EasyMain;
@@ -17,9 +17,10 @@ import com.jen.easy.http.imp.HtppDownloadListener;
 import com.jen.easy.log.EasyUILog;
 
 import java.io.File;
-import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * 图片加载工具
@@ -28,64 +29,24 @@ import java.util.Map;
  */
 
 abstract class ImageLoaderManager {
-    private final String TAG = "ImageLoaderManager";
+    private final String TAG = "ImageLoaderManager ";
     /*本地缓存目录*/
     private String LOCAL_PATH;
     /*图片缓存*/
-    private final Map<String, SoftReference<Drawable>> mImageCache = new HashMap<>();
+//    private final Map<String, SoftReference<Drawable>> mImageCache = new HashMap<>();
+    private LruCache<String, Bitmap> mImageCache;
+    private ExecutorService mExecutorService = Executors.newFixedThreadPool(2);
     /*网络获取图片请求参数*/
     private HttpDownloadRequest mHttpRequest = new HttpDownloadRequest();
     /*ImageView缓存*/
     private final Map<String, ImageView> mViewCache = new HashMap<>();
+    /*默认图片*/
+    private Drawable mDefaultImage;
+    /*默认高宽*/
+    private int mDefaultHeight = 300, mDefaultWidth = 300;
+    private Handler mHandler = new Handler(Looper.getMainLooper());
 
-    private int mDefautImageId;
-
-
-    private final int SUCCESS = 100;
-    private final int FAIL = 101;
-    private Handler mHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case SUCCESS: {
-                    String imageUrl = (String) msg.obj;
-                    ImageView imageView = mViewCache.get(imageUrl);
-                    if (imageView != null) {
-                        SoftReference<Drawable> softReference = mImageCache.get(imageUrl);
-                        Drawable drawable = softReference.get();
-                        if (drawable != null) {
-                            imageView.setImageDrawable(drawable);
-                        } else {
-                            EasyUILog.e("mHandler drawable is null");
-                        }
-                    } else {
-                        EasyUILog.e("mHandler imageView is null");
-                    }
-                    break;
-                }
-                case FAIL: {
-                    String imageUrl = (String) msg.obj;
-                    ImageView imageView = mViewCache.get(imageUrl);
-                    if (EasyApplication.getAppContext() == null) {
-                        EasyUILog.e("Application请继承EasyApplication再使用");
-                    } else if (imageView != null) {
-                        Drawable defautDrawable = EasyApplication.getAppContext().getResources().getDrawable(mDefautImageId);
-                        imageView.setImageDrawable(defautDrawable);
-                    } else {
-                        EasyUILog.e("mHandler imageView is null");
-                    }
-                    break;
-                }
-                default: {
-
-                    break;
-                }
-            }
-        }
-    };
-
-    protected ImageLoaderManager() {
+    ImageLoaderManager() {
         init();
     }
 
@@ -109,41 +70,52 @@ abstract class ImageLoaderManager {
                 }
             }
         }
+
+        int maxMemory = (int) Runtime.getRuntime().maxMemory();
+        int cacheSize = maxMemory / 8;
+        EasyUILog.d("cacheSize=" + cacheSize);
+        mImageCache = new LruCache<String, Bitmap>(cacheSize) {
+            @Override
+            protected int sizeOf(String key, Bitmap value) {
+                return value.getRowBytes() * value.getHeight();
+            }
+        };
     }
 
-    public void setImage(String imageUrl, final ImageView imageView) {
-        Drawable drawable;
-        if (mImageCache.containsKey(imageUrl)) {
-            SoftReference<Drawable> softReference = mImageCache.get(imageUrl);
-            drawable = softReference.get();
-            if (drawable != null) {
-                final Drawable finalDrawable = drawable;
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        imageView.setImageDrawable(finalDrawable);
-                    }
-                });
-                return;
-            }
-        }
-
-        drawable = getFromFile(imageUrl);
-        if (drawable != null) {
-            SoftReference<Drawable> softReference = new SoftReference<>(drawable);
-            mImageCache.put(imageUrl, softReference);
-            final Drawable finalDrawable = drawable;
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    imageView.setImageDrawable(finalDrawable);
+    public void setImage(final String imageUrl, final ImageView imageView, final int width, final int height) {
+        mExecutorService.submit(new Runnable() {
+            public void run() {
+                if (imageView == null) {
+                    EasyUILog.w("ImageView is null");
+                    return;
                 }
-            });
-            return;
-        }
+                if (TextUtils.isEmpty(imageUrl)) {
+                    setImageByHandler(null, imageView);
+                    return;
+                }
 
-        getFromHttp(imageUrl);
-        mViewCache.put(imageUrl, imageView);
+                boolean cacheResult = getFromCache(imageUrl, imageView);
+                if (cacheResult)
+                    return;
+
+                boolean SDCardResult = getFromSDCard(width, height, imageUrl, imageView);
+                if (SDCardResult)
+                    return;
+
+                getFromHttp(imageUrl, imageView);
+            }
+        });
+    }
+
+    public void setImage(String imageUrl, ImageView imageView) {
+        setImage(imageUrl, imageView, mDefaultWidth, mDefaultHeight);
+    }
+
+    private boolean getFromCache(String imageUrl, final ImageView imageView) {
+        final Bitmap bitmap = mImageCache.get(imageUrl);
+        setImageByHandler(bitmap, imageView);
+        return bitmap != null;
+
     }
 
     /**
@@ -151,38 +123,59 @@ abstract class ImageLoaderManager {
      *
      * @param imageUrl
      * @return
+     * @smallRate 压缩比例
      */
-    private Drawable getFromFile(String imageUrl) {
-        Bitmap bmp = null;
-        try {
-            String name = urlChangeToName(imageUrl);
-            File file = new File(LOCAL_PATH + File.separator + name);
-            if (!file.exists()) {
-                return null;
-            }
-//        Drawable drawable = Drawable.createFromPath(LOCAL_PATH + File.separator + name);
-            String filePath = LOCAL_PATH + File.separator + name;
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inSampleSize = 2;
-            bmp = BitmapFactory.decodeFile(filePath, options);
-            if(bmp == null){
-                return null;
-            }
-            Drawable drawable = new BitmapDrawable(bmp);
-            return drawable;
-        } finally {
-            /*if(bmp != null && !bmp.isRecycled()){
-                bmp.recycle();
-            }*/
+    private boolean getFromSDCard(int picWidth, int picHeight, String imageUrl, ImageView imageView) {
+        String name = urlChangeToName(imageUrl);
+        final String filePath = LOCAL_PATH + File.separator + name;
+        File file = new File(filePath);
+        if (!file.exists()) {
+            return false;
         }
+
+        try {
+            BitmapFactory.Options opt = new BitmapFactory.Options();
+            opt.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(filePath, opt);
+
+            int width = opt.outWidth;
+            int height = opt.outHeight;
+            if (width == 0 || height == 0) {
+                return false;
+            }
+            opt.inSampleSize = 1;
+            if (width > height) {
+                if (width > picWidth)
+                    opt.inSampleSize *= width / picWidth;
+            } else {
+                if (height > picHeight)
+                    opt.inSampleSize *= height / picHeight;
+            }
+
+            //这次再真正地生成一个有像素的，经过缩放了的bitmap
+            opt.inJustDecodeBounds = false;
+            final Bitmap bitmap = BitmapFactory.decodeFile(filePath, opt);
+            if (bitmap == null) {
+                return false;
+            } else {
+                mImageCache.put(imageUrl, bitmap);
+                setImageByHandler(bitmap, imageView);
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
     }
 
     /**
      * 从网络获取
      *
-     * @param imageUrl
+     * @param imageUrl 图片地址
      */
-    private void getFromHttp(String imageUrl) {
+    private void getFromHttp(String imageUrl, ImageView imageView) {
+        mViewCache.put(imageUrl, imageView);
         String name = urlChangeToName(imageUrl);
         String filePath = LOCAL_PATH + File.separator + name;
         mHttpRequest.httpParam.url = imageUrl;
@@ -195,7 +188,7 @@ abstract class ImageLoaderManager {
     /**
      * 图片地址转保存到SD卡的名称（包括后缀）
      *
-     * @param imageUrl
+     * @param imageUrl 图片地址
      * @return
      */
     private String urlChangeToName(String imageUrl) {
@@ -210,28 +203,26 @@ abstract class ImageLoaderManager {
 
     private HtppDownloadListener mHttpListener = new HtppDownloadListener() {
         @Override
-        public void success(int flagCode, String flag, String filePath) {
-            boolean success = true;
-            Drawable drawable = Drawable.createFromPath(filePath);
-            if (drawable == null) {
-                success = false;
-            } else {
-                SoftReference<Drawable> softReference = new SoftReference<>(drawable);
-                mImageCache.put(flag, softReference);
+        public void success(int flagCode, final String imageUrl, String filePath) {
+            final ImageView imageView = mViewCache.remove(imageUrl);
+            if (imageView == null) {
+                EasyUILog.e(TAG + "mHttpListener success imageView == null imageUrl=" + imageUrl);
+                return;
             }
-
-            Message message = mHandler.obtainMessage();
-            message.what = success ? SUCCESS : FAIL;
-            message.obj = flag;
-            mHandler.sendMessage(message);
+            boolean SDCardResult = getFromSDCard(mDefaultWidth, mDefaultHeight, imageUrl, imageView);
+            if (!SDCardResult) {
+                setImageByHandler(null, imageView);
+            }
         }
 
         @Override
-        public void fail(int flagCode, String flag, String msg) {
-            Message message = mHandler.obtainMessage();
-            message.what = FAIL;
-            message.obj = flag;
-            mHandler.sendMessage(message);
+        public void fail(int flagCode, String imageUrl, String msg) {
+            ImageView imageView = mViewCache.remove(imageUrl);
+            if (imageView == null) {
+                EasyUILog.e(TAG + "mHttpListener fail imageView == null imageUrl=" + imageUrl);
+                return;
+            }
+            setImageByHandler(null, imageView);
         }
 
         @Override
@@ -240,7 +231,31 @@ abstract class ImageLoaderManager {
         }
     };
 
-    public void setDefautImage(int defautImageId) {
-        mDefautImageId = defautImageId;
+    private void setImageByHandler(final Bitmap bitmap, final ImageView imageView) {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (bitmap != null) {
+                    imageView.setImageBitmap(bitmap);
+                } else {
+                    imageView.setImageDrawable(mDefaultImage);
+                }
+            }
+        });
+    }
+
+    protected ImageLoaderManager setDefaultImage(Drawable defaultImage) {
+        mDefaultImage = defaultImage;
+        return this;
+    }
+
+    protected ImageLoaderManager setDefaultHeight(int defautHeight) {
+        this.mDefaultHeight = defautHeight;
+        return this;
+    }
+
+    protected ImageLoaderManager setDefaultWidth(int defautWidth) {
+        this.mDefaultWidth = defautWidth;
+        return this;
     }
 }

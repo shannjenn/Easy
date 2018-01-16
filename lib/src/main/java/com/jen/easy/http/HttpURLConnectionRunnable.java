@@ -12,20 +12,20 @@ import java.net.URLEncoder;
 import java.util.Map;
 import java.util.Set;
 
-abstract class HttpURLConnectionRunable implements Runnable {
+abstract class HttpURLConnectionRunnable implements Runnable {
     protected String TAG;
-    protected HttpRequest mRequest;
-    protected Class mResponseClass;
+    HttpRequest mRequest;
+    Class mResponseClass;
 
-    protected String mUrlStr;
-    protected int mResposeCode = -1;//返回码
-    protected boolean mHasParam = false;//是否有参数
-    protected String mCharset;//编码
-    protected boolean mIsGet = true;
-    protected String mRequestParam;
-    protected String mMethod;
+    String mUrlStr;
+    int mResponseCode = -1;//返回码
+    boolean mHasParam = false;//是否有参数
+    String mCharset;//编码
+    boolean mIsGet = true;
+    String mRequestParam;
+    private String mMethod;
 
-    HttpURLConnectionRunable(HttpRequest param, String TAG) {
+    HttpURLConnectionRunnable(HttpRequest param, String TAG) {
         super();
         this.TAG = TAG;
         this.mRequest = param;
@@ -94,7 +94,7 @@ abstract class HttpURLConnectionRunable implements Runnable {
             }
         }
 
-        mResposeCode = -1;//返回码
+        mResponseCode = -1;//返回码
         mHasParam = false;//是否有参数
         mCharset = mRequest.httpParam.charset;//编码
         mIsGet = mMethod.toUpperCase().equals("GET");
@@ -145,7 +145,7 @@ abstract class HttpURLConnectionRunable implements Runnable {
             connection.disconnect();
         } catch (IOException e) {
             e.printStackTrace();
-            fail("IOException 网络请求异常：" + mResposeCode);
+            fail("IOException 网络请求异常：" + mResponseCode);
         }
     }
 

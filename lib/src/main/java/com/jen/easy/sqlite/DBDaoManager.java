@@ -182,7 +182,7 @@ abstract class DBDaoManager {
      * <p>
      *
      * @param clazz   对象
-     * @param orderBy 排序
+     * @param orderBy 排序 如：date DESC
      * @return 对象列表集合
      */
     protected <T> List<T> searchAll(Class<T> clazz, String orderBy) {

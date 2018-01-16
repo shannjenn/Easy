@@ -9,9 +9,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 
-class HttpURLConnectionBaseRunable extends HttpURLConnectionRunable {
+class HttpURLConnectionBaseRunnable extends HttpURLConnectionRunnable {
 
-    HttpURLConnectionBaseRunable(HttpBaseRequest request) {
+    HttpURLConnectionBaseRunnable(HttpBaseRequest request) {
         super(request, "HttpBase :");
     }
 
@@ -25,9 +25,9 @@ class HttpURLConnectionBaseRunable extends HttpURLConnectionRunable {
             out.close();
         }
 
-        mResposeCode = connection.getResponseCode();
-        EasyLibLog.d(TAG + mUrlStr + " Http请求返回码：" + mResposeCode);
-        if ((mResposeCode == 200)) {
+        mResponseCode = connection.getResponseCode();
+        EasyLibLog.d(TAG + mUrlStr + " Http请求返回码：" + mResponseCode);
+        if ((mResponseCode == 200)) {
             StringBuffer resultBuffer = new StringBuffer("");
             InputStream inStream = connection.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, mCharset));
@@ -42,7 +42,7 @@ class HttpURLConnectionBaseRunable extends HttpURLConnectionRunable {
             EasyLibLog.d(TAG + mUrlStr + " 返回数据：" + result);
             success(result);
         } else {
-            fail(" 网络请求异常：" + mResposeCode);
+            fail(" 网络请求异常：" + mResponseCode);
         }
     }
 

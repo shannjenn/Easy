@@ -34,7 +34,7 @@ public class DBDao extends DBDaoManager {
      * @param clazz         要查找的对象
      * @param selection     查询条件
      * @param selectionArgs 条件参数
-     * @param orderBy       排序
+     * @param orderBy       排序 如：date DESC
      * @param page          页数
      * @param pageNo        大于0分页,小于等于0不分页
      * @return 对象列表集合
@@ -51,7 +51,7 @@ public class DBDao extends DBDaoManager {
      * @param clazz         要查找的对象
      * @param selection     查询条件
      * @param selectionArgs 条件参数
-     * @param orderBy       排序
+     * @param orderBy       排序 如：date DESC
      * @return 对象列表集合
      */
     @Override
@@ -76,7 +76,7 @@ public class DBDao extends DBDaoManager {
      * <p>
      *
      * @param clazz   对象
-     * @param orderBy 排序
+     * @param orderBy 排序 如：date DESC
      * @return 对象列表集合
      */
     @Override

@@ -31,13 +31,13 @@ abstract class HttpManager {
             return;
         }
         if (request instanceof HttpUploadRequest) {
-            HttpURLConnectionUploadRunable upload = new HttpURLConnectionUploadRunable((HttpUploadRequest) request);
+            HttpURLConnectionUploadRunnable upload = new HttpURLConnectionUploadRunnable((HttpUploadRequest) request);
             pool.execute(upload);
         } else if (request instanceof HttpDownloadRequest) {
-            HttpURLConnectionDownloadRunable download = new HttpURLConnectionDownloadRunable((HttpDownloadRequest) request);
+            HttpURLConnectionDownloadRunnable download = new HttpURLConnectionDownloadRunnable((HttpDownloadRequest) request);
             pool.execute(download);
         } else {
-            HttpURLConnectionBaseRunable base = new HttpURLConnectionBaseRunable((HttpBaseRequest) request);
+            HttpURLConnectionBaseRunnable base = new HttpURLConnectionBaseRunnable((HttpBaseRequest) request);
             pool.execute(base);
         }
     }
