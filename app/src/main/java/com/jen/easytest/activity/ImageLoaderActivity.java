@@ -27,7 +27,7 @@ public class ImageLoaderActivity extends BaseActivity {
 
     @Override
     protected void intDataBeforeView() {
-        ImageLoader.getInstance().setDefautImage(R.mipmap.dialog_loading);
+        ImageLoader.getInstance().setDefaultImage(getResources().getDrawable(R.mipmap.dialog_loading));
         for (int i = 0; i < 10; i++) {//多线程加载图片
             new Thread() {
                 @Override

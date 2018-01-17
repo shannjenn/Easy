@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
+import java.util.List;
+import java.util.Map;
 
 class HttpURLConnectionDownloadRunnable extends HttpURLConnectionRunnable {
 
@@ -57,7 +59,7 @@ class HttpURLConnectionDownloadRunnable extends HttpURLConnectionRunnable {
             if (request.flag.userCancel) {
                 fail("下载失败：用户取消下载");
             } else if (curBytes == request.flag.endPoit) {
-                success(null);
+                success(null, null);
             } else {
                 fail("下载失败：" + mResponseCode);
             }
@@ -67,7 +69,7 @@ class HttpURLConnectionDownloadRunnable extends HttpURLConnectionRunnable {
     }
 
     @Override
-    protected void success(String result) {
+    protected void success(String result, Map<String, List<String>> headMap) {
         EasyLibLog.d(TAG + mUrlStr + " 下载成功！");
         HttpDownloadRequest request = (HttpDownloadRequest) mRequest;
         if (request.getDownloadListener() != null)

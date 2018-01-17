@@ -34,7 +34,7 @@ public class BaseApplication extends EasyApplication {
         EasyMain.mDBHelper.setDatabaseListener(databaseListener);
         createTB();
 
-        ImageLoader.getInstance().setDefautImage(R.mipmap.ic_launcher);
+        ImageLoader.getInstance().setDefaultImage(getResources().getDrawable(R.mipmap.ic_launcher));
         EasyMain.mHttp = new Http(5);
     }
 

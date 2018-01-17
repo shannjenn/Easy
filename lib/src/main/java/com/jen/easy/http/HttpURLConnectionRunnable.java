@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -99,7 +100,10 @@ abstract class HttpURLConnectionRunnable implements Runnable {
         mCharset = mRequest.httpParam.charset;//编码
         mIsGet = mMethod.toUpperCase().equals("GET");
         try {
-            Map<String, String> requestParams = HttpReflectManager.getRequestParams(mRequest);
+            Map<String, Map<String, String>> requests = HttpReflectManager.getRequestParams(mRequest);
+            Map<String, String> requestParams = requests.get(HttpReflectManager.REQ_PARAMS);
+            Map<String, String> requestHeads = requests.get(HttpReflectManager.REQ_HEADS);
+
             boolean isNotFirst = false;
             StringBuffer requestBuf = new StringBuffer("");
             Set<String> sets = requestParams.keySet();
@@ -138,8 +142,8 @@ abstract class HttpURLConnectionRunnable implements Runnable {
             connection.setConnectTimeout(mRequest.httpParam.timeout);
             connection.setReadTimeout(mRequest.httpParam.readTimeout);
             connection.setRequestMethod(mMethod);
-            for (String key : mRequest.httpParam.propertys.keySet()) {//设置Property
-                connection.setRequestProperty(key, mRequest.httpParam.propertys.get(key));
+            for (String key : requestHeads.keySet()) {//设置请求头
+                connection.setRequestProperty(key, requestHeads.get(key));
             }
             childRun(connection);
             connection.disconnect();
@@ -151,7 +155,7 @@ abstract class HttpURLConnectionRunnable implements Runnable {
 
     protected abstract void childRun(HttpURLConnection connection) throws IOException;
 
-    protected abstract void success(String result);
+    protected abstract void success(String result, Map<String, List<String>> headMap);
 
     protected abstract void fail(String msg);
 }

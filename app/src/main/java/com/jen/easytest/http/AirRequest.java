@@ -1,19 +1,18 @@
 package com.jen.easytest.http;
 
 import com.jen.easy.EasyMouse;
-import com.jen.easy.http.HttpBaseRequest;
 
 @EasyMouse.HTTP.POST(URL = "http://apics.baoku.com/api/air/query", Response = AirResponse.class)
-public class AirRequest extends HttpBaseRequest {
+public class AirRequest extends AirBaseRequest {
 
-	@EasyMouse.HTTP.RequestParam(noReq = true)
-	String cid;// 商户公司编号
+//	@EasyMouse.HTTP.RequestParam(noReq = true)
+//	String cid;// 商户公司编号
 
-	@EasyMouse.HTTP.RequestParam(noReq = true)
-	String fromCity;// 起飞城市代码
+//	@EasyMouse.HTTP.RequestParam(noReq = true)
+//	String fromCity;// 起飞城市代码
 
-	@EasyMouse.HTTP.RequestParam(noReq = true)
-	String fromCityName;// 起飞城市名称
+//	@EasyMouse.HTTP.RequestParam(noReq = true)
+//	String fromCityName;// 起飞城市名称
 
 //	@EasyMouse.HTTP.RequestParam("arriveCity")
 	String arriveCity;// 到达城市代码
@@ -49,29 +48,6 @@ public class AirRequest extends HttpBaseRequest {
 	 * ★★★ 下面是getter、settter ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	 ********************************************************************************************************/
 
-	public String getCid() {
-		return cid;
-	}
-
-	public void setCid(String cid) {
-		this.cid = cid;
-	}
-
-	public String getFromCity() {
-		return fromCity;
-	}
-
-	public void setFromCity(String fromCity) {
-		this.fromCity = fromCity;
-	}
-
-	public String getFromCityName() {
-		return fromCityName;
-	}
-
-	public void setFromCityName(String fromCityName) {
-		this.fromCityName = fromCityName;
-	}
 
 	public String getArriveCity() {
 		return arriveCity;

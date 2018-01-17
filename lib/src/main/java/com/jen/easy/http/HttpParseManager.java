@@ -15,8 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.jen.easy.http.HttpReflectManager.PARAM_FIELD;
-import static com.jen.easy.http.HttpReflectManager.PARAM_TYPE;
+import static com.jen.easy.http.HttpReflectManager.RSP_FIELD;
+import static com.jen.easy.http.HttpReflectManager.RSP_HEAD;
+import static com.jen.easy.http.HttpReflectManager.RSP_TYPE;
 
 /**
  * 作者：ShannJenn
@@ -25,8 +26,12 @@ import static com.jen.easy.http.HttpReflectManager.PARAM_TYPE;
  */
 class HttpParseManager {
     private final static String TAG = "数据解析 : ";
+
+    /*解析的class*/
+    private Class mClass;
+    private Map<String, List<String>> mHeadMap;
     //错误提示
-    List<String> mErrors = new ArrayList<>();
+    private List<String> mErrors = new ArrayList<>();
     /**
      * 通用数据返回
      * 设置返回Object变量实体：List集合实体、单实体
@@ -47,8 +52,10 @@ class HttpParseManager {
      * @param obj
      * @return
      */
-    <T> T parseJson(Class<T> tClass, String obj) {
+    <T> T parseJson(Class<T> tClass, String obj, Map<String, List<String>> headMap) {
         EasyLibLog.d(TAG + "解析：" + tClass.getName() + "----开始");
+        mClass = tClass;
+        this.mHeadMap = headMap;
         T t = null;
         try {
             JSONObject object = new JSONObject(obj);
@@ -59,6 +66,9 @@ class HttpParseManager {
         }
         mErrors.clear();
         EasyLibLog.d(TAG + "解析：" + tClass.getName() + "----结束");
+        if (t != null && t instanceof HttpHeadResponse) {
+            ((HttpHeadResponse) t).setHeads(headMap);
+        }
         return t;
     }
 
@@ -88,8 +98,37 @@ class HttpParseManager {
         }
 
         Map<String, Object> objectMap = HttpReflectManager.getResponseParams(tObj.getClass());
-        Map<String, String> param_type = (Map<String, String>) objectMap.get(PARAM_TYPE);
-        Map<String, Field> param_field = (Map<String, Field>) objectMap.get(PARAM_FIELD);
+        Map<String, String> param_type = (Map<String, String>) objectMap.get(RSP_TYPE);
+        Map<String, Field> param_field = (Map<String, Field>) objectMap.get(RSP_FIELD);
+        Map<String, Field> head_field = (Map<String, Field>) objectMap.get(RSP_HEAD);
+
+        Set<String> heads = head_field.keySet();
+        for (String param : heads) {//设置head值
+            if (!mHeadMap.containsKey(param)) {
+                continue;
+            }
+            Field field = head_field.get(param);
+            field.setAccessible(true);
+
+            StringBuffer buffer = new StringBuffer("");
+            List<String> values = mHeadMap.get(param);
+            int size = values.size();
+            for (int i = 0; i < size; i++) {
+                if (i == 0) {
+                    buffer.append(values.get(i));
+                } else {
+                    buffer.append(";");
+                    buffer.append(values.get(i));
+                }
+            }
+            try {
+                field.set(tObj, buffer.toString());
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+                showError("IllegalAccessException：head param=" + param);
+            }
+        }
+
         if (param_type.size() == 0) {
             EasyLibLog.e(TAG + "parseJsonObject 网络请求返回参数请用@EasyMouse.mHttp.ResponseParam备注正确");
             return null;
@@ -187,6 +226,10 @@ class HttpParseManager {
                         if (value instanceof JSONArray) {
                             String clazzName = type.substring(type.indexOf("<") + 1, type.indexOf(">"));
                             Class clazz2 = Class.forName(clazzName);
+                            if (clazz2 == mClass) {
+                                showError("不能解析与类相同的变量,param=" + param + " type=" + clazzName);
+                                continue;
+                            }
                             List objList = parseJsonArray(clazz2, (JSONArray) value);
                             field.set(tObj, objList);
                         } else {
@@ -194,6 +237,10 @@ class HttpParseManager {
                         }
                     } else if (type.contains(Constant.FieldType.CLASS)) {//解析指定class
                         if (value instanceof JSONObject) {
+                            if (field.getType() == mClass) {
+                                showError("不能解析与类相同的变量,param=" + param + " type=" + field.getType());
+                                continue;
+                            }
                             Object obj = parseJsonObject(field.getType(), (JSONObject) value);
                             field.set(tObj, obj);
                         } else {

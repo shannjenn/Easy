@@ -10,6 +10,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.util.List;
+import java.util.Map;
 
 class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
 
@@ -57,17 +59,17 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
         reader.close();
         String result = buffer.toString();
         EasyLibLog.d(TAG + mUrlStr + " 完成，返回数据：" + result);
-        success(result);
+        success(result, null);
     }
 
     @Override
-    protected void success(String result) {
+    protected void success(String result, Map<String, List<String>> headMap) {
         EasyLibLog.d(TAG + mUrlStr + " 上传成功！");
         HttpUploadRequest request = (HttpUploadRequest) mRequest;
         if (request.getUploadListener() != null) {
             HttpParseManager parseManager = new HttpParseManager();
             parseManager.setResponseObjectType(request.responseObjectType);
-            Object parseObject = parseManager.parseJson(mResponseClass, result);
+            Object parseObject = parseManager.parseJson(mResponseClass, result, headMap);
             if (parseObject == null) {
                 fail("返回数据解析异常");
             } else {

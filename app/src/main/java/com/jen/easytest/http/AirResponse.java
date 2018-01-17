@@ -5,10 +5,10 @@ import com.jen.easy.EasyMouse;
 
 import java.util.List;
 
-public class AirResponse {
+public class AirResponse extends AirBaseResponse {
 
-    @EasyMouse.HTTP.ResponseParam("message")
-    private String message;
+    @EasyMouse.HTTP.ResponseParam(isHeadRsp = true)
+    private String Date;
 
     @EasyMouse.HTTP.ResponseParam("token")
     private String token;
@@ -765,13 +765,13 @@ public class AirResponse {
     }
 
 
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
+//    public String getMessage() {
+//        return message;
+//    }
+//
+//    public void setMessage(String message) {
+//        this.message = message;
+//    }
 
     public String getToken() {
         return token;
