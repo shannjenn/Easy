@@ -28,7 +28,7 @@ class HttpParseManager {
     private final static String TAG = "数据解析 : ";
 
     /*解析的class*/
-    private Class mClass;
+    private Class mTopClass;
     private Map<String, List<String>> mHeadMap;
     //错误提示
     private List<String> mErrors = new ArrayList<>();
@@ -54,7 +54,7 @@ class HttpParseManager {
      */
     <T> T parseJson(Class<T> tClass, String obj, Map<String, List<String>> headMap) {
         EasyLibLog.d(TAG + "解析：" + tClass.getName() + "----开始");
-        mClass = tClass;
+        mTopClass = tClass;
         this.mHeadMap = headMap;
         T t = null;
         try {
@@ -89,11 +89,11 @@ class HttpParseManager {
             tObj = tClass.newInstance();
         } catch (InstantiationException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "parseJsonObject InstantiationException 创建对象出错");
+            EasyLibLog.e(TAG + "InstantiationException 创建对象出错");
             return null;
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "parseJsonObject IllegalAccessException 创建对象出错");
+            EasyLibLog.e(TAG + "IllegalAccessException 创建对象出错");
             return null;
         }
 
@@ -117,7 +117,7 @@ class HttpParseManager {
                 if (i == 0) {
                     buffer.append(values.get(i));
                 } else {
-                    buffer.append(";");
+                    buffer.append("&");
                     buffer.append(values.get(i));
                 }
             }
@@ -130,7 +130,7 @@ class HttpParseManager {
         }
 
         if (param_type.size() == 0) {
-            EasyLibLog.e(TAG + "parseJsonObject 网络请求返回参数请用@EasyMouse.mHttp.ResponseParam备注正确");
+            EasyLibLog.e(TAG + "网络请求返回参数请用@EasyMouse.mHttp.ResponseParam备注正确");
             return null;
         }
         Set<String> sets = param_type.keySet();
@@ -194,9 +194,9 @@ class HttpParseManager {
                     } else if (type.equals(Constant.FieldType.BOOLEAN)) {
                         if (!(value instanceof Boolean)) {
                             showWarn("param=" + param + " is not Boolean ");
-                            continue;
+                        } else {
+                            field.setBoolean(tObj, (Boolean) value);
                         }
-                        field.setBoolean(tObj, (Boolean) value);
                     } else if (type.equals(Constant.FieldType.DATE)) {
                         if (value instanceof String) {
                             Date date = EasyUtil.mDateFormat.parser((String) value);
@@ -210,7 +210,9 @@ class HttpParseManager {
                         EasyLibLog.e(TAG + "不支持数组类型");
                     } else if (type.contains(Constant.FieldType.OBJECT)) {//解析Object通用类型
                         if (responseObjectType != null) {
-                            if (value instanceof JSONArray) {
+                            if (responseObjectType == mTopClass) {
+                                showError("不能解析与类相同的变量避免死循环,param=" + param + " type=" + type);
+                            } else if (value instanceof JSONArray) {
                                 List objList = parseJsonArray(responseObjectType, (JSONArray) value);
                                 field.set(tObj, objList);
                             } else if (value instanceof JSONObject) {
@@ -226,21 +228,19 @@ class HttpParseManager {
                         if (value instanceof JSONArray) {
                             String clazzName = type.substring(type.indexOf("<") + 1, type.indexOf(">"));
                             Class clazz2 = Class.forName(clazzName);
-                            if (clazz2 == mClass) {
-                                showError("不能解析与类相同的变量,param=" + param + " type=" + clazzName);
-                                continue;
+                            if (clazz2 == mTopClass) {
+                                showError("不能解析与类相同的变量避免死循环,param=" + param + " type=" + type);
+                            } else {
+                                List objList = parseJsonArray(clazz2, (JSONArray) value);
+                                field.set(tObj, objList);
                             }
-                            List objList = parseJsonArray(clazz2, (JSONArray) value);
-                            field.set(tObj, objList);
                         } else {
                             showError("List类型错误 :" + type);
                         }
                     } else if (type.contains(Constant.FieldType.CLASS)) {//解析指定class
-                        if (value instanceof JSONObject) {
-                            if (field.getType() == mClass) {
-                                showError("不能解析与类相同的变量,param=" + param + " type=" + field.getType());
-                                continue;
-                            }
+                        if (field.getType() == mTopClass) {
+                            showError("不能解析与类相同的变量避免死循环,param=" + param + " type=" + type);
+                        } else if (value instanceof JSONObject) {
                             Object obj = parseJsonObject(field.getType(), (JSONObject) value);
                             field.set(tObj, obj);
                         } else {

@@ -80,9 +80,13 @@ class HttpReflectManager {
         }
 
         Class clazz = obj.getClass();
-        while (!clazz.getName().equals(HttpBaseRequest.class.getName())) {
+        String clazzName = clazz.getName();
+        String reqName = HttpBaseRequest.class.getName();
+        String objName = Object.class.getName();
+        while (!clazzName.equals(reqName) && !clazzName.equals(objName)) {
             addSuperRequestParams(clazz, obj, params, heads);
             clazz = clazz.getSuperclass();
+            clazzName = clazz.getName();
         }
         objectMap.put(REQ_PARAMS, params);
         objectMap.put(REQ_HEADS, heads);
@@ -170,9 +174,13 @@ class HttpReflectManager {
         }
 
         Class myClass = clazz;
-        while (!myClass.getName().equals(Object.class.getName())) {
+        String clazzName = myClass.getName();
+        String respName = HttpHeadResponse.class.getName();
+        String objName = Object.class.getName();
+        while (!clazzName.equals(respName) && !clazzName.equals(objName)) {
             addSuperResponseParams(myClass, param_type, param_field, head_field);
             myClass = myClass.getSuperclass();
+            clazzName = myClass.getName();
         }
         return objectMap;
     }
