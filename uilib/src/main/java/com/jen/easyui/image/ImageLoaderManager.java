@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import com.jen.easy.EasyMain;
 import com.jen.easy.app.EasyApplication;
 import com.jen.easy.http.HttpDownloadRequest;
-import com.jen.easy.http.imp.HtppDownloadListener;
+import com.jen.easy.http.imp.HttpDownloadListener;
 import com.jen.easy.log.EasyUILog;
 
 import java.io.File;
@@ -203,7 +203,7 @@ abstract class ImageLoaderManager {
         return name;
     }
 
-    private HtppDownloadListener mHttpListener = new HtppDownloadListener() {
+    private HttpDownloadListener mHttpListener = new HttpDownloadListener() {
         @Override
         public void success(int flagCode, final String imageUrl, String filePath) {
             final ImageView imageView = mViewCache.remove(imageUrl);

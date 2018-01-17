@@ -1,7 +1,7 @@
 package com.jen.easy.http;
 
 import com.jen.easy.EasyMouse;
-import com.jen.easy.http.imp.HtppDownloadListener;
+import com.jen.easy.http.imp.HttpDownloadListener;
 
 /**
  * 作者：ShannJenn
@@ -12,7 +12,7 @@ import com.jen.easy.http.imp.HtppDownloadListener;
 public class HttpDownloadRequest extends HttpRequest {
 
     @EasyMouse.HTTP.RequestParam(noReq = true)
-    private HtppDownloadListener downloadListener;
+    private HttpDownloadListener downloadListener;
 
     @EasyMouse.HTTP.RequestParam(noReq = true)
     public Flag flag = new Flag();
@@ -58,11 +58,11 @@ public class HttpDownloadRequest extends HttpRequest {
         public boolean deleteOldFile = true;
     }
 
-    public HtppDownloadListener getDownloadListener() {
+    public HttpDownloadListener getDownloadListener() {
         return downloadListener;
     }
 
-    public void setDownloadListener(HtppDownloadListener downloadListener) {
+    public void setDownloadListener(HttpDownloadListener downloadListener) {
         this.downloadListener = downloadListener;
     }
 }

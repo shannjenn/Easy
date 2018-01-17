@@ -89,7 +89,7 @@
 -keep class com.jen.easy.http.imp.HttpBaseListener {
     *;
 }
--keep class com.jen.easy.http.imp.HtppDownloadListener {
+-keep class com.jen.easy.http.imp.HttpDownloadListener {
     *;
 }
 -keep class com.jen.easy.http.imp.HttpUploadListener {

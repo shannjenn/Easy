@@ -5,7 +5,7 @@ package com.jen.easy.http.imp;
  * 时间：2017/9/4:21:44
  * 说明：下载监听
  */
-public interface HtppDownloadListener {
+public interface HttpDownloadListener {
 
     void success(int flagCode, String flag, String filePath);
 
