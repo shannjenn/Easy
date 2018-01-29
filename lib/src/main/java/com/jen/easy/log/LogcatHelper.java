@@ -1,5 +1,7 @@
 package com.jen.easy.log;
 
+import android.content.Context;
+
 import com.jen.easy.log.imp.LogCrashListener;
 
 /**
@@ -12,8 +14,8 @@ public class LogcatHelper extends LogcatHelperManager {
     /**
      * 新建实例
      */
-    public LogcatHelper() {
-        super();
+    public LogcatHelper(Context context) {
+        super(context);
     }
 
     /**

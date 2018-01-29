@@ -45,19 +45,10 @@
 ##############################################################
 ###application
 ##############################################################
--keep class com.jen.easy.app.EasyApplication {
-    *;
-}
 -keep class com.jen.easy.app.EasyVersion {
     *;
 }
--keep class com.jen.easy.EasyMain {
-    *;
-}
 -keep class com.jen.easy.EasyMouse* {
-    *;
-}
--keep class com.jen.easy.EasyUtil {
     *;
 }
 
@@ -147,14 +138,8 @@
 }
 
 ##############################################################
-###工具类
+###数据存储Share
 ##############################################################
--keep class com.jen.easy.util.DataFormat {
-    *;
-}
--keep class com.jen.easy.util.StringToList {
-    *;
-}
--keep class com.jen.easy.util.FileUtil {
+-keep class com.jen.easy.imageLoader.ImageLoader {
     *;
 }

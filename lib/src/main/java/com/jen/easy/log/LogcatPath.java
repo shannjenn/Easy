@@ -1,19 +1,18 @@
 package com.jen.easy.log;
 
+import android.content.Context;
 import android.os.Environment;
-
-import com.jen.easy.app.EasyApplication;
 
 import java.io.File;
 
 class LogcatPath {
     private static String logPath;
 
-    static void setDefaultPath() {
+    static void setDefaultPath(Context context) {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {// 优先保存到SD卡中
             logPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "_LogcatHelper";
         } else {// 如果SD卡不存在，就保存到本应用的目录下
-            logPath = EasyApplication.getAppContext().getFilesDir().getAbsolutePath() + File.separator + "_LogcatHelper";
+            logPath = context.getFilesDir().getAbsolutePath() + File.separator + "_LogcatHelper";
         }
         /*if (logPath == null)
             return;*/

@@ -1,5 +1,7 @@
 package com.jen.easy.log;
 
+import android.content.Context;
+
 import com.jen.easy.log.imp.LogCrashListener;
 
 /**
@@ -12,13 +14,13 @@ import com.jen.easy.log.imp.LogCrashListener;
  */
 abstract class LogcatHelperManager {
 
-    protected LogcatHelperManager() {
-        init();
+    protected LogcatHelperManager(Context context) {
+        init(context);
     }
 
-    private void init() {
+    private void init(Context context) {
         EasyLibLog.d("LogcatHelperManager init");
-        LogcatPath.setDefaultPath();
+        LogcatPath.setDefaultPath(context);
     }
 
     /**

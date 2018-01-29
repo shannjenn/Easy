@@ -1,5 +1,6 @@
-package com.jen.easyui.image;
+package com.jen.easy.imageLoader;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
@@ -10,26 +11,26 @@ import android.widget.ImageView;
  */
 
 public class ImageLoader extends ImageLoaderManager {
-    private static ImageLoader mInstance;
+//    private static ImageLoader mInstance;
 
     /**
      * 多例
      */
-    public ImageLoader(int httpMaxThread) {
-        super(httpMaxThread);
+    public ImageLoader(Context context, int httpMaxThread) {
+        super(context, httpMaxThread);
     }
 
     /**
      * 单例
      */
-    public static ImageLoader getInstance() {
+    /*public static ImageLoader getInstance(Context context) {
         synchronized (ImageLoader.class) {
             if (mInstance == null) {
-                mInstance = new ImageLoader(-1);//-1值默认线程数
+                mInstance = new ImageLoader(context, -1);//-1值默认线程数
             }
         }
         return mInstance;
-    }
+    }*/
 
     @Override
     public void setImage(String imageUrl, ImageView imageView) {
@@ -46,19 +47,19 @@ public class ImageLoader extends ImageLoaderManager {
     @Override
     public ImageLoader setDefaultImage(Drawable defaultImage) {
         super.setDefaultImage(defaultImage);
-        return mInstance;
+        return this;
     }
 
     @Override
     public ImageLoader setDefaultHeight(int defaultHeight) {
         super.setDefaultHeight(defaultHeight);
-        return mInstance;
+        return this;
     }
 
     @Override
     public ImageLoader setDefaultWidth(int defaultWidth) {
         super.setDefaultWidth(defaultWidth);
-        return mInstance;
+        return this;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.jen.easy.util;
+package com.jen.easyui.util;
 
 import java.util.List;
 

@@ -1,16 +1,16 @@
-package com.jen.easyui.image;
+package com.jen.easy.imageLoader;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v4.util.LruCache;
 import android.text.TextUtils;
+import android.util.LruCache;
 import android.widget.ImageView;
 
-import com.jen.easy.app.EasyApplication;
 import com.jen.easy.http.Http;
 import com.jen.easy.http.HttpDownloadRequest;
 import com.jen.easy.http.imp.HttpDownloadListener;
@@ -51,14 +51,14 @@ abstract class ImageLoaderManager {
     private int timeOut = 10000;//默认超时
     private Http mHttp;
 
-    ImageLoaderManager(int httpMaxThread) {
+    ImageLoaderManager(Context context,int httpMaxThread) {
         if (httpMaxThread > 0) {
             mHttpMaxThread = httpMaxThread;
         }
-        init();
+        init(context);
     }
 
-    private void init() {
+    private void init(Context context) {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {// 优先保存到SD卡中
             LOCAL_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + ".EasyImageLoaderCache";
             File file = new File(LOCAL_PATH);
@@ -69,7 +69,7 @@ abstract class ImageLoaderManager {
                 }
             }
         } else if (LOCAL_PATH == null) {
-            LOCAL_PATH = EasyApplication.getAppContext().getFilesDir().getAbsolutePath() + File.separator + "EasyImageLoaderCache";
+            LOCAL_PATH = context.getFilesDir().getAbsolutePath() + File.separator + "EasyImageLoaderCache";
             File file = new File(LOCAL_PATH);
             if (!file.exists()) {
                 boolean result = file.mkdirs();
