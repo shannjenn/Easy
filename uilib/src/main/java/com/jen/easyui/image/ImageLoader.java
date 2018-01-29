@@ -12,14 +12,20 @@ import android.widget.ImageView;
 public class ImageLoader extends ImageLoaderManager {
     private static ImageLoader mInstance;
 
-    private ImageLoader() {
-        super();
+    /**
+     * 多例
+     */
+    public ImageLoader(int httpMaxThread) {
+        super(httpMaxThread);
     }
 
+    /**
+     * 单例
+     */
     public static ImageLoader getInstance() {
         synchronized (ImageLoader.class) {
             if (mInstance == null) {
-                mInstance = new ImageLoader();
+                mInstance = new ImageLoader(-1);//-1值默认线程数
             }
         }
         return mInstance;
@@ -53,5 +59,10 @@ public class ImageLoader extends ImageLoaderManager {
     public ImageLoader setDefaultWidth(int defaultWidth) {
         super.setDefaultWidth(defaultWidth);
         return mInstance;
+    }
+
+    @Override
+    public void setTimeOut(int timeOut) {
+        super.setTimeOut(timeOut);
     }
 }

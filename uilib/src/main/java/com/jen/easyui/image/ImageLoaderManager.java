@@ -10,8 +10,8 @@ import android.support.v4.util.LruCache;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
-import com.jen.easy.EasyMain;
 import com.jen.easy.app.EasyApplication;
+import com.jen.easy.http.Http;
 import com.jen.easy.http.HttpDownloadRequest;
 import com.jen.easy.http.imp.HttpDownloadListener;
 import com.jen.easy.log.EasyUILog;
@@ -47,8 +47,14 @@ abstract class ImageLoaderManager {
     /*默认高宽*/
     private int mDefaultHeight = 300, mDefaultWidth = 300;
     private Handler mHandler = new Handler(Looper.getMainLooper());
+    private int mHttpMaxThread = 3;//默认三个线程
+    private int timeOut = 10000;//默认超时
+    private Http mHttp;
 
-    ImageLoaderManager() {
+    ImageLoaderManager(int httpMaxThread) {
+        if (httpMaxThread > 0) {
+            mHttpMaxThread = httpMaxThread;
+        }
         init();
     }
 
@@ -73,6 +79,7 @@ abstract class ImageLoaderManager {
             }
         }
 
+        mHttp = new Http(mHttpMaxThread);
         int maxMemory = (int) Runtime.getRuntime().maxMemory();
         int cacheSize = maxMemory / 8;
         EasyUILog.d("cacheSize=" + cacheSize);
@@ -181,10 +188,11 @@ abstract class ImageLoaderManager {
         String name = urlChangeToName(imageUrl);
         String filePath = LOCAL_PATH + File.separator + name;
         mHttpRequest.httpParam.url = imageUrl;
+        mHttpRequest.httpParam.timeout = timeOut;
         mHttpRequest.flag.filePath = filePath;
         mHttpRequest.flag.str = imageUrl;
         mHttpRequest.setDownloadListener(mHttpListener);
-        EasyMain.mHttp.start(mHttpRequest);
+        mHttp.start(mHttpRequest);
     }
 
     /**
@@ -259,5 +267,9 @@ abstract class ImageLoaderManager {
     protected ImageLoaderManager setDefaultWidth(int defautWidth) {
         this.mDefaultWidth = defautWidth;
         return this;
+    }
+
+    public void setTimeOut(int timeOut) {
+        this.timeOut = timeOut;
     }
 }
