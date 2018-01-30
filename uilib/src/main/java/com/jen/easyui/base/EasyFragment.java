@@ -1,4 +1,4 @@
-package com.jen.easytest.base;
+package com.jen.easyui.base;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jen.easy.EasyMain;
 import com.jen.easy.http.imp.HttpBaseListener;
+import com.jen.easyui.EasyMain;
 import com.jen.easyui.dialog.EasyLoading;
 
 /**
@@ -20,11 +20,11 @@ import com.jen.easyui.dialog.EasyLoading;
  * 时间：2017/01/09.
  */
 
-public abstract class BaseFragment<T> extends Fragment implements HttpListener<T> {
-    private View rootView;
-    private Context mContext;
-    private Handler mHandler = new Handler(Looper.getMainLooper());
-    private EasyLoading mLoading;
+public abstract class EasyFragment<T> extends Fragment implements HttpListener<T> {
+    protected View rootView;
+    protected Context mContext;
+    protected Handler mHandler = new Handler(Looper.getMainLooper());
+    protected EasyLoading mLoading;
 
     /**
      * 网络请求监听(网络基本数据请求用此监听)

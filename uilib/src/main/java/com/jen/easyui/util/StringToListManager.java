@@ -2,8 +2,7 @@ package com.jen.easyui.util;
 
 import android.util.Base64;
 
-import com.jen.easy.constant.Constant;
-import com.jen.easy.log.EasyLibLog;
+import com.jen.easy.log.EasyUILog;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -19,17 +18,22 @@ import java.util.List;
 
 abstract class StringToListManager {
     private final String TAG = "StringToListManager : ";
+    private String unicode = "utf-8";
+
+    protected void setUnicode(String unicode) {
+        this.unicode = unicode;
+    }
 
     protected <T> String list2String(List<T> list) {
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
             objectOutputStream.writeObject(list);
-            String str = new String(Base64.encode(byteArrayOutputStream.toByteArray(), 0), Constant.Unicode.DEFAULT);
+            String str = new String(Base64.encode(byteArrayOutputStream.toByteArray(), 0), unicode);
             objectOutputStream.close();
             return str;
         } catch (IOException e) {
-            EasyLibLog.e(TAG + "list2String IOException");
+            EasyUILog.e(TAG + "list2String IOException");
             e.printStackTrace();
         }
         return null;
@@ -38,17 +42,17 @@ abstract class StringToListManager {
     protected <T> List<T> string2List(String str) {
         List list = null;
         try {
-            byte[] mobileBytes = Base64.decode(str.getBytes(Constant.Unicode.DEFAULT), 0);
+            byte[] mobileBytes = Base64.decode(str.getBytes(unicode), 0);
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(mobileBytes);
             ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
             list = (List) objectInputStream.readObject();
             objectInputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "string2List IOException");
+            EasyUILog.e(TAG + "string2List IOException");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "string2List ClassNotFoundException");
+            EasyUILog.e(TAG + "string2List ClassNotFoundException");
         }
         return list;
     }
@@ -58,11 +62,11 @@ abstract class StringToListManager {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
             objectOutputStream.writeObject(obj);
-            String str = new String(Base64.encode(byteArrayOutputStream.toByteArray(), 0), Constant.Unicode.DEFAULT);
+            String str = new String(Base64.encode(byteArrayOutputStream.toByteArray(), 0), unicode);
             objectOutputStream.close();
             return str;
         } catch (IOException e) {
-            EasyLibLog.e(TAG + "object2String IOException");
+            EasyUILog.e(TAG + "object2String IOException");
             e.printStackTrace();
         }
         return null;
@@ -70,7 +74,7 @@ abstract class StringToListManager {
 
     protected Object string2Object(String str) {
         try {
-            byte[] mobileBytes = Base64.decode(str.getBytes(Constant.Unicode.DEFAULT), 0);
+            byte[] mobileBytes = Base64.decode(str.getBytes(unicode), 0);
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(mobileBytes);
             ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
 
@@ -79,10 +83,10 @@ abstract class StringToListManager {
             return obj;
         } catch (IOException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "string2Object IOException");
+            EasyUILog.e(TAG + "string2Object IOException");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "string2Object ClassNotFoundException");
+            EasyUILog.e(TAG + "string2Object ClassNotFoundException");
         }
         return null;
     }

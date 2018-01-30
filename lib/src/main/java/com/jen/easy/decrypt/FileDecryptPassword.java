@@ -1,12 +1,7 @@
 package com.jen.easy.decrypt;
 
-import com.jen.easy.constant.Constant;
-import com.jen.easy.log.EasyLibLog;
-
-import java.io.UnsupportedEncodingException;
-
 class FileDecryptPassword {
-    private final static String TAG = "FileDecryptPassword : ";
+    /*private final static String TAG = "FileDecryptPassword : ";
     private static final String defautPassword = "louxiumeiwoaini520";
 
     static byte[] getPassword(String password) {
@@ -28,5 +23,5 @@ class FileDecryptPassword {
             EasyLibLog.e(TAG + "getPassword 编码转换错误");
             return null;
         }
-    }
+    }*/
 }

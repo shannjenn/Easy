@@ -1,22 +1,14 @@
 package com.jen.easy.decrypt;
 
-import com.jen.easy.EasyMain;
-import com.jen.easy.log.EasyLibLog;
-
-import java.io.File;
-import java.io.RandomAccessFile;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
-
 abstract class FileDecryptManager {
-    private final String TAG = "FileDecryptManager : ";
+    /*private final String TAG = "FileDecryptManager : ";
 
-    /**
+    *//**
      * 解密
      *
      * @param strFile 源文件绝对路径
      * @return 解密是否成功
-     */
+     *//*
     protected boolean encrypt(String strFile, String password) {
         File file = new File(strFile);
         if (!file.exists() || !isDecripted(strFile)) {
@@ -61,12 +53,12 @@ abstract class FileDecryptManager {
         return false;
     }
 
-    /**
+    *//**
      * 加密
      *
      * @param strFile 源文件绝对路径
      * @return 加密是否成功
-     */
+     *//*
     protected boolean decrypt(String strFile, String password) {
         File file = new File(strFile);
         if (!file.exists() || isDecripted(strFile)) {
@@ -111,14 +103,14 @@ abstract class FileDecryptManager {
         return false;
     }
 
-    /**
+    *//**
      * 文件是否已经加密了
      *
      * @param strFile
      * @return
-     */
+     *//*
     private boolean isDecripted(String strFile) {
         boolean result = EasyMain.mShared.getBoolean(strFile);//true为已经加密
         return result;
-    }
+    }*/
 }

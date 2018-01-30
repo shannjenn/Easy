@@ -7,14 +7,12 @@ import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
-import com.jen.easy.EasyUtil;
 import com.jen.easy.constant.Constant;
 import com.jen.easy.log.EasyLibLog;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -659,9 +657,9 @@ abstract class DBDaoManager {
                     values.put(column, (Long) value);
                 } else if (value instanceof Boolean) {
                     values.put(column, (Boolean) value);
-                } else if (value instanceof Date) {
+                }/* else if (value instanceof Date) {
                     values.put(column, EasyUtil.mDateFormat.format((Date) value));
-                } else if (column_foreignKey.containsKey(column)) {//其他类型用外键处理（比如：对象）
+                }*/ else if (column_foreignKey.containsKey(column)) {//其他类型用外键处理（比如：对象）
                     if (type.contains(Constant.FieldType.OBJECT)) {
                         EasyLibLog.e(TAG + "cntentValues class java.lang.Object");
                     } else if (type.contains(Constant.FieldType.MAP)) {
@@ -751,12 +749,12 @@ abstract class DBDaoManager {
                         field.setBoolean(obj, value);
                         break;
                     }
-                    case Constant.FieldType.DATE: {
+                    /*case Constant.FieldType.DATE: {
                         String value = cursor.getString(cursor.getColumnIndex(column));
                         Date date = EasyUtil.mDateFormat.parser(value);
                         field.set(obj, date);
                         break;
-                    }
+                    }*/
                     default:
                         EasyLibLog.e(TAG + "valuation 不支持该类型：" + type);
                         break;

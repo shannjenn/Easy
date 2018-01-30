@@ -1,31 +1,30 @@
-package com.jen.easytest.base;
+package com.jen.easyui.base;
 
+import android.app.Application;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.jen.easy.EasyMain;
-import com.jen.easy.app.EasyApplication;
 import com.jen.easy.http.Http;
 import com.jen.easy.log.EasyLog;
 import com.jen.easy.log.imp.LogCrashListener;
 import com.jen.easy.sqlite.imp.DatabaseListener;
-import com.jen.easytest.R;
-import com.jen.easyui.image.ImageLoader;
+import com.jen.easyui.EasyMain;
+import com.jen.easyui.R;
 
 /**
  * 作者：ShannJenn
  * 时间：2017/10/26.
  */
 
-public class BaseApplication extends EasyApplication {
-    /**
-     * 数据库版本号
-     */
-    private final int DB_VERSION = 1;
+public class EasyApplication extends Application {
+    private static EasyApplication mApp;
+    private final int DB_VERSION = 1;//数据库版本号
 
     @Override
     public void onCreate() {
         super.onCreate();
+        mApp = this;
+        EasyMain.init(this);
         EasyMain.mLog.start();
         EasyMain.mLog.setListener(logcatCrashListener);
 
@@ -34,7 +33,7 @@ public class BaseApplication extends EasyApplication {
         EasyMain.mDBHelper.setDatabaseListener(databaseListener);
         createTB();
 
-        ImageLoader.getInstance().setDefaultImage(getResources().getDrawable(R.mipmap.ic_launcher));
+        EasyMain.mImageLoader.setDefaultImage(getResources().getDrawable(R.mipmap.ic_launcher));
         EasyMain.mHttp = new Http(5);
     }
 
@@ -68,9 +67,13 @@ public class BaseApplication extends EasyApplication {
         @Override
         public boolean onBeforeHandleException(Throwable throwable) {
             EasyLog.w("捕获到异常------------");
-            Intent intent = new Intent(BaseApplication.getAppContext(), LogCrashActivity.class);
+            Intent intent = new Intent(EasyApplication.getAppContext(), LogCrashActivity.class);
             startActivity(intent);
             return true;
         }
     };
+
+    public static Application getAppContext() {
+        return mApp;
+    }
 }

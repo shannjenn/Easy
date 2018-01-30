@@ -10,9 +10,9 @@ import com.jen.easytest.activity.DrawableActivity;
 import com.jen.easytest.activity.HttpActivity;
 import com.jen.easytest.activity.ImageLoaderActivity;
 import com.jen.easytest.activity.TabBarActivity;
-import com.jen.easytest.base.BaseActivity;
+import com.jen.easyui.base.EasyActivity;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends EasyActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

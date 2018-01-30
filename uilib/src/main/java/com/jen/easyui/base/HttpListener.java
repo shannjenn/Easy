@@ -1,4 +1,4 @@
-package com.jen.easytest.base;
+package com.jen.easyui.base;
 
 /**
  * 作者：ShannJenn

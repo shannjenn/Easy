@@ -2,13 +2,14 @@ package com.jen.easytest.activity;
 
 import android.view.View;
 
-import com.jen.easytest.base.BaseActivity;
+import com.jen.easyui.base.EasyActivity;
+
 
 /**
  * Created by Administrator on 2017/12/25.
  */
 
-public class RecyclerViewActivity extends BaseActivity {
+public class RecyclerViewActivity extends EasyActivity {
     @Override
     public void httpSuccess(int flagCode, String flag, Object response) {
 

@@ -1,4 +1,4 @@
-package com.jen.easytest.base;
+package com.jen.easyui.base;
 
 import android.view.View;
 
@@ -7,7 +7,7 @@ import android.view.View;
  * 作者：ShannJenn
  * 时间：2017/10/26.
  */
-public class LogCrashActivity<T> extends BaseActivity<T> {
+public class LogCrashActivity<T> extends EasyActivity<T> {
 
 
     @Override

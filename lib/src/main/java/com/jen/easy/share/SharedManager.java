@@ -2,9 +2,16 @@ package com.jen.easy.share;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Base64;
 
-import com.jen.easy.EasyUtil;
+import com.jen.easy.constant.Constant;
+import com.jen.easy.log.EasyLibLog;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,12 +21,13 @@ import java.util.List;
  */
 
 abstract class SharedManager {
+    private final String TAG = "SharedManager ";
     private static final String xmlFileName = "easyShare";
     private SharedPreferences config;
     private SharedPreferences.Editor editor;
 
 
-    protected SharedManager(Context context) {
+    SharedManager(Context context) {
         config = context.getSharedPreferences(xmlFileName, Context.MODE_PRIVATE);
     }
 
@@ -100,7 +108,7 @@ abstract class SharedManager {
      * @return 是否成功
      */
     protected <T> boolean setList(String name, List<T> list) {
-        String value = EasyUtil.mStrList.list2String(list);
+        String value = list2String(list);
         if (value == null) {
             return false;
         }
@@ -115,12 +123,12 @@ abstract class SharedManager {
      * @return 值
      */
     protected <T> List<T> getList(String name) {
-        List<T> valueLlist = new ArrayList<T>();
+        List<T> valueLlist = new ArrayList<>();
         String value = getString(name, null);
         if (null == value) {
             return valueLlist;
         }
-        List<T> list = EasyUtil.mStrList.string2List(value);
+        List<T> list = string2List(value);
         valueLlist.addAll(list);
         return valueLlist;
     }
@@ -136,8 +144,7 @@ abstract class SharedManager {
         if (null == value) {
             return null;
         }
-        Object obj = EasyUtil.mStrList.string2Object(value);
-        return obj;
+        return string2Object(value);
     }
 
     /**
@@ -148,7 +155,7 @@ abstract class SharedManager {
      * @return 是否成功
      */
     protected boolean setObject(String name, Object obj) {
-        String value = EasyUtil.mStrList.object2String(obj);
+        String value = object2String(obj);
         if (null == value) {
             return false;
         }
@@ -165,5 +172,73 @@ abstract class SharedManager {
         editor = config.edit();
         editor.remove(name);
         editor.apply();
+    }
+
+
+    private <T> String list2String(List<T> list) {
+        try {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+            objectOutputStream.writeObject(list);
+            String str = new String(Base64.encode(byteArrayOutputStream.toByteArray(), 0), Constant.Unicode.DEFAULT);
+            objectOutputStream.close();
+            return str;
+        } catch (IOException e) {
+            EasyLibLog.e(TAG + "list2String IOException");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private <T> List<T> string2List(String str) {
+        List list = null;
+        try {
+            byte[] mobileBytes = Base64.decode(str.getBytes(Constant.Unicode.DEFAULT), 0);
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(mobileBytes);
+            ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+            list = (List) objectInputStream.readObject();
+            objectInputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            EasyLibLog.e(TAG + "string2List IOException");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            EasyLibLog.e(TAG + "string2List ClassNotFoundException");
+        }
+        return list;
+    }
+
+    private <T> String object2String(T obj) {
+        try {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+            objectOutputStream.writeObject(obj);
+            String str = new String(Base64.encode(byteArrayOutputStream.toByteArray(), 0), Constant.Unicode.DEFAULT);
+            objectOutputStream.close();
+            return str;
+        } catch (IOException e) {
+            EasyLibLog.e(TAG + "object2String IOException");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private Object string2Object(String str) {
+        try {
+            byte[] mobileBytes = Base64.decode(str.getBytes(Constant.Unicode.DEFAULT), 0);
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(mobileBytes);
+            ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+
+            Object obj = objectInputStream.readObject();
+            objectInputStream.close();
+            return obj;
+        } catch (IOException e) {
+            e.printStackTrace();
+            EasyLibLog.e(TAG + "string2Object IOException");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            EasyLibLog.e(TAG + "string2Object ClassNotFoundException");
+        }
+        return null;
     }
 }

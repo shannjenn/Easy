@@ -11,6 +11,15 @@ import java.util.List;
 public class StringToList extends StringToListManager {
 
     /**
+     * 设置默认编码
+     * @param unicode
+     */
+    @Override
+    protected void setUnicode(String unicode) {
+        super.setUnicode(unicode);
+    }
+
+    /**
      * 列表转字符串
      *
      * @param list 列表

@@ -1,4 +1,4 @@
-package com.jen.easytest.base;
+package com.jen.easyui.base;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -8,23 +8,23 @@ import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.jen.easy.EasyMain;
 import com.jen.easy.http.imp.HttpBaseListener;
+import com.jen.easyui.EasyMain;
 import com.jen.easyui.dialog.EasyLoading;
 
 /**
  * 作者：ShannJenn
  * 时间：2017/10/26.
  */
-public abstract class BaseActivity<T> extends AppCompatActivity implements HttpListener<T> {
-    private Context mContext;
-    private Handler mHandler = new Handler(Looper.getMainLooper());
-    private EasyLoading mLoading;
+public abstract class EasyActivity<T> extends AppCompatActivity implements HttpListener<T> {
+    protected Context mContext;
+    protected Handler mHandler = new Handler(Looper.getMainLooper());
+    protected EasyLoading mLoading;
 
     /**
      * 网络请求监听(网络基本数据请求用此监听)
      */
-    private HttpBaseListener<T> mHttpListener = new HttpBaseListener<T>() {
+    protected HttpBaseListener<T> mHttpListener = new HttpBaseListener<T>() {
         @Override
         public void success(final int flagCode, final String flag, final T response) {
             if (mHandler == null) {
@@ -34,6 +34,7 @@ public abstract class BaseActivity<T> extends AppCompatActivity implements HttpL
                 @Override
                 public void run() {
                     httpSuccess(flagCode, flag, response);
+                    mLoading.cancel();
                 }
             });
         }
@@ -47,6 +48,7 @@ public abstract class BaseActivity<T> extends AppCompatActivity implements HttpL
                 @Override
                 public void run() {
                     httpFail(flagCode, flag, msg);
+                    mLoading.cancel();
                 }
             });
         }
@@ -63,8 +65,8 @@ public abstract class BaseActivity<T> extends AppCompatActivity implements HttpL
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
         EasyMain.mBindView.bind(this);
-        mLoading = new EasyLoading(mContext);
-
+        mLoading = new EasyLoading(this);
+        mLoading.setCancelable(false);
         intDataBeforeView();
         initViews();
         loadDataAfterView();

@@ -1,13 +1,13 @@
 package com.jen.easytest.fragment;
 
 import com.jen.easytest.R;
-import com.jen.easytest.base.BaseFragment;
+import com.jen.easyui.base.EasyFragment;
 
 /**
  * Created by Administrator on 2017/10/31.
  */
 
-public class EmptyFragmentRed extends BaseFragment {
+public class EmptyFragmentRed extends EasyFragment {
 
 
     @Override

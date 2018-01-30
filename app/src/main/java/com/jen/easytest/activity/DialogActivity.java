@@ -5,18 +5,17 @@ import android.view.View;
 
 import com.jen.easy.EasyMouse;
 import com.jen.easytest.R;
-import com.jen.easytest.base.BaseActivity;
+import com.jen.easyui.base.EasyActivity;
 import com.jen.easyui.dialog.EasyDialog;
 import com.jen.easyui.dialog.EasyLoading;
 import com.jen.easyui.dialog.imp.EasyDialogListener;
-import com.jen.easyui.toast.EasyToast;
 
 /**
  * 作者：ShannJenn
  * 时间：2017/10/26.
  */
 
-public class DialogActivity extends BaseActivity {
+public class DialogActivity extends EasyActivity {
 
     EasyLoading loading;
     EasyDialog dialog;
@@ -44,19 +43,19 @@ public class DialogActivity extends BaseActivity {
                 .setEasyDialogListener(new EasyDialogListener() {
                     @Override
                     public void leftButton(View view) {
-                        EasyToast.toast("点击左边按钮");
+//                        EasyToast.toast("点击左边按钮");
                         dialog.hide();
                     }
 
                     @Override
                     public void middleButton(View view) {
-                        EasyToast.toast("点击中间按钮");
+//                        EasyToast.toast("点击中间按钮");
                         dialog.hide();
                     }
 
                     @Override
                     public void rightButton(View view) {
-                        EasyToast.toast("点击右边按钮");
+//                        EasyToast.toast("点击右边按钮");
                         dialog.hide();
                     }
                 })

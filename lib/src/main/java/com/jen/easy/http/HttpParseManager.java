@@ -1,6 +1,5 @@
 package com.jen.easy.http;
 
-import com.jen.easy.EasyUtil;
 import com.jen.easy.constant.Constant;
 import com.jen.easy.log.EasyLibLog;
 
@@ -10,7 +9,6 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -197,14 +195,14 @@ class HttpParseManager {
                         } else {
                             field.setBoolean(tObj, (Boolean) value);
                         }
-                    } else if (type.equals(Constant.FieldType.DATE)) {
+                    } /*else if (type.equals(Constant.FieldType.DATE)) {
                         if (value instanceof String) {
                             Date date = EasyUtil.mDateFormat.parser((String) value);
                             if (date != null) {
                                 field.set(tObj, date);
                             }
                         }
-                    } else if (type.contains(Constant.FieldType.MAP)) {//解析Map
+                    }*/ else if (type.contains(Constant.FieldType.MAP)) {//解析Map
                         EasyLibLog.e(TAG + "不支持Map类型");
                     } else if (type.contains(Constant.FieldType.ARRAY)) {//解析数组
                         EasyLibLog.e(TAG + "不支持数组类型");

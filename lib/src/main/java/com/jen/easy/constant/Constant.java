@@ -36,7 +36,7 @@ public final class Constant {
         public static final String LONG = "class java.lang.Long";
         public static final String BOOLEAN = "boolean";
 
-        public static final String DATE = "class java.util.Date";
+//        public static final String DATE = "class java.util.Date";
 
         public static final String OBJECT = "class java.lang.Object";
         public static final String LIST = "java.util.List";
@@ -71,19 +71,19 @@ public final class Constant {
                 case BOOLEAN:
                     type = "INTEEGER";
                     break;
-                case DATE:
+                /*case DATE:
                     type = "TEXT";
-                    break;
+                    break;*/
             }
             return type;
         }
     }
 
 
-    public static final class DB {
-        /**
+    /*public static final class DB {
+        *//**
          * 密码
-         */
+         *//*
         public static String PASSWORD;
-    }
+    }*/
 }
