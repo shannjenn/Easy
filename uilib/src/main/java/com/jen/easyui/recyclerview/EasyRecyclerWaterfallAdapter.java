@@ -19,6 +19,10 @@ public class EasyRecyclerWaterfallAdapter<T> extends EasyRecyclerWaterfallAdapte
         super(context, data);
     }
 
+    /**
+     * @param position 对应BindLayout下标
+     * @return
+     */
     @Override
     protected int getViewType(int position) {
         return 0;
@@ -45,7 +49,12 @@ public class EasyRecyclerWaterfallAdapter<T> extends EasyRecyclerWaterfallAdapte
     }
 
     @Override
-    protected void onBindView(View view, Object data, int pos) {
+    protected int setSpanSize(int position) {
+        return 0;
+    }
+
+    @Override
+    protected void onBindView(View view, int viewType, T data, int pos) {
 
     }
 

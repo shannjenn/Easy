@@ -1,6 +1,7 @@
 package com.jen.easyui.recyclerview;
 
 import android.content.Context;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,14 +55,40 @@ abstract class EasyRecyclerBaseAdapterManager<T> extends RecyclerView.Adapter<Re
             return;
         }
         T t = mData.get(position);
-        onBindView(holder.itemView, t, position);
+        onBindView(holder.itemView, holder.getItemViewType(), t, position);
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        boolean isSet = setSpanSize(0) <= 0;//如果没设置直接返回
+        if (isSet) {
+            return;
+        }
+
+        //为GridLayoutManager 合并头布局的跨度
+        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+        if (layoutManager instanceof GridLayoutManager) {
+            final GridLayoutManager gridLayoutManager = (GridLayoutManager) layoutManager;
+            gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    int total = gridLayoutManager.getSpanCount();
+                    int spanSize = setSpanSize(position);
+                    if (spanSize > total || spanSize <= 0) {
+                        return total;
+                    } else {
+                        return spanSize;
+                    }
+                }
+            });
+        }
     }
 
     /**
      * ViewHolder
      */
     class EasyHolder extends RecyclerView.ViewHolder {
-
         EasyHolder(View itemView) {
             super(itemView);
             initListener();
@@ -125,11 +152,19 @@ abstract class EasyRecyclerBaseAdapterManager<T> extends RecyclerView.Adapter<Re
     protected abstract boolean bindItemClick();
 
     /**
+     * 设置合并头布局的跨度，只对GridLayoutManager有效
+     *
+     * @param position 下标
+     * @return 跨行
+     */
+    protected abstract int setSpanSize(int position);
+
+    /**
      * 初始化item数据
      *
      * @return
      */
-    protected abstract void onBindView(View view, T data, int pos);
+    protected abstract void onBindView(View view, int viewType, T data, int pos);
 
     public void setEasyAdapterClickEvent(EasyAdapterClickEvent easyAdapterClickEvent) {
         this.easyAdapterClickEvent = easyAdapterClickEvent;

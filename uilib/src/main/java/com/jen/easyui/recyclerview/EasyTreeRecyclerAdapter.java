@@ -58,7 +58,12 @@ public class EasyTreeRecyclerAdapter<T extends EasyTreeItem> extends EasyTreeRec
     }
 
     @Override
-    protected void onBindView(View view, T data, int pos) {
+    protected int setSpanSize(int position) {
+        return 0;
+    }
+
+    @Override
+    protected void onBindView(View view, int viewType, T data, int pos) {
 
     }
 
