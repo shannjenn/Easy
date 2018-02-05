@@ -7,7 +7,9 @@ import com.jen.easy.constant.Constant;
 import com.jen.easy.log.EasyLibLog;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,8 +23,10 @@ class HttpReflectManager {
     static String RSP_FIELD = "rsp_field";
     static String RSP_HEAD = "rsp_head";
 
-    static String REQ_PARAMS = "req_params";
-    static String REQ_HEADS = "req_heads";
+    static String REQ_PARAM_KEYS = "req_param_keys";
+    static String REQ_PARAM_VALUES = "req_param_values";
+    static String REQ_HEAD_KEYS = "req_head_keys";
+    static String REQ_HEAD_VALUES = "req_head_values";
 
     /**
      * 获取地址
@@ -69,10 +73,12 @@ class HttpReflectManager {
      * @param obj
      * @return
      */
-    static Map<String, Map<String, String>> getRequestParams(Object obj) {
-        Map<String, Map<String, String>> objectMap = new HashMap<>();
-        Map<String, String> params = new HashMap<>();
-        Map<String, String> heads = new HashMap<>();
+    static Map<String, List<String>> getRequestParams(Object obj) {
+        Map<String, List<String>> objectMap = new HashMap<>();
+        List<String> param_keys = new ArrayList<>();
+        List<String> param_values = new ArrayList<>();
+        List<String> head_keys = new ArrayList<>();
+        List<String> head_values = new ArrayList<>();
 
         if (obj == null || obj instanceof Class) {
             EasyLibLog.e(TAG + "getRequestParams getRequestParams obj is null");
@@ -84,30 +90,35 @@ class HttpReflectManager {
         String reqName = HttpBaseRequest.class.getName();
         String objName = Object.class.getName();
         while (!clazzName.equals(reqName) && !clazzName.equals(objName)) {
-            addSuperRequestParams(clazz, obj, params, heads);
+            getRequestParam(clazz, obj, param_keys, param_values, head_keys, head_values);
             clazz = clazz.getSuperclass();
             clazzName = clazz.getName();
         }
-        objectMap.put(REQ_PARAMS, params);
-        objectMap.put(REQ_HEADS, heads);
+        objectMap.put(REQ_PARAM_KEYS, param_keys);
+        objectMap.put(REQ_PARAM_VALUES, param_values);
+        objectMap.put(REQ_HEAD_KEYS, head_keys);
+        objectMap.put(REQ_HEAD_VALUES, head_values);
         return objectMap;
     }
 
     /**
-     * 增加父类请求参数
+     * 获取单个类请求参数
      *
      * @param clazz
      * @param obj
-     * @param params
-     * @param heads
+     * @param param_keys
+     * @param param_values
+     * @param head_keys
+     * @param head_values
      */
-    private static void addSuperRequestParams(Class clazz, Object obj, Map<String, String> params, Map<String, String> heads) {
+    private static void getRequestParam(Class clazz, Object obj,
+                                        List<String> param_keys, List<String> param_values, List<String> head_keys, List<String> head_values) {
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
             boolean isAnno = field.isAnnotationPresent(EasyMouse.HTTP.RequestParam.class);
             /*if (!isAnno)
                 continue;*/
-            String paramName = "";
+            String key = "";
             boolean isHead = false;
             if (isAnno) {
                 EasyMouse.HTTP.RequestParam param = field.getAnnotation(EasyMouse.HTTP.RequestParam.class);
@@ -116,36 +127,47 @@ class HttpReflectManager {
                     continue;
                 }
                 isHead = param.isHeadReq();
-                paramName = param.value().trim();
+                key = param.value().trim();
             }
-            if (paramName.length() == 0) {
-                paramName = field.getName();
+            if (key.length() == 0) {
+                key = field.getName();
             }
             String type = field.getGenericType().toString();
             field.setAccessible(true);
             try {
-                switch (type) {
-                    case Constant.FieldType.STRING: {//string类型
-                        String value = field.get(obj) + "";
-                        if (isHead) {
-                            heads.put(paramName, value);
-                        } else {
-                            params.put(paramName, value);
-                        }
+                if (type.equals(Constant.FieldType.STRING) || type.equals(Constant.FieldType.INTEGER)) {
+                    Object value = field.get(obj);
+                    if (isHead) {
+                        head_keys.add(key);
+                        head_values.add(value + "");
+                    } else {
+                        param_keys.add(key);
+                        param_values.add(value + "");
+                    }
+                } else if (type.contains(Constant.FieldType.LIST)) {
+                    List values = (List) field.get(obj);
+                    if (values == null || values.size() <= 0) {
                         break;
                     }
-                    case Constant.FieldType.INTEGER: {//int类型
-                        int value = field.getInt(obj);
-                        if (isHead) {
-                            heads.put(paramName, value + "");
+                    int size = values.size();
+                    for (int i = 0; i < size; i++) {
+                        Object value = values.get(i);
+                        if (value instanceof String ||
+                                value instanceof Integer || value instanceof Float
+                                || value instanceof Long || value instanceof Double) {
+                            if (isHead) {
+                                head_keys.add(key);
+                                head_values.add(value + "");
+                            } else {
+                                param_keys.add(key);
+                                param_values.add(value + "");
+                            }
                         } else {
-                            params.put(paramName, value + "");
+                            EasyLibLog.e(TAG + "不支持该类型（001）：" + field.getName());
                         }
-                        break;
                     }
-                    default:
-                        EasyLibLog.e(TAG + "请求参数必须为int或者string类型：" + field.getName());
-                        break;
+                } else {
+                    EasyLibLog.e(TAG + "不支持该类型（002）：" + field.getName());
                 }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
@@ -178,7 +200,7 @@ class HttpReflectManager {
         String respName = HttpHeadResponse.class.getName();
         String objName = Object.class.getName();
         while (!clazzName.equals(respName) && !clazzName.equals(objName)) {
-            addSuperResponseParams(myClass, param_type, param_field, head_field);
+            getResponseParam(myClass, param_type, param_field, head_field);
             myClass = myClass.getSuperclass();
             clazzName = myClass.getName();
         }
@@ -186,14 +208,14 @@ class HttpReflectManager {
     }
 
     /**
-     * 增加父类返回参数
+     * 获取单个类返回参数
      *
      * @param clazz
      * @param param_type
      * @param param_field
      */
-    private static void addSuperResponseParams(Class clazz, Map<String, String> param_type,
-                                               Map<String, Field> param_field, Map<String, Field> head_field) {
+    private static void getResponseParam(Class clazz, Map<String, String> param_type,
+                                         Map<String, Field> param_field, Map<String, Field> head_field) {
         Field[] fieldsSuper = clazz.getDeclaredFields();
         for (Field field : fieldsSuper) {
             /*//只获取public、protect类型

@@ -11,7 +11,6 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 abstract class HttpURLConnectionRunnable implements Runnable {
     protected String TAG;
@@ -100,19 +99,22 @@ abstract class HttpURLConnectionRunnable implements Runnable {
         mCharset = mRequest.httpParam.charset;//编码
         mIsGet = mMethod.toUpperCase().equals("GET");
         try {
-            Map<String, Map<String, String>> requests = HttpReflectManager.getRequestParams(mRequest);
-            Map<String, String> requestParams = requests.get(HttpReflectManager.REQ_PARAMS);
-            Map<String, String> requestHeads = requests.get(HttpReflectManager.REQ_HEADS);
+            Map<String, List<String>> requests = HttpReflectManager.getRequestParams(mRequest);
+            List<String> requestParamKeys = requests.get(HttpReflectManager.REQ_PARAM_KEYS);
+            List<String> requestParamValues = requests.get(HttpReflectManager.REQ_PARAM_VALUES);
+            List<String> requestHeadKeys = requests.get(HttpReflectManager.REQ_HEAD_KEYS);
+            List<String> requestHeadValues = requests.get(HttpReflectManager.REQ_HEAD_VALUES);
 
             boolean isNotFirst = false;
             StringBuffer requestBuf = new StringBuffer("");
-            Set<String> sets = requestParams.keySet();
-            for (String name : sets) {
-                String value = requestParams.get(name);
+            int paramSize = requestParamKeys.size();
+            for (int i = 0; i < paramSize; i++) {
+                String key = requestParamKeys.get(i);
+                String value = requestParamValues.get(i);
                 if (isNotFirst) {
                     requestBuf.append("&");
                 }
-                requestBuf.append(name);
+                requestBuf.append(key);
                 requestBuf.append("=");
 //                if (mIsGet)//get方式加转译符
 //                    requestBuf.append("\"");
@@ -142,8 +144,11 @@ abstract class HttpURLConnectionRunnable implements Runnable {
             connection.setConnectTimeout(mRequest.httpParam.timeout);
             connection.setReadTimeout(mRequest.httpParam.readTimeout);
             connection.setRequestMethod(mMethod);
-            for (String key : requestHeads.keySet()) {//设置请求头
-                connection.setRequestProperty(key, requestHeads.get(key));
+            int headSize = requestHeadKeys.size();
+            for (int i = 0; i < headSize; i++) {//设置请求头
+                String key = requestHeadKeys.get(i);
+                String value = requestHeadValues.get(i);
+                connection.setRequestProperty(key, value);
             }
             childRun(connection);
             connection.disconnect();
