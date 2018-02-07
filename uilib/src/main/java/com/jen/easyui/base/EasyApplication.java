@@ -9,7 +9,6 @@ import com.jen.easy.log.EasyLog;
 import com.jen.easy.log.imp.LogCrashListener;
 import com.jen.easy.sqlite.imp.DatabaseListener;
 import com.jen.easyui.EasyMain;
-import com.jen.easyui.R;
 
 /**
  * 作者：ShannJenn
@@ -33,7 +32,6 @@ public class EasyApplication extends Application {
         EasyMain.mDBHelper.setDatabaseListener(databaseListener);
         createTB();
 
-        EasyMain.mImageLoader.setDefaultImage(getResources().getDrawable(R.mipmap.ic_launcher));
         EasyMain.mHttp = new Http(5);
     }
 

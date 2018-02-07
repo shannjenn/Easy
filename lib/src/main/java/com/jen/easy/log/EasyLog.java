@@ -159,7 +159,7 @@ public class EasyLog {
     public static void e(String tag, String msg) {
         if (LOGCAT_OPEN) {
             if (msg != null && msg.length() > maxLength) {
-                Log.i(tag, "超长Log打印：开始 ------------------------------ ");
+                Log.e(tag, "超长Log打印：开始 ------------------------------ ");
                 int length = msg.length();
                 for (int i = 0; i < length; i += maxLength) {
                     if (i + maxLength < length) {
@@ -168,7 +168,7 @@ public class EasyLog {
                         Log.e(tag, msg.substring(i, length));
                     }
                 }
-                Log.i(tag, "超长Log打印：结束 ------------------------------ ");
+                Log.e(tag, "超长Log打印：结束 ------------------------------ ");
             } else {
                 Log.e(tag, msg);
             }

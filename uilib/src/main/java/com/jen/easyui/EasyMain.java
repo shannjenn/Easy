@@ -5,6 +5,7 @@ import android.app.Application;
 import com.jen.easy.bind.BindView;
 import com.jen.easy.http.Http;
 import com.jen.easy.imageLoader.ImageLoader;
+import com.jen.easy.imageLoader.ImageLoaderConfig;
 import com.jen.easy.log.EasyUILog;
 import com.jen.easy.log.LogcatHelper;
 import com.jen.easy.share.Shared;
@@ -56,7 +57,14 @@ public final class EasyMain {
         mBindView = new BindView();
         mHttp = new Http(10);//默认最大10个线程
         mLog = new LogcatHelper(application);
-        mImageLoader = new ImageLoader(application, -1);
+        mImageLoader = ImageLoader.getInstance();
+        mImageLoader.init(new ImageLoaderConfig(application)
+                .defaultImage(application.getResources().getDrawable(R.mipmap.ic_launcher))
+                .httpMaxThread(3)
+                .imgHeight(300)
+                .imgWidth(300)
+                .timeOut(10000)
+                .build());
         mShared = new Shared(application);
         mDBHelper = new DBHelper(application);
         mDao = new DBDao(application);

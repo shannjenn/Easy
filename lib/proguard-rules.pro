@@ -138,8 +138,11 @@
 }
 
 ##############################################################
-###数据存储Share
+###图片加载器
 ##############################################################
 -keep class com.jen.easy.imageLoader.ImageLoader {
+    *;
+}
+-keep class com.jen.easy.imageLoader.ImageLoaderConfig {
     *;
 }

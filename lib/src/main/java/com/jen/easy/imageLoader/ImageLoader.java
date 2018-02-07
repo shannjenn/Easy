@@ -1,7 +1,5 @@
 package com.jen.easy.imageLoader;
 
-import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
 /**
@@ -11,32 +9,27 @@ import android.widget.ImageView;
  */
 
 public class ImageLoader extends ImageLoaderManager {
-//    private static ImageLoader mInstance;
+    private static ImageLoader mInstance;
 
-    /**
-     * 多例
-     */
-    public ImageLoader(Context context, int httpMaxThread) {
-        super(context, httpMaxThread);
+    private ImageLoader() {
+        super();
     }
 
     /**
      * 单例
      */
-    /*public static ImageLoader getInstance(Context context) {
+    public static ImageLoader getInstance() {
         synchronized (ImageLoader.class) {
             if (mInstance == null) {
-                mInstance = new ImageLoader(context, -1);//-1值默认线程数
+                mInstance = new ImageLoader();
             }
         }
         return mInstance;
-    }*/
+    }
 
     @Override
-    public void setImage(String imageUrl, ImageView imageView) {
-        synchronized (ImageLoader.class) {
-            super.setImage(imageUrl, imageView);
-        }
+    public void init(ImageLoaderConfig config) {
+        super.init(config);
     }
 
     @Override
@@ -45,25 +38,7 @@ public class ImageLoader extends ImageLoaderManager {
     }
 
     @Override
-    public ImageLoader setDefaultImage(Drawable defaultImage) {
-        super.setDefaultImage(defaultImage);
-        return this;
-    }
-
-    @Override
-    public ImageLoader setDefaultHeight(int defaultHeight) {
-        super.setDefaultHeight(defaultHeight);
-        return this;
-    }
-
-    @Override
-    public ImageLoader setDefaultWidth(int defaultWidth) {
-        super.setDefaultWidth(defaultWidth);
-        return this;
-    }
-
-    @Override
-    public void setTimeOut(int timeOut) {
-        super.setTimeOut(timeOut);
+    public void setImage(String imageUrl, ImageView imageView) {
+        super.setImage(imageUrl, imageView);
     }
 }
