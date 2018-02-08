@@ -5,10 +5,16 @@
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/base"
+        android:id="@+id/post"
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:text="基本数据请求" />
+        android:text="POST请求" />
+
+    <Button
+        android:id="@+id/put"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:text="PUT请求" />
 
     <Button
         android:id="@+id/download"

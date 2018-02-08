@@ -126,14 +126,9 @@ abstract class HttpURLConnectionRunnable implements Runnable {
             mRequestParam = requestBuf.toString();
             mHasParam = mRequestParam.length() > 0;
 
+            EasyLibLog.d(TAG + "网络请求：" + mMethod + " " + mUrlStr + " 请求参数：" + mRequestParam);
             if (mIsGet && mHasParam) {//get请求参数拼接
                 mUrlStr = mUrlStr + "?" + mRequestParam;
-            }
-
-            if (mIsGet) {
-                EasyLibLog.d(TAG + "Http请求地址：" + mUrlStr + " 请求方式：GET");
-            } else {
-                EasyLibLog.d(TAG + "Http请求地址：" + mUrlStr + " 请求方式：POST" + " 请求参数：" + mRequestParam);
             }
 
             URL url = new URL(mUrlStr);

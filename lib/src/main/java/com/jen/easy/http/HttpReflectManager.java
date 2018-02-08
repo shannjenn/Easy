@@ -64,6 +64,18 @@ class HttpReflectManager {
             values[2] = post.Response();
             return values;
         }
+        boolean isAnnoPut = request.getClass().isAnnotationPresent(EasyMouse.HTTP.PUT.class);
+        if (isAnnoPut) {
+            EasyMouse.HTTP.PUT put = request.getClass().getAnnotation(EasyMouse.HTTP.PUT.class);
+            values[0] = "PUT";
+            String url = request.httpParam.url != null ? request.httpParam.url : put.URL();
+            if (!TextUtils.isEmpty(url) && request.httpParam.urlAppend != null) {
+                url = url + request.httpParam.urlAppend;
+            }
+            values[1] = url;
+            values[2] = put.Response();
+            return values;
+        }
         return null;
     }
 

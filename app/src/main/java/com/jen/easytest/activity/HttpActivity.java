@@ -8,8 +8,8 @@ import com.jen.easy.http.imp.HttpBaseListener;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
 import com.jen.easytest.http.AirRequest;
-import com.jen.easytest.http.AirResponse;
 import com.jen.easytest.http.MD5Util;
+import com.jen.easytest.http.PutRequest;
 import com.jen.easyui.EasyMain;
 import com.jen.easyui.base.EasyActivity;
 
@@ -43,12 +43,15 @@ public class HttpActivity extends EasyActivity {
 
     }
 
-    @EasyMouse.BIND.Method({R.id.base, R.id.upload, R.id.download})
+    @EasyMouse.BIND.Method({R.id.post, R.id.put, R.id.upload, R.id.download})
     @Override
     protected void onBindClick(View view) {
         switch (view.getId()) {
-            case R.id.base:
-                base();
+            case R.id.post:
+                post();
+                break;
+            case R.id.put:
+                put();
                 break;
             case R.id.upload:
 
@@ -60,7 +63,7 @@ public class HttpActivity extends EasyActivity {
         }
     }
 
-    private void base() {
+    private void post() {
         String signKey = "zteNTHVcBQ[UDpVoF^4";//用户名+密码
         String cid = "39189";//测试公司编号
         String signType = "MD5";
@@ -100,26 +103,35 @@ public class HttpActivity extends EasyActivity {
         airRequest.setSignType(signType);
         airRequest.setSign(sign);
 
-        airRequest.setBseListener(airRequestListener);
+        airRequest.setBseListener(httpListener);
         EasyMain.mHttp.start(airRequest);
         EasyLog.d("mAirResponse mAirResponse:");
     }
 
-    private void download(){
+    private void put() {
+        PutRequest putRequest = new PutRequest();
+        putRequest.setToken("16643-bdf0737cafb1c1a32451a0d93692edba");
+
+        putRequest.httpParam.urlAppend = "/16643";
+        putRequest.setBseListener(httpListener);
+        EasyMain.mHttp.start(putRequest);
+    }
+
+    private void download() {
 
     }
 
     /**
      * 宝库数据返回
      */
-    HttpBaseListener<AirResponse> airRequestListener = new HttpBaseListener<AirResponse>() {
+    HttpBaseListener httpListener = new HttpBaseListener() {
         @Override
         public void fail(int flagCode, String flag, String msg) {
             EasyLog.d("airRequestListener fail:" + msg);
         }
 
         @Override
-        public void success(int flagCode, String flag, AirResponse airResponse) {
+        public void success(int flagCode, String flag, Object airResponse) {
             EasyLog.d("airRequestListener success");
         }
     };

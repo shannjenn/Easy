@@ -121,6 +121,23 @@ public final class EasyMouse {
         }
 
         /**
+         * POST网络请求地址
+         */
+        @Target(ElementType.TYPE)
+        @Retention(RetentionPolicy.RUNTIME)
+        public @interface PUT {
+            /**
+             * 参数名称
+             */
+            String URL() default "";
+
+            /**
+             * 返回实体类
+             */
+            Class Response() default Object.class;
+        }
+
+        /**
          * 网络请求参数
          */
         @Target(ElementType.FIELD)
