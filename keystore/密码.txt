@@ -1,0 +1,3 @@
+Key alias£ºeasy
+Key store password£ºeasy_code_520
+Key password£ºeasy_code_520

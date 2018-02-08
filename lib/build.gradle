@@ -13,10 +13,25 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
+    signingConfigs {
+        release {
+            storeFile file('release.jks')
+            keyAlias "easy"
+            storePassword "easy_code_520"
+            keyPassword "easy_code_520"
+        }
+        debug {
+            storeFile file('release.jks')
+            keyAlias "easy"
+            storePassword "easy_code_520"
+            keyPassword "easy_code_520"
+        }
+    }
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release // 签名配置
         }
     }
 }
