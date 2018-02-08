@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jen.easytest">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:name="com.jen.easyui.base.EasyApplication"
         android:allowBackup="true"

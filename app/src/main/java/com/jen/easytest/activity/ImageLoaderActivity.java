@@ -27,6 +27,7 @@ public class ImageLoaderActivity extends EasyActivity {
 
     @Override
     protected void intDataBeforeView() {
+        getFilePermission();
         for (int i = 0; i < 10; i++) {//多线程加载图片
             new Thread() {
                 @Override

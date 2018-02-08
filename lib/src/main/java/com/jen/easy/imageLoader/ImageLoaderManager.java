@@ -30,8 +30,8 @@ import java.util.concurrent.Executors;
 abstract class ImageLoaderManager {
     private final String TAG = "ImageLoaderManager ";
     private LruCache<String, Bitmap> mImageCache;//图片缓存
-    private final Map<String, List<ImageView>> mViewCache = new HashMap<>();//key:imageUrl,value:ImageView缓存
-    private ExecutorService mExecutorService = Executors.newFixedThreadPool(2);
+    private Map<String, List<ImageView>> mViewCache = new HashMap<>();//key:imageUrl,value:ImageView缓存
+    private ExecutorService mExecutorService;
     private Http mHttp;
     private HttpDownloadRequest mHttpRequest = new HttpDownloadRequest();//网络获取图片请求参数
     private Handler mHandler = new Handler(Looper.getMainLooper());
@@ -44,6 +44,7 @@ abstract class ImageLoaderManager {
     protected void init(ImageLoaderConfig builder) {
         this.config = builder;
         mHttp = new Http(builder.getHttpMaxThread());
+        mExecutorService = Executors.newFixedThreadPool(builder.getHttpMaxThread());
         int maxMemory = (int) Runtime.getRuntime().maxMemory();
         int cacheSize = maxMemory / 8;
         mImageCache = new LruCache<String, Bitmap>(cacheSize) {
@@ -67,7 +68,10 @@ abstract class ImageLoaderManager {
                 }
 
                 if (mViewCache.containsKey(imageUrl)) {//正在下载
-                    mViewCache.get(imageUrl).add(imageView);
+                    List<ImageView> imageViews = mViewCache.get(imageUrl);
+                    if (!imageViews.contains(imageView)) {
+                        imageViews.add(imageView);
+                    }
                     return;
                 }
 
