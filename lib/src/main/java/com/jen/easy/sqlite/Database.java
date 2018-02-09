@@ -49,21 +49,9 @@ class Database {
     }
 
     /**
-     * 创建数据库
-     */
-    /*void createDB(String password) {
-        File file = new File(path);
-        if (file.exists()) {
-            return;
-        }
-        SQLiteDatabase.openOrCreateDatabase(path, null);
-        mDBHelper.PASSWORD = password;
-    }*/
-
-    /**
      * 升级数据库
      *
-     * @param version
+     * @param version 版本号
      */
     void setVersion(int version) {
         SQLiteDatabase db;
@@ -120,9 +108,9 @@ class Database {
     /**
      * 检测表是否存在
      *
-     * @param db
-     * @param tableName
-     * @return
+     * @param db        数据库
+     * @param tableName 表名
+     * @return 是否存在
      */
     boolean checkTableExist(SQLiteDatabase db, String tableName) {
         try {
@@ -142,11 +130,11 @@ class Database {
     /**
      * 检测列是否存在
      *
-     * @param db
-     * @param tableName
-     * @return
+     * @param db        数据库
+     * @param tableName 表名
+     * @return 是否存在
      */
-    boolean checkCloumnExist(SQLiteDatabase db, String tableName, String columnName) {
+    boolean checkColumnExist(SQLiteDatabase db, String tableName, String columnName) {
         boolean exist = false;
         try {
             Cursor cursor = db.rawQuery("SELECT * FROM " + tableName + " LIMIT 0", null);

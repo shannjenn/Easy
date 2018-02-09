@@ -38,7 +38,7 @@ public final class EasyMouse {
             /**
              * 字段名称
              */
-            String columnName() default "";
+            String value() default "";
 
             /**
              * 是否为主键
@@ -46,9 +46,9 @@ public final class EasyMouse {
             boolean primaryKey() default false;
 
             /**
-             * 外键名称
+             * 不做请求参数
              */
-            String foreignKey() default "";
+            boolean noColumn() default false;
         }
     }
 

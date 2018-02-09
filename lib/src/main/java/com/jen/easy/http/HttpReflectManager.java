@@ -7,8 +7,6 @@ import com.jen.easy.constant.Constant;
 import com.jen.easy.log.EasyLibLog;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,29 +17,21 @@ import java.util.Map;
 
 class HttpReflectManager {
     private final static String TAG = "HttpReflectManager : ";
-    static String RSP_TYPE = "rsp_type";
-    static String RSP_FIELD = "rsp_field";
-    static String RSP_HEAD = "rsp_head";
-
-    static String REQ_PARAM_KEYS = "req_param_keys";
-    static String REQ_PARAM_VALUES = "req_param_values";
-    static String REQ_HEAD_KEYS = "req_head_keys";
-    static String REQ_HEAD_VALUES = "req_head_values";
 
     /**
-     * 获取地址
+     * 获取请求信息
      *
-     * @return
+     * @return 请求信息
      */
     static Object[] getUrl(HttpRequest request) {
         Object[] values = new Object[3];
         if (request == null) {
             EasyLibLog.e(TAG + "getTableName obj is null");
-            return null;
+            return values;
         }
 
-        boolean isAnnoGet = request.getClass().isAnnotationPresent(EasyMouse.HTTP.GET.class);
-        if (isAnnoGet) {
+        boolean isGet = request.getClass().isAnnotationPresent(EasyMouse.HTTP.GET.class);
+        if (isGet) {
             EasyMouse.HTTP.GET get = request.getClass().getAnnotation(EasyMouse.HTTP.GET.class);
             values[0] = "GET";
             String url = request.httpParam.url != null ? request.httpParam.url : get.URL();
@@ -52,8 +42,8 @@ class HttpReflectManager {
             values[2] = get.Response();
             return values;
         }
-        boolean isAnnoPost = request.getClass().isAnnotationPresent(EasyMouse.HTTP.POST.class);
-        if (isAnnoPost) {
+        boolean isPost = request.getClass().isAnnotationPresent(EasyMouse.HTTP.POST.class);
+        if (isPost) {
             EasyMouse.HTTP.POST post = request.getClass().getAnnotation(EasyMouse.HTTP.POST.class);
             values[0] = "POST";
             String url = request.httpParam.url != null ? request.httpParam.url : post.URL();
@@ -64,8 +54,8 @@ class HttpReflectManager {
             values[2] = post.Response();
             return values;
         }
-        boolean isAnnoPut = request.getClass().isAnnotationPresent(EasyMouse.HTTP.PUT.class);
-        if (isAnnoPut) {
+        boolean isPut = request.getClass().isAnnotationPresent(EasyMouse.HTTP.PUT.class);
+        if (isPut) {
             EasyMouse.HTTP.PUT put = request.getClass().getAnnotation(EasyMouse.HTTP.PUT.class);
             values[0] = "PUT";
             String url = request.httpParam.url != null ? request.httpParam.url : put.URL();
@@ -76,25 +66,19 @@ class HttpReflectManager {
             values[2] = put.Response();
             return values;
         }
-        return null;
+        return values;
     }
 
     /**
      * 获取网络请求参数
      *
-     * @param obj
-     * @return
+     * @param obj 对象
      */
-    static Map<String, List<String>> getRequestParams(Object obj) {
-        Map<String, List<String>> objectMap = new HashMap<>();
-        List<String> param_keys = new ArrayList<>();
-        List<String> param_values = new ArrayList<>();
-        List<String> head_keys = new ArrayList<>();
-        List<String> head_values = new ArrayList<>();
+    static void getRequestParams(Object obj, List<String> paramKeys, List<String> paramValues, List<String> headKeys, List<String> headValues) {
 
         if (obj == null || obj instanceof Class) {
             EasyLibLog.e(TAG + "getRequestParams getRequestParams obj is null");
-            return objectMap;
+            return;
         }
 
         Class clazz = obj.getClass();
@@ -102,29 +86,23 @@ class HttpReflectManager {
         String reqName = HttpBaseRequest.class.getName();
         String objName = Object.class.getName();
         while (!clazzName.equals(reqName) && !clazzName.equals(objName)) {
-            getRequestParam(clazz, obj, param_keys, param_values, head_keys, head_values);
+            getRequestParam(clazz, obj, paramKeys, paramValues, headKeys, headValues);
             clazz = clazz.getSuperclass();
             clazzName = clazz.getName();
         }
-        objectMap.put(REQ_PARAM_KEYS, param_keys);
-        objectMap.put(REQ_PARAM_VALUES, param_values);
-        objectMap.put(REQ_HEAD_KEYS, head_keys);
-        objectMap.put(REQ_HEAD_VALUES, head_values);
-        return objectMap;
     }
 
     /**
      * 获取单个类请求参数
      *
-     * @param clazz
-     * @param obj
-     * @param param_keys
-     * @param param_values
-     * @param head_keys
-     * @param head_values
+     * @param clazz       类
+     * @param obj         对象数据
+     * @param paramKeys   参数名
+     * @param paramValues 参数的值
+     * @param headKeys    头参数
+     * @param headValues  头参值
      */
-    private static void getRequestParam(Class clazz, Object obj,
-                                        List<String> param_keys, List<String> param_values, List<String> head_keys, List<String> head_values) {
+    private static void getRequestParam(Class clazz, Object obj, List<String> paramKeys, List<String> paramValues, List<String> headKeys, List<String> headValues) {
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
             boolean isAnno = field.isAnnotationPresent(EasyMouse.HTTP.RequestParam.class);
@@ -150,11 +128,11 @@ class HttpReflectManager {
                 if (type.equals(Constant.FieldType.STRING) || type.equals(Constant.FieldType.INTEGER)) {
                     Object value = field.get(obj);
                     if (isHead) {
-                        head_keys.add(key);
-                        head_values.add(value + "");
+                        headKeys.add(key);
+                        headValues.add(value + "");
                     } else {
-                        param_keys.add(key);
-                        param_values.add(value + "");
+                        paramKeys.add(key);
+                        paramValues.add(value + "");
                     }
                 } else if (type.contains(Constant.FieldType.LIST)) {
                     List values = (List) field.get(obj);
@@ -168,11 +146,11 @@ class HttpReflectManager {
                                 value instanceof Integer || value instanceof Float
                                 || value instanceof Long || value instanceof Double) {
                             if (isHead) {
-                                head_keys.add(key);
-                                head_values.add(value + "");
+                                headKeys.add(key);
+                                headValues.add(value + "");
                             } else {
-                                param_keys.add(key);
-                                param_values.add(value + "");
+                                paramKeys.add(key);
+                                paramValues.add(value + "");
                             }
                         } else {
                             EasyLibLog.e(TAG + "不支持该类型（001）：" + field.getName());
@@ -191,20 +169,15 @@ class HttpReflectManager {
     /**
      * 获取返回参数
      *
-     * @param clazz
-     * @return
+     * @param clazz       类
+     * @param param_type  名称_类型
+     * @param param_field 名称_变量
+     * @param head_field  头名称_变量
      */
-    static Map<String, Object> getResponseParams(Class clazz) {
-        Map<String, Object> objectMap = new HashMap<>();
-        Map<String, String> param_type = new HashMap<>();//param：json要解析的参数名，type：类型
-        Map<String, Field> param_field = new HashMap<>();
-        Map<String, Field> head_field = new HashMap<>();//head：head要解析的参数名；
-        objectMap.put(RSP_TYPE, param_type);
-        objectMap.put(RSP_FIELD, param_field);
-        objectMap.put(RSP_HEAD, head_field);
+    static void getResponseParams(Class clazz, Map<String, String> param_type, Map<String, Field> param_field, Map<String, Field> head_field) {
         if (clazz == null) {
             EasyLibLog.e(TAG + "getResponseParams clazz is not null");
-            return objectMap;
+            return;
         }
 
         Class myClass = clazz;
@@ -216,18 +189,17 @@ class HttpReflectManager {
             myClass = myClass.getSuperclass();
             clazzName = myClass.getName();
         }
-        return objectMap;
     }
 
     /**
-     * 获取单个类返回参数
+     * 获取单个返回参数
      *
-     * @param clazz
-     * @param param_type
-     * @param param_field
+     * @param clazz       类
+     * @param param_type  名称_类型
+     * @param param_field 名称_变量
+     * @param head_field  头名称_变量
      */
-    private static void getResponseParam(Class clazz, Map<String, String> param_type,
-                                         Map<String, Field> param_field, Map<String, Field> head_field) {
+    private static void getResponseParam(Class clazz, Map<String, String> param_type, Map<String, Field> param_field, Map<String, Field> head_field) {
         Field[] fieldsSuper = clazz.getDeclaredFields();
         for (Field field : fieldsSuper) {
             /*//只获取public、protect类型

@@ -68,7 +68,6 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
         HttpUploadRequest request = (HttpUploadRequest) mRequest;
         if (request.getUploadListener() != null) {
             HttpParseManager parseManager = new HttpParseManager();
-            parseManager.setResponseObjectType(request.responseObjectType);
             Object parseObject = parseManager.parseJson(mResponseClass, result, headMap);
             if (parseObject == null) {
                 fail("返回数据解析异常");

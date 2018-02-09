@@ -19,7 +19,7 @@ public class DBDao extends DBDaoManager {
      * 按ID查询
      *
      * @param clazz 要查找的对象
-     * @param id
+     * @param id 主键ID
      * @return 对象
      */
     @Override

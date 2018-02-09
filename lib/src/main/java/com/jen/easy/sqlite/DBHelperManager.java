@@ -10,6 +10,8 @@ import com.jen.easy.constant.Constant;
 import com.jen.easy.log.EasyLibLog;
 import com.jen.easy.sqlite.imp.DatabaseListener;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -18,7 +20,7 @@ abstract class DBHelperManager {
     private final String TAG = "DBHelperManager : ";
     private Database database;
 
-    protected DBHelperManager(Context context) {
+    DBHelperManager(Context context) {
         if (database == null) {
             database = new Database(context);
         }
@@ -28,15 +30,10 @@ abstract class DBHelperManager {
         return database.createDB();
     }
 
-    /*@Override
-    protected void create(String password) {
-        database.createDB(password);
-    }*/
-
     /**
      * 读取数据库
      */
-    protected SQLiteDatabase getReadDatabse() {
+    protected SQLiteDatabase getReadDatabase() {
         try {
             return database.getReadableDatabase();
         } catch (SQLiteCantOpenDatabaseException e) {
@@ -49,7 +46,7 @@ abstract class DBHelperManager {
     /**
      * 写入数据库
      */
-    protected SQLiteDatabase getWtriteDatabse() {
+    protected SQLiteDatabase getWriteDatabase() {
         try {
             return database.getWritableDatabase();
         } catch (SQLiteCantOpenDatabaseException e) {
@@ -75,9 +72,9 @@ abstract class DBHelperManager {
             return;
         }*/
 
-        Map<String, Object> fields = DBReflectManager.getColumnNames(clazz);
-        List<String> primaryKey = (List<String>) fields.get(DBReflectManager.PRIMARY_KEY);
-        Map<String, String> column_type = (Map<String, String>) fields.get(DBReflectManager.COLUMN_TYPE);
+        List<String> primaryKey = new ArrayList<>();
+        Map<String, String> column_type = new HashMap<>();
+        DBReflectManager.getColumnNames(clazz, primaryKey, column_type, null);
 
         if (tableName == null) {
             EasyLibLog.w(TAG + "createTB error:tableName is null");
@@ -87,13 +84,13 @@ abstract class DBHelperManager {
             return;
         }
 
-        StringBuffer primaryKeySql = new StringBuffer("");
-        StringBuffer fieldSql = new StringBuffer("");
+        StringBuilder primaryKeySql = new StringBuilder("");
+        StringBuilder fieldSql = new StringBuilder("");
 
         Set<String> sets = column_type.keySet();
         for (String fieldName : sets) {
             String fieldType = column_type.get(fieldName);
-            String type = Constant.FieldType.getDBCoumnType(fieldType);
+            String type = Constant.FieldType.getDBColumnType(fieldType);
 
             fieldSql.append(fieldName);
             fieldSql.append(" ");
@@ -122,7 +119,7 @@ abstract class DBHelperManager {
                 primaryKeySql.toString() +
                 ")";
 
-        SQLiteDatabase db = getWtriteDatabse();
+        SQLiteDatabase db = getWriteDatabase();
         try {
             db.beginTransaction();
             db.execSQL(sql);
@@ -147,7 +144,7 @@ abstract class DBHelperManager {
         if (TextUtils.isEmpty(tableName)) {
             return false;
         }
-        SQLiteDatabase db = getWtriteDatabse();
+        SQLiteDatabase db = getWriteDatabase();
         try {
             db.beginTransaction();
             db.execSQL("deleteTB DROP TABLE " + tableName);
@@ -167,7 +164,7 @@ abstract class DBHelperManager {
     /**
      * 删除表
      *
-     * @param clazz
+     * @param clazz 类
      */
     protected void deleteTB(Class clazz) {
         String tableName = DBReflectManager.getTableName(clazz);
@@ -177,7 +174,7 @@ abstract class DBHelperManager {
     /**
      * 重建表(注意：该操作删除所有数据)
      *
-     * @param clazz
+     * @param clazz 类
      */
     protected void rebuildTB(Class clazz) {
         deleteTB(clazz);
@@ -190,20 +187,20 @@ abstract class DBHelperManager {
      * @param fieldType  FieldType
      */
     protected void addColumn(String tableName, String columnName, String fieldType) {
-        SQLiteDatabase db = getWtriteDatabse();
+        SQLiteDatabase db = getWriteDatabase();
         boolean existTB = database.checkTableExist(db, tableName);
         if (!existTB) {
             EasyLibLog.w(TAG + "table : " + tableName + " is not exist");
             return;
         }
-        boolean existClumn = database.checkCloumnExist(db, tableName, columnName);
-        if (existClumn) {
-            EasyLibLog.w(TAG + "columnName : " + columnName + " is exist");
+        boolean existColumn = database.checkColumnExist(db, tableName, columnName);
+        if (existColumn) {
+            EasyLibLog.w(TAG + "value : " + columnName + " is exist");
             return;
         }
         try {
             db.beginTransaction();
-            db.execSQL("alter table " + tableName + " add " + columnName + Constant.FieldType.getDBCoumnType(fieldType));
+            db.execSQL("alter table " + tableName + " add " + columnName + Constant.FieldType.getDBColumnType(fieldType));
             db.setTransactionSuccessful();
             EasyLibLog.d("add table name : " + tableName + " column : " + columnName + " SUCCESS");
         } catch (SQLiteException e) {
@@ -218,7 +215,7 @@ abstract class DBHelperManager {
     /**
      * 数据库监听(可以做升级逻辑操作等)
      *
-     * @param databaseListener
+     * @param databaseListener 数据库监听
      */
     protected void setDatabaseListener(DatabaseListener databaseListener) {
         database.setListener(databaseListener);

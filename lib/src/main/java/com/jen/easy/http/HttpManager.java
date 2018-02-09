@@ -23,7 +23,7 @@ abstract class HttpManager {
     /**
      * 开始
      *
-     * @param request
+     * @param request 请求对象
      */
     protected void start(HttpRequest request) {
         if (request == null) {

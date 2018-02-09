@@ -12,15 +12,11 @@ import com.jen.easy.log.EasyLibLog;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import static android.R.attr.type;
-import static com.jen.easy.sqlite.DBReflectManager.COLUMN_FIELD;
-import static com.jen.easy.sqlite.DBReflectManager.FOREIGN_KEY;
-import static com.jen.easy.sqlite.DBReflectManager.getTableName;
 
 /**
  * 数据增删改查
@@ -31,7 +27,7 @@ abstract class DBDaoManager {
     private final String TAG = "DBDaoManager : ";
     private Database database;
 
-    protected DBDaoManager(Context context) {
+    DBDaoManager(Context context) {
         database = new Database(context);
     }
 
@@ -46,16 +42,16 @@ abstract class DBDaoManager {
             EasyLibLog.e(TAG + "searchById clazz is null or id is null");
             return null;
         }
-        String tableName = getTableName(clazz);
+        String tableName = DBReflectManager.getTableName(clazz);
         if (tableName == null) {
             EasyLibLog.e(TAG + "searchById tableName is null");
             return null;
         }
-        Map<String, Object> objectMap = DBReflectManager.getColumnNames(clazz);
-        List<String> primaryKey = (List<String>) objectMap.get(DBReflectManager.PRIMARY_KEY);
-        Map<String, Field> column_field = (Map<String, Field>) objectMap.get(COLUMN_FIELD);
+        List<String> primaryKeys = new ArrayList<>();
+        Map<String, Field> column_field = new HashMap<>();
+        DBReflectManager.getColumnNames(clazz, primaryKeys, null, column_field);
 
-        if (primaryKey.size() == 0) {
+        if (primaryKeys.size() == 0) {
             EasyLibLog.e(TAG + "searchById primaryKey is null");
             return null;
         }
@@ -69,7 +65,7 @@ abstract class DBDaoManager {
             return null;
         }
         try {
-            String selection = primaryKey.get(0) + "=?";
+            String selection = primaryKeys.get(0) + "=?";
             String[] selectionArgs = {id};
             Cursor cursor = db.query(tableName, null, selection, selectionArgs, null, null, null);
             if (cursor == null || cursor.getCount() == 0) {
@@ -107,13 +103,14 @@ abstract class DBDaoManager {
             EasyLibLog.e(TAG + "searchByWhere clazz is null or id is null");
             return objs;
         }
-        String tableName = getTableName(clazz);
+        String tableName = DBReflectManager.getTableName(clazz);
         if (tableName == null) {
             EasyLibLog.e(TAG + "searchByWhere tableName is null");
             return objs;
         }
-        Map<String, Object> objectMap = DBReflectManager.getColumnNames(clazz);
-        Map<String, Field> column_field = (Map<String, Field>) objectMap.get(DBReflectManager.COLUMN_FIELD);
+        Map<String, Field> column_field = new HashMap<>();
+        DBReflectManager.getColumnNames(clazz, null, null, column_field);
+
         if (column_field.size() == 0)
             return objs;
         String limit = null;
@@ -211,67 +208,71 @@ abstract class DBDaoManager {
         try {
             db.beginTransaction();
             if (t instanceof List) {
-                List<Object> list = (List<Object>) t;
+                List list = (List) t;
                 if (list.size() <= 0) {
                     EasyLibLog.e(TAG + "insert 插入数据为空");
                     return false;
                 }
-                String tableName = getTableName(list.get(0).getClass());
+                String tableName = DBReflectManager.getTableName(list.get(0).getClass());
                 if (tableName == null) {
-                    EasyLibLog.e(TAG + "insert 插入表名为空，请检查是否已经注释表明");
+                    EasyLibLog.e(TAG + "insert 插入表名为空，请检查是否已经注释表名");
                     return false;
                 }
-                Map<String, Object> objectMap = DBReflectManager.getColumnNames(list.get(0).getClass());
+                Map<String, Field> column_field = new HashMap<>();
+                DBReflectManager.getColumnNames(list.get(0).getClass(), null, null, column_field);
                 int size = list.size();
                 for (int i = 0; i < size; i++) {
-                    ContentValues values = cntentValues(list.get(i), objectMap);
+                    ContentValues values = contentValues(list.get(i), column_field);
                     db.insert(tableName, null, values);
                 }
+
             } else if (t instanceof Object[]) {
-                Object[] objs = (Object[]) t;
-                if (objs.length <= 0) {
+                Object[] objects = (Object[]) t;
+                if (objects.length <= 0) {
                     EasyLibLog.e(TAG + "insert 数据为空");
                     return false;
                 }
-                String tableName = getTableName(objs[0].getClass());
+                String tableName = DBReflectManager.getTableName(objects[0].getClass());
                 if (tableName == null) {
-                    EasyLibLog.e(TAG + "insert 插入表名为空，请检查是否已经注释表明");
+                    EasyLibLog.e(TAG + "insert 插入表名为空，请检查是否已经注释表名");
                     return false;
                 }
-                Map<String, Object> objectMap = DBReflectManager.getColumnNames(objs[0].getClass());
-                for (Object obj : objs) {
-                    ContentValues values = cntentValues(obj, objectMap);
+                Map<String, Field> column_field = new HashMap<>();
+                DBReflectManager.getColumnNames(objects[0].getClass(), null, null, column_field);
+
+                for (Object obj : objects) {
+                    ContentValues values = contentValues(obj, column_field);
                     db.insert(tableName, null, values);
                 }
+
             } else if (t instanceof Map) {
-                Map<Object, Object> map = (Map<Object, Object>) t;
+                Map map = (Map) t;
                 if (map.size() <= 0) {
                     EasyLibLog.e(TAG + "insert 数据为空");
                     return false;
                 }
-                String tableName = null;
-                Map<String, Object> objectMap = null;
-                Collection<Object> collection = map.values();
-                for (Object value : collection) {
-                    if (tableName == null) {
-                        tableName = DBReflectManager.getTableName(value.getClass());
-                        objectMap = DBReflectManager.getColumnNames(value.getClass());
-                    }
-                    if (tableName == null) {
-                        EasyLibLog.e(TAG + "insert 插入表名为空，请检查是否已经注释表明");
-                        return false;
-                    }
-                    ContentValues values = cntentValues(value, objectMap);
-                    db.insert(tableName, null, values);
-                }
-            } else {
-                String tableName = getTableName(t.getClass());
+                Object[] collection = map.values().toArray();
+                String tableName = DBReflectManager.getTableName(collection[0].getClass());
+                Map<String, Field> column_field = new HashMap<>();
+                DBReflectManager.getColumnNames(collection[0].getClass(), null, null, column_field);
                 if (tableName == null) {
                     EasyLibLog.e(TAG + "insert 插入表名为空，请检查是否已经注释表明");
                     return false;
                 }
-                Map<String, Object> objectMap = DBReflectManager.getColumnNames(t.getClass());
-                ContentValues values = cntentValues(t, objectMap);
+
+                for (Object value : collection) {
+                    ContentValues values = contentValues(value, column_field);
+                    db.insert(tableName, null, values);
+                }
+            } else {
+                String tableName = DBReflectManager.getTableName(t.getClass());
+                if (tableName == null) {
+                    EasyLibLog.e(TAG + "insert 插入表名为空，请检查是否已经注释表明");
+                    return false;
+                }
+                Map<String, Field> column_field = new HashMap<>();
+                DBReflectManager.getColumnNames(t.getClass(), null, null, column_field);
+                ContentValues values = contentValues(t, column_field);
                 db.insert(tableName, null, values);
             }
             db.setTransactionSuccessful();
@@ -309,20 +310,21 @@ abstract class DBDaoManager {
         try {
             db.beginTransaction();
             if (t instanceof List) {
-                List<Object> list = (List<Object>) t;
+                List list = (List) t;
                 if (list.size() <= 0) {
                     EasyLibLog.e(TAG + "replace 数据为空");
                     return false;
                 }
-                String tableName = getTableName(list.get(0).getClass());
+                String tableName = DBReflectManager.getTableName(list.get(0).getClass());
                 if (tableName == null) {
                     EasyLibLog.e(TAG + "replace 插入表名为空，请检查是否已经注释表明");
                     return false;
                 }
-                Map<String, Object> objectMap = DBReflectManager.getColumnNames(list.get(0).getClass());
+                Map<String, Field> column_field = new HashMap<>();
+                DBReflectManager.getColumnNames(list.get(0).getClass(), null, null, column_field);
                 int size = list.size();
                 for (int i = 0; i < size; i++) {
-                    ContentValues values = cntentValues(list.get(i), objectMap);
+                    ContentValues values = contentValues(list.get(i), column_field);
                     db.replace(tableName, null, values);
                 }
             } else if (t instanceof Object[]) {
@@ -331,45 +333,44 @@ abstract class DBDaoManager {
                     EasyLibLog.e(TAG + "replace 数据为空");
                     return false;
                 }
-                String tableName = getTableName(objs[0].getClass());
+                String tableName = DBReflectManager.getTableName(objs[0].getClass());
                 if (tableName == null) {
                     EasyLibLog.e(TAG + "replace 插入表名为空，请检查是否已经注释表明");
                     return false;
                 }
-                Map<String, Object> objectMap = DBReflectManager.getColumnNames(objs[0].getClass());
+                Map<String, Field> column_field = new HashMap<>();
+                DBReflectManager.getColumnNames(objs[0].getClass(), null, null, column_field);
                 for (Object obj : objs) {
-                    ContentValues values = cntentValues(obj, objectMap);
+                    ContentValues values = contentValues(obj, column_field);
                     db.replace(tableName, null, values);
                 }
             } else if (t instanceof Map) {
-                Map<Object, Object> map = (Map<Object, Object>) t;
+                Map map = (Map) t;
                 if (map.size() <= 0) {
                     EasyLibLog.e(TAG + "replace 数据为空");
                     return false;
                 }
-                String tableName = null;
-                Map<String, Object> objectMap = null;
-                Collection<Object> collection = map.values();
-                for (Object value : collection) {
-                    if (tableName == null) {
-                        tableName = DBReflectManager.getTableName(value.getClass());
-                        objectMap = DBReflectManager.getColumnNames(value.getClass());
-                    }
-                    if (tableName == null) {
-                        EasyLibLog.e(TAG + "replace 插入表名为空，请检查是否已经注释表明");
-                        return false;
-                    }
-                    ContentValues values = cntentValues(value, objectMap);
-                    db.replace(tableName, null, values);
-                }
-            } else {
-                String tableName = getTableName(t.getClass());
+                Object[] collection = map.values().toArray();
+                String tableName = DBReflectManager.getTableName(collection[0].getClass());
                 if (tableName == null) {
                     EasyLibLog.e(TAG + "replace 插入表名为空，请检查是否已经注释表明");
                     return false;
                 }
-                Map<String, Object> objectMap = DBReflectManager.getColumnNames(t.getClass());
-                ContentValues values = cntentValues(t, objectMap);
+                Map<String, Field> column_field = new HashMap<>();
+                DBReflectManager.getColumnNames(collection[0].getClass(), null, null, column_field);
+                for (Object value : collection) {
+                    ContentValues values = contentValues(value, column_field);
+                    db.replace(tableName, null, values);
+                }
+            } else {
+                String tableName = DBReflectManager.getTableName(t.getClass());
+                if (tableName == null) {
+                    EasyLibLog.e(TAG + "replace 插入表名为空，请检查是否已经注释表明");
+                    return false;
+                }
+                Map<String, Field> column_field = new HashMap<>();
+                DBReflectManager.getColumnNames(t.getClass(), null, null, column_field);
+                ContentValues values = contentValues(t, column_field);
                 db.replace(tableName, null, values);
             }
             db.setTransactionSuccessful();
@@ -392,18 +393,17 @@ abstract class DBDaoManager {
      */
     protected boolean delete(Class clazz, String id) {
         if (clazz == null || id == null) {
-            EasyLibLog.e(TAG + "delete obj is null");
+            EasyLibLog.e(TAG + "delete error obj is null");
             return false;
         }
-        String tableName = getTableName(clazz);
+        String tableName = DBReflectManager.getTableName(clazz);
         if (tableName == null) {
-            EasyLibLog.e(TAG + "delete tableName is null");
+            EasyLibLog.e(TAG + "delete error tableName is null");
             return false;
         }
-        Map<String, Object> objectMap = DBReflectManager.getColumnNames(clazz);
-        List<String> primarys = (List<String>) objectMap.get(DBReflectManager.PRIMARY_KEY);
-        if (primarys.size() == 0) {
-            EasyLibLog.e(TAG + "delete primary is null");
+        List<String> primaryKeys = DBReflectManager.getPrimaryKeys(clazz);
+        if (primaryKeys.size() == 0) {
+            EasyLibLog.e(TAG + "delete error primary is null");
             return false;
         }
         SQLiteDatabase db;
@@ -416,12 +416,12 @@ abstract class DBDaoManager {
         }
         try {
             db.beginTransaction();
-            db.delete(tableName, primarys.get(0) + "=?", new String[]{id});
+            db.delete(tableName, primaryKeys.get(0) + "=?", new String[]{id});
             db.setTransactionSuccessful();
             return true;
         } catch (SQLiteException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "delete SQLiteException");
+            EasyLibLog.e(TAG + "delete error SQLiteException");
         } finally {
             db.endTransaction();
             db.close();
@@ -437,18 +437,17 @@ abstract class DBDaoManager {
      */
     protected boolean delete(Class clazz, List<String> ids) {
         if (clazz == null || ids == null || ids.size() == 0) {
-            EasyLibLog.e(TAG + "delete obj is null");
+            EasyLibLog.e(TAG + "delete error obj is null");
             return false;
         }
-        String tableName = getTableName(clazz);
+        String tableName = DBReflectManager.getTableName(clazz);
         if (tableName == null) {
-            EasyLibLog.e(TAG + "delete tableName is null");
+            EasyLibLog.e(TAG + "delete error tableName is null");
             return false;
         }
-        Map<String, Object> objectMap = DBReflectManager.getColumnNames(clazz);
-        List<String> primarys = (List<String>) objectMap.get(DBReflectManager.PRIMARY_KEY);
-        if (primarys.size() == 0) {
-            EasyLibLog.e(TAG + "delete primary is null");
+        List<String> primaryKeys = DBReflectManager.getPrimaryKeys(clazz);
+        if (primaryKeys.size() == 0) {
+            EasyLibLog.e(TAG + "delete error primary is null");
             return false;
         }
         SQLiteDatabase db;
@@ -463,13 +462,13 @@ abstract class DBDaoManager {
             db.beginTransaction();
             int size = ids.size();
             for (int i = 0; i < size; i++) {
-                db.delete(tableName, primarys.get(0) + "=?", new String[]{ids.get(i)});
+                db.delete(tableName, primaryKeys.get(0) + "=?", new String[]{ids.get(i)});
             }
             db.setTransactionSuccessful();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "delete SQLiteException");
+            EasyLibLog.e(TAG + "delete error SQLiteException");
         } finally {
             db.endTransaction();
             db.close();
@@ -489,16 +488,44 @@ abstract class DBDaoManager {
             EasyLibLog.e(TAG + "delete obj is null");
             return false;
         }
-        String tableName = null;
-        if (t instanceof List && ((List) t).size() > 0) {
-            getTableName(((List) t).get(0).getClass());
+
+        Class clazz;
+        if (t instanceof List) {
+            List list = (List) t;
+            if (list.size() > 0) {
+                clazz = list.get(0).getClass();
+            } else {
+                EasyLibLog.w(TAG + "delete error 集合空数据");
+                return false;
+            }
+        } else if (t instanceof Object[]) {
+            Object[] objects = (Object[]) t;
+            if (objects.length > 0) {
+                clazz = objects[0].getClass();
+            } else {
+                EasyLibLog.w(TAG + "delete error 集合空数据");
+                return false;
+            }
+        } else if (t instanceof Map) {
+            Map map = (Map) t;
+            Iterator iterator = map.values().iterator();
+            if (iterator.hasNext()) {
+                clazz = iterator.next().getClass().getClass();
+            } else {
+                EasyLibLog.w(TAG + "delete error 集合空数据");
+                return false;
+            }
         } else {
-            getTableName(t.getClass());
+            clazz = t.getClass();
         }
+        String tableName = DBReflectManager.getTableName(clazz);
+
+
         if (tableName == null) {
             EasyLibLog.e(TAG + "delete tableName is null");
             return false;
         }
+
         SQLiteDatabase db;
         try {
             db = database.getWritableDatabase();
@@ -516,14 +543,15 @@ abstract class DBDaoManager {
                     if (primaryKeys_values.size() == 0)
                         continue;
                     int index = 0;
-                    StringBuffer whereCause = new StringBuffer("");
+                    StringBuilder whereCause = new StringBuilder("");
                     String[] selectArg = new String[primaryKeys_values.size()];
                     Set<String> sets = primaryKeys_values.keySet();
                     for (String key : sets) {
                         if (index > 0) {
                             whereCause.append(" and ");
                         }
-                        whereCause.append(key + "=?");
+                        whereCause.append(key);
+                        whereCause.append("=?");
                         selectArg[index] = primaryKeys_values.get(key);
                         index++;
                     }
@@ -534,14 +562,15 @@ abstract class DBDaoManager {
                 if (primaryKeys_values.size() == 0)
                     return false;
                 int index = 0;
-                StringBuffer whereCause = new StringBuffer("");
+                StringBuilder whereCause = new StringBuilder("");
                 String[] selectArg = new String[primaryKeys_values.size()];
                 Set<String> sets = primaryKeys_values.keySet();
                 for (String key : sets) {
                     if (index > 0) {
                         whereCause.append(" and ");
                     }
-                    whereCause.append(key + "=?");
+                    whereCause.append(key);
+                    whereCause.append("=?");
                     selectArg[index] = primaryKeys_values.get(key);
                     index++;
                 }
@@ -565,7 +594,7 @@ abstract class DBDaoManager {
             EasyLibLog.e(TAG + "delete obj or selection or selectionArgs is error");
             return false;
         }
-        String tableName = getTableName(clazz);
+        String tableName = DBReflectManager.getTableName(clazz);
         if (tableName == null) {
             EasyLibLog.e(TAG + "delete tableName is null");
             return false;
@@ -627,17 +656,13 @@ abstract class DBDaoManager {
      * param obj
      * return
      */
-    private ContentValues cntentValues(Object obj, Map<String, Object> objectMap) {
-        Map<String, Field> column_field = (Map<String, Field>) objectMap.get(COLUMN_FIELD);
-        Map<String, String> column_foreignKey = (Map<String, String>) objectMap.get(FOREIGN_KEY);
-
+    private ContentValues contentValues(Object obj, Map<String, Field> column_field) {
         ContentValues values = new ContentValues();
         try {
             Set<String> sets = column_field.keySet();
             for (String column : sets) {
                 Field field = column_field.get(column);
                 field.setAccessible(true);
-                String type = field.getGenericType().toString();
                 Object value = field.get(obj);
                 if (value instanceof Character) {
                     values.put(column, (char) value + "");
@@ -657,45 +682,13 @@ abstract class DBDaoManager {
                     values.put(column, (Long) value);
                 } else if (value instanceof Boolean) {
                     values.put(column, (Boolean) value);
-                }/* else if (value instanceof Date) {
-                    values.put(column, EasyUtil.mDateFormat.format((Date) value));
-                }*/ else if (column_foreignKey.containsKey(column)) {//其他类型用外键处理（比如：对象）
-                    if (type.contains(Constant.FieldType.OBJECT)) {
-                        EasyLibLog.e(TAG + "cntentValues class java.lang.Object");
-                    } else if (type.contains(Constant.FieldType.MAP)) {
-                        EasyLibLog.e(TAG + "cntentValues Constant.FieldType.MAP");
-                    } else if (type.contains(Constant.FieldType.ARRAY)) {
-                        EasyLibLog.e(TAG + "cntentValues Constant.FieldType.ARRAY");
-                    } else if (value instanceof List) {
-                        List<Object> list = (List<Object>) value;
-                        StringBuffer foreignKeyValue = new StringBuffer("");
-                        int size = list.size();
-                        for (int i = 0; i < size; i++) {
-                            String foreignValue = DBReflectManager.getPrimaryKeyValue(list.get(i), column_foreignKey.get(column));
-                            if (foreignValue == null)
-                                break;
-                            if (i == 0) {
-                                foreignKeyValue.append(foreignValue);
-                            } else {
-                                foreignKeyValue.append(",");
-                                foreignKeyValue.append(foreignValue);
-                            }
-                        }
-                        String keyValue = foreignKeyValue.toString().trim();
-                        if (keyValue.length() > 0) {
-                            values.put(column, keyValue);
-                        }
-                    } else if (type.contains(Constant.FieldType.CLASS)) {
-                        String foreignValue = DBReflectManager.getPrimaryKeyValue(value, column_foreignKey.get(column));
-                        if (foreignValue != null) {
-                            values.put(column, foreignValue);
-                        }
-                    }
+                } else {
+                    EasyLibLog.e(TAG + "插入数据库错误提示：不支持该类型：" + value.getClass().getName());
                 }
             }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "cntentValues IllegalAccessException");
+            EasyLibLog.e(TAG + "contentValues IllegalAccessException");
         }
         return values;
     }
@@ -710,13 +703,14 @@ abstract class DBDaoManager {
      */
     private <T> T valuation(Class<T> clazz, Map<String, Field> column_field, Cursor cursor) {
         T obj = null;
+        String type = null;
         try {
             obj = clazz.newInstance();
             Set<String> sets = column_field.keySet();
             for (String column : sets) {
                 Field field = column_field.get(column);
                 field.setAccessible(true);
-                String type = field.getGenericType().toString();
+                type = field.getGenericType().toString();
 
                 switch (type) {
                     case Constant.FieldType.STRING: {
@@ -762,7 +756,7 @@ abstract class DBDaoManager {
             }
         } catch (InstantiationException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "valuation InstantiationException type=" + type);
+            EasyLibLog.e(TAG + "valuation InstantiationException setAccessible");
         } catch (IllegalAccessException e) {
             e.printStackTrace();
             EasyLibLog.e(TAG + "valuation IllegalAccessException type=" + type);

@@ -54,7 +54,6 @@ class HttpURLConnectionBaseRunnable extends HttpURLConnectionRunnable {
         HttpBaseRequest baseRequest = (HttpBaseRequest) mRequest;
         if (baseRequest.getBseListener() != null) {
             HttpParseManager parseManager = new HttpParseManager();
-            parseManager.setResponseObjectType(baseRequest.responseObjectType);
             Object parseObject = parseManager.parseJson(mResponseClass, result,headMap);
             if (parseObject == null) {
                 fail("解析数据解析出错");

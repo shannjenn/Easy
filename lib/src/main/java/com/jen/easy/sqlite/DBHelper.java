@@ -31,16 +31,16 @@ public class DBHelper extends DBHelperManager {
      * 读取数据库
      */
     @Override
-    public SQLiteDatabase getReadDatabse() {
-        return super.getReadDatabse();
+    public SQLiteDatabase getReadDatabase() {
+        return super.getReadDatabase();
     }
 
     /**
      * 写入数据库
      */
     @Override
-    public SQLiteDatabase getWtriteDatabse() {
-        return super.getWtriteDatabse();
+    public SQLiteDatabase getWriteDatabase() {
+        return super.getWriteDatabase();
     }
 
     /**

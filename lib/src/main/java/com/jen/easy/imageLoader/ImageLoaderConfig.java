@@ -23,8 +23,8 @@ public class ImageLoaderConfig {
     private final int nameMaxLen = 100;//保存文件名最长长度
     private Drawable defaultImage;//默认图片
     private int imgHeight = 300, imgWidth = 300;//默认高宽
-    private int httpMaxThread = 3;//默认三个线程
-    private int timeOut = 10000;//默认超时毫秒
+    private int httpMaxThread = 4;//默认三个线程
+    private int timeOut = 5000;//默认超时毫秒
 
     public ImageLoaderConfig(Application context) {
         this.context = context;

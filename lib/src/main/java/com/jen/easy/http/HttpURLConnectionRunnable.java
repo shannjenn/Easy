@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +24,6 @@ abstract class HttpURLConnectionRunnable implements Runnable {
     String mCharset;//编码
     boolean mIsGet = true;
     String mRequestParam;
-    private String mMethod;
 
     HttpURLConnectionRunnable(HttpRequest param, String TAG) {
         super();
@@ -34,11 +34,9 @@ abstract class HttpURLConnectionRunnable implements Runnable {
     @Override
     public void run() {
         Object[] method_url = HttpReflectManager.getUrl(mRequest);
-        if (method_url != null) {
-            mMethod = (String) method_url[0];
-            mRequest.httpParam.url = (String) method_url[1];
-            mResponseClass = (Class) method_url[2];
-        }
+        String method = (String) method_url[0];
+        mRequest.httpParam.url = (String) method_url[1];
+        mResponseClass = (Class) method_url[2];
         mUrlStr = mRequest.httpParam.url;
         if (TextUtils.isEmpty(mUrlStr)) {
             mUrlStr = "";
@@ -97,16 +95,16 @@ abstract class HttpURLConnectionRunnable implements Runnable {
         mResponseCode = -1;//返回码
         mHasParam = false;//是否有参数
         mCharset = mRequest.httpParam.charset;//编码
-        mIsGet = mMethod.toUpperCase().equals("GET");
+        mIsGet = method.toUpperCase().equals("GET");
         try {
-            Map<String, List<String>> requests = HttpReflectManager.getRequestParams(mRequest);
-            List<String> requestParamKeys = requests.get(HttpReflectManager.REQ_PARAM_KEYS);
-            List<String> requestParamValues = requests.get(HttpReflectManager.REQ_PARAM_VALUES);
-            List<String> requestHeadKeys = requests.get(HttpReflectManager.REQ_HEAD_KEYS);
-            List<String> requestHeadValues = requests.get(HttpReflectManager.REQ_HEAD_VALUES);
+            List<String> requestParamKeys = new ArrayList<>();
+            List<String> requestParamValues = new ArrayList<>();
+            List<String> requestHeadKeys = new ArrayList<>();
+            List<String> requestHeadValues = new ArrayList<>();
+            HttpReflectManager.getRequestParams(mRequest, requestParamKeys, requestParamValues, requestHeadKeys, requestHeadValues);
 
             boolean isNotFirst = false;
-            StringBuffer requestBuf = new StringBuffer("");
+            StringBuilder requestBuf = new StringBuilder("");
             int paramSize = requestParamKeys.size();
             for (int i = 0; i < paramSize; i++) {
                 String key = requestParamKeys.get(i);
@@ -126,7 +124,7 @@ abstract class HttpURLConnectionRunnable implements Runnable {
             mRequestParam = requestBuf.toString();
             mHasParam = mRequestParam.length() > 0;
 
-            EasyLibLog.d(TAG + "网络请求：" + mMethod + " " + mUrlStr + " 请求参数：" + mRequestParam);
+            EasyLibLog.d(TAG + "网络请求：" + method + " " + mUrlStr + " 请求参数：" + mRequestParam);
             if (mIsGet && mHasParam) {//get请求参数拼接
                 mUrlStr = mUrlStr + "?" + mRequestParam;
             }
@@ -138,7 +136,7 @@ abstract class HttpURLConnectionRunnable implements Runnable {
             connection.setUseCaches(mRequest.httpParam.useCaches);
             connection.setConnectTimeout(mRequest.httpParam.timeout);
             connection.setReadTimeout(mRequest.httpParam.readTimeout);
-            connection.setRequestMethod(mMethod);
+            connection.setRequestMethod(method);
             int headSize = requestHeadKeys.size();
             for (int i = 0; i < headSize; i++) {//设置请求头
                 String key = requestHeadKeys.get(i);

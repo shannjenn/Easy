@@ -16,127 +16,110 @@ import java.util.Map;
 
 class DBReflectManager {
     private static final String TAG = "DBReflectManager : ";
-    /**
-     * 主键名
-     */
-    static final String PRIMARY_KEY = "primary_key";
-    /**
-     * 外键名
-     */
-    static final String FOREIGN_KEY = "foreign_Key";
-    /**
-     * 全部列明和属性类型
-     */
-    static final String COLUMN_TYPE = "column_type";
-    /**
-     * 全部列明和属性名称
-     */
-    static final String COLUMN_FIELD = "column_field";
-
 
     /**
      * 获取表名
      *
-     * @param clazz
-     * @return
+     * @param clazz 类
+     * @return 返回表名
      */
     static String getTableName(Class clazz) {
         if (clazz == null) {
-            EasyLibLog.e(TAG + "getTableName clazz is not null");
+            EasyLibLog.e(TAG + "传入的Class为空");
             return null;
         }
-        String tbName = null;
-        boolean isAnno = clazz.isAnnotationPresent(EasyMouse.DB.Table.class);
-        if (!isAnno) {
-            EasyLibLog.e(TAG + "getTableName clazz is not AnnotationPresent");
+        boolean isAnnotation = clazz.isAnnotationPresent(EasyMouse.DB.Table.class);
+        if (!isAnnotation) {
+            EasyLibLog.e(TAG + clazz.getName() + "未增加表注释");
             return null;
         }
         EasyMouse.DB.Table table = (EasyMouse.DB.Table) clazz.getAnnotation(EasyMouse.DB.Table.class);
-        tbName = table.value();
-        return tbName;
+        return table.value();
     }
 
     /**
-     * 获取字字段
+     * 获取字字段(包含主键)
      *
-     * @param clazz
-     * @return
+     * @param clazz        类
+     * @param primaryKeys  主键
+     * @param column_type  列名_类型
+     * @param column_field 列名_变量
      */
-    static Map<String, Object> getColumnNames(Class clazz) {
-        Map<String, Object> objectMap = new HashMap<>();
-        List<String> primaryKey = new ArrayList<>();
-        Map<String, String> column_foreignKey = new HashMap<>();
-        Map<String, String> column_type = new HashMap<>();
-        Map<String, Field> fieldName = new HashMap<>();
-        objectMap.put(PRIMARY_KEY, primaryKey);
-        objectMap.put(FOREIGN_KEY, column_foreignKey);
-        objectMap.put(COLUMN_TYPE, column_type);
-        objectMap.put(COLUMN_FIELD, fieldName);
+    static void getColumnNames(Class clazz, List<String> primaryKeys, Map<String, String> column_type, Map<String, Field> column_field) {
         if (clazz == null) {
             EasyLibLog.e(TAG + "getColumnNames clazz is not null");
-            return objectMap;
+            return;
         }
 
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
-            boolean isAnno = field.isAnnotationPresent(EasyMouse.DB.Column.class);
-            if (!isAnno)
-                continue;
-            EasyMouse.DB.Column columnClass = field.getAnnotation(EasyMouse.DB.Column.class);
-            String coulumnName = columnClass.columnName();
-            boolean isPrimary = columnClass.primaryKey();
-            String foreignKey = columnClass.foreignKey().trim();
+            String columnName = "";
+            boolean isPrimary = false;
             String type = field.getGenericType().toString();
 
-            if (coulumnName.trim().length() == 0) {
-                continue;
+            boolean isAnnotation = field.isAnnotationPresent(EasyMouse.DB.Column.class);
+            if (isAnnotation) {
+                EasyMouse.DB.Column columnClass = field.getAnnotation(EasyMouse.DB.Column.class);
+                boolean noColumn = columnClass.noColumn();
+                if (noColumn)
+                    continue;
+                columnName = columnClass.value().trim();
+                isPrimary = columnClass.primaryKey();
             }
-            if (isPrimary)
-                primaryKey.add(coulumnName);
-            if (foreignKey.length() > 0)
-                column_foreignKey.put(coulumnName, foreignKey);
-            column_type.put(coulumnName, type);
-            fieldName.put(coulumnName, field);
+
+            if (columnName.length() == 0) {
+                columnName = field.getName();
+            }
+            if (isPrimary && primaryKeys != null)
+                primaryKeys.add(columnName);
+            if (column_type != null)
+                column_type.put(columnName, type);
+            if (column_field != null)
+                column_field.put(columnName, field);
         }
-        return objectMap;
     }
 
     /**
-     * 获取字字段(只获取一个key)
+     * 获取主键集合
      *
-     * @param obj
-     * @return
+     * @param clazz 类
+     * @return 主键集合
      */
-    static String getPrimaryKeyValue(Object obj, String primaryKey) {
-        if (obj == null || obj instanceof Class || primaryKey == null) {
-            EasyLibLog.e(TAG + "getPrimaryKeyValue clazz is not null");
-            return null;
+    static List<String> getPrimaryKeys(Class clazz) {
+        List<String> primaryKeys = new ArrayList<>();
+        if (clazz == null) {
+            EasyLibLog.e(TAG + "传入的Class为空");
+            return primaryKeys;
         }
-        Field[] fields = obj.getClass().getDeclaredFields();
+
+        Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
-            boolean isAnno = field.isAnnotationPresent(EasyMouse.DB.Column.class);
-            if (!isAnno)
+            boolean isAnnotation = field.isAnnotationPresent(EasyMouse.DB.Column.class);
+            if (!isAnnotation)
                 continue;
+
             EasyMouse.DB.Column columnClass = field.getAnnotation(EasyMouse.DB.Column.class);
-            String columnName = columnClass.columnName().trim();
-            if (columnName.equals(primaryKey)) {
-                try {
-                    field.setAccessible(true);
-                    String value = field.get(obj) + "";
-                    return value;
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
+            boolean noColumn = columnClass.noColumn();
+            if (noColumn)
+                continue;
+
+            boolean isPrimary = columnClass.primaryKey();
+            if (!isPrimary)
+                continue;
+
+            String name = columnClass.value().trim();
+            if (name.length() == 0)
+                name = field.getName();
+            primaryKeys.add(name);
         }
-        return null;
+        return primaryKeys;
     }
 
     /**
-     * 获取字字段(只获取一个key)
+     * 获取主键_值 集合
      *
-     * @param obj
-     * @return
+     * @param obj Object
+     * @return 主键信息
      */
     static Map<String, String> getPrimaryKeysValues(Object obj) {
         Map<String, String> primaryKeys_values = new HashMap<>();
@@ -146,19 +129,28 @@ class DBReflectManager {
         }
         Field[] fields = obj.getClass().getDeclaredFields();
         for (Field field : fields) {
-            boolean isAnno = field.isAnnotationPresent(EasyMouse.DB.Column.class);
-            if (!isAnno)
+            boolean isAnnotation = field.isAnnotationPresent(EasyMouse.DB.Column.class);
+            if (!isAnnotation)
                 continue;
+
             EasyMouse.DB.Column columnClass = field.getAnnotation(EasyMouse.DB.Column.class);
-            if (columnClass.primaryKey()) {
-                String columnName = columnClass.columnName().trim();
-                field.setAccessible(true);
-                try {
-                    String value = field.get(obj) + "";
-                    primaryKeys_values.put(columnName, value);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
+            boolean noColumn = columnClass.noColumn();
+            if (noColumn)
+                continue;
+
+            boolean isPrimary = columnClass.primaryKey();
+            if (!isPrimary)
+                continue;
+
+            String name = columnClass.value().trim();
+            if (name.length() == 0)
+                name = field.getName();
+            field.setAccessible(true);
+            try {
+                String value = field.get(obj) + "";
+                primaryKeys_values.put(name, value);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
             }
         }
         return primaryKeys_values;

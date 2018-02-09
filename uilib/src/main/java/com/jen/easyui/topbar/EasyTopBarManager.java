@@ -165,7 +165,7 @@ abstract class EasyTopBarManager extends RelativeLayout {
         tvTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTitleTextSize);
         tvTitle.setTextColor(mTitleColor);
 
-        if (TextUtils.isEmpty(mLeftText)) {
+        if (TextUtils.isEmpty(mRightText)) {
             tvRight.setVisibility(GONE);
         } else {
             tvRight.setVisibility(VISIBLE);

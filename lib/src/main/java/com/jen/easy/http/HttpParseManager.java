@@ -9,13 +9,10 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import static com.jen.easy.http.HttpReflectManager.RSP_FIELD;
-import static com.jen.easy.http.HttpReflectManager.RSP_HEAD;
-import static com.jen.easy.http.HttpReflectManager.RSP_TYPE;
 
 /**
  * 作者：ShannJenn
@@ -30,25 +27,13 @@ class HttpParseManager {
     private Map<String, List<String>> mHeadMap;
     //错误提示
     private List<String> mErrors = new ArrayList<>();
-    /**
-     * 通用数据返回
-     * 设置返回Object变量实体：List集合实体、单实体
-     * 如：
-     * （@EasyMouse.mHttp.ResponseParam("data") 注释返回参数）
-     * （@private Object data; 实体变量）
-     */
-    private Class responseObjectType;//由HttpBaseRequest传递过来
-
-    void setResponseObjectType(Class responseObjectType) {
-        this.responseObjectType = responseObjectType;
-    }
 
     /**
      * json解析
      *
-     * @param tClass
-     * @param obj
-     * @return
+     * @param tClass 类
+     * @param obj    数据
+     * @return 值
      */
     <T> T parseJson(Class<T> tClass, String obj, Map<String, List<String>> headMap) {
         EasyLibLog.d(TAG + "解析：" + tClass.getName() + "----开始");
@@ -74,8 +59,8 @@ class HttpParseManager {
      * 解析接口返回json格式值
      *
      * @param tClass     类
-     * @param jsonObject
-     * @return
+     * @param jsonObject 数据
+     * @return 值
      */
     private <T> T parseJsonObject(Class<T> tClass, JSONObject jsonObject) {
         if (tClass == null || jsonObject == null) {
@@ -95,10 +80,10 @@ class HttpParseManager {
             return null;
         }
 
-        Map<String, Object> objectMap = HttpReflectManager.getResponseParams(tObj.getClass());
-        Map<String, String> param_type = (Map<String, String>) objectMap.get(RSP_TYPE);
-        Map<String, Field> param_field = (Map<String, Field>) objectMap.get(RSP_FIELD);
-        Map<String, Field> head_field = (Map<String, Field>) objectMap.get(RSP_HEAD);
+        Map<String, String> param_type = new HashMap<>();
+        Map<String, Field> param_field = new HashMap<>();
+        Map<String, Field> head_field = new HashMap<>();
+        HttpReflectManager.getResponseParams(tObj.getClass(), param_type, param_field, head_field);
 
         Set<String> heads = head_field.keySet();
         for (String param : heads) {//设置head值
@@ -108,7 +93,7 @@ class HttpParseManager {
             Field field = head_field.get(param);
             field.setAccessible(true);
 
-            StringBuffer buffer = new StringBuffer("");
+            StringBuilder buffer = new StringBuilder("");
             List<String> values = mHeadMap.get(param);
             int size = values.size();
             for (int i = 0; i < size; i++) {
@@ -207,21 +192,7 @@ class HttpParseManager {
                     } else if (type.contains(Constant.FieldType.ARRAY)) {//解析数组
                         EasyLibLog.e(TAG + "不支持数组类型");
                     } else if (type.contains(Constant.FieldType.OBJECT)) {//解析Object通用类型
-                        if (responseObjectType != null) {
-                            if (responseObjectType == mTopClass) {
-                                showError("不能解析与类相同的变量避免死循环,param=" + param + " type=" + type);
-                            } else if (value instanceof JSONArray) {
-                                List objList = parseJsonArray(responseObjectType, (JSONArray) value);
-                                field.set(tObj, objList);
-                            } else if (value instanceof JSONObject) {
-                                Object object = parseJsonObject(responseObjectType, (JSONObject) value);
-                                field.set(tObj, object);
-                            } else {
-                                showError("Object类型错误 :" + type);
-                            }
-                        } else {
-                            showError("Object类型解析：请指定转换的类");
-                        }
+                        field.set(tObj, value);
                     } else if (type.contains(Constant.FieldType.LIST)) {//解析list
                         if (value instanceof JSONArray) {
                             String clazzName = type.substring(type.indexOf("<") + 1, type.indexOf(">"));
@@ -250,7 +221,7 @@ class HttpParseManager {
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-                showError("JSONException：type=" + type + " param=" + param);
+                showError("JSONException param=" + param);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
                 showError("IllegalAccessException：type=" + type + " param=" + param);
@@ -274,9 +245,9 @@ class HttpParseManager {
     /**
      * 解析jsonArray
      *
-     * @param TClass
-     * @param jsonArray
-     * @return
+     * @param TClass    类
+     * @param jsonArray JSONArray
+     * @return 值
      */
     private <T> List<T> parseJsonArray(Class<T> TClass, JSONArray jsonArray) {
         List<T> list = new ArrayList<>();
@@ -308,7 +279,7 @@ class HttpParseManager {
     /**
      * 警告Log
      *
-     * @param error
+     * @param error 错误信息
      */
     private void showWarn(String error) {
         if (!mErrors.contains(error)) {
@@ -320,7 +291,7 @@ class HttpParseManager {
     /**
      * 错误Log
      *
-     * @param error
+     * @param error 错误信息
      */
     private void showError(String error) {
         if (!mErrors.contains(error)) {

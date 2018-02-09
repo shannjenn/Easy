@@ -51,7 +51,7 @@ public final class Constant {
          * @param fieldType 对象变量类型
          * @return 表中字段类型
          */
-        public static String getDBCoumnType(String fieldType) {
+        public static String getDBColumnType(String fieldType) {
             String type = "TEXT";
             switch (fieldType) {
                 case CHAR:
@@ -62,14 +62,14 @@ public final class Constant {
                 case SHORT:
                 case INTEGER:
                 case LONG:
-                    type = "INTEEGER";
+                    type = "INTEGER";
                     break;
                 case FLOAT:
                 case DOUBLE:
                     type = "REAL";
                     break;
                 case BOOLEAN:
-                    type = "INTEEGER";
+                    type = "INTEGER";
                     break;
                 /*case DATE:
                     type = "TEXT";
