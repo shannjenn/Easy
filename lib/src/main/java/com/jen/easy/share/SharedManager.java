@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Base64;
 
-import com.jen.easy.constant.Constant;
+import com.jen.easy.constant.Unicode;
 import com.jen.easy.log.EasyLibLog;
 
 import java.io.ByteArrayInputStream;
@@ -180,7 +180,7 @@ abstract class SharedManager {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
             objectOutputStream.writeObject(list);
-            String str = new String(Base64.encode(byteArrayOutputStream.toByteArray(), 0), Constant.Unicode.DEFAULT);
+            String str = new String(Base64.encode(byteArrayOutputStream.toByteArray(), 0), Unicode.DEFAULT);
             objectOutputStream.close();
             return str;
         } catch (IOException e) {
@@ -193,7 +193,7 @@ abstract class SharedManager {
     private <T> List<T> string2List(String str) {
         List list = null;
         try {
-            byte[] mobileBytes = Base64.decode(str.getBytes(Constant.Unicode.DEFAULT), 0);
+            byte[] mobileBytes = Base64.decode(str.getBytes(Unicode.DEFAULT), 0);
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(mobileBytes);
             ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
             list = (List) objectInputStream.readObject();
@@ -213,7 +213,7 @@ abstract class SharedManager {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
             objectOutputStream.writeObject(obj);
-            String str = new String(Base64.encode(byteArrayOutputStream.toByteArray(), 0), Constant.Unicode.DEFAULT);
+            String str = new String(Base64.encode(byteArrayOutputStream.toByteArray(), 0), Unicode.DEFAULT);
             objectOutputStream.close();
             return str;
         } catch (IOException e) {
@@ -225,7 +225,7 @@ abstract class SharedManager {
 
     private Object string2Object(String str) {
         try {
-            byte[] mobileBytes = Base64.decode(str.getBytes(Constant.Unicode.DEFAULT), 0);
+            byte[] mobileBytes = Base64.decode(str.getBytes(Unicode.DEFAULT), 0);
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(mobileBytes);
             ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
 

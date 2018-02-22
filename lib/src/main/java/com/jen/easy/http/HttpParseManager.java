@@ -1,6 +1,6 @@
 package com.jen.easy.http;
 
-import com.jen.easy.constant.Constant;
+import com.jen.easy.constant.FieldType;
 import com.jen.easy.log.EasyLibLog;
 
 import org.json.JSONArray;
@@ -130,7 +130,7 @@ class HttpParseManager {
                     field.setAccessible(true);
                     type = param_type.get(param);
 
-                    if (type.equals(Constant.FieldType.STRING)) {
+                    if (type.equals(FieldType.STRING)) {
                         if (value instanceof String) {
                             field.set(tObj, value);
                         } else if (value instanceof Integer || value instanceof Long || value instanceof Float || value instanceof Double) {
@@ -138,7 +138,7 @@ class HttpParseManager {
                         } else {
                             showWarn("param=" + param + "不是tring、Integer、Long、Float、Double类型，不可以转换为String类型");
                         }
-                    } else if (type.equals(Constant.FieldType.INTEGER)) {
+                    } else if (type.equals(FieldType.INTEGER)) {
                         if (value instanceof Long) {
 //                            value = ((Long) value).intValue();
                             showWarn("param=" + param + " is not Integer,is Long");
@@ -147,7 +147,7 @@ class HttpParseManager {
                         } else {
                             field.setInt(tObj, (Integer) value);
                         }
-                    } else if (type.equals(Constant.FieldType.LONG)) {
+                    } else if (type.equals(FieldType.LONG)) {
                         if (value instanceof Integer) {
 //                            value = ((Integer) value).longValue();
                             showWarn("param=" + param + " is not Long,is Integer");
@@ -156,7 +156,7 @@ class HttpParseManager {
                         } else {
                             field.setLong(tObj, (Long) value);
                         }
-                    } else if (type.equals(Constant.FieldType.FLOAT)) {
+                    } else if (type.equals(FieldType.FLOAT)) {
                         if (value instanceof Double) {
 //                            value = ((Double) value).floatValue();
                             showWarn("param=" + param + " is not Float,is Double");
@@ -165,7 +165,7 @@ class HttpParseManager {
                         } else {
                             field.setFloat(tObj, (Float) value);
                         }
-                    } else if (type.equals(Constant.FieldType.DOUBLE)) {
+                    } else if (type.equals(FieldType.DOUBLE)) {
                         if (value instanceof Float) {
 //                            value = ((Float) value).doubleValue();
                             showWarn("param=" + param + " is not Double,is Float");
@@ -174,26 +174,26 @@ class HttpParseManager {
                         } else {
                             field.setDouble(tObj, (Double) value);
                         }
-                    } else if (type.equals(Constant.FieldType.BOOLEAN)) {
+                    } else if (type.equals(FieldType.BOOLEAN)) {
                         if (!(value instanceof Boolean)) {
                             showWarn("param=" + param + " is not Boolean ");
                         } else {
                             field.setBoolean(tObj, (Boolean) value);
                         }
-                    } /*else if (type.equals(Constant.FieldType.DATE)) {
+                    } /*else if (type.equals(FieldType.DATE)) {
                         if (value instanceof String) {
                             Date date = EasyUtil.mDateFormat.parser((String) value);
                             if (date != null) {
                                 field.set(tObj, date);
                             }
                         }
-                    }*/ else if (type.contains(Constant.FieldType.MAP)) {//解析Map
+                    }*/ else if (type.contains(FieldType.MAP)) {//解析Map
                         EasyLibLog.e(TAG + "不支持Map类型");
-                    } else if (type.contains(Constant.FieldType.ARRAY)) {//解析数组
+                    } else if (type.contains(FieldType.ARRAY)) {//解析数组
                         EasyLibLog.e(TAG + "不支持数组类型");
-                    } else if (type.contains(Constant.FieldType.OBJECT)) {//解析Object通用类型
+                    } else if (type.contains(FieldType.OBJECT)) {//解析Object通用类型
                         field.set(tObj, value);
-                    } else if (type.contains(Constant.FieldType.LIST)) {//解析list
+                    } else if (type.contains(FieldType.LIST)) {//解析list
                         if (value instanceof JSONArray) {
                             String clazzName = type.substring(type.indexOf("<") + 1, type.indexOf(">"));
                             Class clazz2 = Class.forName(clazzName);
@@ -206,7 +206,7 @@ class HttpParseManager {
                         } else {
                             showError("List类型错误 :" + type);
                         }
-                    } else if (type.contains(Constant.FieldType.CLASS)) {//解析指定class
+                    } else if (type.contains(FieldType.CLASS)) {//解析指定class
                         if (field.getType() == mTopClass) {
                             showError("不能解析与类相同的变量避免死循环,param=" + param + " type=" + type);
                         } else if (value instanceof JSONObject) {

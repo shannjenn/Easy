@@ -3,7 +3,7 @@ package com.jen.easy.http;
 import android.text.TextUtils;
 
 import com.jen.easy.EasyMouse;
-import com.jen.easy.constant.Constant;
+import com.jen.easy.constant.FieldType;
 import com.jen.easy.log.EasyLibLog;
 
 import java.lang.reflect.Field;
@@ -122,13 +122,13 @@ class HttpReflectManager {
             if (key.length() == 0) {
                 key = field.getName();
             }
-            if (Constant.FieldType.isOtherField(key)) {
+            if (FieldType.isOtherField(key)) {
                 continue;
             }
             String type = field.getGenericType().toString();
             field.setAccessible(true);
             try {
-                if (type.equals(Constant.FieldType.STRING) || type.equals(Constant.FieldType.INTEGER)) {
+                if (type.equals(FieldType.STRING) || type.equals(FieldType.INTEGER)) {
                     Object value = field.get(obj);
                     if (isHead) {
                         headKeys.add(key);
@@ -137,7 +137,7 @@ class HttpReflectManager {
                         paramKeys.add(key);
                         paramValues.add(value + "");
                     }
-                } else if (type.contains(Constant.FieldType.LIST)) {
+                } else if (type.contains(FieldType.LIST)) {
                     List values = (List) field.get(obj);
                     if (values == null || values.size() <= 0) {
                         break;
@@ -226,13 +226,13 @@ class HttpReflectManager {
             if (paramName.length() == 0) {
                 paramName = field.getName();
             }
-            if (Constant.FieldType.isOtherField(paramName)) {
+            if (FieldType.isOtherField(paramName)) {
                 continue;
             }
             String type = field.getGenericType().toString();
 
             if (isHead) {
-                if (!type.equals(Constant.FieldType.STRING)) {
+                if (!type.equals(FieldType.STRING)) {
                     EasyLibLog.e(TAG + "请求头返回变量必须为String类型");
                     continue;
                 }

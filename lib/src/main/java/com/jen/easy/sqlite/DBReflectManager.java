@@ -1,7 +1,7 @@
 package com.jen.easy.sqlite;
 
 import com.jen.easy.EasyMouse;
-import com.jen.easy.constant.Constant;
+import com.jen.easy.constant.FieldType;
 import com.jen.easy.log.EasyLibLog;
 
 import java.lang.reflect.Field;
@@ -71,7 +71,7 @@ class DBReflectManager {
             if (columnName.length() == 0) {
                 columnName = field.getName();
             }
-            if (Constant.FieldType.isOtherField(columnName)) {
+            if (FieldType.isOtherField(columnName)) {
                 continue;
             }
             if (isPrimary && primaryKeys != null)

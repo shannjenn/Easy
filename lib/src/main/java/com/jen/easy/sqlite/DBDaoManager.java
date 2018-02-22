@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
-import com.jen.easy.constant.Constant;
+import com.jen.easy.constant.FieldType;
 import com.jen.easy.log.EasyLibLog;
 
 import java.lang.reflect.Field;
@@ -716,37 +716,37 @@ abstract class DBDaoManager {
                 type = field.getGenericType().toString();
 
                 switch (type) {
-                    case Constant.FieldType.STRING: {
+                    case FieldType.STRING: {
                         String value = cursor.getString(cursor.getColumnIndex(column));
                         field.set(obj, value);
                         break;
                     }
-                    case Constant.FieldType.INTEGER: {
+                    case FieldType.INTEGER: {
                         int value = cursor.getInt(cursor.getColumnIndex(column));
                         field.setInt(obj, value);
                         break;
                     }
-                    case Constant.FieldType.FLOAT: {
+                    case FieldType.FLOAT: {
                         float value = cursor.getFloat(cursor.getColumnIndex(column));
                         field.setFloat(obj, value);
                         break;
                     }
-                    case Constant.FieldType.DOUBLE: {
+                    case FieldType.DOUBLE: {
                         double value = cursor.getDouble(cursor.getColumnIndex(column));
                         field.setDouble(obj, value);
                         break;
                     }
-                    case Constant.FieldType.LONG: {
+                    case FieldType.LONG: {
                         long value = cursor.getLong(cursor.getColumnIndex(column));
                         field.setLong(obj, value);
                         break;
                     }
-                    case Constant.FieldType.BOOLEAN: {
+                    case FieldType.BOOLEAN: {
                         boolean value = cursor.getInt(cursor.getColumnIndex(column)) > 0;
                         field.setBoolean(obj, value);
                         break;
                     }
-                    /*case Constant.FieldType.DATE: {
+                    /*case FieldType.DATE: {
                         String value = cursor.getString(cursor.getColumnIndex(column));
                         Date date = EasyUtil.mDateFormat.parser(value);
                         field.set(obj, date);

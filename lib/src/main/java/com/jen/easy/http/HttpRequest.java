@@ -1,7 +1,7 @@
 package com.jen.easy.http;
 
 import com.jen.easy.EasyMouse;
-import com.jen.easy.constant.Constant;
+import com.jen.easy.constant.Unicode;
 
 /**
  * 作者：ShannJenn
@@ -40,7 +40,7 @@ abstract class HttpRequest {
         /**
          * 默认编码(默认ut-8)
          */
-        public String charset = Constant.Unicode.DEFAULT;
+        public String charset = Unicode.DEFAULT;
 
         /**
          * 是否使用caches(默认false)

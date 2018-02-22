@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.text.TextUtils;
 
-import com.jen.easy.constant.Constant;
+import com.jen.easy.constant.FieldType;
 import com.jen.easy.log.EasyLibLog;
 import com.jen.easy.sqlite.imp.DatabaseListener;
 
@@ -91,7 +91,7 @@ abstract class DBHelperManager {
         Set<String> sets = column_type.keySet();
         for (String fieldName : sets) {
             String fieldType = column_type.get(fieldName);
-            String type = Constant.FieldType.getDBColumnType(fieldType);
+            String type = FieldType.getDBColumnType(fieldType);
             if (type == null) {
                 EasyLibLog.e("创建表失败，不支持该类型：" + fieldName + " 请用@EasyMouse.DB.Column(noColumn = true)注释该变量");
                 return;
@@ -207,7 +207,7 @@ abstract class DBHelperManager {
             EasyLibLog.w(TAG + "value : " + columnName + " is exist");
             return;
         }
-        String type = Constant.FieldType.getDBColumnType(fieldType);
+        String type = FieldType.getDBColumnType(fieldType);
         if (type == null) {
             EasyLibLog.e("增加列失败，不支持该类型：" + fieldType + " 请用@EasyMouse.DB.Column(noColumn = true)注释该变量");
             return;

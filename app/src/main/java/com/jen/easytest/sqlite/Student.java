@@ -7,7 +7,7 @@ import java.util.List;
 
 @EasyMouse.DB.Table("Student")
 public class Student {
-
+    @EasyMouse.DB.Column(primaryKey = true)
     private int id;
 
     private String name;
