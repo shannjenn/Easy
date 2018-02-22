@@ -122,6 +122,9 @@ class HttpReflectManager {
             if (key.length() == 0) {
                 key = field.getName();
             }
+            if (Constant.FieldType.isOtherField(key)) {
+                continue;
+            }
             String type = field.getGenericType().toString();
             field.setAccessible(true);
             try {
@@ -222,6 +225,9 @@ class HttpReflectManager {
             }
             if (paramName.length() == 0) {
                 paramName = field.getName();
+            }
+            if (Constant.FieldType.isOtherField(paramName)) {
+                continue;
             }
             String type = field.getGenericType().toString();
 

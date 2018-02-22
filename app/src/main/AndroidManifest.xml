@@ -3,7 +3,7 @@
     package="com.jen.easytest">
 
     <application
-        android:name="com.jen.easyui.base.EasyApplication"
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/_easy_app_name"
@@ -23,6 +23,7 @@
         <activity android:name=".activity.HttpActivity" />
         <activity android:name=".activity.ImageLoaderActivity" />
         <activity android:name=".activity.DialogActivity" />
+        <activity android:name=".activity.SQLiteActivity" />
 
     </application>
 

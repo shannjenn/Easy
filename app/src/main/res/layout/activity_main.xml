@@ -39,4 +39,11 @@
         android:text="dialog"
         android:textAllCaps="false" />
 
+    <Button
+        android:id="@+id/sqlite"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:text="sqlite"
+        android:textAllCaps="false" />
+
 </LinearLayout>

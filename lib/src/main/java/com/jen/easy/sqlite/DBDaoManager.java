@@ -664,6 +664,9 @@ abstract class DBDaoManager {
                 Field field = column_field.get(column);
                 field.setAccessible(true);
                 Object value = field.get(obj);
+                if (value == null)
+                    continue;
+
                 if (value instanceof Character) {
                     values.put(column, (char) value + "");
                 } else if (value instanceof String) {
@@ -683,7 +686,7 @@ abstract class DBDaoManager {
                 } else if (value instanceof Boolean) {
                     values.put(column, (Boolean) value);
                 } else {
-                    EasyLibLog.e(TAG + "插入数据库错误提示：不支持该类型：" + value.getClass().getName());
+                    EasyLibLog.e(TAG + "插入数据库错误提示：不支持该类型：" + field.getName());
                 }
             }
         } catch (IllegalAccessException e) {

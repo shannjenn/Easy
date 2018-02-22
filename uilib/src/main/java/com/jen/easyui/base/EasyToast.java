@@ -1,5 +1,6 @@
 package com.jen.easyui.base;
 
+import android.content.Context;
 import android.widget.Toast;
 
 
@@ -12,6 +13,10 @@ public class EasyToast {
 
     public static void toast(String txt) {
         Toast.makeText(EasyApplication.getAppContext(), txt, Toast.LENGTH_SHORT).show();
+    }
+
+    public static void toast(Context context, String txt) {
+        Toast.makeText(context, txt, Toast.LENGTH_SHORT).show();
     }
 
     public static void snack() {

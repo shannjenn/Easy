@@ -2,9 +2,10 @@
 apply plugin: 'com.android.library'
 
 android {
+    signingConfigs {
+    }
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
-
     defaultConfig {
 //        applicationId "com.jen.easyui"
         minSdkVersion 17

@@ -44,6 +44,23 @@ public final class Constant {
         public static final String ARRAY = "class [L";//数组
         public static final String CLASS = "class ";//做最后判断
 
+        /**
+         * 1.$change 是Android Studio2.0的.Instant Run 的问题.
+         * 2.serialVersionUID 序列号排除
+         *
+         * @param fieldName 变量名
+         * @return
+         */
+        public static boolean isOtherField(String fieldName) {
+            switch (fieldName) {
+                case "$change":
+                case "serialVersionUID":
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
 
         /**
          * 获取表中字段类型
@@ -52,7 +69,7 @@ public final class Constant {
          * @return 表中字段类型
          */
         public static String getDBColumnType(String fieldType) {
-            String type = "TEXT";
+            String type;
             switch (fieldType) {
                 case CHAR:
                 case STRING:
@@ -71,6 +88,9 @@ public final class Constant {
                 case BOOLEAN:
                     type = "INTEGER";
                     break;
+                default:
+                    type = null;
+                    break;
                 /*case DATE:
                     type = "TEXT";
                     break;*/
@@ -82,8 +102,8 @@ public final class Constant {
 
     /*public static final class DB {
         *//**
-         * 密码
-         *//*
+     * 密码
+     *//*
         public static String PASSWORD;
     }*/
 }
