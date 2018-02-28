@@ -7,7 +7,7 @@
 
     <com.jen.easyui.button.EasyButton
         android:id="@+id/easyButon"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="20dp"
         android:paddingLeft="20dp"
@@ -20,15 +20,15 @@
         app:solid_color="#ff0000"
         app:stroke_click_color="#ff0000"
         app:stroke_color="#0000ff"
-        app:stroke_width="2dp"/>
+        app:stroke_width="2dp" />
 
     <com.jen.easyui.textview.EasyTextView
         android:id="@+id/easyTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="64dp"
         android:clickable="true"
-        android:text="EasyButton"
-        app:corners="5dp"
+        android:text="EasyTextView"
+        app:corners="20dp"
         app:solid_click_color="#0000ff"
         app:solid_color="#ff0000"
         app:stroke_click_color="#ff0000"
@@ -40,8 +40,8 @@
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:clickable="true"
-        android:text="EasyButton"
-        app:corners="5dp"
+        android:text="EasyEditText"
+        app:corners="20dp"
         app:solid_color="#ff0000"
         app:solid_focus_color="#0000ff"
         app:stroke_color="#0000ff"
@@ -53,8 +53,8 @@
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:clickable="true"
-        android:text="EasyButton"
-        app:corners="5dp"
+        android:text="EasyEditText"
+        app:corners="20dp"
         app:solid_color="#ff0000"
         app:solid_focus_color="#0000ff"
         app:stroke_color="#0000ff"
@@ -82,5 +82,47 @@
             android:background="@android:color/white"
             android:text="输入框输入框输入框输入框" />
     </com.jen.easyui.linearlayout.EasyLinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/shape_write_corners"
+        android:orientation="horizontal">
+
+        <com.jen.easyui.edittext.EasyEditText
+            android:id="@+id/seachEdit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:maxLines="1"
+            android:paddingBottom="5dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="82dp"
+            android:paddingTop="5dp"
+            android:textSize="12sp"
+            app:corners_half_round="true"
+            app:stroke_color="#B20000"
+            app:stroke_width="1dp" />
+
+        <com.jen.easyui.linearlayout.EasyLinearLayout
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:cornersShowLeft="false"
+            app:cornersShowRight="true"
+            app:corners_half_round="true"
+            app:solid_color="#B20000">
+
+            <ImageView
+                android:id="@+id/seachImg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/img_search" />
+        </com.jen.easyui.linearlayout.EasyLinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>

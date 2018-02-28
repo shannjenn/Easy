@@ -2,6 +2,7 @@ package com.jen.easyui.button;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.ColorInt;
@@ -129,11 +130,30 @@ abstract class EasyButtonManager extends android.support.v7.widget.AppCompatButt
         }
     }
 
+    private int measureHeight(int measureSpec) {
+        int result;
+        int specMode = MeasureSpec.getMode(measureSpec);
+        int specSize = MeasureSpec.getSize(measureSpec);
+
+        Paint paint = getPaint();
+        int ascent = (int) paint.ascent();
+        if (specMode == MeasureSpec.EXACTLY) {
+            result = specSize;
+        } else {
+            result = (int) (-ascent + paint.descent()) + getPaddingTop() + getPaddingBottom();
+            if (specMode == MeasureSpec.AT_MOST) {
+                result = Math.min(result, specSize);
+            }
+        }
+        return result;
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         if (mHeight == 0) {
-            mHeight = getHeight();
+//            mHeight = getMeasuredHeight();
+            mHeight = measureHeight(heightMeasureSpec);
             setHalfRound();
         }
     }

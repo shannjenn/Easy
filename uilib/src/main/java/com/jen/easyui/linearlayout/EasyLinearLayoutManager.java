@@ -124,11 +124,28 @@ abstract class EasyLinearLayoutManager extends LinearLayout {
         }
     }
 
+    private int measureHeight(int measureSpec) {
+        int result;
+        int specMode = MeasureSpec.getMode(measureSpec);
+        int specSize = MeasureSpec.getSize(measureSpec);
+
+        if (specMode == MeasureSpec.EXACTLY) {
+            result = specSize;
+        } else {
+            result =  getPaddingTop() + getPaddingBottom();
+            if (specMode == MeasureSpec.AT_MOST) {
+                result = Math.min(result, specSize);
+            }
+        }
+        return result;
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         if (mHeight == 0) {
-            mHeight = getHeight();
+//            mHeight = getMeasuredHeight();
+            mHeight = measureHeight(heightMeasureSpec);
             setHalfRound();
         }
     }
