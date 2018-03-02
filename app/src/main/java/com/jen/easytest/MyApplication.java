@@ -41,7 +41,6 @@ public class MyApplication extends Application {
         EasyMain.mHttp = new Http(5);
 
         ImageLoaderConfig config = new ImageLoaderConfig(this)
-                .httpMaxThread(5)
                 .imgHeight(1024)
                 .imgWidth(1024)
                 .defaultImage(getResources().getDrawable(R.mipmap.ic_launcher))

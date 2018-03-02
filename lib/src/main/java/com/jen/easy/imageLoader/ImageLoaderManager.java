@@ -31,31 +31,49 @@ import java.util.concurrent.Executors;
  */
 
 abstract class ImageLoaderManager {
-    private static LruCache<String, Bitmap> mImageCache;//图片缓存
-    //    private static Map<String, Bitmap> mImageCache;
-    private static List<String> mDownloadingUrl = new ArrayList<>();
-    private static Map<ImageView, String> mImageViewCache = new HashMap<>();//key:,ImageView:imageUrl缓存
-    private static ExecutorService mExecutorService;
-    private static Http mHttp;
-    private static HttpDownloadRequest mHttpRequest = new HttpDownloadRequest();//网络获取图片请求参数
-    private static final int H_IMAGE = 100;
-    private static final int H_IMAGE_EMPTY = 101;
-    private static ImageLoaderConfig config;
-    private static Handler mHandler = new Handler(Looper.getMainLooper()) {
+    private LruCache<String, Bitmap> mImageCache;//图片缓存
+    private List<String> mDownloadingUrl = new ArrayList<>();
+    private Map<ImageView, String> mImageViewCache = new HashMap<>();//key:,ImageView:imageUrl缓存
+    private ExecutorService mExecutorService;
+    private Http mHttp;
+    private final int H_IMAGE = 100;
+    private final int H_IMAGE_EMPTY = 101;
+    private ImageLoaderConfig config;
+    private Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            runHandler(msg);
+        }
+    };
+
+    private void setImageView(final ImageView imageView) {
+        Message message = new Message();
+        message.what = H_IMAGE;
+        message.obj = imageView;
+        mHandler.sendMessage(message);
+    }
+
+    private void setImageViewEmpty(ImageView imageView) {
+        Message message = new Message();
+        message.what = H_IMAGE_EMPTY;
+        message.obj = imageView;
+        mHandler.sendMessage(message);
+    }
+
+    private void runHandler(Message msg) {
+        synchronized (this) {
             switch (msg.what) {
                 case H_IMAGE: {
                     ImageView imageView = (ImageView) msg.obj;
                     if (imageView == null) {
                         mImageViewCache.remove(null);
-                        EasyLog.w(TAG.EasyImageLoader,"Handler imageView 为空---");
+                        EasyLog.w(TAG.EasyImageLoader, "Handler imageView 为空---");
                         return;
                     }
                     String imageUrl = mImageViewCache.remove(imageView);
                     if (imageUrl == null) {
-                        EasyLog.w(TAG.EasyImageLoader,"Handler imageUrl 为空---");
+                        EasyLog.w(TAG.EasyImageLoader, "Handler imageUrl 为空---");
                         return;
                     }
                     Bitmap bitmap = mImageCache.get(imageUrl);
@@ -69,7 +87,7 @@ abstract class ImageLoaderManager {
                 case H_IMAGE_EMPTY: {
                     ImageView imageView = (ImageView) msg.obj;
                     if (imageView == null) {
-                        EasyLog.w(TAG.EasyImageLoader,"imageView 为空---");
+                        EasyLog.w(TAG.EasyImageLoader, "imageView 为空---");
                         return;
                     }
                     imageView.setImageDrawable(config.getDefaultImage());
@@ -81,59 +99,26 @@ abstract class ImageLoaderManager {
                 }
             }
         }
-    };
-
-    private synchronized static void setImageView(final ImageView imageView) {
-        Message message = new Message();
-        message.what = H_IMAGE;
-        message.obj = imageView;
-        mHandler.sendMessage(message);
-
-        /*mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                String imageUrl = mImageViewCache.remove(imageView);
-                if (imageUrl == null) {
-                    EasyLog.w(TAG.EasyImageLoader,"Handler imageUrl 为空---");
-                    return;
-                }
-                Bitmap bitmap = mImageCache.get(imageUrl);
-                if (bitmap != null) {
-                    imageView.setImageBitmap(bitmap);
-                } else {
-                    setImage(imageUrl, imageView);
-                }
-            }
-        });*/
-    }
-
-    private synchronized static void setImageViewEmpty(ImageView imageView) {
-        Message message = new Message();
-        message.what = H_IMAGE_EMPTY;
-        message.obj = imageView;
-        mHandler.sendMessage(message);
     }
 
     protected ImageLoaderManager() {
     }
 
-    public synchronized static void init(ImageLoaderConfig builder) {
+    protected void init(ImageLoaderConfig builder) {
         config = builder;
-        int httThreadSize = 3;
-        mHttp = new Http(httThreadSize);
-//        mExecutorService = Executors.newFixedThreadPool(builder.getHttpMaxThread());
-        mExecutorService = Executors.newFixedThreadPool(1);
+        mHttp = new Http(builder.getHttpMaxThread());
+        mExecutorService = Executors.newFixedThreadPool(builder.getHttpMaxThread());
         int maxMemory = (int) Runtime.getRuntime().maxMemory();
         int cacheSize = maxMemory / 8;
         mImageCache = new LruCache<String, Bitmap>(cacheSize) {
             @Override
             protected int sizeOf(String key, Bitmap value) {
-                return 1;
+                return value.getByteCount();
             }
         };
     }
 
-    public synchronized static void setImage(final String imageUrl, final ImageView imageView, final int width, final int height) {
+    protected void setImage(final String imageUrl, final ImageView imageView, final int width, final int height) {
         mExecutorService.submit(new Runnable() {
             public void run() {
                 if (imageView == null) {
@@ -168,11 +153,11 @@ abstract class ImageLoaderManager {
         });
     }
 
-    public synchronized static void setImage(String imageUrl, ImageView imageView) {
+    protected void setImage(String imageUrl, ImageView imageView) {
         setImage(imageUrl, imageView, config.getImgWidth(), config.getImgHeight());
     }
 
-    private synchronized static boolean getFromCache(String imageUrl, ImageView imageView) {
+    private boolean getFromCache(String imageUrl, ImageView imageView) {
         EasyLog.d(TAG.EasyImageLoader, "getFromCache-----");
         Bitmap bitmap = mImageCache.get(imageUrl);
         if (bitmap == null) {
@@ -191,7 +176,7 @@ abstract class ImageLoaderManager {
      * @return
      * @smallRate 压缩比例
      */
-    private synchronized static boolean getFromSDCard(int picWidth, int picHeight, String imageUrl, ImageView imageView) {
+    private boolean getFromSDCard(int picWidth, int picHeight, String imageUrl, ImageView imageView) {
         EasyLog.d(TAG.EasyImageLoader, "getFromSDCard-----");
         String name = urlChangeToName(imageUrl);
         final String filePath = config.getLocalPath() + File.separator + name;
@@ -236,17 +221,18 @@ abstract class ImageLoaderManager {
      *
      * @param imageUrl 图片地址
      */
-    private synchronized static void getFromHttp(String imageUrl) {
+    private void getFromHttp(String imageUrl) {
         EasyLog.d(TAG.EasyImageLoader, "getFromHttp-----");
         mDownloadingUrl.add(imageUrl);
         String name = urlChangeToName(imageUrl);
         String filePath = config.getLocalPath() + File.separator + name;
-        mHttpRequest.httpParam.url = imageUrl;
-        mHttpRequest.httpParam.timeout = config.getTimeOut();
-        mHttpRequest.flag.filePath = filePath;
-        mHttpRequest.flag.str = imageUrl;
-        mHttpRequest.setDownloadListener(mHttpListener);
-        mHttp.start(mHttpRequest);
+        HttpDownloadRequest request = new HttpDownloadRequest();//网络获取图片请求参数
+        request.httpParam.url = imageUrl;
+        request.httpParam.timeout = config.getTimeOut();
+        request.flag.filePath = filePath;
+        request.flag.str = imageUrl;
+        request.setDownloadListener(mHttpListener);
+        mHttp.start(request);
     }
 
     /**
@@ -255,7 +241,7 @@ abstract class ImageLoaderManager {
      * @param imageUrl 图片地址
      * @return
      */
-    private synchronized static String urlChangeToName(String imageUrl) {
+    private String urlChangeToName(String imageUrl) {
         String name = imageUrl;
         if (name.length() > config.getNameMaxLen()) {
             name = name.substring(name.length() - config.getNameMaxLen(), name.length());
@@ -265,7 +251,7 @@ abstract class ImageLoaderManager {
         return name;
     }
 
-    private static HttpDownloadListener mHttpListener = new HttpDownloadListener() {
+    private HttpDownloadListener mHttpListener = new HttpDownloadListener() {
         @Override
         public void success(int flagCode, final String imageUrl, String filePath) {
             EasyLog.d(TAG.EasyImageLoader, "图片下载成功-----");
@@ -290,7 +276,7 @@ abstract class ImageLoaderManager {
 
         @Override
         public void progress(int flagCode, String flag, long currentPoint, long endPoint) {
-
+            EasyLog.d(TAG.EasyImageLoader, "flag = " + flag + " currentPoint = " + currentPoint + " endPoint=" + endPoint);
         }
     };
 

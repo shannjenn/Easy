@@ -24,9 +24,9 @@ public class ImageLoaderConfig {
     private final int nameMaxLen = 100;//保存文件名最长长度
     private Drawable defaultImage;//默认图片
     private int imgHeight = 300, imgWidth = 300;//默认高宽
-    private int httpMaxThread = 4;//默认三个线程
+    private final int httpMaxThread = 5;//默认三个线程
     private int timeOut = 5000;//默认超时毫秒
-    private Bitmap.Config bitmapConfig;
+    private Bitmap.Config bitmapConfig;//图片配置
 
     public ImageLoaderConfig(Application context) {
         this.context = context;
@@ -34,7 +34,7 @@ public class ImageLoaderConfig {
 
     public ImageLoaderConfig build() {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {// 优先保存到SD卡中
-            localPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "cEasyImageLoaderCache";
+            localPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + ".EasyImageLoaderCache";
             File file = new File(localPath);
             if (!file.exists()) {
                 boolean result = file.mkdirs();
@@ -43,7 +43,7 @@ public class ImageLoaderConfig {
                 }
             }
         } else if (localPath == null) {
-            localPath = context.getFilesDir().getAbsolutePath() + File.separator + "EasyImageLoaderCache";
+            localPath = context.getFilesDir().getAbsolutePath() + File.separator + ".EasyImageLoaderCache";
             File file = new File(localPath);
             if (!file.exists()) {
                 boolean result = file.mkdirs();
@@ -76,12 +76,12 @@ public class ImageLoaderConfig {
         return this;
     }
 
-    public ImageLoaderConfig httpMaxThread(int httpMaxThread) {
+    /*public ImageLoaderConfig httpMaxThread(int httpMaxThread) {
         if (httpMaxThread > 0) {
             this.httpMaxThread = httpMaxThread;
         }
         return this;
-    }
+    }*/
 
     public ImageLoaderConfig bitmapConfig(Bitmap.Config bitmapConfig) {
         this.bitmapConfig = bitmapConfig;

@@ -1,5 +1,7 @@
 package com.jen.easy.imageLoader;
 
+import android.widget.ImageView;
+
 /**
  * 图片加载工具
  * 作者：ShannJenn
@@ -27,8 +29,8 @@ public class ImageLoader extends ImageLoaderManager {
 
 
 
-    /*@Override
-    public synchronized static void init(ImageLoaderConfig config) {
+    @Override
+    public void init(ImageLoaderConfig config) {
         super.init(config);
     }
 
@@ -40,5 +42,5 @@ public class ImageLoader extends ImageLoaderManager {
     @Override
     public void setImage(String imageUrl, ImageView imageView) {
         super.setImage(imageUrl, imageView);
-    }*/
+    }
 }
