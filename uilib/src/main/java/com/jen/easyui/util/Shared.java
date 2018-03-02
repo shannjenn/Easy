@@ -1,4 +1,4 @@
-package com.jen.easy.share;
+package com.jen.easyui.util;
 
 import android.content.Context;
 

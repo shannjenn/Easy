@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jen.easy.log.EasyUILog;
+import com.jen.easy.log.EasyLog;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ abstract class EasyRecyclerAdapterManager<T> extends EasyRecyclerBaseAdapterMana
         int layout = onBindLayout();
         View view = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
         if (view == null) {
-            EasyUILog.e("找不到该值对应item布局R.layout.id：" + layout);
+            EasyLog.w("找不到该值对应item布局R.layout.id：" + layout);
             return null;
         }
         return new EasyHolder(view);

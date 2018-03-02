@@ -7,7 +7,8 @@ import android.database.sqlite.SQLiteException;
 import android.text.TextUtils;
 
 import com.jen.easy.constant.FieldType;
-import com.jen.easy.log.EasyLibLog;
+import com.jen.easy.constant.TAG;
+import com.jen.easy.log.EasyLog;
 import com.jen.easy.sqlite.imp.DatabaseListener;
 
 import java.util.ArrayList;
@@ -17,7 +18,6 @@ import java.util.Map;
 import java.util.Set;
 
 abstract class DBHelperManager {
-    private final String TAG = "DBHelperManager : ";
     private Database database;
 
     DBHelperManager(Context context) {
@@ -38,7 +38,7 @@ abstract class DBHelperManager {
             return database.getReadableDatabase();
         } catch (SQLiteCantOpenDatabaseException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "SQLiteCantOpenDatabaseException");
+            EasyLog.w(TAG.EasySQL, "SQLiteCantOpenDatabaseException");
             return null;
         }
     }
@@ -51,7 +51,7 @@ abstract class DBHelperManager {
             return database.getWritableDatabase();
         } catch (SQLiteCantOpenDatabaseException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "SQLiteCantOpenDatabaseException");
+            EasyLog.w(TAG.EasySQL, "SQLiteCantOpenDatabaseException");
             return null;
         }
     }
@@ -63,12 +63,12 @@ abstract class DBHelperManager {
      */
     protected void createTB(Class clazz) {
         if (clazz == null) {
-            EasyLibLog.w(TAG + "createTB error:classObj is null");
+            EasyLog.w(TAG.EasySQL, "createTB error:classObj is null");
             return;
         }
         String tableName = DBReflectManager.getTableName(clazz);
         if (tableName == null) {
-            EasyLibLog.w(TAG + "createTB error:tableName is null");
+            EasyLog.w(TAG.EasySQL, "createTB error:tableName is null");
             return;
         }
         /*boolean existTB = database.checkTableExist(db, tableName);
@@ -81,7 +81,7 @@ abstract class DBHelperManager {
         DBReflectManager.getColumnNames(clazz, primaryKey, column_type, null);
 
         if (column_type.size() == 0) {
-            EasyLibLog.w(TAG + "createTB error:column is null");
+            EasyLog.w(TAG.EasySQL, "createTB error:column is null");
             return;
         }
 
@@ -93,7 +93,7 @@ abstract class DBHelperManager {
             String fieldType = column_type.get(fieldName);
             String type = FieldType.getDBColumnType(fieldType);
             if (type == null) {
-                EasyLibLog.e("创建表失败，不支持该类型：" + fieldName + " 请用@EasyMouse.DB.Column(noColumn = true)注释该变量");
+                EasyLog.w("创建表失败，不支持该类型：" + fieldName + " 请用@EasyMouse.DB.Column(noColumn = true)注释该变量");
                 return;
             }
 
@@ -132,9 +132,9 @@ abstract class DBHelperManager {
             db.beginTransaction();
             db.execSQL(sql);
             db.setTransactionSuccessful();
-            EasyLibLog.d("创建表:" + tableName + " 列明:" + fieldSql + " 主键:" + primaryKeySql + " 成功");
+            EasyLog.d("创建表:" + tableName + " 列明:" + fieldSql + " 主键:" + primaryKeySql + " 成功");
         } catch (SQLiteException e) {
-            EasyLibLog.e("创建表：" + tableName + " 失败  SQLiteException");
+            EasyLog.w("创建表：" + tableName + " 失败  SQLiteException");
             e.printStackTrace();
         } finally {
             db.endTransaction();
@@ -156,10 +156,10 @@ abstract class DBHelperManager {
             db.beginTransaction();
             db.execSQL("deleteTB DROP TABLE " + tableName);
             db.setTransactionSuccessful();
-            EasyLibLog.d("删除表: " + tableName + " 成功");
+            EasyLog.d("删除表: " + tableName + " 成功");
             return true;
         } catch (SQLiteException e) {
-            EasyLibLog.d("删除表: " + tableName + " 失败 SQLiteException");
+            EasyLog.d("删除表: " + tableName + " 失败 SQLiteException");
             e.printStackTrace();
         } finally {
             db.endTransaction();
@@ -199,26 +199,26 @@ abstract class DBHelperManager {
         SQLiteDatabase db = getWriteDatabase();
         boolean existTB = database.checkTableExist(db, tableName);
         if (!existTB) {
-            EasyLibLog.w(TAG + "table : " + tableName + " is not exist");
+            EasyLog.w(TAG.EasySQL, "table : " + tableName + " is not exist");
             return;
         }
         boolean existColumn = database.checkColumnExist(db, tableName, columnName);
         if (existColumn) {
-            EasyLibLog.w(TAG + "value : " + columnName + " is exist");
+            EasyLog.w(TAG.EasySQL, "value : " + columnName + " is exist");
             return;
         }
         String type = FieldType.getDBColumnType(fieldType);
         if (type == null) {
-            EasyLibLog.e("增加列失败，不支持该类型：" + fieldType + " 请用@EasyMouse.DB.Column(noColumn = true)注释该变量");
+            EasyLog.w("增加列失败，不支持该类型：" + fieldType + " 请用@EasyMouse.DB.Column(noColumn = true)注释该变量");
             return;
         }
         try {
             db.beginTransaction();
             db.execSQL("alter table " + tableName + " add " + columnName + type);
             db.setTransactionSuccessful();
-            EasyLibLog.d("add table name : " + tableName + " column : " + columnName + " SUCCESS");
+            EasyLog.d("add table name : " + tableName + " column : " + columnName + " SUCCESS");
         } catch (SQLiteException e) {
-            EasyLibLog.w(TAG + "addColumn SQLiteException");
+            EasyLog.w(TAG.EasySQL, "addColumn SQLiteException");
             e.printStackTrace();
         } finally {
             db.endTransaction();

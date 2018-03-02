@@ -6,7 +6,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 
-import com.jen.easy.log.EasyUILog;
+import com.jen.easy.constant.TAG;
+import com.jen.easy.log.EasyLog;
 
 import java.io.File;
 
@@ -17,7 +18,6 @@ import java.io.File;
  */
 
 public class ImageLoaderConfig {
-    private final String TAG = "ImageLoaderConfig";
     private Context context;
 
     private String localPath;//本地缓存目录
@@ -39,7 +39,7 @@ public class ImageLoaderConfig {
             if (!file.exists()) {
                 boolean result = file.mkdirs();
                 if (!result) {
-                    EasyUILog.e(TAG + "创建图片缓存目录失败1");
+                    EasyLog.w(TAG.EasyImageLoader, "创建图片缓存目录失败1");
                 }
             }
         } else if (localPath == null) {
@@ -48,7 +48,7 @@ public class ImageLoaderConfig {
             if (!file.exists()) {
                 boolean result = file.mkdirs();
                 if (!result) {
-                    EasyUILog.e(TAG + "创建图片缓存目录失败2");
+                    EasyLog.w(TAG.EasyImageLoader, "创建图片缓存目录失败2");
                 }
             }
         }

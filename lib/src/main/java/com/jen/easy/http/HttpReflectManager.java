@@ -4,7 +4,8 @@ import android.text.TextUtils;
 
 import com.jen.easy.EasyMouse;
 import com.jen.easy.constant.FieldType;
-import com.jen.easy.log.EasyLibLog;
+import com.jen.easy.constant.TAG;
+import com.jen.easy.log.EasyLog;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -16,7 +17,6 @@ import java.util.Map;
  */
 
 class HttpReflectManager {
-    private final static String TAG = "HttpReflectManager : ";
 
     /**
      * 获取请求信息
@@ -26,7 +26,7 @@ class HttpReflectManager {
     static Object[] getUrl(HttpRequest request) {
         Object[] values = new Object[3];
         if (request == null) {
-            EasyLibLog.e(TAG + "getTableName obj is null");
+            EasyLog.w(TAG.EasyHttp, "getTableName obj is null");
             return values;
         }
 
@@ -77,7 +77,7 @@ class HttpReflectManager {
     static void getRequestParams(Object obj, List<String> paramKeys, List<String> paramValues, List<String> headKeys, List<String> headValues) {
 
         if (obj == null || obj instanceof Class) {
-            EasyLibLog.e(TAG + "getRequestParams getRequestParams obj is null");
+            EasyLog.w(TAG.EasyHttp, "getRequestParams getRequestParams obj is null");
             return;
         }
 
@@ -156,15 +156,15 @@ class HttpReflectManager {
                                 paramValues.add(value + "");
                             }
                         } else {
-                            EasyLibLog.e(TAG + "不支持该类型（001）：" + field.getName());
+                            EasyLog.w(TAG.EasyHttp, "不支持该类型（001）：" + field.getName());
                         }
                     }
                 } else {
-                    EasyLibLog.e(TAG + "不支持该类型（002）：" + field.getName());
+                    EasyLog.w(TAG.EasyHttp, "不支持该类型（002）：" + field.getName());
                 }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
-                EasyLibLog.e(TAG + "getRequestParams IllegalAccessException");
+                EasyLog.w(TAG.EasyHttp, "getRequestParams IllegalAccessException");
             }
         }
     }
@@ -179,7 +179,7 @@ class HttpReflectManager {
      */
     static void getResponseParams(Class clazz, Map<String, String> param_type, Map<String, Field> param_field, Map<String, Field> head_field) {
         if (clazz == null) {
-            EasyLibLog.e(TAG + "getResponseParams clazz is not null");
+            EasyLog.w(TAG.EasyHttp, "getResponseParams clazz is not null");
             return;
         }
 
@@ -233,7 +233,7 @@ class HttpReflectManager {
 
             if (isHead) {
                 if (!type.equals(FieldType.STRING)) {
-                    EasyLibLog.e(TAG + "请求头返回变量必须为String类型");
+                    EasyLog.w(TAG.EasyHttp, "请求头返回变量必须为String类型");
                     continue;
                 }
                 head_field.put(paramName, field);

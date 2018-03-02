@@ -2,7 +2,7 @@ package com.jen.easyui.util;
 
 import android.util.Base64;
 
-import com.jen.easy.log.EasyUILog;
+import com.jen.easy.log.EasyLog;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -17,7 +17,7 @@ import java.util.List;
  */
 
 abstract class StringToListManager {
-    private final String TAG = "StringToListManager : ";
+    private final String TAG = "StringToListManager";
     private String unicode = "utf-8";
 
     protected void setUnicode(String unicode) {
@@ -33,7 +33,7 @@ abstract class StringToListManager {
             objectOutputStream.close();
             return str;
         } catch (IOException e) {
-            EasyUILog.e(TAG + "list2String IOException");
+            EasyLog.w(TAG, "list2String IOException");
             e.printStackTrace();
         }
         return null;
@@ -49,10 +49,10 @@ abstract class StringToListManager {
             objectInputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
-            EasyUILog.e(TAG + "string2List IOException");
+            EasyLog.w(TAG, "string2List IOException");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            EasyUILog.e(TAG + "string2List ClassNotFoundException");
+            EasyLog.w(TAG, "string2List ClassNotFoundException");
         }
         return list;
     }
@@ -66,7 +66,7 @@ abstract class StringToListManager {
             objectOutputStream.close();
             return str;
         } catch (IOException e) {
-            EasyUILog.e(TAG + "object2String IOException");
+            EasyLog.w(TAG, "object2String IOException");
             e.printStackTrace();
         }
         return null;
@@ -83,10 +83,10 @@ abstract class StringToListManager {
             return obj;
         } catch (IOException e) {
             e.printStackTrace();
-            EasyUILog.e(TAG + "string2Object IOException");
+            EasyLog.w(TAG, "string2Object IOException");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            EasyUILog.e(TAG + "string2Object ClassNotFoundException");
+            EasyLog.w(TAG, "string2Object ClassNotFoundException");
         }
         return null;
     }

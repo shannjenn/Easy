@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jen.easy.log.EasyUILog;
+import com.jen.easy.log.EasyLog;
 import com.jen.easyui.util.EasyDensityUtil;
 
 import java.util.HashMap;
@@ -57,19 +57,19 @@ abstract class EasyTreeRecyclerAdapterManager<T extends EasyTreeItem> extends Ea
         boolean isSameView = isSameView();
         int[] layouts = onBindLayout();
         if (layouts == null) {
-            EasyUILog.e("布局为空");
+            EasyLog.w("布局为空");
             return null;
         }
         if (isSameView) {
             level = 0;
         }
         if (level < 0 || layouts.length <= level) {
-            EasyUILog.e("viewType：" + level + "错误");
+            EasyLog.w("viewType：" + level + "错误");
             return null;
         }
         View view = LayoutInflater.from(parent.getContext()).inflate(layouts[level], parent, false);
         if (view == null) {
-            EasyUILog.e("找不到该值对应item布局R.layout.id：" + layouts[level]);
+            EasyLog.w("找不到该值对应item布局R.layout.id：" + layouts[level]);
             return null;
         }
         return new EasyHolder(view);

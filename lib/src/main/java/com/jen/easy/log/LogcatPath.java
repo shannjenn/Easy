@@ -3,6 +3,8 @@ package com.jen.easy.log;
 import android.content.Context;
 import android.os.Environment;
 
+import com.jen.easy.constant.TAG;
+
 import java.io.File;
 
 class LogcatPath {
@@ -31,14 +33,14 @@ class LogcatPath {
 
     static void setLogPath(String logPath) {
         if (logPath == null) {
-            EasyLibLog.w("设置的日志路径不能为空：");
+            EasyLog.w(TAG.EasyLogcat,"设置的日志路径不能为空：");
             return;
         }
         File file = new File(logPath);
         if (!file.exists()) {
             boolean ret = file.mkdirs();
             if (!ret) {
-                EasyLibLog.w("设置的日志路径不正确：" + logPath);
+                EasyLog.w(TAG.EasyLogcat,"设置的日志路径不正确：" + logPath);
                 return;
             }
         }

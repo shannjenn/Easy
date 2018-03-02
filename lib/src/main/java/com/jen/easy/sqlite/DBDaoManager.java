@@ -8,7 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
 import com.jen.easy.constant.FieldType;
-import com.jen.easy.log.EasyLibLog;
+import com.jen.easy.constant.TAG;
+import com.jen.easy.log.EasyLog;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -24,7 +25,6 @@ import java.util.Set;
  */
 
 abstract class DBDaoManager {
-    private final String TAG = "DBDaoManager : ";
     private Database database;
 
     DBDaoManager(Context context) {
@@ -39,12 +39,12 @@ abstract class DBDaoManager {
      */
     protected <T> T searchById(Class<T> clazz, String id) {
         if (clazz == null || id == null) {
-            EasyLibLog.e(TAG + "searchById clazz is null or id is null");
+            EasyLog.w(TAG.EasySQL,"searchById clazz is null or id is null");
             return null;
         }
         String tableName = DBReflectManager.getTableName(clazz);
         if (tableName == null) {
-            EasyLibLog.e(TAG + "searchById tableName is null");
+            EasyLog.w(TAG.EasySQL,"searchById tableName is null");
             return null;
         }
         List<String> primaryKeys = new ArrayList<>();
@@ -52,7 +52,7 @@ abstract class DBDaoManager {
         DBReflectManager.getColumnNames(clazz, primaryKeys, null, column_field);
 
         if (primaryKeys.size() == 0) {
-            EasyLibLog.e(TAG + "searchById primaryKey is null");
+            EasyLog.w(TAG.EasySQL,"searchById primaryKey is null");
             return null;
         }
 
@@ -61,7 +61,7 @@ abstract class DBDaoManager {
             db = database.getReadableDatabase();
         } catch (SQLiteCantOpenDatabaseException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "SQLiteCantOpenDatabaseException");
+            EasyLog.w(TAG.EasySQL,"SQLiteCantOpenDatabaseException");
             return null;
         }
         try {
@@ -78,7 +78,7 @@ abstract class DBDaoManager {
             return obj;
         } catch (SQLiteException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "SQLiteException");
+            EasyLog.w(TAG.EasySQL,"SQLiteException");
         } finally {
             db.close();
         }
@@ -100,12 +100,12 @@ abstract class DBDaoManager {
     protected <T> List<T> searchByWhere(Class<T> clazz, String selection, String[] selectionArgs, String orderBy, int page, int pageNo) {
         List<T> objs = new ArrayList<>();
         if (clazz == null) {
-            EasyLibLog.e(TAG + "searchByWhere clazz is null or id is null");
+            EasyLog.w(TAG.EasySQL,"searchByWhere clazz is null or id is null");
             return objs;
         }
         String tableName = DBReflectManager.getTableName(clazz);
         if (tableName == null) {
-            EasyLibLog.e(TAG + "searchByWhere tableName is null");
+            EasyLog.w(TAG.EasySQL,"searchByWhere tableName is null");
             return objs;
         }
         Map<String, Field> column_field = new HashMap<>();
@@ -123,7 +123,7 @@ abstract class DBDaoManager {
             db = database.getReadableDatabase();
         } catch (SQLiteCantOpenDatabaseException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "SQLiteCantOpenDatabaseException");
+            EasyLog.w(TAG.EasySQL,"SQLiteCantOpenDatabaseException");
             return objs;
         }
         try {
@@ -140,7 +140,7 @@ abstract class DBDaoManager {
             db.close();
         } catch (SQLiteException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "SQLiteException");
+            EasyLog.w(TAG.EasySQL,"SQLiteException");
         } finally {
             db.close();
         }
@@ -194,7 +194,7 @@ abstract class DBDaoManager {
      */
     protected <T> boolean insert(T t) {
         if (t == null || t instanceof Class) {
-            EasyLibLog.e(TAG + "insert obj is null");
+            EasyLog.w(TAG.EasySQL,"insert obj is null");
             return false;
         }
         SQLiteDatabase db;
@@ -202,7 +202,7 @@ abstract class DBDaoManager {
             db = database.getWritableDatabase();
         } catch (SQLiteCantOpenDatabaseException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "SQLiteCantOpenDatabaseException");
+            EasyLog.w(TAG.EasySQL,"SQLiteCantOpenDatabaseException");
             return false;
         }
         try {
@@ -210,12 +210,12 @@ abstract class DBDaoManager {
             if (t instanceof List) {
                 List list = (List) t;
                 if (list.size() <= 0) {
-                    EasyLibLog.e(TAG + "insert 插入数据为空");
+                    EasyLog.w(TAG.EasySQL,"insert 插入数据为空");
                     return false;
                 }
                 String tableName = DBReflectManager.getTableName(list.get(0).getClass());
                 if (tableName == null) {
-                    EasyLibLog.e(TAG + "insert 插入表名为空，请检查是否已经注释表名");
+                    EasyLog.w(TAG.EasySQL,"insert 插入表名为空，请检查是否已经注释表名");
                     return false;
                 }
                 Map<String, Field> column_field = new HashMap<>();
@@ -229,12 +229,12 @@ abstract class DBDaoManager {
             } else if (t instanceof Object[]) {
                 Object[] objects = (Object[]) t;
                 if (objects.length <= 0) {
-                    EasyLibLog.e(TAG + "insert 数据为空");
+                    EasyLog.w(TAG.EasySQL,"insert 数据为空");
                     return false;
                 }
                 String tableName = DBReflectManager.getTableName(objects[0].getClass());
                 if (tableName == null) {
-                    EasyLibLog.e(TAG + "insert 插入表名为空，请检查是否已经注释表名");
+                    EasyLog.w(TAG.EasySQL,"insert 插入表名为空，请检查是否已经注释表名");
                     return false;
                 }
                 Map<String, Field> column_field = new HashMap<>();
@@ -248,7 +248,7 @@ abstract class DBDaoManager {
             } else if (t instanceof Map) {
                 Map map = (Map) t;
                 if (map.size() <= 0) {
-                    EasyLibLog.e(TAG + "insert 数据为空");
+                    EasyLog.w(TAG.EasySQL,"insert 数据为空");
                     return false;
                 }
                 Object[] collection = map.values().toArray();
@@ -256,7 +256,7 @@ abstract class DBDaoManager {
                 Map<String, Field> column_field = new HashMap<>();
                 DBReflectManager.getColumnNames(collection[0].getClass(), null, null, column_field);
                 if (tableName == null) {
-                    EasyLibLog.e(TAG + "insert 插入表名为空，请检查是否已经注释表明");
+                    EasyLog.w(TAG.EasySQL,"insert 插入表名为空，请检查是否已经注释表明");
                     return false;
                 }
 
@@ -267,7 +267,7 @@ abstract class DBDaoManager {
             } else {
                 String tableName = DBReflectManager.getTableName(t.getClass());
                 if (tableName == null) {
-                    EasyLibLog.e(TAG + "insert 插入表名为空，请检查是否已经注释表明");
+                    EasyLog.w(TAG.EasySQL,"insert 插入表名为空，请检查是否已经注释表明");
                     return false;
                 }
                 Map<String, Field> column_field = new HashMap<>();
@@ -279,7 +279,7 @@ abstract class DBDaoManager {
             return true;
         } catch (SQLiteException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "insert SQLiteException");
+            EasyLog.w(TAG.EasySQL,"insert SQLiteException");
         } finally {
             db.endTransaction();
             db.close();
@@ -296,7 +296,7 @@ abstract class DBDaoManager {
      */
     protected <T> boolean replace(T t) {
         if (t == null || t instanceof Class) {
-            EasyLibLog.e(TAG + "replace obj is null");
+            EasyLog.w(TAG.EasySQL,"replace obj is null");
             return false;
         }
         SQLiteDatabase db;
@@ -304,7 +304,7 @@ abstract class DBDaoManager {
             db = database.getWritableDatabase();
         } catch (SQLiteCantOpenDatabaseException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "SQLiteCantOpenDatabaseException");
+            EasyLog.w(TAG.EasySQL,"SQLiteCantOpenDatabaseException");
             return false;
         }
         try {
@@ -312,12 +312,12 @@ abstract class DBDaoManager {
             if (t instanceof List) {
                 List list = (List) t;
                 if (list.size() <= 0) {
-                    EasyLibLog.e(TAG + "replace 数据为空");
+                    EasyLog.w(TAG.EasySQL,"replace 数据为空");
                     return false;
                 }
                 String tableName = DBReflectManager.getTableName(list.get(0).getClass());
                 if (tableName == null) {
-                    EasyLibLog.e(TAG + "replace 插入表名为空，请检查是否已经注释表明");
+                    EasyLog.w(TAG.EasySQL,"replace 插入表名为空，请检查是否已经注释表明");
                     return false;
                 }
                 Map<String, Field> column_field = new HashMap<>();
@@ -330,12 +330,12 @@ abstract class DBDaoManager {
             } else if (t instanceof Object[]) {
                 Object[] objs = (Object[]) t;
                 if (objs.length <= 0) {
-                    EasyLibLog.e(TAG + "replace 数据为空");
+                    EasyLog.w(TAG.EasySQL,"replace 数据为空");
                     return false;
                 }
                 String tableName = DBReflectManager.getTableName(objs[0].getClass());
                 if (tableName == null) {
-                    EasyLibLog.e(TAG + "replace 插入表名为空，请检查是否已经注释表明");
+                    EasyLog.w(TAG.EasySQL,"replace 插入表名为空，请检查是否已经注释表明");
                     return false;
                 }
                 Map<String, Field> column_field = new HashMap<>();
@@ -347,13 +347,13 @@ abstract class DBDaoManager {
             } else if (t instanceof Map) {
                 Map map = (Map) t;
                 if (map.size() <= 0) {
-                    EasyLibLog.e(TAG + "replace 数据为空");
+                    EasyLog.w(TAG.EasySQL,"replace 数据为空");
                     return false;
                 }
                 Object[] collection = map.values().toArray();
                 String tableName = DBReflectManager.getTableName(collection[0].getClass());
                 if (tableName == null) {
-                    EasyLibLog.e(TAG + "replace 插入表名为空，请检查是否已经注释表明");
+                    EasyLog.w(TAG.EasySQL,"replace 插入表名为空，请检查是否已经注释表明");
                     return false;
                 }
                 Map<String, Field> column_field = new HashMap<>();
@@ -365,7 +365,7 @@ abstract class DBDaoManager {
             } else {
                 String tableName = DBReflectManager.getTableName(t.getClass());
                 if (tableName == null) {
-                    EasyLibLog.e(TAG + "replace 插入表名为空，请检查是否已经注释表明");
+                    EasyLog.w(TAG.EasySQL,"replace 插入表名为空，请检查是否已经注释表明");
                     return false;
                 }
                 Map<String, Field> column_field = new HashMap<>();
@@ -377,7 +377,7 @@ abstract class DBDaoManager {
             return true;
         } catch (SQLiteException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "replace SQLiteException");
+            EasyLog.w(TAG.EasySQL,"replace SQLiteException");
         } finally {
             db.endTransaction();
             db.close();
@@ -393,17 +393,17 @@ abstract class DBDaoManager {
      */
     protected boolean delete(Class clazz, String id) {
         if (clazz == null || id == null) {
-            EasyLibLog.e(TAG + "delete error obj is null");
+            EasyLog.w(TAG.EasySQL,"delete error obj is null");
             return false;
         }
         String tableName = DBReflectManager.getTableName(clazz);
         if (tableName == null) {
-            EasyLibLog.e(TAG + "delete error tableName is null");
+            EasyLog.w(TAG.EasySQL,"delete error tableName is null");
             return false;
         }
         List<String> primaryKeys = DBReflectManager.getPrimaryKeys(clazz);
         if (primaryKeys.size() == 0) {
-            EasyLibLog.e(TAG + "delete error primary is null");
+            EasyLog.w(TAG.EasySQL,"delete error primary is null");
             return false;
         }
         SQLiteDatabase db;
@@ -411,7 +411,7 @@ abstract class DBDaoManager {
             db = database.getWritableDatabase();
         } catch (SQLiteCantOpenDatabaseException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "SQLiteCantOpenDatabaseException");
+            EasyLog.w(TAG.EasySQL,"SQLiteCantOpenDatabaseException");
             return false;
         }
         try {
@@ -421,7 +421,7 @@ abstract class DBDaoManager {
             return true;
         } catch (SQLiteException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "delete error SQLiteException");
+            EasyLog.w(TAG.EasySQL,"delete error SQLiteException");
         } finally {
             db.endTransaction();
             db.close();
@@ -437,17 +437,17 @@ abstract class DBDaoManager {
      */
     protected boolean delete(Class clazz, List<String> ids) {
         if (clazz == null || ids == null || ids.size() == 0) {
-            EasyLibLog.e(TAG + "delete error obj is null");
+            EasyLog.w(TAG.EasySQL,"delete error obj is null");
             return false;
         }
         String tableName = DBReflectManager.getTableName(clazz);
         if (tableName == null) {
-            EasyLibLog.e(TAG + "delete error tableName is null");
+            EasyLog.w(TAG.EasySQL,"delete error tableName is null");
             return false;
         }
         List<String> primaryKeys = DBReflectManager.getPrimaryKeys(clazz);
         if (primaryKeys.size() == 0) {
-            EasyLibLog.e(TAG + "delete error primary is null");
+            EasyLog.w(TAG.EasySQL,"delete error primary is null");
             return false;
         }
         SQLiteDatabase db;
@@ -455,7 +455,7 @@ abstract class DBDaoManager {
             db = database.getWritableDatabase();
         } catch (SQLiteCantOpenDatabaseException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "SQLiteCantOpenDatabaseException");
+            EasyLog.w(TAG.EasySQL,"SQLiteCantOpenDatabaseException");
             return false;
         }
         try {
@@ -468,7 +468,7 @@ abstract class DBDaoManager {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "delete error SQLiteException");
+            EasyLog.w(TAG.EasySQL,"delete error SQLiteException");
         } finally {
             db.endTransaction();
             db.close();
@@ -485,7 +485,7 @@ abstract class DBDaoManager {
      */
     protected <T> boolean delete(T t) {
         if (t == null) {
-            EasyLibLog.e(TAG + "delete obj is null");
+            EasyLog.w(TAG.EasySQL,"delete obj is null");
             return false;
         }
 
@@ -495,7 +495,7 @@ abstract class DBDaoManager {
             if (list.size() > 0) {
                 clazz = list.get(0).getClass();
             } else {
-                EasyLibLog.w(TAG + "delete error 集合空数据");
+                EasyLog.w(TAG.EasySQL,"delete error 集合空数据");
                 return false;
             }
         } else if (t instanceof Object[]) {
@@ -503,7 +503,7 @@ abstract class DBDaoManager {
             if (objects.length > 0) {
                 clazz = objects[0].getClass();
             } else {
-                EasyLibLog.w(TAG + "delete error 集合空数据");
+                EasyLog.w(TAG.EasySQL,"delete error 集合空数据");
                 return false;
             }
         } else if (t instanceof Map) {
@@ -512,7 +512,7 @@ abstract class DBDaoManager {
             if (iterator.hasNext()) {
                 clazz = iterator.next().getClass().getClass();
             } else {
-                EasyLibLog.w(TAG + "delete error 集合空数据");
+                EasyLog.w(TAG.EasySQL,"delete error 集合空数据");
                 return false;
             }
         } else {
@@ -522,7 +522,7 @@ abstract class DBDaoManager {
 
 
         if (tableName == null) {
-            EasyLibLog.e(TAG + "delete tableName is null");
+            EasyLog.w(TAG.EasySQL,"delete tableName is null");
             return false;
         }
 
@@ -531,7 +531,7 @@ abstract class DBDaoManager {
             db = database.getWritableDatabase();
         } catch (SQLiteCantOpenDatabaseException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "SQLiteCantOpenDatabaseException");
+            EasyLog.w(TAG.EasySQL,"SQLiteCantOpenDatabaseException");
             return false;
         }
         try {
@@ -580,7 +580,7 @@ abstract class DBDaoManager {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "delete SQLiteException");
+            EasyLog.w(TAG.EasySQL,"delete SQLiteException");
         } finally {
             db.endTransaction();
             db.close();
@@ -591,12 +591,12 @@ abstract class DBDaoManager {
 
     protected boolean delete(Class clazz, String whereCause, String[] selectionArgs) {
         if (clazz == null || whereCause == null || selectionArgs == null || selectionArgs.length == 0) {
-            EasyLibLog.e(TAG + "delete obj or selection or selectionArgs is error");
+            EasyLog.w(TAG.EasySQL,"delete obj or selection or selectionArgs is error");
             return false;
         }
         String tableName = DBReflectManager.getTableName(clazz);
         if (tableName == null) {
-            EasyLibLog.e(TAG + "delete tableName is null");
+            EasyLog.w(TAG.EasySQL,"delete tableName is null");
             return false;
         }
         SQLiteDatabase db;
@@ -604,7 +604,7 @@ abstract class DBDaoManager {
             db = database.getWritableDatabase();
         } catch (SQLiteCantOpenDatabaseException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "SQLiteCantOpenDatabaseException");
+            EasyLog.w(TAG.EasySQL,"SQLiteCantOpenDatabaseException");
             return false;
         }
         try {
@@ -614,7 +614,7 @@ abstract class DBDaoManager {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "delete SQLiteException");
+            EasyLog.w(TAG.EasySQL,"delete SQLiteException");
         } finally {
             db.endTransaction();
             db.close();
@@ -633,7 +633,7 @@ abstract class DBDaoManager {
             db = database.getWritableDatabase();
         } catch (SQLiteCantOpenDatabaseException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "SQLiteCantOpenDatabaseException");
+            EasyLog.w(TAG.EasySQL,"SQLiteCantOpenDatabaseException");
             return false;
         }
         try {
@@ -642,7 +642,7 @@ abstract class DBDaoManager {
             db.setTransactionSuccessful();
         } catch (SQLiteException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "execSQL SQLiteException");
+            EasyLog.w(TAG.EasySQL,"execSQL SQLiteException");
         } finally {
             db.endTransaction();
             db.close();
@@ -686,12 +686,12 @@ abstract class DBDaoManager {
                 } else if (value instanceof Boolean) {
                     values.put(column, (Boolean) value);
                 } else {
-                    EasyLibLog.e(TAG + "插入数据库错误提示：不支持该类型：" + field.getName());
+                    EasyLog.w(TAG.EasySQL,"插入数据库错误提示：不支持该类型：" + field.getName());
                 }
             }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "contentValues IllegalAccessException");
+            EasyLog.w(TAG.EasySQL,"contentValues IllegalAccessException");
         }
         return values;
     }
@@ -753,19 +753,19 @@ abstract class DBDaoManager {
                         break;
                     }*/
                     default:
-                        EasyLibLog.e(TAG + "valuation 不支持该类型：" + type);
+                        EasyLog.w(TAG.EasySQL,"valuation 不支持该类型：" + type);
                         break;
                 }
             }
         } catch (InstantiationException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "valuation InstantiationException setAccessible");
+            EasyLog.w(TAG.EasySQL,"valuation InstantiationException setAccessible");
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "valuation IllegalAccessException type=" + type);
+            EasyLog.w(TAG.EasySQL,"valuation IllegalAccessException type=" + type);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "valuation IllegalArgumentException type=" + type);
+            EasyLog.w(TAG.EasySQL,"valuation IllegalArgumentException type=" + type);
         }
         return obj;
     }

@@ -1,11 +1,11 @@
-package com.jen.easy.share;
+package com.jen.easyui.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Base64;
 
 import com.jen.easy.constant.Unicode;
-import com.jen.easy.log.EasyLibLog;
+import com.jen.easy.log.EasyLog;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -21,7 +21,7 @@ import java.util.List;
  */
 
 abstract class SharedManager {
-    private final String TAG = "SharedManager ";
+    private final String TAG = "SharedManager";
     private static final String xmlFileName = "easyShare";
     private SharedPreferences config;
     private SharedPreferences.Editor editor;
@@ -184,7 +184,7 @@ abstract class SharedManager {
             objectOutputStream.close();
             return str;
         } catch (IOException e) {
-            EasyLibLog.e(TAG + "list2String IOException");
+            EasyLog.w(TAG, "list2String IOException");
             e.printStackTrace();
         }
         return null;
@@ -200,10 +200,10 @@ abstract class SharedManager {
             objectInputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "string2List IOException");
+            EasyLog.w(TAG, "string2List IOException");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "string2List ClassNotFoundException");
+            EasyLog.w(TAG, "string2List ClassNotFoundException");
         }
         return list;
     }
@@ -217,7 +217,7 @@ abstract class SharedManager {
             objectOutputStream.close();
             return str;
         } catch (IOException e) {
-            EasyLibLog.e(TAG + "object2String IOException");
+            EasyLog.w(TAG, "object2String IOException");
             e.printStackTrace();
         }
         return null;
@@ -234,10 +234,10 @@ abstract class SharedManager {
             return obj;
         } catch (IOException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "string2Object IOException");
+            EasyLog.w(TAG, "string2Object IOException");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "string2Object ClassNotFoundException");
+            EasyLog.w(TAG, "string2Object ClassNotFoundException");
         }
         return null;
     }

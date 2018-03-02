@@ -1,7 +1,8 @@
 package com.jen.easy.http;
 
 import com.jen.easy.constant.FieldType;
-import com.jen.easy.log.EasyLibLog;
+import com.jen.easy.constant.TAG;
+import com.jen.easy.log.EasyLog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,7 +21,6 @@ import java.util.Set;
  * 说明：Json数据解析
  */
 class HttpParseManager {
-    private final static String TAG = "数据解析 : ";
 
     /*解析的class*/
     private Class mTopClass;
@@ -36,7 +36,7 @@ class HttpParseManager {
      * @return 值
      */
     <T> T parseJson(Class<T> tClass, String obj, Map<String, List<String>> headMap) {
-        EasyLibLog.d(TAG + "解析：" + tClass.getName() + "----开始");
+        EasyLog.d(TAG.EasyHttp, "解析：" + tClass.getName() + "----开始");
         mTopClass = tClass;
         this.mHeadMap = headMap;
         T t = null;
@@ -45,10 +45,10 @@ class HttpParseManager {
             t = parseJsonObject(tClass, object);
         } catch (JSONException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "parseJson JSONException error");
+            EasyLog.w(TAG.EasyHttp, "parseJson JSONException error");
         }
         mErrors.clear();
-        EasyLibLog.d(TAG + "解析：" + tClass.getName() + "----结束");
+        EasyLog.d(TAG.EasyHttp, "解析：" + tClass.getName() + "----结束");
         if (t != null && t instanceof HttpHeadResponse) {
             ((HttpHeadResponse) t).setHeads(headMap);
         }
@@ -64,7 +64,7 @@ class HttpParseManager {
      */
     private <T> T parseJsonObject(Class<T> tClass, JSONObject jsonObject) {
         if (tClass == null || jsonObject == null) {
-            EasyLibLog.e(TAG + "tClass == null || jsonObject == null");
+            EasyLog.w(TAG.EasyHttp, "tClass == null || jsonObject == null");
             return null;
         }
         T tObj;
@@ -72,11 +72,11 @@ class HttpParseManager {
             tObj = tClass.newInstance();
         } catch (InstantiationException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "InstantiationException 创建对象出错");
+            EasyLog.w(TAG.EasyHttp, "InstantiationException 创建对象出错");
             return null;
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "IllegalAccessException 创建对象出错");
+            EasyLog.w(TAG.EasyHttp, "IllegalAccessException 创建对象出错");
             return null;
         }
 
@@ -113,7 +113,7 @@ class HttpParseManager {
         }
 
         if (param_type.size() == 0) {
-            EasyLibLog.e(TAG + "网络请求返回参数请用@EasyMouse.mHttp.ResponseParam备注正确");
+            EasyLog.w(TAG.EasyHttp, "网络请求返回参数请用@EasyMouse.mHttp.ResponseParam备注正确");
             return null;
         }
         Set<String> sets = param_type.keySet();
@@ -188,9 +188,9 @@ class HttpParseManager {
                             }
                         }
                     }*/ else if (type.contains(FieldType.MAP)) {//解析Map
-                        EasyLibLog.e(TAG + "不支持Map类型");
+                        EasyLog.w(TAG.EasyHttp, "不支持Map类型");
                     } else if (type.contains(FieldType.ARRAY)) {//解析数组
-                        EasyLibLog.e(TAG + "不支持数组类型");
+                        EasyLog.w(TAG.EasyHttp, "不支持数组类型");
                     } else if (type.contains(FieldType.OBJECT)) {//解析Object通用类型
                         field.set(tObj, value);
                     } else if (type.contains(FieldType.LIST)) {//解析list
@@ -252,7 +252,7 @@ class HttpParseManager {
     private <T> List<T> parseJsonArray(Class<T> TClass, JSONArray jsonArray) {
         List<T> list = new ArrayList<>();
         if (jsonArray == null) {
-            EasyLibLog.e(TAG + "parseJsonArray clazz or jsonArray is null");
+            EasyLog.w(TAG.EasyHttp, "parseJsonArray clazz or jsonArray is null");
             return list;
         }
         int length = jsonArray.length();
@@ -262,7 +262,7 @@ class HttpParseManager {
                 jsonObj = jsonArray.get(i);
             } catch (JSONException e) {
                 e.printStackTrace();
-                EasyLibLog.e(TAG + "parseJsonArray JSONException jsonObj");
+                EasyLog.w(TAG.EasyHttp, "parseJsonArray JSONException jsonObj");
                 continue;
             }
             if (jsonObj instanceof JSONObject) {
@@ -270,7 +270,7 @@ class HttpParseManager {
                 if (tObj != null)
                     list.add(tObj);
             } else {
-                EasyLibLog.e(TAG + "parseJsonArray jsonArray.get(i) is not JSONObject");
+                EasyLog.w(TAG.EasyHttp, "parseJsonArray jsonArray.get(i) is not JSONObject");
             }
         }
         return list;
@@ -283,7 +283,7 @@ class HttpParseManager {
      */
     private void showWarn(String error) {
         if (!mErrors.contains(error)) {
-            EasyLibLog.w(TAG + error);
+            EasyLog.w(TAG.EasyHttp, error);
             mErrors.add(error);
         }
     }
@@ -295,7 +295,7 @@ class HttpParseManager {
      */
     private void showError(String error) {
         if (!mErrors.contains(error)) {
-            EasyLibLog.e(TAG + error);
+            EasyLog.w(TAG.EasyHttp, error);
             mErrors.add(error);
         }
     }

@@ -6,13 +6,13 @@ import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
-import com.jen.easy.log.EasyLibLog;
+import com.jen.easy.constant.TAG;
+import com.jen.easy.log.EasyLog;
 import com.jen.easy.sqlite.imp.DatabaseListener;
 
 import java.io.File;
 
 class Database {
-    private final String TAG = "Database : ";
     private static final String name = "easy.db";
     private String path;
     private DatabaseListener listener;
@@ -23,7 +23,7 @@ class Database {
         if (!parent.exists()) {
             boolean ret = parent.mkdirs();
             if (!ret) {
-                EasyLibLog.w(TAG + "创建数据库文件夹失败");
+                EasyLog.w(TAG.EasySQL, "创建数据库文件夹失败");
             }
         }
     }
@@ -34,7 +34,7 @@ class Database {
     boolean createDB() {
         File file = new File(path);
         if (file.exists()) {
-            EasyLibLog.i(TAG + "数据库已经存在");
+            EasyLog.i(TAG.EasySQL, "数据库已经存在");
             return true;
         }
         try {
@@ -43,7 +43,7 @@ class Database {
             return true;
         } catch (SQLiteException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "数据库创建失败");
+            EasyLog.w(TAG.EasySQL, "数据库创建失败");
         }
         return false;
     }
@@ -59,13 +59,13 @@ class Database {
             db = getWritableDatabase();
         } catch (SQLiteCantOpenDatabaseException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "SQLiteCantOpenDatabaseException");
+            EasyLog.w(TAG.EasySQL, "SQLiteCantOpenDatabaseException");
             return;
         }
         try {
             int oldVersion = db.getVersion();
             if (version < oldVersion) {
-                EasyLibLog.w(TAG + "升级版本不能小于当前版本：" + oldVersion);
+                EasyLog.w(TAG.EasySQL, "升级版本不能小于当前版本：" + oldVersion);
             }
             if (oldVersion == version) {
                 return;
@@ -77,7 +77,7 @@ class Database {
 
         } catch (SQLiteException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "SQLiteException");
+            EasyLog.w(TAG.EasySQL, "SQLiteException");
         } finally {
             db.close();
         }
@@ -88,7 +88,7 @@ class Database {
             return getReadableDatabase().getVersion();
         } catch (SQLiteCantOpenDatabaseException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "SQLiteCantOpenDatabaseException");
+            EasyLog.w(TAG.EasySQL, "SQLiteCantOpenDatabaseException");
             return -1;
         }
     }

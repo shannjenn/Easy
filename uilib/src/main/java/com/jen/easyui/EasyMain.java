@@ -7,9 +7,8 @@ import com.jen.easy.bind.BindView;
 import com.jen.easy.http.Http;
 import com.jen.easy.imageLoader.ImageLoader;
 import com.jen.easy.imageLoader.ImageLoaderConfig;
-import com.jen.easy.log.EasyUILog;
+import com.jen.easy.log.EasyLog;
 import com.jen.easy.log.LogcatHelper;
-import com.jen.easy.share.Shared;
 import com.jen.easy.sqlite.DBDao;
 import com.jen.easy.sqlite.DBHelper;
 
@@ -44,16 +43,12 @@ public final class EasyMain {
      */
     public static LogcatHelper mLog;
     /**
-     * 数据存储SharedPreferences
-     */
-    public static Shared mShared;
-    /**
      * 图片加载工具
      */
     public static ImageLoader mImageLoader;
 
     public static void init(Application application) {
-        EasyUILog.d("init EasyMain -------");
+        EasyLog.d("init EasyMain -------");
 
         mBindView = new BindView();
         mHttp = new Http(10);//默认最大10个线程
@@ -67,7 +62,6 @@ public final class EasyMain {
                 .timeOut(10000)
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .build());
-        mShared = new Shared(application);
         mDBHelper = new DBHelper(application);
         mDao = new DBDao(application);
 

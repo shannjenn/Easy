@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.util.LruCache;
 import android.widget.ImageView;
 
+import com.jen.easy.constant.TAG;
 import com.jen.easy.http.Http;
 import com.jen.easy.http.HttpDownloadRequest;
 import com.jen.easy.http.imp.HttpDownloadListener;
@@ -30,7 +31,6 @@ import java.util.concurrent.Executors;
  */
 
 abstract class ImageLoaderManager {
-    private static final String TAG = "ImageLoaderManager";
     private static LruCache<String, Bitmap> mImageCache;//图片缓存
     //    private static Map<String, Bitmap> mImageCache;
     private static List<String> mDownloadingUrl = new ArrayList<>();
@@ -137,7 +137,7 @@ abstract class ImageLoaderManager {
         mExecutorService.submit(new Runnable() {
             public void run() {
                 if (imageView == null) {
-                    EasyLog.w(TAG, "setImage ImageView is null");
+                    EasyLog.w(TAG.EasyImageLoader, "setImage ImageView is null");
                     return;
                 }
                 if (TextUtils.isEmpty(imageUrl)) {
@@ -154,7 +154,7 @@ abstract class ImageLoaderManager {
                 mImageViewCache.put(imageView, imageUrl);
 
                 boolean cacheResult = getFromCache(imageUrl, imageView);
-                EasyLog.w(TAG, "setImage cacheResult = " + cacheResult);
+                EasyLog.w(TAG.EasyImageLoader, "setImage cacheResult = " + cacheResult);
                 if (cacheResult)
                     return;
 
@@ -173,7 +173,7 @@ abstract class ImageLoaderManager {
     }
 
     private synchronized static boolean getFromCache(String imageUrl, ImageView imageView) {
-        EasyLog.d(TAG, "getFromCache-----");
+        EasyLog.d(TAG.EasyImageLoader, "getFromCache-----");
         Bitmap bitmap = mImageCache.get(imageUrl);
         if (bitmap == null) {
             return false;
@@ -192,7 +192,7 @@ abstract class ImageLoaderManager {
      * @smallRate 压缩比例
      */
     private synchronized static boolean getFromSDCard(int picWidth, int picHeight, String imageUrl, ImageView imageView) {
-        EasyLog.d(TAG, "getFromSDCard-----");
+        EasyLog.d(TAG.EasyImageLoader, "getFromSDCard-----");
         String name = urlChangeToName(imageUrl);
         final String filePath = config.getLocalPath() + File.separator + name;
         File file = new File(filePath);
@@ -237,7 +237,7 @@ abstract class ImageLoaderManager {
      * @param imageUrl 图片地址
      */
     private synchronized static void getFromHttp(String imageUrl) {
-        EasyLog.d(TAG, "getFromHttp-----");
+        EasyLog.d(TAG.EasyImageLoader, "getFromHttp-----");
         mDownloadingUrl.add(imageUrl);
         String name = urlChangeToName(imageUrl);
         String filePath = config.getLocalPath() + File.separator + name;
@@ -268,7 +268,7 @@ abstract class ImageLoaderManager {
     private static HttpDownloadListener mHttpListener = new HttpDownloadListener() {
         @Override
         public void success(int flagCode, final String imageUrl, String filePath) {
-            EasyLog.d(TAG, "图片下载成功-----");
+            EasyLog.d(TAG.EasyImageLoader, "图片下载成功-----");
             mImageViewCache.remove(null);
             Set<ImageView> set = mImageViewCache.keySet();
             for (ImageView imageView : set) {
@@ -284,7 +284,7 @@ abstract class ImageLoaderManager {
 
         @Override
         public void fail(int flagCode, String imageUrl, String msg) {
-            EasyLog.d(TAG, "图片下载失败-----");
+            EasyLog.d(TAG.EasyImageLoader, "图片下载失败-----");
             mDownloadingUrl.remove(imageUrl);
         }
 

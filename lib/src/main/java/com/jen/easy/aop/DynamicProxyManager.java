@@ -1,6 +1,7 @@
 package com.jen.easy.aop;
 
-import com.jen.easy.log.EasyLibLog;
+import com.jen.easy.constant.TAG;
+import com.jen.easy.log.EasyLog;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -13,7 +14,6 @@ import java.lang.reflect.Proxy;
  * 时间：2017/8/14.
  */
 abstract class DynamicProxyManager implements InvocationHandler {
-    private final String TAG = "DynamicProxyManager : ";
     private Object target;
 
     private Object beforeClzz;
@@ -25,7 +25,7 @@ abstract class DynamicProxyManager implements InvocationHandler {
 
     protected Object bind(Object target) {
         if (target == null || target instanceof Class) {
-            EasyLibLog.e(TAG + "mBindView 绑定对象为空");
+            EasyLog.w(TAG.EasyAOP, "mBindView 绑定对象为空");
             return null;
         }
         this.target = target;
@@ -33,14 +33,14 @@ abstract class DynamicProxyManager implements InvocationHandler {
             return Proxy.newProxyInstance(target.getClass().getClassLoader(), target.getClass().getInterfaces(), this);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "mBindView 切入对象为空");
+            EasyLog.w(TAG.EasyAOP, "mBindView 切入对象为空");
         }
         return null;
     }
 
     protected void setBeforeMethod(Class<?> beforeClzz, Object... beforeParams) {
         if (beforeClzz == null) {
-            EasyLibLog.e(TAG + "mBindView 切入对象为空");
+            EasyLog.w(TAG.EasyAOP, "mBindView 切入对象为空");
             return;
         }
         try {
@@ -55,16 +55,16 @@ abstract class DynamicProxyManager implements InvocationHandler {
             }
         } catch (InstantiationException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "mBindView InstantiationException");
+            EasyLog.w(TAG.EasyAOP, "mBindView InstantiationException");
         } catch (IllegalAccessException e) {
-            EasyLibLog.e(TAG + "mBindView IllegalAccessException");
+            EasyLog.w(TAG.EasyAOP, "mBindView IllegalAccessException");
             e.printStackTrace();
         }
     }
 
     protected void setAfterMethod(Class<?> afterClzz, Object... afterParams) {
         if (afterClzz == null) {
-            EasyLibLog.e(TAG + "切入对象为空");
+            EasyLog.w(TAG.EasyAOP, "切入对象为空");
             return;
         }
         try {
@@ -79,10 +79,10 @@ abstract class DynamicProxyManager implements InvocationHandler {
             }
         } catch (InstantiationException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "DynamicProxyManager InstantiationException");
+            EasyLog.w(TAG.EasyAOP, "DynamicProxyManager InstantiationException");
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "DynamicProxyManager IllegalAccessException");
+            EasyLog.w(TAG.EasyAOP, "DynamicProxyManager IllegalAccessException");
 
         }
     }
@@ -121,7 +121,7 @@ abstract class DynamicProxyManager implements InvocationHandler {
                                     beforeParams[6], beforeParams[7]);
                             break;
                         default:
-                            EasyLibLog.e(TAG + "invoke 方法参数超过8个");
+                            EasyLog.w(TAG.EasyAOP, "invoke 方法参数超过8个");
                             break;
                     }
                 } else {
@@ -158,7 +158,7 @@ abstract class DynamicProxyManager implements InvocationHandler {
                                     afterParams[7]);
                             break;
                         default:
-                            EasyLibLog.e(TAG + "invoke 参数超过8个");
+                            EasyLog.w(TAG.EasyAOP, "invoke 参数超过8个");
                             break;
                     }
                 } else {
@@ -167,13 +167,13 @@ abstract class DynamicProxyManager implements InvocationHandler {
             }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "invoke IllegalAccessException");
+            EasyLog.w(TAG.EasyAOP, "invoke IllegalAccessException");
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "invoke IllegalArgumentException");
+            EasyLog.w(TAG.EasyAOP, "invoke IllegalArgumentException");
         } catch (InvocationTargetException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "invoke InvocationTargetException");
+            EasyLog.w(TAG.EasyAOP, "invoke InvocationTargetException");
         }
         return result;
     }

@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.jen.easy.log.EasyUILog;
+import com.jen.easy.log.EasyLog;
 import com.jen.easyui.R;
 import com.jen.easyui.util.EasyDensityUtil;
 
@@ -64,7 +64,7 @@ abstract class EasyImageViewPagerManager extends RelativeLayout {
         @Override
         public void onPageSelected(int position) {
             if (position >= numLayout.getChildCount()) {
-                EasyUILog.e(TAG + "position >=numLayout.getChildCount()");
+                EasyLog.w(TAG + "position >=numLayout.getChildCount()");
                 return;
             }
             if (mPreSelectedPoit != null) {

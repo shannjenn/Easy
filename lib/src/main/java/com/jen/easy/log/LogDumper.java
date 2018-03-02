@@ -1,5 +1,6 @@
 package com.jen.easy.log;
 
+import com.jen.easy.constant.TAG;
 import com.jen.easy.constant.Unicode;
 
 import java.io.BufferedReader;
@@ -10,7 +11,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 class LogDumper extends Thread {
-    private final String TAG = "LogDumper : ";
     private static LogDumper instance;
     private Process logcatProc;
     private BufferedReader reader;
@@ -98,7 +98,7 @@ class LogDumper extends Thread {
 
         } catch (IOException e) {
             e.printStackTrace();
-            EasyLibLog.e(TAG + "IOException");
+            EasyLog.w(TAG.EasyLogcat, "IOException");
         } finally {
             if (logcatProc != null) {
                 logcatProc.destroy();

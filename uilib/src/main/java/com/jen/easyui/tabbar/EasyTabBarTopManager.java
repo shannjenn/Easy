@@ -18,7 +18,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.jen.easy.log.EasyUILog;
+import com.jen.easy.log.EasyLog;
 import com.jen.easyui.R;
 import com.jen.easyui.util.EasyDensityUtil;
 
@@ -163,7 +163,7 @@ abstract class EasyTabBarTopManager extends HorizontalScrollView {
 
     public void setViewPager(ViewPager viewPager) {
         if (viewPager == null) {
-            EasyUILog.e("EasyTabBarTxtScroll setViewPager viewPager is null");
+            EasyLog.w("EasyTabBarTxtScroll setViewPager viewPager is null");
             return;
         }
         isWithTitles = false;
@@ -173,7 +173,7 @@ abstract class EasyTabBarTopManager extends HorizontalScrollView {
 
     public void setViewPager(ViewPager viewPager, List<String> titles) {
         if (viewPager == null) {
-            EasyUILog.e("EasyTabBarTxtScroll setViewPager viewPager is null");
+            EasyLog.w("EasyTabBarTxtScroll setViewPager viewPager is null");
             return;
         }
         isWithTitles = true;
@@ -181,7 +181,7 @@ abstract class EasyTabBarTopManager extends HorizontalScrollView {
         if (titles != null) {
             mTitles.addAll(titles);
         } else {
-            EasyUILog.e("EasyTabBarTxtScroll setViewPager titles is null");
+            EasyLog.w("EasyTabBarTxtScroll setViewPager titles is null");
         }
         notifyDataSetChanged();
     }
@@ -304,7 +304,7 @@ abstract class EasyTabBarTopManager extends HorizontalScrollView {
         super.onDraw(canvas);
         //如果在自定义控件的构造函数或者其他绘制相关地方使用系统依赖的代码，会导致可视化编辑器无法报错并提
         if (isInEditMode()) {
-            EasyUILog.w("onDraw isInEditMode");
+            EasyLog.w("onDraw isInEditMode");
             return;
         }
         drawUnderline(canvas);
@@ -318,7 +318,7 @@ abstract class EasyTabBarTopManager extends HorizontalScrollView {
      */
     private void drawIndicatorRoundRect(Canvas canvas) {
         if (mTabCount <= 0) {
-            EasyUILog.e("drawIndicatorRoundRect mTabCount=" + mTabCount);
+            EasyLog.w("drawIndicatorRoundRect mTabCount=" + mTabCount);
             return;
         }
         TextView textView = (TextView) mTabsContainer.getChildAt(mScrollPostion);
@@ -435,7 +435,7 @@ abstract class EasyTabBarTopManager extends HorizontalScrollView {
          */
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//            EasyUILog.d("onPageScrolled position=" + position
+//            EasyLog.d("onPageScrolled position=" + position
 //                    + " positionOffset=" + positionOffset + " positionOffsetPixels=" + positionOffsetPixels);
             mScrollPostion = position;
             mPositionOffset = positionOffset;
@@ -445,7 +445,7 @@ abstract class EasyTabBarTopManager extends HorizontalScrollView {
 
         @Override
         public void onPageSelected(int position) {
-//            EasyUILog.d("onPageSelected position=" + position);
+//            EasyLog.d("onPageSelected position=" + position);
             updtaeTabText(position);
 //            mCurrentTab = position;
         }
@@ -455,7 +455,7 @@ abstract class EasyTabBarTopManager extends HorizontalScrollView {
          */
         @Override
         public void onPageScrollStateChanged(int state) {
-//            EasyUILog.d("onPageScrollStateChanged state=" + state);
+//            EasyLog.d("onPageScrollStateChanged state=" + state);
             if (state == 0) {
                 mCurrentTab = mScrollPostion;
             }

@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jen.easy.log.EasyUILog;
+import com.jen.easy.log.EasyLog;
 
 import java.util.List;
 
@@ -115,7 +115,7 @@ abstract class EasyRecyclerBaseAdapterManager<T> extends RecyclerView.Adapter<Re
                 for (int id : clicks) {
                     View view = itemView.findViewById(id);
                     if (view == null) {
-                        EasyUILog.e("点击设置事件失败，请检查ID是否正确id=" + id);
+                        EasyLog.w("点击设置事件失败，请检查ID是否正确id=" + id);
                         continue;
                     }
                     view.setOnClickListener(new View.OnClickListener() {
@@ -131,7 +131,7 @@ abstract class EasyRecyclerBaseAdapterManager<T> extends RecyclerView.Adapter<Re
                 for (int id : longClicks) {
                     View view = itemView.findViewById(id);
                     if (view == null) {
-                        EasyUILog.e("点击设置事件失败，请检查ID是否正确id=" + id);
+                        EasyLog.w("点击设置事件失败，请检查ID是否正确id=" + id);
                         continue;
                     }
                     view.setOnLongClickListener(new View.OnLongClickListener() {

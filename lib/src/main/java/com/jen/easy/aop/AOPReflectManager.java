@@ -1,7 +1,8 @@
 package com.jen.easy.aop;
 
 import com.jen.easy.EasyMouse;
-import com.jen.easy.log.EasyLibLog;
+import com.jen.easy.constant.TAG;
+import com.jen.easy.log.EasyLog;
 
 import java.lang.reflect.Method;
 
@@ -11,8 +12,6 @@ import java.lang.reflect.Method;
  */
 
 class AOPReflectManager {
-    private static final String TAG = "AOPReflectManager : ";
-
     /**
      * 获取方法
      *
@@ -21,7 +20,7 @@ class AOPReflectManager {
      */
     static Method getBefore(Class clazz) {
         if (clazz == null) {
-            EasyLibLog.e(TAG + "clazz is null");
+            EasyLog.w(TAG.EasyAOP, "clazz is null");
             return null;
         }
         Method[] methods = clazz.getDeclaredMethods();
@@ -42,7 +41,7 @@ class AOPReflectManager {
      */
     static Method getAfter(Class clazz) {
         if (clazz == null) {
-            EasyLibLog.e(TAG + "clazz is null");
+            EasyLog.w(TAG.EasyAOP, "clazz is null");
             return null;
         }
         Method[] methods = clazz.getDeclaredMethods();

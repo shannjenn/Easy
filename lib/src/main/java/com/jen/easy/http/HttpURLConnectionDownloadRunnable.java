@@ -1,6 +1,7 @@
 package com.jen.easy.http;
 
-import com.jen.easy.log.EasyLibLog;
+import com.jen.easy.constant.TAG;
+import com.jen.easy.log.EasyLog;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -13,7 +14,7 @@ import java.util.Map;
 class HttpURLConnectionDownloadRunnable extends HttpURLConnectionRunnable {
 
     HttpURLConnectionDownloadRunnable(HttpDownloadRequest request) {
-        super(request, "HttpDownload : ");
+        super(request);
     }
 
     @Override
@@ -38,7 +39,7 @@ class HttpURLConnectionDownloadRunnable extends HttpURLConnectionRunnable {
         }
 
         mResponseCode = connection.getResponseCode();
-        EasyLibLog.d(TAG + mUrlStr + "  Http请求返回码：" + mResponseCode);
+        EasyLog.d(TAG.EasyHttp, mUrlStr + "  Http请求返回码：" + mResponseCode);
         if (mResponseCode == 200) {
             long curBytes = request.flag.startPoint;
             request.flag.endPoint = connection.getContentLength();
@@ -70,7 +71,7 @@ class HttpURLConnectionDownloadRunnable extends HttpURLConnectionRunnable {
 
     @Override
     protected void success(String result, Map<String, List<String>> headMap) {
-        EasyLibLog.d(TAG + mUrlStr + " 下载成功！");
+        EasyLog.d(TAG.EasyHttp, mUrlStr + " 下载成功！");
         HttpDownloadRequest request = (HttpDownloadRequest) mRequest;
         if (request.getDownloadListener() != null)
             request.getDownloadListener().success(request.flag.code, request.flag.str, request.flag.filePath);
@@ -78,7 +79,7 @@ class HttpURLConnectionDownloadRunnable extends HttpURLConnectionRunnable {
 
     @Override
     protected void fail(String msg) {
-        EasyLibLog.e(TAG + mUrlStr + " " + msg);
+        EasyLog.w(TAG.EasyHttp, mUrlStr + " " + msg);
         HttpDownloadRequest request = (HttpDownloadRequest) mRequest;
         if (request.getDownloadListener() != null)
             request.getDownloadListener().fail(request.flag.code, request.flag.str, msg);

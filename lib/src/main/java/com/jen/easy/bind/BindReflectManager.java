@@ -1,7 +1,8 @@
 package com.jen.easy.bind;
 
 import com.jen.easy.EasyMouse;
-import com.jen.easy.log.EasyLibLog;
+import com.jen.easy.constant.TAG;
+import com.jen.easy.log.EasyLog;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -9,11 +10,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Jen on 2017/7/19.
+ * 创建人：ShannJenn
+ * 时间：2017/8/14.
  */
-
 abstract class BindReflectManager {
-    private final static String TAG = "BindReflectManager : ";
     /**
      * 全部列明和属性类型
      */
@@ -36,7 +36,7 @@ abstract class BindReflectManager {
         objectMap.put(ID_TYPE, id_type);
         objectMap.put(ID_FIELD, id_field);
         if (clazz == null) {
-            EasyLibLog.e(TAG + "getFields clazz is null");
+            EasyLog.w(TAG.EasyBind, "getFields clazz is null");
             return objectMap;
         }
 
@@ -66,7 +66,7 @@ abstract class BindReflectManager {
     static Map<Method, int[]> getMethods(Class clazz) {
         Map<Method, int[]> method_ids = new HashMap<>();
         if (clazz == null) {
-            EasyLibLog.e(TAG + "getMethods clazz is null");
+            EasyLog.w(TAG.EasyBind, "getMethods clazz is null");
             return method_ids;
         }
         Method[] methods = clazz.getDeclaredMethods();

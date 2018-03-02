@@ -2,7 +2,8 @@ package com.jen.easy.http;
 
 import android.text.TextUtils;
 
-import com.jen.easy.log.EasyLibLog;
+import com.jen.easy.constant.TAG;
+import com.jen.easy.log.EasyLog;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 
 abstract class HttpURLConnectionRunnable implements Runnable {
-    protected String TAG;
     HttpRequest mRequest;
     Class mResponseClass;
 
@@ -25,9 +25,8 @@ abstract class HttpURLConnectionRunnable implements Runnable {
     boolean mIsGet = true;
     String mRequestParam;
 
-    HttpURLConnectionRunnable(HttpRequest param, String TAG) {
+    HttpURLConnectionRunnable(HttpRequest param) {
         super();
-        this.TAG = TAG;
         this.mRequest = param;
     }
 
@@ -124,7 +123,7 @@ abstract class HttpURLConnectionRunnable implements Runnable {
             mRequestParam = requestBuf.toString();
             mHasParam = mRequestParam.length() > 0;
 
-            EasyLibLog.d(TAG + "网络请求：" + method + " " + mUrlStr + " 请求参数：" + mRequestParam);
+            EasyLog.d(TAG.EasyHttp, "网络请求：" + method + " " + mUrlStr + " 请求参数：" + mRequestParam);
             if (mIsGet && mHasParam) {//get请求参数拼接
                 mUrlStr = mUrlStr + "?" + mRequestParam;
             }

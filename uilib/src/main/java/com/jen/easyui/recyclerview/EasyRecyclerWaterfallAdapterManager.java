@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jen.easy.log.EasyUILog;
+import com.jen.easy.log.EasyLog;
 
 import java.util.List;
 
@@ -41,16 +41,16 @@ abstract class EasyRecyclerWaterfallAdapterManager<T> extends EasyRecyclerBaseAd
     public EasyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         int[] layouts = onBindLayout();
         if (layouts == null) {
-            EasyUILog.e("布局为空");
+            EasyLog.w("布局为空");
             return null;
         }
         if (viewType < 0 || layouts.length < viewType) {
-            EasyUILog.e("viewType：" + viewType + "错误");
+            EasyLog.w("viewType：" + viewType + "错误");
             return null;
         }
         View view = LayoutInflater.from(parent.getContext()).inflate(layouts[viewType], parent, false);
         if (view == null) {
-            EasyUILog.e("找不到该值对应item布局R.layout.id：" + layouts[viewType]);
+            EasyLog.w("找不到该值对应item布局R.layout.id：" + layouts[viewType]);
             return null;
         }
         return new EasyHolder(view);

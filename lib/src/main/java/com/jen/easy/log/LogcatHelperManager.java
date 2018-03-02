@@ -2,6 +2,7 @@ package com.jen.easy.log;
 
 import android.content.Context;
 
+import com.jen.easy.constant.TAG;
 import com.jen.easy.log.imp.LogCrashListener;
 
 /**
@@ -19,7 +20,7 @@ abstract class LogcatHelperManager {
     }
 
     private void init(Context context) {
-        EasyLibLog.d("LogcatHelperManager init");
+        EasyLog.d(TAG.EasyLogcat, "LogcatHelperManager init");
         LogcatPath.setDefaultPath(context);
     }
 
@@ -46,10 +47,10 @@ abstract class LogcatHelperManager {
      */
     protected void start() {
         if (LogcatPath.getLogPath() == null) {
-            EasyLibLog.w("日志路径为空，LogcatHelper日志未能启动--------------------");
+            EasyLog.w(TAG.EasyLogcat, "日志路径为空，LogcatHelper日志未能启动--------------------");
             return;
         }
-        EasyLibLog.w("日志路径为:" + LogcatPath.getLogPath());
+        EasyLog.w(TAG.EasyLogcat, "日志路径为:" + LogcatPath.getLogPath());
         LogDumper.getInstance().startLogs();
         LogcatCrash.getInstance().start();
     }

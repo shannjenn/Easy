@@ -14,14 +14,6 @@ public class EasyLog {
      * 日志是否打印
      */
     public static boolean LOGCAT_OPEN = true;
-    /**
-     * Lib框架日志是否打印
-     */
-    public static boolean EASY_LIB_LOG = true;
-    /**
-     * UI框架日志是否打印
-     */
-    public static boolean EASY_UI_LOG = true;
 
     public static void d(String msg) {
         if (LOGCAT_OPEN) {

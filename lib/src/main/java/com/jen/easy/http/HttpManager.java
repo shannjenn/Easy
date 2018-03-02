@@ -1,6 +1,7 @@
 package com.jen.easy.http;
 
-import com.jen.easy.log.EasyLibLog;
+import com.jen.easy.constant.TAG;
+import com.jen.easy.log.EasyLog;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -11,7 +12,6 @@ import java.util.concurrent.Executors;
  * 说明：网络请求
  */
 abstract class HttpManager {
-    private final String TAG = "HttpManager : ";
     private ExecutorService pool;
     protected int maxThreadSize;
 
@@ -27,7 +27,7 @@ abstract class HttpManager {
      */
     protected void start(HttpRequest request) {
         if (request == null) {
-            EasyLibLog.w(TAG + "start 参数为空");
+            EasyLog.w(TAG.EasyHttp, "start 参数为空");
             return;
         }
         if (request instanceof HttpUploadRequest) {
