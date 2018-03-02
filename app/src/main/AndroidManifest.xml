@@ -24,6 +24,7 @@
         <activity android:name=".activity.ImageLoaderActivity" />
         <activity android:name=".activity.DialogActivity" />
         <activity android:name=".activity.SQLiteActivity" />
+        <activity android:name=".activity.UtilActivity" />
 
     </application>
 

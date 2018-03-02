@@ -3,11 +3,15 @@ package com.jen.easytest;
 import android.app.Application;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 
 import com.jen.easy.http.Http;
+import com.jen.easy.imageLoader.ImageLoader;
+import com.jen.easy.imageLoader.ImageLoaderConfig;
 import com.jen.easy.log.EasyLog;
 import com.jen.easy.log.imp.LogCrashListener;
 import com.jen.easy.sqlite.imp.DatabaseListener;
+import com.jen.easytest.model.ImageLoaderModel;
 import com.jen.easytest.sqlite.Student;
 import com.jen.easyui.EasyMain;
 import com.jen.easyui.base.LogCrashActivity;
@@ -35,6 +39,15 @@ public class MyApplication extends Application {
         createTB();
 
         EasyMain.mHttp = new Http(5);
+
+        ImageLoaderConfig config = new ImageLoaderConfig(this)
+                .httpMaxThread(5)
+                .imgHeight(1024)
+                .imgWidth(1024)
+                .defaultImage(getResources().getDrawable(R.mipmap.ic_launcher))
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .build();
+        ImageLoader.getInstance().init(config);
     }
 
 
@@ -45,6 +58,7 @@ public class MyApplication extends Application {
         if (EasyMain.mDBHelper.getVersion() == 1) {//第一版开始全部执行创建,发版后使用升级操作
             EasyLog.d("创建表------------");
             EasyMain.mDBHelper.createTB(Student.class);
+            EasyMain.mDBHelper.createTB(ImageLoaderModel.class);
 
         }
     }
@@ -69,7 +83,7 @@ public class MyApplication extends Application {
             EasyLog.w("捕获到异常------------");
             Intent intent = new Intent(MyApplication.getAppContext(), LogCrashActivity.class);
             startActivity(intent);
-            return true;
+            return false;
         }
     };
 

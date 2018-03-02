@@ -19,14 +19,14 @@ class HttpURLConnectionDownloadRunnable extends HttpURLConnectionRunnable {
     @Override
     protected void childRun(HttpURLConnection connection) throws IOException {
         HttpDownloadRequest request = (HttpDownloadRequest) mRequest;
-        if (request.flag.startPoit <= 1024 * 2) {
-            request.flag.startPoit = 0;
-        } else if (request.flag.startPoit > 1024 * 2) {
-            request.flag.startPoit = request.flag.startPoit - 1024 * 2;
+        if (request.flag.startPoint <= 1024 * 2) {
+            request.flag.startPoint = 0;
+        } else if (request.flag.startPoint > 1024 * 2) {
+            request.flag.startPoint = request.flag.startPoint - 1024 * 2;
         }
 
-        if (request.flag.isBreak && request.flag.endPoit > request.flag.startPoit + 100) {
-            connection.setRequestProperty("Range", "bytes=" + request.flag.startPoit + "-" + request.flag.endPoit);
+        if (request.flag.isBreak && request.flag.endPoint > request.flag.startPoint + 100) {
+            connection.setRequestProperty("Range", "bytes=" + request.flag.startPoint + "-" + request.flag.endPoint);
         }
 
         if (!mIsGet && mHasParam) {
@@ -40,28 +40,28 @@ class HttpURLConnectionDownloadRunnable extends HttpURLConnectionRunnable {
         mResponseCode = connection.getResponseCode();
         EasyLibLog.d(TAG + mUrlStr + "  Http请求返回码：" + mResponseCode);
         if (mResponseCode == 200) {
-            long curBytes = request.flag.startPoit;
-            request.flag.endPoit = connection.getContentLength();
+            long curBytes = request.flag.startPoint;
+            request.flag.endPoint = connection.getContentLength();
             InputStream inStream = connection.getInputStream();
             byte[] buffer = new byte[1024];
             RandomAccessFile randFile = new RandomAccessFile(request.flag.filePath, "rwd");
-            randFile.seek(request.flag.startPoit);
+            randFile.seek(request.flag.startPoint);
             int len;
             while ((len = inStream.read(buffer)) != -1 && !request.flag.userCancel) {
                 randFile.write(buffer, 0, len);
                 curBytes += len;
                 if (!request.flag.userCancel) {
-                    progress(curBytes, request.flag.endPoit);
+                    progress(curBytes, request.flag.endPoint);
                 } else {
                     break;
                 }
             }
             if (request.flag.userCancel) {
                 fail("下载失败：用户取消下载");
-            } else if (curBytes == request.flag.endPoit) {
+            } else if (curBytes == request.flag.endPoint) {
                 success(null, null);
             } else {
-                fail("下载失败：" + mResponseCode);
+                fail("下载失败：" + mResponseCode + " curBytes = " + curBytes + " endPoint = " + request.flag.endPoint);
             }
         } else {
             fail("下载失败：" + mResponseCode);

@@ -41,11 +41,11 @@ public class HttpDownloadRequest extends HttpRequest {
         /**
          * 开始位置
          */
-        public long startPoit;
+        public long startPoint;
         /**
          * 结束位置
          */
-        public long endPoit;
+        public long endPoint;
 
         /**
          * 是否断点下载

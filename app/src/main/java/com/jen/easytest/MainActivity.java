@@ -11,6 +11,7 @@ import com.jen.easytest.activity.HttpActivity;
 import com.jen.easytest.activity.ImageLoaderActivity;
 import com.jen.easytest.activity.SQLiteActivity;
 import com.jen.easytest.activity.TabBarActivity;
+import com.jen.easytest.activity.UtilActivity;
 import com.jen.easyui.base.EasyActivity;
 
 public class MainActivity extends EasyActivity {
@@ -37,7 +38,7 @@ public class MainActivity extends EasyActivity {
     }
 
 
-    @EasyMouse.BIND.Method({R.id.tabBar, R.id.drawable, R.id.http, R.id.imageLoader, R.id.dialog, R.id.sqlite})
+    @EasyMouse.BIND.Method({R.id.tabBar, R.id.drawable, R.id.http, R.id.imageLoader, R.id.dialog, R.id.sqlite, R.id.util})
     @Override
     protected void onBindClick(View view) {
         Class clazz = null;
@@ -64,6 +65,10 @@ public class MainActivity extends EasyActivity {
             }
             case R.id.sqlite: {
                 clazz = SQLiteActivity.class;
+                break;
+            }
+            case R.id.util: {
+                clazz = UtilActivity.class;
                 break;
             }
             default: {

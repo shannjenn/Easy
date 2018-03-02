@@ -2,6 +2,7 @@ package com.jen.easy.imageLoader;
 
 import android.app.Application;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 
@@ -25,6 +26,7 @@ public class ImageLoaderConfig {
     private int imgHeight = 300, imgWidth = 300;//默认高宽
     private int httpMaxThread = 4;//默认三个线程
     private int timeOut = 5000;//默认超时毫秒
+    private Bitmap.Config bitmapConfig;
 
     public ImageLoaderConfig(Application context) {
         this.context = context;
@@ -32,7 +34,7 @@ public class ImageLoaderConfig {
 
     public ImageLoaderConfig build() {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {// 优先保存到SD卡中
-            localPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + ".EasyImageLoaderCache";
+            localPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "cEasyImageLoaderCache";
             File file = new File(localPath);
             if (!file.exists()) {
                 boolean result = file.mkdirs();
@@ -81,31 +83,41 @@ public class ImageLoaderConfig {
         return this;
     }
 
-    public String getLocalPath() {
+    public ImageLoaderConfig bitmapConfig(Bitmap.Config bitmapConfig) {
+        this.bitmapConfig = bitmapConfig;
+        return this;
+    }
+
+
+    String getLocalPath() {
         return localPath;
     }
 
-    public int getNameMaxLen() {
+    int getNameMaxLen() {
         return nameMaxLen;
     }
 
-    public Drawable getDefaultImage() {
+    Drawable getDefaultImage() {
         return defaultImage;
     }
 
-    public int getImgHeight() {
+    int getImgHeight() {
         return imgHeight;
     }
 
-    public int getImgWidth() {
+    int getImgWidth() {
         return imgWidth;
     }
 
-    public int getHttpMaxThread() {
+    int getHttpMaxThread() {
         return httpMaxThread;
     }
 
-    public int getTimeOut() {
+    int getTimeOut() {
         return timeOut;
+    }
+
+    Bitmap.Config getBitmapConfig() {
+        return bitmapConfig;
     }
 }

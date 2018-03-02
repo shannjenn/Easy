@@ -2,6 +2,8 @@ package com.jen.easyui.base;
 
 import android.view.View;
 
+import com.jen.easyui.R;
+
 /**
  * 错误日志抓取
  * 作者：ShannJenn
@@ -9,6 +11,10 @@ import android.view.View;
  */
 public class LogCrashActivity<T> extends EasyActivity<T> {
 
+    @Override
+    public void setContentView(int layoutResID) {
+        super.setContentView(R.layout._easy_log_crash);
+    }
 
     @Override
     protected void intDataBeforeView() {

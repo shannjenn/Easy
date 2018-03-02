@@ -46,4 +46,11 @@
         android:text="sqlite"
         android:textAllCaps="false" />
 
+    <Button
+        android:id="@+id/util"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:text="util"
+        android:textAllCaps="false" />
+
 </LinearLayout>

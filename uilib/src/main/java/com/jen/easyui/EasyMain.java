@@ -1,6 +1,7 @@
 package com.jen.easyui;
 
 import android.app.Application;
+import android.graphics.Bitmap;
 
 import com.jen.easy.bind.BindView;
 import com.jen.easy.http.Http;
@@ -64,6 +65,7 @@ public final class EasyMain {
                 .imgHeight(300)
                 .imgWidth(300)
                 .timeOut(10000)
+                .bitmapConfig(Bitmap.Config.RGB_565)
                 .build());
         mShared = new Shared(application);
         mDBHelper = new DBHelper(application);
