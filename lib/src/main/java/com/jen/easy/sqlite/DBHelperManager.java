@@ -93,7 +93,7 @@ abstract class DBHelperManager {
             String fieldType = column_type.get(fieldName);
             String type = FieldType.getDBColumnType(fieldType);
             if (type == null) {
-                EasyLog.w("创建表失败，不支持该类型：" + fieldName + " 请用@EasyMouse.DB.Column(noColumn = true)注释该变量");
+                EasyLog.w(TAG.EasySQL, "创建表失败，不支持该类型：" + fieldName + " 请用@EasyMouse.DB.Column(noColumn = true)注释该变量");
                 return;
             }
 
@@ -132,9 +132,9 @@ abstract class DBHelperManager {
             db.beginTransaction();
             db.execSQL(sql);
             db.setTransactionSuccessful();
-            EasyLog.d("创建表:" + tableName + " 列明:" + fieldSql + " 主键:" + primaryKeySql + " 成功");
+            EasyLog.d(TAG.EasySQL, "创建表:" + tableName + " 列明:" + fieldSql + " 主键:" + primaryKeySql + " 成功");
         } catch (SQLiteException e) {
-            EasyLog.w("创建表：" + tableName + " 失败  SQLiteException");
+            EasyLog.w(TAG.EasySQL, "创建表：" + tableName + " 失败  SQLiteException");
             e.printStackTrace();
         } finally {
             db.endTransaction();
@@ -156,10 +156,10 @@ abstract class DBHelperManager {
             db.beginTransaction();
             db.execSQL("deleteTB DROP TABLE " + tableName);
             db.setTransactionSuccessful();
-            EasyLog.d("删除表: " + tableName + " 成功");
+            EasyLog.d(TAG.EasySQL, "删除表: " + tableName + " 成功");
             return true;
         } catch (SQLiteException e) {
-            EasyLog.d("删除表: " + tableName + " 失败 SQLiteException");
+            EasyLog.d(TAG.EasySQL, "删除表: " + tableName + " 失败 SQLiteException");
             e.printStackTrace();
         } finally {
             db.endTransaction();
@@ -209,14 +209,14 @@ abstract class DBHelperManager {
         }
         String type = FieldType.getDBColumnType(fieldType);
         if (type == null) {
-            EasyLog.w("增加列失败，不支持该类型：" + fieldType + " 请用@EasyMouse.DB.Column(noColumn = true)注释该变量");
+            EasyLog.w(TAG.EasySQL, "增加列失败，不支持该类型：" + fieldType + " 请用@EasyMouse.DB.Column(noColumn = true)注释该变量");
             return;
         }
         try {
             db.beginTransaction();
             db.execSQL("alter table " + tableName + " add " + columnName + type);
             db.setTransactionSuccessful();
-            EasyLog.d("add table name : " + tableName + " column : " + columnName + " SUCCESS");
+            EasyLog.d(TAG.EasySQL, "add table name : " + tableName + " column : " + columnName + " SUCCESS");
         } catch (SQLiteException e) {
             EasyLog.w(TAG.EasySQL, "addColumn SQLiteException");
             e.printStackTrace();

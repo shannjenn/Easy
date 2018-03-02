@@ -50,12 +50,12 @@ abstract class ImageLoaderManager {
                     ImageView imageView = (ImageView) msg.obj;
                     if (imageView == null) {
                         mImageViewCache.remove(null);
-                        EasyLog.w("Handler imageView 为空---");
+                        EasyLog.w(TAG.EasyImageLoader,"Handler imageView 为空---");
                         return;
                     }
                     String imageUrl = mImageViewCache.remove(imageView);
                     if (imageUrl == null) {
-                        EasyLog.w("Handler imageUrl 为空---");
+                        EasyLog.w(TAG.EasyImageLoader,"Handler imageUrl 为空---");
                         return;
                     }
                     Bitmap bitmap = mImageCache.get(imageUrl);
@@ -69,7 +69,7 @@ abstract class ImageLoaderManager {
                 case H_IMAGE_EMPTY: {
                     ImageView imageView = (ImageView) msg.obj;
                     if (imageView == null) {
-                        EasyLog.w("imageView 为空---");
+                        EasyLog.w(TAG.EasyImageLoader,"imageView 为空---");
                         return;
                     }
                     imageView.setImageDrawable(config.getDefaultImage());
@@ -94,7 +94,7 @@ abstract class ImageLoaderManager {
             public void run() {
                 String imageUrl = mImageViewCache.remove(imageView);
                 if (imageUrl == null) {
-                    EasyLog.w("Handler imageUrl 为空---");
+                    EasyLog.w(TAG.EasyImageLoader,"Handler imageUrl 为空---");
                     return;
                 }
                 Bitmap bitmap = mImageCache.get(imageUrl);
