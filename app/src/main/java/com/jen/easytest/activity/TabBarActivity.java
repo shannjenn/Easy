@@ -110,16 +110,6 @@ public class TabBarActivity extends EasyActivity {
         easy_tabar_scroll.setViewPager(viewpager_scroll,titles);
     }
 
-    @Override
-    public void httpSuccess(int flagCode, String flag, Object response) {
-
-    }
-
-    @Override
-    public void httpFail(int flagCode, String flag, String msg) {
-
-    }
-
 
     class CenterFragmentPagerAdapter extends EasyFragmentPagerAdapter {
 

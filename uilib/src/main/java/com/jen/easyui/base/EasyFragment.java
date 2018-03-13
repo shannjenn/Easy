@@ -20,42 +20,11 @@ import com.jen.easyui.dialog.EasyLoading;
  * 时间：2017/01/09.
  */
 
-public abstract class EasyFragment<T> extends Fragment implements HttpListener<T> {
+public abstract class EasyFragment<T> extends Fragment implements HttpBaseListener<T> {
     protected View rootView;
     protected Context mContext;
     protected Handler mHandler = new Handler(Looper.getMainLooper());
     protected EasyLoading mLoading;
-
-    /**
-     * 网络请求监听(网络基本数据请求用此监听)
-     */
-    private HttpBaseListener<T> mHttpListener = new HttpBaseListener<T>() {
-        @Override
-        public void success(final int flagCode, final String flag, final T response) {
-            if (mHandler == null) {
-                return;
-            }
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    httpSuccess(flagCode, flag, response);
-                }
-            });
-        }
-
-        @Override
-        public void fail(final int flagCode, final String flag, final String msg) {
-            if (mHandler == null) {
-                return;
-            }
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    httpFail(flagCode, flag, msg);
-                }
-            });
-        }
-    };
 
     @Override
     public void onAttach(Context context) {
@@ -91,8 +60,20 @@ public abstract class EasyFragment<T> extends Fragment implements HttpListener<T
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mHandler.removeMessages(0);
-        mHandler = null;
+        if (mHandler != null) {
+            mHandler.removeMessages(0);
+            mHandler = null;
+        }
+    }
+
+    @Override
+    public void success(int flagCode, String flag, T response) {
+
+    }
+
+    @Override
+    public void fail(int flagCode, String flag, String msg) {
+
     }
 
     protected abstract int inflateLayout();

@@ -26,7 +26,16 @@ abstract class EasyRecyclerAdapterManager<T> extends EasyRecyclerBaseAdapterMana
 
     @Override
     public EasyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        switch (viewType) {
+            case VIEW_TYPE_HEAD:
+            case VIEW_TYPE_FOOT:
+                return super.onCreateViewHolder(parent, viewType);
+        }
         int layout = onBindLayout();
+        if (layout == 0) {
+            EasyLog.w("找不到该值对应item布局R.layout.id：" + layout);
+            return null;
+        }
         View view = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
         if (view == null) {
             EasyLog.w("找不到该值对应item布局R.layout.id：" + layout);
@@ -37,4 +46,13 @@ abstract class EasyRecyclerAdapterManager<T> extends EasyRecyclerBaseAdapterMana
 
     protected abstract int onBindLayout();
 
+    @Override
+    protected void onBindHeaderView(View view) {
+
+    }
+
+    @Override
+    protected void onBindFooterView(View view) {
+
+    }
 }

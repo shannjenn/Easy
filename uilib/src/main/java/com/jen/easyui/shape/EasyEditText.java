@@ -1,4 +1,4 @@
-package com.jen.easyui.edittext;
+package com.jen.easyui.shape;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -11,9 +11,9 @@ import android.util.AttributeSet;
 
 public class EasyEditText extends EasyEditTextManager {
 
-    public EasyEditText(Context context) {
+    /*public EasyEditText(Context context) {
         super(context);
-    }
+    }*/
 
     public EasyEditText(Context context, AttributeSet attrs) {
         super(context, attrs);

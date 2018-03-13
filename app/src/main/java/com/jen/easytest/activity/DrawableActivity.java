@@ -3,10 +3,8 @@ package com.jen.easytest.activity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.jen.easy.EasyMouse;
 import com.jen.easytest.R;
 import com.jen.easyui.base.EasyActivity;
-import com.jen.easyui.button.EasyButton;
 
 /**
  * 作者：ShannJenn
@@ -14,9 +12,6 @@ import com.jen.easyui.button.EasyButton;
  */
 
 public class DrawableActivity extends EasyActivity {
-
-    @EasyMouse.BIND.ID(R.id.easyButon)
-    EasyButton easyButon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +40,12 @@ public class DrawableActivity extends EasyActivity {
     }
 
     @Override
-    public void httpSuccess(int flagCode, String flag, Object response) {
+    public void success(int flagCode, String flag, Object response) {
 
     }
 
     @Override
-    public void httpFail(int flagCode, String flag, String msg) {
+    public void fail(int flagCode, String flag, String msg) {
 
     }
 }

@@ -62,7 +62,7 @@ public class ImageLoaderActivity<T extends ImageLoaderResponse> extends EasyActi
     protected void loadDataAfterView() {
         if (mData.size() == 0) {
             ImageLoaderRequest request = new ImageLoaderRequest();
-            request.setBseListener(mHttpListener);
+            request.setBseListener(this);
             EasyMain.mHttp.start(request);
         }
     }
@@ -73,7 +73,8 @@ public class ImageLoaderActivity<T extends ImageLoaderResponse> extends EasyActi
     }
 
     @Override
-    public void httpSuccess(int flagCode, String flag, ImageLoaderResponse response) {
+    public void success(int flagCode, String flag, T response) {
+        super.success(flagCode, flag, response);
         mData.clear();
         mData.addAll(response.getData().getData2());
         EasyMain.mDao.replace(mData);
@@ -81,7 +82,7 @@ public class ImageLoaderActivity<T extends ImageLoaderResponse> extends EasyActi
     }
 
     @Override
-    public void httpFail(int flagCode, String flag, String msg) {
-
+    public void fail(int flagCode, String flag, String msg) {
+        super.fail(flagCode, flag, msg);
     }
 }

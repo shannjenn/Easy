@@ -26,12 +26,12 @@ public class EmptyFragmentBlue extends EasyFragment {
     }
 
     @Override
-    public void httpSuccess(int flagCode, String flag, Object response) {
+    public void success(int flagCode, String flag, Object response) {
 
     }
 
     @Override
-    public void httpFail(int flagCode, String flag, String msg) {
+    public void fail(int flagCode, String flag, String msg) {
 
     }
 }

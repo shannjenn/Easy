@@ -19,43 +19,10 @@ import com.jen.easyui.dialog.EasyLoading;
  * 作者：ShannJenn
  * 时间：2017/10/26.
  */
-public abstract class EasyActivity<T> extends AppCompatActivity implements HttpListener<T> {
+public abstract class EasyActivity<T> extends AppCompatActivity implements HttpBaseListener<T> {
     protected Context mContext;
     protected Handler mHandler = new Handler(Looper.getMainLooper());
     protected EasyLoading mLoading;
-
-    /**
-     * 网络请求监听(网络基本数据请求用此监听)
-     */
-    protected HttpBaseListener<T> mHttpListener = new HttpBaseListener<T>() {
-        @Override
-        public void success(final int flagCode, final String flag, final T response) {
-            if (mHandler == null) {
-                return;
-            }
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    httpSuccess(flagCode, flag, response);
-                    mLoading.cancel();
-                }
-            });
-        }
-
-        @Override
-        public void fail(final int flagCode, final String flag, final String msg) {
-            if (mHandler == null) {
-                return;
-            }
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    httpFail(flagCode, flag, msg);
-                    mLoading.cancel();
-                }
-            });
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,8 +46,10 @@ public abstract class EasyActivity<T> extends AppCompatActivity implements HttpL
     protected void onDestroy() {
         super.onDestroy();
         EasyMain.mBindView.unbind(this);
-        mHandler.removeMessages(0);
-        mHandler = null;
+        if (mHandler != null) {
+            mHandler.removeMessages(0);
+            mHandler = null;
+        }
     }
 
     /**
@@ -94,6 +63,16 @@ public abstract class EasyActivity<T> extends AppCompatActivity implements HttpL
     protected abstract void loadDataAfterView();
 
     protected abstract void onBindClick(View view);
+
+    @Override
+    public void success(int flagCode, String flag, T response) {
+
+    }
+
+    @Override
+    public void fail(int flagCode, String flag, String msg) {
+
+    }
 
     /**
      * 6.0以上获取读写文件权限

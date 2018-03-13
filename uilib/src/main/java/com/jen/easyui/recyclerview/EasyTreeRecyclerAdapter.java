@@ -11,7 +11,7 @@ import java.util.List;
  * 时间：2017/8/12.
  */
 
-public class EasyTreeRecyclerAdapter<T extends EasyTreeItem> extends EasyTreeRecyclerAdapterManager<T> {
+public abstract class EasyTreeRecyclerAdapter<T extends EasyTreeItem> extends EasyTreeRecyclerAdapterManager<T> {
 
 
     /**
@@ -38,7 +38,7 @@ public class EasyTreeRecyclerAdapter<T extends EasyTreeItem> extends EasyTreeRec
     }
 
     @Override
-    protected float itemSpacedb() {
+    protected float itemSpace() {
         return 0;
     }
 

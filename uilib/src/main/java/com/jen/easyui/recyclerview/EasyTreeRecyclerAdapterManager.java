@@ -30,12 +30,18 @@ abstract class EasyTreeRecyclerAdapterManager<T extends EasyTreeItem> extends Ea
      */
     EasyTreeRecyclerAdapterManager(Context context, List<T> data) {
         super(context, data);
-        spaceSize = EasyDensityUtil.dip2px(mContext, itemSpacedb());
+        spaceSize = EasyDensityUtil.dip2px(mContext, itemSpace());
     }
 
     @Override
     public int getItemViewType(int position) {
-        int level = mData.get(position).getLevel();
+        int viewType = super.getItemViewType(position);
+        switch (viewType) {
+            case VIEW_TYPE_HEAD:
+            case VIEW_TYPE_FOOT:
+                return viewType;
+        }
+        int level = mData.get(position - mHeadItems).getLevel();
         return getViewType(level);
     }
 
@@ -54,30 +60,47 @@ abstract class EasyTreeRecyclerAdapterManager<T extends EasyTreeItem> extends Ea
 
     @Override
     public EasyHolder onCreateViewHolder(ViewGroup parent, int level) {
+        switch (level) {
+            case VIEW_TYPE_HEAD:
+            case VIEW_TYPE_FOOT:
+                return super.onCreateViewHolder(parent, level);
+        }
         boolean isSameView = isSameView();
         int[] layouts = onBindLayout();
         if (layouts == null) {
             EasyLog.w("布局为空");
-            return null;
+            return super.onCreateViewHolder(parent, level);
         }
         if (isSameView) {
             level = 0;
         }
         if (level < 0 || layouts.length <= level) {
             EasyLog.w("viewType：" + level + "错误");
-            return null;
+            return super.onCreateViewHolder(parent, level);
         }
         View view = LayoutInflater.from(parent.getContext()).inflate(layouts[level], parent, false);
         if (view == null) {
             EasyLog.w("找不到该值对应item布局R.layout.id：" + layouts[level]);
-            return null;
+            return super.onCreateViewHolder(parent, level);
         }
         return new EasyHolder(view);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        EasyTreeItem data = mData.get(position);
+        if (holder == null) {
+            return;
+        }
+        if (position == 0 && mHeaderLayout != 0) {
+            super.onBindViewHolder(holder, position);
+            return;
+        }
+        if (isFootPosition(position) && mFootLayout != 0) {
+            super.onBindViewHolder(holder, position);
+            return;
+        }
+
+        EasyTreeItem data = mData.get(position - mHeadItems);
         if (!mLayoutParam.containsKey(data.getLevel())) {
             ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
             int height = layoutParams.height;
@@ -110,6 +133,18 @@ abstract class EasyTreeRecyclerAdapterManager<T extends EasyTreeItem> extends Ea
 
     protected abstract int[] onBindLayout();
 
-    protected abstract float itemSpacedb();
+    /**单位db
+     * @return
+     */
+    protected abstract float itemSpace();
 
+    @Override
+    protected void onBindHeaderView(View view) {
+
+    }
+
+    @Override
+    protected void onBindFooterView(View view) {
+
+    }
 }

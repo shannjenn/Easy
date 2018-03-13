@@ -36,13 +36,4 @@ public class LogCrashActivity<T> extends EasyActivity<T> {
 
     }
 
-    @Override
-    public void httpSuccess(int flagCode, String flag, T response) {
-
-    }
-
-    @Override
-    public void httpFail(int flagCode, String flag, String msg) {
-
-    }
 }

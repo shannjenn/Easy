@@ -65,13 +65,4 @@ public class SQLiteActivity extends EasyActivity {
         }
     }
 
-    @Override
-    public void httpSuccess(int flagCode, String flag, Object response) {
-
-    }
-
-    @Override
-    public void httpFail(int flagCode, String flag, String msg) {
-
-    }
 }

@@ -1,4 +1,4 @@
-package com.jen.easyui.linearlayout;
+package com.jen.easyui.shape;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -10,9 +10,9 @@ import android.util.AttributeSet;
  */
 
 public class EasyLinearLayout extends EasyLinearLayoutManager {
-    public EasyLinearLayout(Context context) {
+    /*public EasyLinearLayout(Context context) {
         super(context);
-    }
+    }*/
 
     public EasyLinearLayout(Context context, AttributeSet attrs) {
         super(context, attrs);

@@ -1,4 +1,4 @@
-package com.jen.easyui.textview;
+package com.jen.easyui.shape;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -10,9 +10,9 @@ import android.util.AttributeSet;
  */
 
 public class EasyTextView extends EasyTextViewManager {
-    public EasyTextView(Context context) {
+    /*public EasyTextView(Context context) {
         super(context);
-    }
+    }*/
 
     public EasyTextView(Context context, AttributeSet attrs) {
         super(context, attrs);

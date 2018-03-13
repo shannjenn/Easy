@@ -1,4 +1,4 @@
-package com.jen.easyui.relativelayout;
+package com.jen.easyui.shape;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -10,9 +10,9 @@ import android.util.AttributeSet;
  */
 
 public class EasyRelativeLayout extends EasyRelativeLayoutManager {
-    public EasyRelativeLayout(Context context) {
+    /*public EasyRelativeLayout(Context context) {
         super(context);
-    }
+    }*/
 
     public EasyRelativeLayout(Context context, AttributeSet attrs) {
         super(context, attrs);

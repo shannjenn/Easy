@@ -53,4 +53,11 @@
         android:text="util"
         android:textAllCaps="false" />
 
+    <Button
+        android:id="@+id/recycleView"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:text="recycleView"
+        android:textAllCaps="false" />
+
 </LinearLayout>

@@ -1,7 +1,6 @@
 package com.jen.easyui.recyclerview;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +25,13 @@ abstract class EasyRecyclerWaterfallAdapterManager<T> extends EasyRecyclerBaseAd
 
     @Override
     public int getItemViewType(int position) {
-        return getViewType(position);
+        int viewType = super.getItemViewType(position);
+        switch (viewType) {
+            case VIEW_TYPE_HEAD:
+            case VIEW_TYPE_FOOT:
+                return viewType;
+        }
+        return getViewType(position - mHeadItems);
     }
 
     /**
@@ -39,6 +44,11 @@ abstract class EasyRecyclerWaterfallAdapterManager<T> extends EasyRecyclerBaseAd
 
     @Override
     public EasyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        switch (viewType) {
+            case VIEW_TYPE_HEAD:
+            case VIEW_TYPE_FOOT:
+                return super.onCreateViewHolder(parent, viewType);
+        }
         int[] layouts = onBindLayout();
         if (layouts == null) {
             EasyLog.w("布局为空");
@@ -56,10 +66,20 @@ abstract class EasyRecyclerWaterfallAdapterManager<T> extends EasyRecyclerBaseAd
         return new EasyHolder(view);
     }
 
+    /**
+     * 返回值对应viewType
+     *
+     * @return viewType
+     */
     protected abstract int[] onBindLayout();
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        super.onBindViewHolder(holder, position);
+    protected void onBindHeaderView(View view) {
+
+    }
+
+    @Override
+    protected void onBindFooterView(View view) {
+
     }
 }

@@ -3,6 +3,7 @@ package com.jen.easyui.recyclerview;
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -21,26 +22,80 @@ abstract class EasyRecyclerBaseAdapterManager<T> extends RecyclerView.Adapter<Re
     protected List<T> mData;
     private EasyAdapterClickEvent easyAdapterClickEvent;
 
+    protected final int VIEW_TYPE_HEAD = -100;
+    protected final int VIEW_TYPE_FOOT = -101;
+    protected int mHeaderLayout;
+    protected int mFootLayout;
+    protected int mHeadItems;
+    protected int mFootItems;
+    private View mHeaderView;
+    private View mFootView;
+    private int mHeaderHeight;
+    private int mFootHeight;
+
     /**
      * @param data 数据
      */
     EasyRecyclerBaseAdapterManager(Context context, List<T> data) {
         this.mContext = context;
-        this.mData = data;
+        mData = data;
     }
 
     @Override
     public int getItemCount() {
         int count = 0;
-        if (mData == null) {
-            return count;
+        mHeadItems = 0;
+        mFootItems = 0;
+        if (mHeaderLayout != 0) {
+            count++;
+            mHeadItems = 1;
         }
-        count = mData.size();
+        if (mFootLayout != 0) {
+            count++;
+            mFootItems = 1;
+        }
+        count += mData.size();
         return count;
+    }
+
+    protected boolean isFootPosition(int position) {
+        return position - mHeadItems > mData.size() - 1;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position == 0 && mHeaderLayout != 0) {
+            return VIEW_TYPE_HEAD;
+        }
+        if (isFootPosition(position) && mFootLayout != 0) {
+            return VIEW_TYPE_FOOT;
+        }
+        return super.getItemViewType(position - mHeadItems);
+
     }
 
     @Override
     public EasyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        switch (viewType) {
+            case VIEW_TYPE_HEAD: {
+                mHeaderView = LayoutInflater.from(parent.getContext()).inflate(mHeaderLayout, parent, false);
+                if (mHeaderView != null) {
+                    mHeaderHeight = mHeaderView.getLayoutParams().height;
+                    setHeaderVisible(false);
+                    return new EasyHolder(mHeaderView);
+                }
+                break;
+            }
+            case VIEW_TYPE_FOOT: {
+                mFootView = LayoutInflater.from(parent.getContext()).inflate(mFootLayout, parent, false);
+                if (mFootView != null) {
+                    mFootHeight = mFootView.getLayoutParams().height;
+                    setFootVisible(false);
+                    return new EasyHolder(mFootView);
+                }
+                break;
+            }
+        }
         return null;
     }
 
@@ -54,8 +109,16 @@ abstract class EasyRecyclerBaseAdapterManager<T> extends RecyclerView.Adapter<Re
         if (holder == null) {
             return;
         }
-        T t = mData.get(position);
-        onBindView(holder.itemView, holder.getItemViewType(), t, position);
+        if (position == 0 && mHeaderLayout != 0) {
+            onBindHeaderView(holder.itemView);
+            return;
+        }
+        if (isFootPosition(position) && mFootLayout != 0) {
+            onBindFooterView(holder.itemView);
+            return;
+        }
+        T t = mData.get(position - mHeadItems);
+        onBindView(holder.itemView, holder.getItemViewType(), t, position - mHeadItems);
     }
 
     @Override
@@ -166,7 +229,53 @@ abstract class EasyRecyclerBaseAdapterManager<T> extends RecyclerView.Adapter<Re
      */
     protected abstract void onBindView(View view, int viewType, T data, int pos);
 
+    /**
+     * 头部view
+     *
+     * @param view
+     */
+    protected abstract void onBindHeaderView(View view);
+
+    /**
+     * 底部view
+     *
+     * @param view
+     */
+    protected abstract void onBindFooterView(View view);
+
     public void setEasyAdapterClickEvent(EasyAdapterClickEvent easyAdapterClickEvent) {
         this.easyAdapterClickEvent = easyAdapterClickEvent;
     }
+
+    protected void setHeaderVisible(boolean visible) {
+        if (mHeaderView != null) {
+            if (visible) {
+                mHeaderView.getLayoutParams().height = mHeaderHeight;
+                mHeaderView.setVisibility(View.VISIBLE);
+            } else {
+                mHeaderView.getLayoutParams().height = 1;
+                mHeaderView.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    protected void setFootVisible(boolean visible) {
+        if (mFootView != null) {
+            if (visible) {
+                mFootView.getLayoutParams().height = mFootHeight;
+                mFootView.setVisibility(View.VISIBLE);
+            } else {
+                mFootView.getLayoutParams().height = 1;
+                mFootView.setVisibility(View.GONE);
+                new android.os.Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mFootView.setVisibility(View.VISIBLE);
+                        mFootView.getLayoutParams().height = mFootHeight;
+                    }
+                }, 5);
+            }
+        }
+    }
+
 }

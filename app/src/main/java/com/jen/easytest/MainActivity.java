@@ -9,6 +9,7 @@ import com.jen.easytest.activity.DialogActivity;
 import com.jen.easytest.activity.DrawableActivity;
 import com.jen.easytest.activity.HttpActivity;
 import com.jen.easytest.activity.ImageLoaderActivity;
+import com.jen.easytest.activity.RecyclerViewActivity;
 import com.jen.easytest.activity.SQLiteActivity;
 import com.jen.easytest.activity.TabBarActivity;
 import com.jen.easytest.activity.UtilActivity;
@@ -38,7 +39,7 @@ public class MainActivity extends EasyActivity {
     }
 
 
-    @EasyMouse.BIND.Method({R.id.tabBar, R.id.drawable, R.id.http, R.id.imageLoader, R.id.dialog, R.id.sqlite, R.id.util})
+    @EasyMouse.BIND.Method({R.id.tabBar, R.id.drawable, R.id.http, R.id.imageLoader, R.id.dialog, R.id.sqlite, R.id.util, R.id.recycleView})
     @Override
     protected void onBindClick(View view) {
         Class clazz = null;
@@ -71,6 +72,10 @@ public class MainActivity extends EasyActivity {
                 clazz = UtilActivity.class;
                 break;
             }
+            case R.id.recycleView: {
+                clazz = RecyclerViewActivity.class;
+                break;
+            }
             default: {
 
                 break;
@@ -80,13 +85,4 @@ public class MainActivity extends EasyActivity {
         startActivity(intent);
     }
 
-    @Override
-    public void httpSuccess(int flagCode, String flag, Object response) {
-
-    }
-
-    @Override
-    public void httpFail(int flagCode, String flag, String msg) {
-
-    }
 }
