@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.jen.easy.EasyMouse;
 import com.jen.easytest.R;
 import com.jen.easyui.base.EasyActivity;
+import com.jen.easyui.recyclerview.EasyLetterView;
 import com.jen.easyui.recyclerview.EasyRecyclerAdapter;
 import com.jen.easyui.recyclerview.EasyRecyclerView;
 
@@ -24,6 +25,12 @@ public class RecyclerViewActivity extends EasyActivity {
 
     @EasyMouse.BIND.ID(R.id.recyclerView)
     EasyRecyclerView recyclerView;
+
+    @EasyMouse.BIND.ID(R.id.lt_letter)
+    EasyLetterView lt_letter;
+
+    @EasyMouse.BIND.ID(R.id.tv_letter_show)
+    TextView tv_letter_show;
 
     List<String> mData = new ArrayList<>();
 
@@ -54,7 +61,7 @@ public class RecyclerViewActivity extends EasyActivity {
 
     @Override
     protected void initViews() {
-
+//        lt_letter.setTextViewDialog(tv_letter_show);
     }
 
     @Override
