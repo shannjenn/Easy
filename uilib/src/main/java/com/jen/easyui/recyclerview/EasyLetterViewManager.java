@@ -10,7 +10,6 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.TextView;
 
 import com.jen.easyui.R;
 import com.jen.easyui.util.EasyDensityUtil;
@@ -31,7 +30,6 @@ public class EasyLetterViewManager extends View {
     private Paint textDialogPaint;
     private Paint textDialogBackgroundPaint;
     private int choosePosition = -1;//当前手指滑动到的位置
-    private TextView textViewDialog;//中间显示的TextView
     private TouchListener touchListener;
     private final String[] LETTERS = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L",
             "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "#"};//默认字母
@@ -237,9 +235,6 @@ public class EasyLetterViewManager extends View {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_UP:
-                if (textViewDialog != null) {
-                    textViewDialog.setVisibility(View.GONE);
-                }
                 setBackgroundColor(backgroundColor);
                 choosePosition = -1;
                 if (getLayoutParams().width != width) {
@@ -255,12 +250,8 @@ public class EasyLetterViewManager extends View {
                     String letter = letters[currentPosition];
                     setBackgroundColor(backgroundTouchColor);
                     if (currentPosition > -1 && currentPosition < letters.length) {
-                        if (textViewDialog != null) {
-                            textViewDialog.setVisibility(View.VISIBLE);
-                            textViewDialog.setText(letter);
-                        }
                         if (touchListener != null) {
-                            touchListener.updateListView(letter);
+                            touchListener.onTouch(letter);
                         }
                         choosePosition = currentPosition;
                     }
@@ -296,18 +287,8 @@ public class EasyLetterViewManager extends View {
         super.setBackgroundDrawable(null);
     }
 
-    /**
-     * 设置提示的文本框
-     *
-     * @param textViewDialog
-     */
-    public void setTextViewDialog(TextView textViewDialog) {
-        this.textViewDialog = textViewDialog;
-    }
-
-
     public interface TouchListener {
-        void updateListView(String currentChar);
+        void onTouch(String letter);
     }
 
     /**
@@ -319,14 +300,12 @@ public class EasyLetterViewManager extends View {
         this.touchListener = touchListener;
     }
 
-    public void updateLetterIndexView(int currentChar) {
-        for (int i = 0; i < letters.length; i++) {
-            if (currentChar == letters[i].charAt(0)) {
-                choosePosition = i;
-                invalidate();
-                break;
-            }
-        }
+    public String[] getLetters() {
+        return letters;
+    }
 
+    public void setLetters(String[] letters) {
+        this.letters = letters;
+        invalidate();
     }
 }

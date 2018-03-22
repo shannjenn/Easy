@@ -14,12 +14,12 @@ import com.jen.easyui.R;
  */
 
 public class EasyRecyclerView extends RecyclerView {
-    private boolean showHeader;
-    private boolean showFoot;
+    protected int headItems;
+    protected int footItems;
     private RefreshListener refreshListener;
     private LoadMoreListener loadMoreListener;
-    protected int mHeaderLayout = R.layout._easy_recycler_header;
-    protected int mFootLayout = R.layout._easy_recycler_foot;
+    protected int headerLayout = R.layout._easy_recycler_header;
+    protected int footLayout = R.layout._easy_recycler_foot;
     private boolean isRefreshing;
     private boolean isLoading;
 
@@ -84,6 +84,9 @@ public class EasyRecyclerView extends RecyclerView {
         super.setLayoutManager(layoutManager);
     }
 
+    /**
+     * 滚动监听,加载更多、下拉刷新
+     */
     RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
         int lastVisibleItem;
         int firstVisibleItem;
@@ -131,11 +134,52 @@ public class EasyRecyclerView extends RecyclerView {
     @Override
     public void setAdapter(Adapter adapter) {
         super.setAdapter(adapter);
+        updateHeaderFooter();
+    }
+
+    /**
+     * 更新头部和尾部
+     */
+    private void updateHeaderFooter() {
+        Adapter adapter = getAdapter();
         if (adapter != null && adapter instanceof EasyRecyclerBaseAdapterManager) {
-            if (showHeader)
-                ((EasyRecyclerBaseAdapterManager) adapter).mHeaderLayout = mHeaderLayout;
-            if (showFoot)
-                ((EasyRecyclerBaseAdapterManager) adapter).mFootLayout = mFootLayout;
+            if (headItems > 0)
+                ((EasyRecyclerBaseAdapterManager) adapter).mHeaderLayout = headerLayout;
+            else
+                ((EasyRecyclerBaseAdapterManager) adapter).mHeaderLayout = 0;
+            if (footItems > 0)
+                ((EasyRecyclerBaseAdapterManager) adapter).mFootLayout = footLayout;
+            else
+                ((EasyRecyclerBaseAdapterManager) adapter).mFootLayout = 0;
+        }
+    }
+
+    /**
+     * 滑动到顶部
+     *
+     * @param position
+     */
+    public void scrollPositionToHeader(int position) {
+        position += headItems;
+        int count = getChildCount();
+        int firstItem = getChildLayoutPosition(getChildAt(0));
+        int lastItem = getChildLayoutPosition(getChildAt(count - 1));
+        if (position < firstItem) {
+            scrollToPosition(position);
+        } else if (position <= lastItem) {
+            int movePosition = position - firstItem;
+            if (movePosition >= 0 && movePosition < count) {
+                int top = getChildAt(movePosition).getTop();
+                scrollBy(0, top);
+                if (footItems > 0) {
+                    Adapter adapter = getAdapter();
+                    if (adapter != null && adapter instanceof EasyRecyclerBaseAdapterManager) {
+                        ((EasyRecyclerBaseAdapterManager) adapter).setFootVisible(false);
+                    }
+                }
+            }
+        } else {
+            scrollToPosition(position);
         }
     }
 
@@ -174,30 +218,30 @@ public class EasyRecyclerView extends RecyclerView {
     }
 
     public void setHeadView(int headerLayout) {
-        mHeaderLayout = headerLayout;
-        if (showHeader) {
-            Adapter adapter = getAdapter();
-            if (adapter != null && adapter instanceof EasyRecyclerBaseAdapterManager) {
-                ((EasyRecyclerBaseAdapterManager) adapter).mHeaderLayout = mHeaderLayout;
-            }
-        }
+        this.headerLayout = headerLayout;
+        updateHeaderFooter();
     }
 
     public void setFootView(int footLayout) {
-        mFootLayout = footLayout;
-        Adapter adapter = getAdapter();
-        if (showHeader) {
-            if (adapter != null && adapter instanceof EasyRecyclerBaseAdapterManager) {
-                ((EasyRecyclerBaseAdapterManager) adapter).mFootLayout = mFootLayout;
-            }
-        }
+        this.footLayout = footLayout;
+        updateHeaderFooter();
     }
 
-    public void setShowHeader(boolean showHeader) {
-        this.showHeader = showHeader;
+    public int getHeadItems() {
+        return headItems;
     }
 
-    public void setShowFoot(boolean showFoot) {
-        this.showFoot = showFoot;
+    public void showHeader(boolean showHeader) {
+        this.headItems = showHeader ? 1 : 0;
+        updateHeaderFooter();
+    }
+
+    public int getFootItems() {
+        return footItems;
+    }
+
+    public void showFooter(boolean showFooter) {
+        this.footItems = showFooter ? 1 : 0;
+        updateHeaderFooter();
     }
 }

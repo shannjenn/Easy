@@ -36,11 +36,6 @@ public abstract class EasyRecyclerAdapter<T> extends EasyRecyclerAdapterManager<
     }
 
     @Override
-    protected boolean bindItemClick() {
-        return false;
-    }
-
-    @Override
     protected int setSpanSize(int position) {
         return 0;
     }

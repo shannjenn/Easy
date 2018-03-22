@@ -3,12 +3,14 @@ package com.jen.easyui.recyclerview;
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.jen.easy.log.EasyLog;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -19,7 +21,7 @@ import java.util.List;
 
 abstract class EasyRecyclerBaseAdapterManager<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     protected Context mContext;
-    protected List<T> mData;
+    protected List<T> mData;//不包含header、footer
     private EasyAdapterClickEvent easyAdapterClickEvent;
 
     protected final int VIEW_TYPE_HEAD = -100;
@@ -163,16 +165,15 @@ abstract class EasyRecyclerBaseAdapterManager<T> extends RecyclerView.Adapter<Re
             }
             int[] clicks = bindClick();
             int[] longClicks = bindLongClick();
-            boolean itemClick = bindItemClick();
-
-            if (itemClick) {
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        easyAdapterClickEvent.onItemClick(v, getAdapterPosition());
-                    }
-                });
-            }
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = getAdapterPosition() - mHeadItems;
+                    if (pos < 0)
+                        return;
+                    easyAdapterClickEvent.onItemClick(v, pos);
+                }
+            });
 
             if (clicks != null) {
                 for (int id : clicks) {
@@ -184,7 +185,10 @@ abstract class EasyRecyclerBaseAdapterManager<T> extends RecyclerView.Adapter<Re
                     view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            easyAdapterClickEvent.onClick(v, getAdapterPosition());
+                            int pos = getAdapterPosition() - mHeadItems;
+                            if (pos < 0)
+                                return;
+                            easyAdapterClickEvent.onClick(v, pos);
                         }
                     });
                 }
@@ -200,7 +204,10 @@ abstract class EasyRecyclerBaseAdapterManager<T> extends RecyclerView.Adapter<Re
                     view.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {
-                            return easyAdapterClickEvent.onLongClick(v, getAdapterPosition());
+                            int pos = getAdapterPosition() - mHeadItems;
+                            if (pos < 0)
+                                return false;
+                            return easyAdapterClickEvent.onLongClick(v, pos);
                         }
                     });
                 }
@@ -212,7 +219,7 @@ abstract class EasyRecyclerBaseAdapterManager<T> extends RecyclerView.Adapter<Re
 
     protected abstract int[] bindLongClick();
 
-    protected abstract boolean bindItemClick();
+//    protected abstract boolean bindItemClick();
 
     /**
      * 设置合并头布局的跨度，只对GridLayoutManager有效
@@ -247,6 +254,11 @@ abstract class EasyRecyclerBaseAdapterManager<T> extends RecyclerView.Adapter<Re
         this.easyAdapterClickEvent = easyAdapterClickEvent;
     }
 
+    /**
+     * 设置下拉显示/隐藏
+     *
+     * @param visible
+     */
     protected void setHeaderVisible(boolean visible) {
         if (mHeaderView != null) {
             if (visible) {
@@ -259,6 +271,11 @@ abstract class EasyRecyclerBaseAdapterManager<T> extends RecyclerView.Adapter<Re
         }
     }
 
+    /**
+     * 设置上拉显示/隐藏
+     *
+     * @param visible
+     */
     protected void setFootVisible(boolean visible) {
         if (mFootView != null) {
             if (visible) {
@@ -277,5 +294,61 @@ abstract class EasyRecyclerBaseAdapterManager<T> extends RecyclerView.Adapter<Re
             }
         }
     }
+
+    /**
+     * 设置拖拽排序
+     *
+     * @param recyclerView
+     */
+    public void setItemTouchSortEvent(RecyclerView recyclerView) {
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    /**
+     * 拖拽排序
+     */
+    private ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.Callback() {
+        @Override
+        public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+            if (recyclerView.getLayoutManager() instanceof GridLayoutManager) {
+                final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
+                final int swipeFlags = 0;
+                return makeMovementFlags(dragFlags, swipeFlags);
+            } else {
+                final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
+                final int swipeFlags = 0;
+                return makeMovementFlags(dragFlags, swipeFlags);
+            }
+        }
+
+        @Override
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            int fromPosition = viewHolder.getAdapterPosition();
+            int toPosition = target.getAdapterPosition();
+            if (fromPosition < mHeadItems || toPosition < mHeadItems) {
+                return false;
+            }
+            if (fromPosition >= mData.size() + mHeadItems || toPosition >= mData.size() + mHeadItems) {
+                return false;
+            }
+
+            if (fromPosition < toPosition) {
+                for (int i = fromPosition; i < toPosition; i++) {
+                    Collections.swap(mData, i - mHeadItems, i - mHeadItems + 1);
+                }
+            } else {
+                for (int i = fromPosition; i > toPosition; i--) {
+                    Collections.swap(mData, i - mHeadItems, i - mHeadItems - 1);
+                }
+            }
+            notifyItemMoved(fromPosition, toPosition);
+            return true;
+        }
+
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+
+        }
+    });
 
 }

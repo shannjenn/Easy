@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * EasyTree数据树形重构，0为最高级
+ * EasyTree数据树形重构排序，0为最高级
  * 作者：ShannJenn
  * 时间：2017/8/12.
  */
 
-public abstract class EasyTreeRestructure {
+public abstract class EasyTreeSort {
 
     /**
      * 树形转到平铺(要先设置好children值：parent.setChildren(children))

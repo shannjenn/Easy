@@ -41,7 +41,7 @@ public class ImageLoaderActivity<T extends ImageLoaderResponse> extends EasyActi
 
     @Override
     protected void intDataBeforeView() {
-        getFilePermission();
+//        checkFilePermission();
         EasyMain.mImageLoader.setImage("http://pic4.nipic.com/20091217/3885730_124701000519_2.jpg", iv_pic);
 
     }

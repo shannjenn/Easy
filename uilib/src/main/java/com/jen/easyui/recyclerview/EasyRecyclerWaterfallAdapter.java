@@ -44,11 +44,6 @@ public abstract class EasyRecyclerWaterfallAdapter<T> extends EasyRecyclerWaterf
     }
 
     @Override
-    protected boolean bindItemClick() {
-        return false;
-    }
-
-    @Override
     protected int setSpanSize(int position) {
         return 0;
     }

@@ -7,9 +7,15 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.jen.easy.EasyMouse;
+import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
+import com.jen.easytest.model.RecyclerViewModel;
 import com.jen.easyui.base.EasyActivity;
+import com.jen.easyui.base.EasyToast;
+import com.jen.easyui.recyclerview.EasyAdapterClickEvent;
+import com.jen.easyui.recyclerview.EasyLetterDecoration;
 import com.jen.easyui.recyclerview.EasyLetterView;
+import com.jen.easyui.recyclerview.EasyLetterViewManager;
 import com.jen.easyui.recyclerview.EasyRecyclerAdapter;
 import com.jen.easyui.recyclerview.EasyRecyclerView;
 
@@ -32,9 +38,9 @@ public class RecyclerViewActivity extends EasyActivity {
     @EasyMouse.BIND.ID(R.id.tv_letter_show)
     TextView tv_letter_show;
 
-    List<String> mData = new ArrayList<>();
+    List<RecyclerViewModel> mData = new ArrayList<>();
 
-    EasyAdapter1<String> easyAdapter1;
+    EasyAdapter1<RecyclerViewModel> easyAdapter1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,23 +51,97 @@ public class RecyclerViewActivity extends EasyActivity {
     @Override
     protected void intDataBeforeView() {
         mData.clear();
-        for (int i = 0; i < 100; i++) {
-            mData.add("第" + i + "个数据 --- ");
+        for (int i = 0; i < 36; i++) {
+            RecyclerViewModel model = new RecyclerViewModel();
+            mData.add(model);
         }
-        easyAdapter1 = new EasyAdapter1<>(this, mData);
+        mData.get(0).setLetter("A");
+        mData.get(1).setLetter("A");
+        mData.get(2).setLetter("B");
+        mData.get(3).setLetter("B");
+        mData.get(4).setLetter("C");
+        mData.get(5).setLetter("C");
+        mData.get(6).setLetter("D");
+        mData.get(7).setLetter("D");
+        mData.get(8).setLetter("E");
+        mData.get(9).setLetter("E");
+        mData.get(10).setLetter("F");
+        mData.get(11).setLetter("F");
+        mData.get(12).setLetter("G");
+        mData.get(13).setLetter("G");
+        mData.get(14).setLetter("H");
+        mData.get(15).setLetter("H");
+        mData.get(16).setLetter("I");
+        mData.get(17).setLetter("I");
+        mData.get(18).setLetter("J");
+        mData.get(19).setLetter("J");
+        mData.get(20).setLetter("K");
+        mData.get(21).setLetter("K");
+        mData.get(22).setLetter("L");
+        mData.get(23).setLetter("L");
+        mData.get(24).setLetter("M");
+        mData.get(25).setLetter("M");
+        mData.get(26).setLetter("N");
+        mData.get(27).setLetter("N");
+        mData.get(28).setLetter("O");
+        mData.get(29).setLetter("O");
+        mData.get(30).setLetter("P");
+        mData.get(31).setLetter("P");
+        mData.get(32).setLetter("Q");
+        mData.get(33).setLetter("Q");
+        mData.get(34).setLetter("R");
 
+
+        easyAdapter1 = new EasyAdapter1<>(this, mData);
         recyclerView.setLinearLayoutManager(RecyclerView.VERTICAL);
-        recyclerView.setShowHeader(true);
-        recyclerView.setShowFoot(true);
+        easyAdapter1.setItemTouchSortEvent(recyclerView);
+        recyclerView.setAdapter(easyAdapter1);
+
+        recyclerView.showHeader(true);
+        recyclerView.showFooter(true);
         recyclerView.setRefreshListener(refreshListener);
         recyclerView.setLoadMoreListener(loadMoreListener);
+        EasyLetterDecoration itemDecoration = new EasyLetterDecoration(mData);
+        itemDecoration.setLetterTextColor(0xffff0000);
+        recyclerView.addItemDecoration(itemDecoration);
 
-        recyclerView.setAdapter(easyAdapter1);
+
+        lt_letter.setTouchListener(new EasyLetterViewManager.TouchListener() {
+            @Override
+            public void onTouch(String letter) {
+//                int pos = -1;
+                for (int i = 1; i < mData.size(); i++) {
+                    if (mData.get(i).getLetter().equals(letter)) {
+//                        pos = i;
+                        EasyLog.d("touch = " + letter);
+                        recyclerView.scrollPositionToHeader(i);
+                        break;
+                    }
+                }
+            }
+        });
+        easyAdapter1.setEasyAdapterClickEvent(new EasyAdapterClickEvent() {
+            @Override
+            public void onClick(View view, int pos) {
+
+            }
+
+            @Override
+            public boolean onLongClick(View view, int pos) {
+                return false;
+            }
+
+            @Override
+            public void onItemClick(View view, int pos) {
+                EasyLog.d("onItemClick -------- ");
+                EasyToast.toast(mContext, "onItemClick = " + pos);
+            }
+        });
     }
 
     @Override
     protected void initViews() {
-//        lt_letter.setTextViewDialog(tv_letter_show);
+
     }
 
     @Override
@@ -116,7 +196,7 @@ public class RecyclerViewActivity extends EasyActivity {
         }
     };
 
-    private class EasyAdapter1<T extends String> extends EasyRecyclerAdapter<T> {
+    private class EasyAdapter1<T extends RecyclerViewModel> extends EasyRecyclerAdapter<T> {
 
         /**
          * @param context
@@ -135,7 +215,7 @@ public class RecyclerViewActivity extends EasyActivity {
         protected void onBindView(View view, int viewType, T data, int pos) {
             super.onBindView(view, viewType, data, pos);
             TextView tv_text = view.findViewById(R.id.tv_text);
-            tv_text.setText(data);
+            tv_text.setText(data.getLetter());
         }
     }
 }

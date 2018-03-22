@@ -52,11 +52,11 @@
         android:paddingTop="10dp"
         app:backgroundTouchColor="#ffff00"
         app:dialogTextBackground="@drawable/_easy_viewpager_num_select"
-        app:dialogTextBackgroundHeight="20dp"
-        app:dialogTextBackgroundWith="20dp"
+        app:dialogTextBackgroundHeight="100dp"
+        app:dialogTextBackgroundWith="100dp"
         app:dialogTextColor="@android:color/holo_red_light"
         app:dialogTextMarginRight="50dp"
-        app:dialogTextSize="24sp"
+        app:dialogTextSize="50sp"
         app:lettersByComma=""
         app:textSize="14sp" />
 

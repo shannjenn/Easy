@@ -10,8 +10,10 @@ import android.support.annotation.LayoutRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Toast;
 
 import com.jen.easy.http.imp.HttpBaseListener;
+import com.jen.easy.log.EasyLog;
 import com.jen.easyui.EasyMain;
 import com.jen.easyui.dialog.EasyLoading;
 
@@ -29,6 +31,7 @@ public abstract class EasyActivity<T> extends AppCompatActivity implements HttpB
         super.onCreate(savedInstanceState);
         mContext = this;
 //        setContentView(setLayout());
+        checkFilePermission();
     }
 
     @Override
@@ -77,12 +80,18 @@ public abstract class EasyActivity<T> extends AppCompatActivity implements HttpB
     /**
      * 6.0以上获取读写文件权限
      */
-    protected void getFilePermission() {
-        final int REQUEST_EXTERNAL_STORAGE = 1;
-        String[] PERMISSIONS_STORAGE = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
+    protected void checkFilePermission() {
+        //检查权限（NEED_PERMISSION）是否被授权 PackageManager.PERMISSION_GRANTED表示同意授权
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            //用户已经拒绝过一次，再次弹出权限申请对话框需要给用户一个解释
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                Toast.makeText(this, "请开通相关权限，否则无法正常使用本应用！", Toast.LENGTH_SHORT).show();
+            }
+            //申请权限
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        } else {
+//            Toast.makeText(this, "授权成功！", Toast.LENGTH_SHORT).show();
+            EasyLog.d("checkFilePermission: 已经授权！");
         }
     }
 }

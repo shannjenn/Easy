@@ -53,11 +53,6 @@ public abstract class EasyTreeRecyclerAdapter<T extends EasyTreeItem> extends Ea
     }
 
     @Override
-    protected boolean bindItemClick() {
-        return false;
-    }
-
-    @Override
     protected int setSpanSize(int position) {
         return 0;
     }

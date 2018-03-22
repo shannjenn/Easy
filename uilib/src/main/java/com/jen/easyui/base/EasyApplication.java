@@ -74,4 +74,5 @@ public class EasyApplication extends Application {
     public static Application getAppContext() {
         return mApp;
     }
+
 }

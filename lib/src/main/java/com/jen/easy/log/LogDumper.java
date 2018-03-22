@@ -86,7 +86,8 @@ class LogDumper extends Thread {
                 }
                 if (line.contains(PID)) {
                     try {
-                        FileOutputStream out = new FileOutputStream(new File(LogcatPath.getLogPath(), "LogcatHelper-" + LogcatDate.getFileName() + ".txt"), true);
+                        File file = new File(LogcatPath.getLogPath(), "LogcatHelper-" + LogcatDate.getFileName() + ".txt");
+                        FileOutputStream out = new FileOutputStream(file, true);
                         out.write((LogcatDate.getDateEN() + "  " + line + "\n").getBytes(Unicode.DEFAULT));
                         out.flush();
                         out.close();
