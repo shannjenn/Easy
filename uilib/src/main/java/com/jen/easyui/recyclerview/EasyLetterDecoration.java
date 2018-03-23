@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -145,7 +146,13 @@ public class EasyLetterDecoration<T extends EasyLetterItem> extends RecyclerView
      * @param state
      */
     public void onDrawOver(Canvas canvas, final EasyRecyclerView parent, RecyclerView.State state) {
-        int position = ((LinearLayoutManager) (parent.getLayoutManager())).findFirstVisibleItemPosition();
+        int position = -1;
+        RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();
+        if (layoutManager instanceof LinearLayoutManager) {
+            position = ((LinearLayoutManager) (layoutManager)).findFirstVisibleItemPosition();
+        } else if (layoutManager instanceof GridLayoutManager) {
+            position = ((GridLayoutManager) (layoutManager)).findFirstVisibleItemPosition();
+        }
         if (position == -1)
             return;
         if (parent.getHeadItems() > 0 && position == 0)//头部
