@@ -36,16 +36,16 @@
 -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
 -dontusemixedcaseclassnames#混淆时不会产生形形色色的类名
 -dontoptimize    #不优化输入的类文件
-#-assumenosideeffects {class com.jen.easy.app.EasyVersion}    #优化时假设指定的方法，没有任何副作用
+#-assumenosideeffects {class com.jen.easy.EasyVersion}    #优化时假设指定的方法，没有任何副作用
 -allowaccessmodification    #优化时允许访问并修改有修饰符的类和类的成员
 
 -keepattributes *Annotation*
 -keep class * extends java.lang.annotation.Annotation { *; }
 
 ##############################################################
-###application
+###根目录
 ##############################################################
--keep class com.jen.easy.app.EasyVersion {
+-keep class com.jen.easy.EasyVersion {
     *;
 }
 -keep class com.jen.easy.EasyMouse* {
@@ -75,6 +75,9 @@
     *;
 }
 -keep class com.jen.easy.http.HttpUploadRequest* {
+    *;
+}
+-keep class com.jen.easy.http.HttpHeadResponse* {
     *;
 }
 -keep class com.jen.easy.http.imp.HttpBaseListener {

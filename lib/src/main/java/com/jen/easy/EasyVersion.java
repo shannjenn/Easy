@@ -1,4 +1,4 @@
-package com.jen.easy.app;
+package com.jen.easy;
 
 /**
  * 作者：ShannJenn
@@ -9,9 +9,9 @@ public final class EasyVersion {
     /**
      * 版本号(初版：1)
      */
-    public final static int VERSION_CODE = 2;
+    public final static int VERSION_CODE = 1;
     /**
      * 版本名称(初版：1.0.0)
      */
-    public final static String VERSION_NAME = "1.1";
+    public final static String VERSION_NAME = "1.0.0";
 }
