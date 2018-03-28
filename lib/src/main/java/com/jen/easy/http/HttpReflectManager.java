@@ -2,7 +2,7 @@ package com.jen.easy.http;
 
 import android.text.TextUtils;
 
-import com.jen.easy.EasyMouse;
+import com.jen.easy.Easy;
 import com.jen.easy.constant.FieldType;
 import com.jen.easy.constant.TAG;
 import com.jen.easy.log.EasyLog;
@@ -30,9 +30,9 @@ class HttpReflectManager {
             return values;
         }
 
-        boolean isGet = request.getClass().isAnnotationPresent(EasyMouse.HTTP.GET.class);
+        boolean isGet = request.getClass().isAnnotationPresent(Easy.HTTP.GET.class);
         if (isGet) {
-            EasyMouse.HTTP.GET get = request.getClass().getAnnotation(EasyMouse.HTTP.GET.class);
+            Easy.HTTP.GET get = request.getClass().getAnnotation(Easy.HTTP.GET.class);
             values[0] = "GET";
             String url = request.httpParam.url != null ? request.httpParam.url : get.URL();
             if (!TextUtils.isEmpty(url) && request.httpParam.urlAppend != null) {
@@ -42,9 +42,9 @@ class HttpReflectManager {
             values[2] = get.Response();
             return values;
         }
-        boolean isPost = request.getClass().isAnnotationPresent(EasyMouse.HTTP.POST.class);
+        boolean isPost = request.getClass().isAnnotationPresent(Easy.HTTP.POST.class);
         if (isPost) {
-            EasyMouse.HTTP.POST post = request.getClass().getAnnotation(EasyMouse.HTTP.POST.class);
+            Easy.HTTP.POST post = request.getClass().getAnnotation(Easy.HTTP.POST.class);
             values[0] = "POST";
             String url = request.httpParam.url != null ? request.httpParam.url : post.URL();
             if (!TextUtils.isEmpty(url) && request.httpParam.urlAppend != null) {
@@ -54,9 +54,9 @@ class HttpReflectManager {
             values[2] = post.Response();
             return values;
         }
-        boolean isPut = request.getClass().isAnnotationPresent(EasyMouse.HTTP.PUT.class);
+        boolean isPut = request.getClass().isAnnotationPresent(Easy.HTTP.PUT.class);
         if (isPut) {
-            EasyMouse.HTTP.PUT put = request.getClass().getAnnotation(EasyMouse.HTTP.PUT.class);
+            Easy.HTTP.PUT put = request.getClass().getAnnotation(Easy.HTTP.PUT.class);
             values[0] = "PUT";
             String url = request.httpParam.url != null ? request.httpParam.url : put.URL();
             if (!TextUtils.isEmpty(url) && request.httpParam.urlAppend != null) {
@@ -105,13 +105,13 @@ class HttpReflectManager {
     private static void getRequestParam(Class clazz, Object obj, List<String> paramKeys, List<String> paramValues, List<String> headKeys, List<String> headValues) {
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
-            boolean isAnno = field.isAnnotationPresent(EasyMouse.HTTP.RequestParam.class);
+            boolean isAnno = field.isAnnotationPresent(Easy.HTTP.RequestParam.class);
             /*if (!isAnno)
                 continue;*/
             String key = "";
             boolean isHead = false;
             if (isAnno) {
-                EasyMouse.HTTP.RequestParam param = field.getAnnotation(EasyMouse.HTTP.RequestParam.class);
+                Easy.HTTP.RequestParam param = field.getAnnotation(Easy.HTTP.RequestParam.class);
                 boolean noReq = param.noReq();
                 if (noReq) {//不做参数传递
                     continue;
@@ -209,13 +209,13 @@ class HttpReflectManager {
             int modifierType = field.getModifiers();
             if (modifierType != Modifier.PUBLIC && modifierType != Modifier.PROTECTED)
                 continue;*/
-            boolean isAnno = field.isAnnotationPresent(EasyMouse.HTTP.ResponseParam.class);
+            boolean isAnno = field.isAnnotationPresent(Easy.HTTP.ResponseParam.class);
             /*if (!isAnno)
                 continue;*/
             String paramName = "";
             boolean isHead = false;
             if (isAnno) {
-                EasyMouse.HTTP.ResponseParam param = field.getAnnotation(EasyMouse.HTTP.ResponseParam.class);
+                Easy.HTTP.ResponseParam param = field.getAnnotation(Easy.HTTP.ResponseParam.class);
                 boolean noResp = param.noResp();
                 if (noResp) {//不做参数返回
                     continue;

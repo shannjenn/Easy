@@ -1,47 +1,62 @@
-package com.jen.easytest.http;
+package com.jen.easytest.http.request;
 
-import com.jen.easy.EasyMouse;
+import com.jen.easy.Easy;
+import com.jen.easytest.http.response.ExampleResponse;
 
-@EasyMouse.HTTP.POST(URL = "http://apics.baoku.com/api/air/query", Response = AirResponse.class)
-public class AirRequest extends AirBaseRequest {
+@Easy.HTTP.POST(URL = "http://apics.baoku.com/api/air/query", Response = ExampleResponse.class)
+public class ExampleRequest extends ExampleBaseRequest {
 
-//	@EasyMouse.HTTP.RequestParam(noReq = true)
+    @Easy.HTTP.RequestParam("book_id")//请求参数为book_id,值为当前bookId变量值
+    private int bookId;
+
+    private String bookName;//不注释默认作为参数请求,请求参数名与变量名一致，也就是bookName
+
+    @Easy.HTTP.RequestParam(noReq = true)//注释noReq = true，则不作为参数请求
+    private boolean isCheck;
+
+    @Easy.HTTP.RequestParam(value = "book_code", isHeadReq = true)//注释isHeadReq = true，则作为head参数请求
+    private String bookCode;
+
+
+
+
+//	@Easy.HTTP.RequestParam(noReq = true)
 //	String cid;// 商户公司编号
 
-//	@EasyMouse.HTTP.RequestParam(noReq = true)
+//	@Easy.HTTP.RequestParam(noReq = true)
 //	String fromCity;// 起飞城市代码
 
-//	@EasyMouse.HTTP.RequestParam(noReq = true)
+//	@Easy.HTTP.RequestParam(noReq = true)
 //	String fromCityName;// 起飞城市名称
 
-//	@EasyMouse.HTTP.RequestParam("arriveCity")
+//	@Easy.HTTP.RequestParam("arriveCity")
 	String arriveCity;// 到达城市代码
 
-//	@EasyMouse.HTTP.RequestParam("arriveCityName")
+//	@Easy.HTTP.RequestParam("arriveCityName")
 	String arriveCityName;// 到达城市名称
 
-	@EasyMouse.HTTP.RequestParam(noReq = true)
+	@Easy.HTTP.RequestParam(noReq = true)
 	String carrier;// 航空公司 (可选)
 
-	@EasyMouse.HTTP.RequestParam(noReq = true)
+	@Easy.HTTP.RequestParam(noReq = true)
 	String codeLevel;// 仓位级别 (可选)
 
-	@EasyMouse.HTTP.RequestParam("goDate")
+	@Easy.HTTP.RequestParam("goDate")
 	String goDate;// 去程旅行日期
 
-	@EasyMouse.HTTP.RequestParam("backDate")
+	@Easy.HTTP.RequestParam("backDate")
 	String backDate;// 返程旅行日期
 
-//	@EasyMouse.HTTP.RequestParam("level")
+//	@Easy.HTTP.RequestParam("level")
 	String level;// 用户级别 (可选)
 
-	@EasyMouse.HTTP.RequestParam("userCode")
+	@Easy.HTTP.RequestParam("userCode")
 	String userCode;// 用来唯一标识用户
 
-	@EasyMouse.HTTP.RequestParam("signType")
+	@Easy.HTTP.RequestParam("signType")
 	String signType;// 签名方式
 
-	@EasyMouse.HTTP.RequestParam("sign")
+	@Easy.HTTP.RequestParam("sign")
 	String sign;// 签名
 
 	/*******************************************************************************************************
@@ -129,4 +144,35 @@ public class AirRequest extends AirBaseRequest {
 		this.sign = sign;
 	}
 
+    public int getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(int bookId) {
+        this.bookId = bookId;
+    }
+
+    public String getBookName() {
+        return bookName;
+    }
+
+    public void setBookName(String bookName) {
+        this.bookName = bookName;
+    }
+
+    public boolean isCheck() {
+        return isCheck;
+    }
+
+    public void setCheck(boolean check) {
+        isCheck = check;
+    }
+
+    public String getBookCode() {
+        return bookCode;
+    }
+
+    public void setBookCode(String bookCode) {
+        this.bookCode = bookCode;
+    }
 }

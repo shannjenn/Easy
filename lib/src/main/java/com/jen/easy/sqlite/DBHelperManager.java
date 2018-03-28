@@ -93,7 +93,7 @@ abstract class DBHelperManager {
             String fieldType = column_type.get(fieldName);
             String type = FieldType.getDBColumnType(fieldType);
             if (type == null) {
-                EasyLog.w(TAG.EasySQL, "创建表失败，不支持该类型：" + fieldName + " 请用@EasyMouse.DB.Column(noColumn = true)注释该变量");
+                EasyLog.w(TAG.EasySQL, "创建表失败，不支持该类型：" + fieldName + " 请用@Easy.DB.Column(noColumn = true)注释该变量");
                 return;
             }
 
@@ -209,7 +209,7 @@ abstract class DBHelperManager {
         }
         String type = FieldType.getDBColumnType(fieldType);
         if (type == null) {
-            EasyLog.w(TAG.EasySQL, "增加列失败，不支持该类型：" + fieldType + " 请用@EasyMouse.DB.Column(noColumn = true)注释该变量");
+            EasyLog.w(TAG.EasySQL, "增加列失败，不支持该类型：" + fieldType + " 请用@Easy.DB.Column(noColumn = true)注释该变量");
             return;
         }
         try {

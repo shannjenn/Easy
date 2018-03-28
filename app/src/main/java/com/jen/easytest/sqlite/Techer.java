@@ -1,16 +1,16 @@
 package com.jen.easytest.sqlite;
 
 
-import com.jen.easy.EasyMouse;
+import com.jen.easy.Easy;
 
-@EasyMouse.DB.Table("Techer")
+@Easy.DB.Table("Techer")
 public class Techer {
 
     private int id;
 
     private String name;
 
-    @EasyMouse.DB.Column(noColumn = true)
+    @Easy.DB.Column(noColumn = true)
     private int age;
 
 }

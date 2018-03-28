@@ -3,7 +3,8 @@ package com.jen.easytest.activity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.jen.easy.EasyMouse;
+import com.jen.easy.Easy;
+import com.jen.easy.sqlite.DBDao;
 import com.jen.easytest.R;
 import com.jen.easytest.sqlite.Student;
 import com.jen.easyui.EasyMain;
@@ -18,6 +19,7 @@ import java.util.List;
  */
 
 public class SQLiteActivity extends EasyActivity {
+    private DBDao dbDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,21 +42,26 @@ public class SQLiteActivity extends EasyActivity {
 
     }
 
-    @EasyMouse.BIND.Method({R.id.replace, R.id.search})
+    @Easy.BIND.Method({R.id.replace, R.id.search})
     @Override
     protected void onBindClick(View view) {
         switch (view.getId()) {
             case R.id.replace: {
+                dbDao = new DBDao(SQLiteActivity.this);
                 Student student = new Student();
                 student.setId(1);
                 student.setName("张三");
                 student.setAge(30);
-                boolean result = EasyMain.mDao.replace(student);
-                EasyToast.toast(this, "结果：" + result);
+
+                boolean insertResult = dbDao.insert(student);
+                boolean replaceResult = dbDao.replace(student);
+                List<Student> list = EasyMain.mDao.searchAll(Student.class);
+
+                EasyToast.toast(this, "结果：" + replaceResult);
                 break;
             }
             case R.id.search: {
-                List<Student> list = EasyMain.mDao.searchAll(Student.class);
+                List<Student> list = dbDao.searchAll(Student.class);
                 EasyToast.toast(this, "结果：" + list.size());
                 break;
             }

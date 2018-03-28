@@ -3,7 +3,7 @@ package com.jen.easytest.activity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.jen.easy.EasyMouse;
+import com.jen.easy.Easy;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
 import com.jen.easyui.base.EasyActivity;
@@ -38,7 +38,7 @@ public class UtilActivity extends EasyActivity {
 
     }
 
-    @EasyMouse.BIND.Method({R.id.dateFormat})
+    @Easy.BIND.Method({R.id.dateFormat})
     @Override
     protected void onBindClick(View view) {
         switch (view.getId()) {

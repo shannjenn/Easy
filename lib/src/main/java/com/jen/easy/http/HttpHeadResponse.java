@@ -1,6 +1,6 @@
 package com.jen.easy.http;
 
-import com.jen.easy.EasyMouse;
+import com.jen.easy.Easy;
 
 import java.util.List;
 import java.util.Map;
@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public abstract class HttpHeadResponse {
 
-    @EasyMouse.HTTP.ResponseParam(noResp = true)
+    @Easy.HTTP.ResponseParam(noResp = true)
     protected Map<String, List<String>> heads;
 
     public Map<String, List<String>> getHeads() {

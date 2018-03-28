@@ -1,4 +1,4 @@
-package com.jen.easytest.http;
+package com.jen.easytest.http.response;
 
 
 import com.jen.easy.http.HttpHeadResponse;

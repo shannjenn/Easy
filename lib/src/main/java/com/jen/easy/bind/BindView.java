@@ -6,7 +6,7 @@ import android.view.View;
 /**
  * 作者：ShannJenn
  * 时间：2017/8/12.
- * 说明：控件ID绑定类（结合注释@EasyMouse.BIND使用）
+ * 说明：控件ID绑定类（结合注释@Easy.BIND使用）
  */
 public class BindView extends BindViewManager {
     /**

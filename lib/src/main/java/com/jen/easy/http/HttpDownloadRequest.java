@@ -1,6 +1,6 @@
 package com.jen.easy.http;
 
-import com.jen.easy.EasyMouse;
+import com.jen.easy.Easy;
 import com.jen.easy.http.imp.HttpDownloadListener;
 
 /**
@@ -8,13 +8,13 @@ import com.jen.easy.http.imp.HttpDownloadListener;
  * 时间：2017/8/12.
  * 说明：下载文件请求参数
  */
-@EasyMouse.HTTP.GET
+@Easy.HTTP.GET
 public class HttpDownloadRequest extends HttpRequest {
 
-    @EasyMouse.HTTP.RequestParam(noReq = true)
+    @Easy.HTTP.RequestParam(noReq = true)
     private HttpDownloadListener downloadListener;
 
-    @EasyMouse.HTTP.RequestParam(noReq = true)
+    @Easy.HTTP.RequestParam(noReq = true)
     public Flag flag = new Flag();
 
     public final class Flag {

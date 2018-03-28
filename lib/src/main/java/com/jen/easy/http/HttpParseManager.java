@@ -113,7 +113,7 @@ class HttpParseManager {
         }
 
         if (param_type.size() == 0) {
-            EasyLog.w(TAG.EasyHttp, "网络请求返回参数请用@EasyMouse.mHttp.ResponseParam备注正确");
+            EasyLog.w(TAG.EasyHttp, "网络请求返回参数请用@Easy.mHttp.ResponseParam备注正确");
             return null;
         }
         Set<String> sets = param_type.keySet();

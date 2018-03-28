@@ -5,7 +5,7 @@ package com.jen.easy;
  * 时间：2017/8/12.
  * 说明：版本信息
  */
-public final class EasyVersion {
+public final class Version {
     /**
      * 版本号(初版：1)
      */

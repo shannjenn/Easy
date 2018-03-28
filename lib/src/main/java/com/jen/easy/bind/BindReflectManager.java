@@ -1,6 +1,6 @@
 package com.jen.easy.bind;
 
-import com.jen.easy.EasyMouse;
+import com.jen.easy.Easy;
 import com.jen.easy.constant.TAG;
 import com.jen.easy.log.EasyLog;
 
@@ -42,10 +42,10 @@ abstract class BindReflectManager {
 
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
-            boolean isAnno = field.isAnnotationPresent(EasyMouse.BIND.ID.class);
+            boolean isAnno = field.isAnnotationPresent(Easy.BIND.ID.class);
             if (!isAnno)
                 continue;
-            EasyMouse.BIND.ID easyID = field.getAnnotation(EasyMouse.BIND.ID.class);
+            Easy.BIND.ID easyID = field.getAnnotation(Easy.BIND.ID.class);
             int id = easyID.value();
             if (id == -1)
                 continue;
@@ -71,10 +71,10 @@ abstract class BindReflectManager {
         }
         Method[] methods = clazz.getDeclaredMethods();
         for (Method method : methods) {
-            boolean isAnno = method.isAnnotationPresent(EasyMouse.BIND.Method.class);
+            boolean isAnno = method.isAnnotationPresent(Easy.BIND.Method.class);
             if (!isAnno)
                 continue;
-            EasyMouse.BIND.Method easyID = method.getAnnotation(EasyMouse.BIND.Method.class);
+            Easy.BIND.Method easyID = method.getAnnotation(Easy.BIND.Method.class);
             int[] ids = easyID.value();
             method_ids.put(method, ids);
         }

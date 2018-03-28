@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
-import com.jen.easy.EasyMouse;
+import com.jen.easy.Easy;
 import com.jen.easytest.R;
 import com.jen.easytest.fragment.EmptyFragmentBlue;
 import com.jen.easytest.fragment.EmptyFragmentRed;
@@ -26,13 +26,13 @@ import java.util.List;
 
 public class TabBarActivity extends EasyActivity {
 
-    @EasyMouse.BIND.ID(R.id.easy_tabbar_txtimg)
+    @Easy.BIND.ID(R.id.easy_tabbar_txtimg)
     EasyTabBarBottom easy_tabbar_txtimg;
 
-    @EasyMouse.BIND.ID(R.id.easy_tabar_scroll)
+    @Easy.BIND.ID(R.id.easy_tabar_scroll)
     EasyTabBarTop easy_tabar_scroll;
 
-    @EasyMouse.BIND.ID(R.id.viewpager_scroll)
+    @Easy.BIND.ID(R.id.viewpager_scroll)
     ViewPager viewpager_scroll;
 
     Handler handler = new Handler();

@@ -3,13 +3,14 @@ package com.jen.easytest.activity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.jen.easy.EasyMouse;
+import com.jen.easy.Easy;
+import com.jen.easy.http.Http;
 import com.jen.easy.http.imp.HttpBaseListener;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
-import com.jen.easytest.http.AirRequest;
 import com.jen.easytest.http.MD5Util;
-import com.jen.easytest.http.PutRequest;
+import com.jen.easytest.http.request.ExampleRequest;
+import com.jen.easytest.http.request.PutRequest;
 import com.jen.easyui.EasyMain;
 import com.jen.easyui.base.EasyActivity;
 
@@ -43,7 +44,7 @@ public class HttpActivity extends EasyActivity {
 
     }
 
-    @EasyMouse.BIND.Method({R.id.post, R.id.put, R.id.upload, R.id.download})
+    @Easy.BIND.Method({R.id.post, R.id.put, R.id.upload, R.id.download})
     @Override
     protected void onBindClick(View view) {
         switch (view.getId()) {
@@ -88,7 +89,7 @@ public class HttpActivity extends EasyActivity {
         String sign = MD5Util.encrypt(signString);
 //        sign = "6D715C3DACEC16D640852DAC6272FB6B";
 
-        AirRequest airRequest = new AirRequest();
+        ExampleRequest airRequest = new ExampleRequest();
         airRequest.setCid(cid);
         airRequest.setFromCity(fromCity);
         airRequest.setFromCityName(fromCityName);
@@ -106,6 +107,19 @@ public class HttpActivity extends EasyActivity {
         airRequest.setBseListener(httpListener);
         EasyMain.mHttp.start(airRequest);
         EasyLog.d("mAirResponse mAirResponse:");
+
+        Http http = new Http(5);//设置请求最大线程数量值5
+        ExampleRequest exampleRequest = new ExampleRequest();
+        exampleRequest.setBookId(123);
+        exampleRequest.setBookName("红楼梦");
+        exampleRequest.setBookCode("abcdefg");
+
+        exampleRequest.httpParam.timeout = 30 * 1000;//设置超时
+        exampleRequest.flag.code = 10;//设置请求码
+
+        exampleRequest.setBseListener(httpListener);
+        http.start(exampleRequest);
+
     }
 
     private void put() {
@@ -127,12 +141,12 @@ public class HttpActivity extends EasyActivity {
     HttpBaseListener httpListener = new HttpBaseListener() {
         @Override
         public void fail(int flagCode, String flag, String msg) {
-            EasyLog.d("airRequestListener fail:" + msg);
+            EasyLog.d("exampleRequest fail:" + msg);
         }
 
         @Override
         public void success(int flagCode, String flag, Object airResponse) {
-            EasyLog.d("airRequestListener success");
+            EasyLog.d("exampleRequest success");
         }
     };
 

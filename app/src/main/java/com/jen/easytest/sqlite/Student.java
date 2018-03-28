@@ -1,33 +1,33 @@
 package com.jen.easytest.sqlite;
 
 
-import com.jen.easy.EasyMouse;
+import com.jen.easy.Easy;
 
 import java.util.List;
 
-@EasyMouse.DB.Table("Student")
+@Easy.DB.Table("student")
 public class Student {
-    @EasyMouse.DB.Column(primaryKey = true)
+    @Easy.DB.Column(value = "_id",primaryKey = true)
     private int id;
 
     private String name;
 
-    @EasyMouse.DB.Column("name2")
+    @Easy.DB.Column(noColumn = true)
     private String name2;
 
     private int age;
 
-    @EasyMouse.DB.Column("age2")
+    @Easy.DB.Column("age2")
     private int age2;
 
 
-    @EasyMouse.DB.Column(noColumn = true)
+    @Easy.DB.Column(noColumn = true)
     List<String> list;
 
-    @EasyMouse.DB.Column(noColumn = true)
+    @Easy.DB.Column(noColumn = true)
     List<Student> students;
 
-    @EasyMouse.DB.Column(noColumn = true)
+    @Easy.DB.Column(noColumn = true)
     List<Techer> techers;
 
 

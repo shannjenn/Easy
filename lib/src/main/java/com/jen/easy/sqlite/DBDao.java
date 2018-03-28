@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * 作者：ShannJenn
  * 时间：2017/8/12.
- * 说明：数据库表操作类（结合注释@EasyMouse.DB使用）
+ * 说明：数据库表操作类（结合注释@Easy.DB使用）
  */
 public class DBDao extends DBDaoManager {
 

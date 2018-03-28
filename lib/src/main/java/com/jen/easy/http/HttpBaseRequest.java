@@ -1,6 +1,6 @@
 package com.jen.easy.http;
 
-import com.jen.easy.EasyMouse;
+import com.jen.easy.Easy;
 import com.jen.easy.http.imp.HttpBaseListener;
 
 /**
@@ -10,10 +10,10 @@ import com.jen.easy.http.imp.HttpBaseListener;
  */
 public abstract class HttpBaseRequest extends HttpRequest {
 
-    @EasyMouse.HTTP.RequestParam(noReq = true)
+    @Easy.HTTP.RequestParam(noReq = true)
     private HttpBaseListener bseListener;
 
-    @EasyMouse.HTTP.RequestParam(noReq = true)
+    @Easy.HTTP.RequestParam(noReq = true)
     public Flag flag = new Flag();
 
     public final class Flag {

@@ -11,8 +11,8 @@ import java.lang.annotation.Target;
  * 作者：ShannJenn
  * 时间：2017/8/12.
  */
-public final class EasyMouse {
-    private EasyMouse() {
+public final class Easy {
+    private Easy() {
     }
 
     /*****************************************************************************

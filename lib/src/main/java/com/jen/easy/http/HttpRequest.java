@@ -1,6 +1,6 @@
 package com.jen.easy.http;
 
-import com.jen.easy.EasyMouse;
+import com.jen.easy.Easy;
 import com.jen.easy.constant.Unicode;
 
 /**
@@ -10,7 +10,7 @@ import com.jen.easy.constant.Unicode;
  */
 abstract class HttpRequest {
 
-    @EasyMouse.HTTP.RequestParam(noReq = true)
+    @Easy.HTTP.RequestParam(noReq = true)
     public HttpParam httpParam = new HttpParam();
 
     /**

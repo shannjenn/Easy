@@ -2,51 +2,51 @@ package com.jen.easytest.model;
 
 import android.view.View;
 
-import com.jen.easy.EasyMouse;
+import com.jen.easy.Easy;
 
 /**
  * Created by Administrator on 2018/3/2.
  */
-@EasyMouse.DB.Table("ImageLoaderModel")
+@Easy.DB.Table("ImageLoaderModel")
 public class ImageLoaderModel {
-    @EasyMouse.HTTP.ResponseParam("aid")
+    @Easy.HTTP.ResponseParam("aid")
     private String aid;// 文章编号
 
-    @EasyMouse.HTTP.ResponseParam("catid")
+    @Easy.HTTP.ResponseParam("catid")
     private String catid;//分类编号
 
-    @EasyMouse.HTTP.ResponseParam("title")
+    @Easy.HTTP.ResponseParam("title")
     private String title;// 标题
 
-    @EasyMouse.HTTP.ResponseParam("summary")
+    @Easy.HTTP.ResponseParam("summary")
     private String summary;// 摘要
 
-    @EasyMouse.HTTP.ResponseParam("pic")
+    @Easy.HTTP.ResponseParam("pic")
     private String pic;//图片
 
-    @EasyMouse.HTTP.ResponseParam("dateline")
+    @Easy.HTTP.ResponseParam("dateline")
     private String dateline;// 发布时间戳
-    @EasyMouse.HTTP.ResponseParam("movieid")
+    @Easy.HTTP.ResponseParam("movieid")
     private String movieid;
 
     /**
      * 0正常数据，1轮播一，2轮播二
      */
-    @EasyMouse.HTTP.ResponseParam(noResp = true)
-    @EasyMouse.DB.Column(noColumn = true)
+    @Easy.HTTP.ResponseParam(noResp = true)
+    @Easy.DB.Column(noColumn = true)
     private int viewType;
-    @EasyMouse.HTTP.ResponseParam(noResp = true)
-    @EasyMouse.DB.Column(noColumn = true)
+    @Easy.HTTP.ResponseParam(noResp = true)
+    @Easy.DB.Column(noColumn = true)
     private int viewSize = 1;
 
-    @EasyMouse.HTTP.ResponseParam(noResp = true)
-    @EasyMouse.DB.Column(noColumn = true)
+    @Easy.HTTP.ResponseParam(noResp = true)
+    @Easy.DB.Column(noColumn = true)
     int bitTitleVisible = View.GONE;//显示大标题
-    @EasyMouse.HTTP.ResponseParam(noResp = true)
-    @EasyMouse.DB.Column(noColumn = true)
+    @Easy.HTTP.ResponseParam(noResp = true)
+    @Easy.DB.Column(noColumn = true)
     boolean showEnter;//显示进入
-    @EasyMouse.HTTP.ResponseParam(noResp = true)
-    @EasyMouse.DB.Column(noColumn = true)
+    @Easy.HTTP.ResponseParam(noResp = true)
+    @Easy.DB.Column(noColumn = true)
     boolean showChange;//显示晃一晃
 
 

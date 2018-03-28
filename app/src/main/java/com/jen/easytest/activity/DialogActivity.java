@@ -3,7 +3,7 @@ package com.jen.easytest.activity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.jen.easy.EasyMouse;
+import com.jen.easy.Easy;
 import com.jen.easytest.R;
 import com.jen.easyui.base.EasyActivity;
 import com.jen.easyui.dialog.EasyDialog;
@@ -67,7 +67,7 @@ public class DialogActivity extends EasyActivity {
 
     }
 
-    @EasyMouse.BIND.Method({R.id.loading, R.id.dialog})
+    @Easy.BIND.Method({R.id.loading, R.id.dialog})
     @Override
     protected void onBindClick(View view) {
         switch (view.getId()) {
