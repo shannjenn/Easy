@@ -12,9 +12,9 @@ public interface DatabaseListener {
     /**
      * 数据库升级
      *
-     * @param db
-     * @param oldVersion
-     * @param newVersion
+     * @param db         数据库
+     * @param oldVersion 旧版本号
+     * @param newVersion 升级版本号
      */
     void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion);
 }

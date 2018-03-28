@@ -1,0 +1,10 @@
+com.jen.easy
+com.jen.easy.aop
+com.jen.easy.bind
+com.jen.easy.http
+com.jen.easy.http.imp
+com.jen.easy.imageLoader
+com.jen.easy.log
+com.jen.easy.log.imp
+com.jen.easy.sqlite
+com.jen.easy.sqlite.imp

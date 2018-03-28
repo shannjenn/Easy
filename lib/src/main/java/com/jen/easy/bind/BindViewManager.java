@@ -54,8 +54,10 @@ abstract class BindViewManager {
         Set<Method> methodSet = method_ids.keySet();
         for (final Method method : methodSet) {
             int[] ids = method_ids.get(method);
-            for (int i = 0; i < ids.length; i++) {
-                final View view = activity.findViewById(ids[i]);
+            for (int id : ids) {
+                final View view = activity.findViewById(id);
+                if (view == null)
+                    continue;
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

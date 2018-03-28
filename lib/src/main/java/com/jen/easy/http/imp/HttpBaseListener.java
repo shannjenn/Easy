@@ -7,7 +7,21 @@ package com.jen.easy.http.imp;
  */
 public interface HttpBaseListener<T> {
 
+    /**
+     * 成功
+     *
+     * @param flagCode flagCode标记
+     * @param flag     flag标记
+     * @param response 返回对象
+     */
     void success(int flagCode, String flag, T response);
 
+    /**
+     * 失败
+     *
+     * @param flagCode flagCode标记
+     * @param flag     flag标记
+     * @param msg      错误码
+     */
     void fail(int flagCode, String flag, String msg);
 }
