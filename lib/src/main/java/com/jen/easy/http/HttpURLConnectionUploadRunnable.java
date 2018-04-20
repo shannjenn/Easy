@@ -23,29 +23,29 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
     @Override
     protected void childRun(HttpURLConnection connection) throws IOException {
         HttpUploadRequest request = (HttpUploadRequest) mRequest;
-        if (request.flag.isBreak && request.flag.endPoit > request.flag.startPoit + 100) {
-            connection.setRequestProperty("Range", "bytes=" + request.flag.startPoit + "-" + request.flag.endPoit);
+        if (request.isBreak && request.endPoint > request.startPoint + 100) {
+            connection.setRequestProperty("Range", "bytes=" + request.startPoint + "-" + request.endPoint);
         }
 
         DataOutputStream out = new DataOutputStream(connection.getOutputStream());
-        File file = new File(request.flag.filePath);
+        File file = new File(request.filePath);
         DataInputStream in = new DataInputStream(new FileInputStream(file));
-        long curBytes = request.flag.startPoit;
+        long curBytes = request.startPoint;
         int len = 0;
         byte[] bufferOut = new byte[1024];
-        while ((len = in.read(bufferOut)) != -1 && !request.flag.userCancel) {
+        while ((len = in.read(bufferOut)) != -1 && !request.userCancel) {
             out.write(bufferOut, 0, len);
-            if (request.flag.userCancel) {
+            if (request.userCancel) {
                 break;
             } else {
-                progress(curBytes, request.flag.endPoit);
+                progress(curBytes, request.endPoint);
             }
         }
         in.close();
         out.flush();
         out.close();
 
-        if (request.flag.userCancel) {
+        if (request.userCancel) {
             fail("上传失败：用户取消上传");
             return;
         }
@@ -73,7 +73,7 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
             if (parseObject == null) {
                 fail("返回数据解析异常");
             } else {
-                request.getUploadListener().success(request.flag.code, request.flag.str, parseObject);
+                request.getUploadListener().success(request.flagCode, request.flagStr, parseObject);
             }
         }
     }
@@ -83,12 +83,12 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
         EasyLog.w(TAG.EasyHttp, mUrlStr + " " + msg);
         HttpUploadRequest request = (HttpUploadRequest) mRequest;
         if (request.getUploadListener() != null)
-            request.getUploadListener().fail(request.flag.code, request.flag.str, msg);
+            request.getUploadListener().fail(request.flagCode, request.flagStr, msg);
     }
 
     private void progress(long currentPoint, long endPoint) {
         HttpUploadRequest request = (HttpUploadRequest) mRequest;
         if (request.getUploadListener() != null)
-            request.getUploadListener().progress(request.flag.code, request.flag.str, currentPoint, endPoint);
+            request.getUploadListener().progress(request.flagCode, request.flagStr, currentPoint, endPoint);
     }
 }

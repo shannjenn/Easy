@@ -1,7 +1,5 @@
 package com.jen.easy.http;
 
-import android.text.TextUtils;
-
 import com.jen.easy.Easy;
 import com.jen.easy.constant.FieldType;
 import com.jen.easy.constant.TAG;
@@ -29,16 +27,11 @@ class HttpReflectManager {
             EasyLog.w(TAG.EasyHttp, "getTableName obj is null");
             return values;
         }
-
         boolean isGet = request.getClass().isAnnotationPresent(Easy.HTTP.GET.class);
         if (isGet) {
             Easy.HTTP.GET get = request.getClass().getAnnotation(Easy.HTTP.GET.class);
             values[0] = "GET";
-            String url = request.httpParam.url != null ? request.httpParam.url : get.URL();
-            if (!TextUtils.isEmpty(url) && request.httpParam.urlAppend != null) {
-                url = url + request.httpParam.urlAppend;
-            }
-            values[1] = url;
+            values[1] = request.url != null ? request.url : get.URL();
             values[2] = get.Response();
             return values;
         }
@@ -46,11 +39,7 @@ class HttpReflectManager {
         if (isPost) {
             Easy.HTTP.POST post = request.getClass().getAnnotation(Easy.HTTP.POST.class);
             values[0] = "POST";
-            String url = request.httpParam.url != null ? request.httpParam.url : post.URL();
-            if (!TextUtils.isEmpty(url) && request.httpParam.urlAppend != null) {
-                url = url + request.httpParam.urlAppend;
-            }
-            values[1] = url;
+            values[1] = request.url != null ? request.url : post.URL();
             values[2] = post.Response();
             return values;
         }
@@ -58,11 +47,7 @@ class HttpReflectManager {
         if (isPut) {
             Easy.HTTP.PUT put = request.getClass().getAnnotation(Easy.HTTP.PUT.class);
             values[0] = "PUT";
-            String url = request.httpParam.url != null ? request.httpParam.url : put.URL();
-            if (!TextUtils.isEmpty(url) && request.httpParam.urlAppend != null) {
-                url = url + request.httpParam.urlAppend;
-            }
-            values[1] = url;
+            values[1] = request.url != null ? request.url : put.URL();
             values[2] = put.Response();
             return values;
         }
@@ -72,9 +57,12 @@ class HttpReflectManager {
     /**
      * 获取网络请求参数
      *
-     * @param obj 对象
+     * @param obj    对象数据
+     * @param urls   拼接请求地址参数
+     * @param params 请求参数
+     * @param heads  请求头参数
      */
-    static void getRequestParams(Object obj, List<String> paramKeys, List<String> paramValues, List<String> headKeys, List<String> headValues) {
+    static void getRequestParams(Object obj, Map<String, String> urls, Map<String, String> params, Map<String, String> heads) {
 
         if (obj == null || obj instanceof Class) {
             EasyLog.w(TAG.EasyHttp, "getRequestParams getRequestParams obj is null");
@@ -86,8 +74,10 @@ class HttpReflectManager {
         String reqName = HttpBaseRequest.class.getName();
         String objName = Object.class.getName();
         while (!clazzName.equals(reqName) && !clazzName.equals(objName)) {
-            getRequestParam(clazz, obj, paramKeys, paramValues, headKeys, headValues);
-            clazz = clazz.getSuperclass();
+            boolean isNoRequestParam = clazz.isAnnotationPresent(Easy.HTTP.NoRequestParam.class);
+            if (isNoRequestParam) continue;//不获取请求参数
+            getRequestParam(clazz, obj, urls, params, heads);
+            clazz = clazz.getSuperclass();//获取父类
             clazzName = clazz.getName();
         }
     }
@@ -95,28 +85,25 @@ class HttpReflectManager {
     /**
      * 获取单个类请求参数
      *
-     * @param clazz       类
-     * @param obj         对象数据
-     * @param paramKeys   参数名
-     * @param paramValues 参数的值
-     * @param headKeys    头参数
-     * @param headValues  头参值
+     * @param clazz  类
+     * @param obj    对象数据
+     * @param urls   拼接请求地址参数
+     * @param params 请求参数
+     * @param heads  请求头参数
      */
-    private static void getRequestParam(Class clazz, Object obj, List<String> paramKeys, List<String> paramValues, List<String> headKeys, List<String> headValues) {
+    private static void getRequestParam(Class clazz, Object obj, Map<String, String> urls, Map<String, String> params, Map<String, String> heads) {
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
-            boolean isAnno = field.isAnnotationPresent(Easy.HTTP.RequestParam.class);
-            /*if (!isAnno)
-                continue;*/
+            boolean isAnnotation = field.isAnnotationPresent(Easy.HTTP.RequestParam.class);
             String key = "";
-            boolean isHead = false;
-            if (isAnno) {
+            Easy.HTTP.TYPE paramType = Easy.HTTP.TYPE.PARAM;
+            if (isAnnotation) {
                 Easy.HTTP.RequestParam param = field.getAnnotation(Easy.HTTP.RequestParam.class);
                 boolean noReq = param.noReq();
                 if (noReq) {//不做参数传递
                     continue;
                 }
-                isHead = param.isHeadReq();
+                paramType = param.type();
                 key = param.value().trim();
             }
             if (key.length() == 0) {
@@ -125,35 +112,48 @@ class HttpReflectManager {
             if (FieldType.isOtherField(key)) {
                 continue;
             }
-            String type = field.getGenericType().toString();
+            String fieldType = field.getGenericType().toString();
             field.setAccessible(true);
             try {
-                if (type.equals(FieldType.STRING) || type.equals(FieldType.INTEGER)) {
+                if (fieldType.equals(FieldType.STRING) || fieldType.equals(FieldType.INTEGER) || fieldType.equals(FieldType.FLOAT)
+                        || fieldType.equals(FieldType.LONG) || fieldType.equals(FieldType.DOUBLE)) {
                     Object value = field.get(obj);
-                    if (isHead) {
-                        headKeys.add(key);
-                        headValues.add(value + "");
-                    } else {
-                        paramKeys.add(key);
-                        paramValues.add(value + "");
+                    switch (paramType) {
+                        case PARAM: {
+                            params.put(key, value + "");
+                            break;
+                        }
+                        case HEAD: {
+                            heads.put(key, value + "");
+                            break;
+                        }
+                        case URL: {
+                            urls.put(key, value + "");
+                            break;
+                        }
                     }
-                } else if (type.contains(FieldType.LIST)) {
+                } else if (fieldType.contains(FieldType.LIST)) {
                     List values = (List) field.get(obj);
                     if (values == null || values.size() <= 0) {
                         break;
                     }
-                    int size = values.size();
-                    for (int i = 0; i < size; i++) {
+                    for (int i = 0; i < values.size(); i++) {
                         Object value = values.get(i);
-                        if (value instanceof String ||
-                                value instanceof Integer || value instanceof Float
+                        if (value instanceof String || value instanceof Integer || value instanceof Float
                                 || value instanceof Long || value instanceof Double) {
-                            if (isHead) {
-                                headKeys.add(key);
-                                headValues.add(value + "");
-                            } else {
-                                paramKeys.add(key);
-                                paramValues.add(value + "");
+                            switch (paramType) {
+                                case PARAM: {
+                                    params.put(key, value + "");
+                                    break;
+                                }
+                                case HEAD: {
+                                    heads.put(key, value + "");
+                                    break;
+                                }
+                                case URL: {
+                                    urls.put(key, value + "");
+                                    break;
+                                }
                             }
                         } else {
                             EasyLog.w(TAG.EasyHttp, "不支持该类型（001）：" + field.getName());
@@ -205,22 +205,16 @@ class HttpReflectManager {
     private static void getResponseParam(Class clazz, Map<String, String> param_type, Map<String, Field> param_field, Map<String, Field> head_field) {
         Field[] fieldsSuper = clazz.getDeclaredFields();
         for (Field field : fieldsSuper) {
-            /*//只获取public、protect类型
-            int modifierType = field.getModifiers();
-            if (modifierType != Modifier.PUBLIC && modifierType != Modifier.PROTECTED)
-                continue;*/
-            boolean isAnno = field.isAnnotationPresent(Easy.HTTP.ResponseParam.class);
-            /*if (!isAnno)
-                continue;*/
+            boolean isAnnotation = field.isAnnotationPresent(Easy.HTTP.ResponseParam.class);
             String paramName = "";
-            boolean isHead = false;
-            if (isAnno) {
+            Easy.HTTP.TYPE paramType = Easy.HTTP.TYPE.PARAM;
+            if (isAnnotation) {
                 Easy.HTTP.ResponseParam param = field.getAnnotation(Easy.HTTP.ResponseParam.class);
                 boolean noResp = param.noResp();
                 if (noResp) {//不做参数返回
                     continue;
                 }
-                isHead = param.isHeadRsp();
+                paramType = param.type();
                 paramName = param.value().trim();
             }
             if (paramName.length() == 0) {
@@ -230,21 +224,27 @@ class HttpReflectManager {
                 continue;
             }
             String type = field.getGenericType().toString();
-
-            if (isHead) {
-                if (!type.equals(FieldType.STRING)) {
-                    EasyLog.w(TAG.EasyHttp, "请求头返回变量必须为String类型");
-                    continue;
+            switch (paramType) {
+                case PARAM: {
+                    if (param_type.containsKey(paramName)) {//子类已经有不再重复增加
+                        continue;
+                    }
+                    param_type.put(paramName, type);
+                    param_field.put(paramName, field);
+                    break;
                 }
-                head_field.put(paramName, field);
-            } else {
-                if (param_type.containsKey(paramName)) {//子类已经有不再重复增加
-                    continue;
+                case HEAD: {
+                    if (!type.equals(FieldType.STRING)) {
+                        EasyLog.w(TAG.EasyHttp, "请求头返回变量必须为String类型:" + paramName);
+                        continue;
+                    }
+                    head_field.put(paramName, field);
+                    break;
                 }
-                param_type.put(paramName, type);
-                param_field.put(paramName, field);
+                case URL: {
+                    break;
+                }
             }
-
         }
     }
 }

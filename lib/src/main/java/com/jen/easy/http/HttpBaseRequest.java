@@ -8,26 +8,9 @@ import com.jen.easy.http.imp.HttpBaseListener;
  * 时间：2017/8/12.
  * 说明：基本数据请求参数
  */
+@Easy.HTTP.NoRequestParam
 public abstract class HttpBaseRequest extends HttpRequest {
-
-    @Easy.HTTP.RequestParam(noReq = true)
     private HttpBaseListener bseListener;
-
-    @Easy.HTTP.RequestParam(noReq = true)
-    public Flag flag = new Flag();
-
-    public final class Flag {
-        /**
-         * 请求标识
-         */
-        public int code;
-
-        /**
-         * 请求标识
-         */
-        public String str;
-
-    }
 
     public HttpBaseListener getBseListener() {
         return bseListener;

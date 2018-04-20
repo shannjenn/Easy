@@ -38,8 +38,7 @@ abstract class EasyImagePagerAdapterManager<T> extends PagerAdapter {
         if (object != null && data != null) {
             Integer resId = (Integer) ((ImageView) object).getTag();
             if (resId != null) {
-                int size = data.size();
-                for (int i = 0; i < size; i++) {
+                for (int i = 0; i < data.size(); i++) {
                     if (resId.equals(data.get(i))) {
                         return i;
                     }

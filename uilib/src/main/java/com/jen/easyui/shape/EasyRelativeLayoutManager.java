@@ -49,7 +49,7 @@ abstract class EasyRelativeLayoutManager extends RelativeLayout {
         mShape.mSolidColor = ta.getColor(R.styleable.EasyRelativeLayout_solid_color, 0);
         mShape.mSolidClickColor = ta.getColor(R.styleable.EasyRelativeLayout_solid_click_color, 0);
 
-        mShape.mChangeClickColor = ta.getBoolean(R.styleable.EasyRelativeLayout_change_click_color, false);
+        mShape.mClickType = ta.getInt(R.styleable.EasyRelativeLayout_click_type, 0);
 
         /*int padding = (int) ta.getDimension(R.styleable.EasyRelativeLayout_android_padding, 0);
         if (padding == 0) {
@@ -78,5 +78,13 @@ abstract class EasyRelativeLayoutManager extends RelativeLayout {
     public boolean onTouchEvent(MotionEvent event) {
         mShape.onFocusEvent(event);
         return super.onTouchEvent(event);
+    }
+
+    public boolean isSelect() {
+        return mShape.isSelect();
+    }
+
+    public void setSelect(boolean select) {
+        mShape.setSelect(select);
     }
 }

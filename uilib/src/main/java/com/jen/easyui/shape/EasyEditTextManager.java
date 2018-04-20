@@ -51,7 +51,7 @@ abstract class EasyEditTextManager extends android.support.v7.widget.AppCompatEd
         mShape.mTextColor = ta.getColor(R.styleable.EasyEditText_android_textColor, 0xFF000000);
         mShape.mTextClickColor = ta.getColor(R.styleable.EasyEditText_text_focus_color, 0xFF000000);
 
-        mShape.mChangeClickColor = ta.getBoolean(R.styleable.EasyEditText_change_focus_color, false);
+        mShape.mClickType = ta.getInt(R.styleable.EasyEditText_click_type, 0);
 
         /*int padding = (int) ta.getDimension(R.styleable.EasyEditText_android_padding, 0);
         if (padding == 0) {
@@ -80,5 +80,13 @@ abstract class EasyEditTextManager extends android.support.v7.widget.AppCompatEd
     public boolean onTouchEvent(MotionEvent event) {
         mShape.onFocusEvent(event);
         return super.onTouchEvent(event);
+    }
+
+    public boolean isSelect() {
+        return mShape.isSelect();
+    }
+
+    public void setSelect(boolean select) {
+        mShape.setSelect(select);
     }
 }

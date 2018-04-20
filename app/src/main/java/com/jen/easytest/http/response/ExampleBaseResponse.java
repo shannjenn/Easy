@@ -17,7 +17,7 @@ public class ExampleBaseResponse extends HttpHeadResponse {
     @Easy.HTTP.ResponseParam("message")
     protected String message;
 
-    @Easy.HTTP.ResponseParam(isHeadRsp = true)
+    @Easy.HTTP.ResponseParam(type = Easy.HTTP.TYPE.HEAD)
     private String head;
 
     public String getCode() {

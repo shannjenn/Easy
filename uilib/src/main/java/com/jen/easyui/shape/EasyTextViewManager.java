@@ -51,7 +51,7 @@ abstract class EasyTextViewManager extends android.support.v7.widget.AppCompatTe
         mShape.mTextColor = ta.getColor(R.styleable.EasyTextView_android_textColor, 0xFF000000);
         mShape.mTextClickColor = ta.getColor(R.styleable.EasyTextView_text_click_color, 0xFF000000);
 
-        mShape.mChangeClickColor = ta.getBoolean(R.styleable.EasyTextView_change_click_color, false);
+        mShape.mClickType = ta.getInt(R.styleable.EasyTextView_click_type, 0);
 
         /*int padding = (int) ta.getDimension(R.styleable.EasyTextView_android_padding, 0);
         if (padding == 0) {
@@ -80,5 +80,12 @@ abstract class EasyTextViewManager extends android.support.v7.widget.AppCompatTe
     public boolean onTouchEvent(MotionEvent event) {
         mShape.onFocusEvent(event);
         return super.onTouchEvent(event);
+    }
+    public boolean isSelect() {
+        return mShape.isSelect();
+    }
+
+    public void setSelect(boolean select) {
+        mShape.setSelect(select);
     }
 }

@@ -10,9 +10,10 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 abstract class HttpURLConnectionRunnable implements Runnable {
     HttpRequest mRequest;
@@ -23,7 +24,7 @@ abstract class HttpURLConnectionRunnable implements Runnable {
     boolean mHasParam = false;//是否有参数
     String mCharset;//编码
     boolean mIsGet = true;
-    String mRequestParam;
+    String mParamStr;
 
     HttpURLConnectionRunnable(HttpRequest param) {
         super();
@@ -34,9 +35,9 @@ abstract class HttpURLConnectionRunnable implements Runnable {
     public void run() {
         Object[] method_url = HttpReflectManager.getUrl(mRequest);
         String method = (String) method_url[0];
-        mRequest.httpParam.url = (String) method_url[1];
+        mRequest.url = (String) method_url[1];
         mResponseClass = (Class) method_url[2];
-        mUrlStr = mRequest.httpParam.url;
+        mUrlStr = mRequest.url;
         if (TextUtils.isEmpty(mUrlStr)) {
             mUrlStr = "";
             fail("URL地址为空");
@@ -45,28 +46,28 @@ abstract class HttpURLConnectionRunnable implements Runnable {
 
         if (mRequest instanceof HttpBaseRequest) {//===============基本数据处理
             if (mResponseClass == null) {
-                fail("返回class不能为空");
+                fail("返回对象不能为空");
                 return;
             }
         } else if (mRequest instanceof HttpUploadRequest) {//===============上传请求处理
             if (mResponseClass == null) {
-                fail("返回class不能为空");
+                fail("返回对象不能为空");
                 return;
             }
             HttpUploadRequest uploadRequest = (HttpUploadRequest) mRequest;
-            if (TextUtils.isEmpty(uploadRequest.flag.filePath)) {
+            if (TextUtils.isEmpty(uploadRequest.filePath)) {
                 fail("文件地址不能为空");
                 return;
             }
-            File file = new File(uploadRequest.flag.filePath);
+            File file = new File(uploadRequest.filePath);
             if (!file.isFile()) {
                 fail("文件地址参数错误");
                 return;
             }
         } else if (mRequest instanceof HttpDownloadRequest) {//===============下载请求处理
             HttpDownloadRequest downloadRequest = (HttpDownloadRequest) mRequest;
-            if (downloadRequest.flag.deleteOldFile) {
-                File file = new File(downloadRequest.flag.filePath);
+            if (downloadRequest.deleteOldFile) {
+                File file = new File(downloadRequest.filePath);
                 if (file.exists()) {
                     boolean ret = file.delete();
                     if (!ret) {
@@ -76,12 +77,12 @@ abstract class HttpURLConnectionRunnable implements Runnable {
                 }
             }
 
-            if (TextUtils.isEmpty(downloadRequest.flag.filePath)) {
+            if (TextUtils.isEmpty(downloadRequest.filePath)) {
                 fail("文件地址不能为空");
                 return;
             }
 
-            File fileFolder = new File(downloadRequest.flag.filePath.substring(0, downloadRequest.flag.filePath.lastIndexOf("/")));
+            File fileFolder = new File(downloadRequest.filePath.substring(0, downloadRequest.filePath.lastIndexOf("/")));
             if (!fileFolder.exists()) {
                 boolean ret = fileFolder.mkdirs();
                 if (!ret) {
@@ -93,53 +94,53 @@ abstract class HttpURLConnectionRunnable implements Runnable {
 
         mResponseCode = -1;//返回码
         mHasParam = false;//是否有参数
-        mCharset = mRequest.httpParam.charset;//编码
+        mCharset = mRequest.charset;//编码
         mIsGet = method.toUpperCase().equals("GET");
         try {
-            List<String> requestParamKeys = new ArrayList<>();
-            List<String> requestParamValues = new ArrayList<>();
-            List<String> requestHeadKeys = new ArrayList<>();
-            List<String> requestHeadValues = new ArrayList<>();
-            HttpReflectManager.getRequestParams(mRequest, requestParamKeys, requestParamValues, requestHeadKeys, requestHeadValues);
+            Map<String, String> urls = new HashMap<>();
+            Map<String, String> params = new HashMap<>();
+            Map<String, String> heads = new HashMap<>();
+            HttpReflectManager.getRequestParams(mRequest, urls, params, heads);
 
             boolean isNotFirst = false;
             StringBuilder requestBuf = new StringBuilder("");
-            int paramSize = requestParamKeys.size();
-            for (int i = 0; i < paramSize; i++) {
-                String key = requestParamKeys.get(i);
-                String value = requestParamValues.get(i);
+            Set<String> paramKeys = params.keySet();
+            for (String key : paramKeys) {
+                String value = params.get(key);
                 if (isNotFirst) {
                     requestBuf.append("&");
+                    isNotFirst = true;
                 }
                 requestBuf.append(key);
                 requestBuf.append("=");
-//                if (mIsGet)//get方式加转译符
-//                    requestBuf.append("\"");
                 requestBuf.append(URLEncoder.encode(value, mCharset));
-//                if (mIsGet)//get方式加转译符
-//                    requestBuf.append("\"");
-                isNotFirst = true;
             }
-            mRequestParam = requestBuf.toString();
-            mHasParam = mRequestParam.length() > 0;
+            mParamStr = requestBuf.toString();
+            mHasParam = mParamStr.length() > 0;
 
-            EasyLog.d(TAG.EasyHttp, "网络请求：" + method + " " + mUrlStr + " 请求参数：" + mRequestParam);
+            Set<String> urlKeys = urls.keySet();
+            for (String key : urlKeys) {
+                String value = urls.get(key);
+                mUrlStr = mUrlStr.replaceAll("\\{" + key + "\\}", value);
+            }
+
+            EasyLog.d(TAG.EasyHttp, "网络请求：" + method + " " + mUrlStr + " 请求参数：" + mParamStr);
             if (mIsGet && mHasParam) {//get请求参数拼接
-                mUrlStr = mUrlStr + "?" + mRequestParam;
+                mUrlStr = mUrlStr + "?" + mParamStr;
             }
 
             URL url = new URL(mUrlStr);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoInput(true);
             connection.setDoOutput(!mIsGet);
-            connection.setUseCaches(mRequest.httpParam.useCaches);
-            connection.setConnectTimeout(mRequest.httpParam.timeout);
-            connection.setReadTimeout(mRequest.httpParam.readTimeout);
+            connection.setUseCaches(mRequest.useCaches);
+            connection.setConnectTimeout(mRequest.timeout);
+            connection.setReadTimeout(mRequest.readTimeout);
             connection.setRequestMethod(method);
-            int headSize = requestHeadKeys.size();
-            for (int i = 0; i < headSize; i++) {//设置请求头
-                String key = requestHeadKeys.get(i);
-                String value = requestHeadValues.get(i);
+
+            Set<String> headKeys = heads.keySet();
+            for (String key : headKeys) {//设置请求头
+                String value = heads.get(key);
                 connection.setRequestProperty(key, value);
             }
             childRun(connection);

@@ -56,8 +56,7 @@ public abstract class EasyTreeSort {
         if (trees == null) {
             return list;
         }
-        int size = trees.size();
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < trees.size(); i++) {
             EasyTreeItem parent = trees.get(i);
             parent.setParent(topParent);
             parent.setLevel(topParent == null ? startLev : topParent.getLevel() + 1);

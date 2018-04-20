@@ -23,7 +23,7 @@ class HttpURLConnectionBaseRunnable extends HttpURLConnectionRunnable {
         if (!mIsGet && mHasParam) {
             connection.connect();
             DataOutputStream out = new DataOutputStream(connection.getOutputStream());
-            out.writeBytes(mRequestParam);
+            out.writeBytes(mParamStr);
             out.flush();
             out.close();
         }
@@ -60,7 +60,7 @@ class HttpURLConnectionBaseRunnable extends HttpURLConnectionRunnable {
                 fail("解析数据解析出错");
             } else {
                 EasyLog.d(TAG.EasyHttp, mUrlStr + " 成功!");
-                baseRequest.getBseListener().success(baseRequest.flag.code, baseRequest.flag.str, parseObject);
+                baseRequest.getBseListener().success(baseRequest.flagCode, baseRequest.flagStr, parseObject);
             }
         }
     }
@@ -70,6 +70,6 @@ class HttpURLConnectionBaseRunnable extends HttpURLConnectionRunnable {
         EasyLog.w(TAG.EasyHttp, mUrlStr + " " + result);
         HttpBaseRequest baseRequest = (HttpBaseRequest) mRequest;
         if (baseRequest.getBseListener() != null)
-            baseRequest.getBseListener().fail(baseRequest.flag.code, baseRequest.flag.str, result);
+            baseRequest.getBseListener().fail(baseRequest.flagCode, baseRequest.flagStr, result);
     }
 }

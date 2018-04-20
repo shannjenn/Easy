@@ -16,7 +16,7 @@ public class ExampleBaseRequest extends HttpBaseRequest {
     @Easy.HTTP.RequestParam(noReq = true)//注释noReq = true，则不作为参数请求
     private int age;
 
-    @Easy.HTTP.RequestParam(value = "_type", isHeadReq = true)//注释isHeadReq = true，则作为head参数请求
+    @Easy.HTTP.RequestParam(value = "_type", type = Easy.HTTP.TYPE.HEAD)//注释isHeadReq = true，则作为head参数请求
     private String type;
 
 

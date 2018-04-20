@@ -32,8 +32,9 @@ class ShapeSuper<T extends View> {
     protected int mSolidColor;
     protected int mSolidClickColor;
 
-    /*是否触摸变色*/
-    protected boolean mChangeClickColor;
+    /*点击类型：0：不允许点击，1：点击变色，2：check，3:Radio*/
+    protected int mClickType;
+    protected boolean isSelect;
     /*------------------------------------------------公共属性end*/
 
 //    private int mPaddingLeft;
@@ -143,32 +144,66 @@ class ShapeSuper<T extends View> {
         return result;
     }
 
-
     /**
      * 触摸点击事件
      *
      * @param event
      */
     public void onFocusEvent(MotionEvent event) {
-        if (!mChangeClickColor)
+        if (mClickType == 0)
             return;
         if (t.isClickable()) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN: {
-//                EasyUILog.d(TAG + "drawableStateChanged-- ACTION_DOWN");
-                    mDrawable.setStroke(mStrokeWidth, mStrokeClickColor);
-                    mDrawable.setColor(mSolidClickColor);
-                    if (isTextView) {
-                        ((TextView) t).setTextColor(mTextClickColor);
+                    switch (mClickType) {
+                        case 1: {
+                            mDrawable.setStroke(mStrokeWidth, mStrokeClickColor);
+                            mDrawable.setColor(mSolidClickColor);
+                            if (isTextView) {
+                                ((TextView) t).setTextColor(mTextClickColor);
+                            }
+                            break;
+                        }
+                        case 2: {
+                            isSelect = !isSelect;
+                            if (isSelect) {
+                                mDrawable.setStroke(mStrokeWidth, mStrokeClickColor);
+                                mDrawable.setColor(mSolidClickColor);
+                                if (isTextView) {
+                                    ((TextView) t).setTextColor(mTextClickColor);
+                                }
+                            } else {
+                                mDrawable.setStroke(mStrokeWidth, mStrokeColor);
+                                mDrawable.setColor(mSolidColor);
+                                if (isTextView) {
+                                    ((TextView) t).setTextColor(mTextColor);
+                                }
+                            }
+                            break;
+                        }
+                        case 3: {
+                            mDrawable.setStroke(mStrokeWidth, mStrokeClickColor);
+                            mDrawable.setColor(mSolidClickColor);
+                            if (isTextView) {
+                                ((TextView) t).setTextColor(mTextClickColor);
+                            }
+                            isSelect = true;
+                            break;
+                        }
+                        default: {
+
+                            break;
+                        }
                     }
                     break;
                 }
                 case MotionEvent.ACTION_UP: {
-//                EasyUILog.d(TAG + "drawableStateChanged-- ACTION_UP");
-                    mDrawable.setStroke(mStrokeWidth, mStrokeColor);
-                    mDrawable.setColor(mSolidColor);
-                    if (isTextView) {
-                        ((TextView) t).setTextColor(mTextColor);
+                    if (mClickType == 0) {
+                        mDrawable.setStroke(mStrokeWidth, mStrokeColor);
+                        mDrawable.setColor(mSolidColor);
+                        if (isTextView) {
+                            ((TextView) t).setTextColor(mTextColor);
+                        }
                     }
                     break;
                 }
@@ -176,6 +211,27 @@ class ShapeSuper<T extends View> {
 
                     break;
                 }
+            }
+        }
+    }
+
+    public boolean isSelect() {
+        return isSelect;
+    }
+
+    public void setSelect(boolean select) {
+        isSelect = select;
+        if (isSelect) {
+            mDrawable.setStroke(mStrokeWidth, mStrokeClickColor);
+            mDrawable.setColor(mSolidClickColor);
+            if (isTextView) {
+                ((TextView) t).setTextColor(mTextClickColor);
+            }
+        } else {
+            mDrawable.setStroke(mStrokeWidth, mStrokeColor);
+            mDrawable.setColor(mSolidColor);
+            if (isTextView) {
+                ((TextView) t).setTextColor(mTextColor);
             }
         }
     }

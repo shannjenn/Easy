@@ -16,7 +16,7 @@ public class ExampleResponse extends ExampleBaseResponse {
 
 
 
-    @Easy.HTTP.ResponseParam(isHeadRsp = true)
+    @Easy.HTTP.ResponseParam(type = Easy.HTTP.TYPE.HEAD)
     private String Date;
 
     @Easy.HTTP.ResponseParam("token")

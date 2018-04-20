@@ -14,7 +14,7 @@ public class ExampleRequest extends ExampleBaseRequest {
     @Easy.HTTP.RequestParam(noReq = true)//注释noReq = true，则不作为参数请求
     private boolean isCheck;
 
-    @Easy.HTTP.RequestParam(value = "book_code", isHeadReq = true)//注释isHeadReq = true，则作为head参数请求
+    @Easy.HTTP.RequestParam(value = "book_code", type = Easy.HTTP.TYPE.HEAD)//注释isHeadReq = true，则作为head参数请求
     private String bookCode;
 
 

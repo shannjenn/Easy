@@ -12,7 +12,7 @@
         <attr name="solid_color" />
         <attr name="solid_click_color" />
 
-        <attr name="change_click_color" />
+        <attr name="click_type"/>
 
         <!--<attr name="android:paddingLeft" />
         <attr name="android:paddingRight" />

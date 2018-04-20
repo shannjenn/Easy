@@ -220,8 +220,7 @@ abstract class DBDaoManager {
                 }
                 Map<String, Field> column_field = new HashMap<>();
                 DBReflectManager.getColumnNames(list.get(0).getClass(), null, null, column_field);
-                int size = list.size();
-                for (int i = 0; i < size; i++) {
+                for (int i = 0; i < list.size(); i++) {
                     ContentValues values = contentValues(list.get(i), column_field);
                     db.insert(tableName, null, values);
                 }
@@ -322,8 +321,7 @@ abstract class DBDaoManager {
                 }
                 Map<String, Field> column_field = new HashMap<>();
                 DBReflectManager.getColumnNames(list.get(0).getClass(), null, null, column_field);
-                int size = list.size();
-                for (int i = 0; i < size; i++) {
+                for (int i = 0; i < list.size(); i++) {
                     ContentValues values = contentValues(list.get(i), column_field);
                     db.replace(tableName, null, values);
                 }
@@ -460,8 +458,7 @@ abstract class DBDaoManager {
         }
         try {
             db.beginTransaction();
-            int size = ids.size();
-            for (int i = 0; i < size; i++) {
+            for (int i = 0; i < ids.size(); i++) {
                 db.delete(tableName, primaryKeys.get(0) + "=?", new String[]{ids.get(i)});
             }
             db.setTransactionSuccessful();

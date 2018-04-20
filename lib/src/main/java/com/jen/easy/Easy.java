@@ -138,6 +138,14 @@ public final class Easy {
         }
 
         /**
+         * 不获取请求参数（用于优化）
+         */
+        @Target(ElementType.TYPE)
+        @Retention(RetentionPolicy.RUNTIME)
+        public @interface NoRequestParam {
+        }
+
+        /**
          * 网络请求参数
          */
         @Target(ElementType.FIELD)
@@ -156,7 +164,7 @@ public final class Easy {
             /**
              * 请求头参数
              */
-            boolean isHeadReq() default false;
+            TYPE type() default TYPE.PARAM;
         }
 
         /**
@@ -179,7 +187,19 @@ public final class Easy {
             /**
              * 返回头参数
              */
-            boolean isHeadRsp() default false;
+            TYPE type() default TYPE.PARAM;
+        }
+
+        /**
+         *
+         */
+        public enum TYPE {
+            /*（请求/返回）参数*/
+            PARAM,
+            /*（请求/返回）头部*/
+            HEAD,
+            /*请求地址拼接*/
+            URL;
         }
     }
 

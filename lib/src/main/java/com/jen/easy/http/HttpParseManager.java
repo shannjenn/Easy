@@ -95,8 +95,7 @@ class HttpParseManager {
 
             StringBuilder buffer = new StringBuilder("");
             List<String> values = mHeadMap.get(param);
-            int size = values.size();
-            for (int i = 0; i < size; i++) {
+            for (int i = 0; i < values.size(); i++) {
                 if (i == 0) {
                     buffer.append(values.get(i));
                 } else {

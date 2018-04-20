@@ -8,44 +8,42 @@ import com.jen.easy.constant.Unicode;
  * 时间：2017/8/12.
  * 说明：http请求参数
  */
+@Easy.HTTP.NoRequestParam
 abstract class HttpRequest {
 
-    @Easy.HTTP.RequestParam(noReq = true)
-    public HttpParam httpParam = new HttpParam();
+    /**
+     * 请求标识
+     */
+    public int flagCode;
 
     /**
-     * http请求参数
+     * 请求标识
      */
-    public final class HttpParam {
-        /**
-         * 可以动态设置
-         */
-        public String url;
+    public String flagStr;
 
-        /**
-         * 可以动态设置地址拼接（注意：不可以单独使用，必须有前面地址）
-         */
-        public String urlAppend;
+    /**
+     * 可以动态设置
+     */
+    public String url;
 
-        /**
-         * 请求超时
-         */
-        public int timeout = 30000;
+    /**
+     * 请求超时
+     */
+    public int timeout = 30000;
 
-        /**
-         * 读取超时
-         */
-        public int readTimeout = 30000;
+    /**
+     * 读取超时
+     */
+    public int readTimeout = 30000;
 
-        /**
-         * 默认编码(默认ut-8)
-         */
-        public String charset = Unicode.DEFAULT;
+    /**
+     * 默认编码(默认ut-8)
+     */
+    public String charset = Unicode.DEFAULT;
 
-        /**
-         * 是否使用caches(默认false)
-         */
-        public boolean useCaches = false;
-    }
+    /**
+     * 是否使用caches(默认false)
+     */
+    public boolean useCaches = false;
 
 }

@@ -103,8 +103,7 @@ abstract class DBHelperManager {
             fieldSql.append(",");
         }
 
-        int size = primaryKey.size();
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < primaryKey.size(); i++) {
             if (i == 0) {
                 primaryKeySql.append("primary key (");
                 primaryKeySql.append(primaryKey.get(i));

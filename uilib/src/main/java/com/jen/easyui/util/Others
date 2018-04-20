@@ -2,8 +2,7 @@
 1.
 TextView文字中间插入图片:Html.ImageGetter
      StringBuffer nameBuff = new StringBuffer("");
-        int size = mData.size();
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < mData.size(); i++) {
             TaskDocumentModel model = mData.get(i);
             model.setTaskId(mTaskDetailInfo.getId());
             model.setSpaceId(spaceId);

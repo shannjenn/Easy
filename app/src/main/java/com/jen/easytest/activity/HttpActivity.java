@@ -114,8 +114,8 @@ public class HttpActivity extends EasyActivity {
         exampleRequest.setBookName("红楼梦");
         exampleRequest.setBookCode("abcdefg");
 
-        exampleRequest.httpParam.timeout = 30 * 1000;//设置超时
-        exampleRequest.flag.code = 10;//设置请求码
+        exampleRequest.timeout = 30 * 1000;//设置超时
+        exampleRequest.flagCode = 10;//设置请求码
 
         exampleRequest.setBseListener(httpListener);
         http.start(exampleRequest);
@@ -126,7 +126,7 @@ public class HttpActivity extends EasyActivity {
         PutRequest putRequest = new PutRequest();
         putRequest.setToken("16643-bdf0737cafb1c1a32451a0d93692edba");
 
-        putRequest.httpParam.urlAppend = "/16643";
+        putRequest.setId("16643");
         putRequest.setBseListener(httpListener);
         EasyMain.mHttp.start(putRequest);
     }
