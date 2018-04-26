@@ -45,10 +45,10 @@
 ##############################################################
 ###根目录
 ##############################################################
--keep class com.jen.easy.EasyVersion {
+-keep class com.jen.easy.Version {
     *;
 }
--keep class com.jen.easy.EasyMouse* {
+-keep class com.jen.easy.Easy* {
     *;
 }
 
