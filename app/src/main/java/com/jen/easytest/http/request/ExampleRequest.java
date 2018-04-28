@@ -2,13 +2,17 @@ package com.jen.easytest.http.request;
 
 import com.jen.easy.Easy;
 import com.jen.easytest.http.response.ExampleResponse;
+import com.jen.easytest.model.Book;
+
+import java.util.List;
 
 @Easy.HTTP.POST(URL = "http://apics.baoku.com/api/air/query", Response = ExampleResponse.class)
 public class ExampleRequest extends ExampleBaseRequest {
 
-    @Easy.HTTP.RequestParam("book_id")//请求参数为book_id,值为当前bookId变量值
+    @Easy.HTTP.RequestParam(value = "book_id",noReq = true)//请求参数为book_id,值为当前bookId变量值
     private int bookId;
 
+	@Easy.HTTP.RequestParam(value = "book_id",noReq = true)
     private String bookName;//不注释默认作为参数请求,请求参数名与变量名一致，也就是bookName
 
     @Easy.HTTP.RequestParam(noReq = true)//注释noReq = true，则不作为参数请求
@@ -16,6 +20,10 @@ public class ExampleRequest extends ExampleBaseRequest {
 
     @Easy.HTTP.RequestParam(value = "book_code", type = Easy.HTTP.TYPE.HEAD)//注释isHeadReq = true，则作为head参数请求
     private String bookCode;
+
+    private List<Book> books;
+
+    private Book book;
 
 
 
@@ -41,7 +49,7 @@ public class ExampleRequest extends ExampleBaseRequest {
 	@Easy.HTTP.RequestParam(noReq = true)
 	String codeLevel;// 仓位级别 (可选)
 
-	@Easy.HTTP.RequestParam("goDate")
+	@Easy.HTTP.RequestParam(value = "goDate",noReq = true)
 	String goDate;// 去程旅行日期
 
 	@Easy.HTTP.RequestParam("backDate")
@@ -175,4 +183,20 @@ public class ExampleRequest extends ExampleBaseRequest {
     public void setBookCode(String bookCode) {
         this.bookCode = bookCode;
     }
+
+	public List<Book> getBooks() {
+		return books;
+	}
+
+	public void setBooks(List<Book> books) {
+		this.books = books;
+	}
+
+	public Book getBook() {
+		return book;
+	}
+
+	public void setBook(Book book) {
+		this.book = book;
+	}
 }

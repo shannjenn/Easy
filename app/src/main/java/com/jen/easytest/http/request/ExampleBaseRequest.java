@@ -6,6 +6,7 @@ import com.jen.easy.http.HttpBaseRequest;
 import java.util.ArrayList;
 import java.util.List;
 
+@Easy.HTTP.NoRequestParam
 public class ExampleBaseRequest extends HttpBaseRequest {
 
     @Easy.HTTP.RequestParam("_id")//请求参数为_id,值为当前id变量值

@@ -5,12 +5,16 @@ import android.text.TextUtils;
 import com.jen.easy.constant.TAG;
 import com.jen.easy.log.EasyLog;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,10 +25,11 @@ abstract class HttpURLConnectionRunnable implements Runnable {
 
     String mUrlStr;
     int mResponseCode = -1;//返回码
-    boolean mHasParam = false;//是否有参数
+//    boolean mHasParam = false;//是否有参数
     String mCharset;//编码
     boolean mIsGet = true;
-    String mParamStr;
+//    String mParamStr;
+    final JSONObject mJsonParam = new JSONObject();
 
     HttpURLConnectionRunnable(HttpRequest param) {
         super();
@@ -93,40 +98,40 @@ abstract class HttpURLConnectionRunnable implements Runnable {
         }
 
         mResponseCode = -1;//返回码
-        mHasParam = false;//是否有参数
+//        mHasParam = false;//是否有参数
         mCharset = mRequest.charset;//编码
         mIsGet = method.toUpperCase().equals("GET");
         try {
             Map<String, String> urls = new HashMap<>();
-            Map<String, String> params = new HashMap<>();
+//            JSONObject mJsonParam = new JSONObject();
             Map<String, String> heads = new HashMap<>();
-            HttpReflectManager.getRequestParams(mRequest, urls, params, heads);
+            HttpReflectManager.getRequestParams(mRequest, urls, mJsonParam, heads);
 
-            boolean isNotFirst = false;
-            StringBuilder requestBuf = new StringBuilder("");
-            Set<String> paramKeys = params.keySet();
-            for (String key : paramKeys) {
-                String value = params.get(key);
-                if (isNotFirst) {
-                    requestBuf.append("&");
-                    isNotFirst = true;
+            if (mIsGet) {
+                Iterator<String> paramKeys = mJsonParam.keys();
+                StringBuilder requestBuf = new StringBuilder("");
+                boolean isFirst = true;
+                while (paramKeys.hasNext()) {
+                    String key = paramKeys.next();
+                    Object value = mJsonParam.get(key);
+                    if (isFirst) {
+                        isFirst = false;
+                    } else {
+                        requestBuf.append("&");
+                    }
+                    requestBuf.append(key);
+                    requestBuf.append("=");
+                    requestBuf.append(URLEncoder.encode(value + "", mCharset));
                 }
-                requestBuf.append(key);
-                requestBuf.append("=");
-                requestBuf.append(URLEncoder.encode(value, mCharset));
+                if (requestBuf.length() > 0) {
+                    mUrlStr = mUrlStr + "?" + requestBuf.toString();
+                }
             }
-            mParamStr = requestBuf.toString();
-            mHasParam = mParamStr.length() > 0;
 
             Set<String> urlKeys = urls.keySet();
             for (String key : urlKeys) {
                 String value = urls.get(key);
                 mUrlStr = mUrlStr.replaceAll("\\{" + key + "\\}", value);
-            }
-
-            EasyLog.d(TAG.EasyHttp, "网络请求：" + method + " " + mUrlStr + " 请求参数：" + mParamStr);
-            if (mIsGet && mHasParam) {//get请求参数拼接
-                mUrlStr = mUrlStr + "?" + mParamStr;
             }
 
             URL url = new URL(mUrlStr);
@@ -139,15 +144,24 @@ abstract class HttpURLConnectionRunnable implements Runnable {
             connection.setRequestMethod(method);
 
             Set<String> headKeys = heads.keySet();
+            StringBuilder headBuilder = new StringBuilder("");
             for (String key : headKeys) {//设置请求头
                 String value = heads.get(key);
                 connection.setRequestProperty(key, value);
+                headBuilder.append(key);
+                headBuilder.append("=");
+                headBuilder.append(value);
+                headBuilder.append(" ");
             }
+            EasyLog.d(TAG.EasyHttp, "网络请求：" + method + " " + mUrlStr + " 请求头部：" + headBuilder.toString() + " 请求参数：" + mJsonParam.toString());
             childRun(connection);
             connection.disconnect();
         } catch (IOException e) {
             e.printStackTrace();
             fail("IOException 网络请求异常：" + mResponseCode);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            fail("JSONException 网络请求异常：" + mResponseCode);
         }
     }
 

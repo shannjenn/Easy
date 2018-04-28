@@ -5,6 +5,10 @@ import com.jen.easy.constant.FieldType;
 import com.jen.easy.constant.TAG;
 import com.jen.easy.log.EasyLog;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
@@ -57,13 +61,12 @@ class HttpReflectManager {
     /**
      * 获取网络请求参数
      *
-     * @param obj    对象数据
-     * @param urls   拼接请求地址参数
-     * @param params 请求参数
-     * @param heads  请求头参数
+     * @param obj       对象数据
+     * @param urls      拼接请求地址参数
+     * @param jsonParam 请求参数
+     * @param heads     请求头参数
      */
-    static void getRequestParams(Object obj, Map<String, String> urls, Map<String, String> params, Map<String, String> heads) {
-
+    static void getRequestParams(Object obj, Map<String, String> urls, JSONObject jsonParam, Map<String, String> heads) {
         if (obj == null || obj instanceof Class) {
             EasyLog.w(TAG.EasyHttp, "getRequestParams getRequestParams obj is null");
             return;
@@ -75,23 +78,28 @@ class HttpReflectManager {
         String objName = Object.class.getName();
         while (!clazzName.equals(reqName) && !clazzName.equals(objName)) {
             boolean isNoRequestParam = clazz.isAnnotationPresent(Easy.HTTP.NoRequestParam.class);
-            if (isNoRequestParam) continue;//不获取请求参数
-            getRequestParam(clazz, obj, urls, params, heads);
+            if (isNoRequestParam) {
+                clazz = clazz.getSuperclass();//获取父类
+                clazzName = clazz.getName();
+                continue;//不获取请求参数
+            }
+            getRequestParam(clazz, obj, urls, jsonParam, heads);
             clazz = clazz.getSuperclass();//获取父类
             clazzName = clazz.getName();
         }
     }
 
+
     /**
      * 获取单个类请求参数
      *
-     * @param clazz  类
-     * @param obj    对象数据
-     * @param urls   拼接请求地址参数
-     * @param params 请求参数
-     * @param heads  请求头参数
+     * @param clazz     类
+     * @param obj       对象数据
+     * @param urls      拼接请求地址参数
+     * @param jsonParam 请求参数
+     * @param heads     请求头参数
      */
-    private static void getRequestParam(Class clazz, Object obj, Map<String, String> urls, Map<String, String> params, Map<String, String> heads) {
+    private static void getRequestParam(Class clazz, Object obj, Map<String, String> urls, JSONObject jsonParam, Map<String, String> heads) {
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
             boolean isAnnotation = field.isAnnotationPresent(Easy.HTTP.RequestParam.class);
@@ -109,18 +117,21 @@ class HttpReflectManager {
             if (key.length() == 0) {
                 key = field.getName();
             }
+
             if (FieldType.isOtherField(key)) {
                 continue;
             }
             String fieldType = field.getGenericType().toString();
             field.setAccessible(true);
             try {
-                if (fieldType.equals(FieldType.STRING) || fieldType.equals(FieldType.INTEGER) || fieldType.equals(FieldType.FLOAT)
-                        || fieldType.equals(FieldType.LONG) || fieldType.equals(FieldType.DOUBLE)) {
-                    Object value = field.get(obj);
+                Object value = field.get(obj);
+                if (value == null) {
+                    continue;
+                }
+                if (value instanceof String || value instanceof Integer || value instanceof Float || value instanceof Long || value instanceof Double) {
                     switch (paramType) {
                         case PARAM: {
-                            params.put(key, value + "");
+                            jsonParam.put(key, value);
                             break;
                         }
                         case HEAD: {
@@ -132,39 +143,43 @@ class HttpReflectManager {
                             break;
                         }
                     }
-                } else if (fieldType.contains(FieldType.LIST)) {
-                    List values = (List) field.get(obj);
-                    if (values == null || values.size() <= 0) {
-                        break;
+                } else if (value instanceof List) {
+                    List listObj = (List) value;
+                    if (listObj == null || listObj.size() <= 0) {
+                        continue;
                     }
-                    for (int i = 0; i < values.size(); i++) {
-                        Object value = values.get(i);
-                        if (value instanceof String || value instanceof Integer || value instanceof Float
-                                || value instanceof Long || value instanceof Double) {
-                            switch (paramType) {
-                                case PARAM: {
-                                    params.put(key, value + "");
-                                    break;
-                                }
-                                case HEAD: {
-                                    heads.put(key, value + "");
-                                    break;
-                                }
-                                case URL: {
-                                    urls.put(key, value + "");
-                                    break;
-                                }
+                    Object item0 = listObj.get(0);
+                    boolean isBasic = item0 instanceof String || item0 instanceof Integer || item0 instanceof Float
+                            || item0 instanceof Long || item0 instanceof Double;
+                    if (isBasic) {
+                        EasyLog.w(TAG.EasyHttp, "不支持该类型");
+                    } else {
+                        JSONArray jsonArray = new JSONArray();
+                        for (int i = 0; i < listObj.size(); i++) {
+                            Object itemObj = listObj.get(i);
+                            if (itemObj == null) {
+                                continue;
                             }
-                        } else {
-                            EasyLog.w(TAG.EasyHttp, "不支持该类型（001）：" + field.getName());
+                            JSONObject item = new JSONObject();
+                            getRequestParam(itemObj.getClass(), itemObj, urls, item, heads);
+                            jsonArray.put(item);
+                        }
+                        if (jsonArray.length() > 0) {
+                            jsonParam.put(key, jsonArray);
                         }
                     }
+                } else if (fieldType.contains(FieldType.CLASS)) {
+                    JSONObject item = new JSONObject();
+                    getRequestParam(value.getClass(), value, urls, item, heads);
+                    jsonParam.put(key, item);
                 } else {
-                    EasyLog.w(TAG.EasyHttp, "不支持该类型（002）：" + field.getName());
+                    EasyLog.w(TAG.EasyHttp, "不支持该类型：" + field.getName());
                 }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
                 EasyLog.w(TAG.EasyHttp, "getRequestParams IllegalAccessException");
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
     }

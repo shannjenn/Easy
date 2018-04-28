@@ -1,6 +1,7 @@
 package com.jen.easy.http;
 
 import com.jen.easy.constant.TAG;
+import com.jen.easy.constant.Unicode;
 import com.jen.easy.log.EasyLog;
 
 import java.io.BufferedReader;
@@ -20,10 +21,10 @@ class HttpURLConnectionBaseRunnable extends HttpURLConnectionRunnable {
 
     @Override
     protected void childRun(HttpURLConnection connection) throws IOException {
-        if (!mIsGet && mHasParam) {
+        if (!mIsGet) {
             connection.connect();
             DataOutputStream out = new DataOutputStream(connection.getOutputStream());
-            out.writeBytes(mParamStr);
+            out.write(mJsonParam.toString().getBytes(Unicode.DEFAULT));
             out.flush();
             out.close();
         }
