@@ -9,7 +9,7 @@ import com.jen.easy.constant.Unicode;
  * 说明：http请求参数
  */
 @Easy.HTTP.NoRequestParam
-abstract class HttpRequest {
+public abstract class HttpRequest {
 
     /**
      * 请求标识
