@@ -1,7 +1,6 @@
 package com.jen.easy.http;
 
 import com.jen.easy.Easy;
-import com.jen.easy.http.imp.HttpUploadListener;
 
 /**
  * 上传文件请求参数
@@ -10,8 +9,6 @@ import com.jen.easy.http.imp.HttpUploadListener;
  */
 @Easy.HTTP.NoRequestParam
 public class HttpUploadRequest extends HttpRequest {
-    private HttpUploadListener uploadListener;
-
     /**
      * 上传/下载文件位置
      */
@@ -33,11 +30,4 @@ public class HttpUploadRequest extends HttpRequest {
      */
     public boolean userCancel;
 
-    public HttpUploadListener getUploadListener() {
-        return uploadListener;
-    }
-
-    public void setEasyHttpUploadFileListener(HttpUploadListener uploadListener) {
-        this.uploadListener = uploadListener;
-    }
 }

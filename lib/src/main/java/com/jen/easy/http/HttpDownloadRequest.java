@@ -1,7 +1,6 @@
 package com.jen.easy.http;
 
 import com.jen.easy.Easy;
-import com.jen.easy.http.imp.HttpDownloadListener;
 
 /**
  * 作者：ShannJenn
@@ -10,8 +9,6 @@ import com.jen.easy.http.imp.HttpDownloadListener;
  */
 @Easy.HTTP.NoRequestParam
 public class HttpDownloadRequest extends HttpRequest {
-    private HttpDownloadListener downloadListener;
-
     /**
      * 上传/下载文件位置
      */
@@ -38,11 +35,4 @@ public class HttpDownloadRequest extends HttpRequest {
      */
     public boolean deleteOldFile = true;
 
-    public HttpDownloadListener getDownloadListener() {
-        return downloadListener;
-    }
-
-    public void setDownloadListener(HttpDownloadListener downloadListener) {
-        this.downloadListener = downloadListener;
-    }
 }

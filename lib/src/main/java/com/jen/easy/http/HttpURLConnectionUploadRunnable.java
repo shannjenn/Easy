@@ -1,6 +1,7 @@
 package com.jen.easy.http;
 
 import com.jen.easy.constant.TAG;
+import com.jen.easy.http.imp.HttpUploadListener;
 import com.jen.easy.log.EasyLog;
 
 import java.io.BufferedReader;
@@ -15,9 +16,11 @@ import java.util.List;
 import java.util.Map;
 
 class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
+    private HttpUploadListener uploadListener;
 
-    HttpURLConnectionUploadRunnable(HttpUploadRequest request) {
+    HttpURLConnectionUploadRunnable(HttpUploadRequest request, HttpUploadListener uploadListener) {
         super(request);
+        this.uploadListener = uploadListener;
     }
 
     @Override
@@ -67,13 +70,13 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
     protected void success(String result, Map<String, List<String>> headMap) {
         EasyLog.d(TAG.EasyHttp, mUrlStr + " 上传成功！");
         HttpUploadRequest request = (HttpUploadRequest) mRequest;
-        if (request.getUploadListener() != null) {
+        if (uploadListener != null) {
             HttpParseManager parseManager = new HttpParseManager();
             Object parseObject = parseManager.parseJson(mResponseClass, result, headMap);
             if (parseObject == null) {
                 fail("返回数据解析异常");
             } else {
-                request.getUploadListener().success(request.flagCode, request.flagStr, parseObject);
+                uploadListener.success(request.flagCode, request.flagStr, parseObject);
             }
         }
     }
@@ -82,13 +85,13 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
     protected void fail(String msg) {
         EasyLog.w(TAG.EasyHttp, mUrlStr + " " + msg);
         HttpUploadRequest request = (HttpUploadRequest) mRequest;
-        if (request.getUploadListener() != null)
-            request.getUploadListener().fail(request.flagCode, request.flagStr, msg);
+        if (uploadListener != null)
+            uploadListener.fail(request.flagCode, request.flagStr, msg);
     }
 
     private void progress(long currentPoint, long endPoint) {
         HttpUploadRequest request = (HttpUploadRequest) mRequest;
-        if (request.getUploadListener() != null)
-            request.getUploadListener().progress(request.flagCode, request.flagStr, currentPoint, endPoint);
+        if (uploadListener != null)
+            uploadListener.progress(request.flagCode, request.flagStr, currentPoint, endPoint);
     }
 }

@@ -128,7 +128,8 @@ class HttpReflectManager {
                 if (value == null) {
                     continue;
                 }
-                if (value instanceof String || value instanceof Integer || value instanceof Float || value instanceof Long || value instanceof Double) {
+                if (value instanceof String || value instanceof Integer || value instanceof Float || value instanceof Long
+                        || value instanceof Double || value instanceof Boolean) {
                     switch (paramType) {
                         case PARAM: {
                             jsonParam.put(key, value);
@@ -150,7 +151,7 @@ class HttpReflectManager {
                     }
                     Object item0 = listObj.get(0);
                     boolean isBasic = item0 instanceof String || item0 instanceof Integer || item0 instanceof Float
-                            || item0 instanceof Long || item0 instanceof Double;
+                            || item0 instanceof Long || item0 instanceof Double || item0 instanceof Boolean;
                     if (isBasic) {
                         EasyLog.w(TAG.EasyHttp, "不支持该类型");
                     } else {

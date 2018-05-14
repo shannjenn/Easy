@@ -28,6 +28,7 @@ public class HttpActivity extends EasyActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_http);
+        EasyMain.mHttp.setHttpBaseListener(httpListener);
     }
 
     @Override
@@ -104,7 +105,6 @@ public class HttpActivity extends EasyActivity {
         airRequest.setSignType(signType);
         airRequest.setSign(sign);
 
-        airRequest.setBseListener(httpListener);
         EasyMain.mHttp.start(airRequest);
         EasyLog.d("mAirResponse mAirResponse:");
 
@@ -117,7 +117,6 @@ public class HttpActivity extends EasyActivity {
         exampleRequest.timeout = 30 * 1000;//设置超时
         exampleRequest.flagCode = 10;//设置请求码
 
-        exampleRequest.setBseListener(httpListener);
         http.start(exampleRequest);
 
     }
@@ -127,7 +126,6 @@ public class HttpActivity extends EasyActivity {
         putRequest.setToken("16643-bdf0737cafb1c1a32451a0d93692edba");
 
         putRequest.setId("16643");
-        putRequest.setBseListener(httpListener);
         EasyMain.mHttp.start(putRequest);
     }
 

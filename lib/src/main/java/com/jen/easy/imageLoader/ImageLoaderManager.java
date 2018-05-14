@@ -107,6 +107,7 @@ abstract class ImageLoaderManager {
     protected void init(ImageLoaderConfig builder) {
         config = builder;
         mHttp = new Http(builder.getHttpMaxThread());
+        mHttp.setHttpDownloadListener(mHttpListener);
         mExecutorService = Executors.newFixedThreadPool(builder.getHttpMaxThread());
         int maxMemory = (int) Runtime.getRuntime().maxMemory();
         int cacheSize = maxMemory / 8;
@@ -231,7 +232,6 @@ abstract class ImageLoaderManager {
         request.timeout = config.getTimeOut();
         request.filePath = filePath;
         request.flagStr = imageUrl;
-        request.setDownloadListener(mHttpListener);
         mHttp.start(request);
     }
 

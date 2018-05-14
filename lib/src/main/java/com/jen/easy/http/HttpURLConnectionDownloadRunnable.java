@@ -2,6 +2,7 @@ package com.jen.easy.http;
 
 import com.jen.easy.constant.TAG;
 import com.jen.easy.constant.Unicode;
+import com.jen.easy.http.imp.HttpDownloadListener;
 import com.jen.easy.log.EasyLog;
 
 import java.io.DataOutputStream;
@@ -13,9 +14,11 @@ import java.util.List;
 import java.util.Map;
 
 class HttpURLConnectionDownloadRunnable extends HttpURLConnectionRunnable {
+    private HttpDownloadListener downloadListener;
 
-    HttpURLConnectionDownloadRunnable(HttpDownloadRequest request) {
+    HttpURLConnectionDownloadRunnable(HttpDownloadRequest request, HttpDownloadListener downloadListener) {
         super(request);
+        this.downloadListener = downloadListener;
     }
 
     @Override
@@ -74,21 +77,21 @@ class HttpURLConnectionDownloadRunnable extends HttpURLConnectionRunnable {
     protected void success(String result, Map<String, List<String>> headMap) {
         EasyLog.d(TAG.EasyHttp, mUrlStr + " 下载成功！");
         HttpDownloadRequest request = (HttpDownloadRequest) mRequest;
-        if (request.getDownloadListener() != null)
-            request.getDownloadListener().success(request.flagCode, request.flagStr, request.filePath);
+        if (downloadListener != null)
+            downloadListener.success(request.flagCode, request.flagStr, request.filePath);
     }
 
     @Override
     protected void fail(String msg) {
         EasyLog.w(TAG.EasyHttp, mUrlStr + " " + msg);
         HttpDownloadRequest request = (HttpDownloadRequest) mRequest;
-        if (request.getDownloadListener() != null)
-            request.getDownloadListener().fail(request.flagCode, request.flagStr, msg);
+        if (downloadListener != null)
+            downloadListener.fail(request.flagCode, request.flagStr, msg);
     }
 
     private void progress(long currentPoint, long endPoint) {
         HttpDownloadRequest request = (HttpDownloadRequest) mRequest;
-        if (request.getDownloadListener() != null)
-            request.getDownloadListener().progress(request.flagCode, request.flagStr, currentPoint, endPoint);
+        if (downloadListener != null)
+            downloadListener.progress(request.flagCode, request.flagStr, currentPoint, endPoint);
     }
 }
