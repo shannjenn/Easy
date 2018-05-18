@@ -169,7 +169,7 @@ class HttpReflectManager {
                             jsonParam.put(key, jsonArray);
                         }
                     }
-                } else if (fieldType.contains(FieldType.CLASS)) {
+                } else if (FieldType.isClass(fieldType)) {
                     JSONObject item = new JSONObject();
                     getRequestParam(value.getClass(), value, urls, item, heads);
                     jsonParam.put(key, item);
@@ -250,7 +250,7 @@ class HttpReflectManager {
                     break;
                 }
                 case HEAD: {
-                    if (!type.equals(FieldType.STRING)) {
+                    if (!FieldType.isString(type)) {
                         EasyLog.w(TAG.EasyHttp, "请求头返回变量必须为String类型:" + paramName);
                         continue;
                     }

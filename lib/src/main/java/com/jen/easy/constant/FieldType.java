@@ -1,5 +1,8 @@
 package com.jen.easy.constant;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 作者：ShannJenn
  * 时间：2018/2/22:20:37
@@ -7,24 +10,58 @@ package com.jen.easy.constant;
  */
 
 public final class FieldType {
-    public static final String CHAR = "char";
-    public static final String STRING = "class java.lang.String";
 
-    public static final String BYTE = "class java.lang.Byte";
-    public static final String SHORT = "class java.lang.Short";
-    public static final String INTEGER = "int";
-    public static final String FLOAT = "float";
-    public static final String DOUBLE = "double";
-    public static final String LONG = "class java.lang.Long";
-    public static final String BOOLEAN = "boolean";
+    public static boolean isChar(String type) {
+        return char.class.toString().equals(type);
+    }
 
-//        public static final String DATE = "class java.util.Date";
+    public static boolean isString(String type) {
+        return String.class.toString().equals(type);
+    }
 
-    public static final String OBJECT = "class java.lang.Object";
-    public static final String LIST = "java.util.List";
-    public static final String MAP = "java.util.Map";
-    public static final String ARRAY = "class [L";//数组
-    public static final String CLASS = "class ";//做最后判断
+    public static boolean isByte(String type) {
+        return Byte.class.toString().equals(type) || byte.class.toString().equals(type);
+    }
+
+    public static boolean isShort(String type) {
+        return Short.class.toString().equals(type) || short.class.toString().equals(type);
+    }
+
+    public static boolean isInt(String type) {
+        return Integer.class.toString().equals(type) || int.class.toString().equals(type);
+    }
+
+    public static boolean isFloat(String type) {
+        return Float.class.toString().equals(type) || float.class.toString().equals(type);
+    }
+
+    public static boolean isDouble(String type) {
+        return Double.class.toString().equals(type) || double.class.toString().equals(type);
+    }
+
+    public static boolean isLong(String type) {
+        return Long.class.toString().equals(type) || long.class.toString().equals(type);
+    }
+
+    public static boolean isBoolean(String type) {
+        return Boolean.class.toString().equals(type) || boolean.class.toString().equals(type);
+    }
+
+    public static boolean isList(String type) {
+        return type.contains(List.class.toString().replace("interface ", ""));
+    }
+
+    public static boolean isMap(String type) {
+        return type.contains(Map.class.toString().replace("interface ", ""));
+    }
+
+    public static boolean isObject(String type) {
+        return Object.class.toString().equals(type);
+    }
+
+    public static boolean isClass(String type) {//做最后判断
+        return type.contains("class ");
+    }
 
     /**
      * 1.$change 是Android Studio2.0的.Instant Run 的问题.
@@ -52,27 +89,18 @@ public final class FieldType {
      */
     public static String getDBColumnType(String fieldType) {
         String type;
-        switch (fieldType) {
-            case CHAR:
-            case STRING:
-                type = "TEXT";
-                break;
-            case BYTE:
-            case SHORT:
-            case INTEGER:
-            case LONG:
-                type = "INTEGER";
-                break;
-            case FLOAT:
-            case DOUBLE:
-                type = "REAL";
-                break;
-            case BOOLEAN:
-                type = "INTEGER";
-                break;
-            default:
-                type = null;
-                break;
+        if (isChar(fieldType) || isString(fieldType)) {
+            type = "TEXT";
+
+        } else if (isByte(fieldType) || isShort(fieldType) || isInt(fieldType) || isLong(fieldType) || isBoolean(fieldType)) {
+            type = "INTEGER";
+
+        } else if (isFloat(fieldType) || isDouble(fieldType)) {
+            type = "REAL";
+
+        } else {
+            type = null;
+
                 /*case DATE:
                     type = "TEXT";
                     break;*/

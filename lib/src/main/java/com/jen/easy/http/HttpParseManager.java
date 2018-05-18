@@ -39,16 +39,17 @@ class HttpParseManager {
         EasyLog.d(TAG.EasyHttp, "解析：" + tClass.getName() + "----开始");
         mTopClass = tClass;
         this.mHeadMap = headMap;
-        T t = null;
+        T t;
+        JSONObject object = null;
         try {
-            JSONObject object = new JSONObject(obj);
-            t = parseJsonObject(tClass, object);
+            object = new JSONObject(obj);
         } catch (JSONException e) {
             e.printStackTrace();
-            EasyLog.w(TAG.EasyHttp, "parseJson JSONException error");
+            EasyLog.w(TAG.EasyHttp, "parseJson方法解析错误JSONException");
         }
+        t = parseJsonObject(tClass, object);
         mErrors.clear();
-        EasyLog.d(TAG.EasyHttp, "解析：" + tClass.getName() + "----结束");
+        EasyLog.d(TAG.EasyHttp, "解析：" + tClass.getName() + "----完成");
         if (t != null && t instanceof HttpHeadResponse) {
             ((HttpHeadResponse) t).setHeads(headMap);
         }
@@ -64,7 +65,7 @@ class HttpParseManager {
      */
     private <T> T parseJsonObject(Class<T> tClass, JSONObject jsonObject) {
         if (tClass == null || jsonObject == null) {
-            EasyLog.w(TAG.EasyHttp, "tClass == null || jsonObject == null");
+            EasyLog.w(TAG.EasyHttp, "该Class为空或者JSONObject为空");
             return null;
         }
         T tObj;
@@ -107,7 +108,7 @@ class HttpParseManager {
                 field.set(tObj, buffer.toString());
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
-                showError("IllegalAccessException：head param=" + param);
+                showWarn("IllegalAccessException：header 参数：" + param);
             }
         }
 
@@ -129,113 +130,102 @@ class HttpParseManager {
                     field.setAccessible(true);
                     type = param_type.get(param);
 
-                    if (type.equals(FieldType.STRING)) {
+                    if (FieldType.isString(type)) {
                         if (value instanceof String) {
                             field.set(tObj, value);
                         } else if (value instanceof Integer || value instanceof Long || value instanceof Float || value instanceof Double) {
                             field.set(tObj, value + "");
                         } else {
-                            showWarn("param=" + param + "不是tring、Integer、Long、Float、Double类型，不可以转换为String类型");
+                            showWarn("param=" + param + "不是String、Integer、Long、Float、Double类型，不可以转换为String类型");
                         }
-                    } else if (type.equals(FieldType.INTEGER)) {
+                    } else if (FieldType.isInt(type)) {
                         if (value instanceof Long) {
 //                            value = ((Long) value).intValue();
-                            showWarn("param=" + param + " is not Integer,is Long");
+                            showWarn("param=" + param + "不是Integer类型，是Long类型");
                         } else if (!(value instanceof Integer)) {
-                            showWarn("param=" + param + " is not Integer");
+                            showWarn("param=" + param + "不是Integer类型");
                         } else {
                             field.setInt(tObj, (Integer) value);
                         }
-                    } else if (type.equals(FieldType.LONG)) {
+                    } else if (FieldType.isLong(type)) {
                         if (value instanceof Integer) {
 //                            value = ((Integer) value).longValue();
-                            showWarn("param=" + param + " is not Long,is Integer");
+                            showWarn("param=" + param + "不是Long类型，是Integer类型");
                         } else if (!(value instanceof Long)) {
-                            showWarn("param=" + param + " is not Long");
+                            showWarn("param=" + param + "不是Long类型");
                         } else {
                             field.setLong(tObj, (Long) value);
                         }
-                    } else if (type.equals(FieldType.FLOAT)) {
+                    } else if (FieldType.isFloat(type)) {
                         if (value instanceof Double) {
 //                            value = ((Double) value).floatValue();
-                            showWarn("param=" + param + " is not Float,is Double");
+                            showWarn("param=" + param + "不是Float类型，是Double类型");
                         } else if (!(value instanceof Float)) {
-                            showWarn("param=" + param + " is not Float");
+                            showWarn("param=" + param + "不是Float类型");
                         } else {
                             field.setFloat(tObj, (Float) value);
                         }
-                    } else if (type.equals(FieldType.DOUBLE)) {
+                    } else if (FieldType.isDouble(type)) {
                         if (value instanceof Float) {
 //                            value = ((Float) value).doubleValue();
-                            showWarn("param=" + param + " is not Double,is Float");
+                            showWarn("param=" + param + "不是Double类型，是Float类型");
                         } else if (!(value instanceof Double)) {
-                            showWarn("param=" + param + " is not Double");
+                            showWarn("param=" + param + "不是Double类型");
                         } else {
                             field.setDouble(tObj, (Double) value);
                         }
-                    } else if (type.equals(FieldType.BOOLEAN)) {
+                    } else if (FieldType.isBoolean(type)) {
                         if (!(value instanceof Boolean)) {
-                            showWarn("param=" + param + " is not Boolean ");
+                            showWarn("参数：" + param + "不是Boolean类型");
                         } else {
                             field.setBoolean(tObj, (Boolean) value);
                         }
-                    } /*else if (type.equals(FieldType.DATE)) {
-                        if (value instanceof String) {
-                            Date date = EasyUtil.mDateFormat.parser((String) value);
-                            if (date != null) {
-                                field.set(tObj, date);
-                            }
-                        }
-                    }*/ else if (type.contains(FieldType.MAP)) {//解析Map
-                        EasyLog.w(TAG.EasyHttp, "不支持Map类型");
-                    } else if (type.contains(FieldType.ARRAY)) {//解析数组
-                        EasyLog.w(TAG.EasyHttp, "不支持数组类型");
-                    } else if (type.contains(FieldType.OBJECT)) {//解析Object通用类型
+                    } else if (FieldType.isObject(type)) {//解析Object通用类型
                         field.set(tObj, value);
-                    } else if (type.contains(FieldType.LIST)) {//解析list
+                    } else if (FieldType.isList(type)) {//解析list
                         if (value instanceof JSONArray) {
                             String clazzName = type.substring(type.indexOf("<") + 1, type.indexOf(">"));
                             Class clazz2 = Class.forName(clazzName);
                             if (clazz2 == mTopClass) {
-                                showError("不能解析与类相同的变量避免死循环,param=" + param + " type=" + type);
+                                showWarn("不能解析与类相同的变量避免死循环,参数：" + param + " 类型：" + type);
                             } else {
                                 List objList = parseJsonArray(clazz2, (JSONArray) value);
                                 field.set(tObj, objList);
                             }
                         } else {
-                            showError("List类型错误 :" + type);
+                            showWarn("List类型错误 :" + type);
                         }
-                    } else if (type.contains(FieldType.CLASS)) {//解析指定class
+                    } else if (FieldType.isClass(type)) {//解析指定class
                         if (field.getType() == mTopClass) {
-                            showError("不能解析与类相同的变量避免死循环,param=" + param + " type=" + type);
+                            showWarn("不能解析与类相同的变量避免死循环,param=" + param + " 类型：" + type);
                         } else if (value instanceof JSONObject) {
                             Object obj = parseJsonObject(field.getType(), (JSONObject) value);
                             field.set(tObj, obj);
                         } else {
-                            showError("Class类型错误 :" + type);
+                            showWarn("Class类型错误 :" + type);
                         }
                     } else {
-                        showError("不支持该类型：" + type);
+                        showWarn("不支持该类型：" + type);
                     }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-                showError("JSONException param=" + param);
+                showWarn("JSONException param=" + param);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
-                showError("IllegalAccessException：type=" + type + " param=" + param);
+                showWarn("IllegalAccessException：类型：" + type + " 参数：" + param);
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
-                showError("ClassNotFoundException：type=" + type + " param=" + param);
+                showWarn("ClassNotFoundException：类型：" + type + " 参数：" + param);
             } catch (NumberFormatException e) {
                 e.printStackTrace();
-                showError("NumberFormatException：type=" + type + " param=" + param);
+                showWarn("NumberFormatException：类型：" + type + " 参数：" + param);
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
-                showError("class类型错误 parseJsonObject IllegalArgumentException：type=" + type + " param=" + param);
+                showWarn("class类型错误 parseJsonObject IllegalArgumentException：类型：" + type + " 参数：" + param);
             } catch (ClassCastException e) {
                 e.printStackTrace();
-                showError("ClassCastException：type=" + type + " param=" + param);
+                showWarn("ClassCastException：类型：" + type + " 参数：" + param);
             }
         }
         return tObj;
@@ -251,7 +241,7 @@ class HttpParseManager {
     private <T> List<T> parseJsonArray(Class<T> TClass, JSONArray jsonArray) {
         List<T> list = new ArrayList<>();
         if (jsonArray == null) {
-            EasyLog.w(TAG.EasyHttp, "parseJsonArray clazz or jsonArray is null");
+            EasyLog.w(TAG.EasyHttp, "parseJsonArray JSONArray数据为空");
             return list;
         }
         int length = jsonArray.length();
@@ -261,7 +251,7 @@ class HttpParseManager {
                 jsonObj = jsonArray.get(i);
             } catch (JSONException e) {
                 e.printStackTrace();
-                EasyLog.w(TAG.EasyHttp, "parseJsonArray JSONException jsonObj");
+                EasyLog.w(TAG.EasyHttp, "parseJsonArray JSONException");
                 continue;
             }
             if (jsonObj instanceof JSONObject) {
@@ -269,7 +259,8 @@ class HttpParseManager {
                 if (tObj != null)
                     list.add(tObj);
             } else {
-                EasyLog.w(TAG.EasyHttp, "parseJsonArray jsonArray.get(i) is not JSONObject");
+
+                EasyLog.w(TAG.EasyHttp, "parseJsonArray 该数据不属于JSONObject类型");
             }
         }
         return list;
@@ -281,18 +272,6 @@ class HttpParseManager {
      * @param error 错误信息
      */
     private void showWarn(String error) {
-        if (!mErrors.contains(error)) {
-            EasyLog.w(TAG.EasyHttp, error);
-            mErrors.add(error);
-        }
-    }
-
-    /**
-     * 错误Log
-     *
-     * @param error 错误信息
-     */
-    private void showError(String error) {
         if (!mErrors.contains(error)) {
             EasyLog.w(TAG.EasyHttp, error);
             mErrors.add(error);
