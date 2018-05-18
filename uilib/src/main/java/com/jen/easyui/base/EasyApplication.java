@@ -67,7 +67,7 @@ public class EasyApplication extends Application {
             EasyLog.w("捕获到异常------------");
             Intent intent = new Intent(EasyApplication.getAppContext(), LogCrashActivity.class);
             startActivity(intent);
-            return true;
+            return false;
         }
     };
 

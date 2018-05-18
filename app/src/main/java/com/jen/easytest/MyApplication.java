@@ -79,7 +79,7 @@ public class MyApplication extends Application {
     private LogCrashListener logcatCrashListener = new LogCrashListener() {
         @Override
         public boolean onBeforeHandleException(Throwable throwable) {
-            EasyLog.w("捕获到异常------------");
+            EasyLog.w("捕获到异常---------------------");
             Intent intent = new Intent(MyApplication.getAppContext(), LogCrashActivity.class);
             startActivity(intent);
             return false;

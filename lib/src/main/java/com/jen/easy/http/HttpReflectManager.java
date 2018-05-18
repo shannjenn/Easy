@@ -146,7 +146,7 @@ class HttpReflectManager {
                     }
                 } else if (value instanceof List) {
                     List listObj = (List) value;
-                    if (listObj == null || listObj.size() <= 0) {
+                    if (listObj.size() <= 0) {
                         continue;
                     }
                     Object item0 = listObj.get(0);

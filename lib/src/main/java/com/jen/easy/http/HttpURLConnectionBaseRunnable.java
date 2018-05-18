@@ -36,7 +36,7 @@ class HttpURLConnectionBaseRunnable extends HttpURLConnectionRunnable {
         EasyLog.d(TAG.EasyHttp, mUrlStr + " Http请求返回码：" + mResponseCode);
         if ((mResponseCode == 200)) {
             Map<String, List<String>> headMap = connection.getHeaderFields();//获取head数据
-            StringBuffer resultBuffer = new StringBuffer("");
+            StringBuilder resultBuffer = new StringBuilder("");
             InputStream inStream = connection.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, mCharset));
             String s;
