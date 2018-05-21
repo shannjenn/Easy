@@ -204,6 +204,12 @@ class HttpReflectManager {
         String respName = HttpHeadResponse.class.getName();
         String objName = Object.class.getName();
         while (!clazzName.equals(respName) && !clazzName.equals(objName)) {
+            boolean isNoResponseParam = myClass.isAnnotationPresent(Easy.HTTP.NoResponseParam.class);
+            if (isNoResponseParam) {
+                myClass = myClass.getSuperclass();//获取父类
+                clazzName = myClass.getName();
+                continue;//不获取请求参数
+            }
             getResponseParam(myClass, param_type, param_field, head_field);
             myClass = myClass.getSuperclass();
             clazzName = myClass.getName();

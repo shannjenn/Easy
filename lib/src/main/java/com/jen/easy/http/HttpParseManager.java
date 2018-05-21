@@ -23,7 +23,7 @@ import java.util.Set;
 class HttpParseManager {
 
     /*解析的class*/
-    private Class mTopClass;
+//    private Class mTopClass;
     private Map<String, List<String>> mHeadMap;
     //错误提示
     private List<String> mErrors = new ArrayList<>();
@@ -37,7 +37,7 @@ class HttpParseManager {
      */
     <T> T parseJson(Class<T> tClass, String obj, Map<String, List<String>> headMap) {
         EasyLog.d(TAG.EasyHttp, "解析：" + tClass.getName() + "----开始");
-        mTopClass = tClass;
+//        mTopClass = tClass;
         this.mHeadMap = headMap;
         T t;
         JSONObject object = null;
@@ -131,74 +131,52 @@ class HttpParseManager {
                     type = param_type.get(param);
 
                     if (FieldType.isString(type)) {
-                        if (value instanceof String) {
-                            field.set(tObj, value);
-                        } else if (value instanceof Integer || value instanceof Long || value instanceof Float || value instanceof Double) {
-                            field.set(tObj, value + "");
-                        } else {
-                            showWarn("param=" + param + "不是String、Integer、Long、Float、Double类型，不可以转换为String类型");
-                        }
+                        String res = parseString(value, param);
+                        field.set(tObj, res);
                     } else if (FieldType.isInt(type)) {
-                        if (value instanceof Long) {
-//                            value = ((Long) value).intValue();
-                            showWarn("param=" + param + "不是Integer类型，是Long类型");
-                        } else if (!(value instanceof Integer)) {
-                            showWarn("param=" + param + "不是Integer类型");
-                        } else {
-                            field.setInt(tObj, (Integer) value);
-                        }
+                        int res = parseInt(value, param);
+                        field.setInt(tObj, res);
                     } else if (FieldType.isLong(type)) {
-                        if (value instanceof Integer) {
-//                            value = ((Integer) value).longValue();
-                            showWarn("param=" + param + "不是Long类型，是Integer类型");
-                        } else if (!(value instanceof Long)) {
-                            showWarn("param=" + param + "不是Long类型");
-                        } else {
-                            field.setLong(tObj, (Long) value);
-                        }
+                        long res = parseLong(value, param);
+                        field.setLong(tObj, res);
                     } else if (FieldType.isFloat(type)) {
-                        if (value instanceof Double) {
-//                            value = ((Double) value).floatValue();
-                            showWarn("param=" + param + "不是Float类型，是Double类型");
-                        } else if (!(value instanceof Float)) {
-                            showWarn("param=" + param + "不是Float类型");
-                        } else {
-                            field.setFloat(tObj, (Float) value);
-                        }
+                        float res = parseFloat(value, param);
+                        field.setFloat(tObj, res);
                     } else if (FieldType.isDouble(type)) {
-                        if (value instanceof Float) {
-//                            value = ((Float) value).doubleValue();
-                            showWarn("param=" + param + "不是Double类型，是Float类型");
-                        } else if (!(value instanceof Double)) {
-                            showWarn("param=" + param + "不是Double类型");
-                        } else {
-                            field.setDouble(tObj, (Double) value);
-                        }
+                        double res = parseDouble(value, param);
+                        field.setDouble(tObj, res);
+                    } else if (FieldType.isShort(type)) {
+                        short res = parseShort(value, param);
+                        field.setShort(tObj, res);
                     } else if (FieldType.isBoolean(type)) {
-                        if (!(value instanceof Boolean)) {
-                            showWarn("参数：" + param + "不是Boolean类型");
-                        } else {
-                            field.setBoolean(tObj, (Boolean) value);
-                        }
+                        boolean res = parseBoolean(value, param);
+                        field.setBoolean(tObj, res);
+                    } else if (FieldType.isChar(type)) {
+                        char res = parseCharacter(value, param);
+                        field.setChar(tObj, res);
+                    } else if (FieldType.isByte(type)) {
+                        byte res = parseByte(value, param);
+                        field.setByte(tObj, res);
                     } else if (FieldType.isObject(type)) {//解析Object通用类型
                         field.set(tObj, value);
                     } else if (FieldType.isList(type)) {//解析list
                         if (value instanceof JSONArray) {
                             String clazzName = type.substring(type.indexOf("<") + 1, type.indexOf(">"));
                             Class clazz2 = Class.forName(clazzName);
-                            if (clazz2 == mTopClass) {
+                            /*if (clazz2 == mTopClass) {
                                 showWarn("不能解析与类相同的变量避免死循环,参数：" + param + " 类型：" + type);
-                            } else {
-                                List objList = parseJsonArray(clazz2, (JSONArray) value);
-                                field.set(tObj, objList);
-                            }
+                            } else {*/
+                            List objList = parseJsonArray(clazz2, (JSONArray) value);
+                            field.set(tObj, objList);
+//                            }
                         } else {
                             showWarn("List类型错误 :" + type);
                         }
                     } else if (FieldType.isClass(type)) {//解析指定class
-                        if (field.getType() == mTopClass) {
+                        /*if (field.getType() == mTopClass) {
                             showWarn("不能解析与类相同的变量避免死循环,param=" + param + " 类型：" + type);
-                        } else if (value instanceof JSONObject) {
+                        } else */
+                        if (value instanceof JSONObject) {
                             Object obj = parseJsonObject(field.getType(), (JSONObject) value);
                             field.set(tObj, obj);
                         } else {
@@ -264,6 +242,324 @@ class HttpParseManager {
             }
         }
         return list;
+    }
+
+    /**
+     * 转String类型
+     *
+     * @param obj 值
+     * @return 返回
+     */
+    private String parseString(Object obj, String param) {
+        String res = null;
+        if (obj instanceof String) {
+            res = (String) obj;
+        } else if (obj instanceof Integer) {
+            res = String.valueOf(obj);
+        } else if (obj instanceof Boolean) {
+            res = String.valueOf(obj);
+        } else if (obj instanceof Float) {
+            res = String.valueOf(obj);
+        } else if (obj instanceof Long) {
+            res = String.valueOf(obj);
+        } else if (obj instanceof Double) {
+            res = String.valueOf(obj);
+        } else if (obj instanceof Short) {
+            res = String.valueOf(obj);
+        } else if (obj instanceof Character) {
+            res = String.valueOf(obj);
+        } else if (obj instanceof Byte) {
+            res = String.valueOf(obj);
+        } else {
+            showWarn("param=" + param + "该值不支持转换为 String 类型");
+        }
+        return res;
+    }
+
+    /**
+     * 转Int类型
+     *
+     * @param obj 值
+     * @return 返回
+     */
+    private int parseInt(Object obj, String param) {
+        int res = 0;
+        try {
+            if (obj instanceof Integer) {
+                res = (int) obj;
+            } else if (obj instanceof String) {
+                res = Integer.valueOf((String) obj);
+            } else if (obj instanceof Boolean) {
+                showWarn("param=" + param + "Boolean 值不支持转换为 Integer 类型");
+            } else if (obj instanceof Float) {
+                res = ((Float) obj).intValue();
+            } else if (obj instanceof Long) {
+                res = ((Long) obj).intValue();
+            } else if (obj instanceof Double) {
+                res = ((Double) obj).intValue();
+            } else if (obj instanceof Short) {
+                res = ((Short) obj).intValue();
+            } else if (obj instanceof Character) {
+                res = Integer.valueOf(obj.toString());
+            } else if (obj instanceof Byte) {
+                res = ((Byte) obj).intValue();
+            } else {
+                showWarn("param=" + param + "该值不支持转换为 Integer 类型");
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
+    /**
+     * 转Boolean类型
+     *
+     * @param obj 值
+     * @return 返回
+     */
+    private boolean parseBoolean(Object obj, String param) {
+        boolean res = false;
+        if (obj instanceof Boolean) {
+            res = (boolean) obj;
+        } else if (obj instanceof String) {
+            if ("true".equals(obj)) {
+                res = true;
+            } else if ("false".equals(obj)) {
+                res = false;
+            } else {
+                showWarn("param=" + param + "该 String 值不支持转换为 Boolean 类型");
+            }
+        } else if (obj instanceof Integer) {
+            showWarn("param=" + param + "Integer 值不支持转换为 Boolean 类型");
+        } else if (obj instanceof Float) {
+            showWarn("param=" + param + "Float 值不支持转换为 Boolean 类型");
+        } else if (obj instanceof Long) {
+            showWarn("param=" + param + "Long 值不支持转换为 Boolean 类型");
+        } else if (obj instanceof Double) {
+            showWarn("param=" + param + "Double 值不支持转换为 Boolean 类型");
+        } else if (obj instanceof Short) {
+            showWarn("param=" + param + "Short 值不支持转换为 Boolean 类型");
+        } else if (obj instanceof Character) {
+            showWarn("param=" + param + "Character 值不支持转换为 Boolean 类型");
+        } else if (obj instanceof Byte) {
+            showWarn("param=" + param + "Byte 值不支持转换为 Boolean 类型");
+        } else {
+            showWarn("param=" + param + "该值不支持转换为 Boolean 类型");
+        }
+        return res;
+    }
+
+    /**
+     * 转Float类型
+     *
+     * @param obj 值
+     * @return 返回
+     */
+    private float parseFloat(Object obj, String param) {
+        float res = 0.0f;
+        try {
+            if (obj instanceof Float) {
+                res = (float) obj;
+            } else if (obj instanceof String) {
+                res = Float.valueOf((String) obj);
+            } else if (obj instanceof Integer) {
+                res = (float) obj;
+            } else if (obj instanceof Boolean) {
+                showWarn("param=" + param + "Boolean 值不支持转换为 Float 类型");
+            } else if (obj instanceof Long) {
+                res = (float) obj;
+            } else if (obj instanceof Double) {
+                res = (float) obj;
+            } else if (obj instanceof Short) {
+                res = (float) obj;
+            } else if (obj instanceof Character) {
+                res = Float.valueOf((Character) obj);
+            } else if (obj instanceof Byte) {
+                res = (float) obj;
+            } else {
+                showWarn("param=" + param + "该值不支持转换为 Float 类型");
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
+    /**
+     * 转Long类型
+     *
+     * @param obj 值
+     * @return 返回
+     */
+    private long parseLong(Object obj, String param) {
+        long res = 0;
+        try {
+            if (obj instanceof Long) {
+                res = (long) obj;
+            } else if (obj instanceof String) {
+                res = Long.valueOf((String) obj);
+            } else if (obj instanceof Integer) {
+                res = (long) obj;
+            } else if (obj instanceof Boolean) {
+                showWarn("param=" + param + "Boolean 值不支持转换为 Long 类型");
+            } else if (obj instanceof Float) {
+                res = (long) obj;
+            } else if (obj instanceof Double) {
+                res = (long) obj;
+            } else if (obj instanceof Short) {
+                res = (long) obj;
+            } else if (obj instanceof Character) {
+                res = Long.valueOf((Character) obj);
+            } else if (obj instanceof Byte) {
+                res = (long) obj;
+            } else {
+                showWarn("param=" + param + "该值不支持转换为 Long 类型");
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
+    /**
+     * 转Double类型
+     *
+     * @param obj 值
+     * @return 返回
+     */
+    private double parseDouble(Object obj, String param) {
+        double res = 0;
+        try {
+            if (obj instanceof Double) {
+                res = (double) obj;
+            } else if (obj instanceof String) {
+                res = Double.valueOf((String) obj);
+            } else if (obj instanceof Integer) {
+                res = (double) obj;
+            } else if (obj instanceof Boolean) {
+                showWarn("param=" + param + "Boolean 值不支持转换为 Double 类型");
+            } else if (obj instanceof Float) {
+                res = (double) obj;
+            } else if (obj instanceof Long) {
+                res = (double) obj;
+            } else if (obj instanceof Short) {
+                res = (double) obj;
+            } else if (obj instanceof Character) {
+                res = Double.valueOf((Character) obj);
+            } else if (obj instanceof Byte) {
+                res = (double) obj;
+            } else {
+                showWarn("param=" + param + "该值不支持转换为 Double 类型");
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
+    /**
+     * 转Short类型
+     *
+     * @param obj 值
+     * @return 返回
+     */
+    private short parseShort(Object obj, String param) {
+        short res = 0;
+        try {
+            if (obj instanceof Short) {
+                res = (short) obj;
+            } else if (obj instanceof String) {
+                res = Short.valueOf((String) obj);
+            } else if (obj instanceof Integer) {
+                res = (short) obj;
+            } else if (obj instanceof Boolean) {
+                showWarn("param=" + param + "Boolean 值不支持转换为 Short 类型");
+            } else if (obj instanceof Float) {
+                res = (short) obj;
+            } else if (obj instanceof Long) {
+                res = (short) obj;
+            } else if (obj instanceof Double) {
+                res = (short) obj;
+            } else if (obj instanceof Character) {
+                res = Short.valueOf(String.valueOf(obj));
+            } else if (obj instanceof Byte) {
+                res = (short) obj;
+            } else {
+                showWarn("param=" + param + "该值不支持转换为 Short 类型");
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
+    /**
+     * 转Character类型
+     *
+     * @param obj 值
+     * @return 返回
+     */
+    private char parseCharacter(Object obj, String param) {
+        char res = 0;
+        if (obj instanceof Character) {
+            res = (char) obj;
+        } else if (obj instanceof String) {
+            if (((String) obj).length() == 1) {
+                res = ((String) obj).charAt(0);
+            } else {
+                showWarn("param=" + param + "String 值不支持转换为 Character 类型");
+            }
+        } else if (obj instanceof Integer) {
+            showWarn("param=" + param + "Integer 值不支持转换为 Character 类型");
+        } else if (obj instanceof Boolean) {
+            showWarn("param=" + param + "Boolean 值不支持转换为 Character 类型");
+        } else if (obj instanceof Float) {
+            showWarn("param=" + param + "Float 值不支持转换为 Character 类型");
+        } else if (obj instanceof Long) {
+            showWarn("param=" + param + "Long 值不支持转换为 Character 类型");
+        } else if (obj instanceof Double) {
+            showWarn("param=" + param + "Double 值不支持转换为 Character 类型");
+        } else if (obj instanceof Short) {
+            showWarn("param=" + param + "Short 值不支持转换为 Character 类型");
+        } else if (obj instanceof Byte) {
+            res = (char) obj;
+        } else {
+            showWarn("param=" + param + "该值不支持转换为 Character 类型");
+        }
+        return res;
+    }
+
+    /**
+     * 转Byte类型
+     *
+     * @param obj 值
+     * @return 返回
+     */
+    private byte parseByte(Object obj, String param) {
+        byte res = 0;
+        if (obj instanceof Byte) {
+            res = (byte) obj;
+        } else if (obj instanceof String) {
+            showWarn("param=" + param + "String 值不支持转换为 Byte 类型");
+        } else if (obj instanceof Integer) {
+            showWarn("param=" + param + "Integer 值不支持转换为 Byte 类型");
+        } else if (obj instanceof Boolean) {
+            showWarn("param=" + param + "Boolean 值不支持转换为 Byte 类型");
+        } else if (obj instanceof Float) {
+            showWarn("param=" + param + "Float 值不支持转换为 Byte 类型");
+        } else if (obj instanceof Long) {
+            showWarn("param=" + param + "Long 值不支持转换为 Byte 类型");
+        } else if (obj instanceof Double) {
+            showWarn("param=" + param + "Double 值不支持转换为 Byte 类型");
+        } else if (obj instanceof Short) {
+            showWarn("param=" + param + "Short 值不支持转换为 Byte 类型");
+        } else if (obj instanceof Character) {
+            showWarn("param=" + param + "Character 值不支持转换为 Byte 类型");
+        } else {
+            showWarn("param=" + param + "该值不支持转换为 Byte 类型");
+        }
+        return res;
     }
 
     /**

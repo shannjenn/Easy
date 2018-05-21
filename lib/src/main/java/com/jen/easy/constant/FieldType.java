@@ -12,7 +12,7 @@ import java.util.Map;
 public final class FieldType {
 
     public static boolean isChar(String type) {
-        return char.class.toString().equals(type);
+        return Character.class.toString().equals(type) || char.class.toString().equals(type);
     }
 
     public static boolean isString(String type) {

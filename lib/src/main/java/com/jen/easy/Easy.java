@@ -144,6 +144,13 @@ public final class Easy {
         @Retention(RetentionPolicy.RUNTIME)
         public @interface NoRequestParam {
         }
+        /**
+         * 不获取返回参数（用于优化）
+         */
+        @Target(ElementType.TYPE)
+        @Retention(RetentionPolicy.RUNTIME)
+        public @interface NoResponseParam {
+        }
 
         /**
          * 网络请求参数
