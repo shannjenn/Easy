@@ -49,7 +49,7 @@ abstract class DBDaoManager {
         }
         List<String> primaryKeys = new ArrayList<>();
         Map<String, Field> column_field = new HashMap<>();
-        DBReflectManager.getColumnNames(clazz, primaryKeys, null, column_field);
+        DBReflectManager.getColumnNames(clazz, primaryKeys, column_field);
 
         if (primaryKeys.size() == 0) {
             EasyLog.w(TAG.EasySQL, "searchById primaryKey is null");
@@ -109,7 +109,7 @@ abstract class DBDaoManager {
             return objs;
         }
         Map<String, Field> column_field = new HashMap<>();
-        DBReflectManager.getColumnNames(clazz, null, null, column_field);
+        DBReflectManager.getColumnNames(clazz, null, column_field);
 
         if (column_field.size() == 0)
             return objs;
@@ -219,7 +219,7 @@ abstract class DBDaoManager {
                     return false;
                 }
                 Map<String, Field> column_field = new HashMap<>();
-                DBReflectManager.getColumnNames(list.get(0).getClass(), null, null, column_field);
+                DBReflectManager.getColumnNames(list.get(0).getClass(), null, column_field);
                 for (int i = 0; i < list.size(); i++) {
                     ContentValues values = contentValues(list.get(i), column_field);
                     db.insert(tableName, null, values);
@@ -237,7 +237,7 @@ abstract class DBDaoManager {
                     return false;
                 }
                 Map<String, Field> column_field = new HashMap<>();
-                DBReflectManager.getColumnNames(objects[0].getClass(), null, null, column_field);
+                DBReflectManager.getColumnNames(objects[0].getClass(), null, column_field);
 
                 for (Object obj : objects) {
                     ContentValues values = contentValues(obj, column_field);
@@ -253,7 +253,7 @@ abstract class DBDaoManager {
                 Object[] collection = map.values().toArray();
                 String tableName = DBReflectManager.getTableName(collection[0].getClass());
                 Map<String, Field> column_field = new HashMap<>();
-                DBReflectManager.getColumnNames(collection[0].getClass(), null, null, column_field);
+                DBReflectManager.getColumnNames(collection[0].getClass(), null, column_field);
                 if (tableName == null) {
                     EasyLog.w(TAG.EasySQL, "insert 插入表名为空，请检查是否已经注释表明");
                     return false;
@@ -270,7 +270,7 @@ abstract class DBDaoManager {
                     return false;
                 }
                 Map<String, Field> column_field = new HashMap<>();
-                DBReflectManager.getColumnNames(t.getClass(), null, null, column_field);
+                DBReflectManager.getColumnNames(t.getClass(), null, column_field);
                 ContentValues values = contentValues(t, column_field);
                 db.insert(tableName, null, values);
             }
@@ -320,7 +320,7 @@ abstract class DBDaoManager {
                     return false;
                 }
                 Map<String, Field> column_field = new HashMap<>();
-                DBReflectManager.getColumnNames(list.get(0).getClass(), null, null, column_field);
+                DBReflectManager.getColumnNames(list.get(0).getClass(), null, column_field);
                 for (int i = 0; i < list.size(); i++) {
                     ContentValues values = contentValues(list.get(i), column_field);
                     db.replace(tableName, null, values);
@@ -337,7 +337,7 @@ abstract class DBDaoManager {
                     return false;
                 }
                 Map<String, Field> column_field = new HashMap<>();
-                DBReflectManager.getColumnNames(objs[0].getClass(), null, null, column_field);
+                DBReflectManager.getColumnNames(objs[0].getClass(), null, column_field);
                 for (Object obj : objs) {
                     ContentValues values = contentValues(obj, column_field);
                     db.replace(tableName, null, values);
@@ -355,7 +355,7 @@ abstract class DBDaoManager {
                     return false;
                 }
                 Map<String, Field> column_field = new HashMap<>();
-                DBReflectManager.getColumnNames(collection[0].getClass(), null, null, column_field);
+                DBReflectManager.getColumnNames(collection[0].getClass(), null, column_field);
                 for (Object value : collection) {
                     ContentValues values = contentValues(value, column_field);
                     db.replace(tableName, null, values);
@@ -367,7 +367,7 @@ abstract class DBDaoManager {
                     return false;
                 }
                 Map<String, Field> column_field = new HashMap<>();
-                DBReflectManager.getColumnNames(t.getClass(), null, null, column_field);
+                DBReflectManager.getColumnNames(t.getClass(), null, column_field);
                 ContentValues values = contentValues(t, column_field);
                 db.replace(tableName, null, values);
             }
@@ -703,35 +703,35 @@ abstract class DBDaoManager {
      */
     private <T> T valuation(Class<T> clazz, Map<String, Field> column_field, Cursor cursor) {
         T obj = null;
-        String type = null;
+        Class fieldClass = null;
         try {
             obj = clazz.newInstance();
             Set<String> sets = column_field.keySet();
             for (String column : sets) {
                 Field field = column_field.get(column);
                 field.setAccessible(true);
-                type = field.getGenericType().toString();
+                fieldClass = field.getType();
 
-                if (FieldType.isString(type)) {
+                if (FieldType.isString(fieldClass)) {
                     String value = cursor.getString(cursor.getColumnIndex(column));
                     field.set(obj, value);
-                } else if (FieldType.isInt(type)) {
+                } else if (FieldType.isInt(fieldClass)) {
                     int value = cursor.getInt(cursor.getColumnIndex(column));
                     field.setInt(obj, value);
-                } else if (FieldType.isFloat(type)) {
+                } else if (FieldType.isFloat(fieldClass)) {
                     float value = cursor.getFloat(cursor.getColumnIndex(column));
                     field.setFloat(obj, value);
-                } else if (FieldType.isDouble(type)) {
+                } else if (FieldType.isDouble(fieldClass)) {
                     double value = cursor.getDouble(cursor.getColumnIndex(column));
                     field.setDouble(obj, value);
-                } else if (FieldType.isLong(type)) {
+                } else if (FieldType.isLong(fieldClass)) {
                     long value = cursor.getLong(cursor.getColumnIndex(column));
                     field.setLong(obj, value);
-                } else if (FieldType.isDouble(type)) {
+                } else if (FieldType.isDouble(fieldClass)) {
                     boolean value = cursor.getInt(cursor.getColumnIndex(column)) > 0;
                     field.setBoolean(obj, value);
                 } else {
-                    EasyLog.w(TAG.EasySQL, "valuation 不支持该类型：" + type);
+                    EasyLog.w(TAG.EasySQL, "valuation 不支持该类型：" + fieldClass);
                 }
             }
         } catch (InstantiationException e) {
@@ -739,10 +739,10 @@ abstract class DBDaoManager {
             EasyLog.w(TAG.EasySQL, "valuation InstantiationException setAccessible");
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-            EasyLog.w(TAG.EasySQL, "valuation IllegalAccessException type=" + type);
+            EasyLog.w(TAG.EasySQL, "valuation IllegalAccessException type=" + fieldClass);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-            EasyLog.w(TAG.EasySQL, "valuation IllegalArgumentException type=" + type);
+            EasyLog.w(TAG.EasySQL, "valuation IllegalArgumentException type=" + fieldClass);
         }
         return obj;
     }

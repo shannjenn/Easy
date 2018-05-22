@@ -121,7 +121,6 @@ class HttpReflectManager {
             if (FieldType.isOtherField(key)) {
                 continue;
             }
-            String fieldType = field.getGenericType().toString();
             field.setAccessible(true);
             try {
                 Object value = field.get(obj);
@@ -169,7 +168,7 @@ class HttpReflectManager {
                             jsonParam.put(key, jsonArray);
                         }
                     }
-                } else if (FieldType.isClass(fieldType)) {
+                } else if (FieldType.isClass(field.getType())) {
                     JSONObject item = new JSONObject();
                     getRequestParam(value.getClass(), value, urls, item, heads);
                     jsonParam.put(key, item);
@@ -189,11 +188,10 @@ class HttpReflectManager {
      * 获取返回参数
      *
      * @param clazz       类
-     * @param param_type  名称_类型
      * @param param_field 名称_变量
      * @param head_field  头名称_变量
      */
-    static void getResponseParams(Class clazz, Map<String, String> param_type, Map<String, Field> param_field, Map<String, Field> head_field) {
+    static void getResponseParams(Class clazz, Map<String, Field> param_field, Map<String, Field> head_field) {
         if (clazz == null) {
             EasyLog.w(TAG.EasyHttp, "getResponseParams clazz is not null");
             return;
@@ -210,7 +208,7 @@ class HttpReflectManager {
                 clazzName = myClass.getName();
                 continue;//不获取请求参数
             }
-            getResponseParam(myClass, param_type, param_field, head_field);
+            getResponseParam(myClass, param_field, head_field);
             myClass = myClass.getSuperclass();
             clazzName = myClass.getName();
         }
@@ -220,11 +218,10 @@ class HttpReflectManager {
      * 获取单个返回参数
      *
      * @param clazz       类
-     * @param param_type  名称_类型
      * @param param_field 名称_变量
      * @param head_field  头名称_变量
      */
-    private static void getResponseParam(Class clazz, Map<String, String> param_type, Map<String, Field> param_field, Map<String, Field> head_field) {
+    private static void getResponseParam(Class clazz, Map<String, Field> param_field, Map<String, Field> head_field) {
         Field[] fieldsSuper = clazz.getDeclaredFields();
         for (Field field : fieldsSuper) {
             boolean isAnnotation = field.isAnnotationPresent(Easy.HTTP.ResponseParam.class);
@@ -245,18 +242,17 @@ class HttpReflectManager {
             if (FieldType.isOtherField(paramName)) {
                 continue;
             }
-            String type = field.getGenericType().toString();
+            Class fieldClass = field.getType();
             switch (paramType) {
                 case PARAM: {
-                    if (param_type.containsKey(paramName)) {//子类已经有不再重复增加
+                    if (param_field.containsKey(paramName)) {//子类已经有不再重复增加
                         continue;
                     }
-                    param_type.put(paramName, type);
                     param_field.put(paramName, field);
                     break;
                 }
                 case HEAD: {
-                    if (!FieldType.isString(type)) {
+                    if (!FieldType.isString(fieldClass)) {
                         EasyLog.w(TAG.EasyHttp, "请求头返回变量必须为String类型:" + paramName);
                         continue;
                     }

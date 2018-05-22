@@ -11,6 +11,7 @@ import com.jen.easytest.R;
 import com.jen.easytest.http.MD5Util;
 import com.jen.easytest.http.request.ExampleRequest;
 import com.jen.easytest.http.request.PutRequest;
+import com.jen.easytest.http.request.TaskProgressListRequest;
 import com.jen.easyui.EasyMain;
 import com.jen.easyui.base.EasyActivity;
 
@@ -23,6 +24,7 @@ import java.util.Date;
  */
 
 public class HttpActivity extends EasyActivity {
+    Http http = new Http(5);//设置请求最大线程数量值5
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +47,13 @@ public class HttpActivity extends EasyActivity {
 
     }
 
-    @Easy.BIND.Method({R.id.post, R.id.put, R.id.upload, R.id.download})
+    @Easy.BIND.Method({R.id.get,R.id.post, R.id.put, R.id.upload, R.id.download})
     @Override
     protected void onBindClick(View view) {
         switch (view.getId()) {
+            case R.id.get:
+                get();
+                break;
             case R.id.post:
                 post();
                 break;
@@ -63,6 +68,15 @@ public class HttpActivity extends EasyActivity {
                 break;
 
         }
+    }
+
+    private void get(){
+        TaskProgressListRequest taskProgressListRequest = new TaskProgressListRequest();
+        taskProgressListRequest.setTaskId(353631);
+        taskProgressListRequest.setLimit(3);
+        taskProgressListRequest.setPage(0);
+        http.setHttpBaseListener(httpListener);
+        http.start(taskProgressListRequest);
     }
 
     private void post() {
@@ -108,7 +122,6 @@ public class HttpActivity extends EasyActivity {
         EasyMain.mHttp.start(airRequest);
         EasyLog.d("mAirResponse mAirResponse:");
 
-        Http http = new Http(5);//设置请求最大线程数量值5
         ExampleRequest exampleRequest = new ExampleRequest();
         exampleRequest.setBookId(123);
         exampleRequest.setBookName("红楼梦");

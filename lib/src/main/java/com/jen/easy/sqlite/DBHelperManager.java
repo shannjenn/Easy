@@ -11,6 +11,7 @@ import com.jen.easy.constant.TAG;
 import com.jen.easy.log.EasyLog;
 import com.jen.easy.sqlite.imp.DatabaseListener;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -77,10 +78,10 @@ abstract class DBHelperManager {
         }*/
 
         List<String> primaryKey = new ArrayList<>();
-        Map<String, String> column_type = new HashMap<>();
-        DBReflectManager.getColumnNames(clazz, primaryKey, column_type, null);
+        Map<String, Field> column_field = new HashMap<>();
+        DBReflectManager.getColumnNames(clazz, primaryKey, column_field);
 
-        if (column_type.size() == 0) {
+        if (column_field.size() == 0) {
             EasyLog.w(TAG.EasySQL, "createTB error:column is null");
             return;
         }
@@ -88,10 +89,10 @@ abstract class DBHelperManager {
         StringBuilder primaryKeySql = new StringBuilder("");
         StringBuilder fieldSql = new StringBuilder("");
 
-        Set<String> sets = column_type.keySet();
+        Set<String> sets = column_field.keySet();
         for (String fieldName : sets) {
-            String fieldType = column_type.get(fieldName);
-            String type = FieldType.getDBColumnType(fieldType);
+            Field field = column_field.get(fieldName);
+            String type = FieldType.getDBColumnType(field.getType());
             if (type == null) {
                 EasyLog.w(TAG.EasySQL, "创建表失败，不支持该类型：" + fieldName + " 请用@Easy.DB.Column(noColumn = true)注释该变量");
                 return;
@@ -192,9 +193,9 @@ abstract class DBHelperManager {
      *
      * @param tableName  表名
      * @param columnName 列名
-     * @param fieldType  FieldType
+     * @param clazz  如：String.class
      */
-    protected void addColumn(String tableName, String columnName, String fieldType) {
+    protected void addColumn(String tableName, String columnName, Class clazz) {
         SQLiteDatabase db = getWriteDatabase();
         boolean existTB = database.checkTableExist(db, tableName);
         if (!existTB) {
@@ -206,9 +207,9 @@ abstract class DBHelperManager {
             EasyLog.w(TAG.EasySQL, "value : " + columnName + " is exist");
             return;
         }
-        String type = FieldType.getDBColumnType(fieldType);
+        String type = FieldType.getDBColumnType(clazz);
         if (type == null) {
-            EasyLog.w(TAG.EasySQL, "增加列失败，不支持该类型：" + fieldType + " 请用@Easy.DB.Column(noColumn = true)注释该变量");
+            EasyLog.w(TAG.EasySQL, "增加列失败，不支持该类型：" + clazz + " 请用@Easy.DB.Column(noColumn = true)注释该变量");
             return;
         }
         try {

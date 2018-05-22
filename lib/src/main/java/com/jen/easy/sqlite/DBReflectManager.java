@@ -43,10 +43,9 @@ class DBReflectManager {
      *
      * @param clazz        类
      * @param primaryKeys  主键
-     * @param column_type  列名_类型
      * @param column_field 列名_变量
      */
-    static void getColumnNames(Class clazz, List<String> primaryKeys, Map<String, String> column_type, Map<String, Field> column_field) {
+    static void getColumnNames(Class clazz, List<String> primaryKeys, Map<String, Field> column_field) {
         if (clazz == null) {
             EasyLog.w(TAG.EasySQL, "getColumnNames clazz is not null");
             return;
@@ -56,7 +55,6 @@ class DBReflectManager {
         for (Field field : fields) {
             String columnName = "";
             boolean isPrimary = false;
-            String type = field.getGenericType().toString();
 
             boolean isAnnotation = field.isAnnotationPresent(Easy.DB.Column.class);
             if (isAnnotation) {
@@ -76,10 +74,7 @@ class DBReflectManager {
             }
             if (isPrimary && primaryKeys != null)
                 primaryKeys.add(columnName);
-            if (column_type != null)
-                column_type.put(columnName, type);
-            if (column_field != null)
-                column_field.put(columnName, field);
+            column_field.put(columnName, field);
         }
     }
 

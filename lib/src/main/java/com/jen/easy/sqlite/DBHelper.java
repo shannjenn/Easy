@@ -84,15 +84,15 @@ public class DBHelper extends DBHelperManager {
     }
 
     /**
-     * 增加行
+     * 增加列
      *
      * @param tableName  表名
      * @param columnName 列名
-     * @param fieldType  FieldType
+     * @param clazz  如：String.class
      */
     @Override
-    public void addColumn(String tableName, String columnName, String fieldType) {
-        super.addColumn(tableName, columnName, fieldType);
+    public void addColumn(String tableName, String columnName, Class clazz) {
+        super.addColumn(tableName, columnName, clazz);
     }
 
     /**
