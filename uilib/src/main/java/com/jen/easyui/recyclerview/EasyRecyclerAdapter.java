@@ -45,8 +45,7 @@ public abstract class EasyRecyclerAdapter<T> extends EasyRecyclerAdapterManager<
 
     }
 
-    @Override
-    public void setEasyAdapterClickEvent(EasyAdapterClickEvent easyAdapterClickEvent) {
-        super.setEasyAdapterClickEvent(easyAdapterClickEvent);
+    public void setEasyAdapterClickEvent(EasyAdapterOnClickListener easyAdapterOnClickListener) {
+        super.easyAdapterOnClickListener = easyAdapterOnClickListener;
     }
 }

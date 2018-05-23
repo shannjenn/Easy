@@ -6,7 +6,7 @@ import android.view.View;
 import java.util.List;
 
 /**
- * 树形模式
+ * 树形模式(数据平铺:如level0 position=0，level1 position=1)
  * 作者：ShannJenn
  * 时间：2017/8/12.
  */
@@ -28,17 +28,12 @@ public abstract class EasyTreeRecyclerAdapter<T extends EasyTreeItem> extends Ea
     }
 
     @Override
-    protected boolean isSameView() {
-        return false;
-    }
-
-    @Override
     protected int[] onBindLayout() {
         return new int[0];
     }
 
     @Override
-    protected float itemSpace() {
+    protected float itemLeftSpace() {
         return 0;
     }
 
@@ -62,8 +57,8 @@ public abstract class EasyTreeRecyclerAdapter<T extends EasyTreeItem> extends Ea
 
     }
 
-    @Override
-    public void setEasyAdapterClickEvent(EasyAdapterClickEvent easyAdapterClickEvent) {
-        super.setEasyAdapterClickEvent(easyAdapterClickEvent);
+    public void setEasyAdapterClickEvent(EasyAdapterOnClickListener easyAdapterOnClickListener) {
+        super.easyAdapterOnClickListener = easyAdapterOnClickListener;
     }
+
 }

@@ -73,8 +73,8 @@ public class EasyRecyclerView extends EasyRecyclerViewManager {
     }
 
     @Override
-    public int getHeadItems() {
-        return super.getHeadItems();
+    public int getHeadItemCount() {
+        return super.getHeadItemCount();
     }
 
     @Override
@@ -83,8 +83,8 @@ public class EasyRecyclerView extends EasyRecyclerViewManager {
     }
 
     @Override
-    public int getFootItems() {
-        return super.getFootItems();
+    public int getFootItemCount() {
+        return super.getFootItemCount();
     }
 
     @Override

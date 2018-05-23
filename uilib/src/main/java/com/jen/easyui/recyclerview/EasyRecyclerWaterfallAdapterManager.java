@@ -31,7 +31,7 @@ abstract class EasyRecyclerWaterfallAdapterManager<T> extends EasyRecyclerBaseAd
             case VIEW_TYPE_FOOT:
                 return viewType;
         }
-        return getViewType(position - mHeadItems);
+        return getViewType(position - mHeadItemCount);
     }
 
     /**

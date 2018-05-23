@@ -14,8 +14,10 @@ import com.jen.easyui.R;
  */
 
 abstract class EasyRecyclerViewManager extends RecyclerView {
-    private int headItems;
-    private int footItems;
+    /*头部item数量*/
+    private int headItemCount;
+    /*底部item数量*/
+    private int footItemCount;
     private RefreshListener refreshListener;
     private LoadMoreListener loadMoreListener;
     private int headerLayout = R.layout._easy_recycler_header;
@@ -91,20 +93,10 @@ abstract class EasyRecyclerViewManager extends RecyclerView {
         void onLoadMore();
     }
 
-    /**
-     * 必须设置showhead 为true
-     *
-     * @param refreshListener
-     */
     protected void setRefreshListener(RefreshListener refreshListener) {
         this.refreshListener = refreshListener;
     }
 
-    /**
-     * showFoot 为true
-     *
-     * @param loadMoreListener
-     */
     protected void setLoadMoreListener(LoadMoreListener loadMoreListener) {
         this.loadMoreListener = loadMoreListener;
     }
@@ -135,21 +127,31 @@ abstract class EasyRecyclerViewManager extends RecyclerView {
         updateHeaderFooter();
     }
 
-    protected int getHeadItems() {
-        return headItems;
+    protected int getHeadItemCount() {
+        return headItemCount;
     }
 
+    /**
+     * 显示头部
+     *
+     * @param showHeader
+     */
     protected void showHeader(boolean showHeader) {
-        this.headItems = showHeader ? 1 : 0;
+        this.headItemCount = showHeader ? 1 : 0;
         updateHeaderFooter();
     }
 
-    protected int getFootItems() {
-        return footItems;
+    protected int getFootItemCount() {
+        return footItemCount;
     }
 
+    /**
+     * 显示底部
+     *
+     * @param showFooter
+     */
     protected void showFooter(boolean showFooter) {
-        this.footItems = showFooter ? 1 : 0;
+        this.footItemCount = showFooter ? 1 : 0;
         updateHeaderFooter();
     }
 
@@ -159,11 +161,11 @@ abstract class EasyRecyclerViewManager extends RecyclerView {
     private void updateHeaderFooter() {
         Adapter adapter = getAdapter();
         if (adapter != null && adapter instanceof EasyRecyclerBaseAdapterManager) {
-            if (headItems > 0)
+            if (headItemCount > 0)
                 ((EasyRecyclerBaseAdapterManager) adapter).mHeaderLayout = headerLayout;
             else
                 ((EasyRecyclerBaseAdapterManager) adapter).mHeaderLayout = 0;
-            if (footItems > 0)
+            if (footItemCount > 0)
                 ((EasyRecyclerBaseAdapterManager) adapter).mFootLayout = footLayout;
             else
                 ((EasyRecyclerBaseAdapterManager) adapter).mFootLayout = 0;
@@ -176,7 +178,7 @@ abstract class EasyRecyclerViewManager extends RecyclerView {
      * @param position
      */
     protected void scrollPositionToHeader(int position) {
-        position += headItems;
+        position += headItemCount;
         int count = getChildCount();
         int firstItem = getChildLayoutPosition(getChildAt(0));
         int lastItem = getChildLayoutPosition(getChildAt(count - 1));
@@ -187,7 +189,7 @@ abstract class EasyRecyclerViewManager extends RecyclerView {
             if (movePosition >= 0 && movePosition < count) {
                 int top = getChildAt(movePosition).getTop();
                 scrollBy(0, top);
-                if (footItems > 0) {
+                if (footItemCount > 0) {
                     Adapter adapter = getAdapter();
                     if (adapter != null && adapter instanceof EasyRecyclerBaseAdapterManager) {
                         ((EasyRecyclerBaseAdapterManager) adapter).setFootVisible(false);

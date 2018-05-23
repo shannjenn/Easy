@@ -49,7 +49,7 @@ public class EasyLetterDecoration<T extends EasyLetterItem> extends RecyclerView
         int position = ((RecyclerView.LayoutParams) view.getLayoutParams()).getViewLayoutPosition();
         if (position < 0)
             return;
-        int firstPos = parent.getHeadItems();
+        int firstPos = parent.getHeadItemCount();
         if (position < firstPos)
             return;
         if (position - firstPos >= mData.size())
@@ -83,8 +83,8 @@ public class EasyLetterDecoration<T extends EasyLetterItem> extends RecyclerView
         int right = parent.getWidth() - parent.getPaddingRight();
         int childCount = parent.getChildCount();
 
-        int firstPos = parent.getHeadItems();
-        childCount -= parent.getFootItems();
+        int firstPos = parent.getHeadItemCount();
+        childCount -= parent.getFootItemCount();
         String lastLetter = "";
         for (int i = 0; i < childCount; i++) {
             View child = parent.getChildAt(i + firstPos);
@@ -95,12 +95,12 @@ public class EasyLetterDecoration<T extends EasyLetterItem> extends RecyclerView
             if (position < firstPos || position - firstPos >= mData.size()) {
                 continue;
             } else if (position == firstPos) {
-                drawTitle(canvas, left, right, child, params, position, parent.getHeadItems());
+                drawTitle(canvas, left, right, child, params, position, parent.getHeadItemCount());
             } else {
                 String letter = mData.get(position - firstPos).getLetter();
                 if (!letter.equals(lastLetter)) {
                     lastLetter = letter;
-                    drawTitle(canvas, left, right, child, params, position, parent.getHeadItems());
+                    drawTitle(canvas, left, right, child, params, position, parent.getHeadItemCount());
                 }
             }
         }
@@ -155,10 +155,10 @@ public class EasyLetterDecoration<T extends EasyLetterItem> extends RecyclerView
         }
         if (position == -1)
             return;
-        if (parent.getHeadItems() > 0 && position == 0)//头部
+        if (parent.getHeadItemCount() > 0 && position == 0)//头部
             return;
 
-        int firstPos = parent.getHeadItems();
+        int firstPos = parent.getHeadItemCount();
         boolean flag = false;//Canvas是否位移过的标志
         View child = parent.findViewHolderForLayoutPosition(position).itemView;
         String letter = mData.get(position - firstPos).getLetter();

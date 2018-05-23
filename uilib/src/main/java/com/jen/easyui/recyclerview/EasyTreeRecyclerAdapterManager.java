@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 树形模式
+ * 树形模式(数据平铺:如level0 position=0，level1 position=1)
  * 作者：ShannJenn
  * 时间：2017/8/12.
  */
@@ -30,7 +30,7 @@ abstract class EasyTreeRecyclerAdapterManager<T extends EasyTreeItem> extends Ea
      */
     EasyTreeRecyclerAdapterManager(Context context, List<T> data) {
         super(context, data);
-        spaceSize = EasyDensityUtil.dip2px(mContext, itemSpace());
+        spaceSize = EasyDensityUtil.dip2px(mContext, itemLeftSpace());
     }
 
     @Override
@@ -41,7 +41,7 @@ abstract class EasyTreeRecyclerAdapterManager<T extends EasyTreeItem> extends Ea
             case VIEW_TYPE_FOOT:
                 return viewType;
         }
-        int level = mData.get(position - mHeadItems).getLevel();
+        int level = mData.get(position - mHeadItemCount).getLevel();
         return getViewType(level);
     }
 
@@ -53,35 +53,26 @@ abstract class EasyTreeRecyclerAdapterManager<T extends EasyTreeItem> extends Ea
      */
     protected abstract int getViewType(int level);
 
-    /**
-     * @return 是否相同布局
-     */
-    protected abstract boolean isSameView();
-
     @Override
-    public EasyHolder onCreateViewHolder(ViewGroup parent, int level) {
-        switch (level) {
+    public EasyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        switch (viewType) {
             case VIEW_TYPE_HEAD:
             case VIEW_TYPE_FOOT:
-                return super.onCreateViewHolder(parent, level);
+                return super.onCreateViewHolder(parent, viewType);
         }
-        boolean isSameView = isSameView();
         int[] layouts = onBindLayout();
         if (layouts == null) {
             EasyLog.w("布局为空");
-            return super.onCreateViewHolder(parent, level);
+            return super.onCreateViewHolder(parent, viewType);
         }
-        if (isSameView) {
-            level = 0;
+        if (viewType < 0 || layouts.length <= viewType) {
+            EasyLog.w("viewType：" + viewType + "错误");
+            return super.onCreateViewHolder(parent, viewType);
         }
-        if (level < 0 || layouts.length <= level) {
-            EasyLog.w("viewType：" + level + "错误");
-            return super.onCreateViewHolder(parent, level);
-        }
-        View view = LayoutInflater.from(parent.getContext()).inflate(layouts[level], parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(layouts[viewType], parent, false);
         if (view == null) {
-            EasyLog.w("找不到该值对应item布局R.layout.id：" + layouts[level]);
-            return super.onCreateViewHolder(parent, level);
+            EasyLog.w("找不到该值对应item布局R.layout.id：" + layouts[viewType]);
+            return super.onCreateViewHolder(parent, viewType);
         }
         return new EasyHolder(view);
     }
@@ -100,7 +91,7 @@ abstract class EasyTreeRecyclerAdapterManager<T extends EasyTreeItem> extends Ea
             return;
         }
 
-        EasyTreeItem data = mData.get(position - mHeadItems);
+        EasyTreeItem data = mData.get(position - mHeadItemCount);
         if (!mLayoutParam.containsKey(data.getLevel())) {
             ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
             int height = layoutParams.height;
@@ -111,7 +102,7 @@ abstract class EasyTreeRecyclerAdapterManager<T extends EasyTreeItem> extends Ea
         setVisibility(data.getLevel(), holder.itemView);
         if (data.isParentExpand()) {//展开显示
             View view = holder.itemView;
-            int space = data.getLevel() * spaceSize + view.getPaddingLeft();
+            int space = data.getLevel() * spaceSize;
             view.setPadding(space, view.getPaddingTop(), view.getPaddingRight(), view.getPaddingBottom());
             super.onBindViewHolder(holder, position);
         }
@@ -133,10 +124,12 @@ abstract class EasyTreeRecyclerAdapterManager<T extends EasyTreeItem> extends Ea
 
     protected abstract int[] onBindLayout();
 
-    /**单位db
+    /**
+     * 单位db
+     *
      * @return
      */
-    protected abstract float itemSpace();
+    protected abstract float itemLeftSpace();
 
     @Override
     protected void onBindHeaderView(View view) {

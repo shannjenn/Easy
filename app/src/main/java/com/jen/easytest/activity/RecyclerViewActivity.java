@@ -12,7 +12,7 @@ import com.jen.easytest.R;
 import com.jen.easytest.model.RecyclerViewModel;
 import com.jen.easyui.base.EasyActivity;
 import com.jen.easyui.base.EasyToast;
-import com.jen.easyui.recyclerview.EasyAdapterClickEvent;
+import com.jen.easyui.recyclerview.EasyAdapterOnClickListener;
 import com.jen.easyui.recyclerview.EasyLetterDecoration;
 import com.jen.easyui.recyclerview.EasyLetterView;
 import com.jen.easyui.recyclerview.EasyLetterViewManager;
@@ -120,7 +120,7 @@ public class RecyclerViewActivity extends EasyActivity {
                 }
             }
         });
-        easyAdapter1.setEasyAdapterClickEvent(new EasyAdapterClickEvent() {
+        easyAdapter1.setEasyAdapterClickEvent(new EasyAdapterOnClickListener() {
             @Override
             public void onClick(View view, int pos) {
 

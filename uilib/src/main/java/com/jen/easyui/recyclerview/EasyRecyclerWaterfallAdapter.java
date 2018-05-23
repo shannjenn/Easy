@@ -53,8 +53,7 @@ public abstract class EasyRecyclerWaterfallAdapter<T> extends EasyRecyclerWaterf
 
     }
 
-    @Override
-    public void setEasyAdapterClickEvent(EasyAdapterClickEvent easyAdapterClickEvent) {
-        super.setEasyAdapterClickEvent(easyAdapterClickEvent);
+    public void setEasyAdapterClickEvent(EasyAdapterOnClickListener easyAdapterOnClickListener) {
+        super.easyAdapterOnClickListener = easyAdapterOnClickListener;
     }
 }
