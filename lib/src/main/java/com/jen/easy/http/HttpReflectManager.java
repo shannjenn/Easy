@@ -151,10 +151,16 @@ class HttpReflectManager {
                     Object item0 = listObj.get(0);
                     boolean isBasic = item0 instanceof String || item0 instanceof Integer || item0 instanceof Float
                             || item0 instanceof Long || item0 instanceof Double || item0 instanceof Boolean;
+                    JSONArray jsonArray = new JSONArray();
                     if (isBasic) {
-                        EasyLog.w(TAG.EasyHttp, "不支持该类型");
+                        for (int i = 0; i < listObj.size(); i++) {
+                            Object itemObj = listObj.get(i);
+                            if (itemObj == null) {
+                                continue;
+                            }
+                            jsonArray.put(itemObj);
+                        }
                     } else {
-                        JSONArray jsonArray = new JSONArray();
                         for (int i = 0; i < listObj.size(); i++) {
                             Object itemObj = listObj.get(i);
                             if (itemObj == null) {
@@ -164,9 +170,9 @@ class HttpReflectManager {
                             getRequestParam(itemObj.getClass(), itemObj, urls, item, heads);
                             jsonArray.put(item);
                         }
-                        if (jsonArray.length() > 0) {
-                            jsonParam.put(key, jsonArray);
-                        }
+                    }
+                    if (jsonArray.length() > 0) {
+                        jsonParam.put(key, jsonArray);
                     }
                 } else if (FieldType.isClass(field.getType())) {
                     JSONObject item = new JSONObject();

@@ -8,8 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jen.easy.log.EasyLog;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -19,13 +17,11 @@ import java.util.List;
  * 时间：2017/8/12.
  */
 
-abstract class EasyRecyclerBaseAdapterManager<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public abstract class EasyRecyclerBaseAdapterManager<T> extends RecyclerView.Adapter<EasyHolder> {
     protected Context mContext;
     protected List<T> mData;//不包含header、footer
     protected EasyAdapterOnClickListener easyAdapterOnClickListener;
 
-    protected final int VIEW_TYPE_HEAD = -100;
-    protected final int VIEW_TYPE_FOOT = -101;
     protected int mHeaderLayout;
     protected int mFootLayout;
     protected int mHeadItemCount;
@@ -70,35 +66,29 @@ abstract class EasyRecyclerBaseAdapterManager<T> extends RecyclerView.Adapter<Re
     @Override
     public int getItemViewType(int position) {
         if (position == 0 && mHeaderLayout != 0) {
-            return VIEW_TYPE_HEAD;
+            return EasyItemType.HEAD.getType();
         }
         if (isFootPosition(position) && mFootLayout != 0) {
-            return VIEW_TYPE_FOOT;
+            return EasyItemType.FOOT.getType();
         }
         return super.getItemViewType(position - mHeadItemCount);
-
     }
 
     @Override
     public EasyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        switch (viewType) {
-            case VIEW_TYPE_HEAD: {
-                mHeaderView = LayoutInflater.from(parent.getContext()).inflate(mHeaderLayout, parent, false);
-                if (mHeaderView != null) {
-                    mHeaderHeight = mHeaderView.getLayoutParams().height;
-                    setHeaderVisible(false);
-                    return new EasyHolder(mHeaderView);
-                }
-                break;
+        if (viewType == EasyItemType.HEAD.getType()) {
+            mHeaderView = LayoutInflater.from(parent.getContext()).inflate(mHeaderLayout, parent, false);
+            if (mHeaderView != null) {
+                mHeaderHeight = mHeaderView.getLayoutParams().height;
+                setHeaderVisible(false);
+                return bindHolder(mHeaderView, EasyItemType.HEAD);
             }
-            case VIEW_TYPE_FOOT: {
-                mFootView = LayoutInflater.from(parent.getContext()).inflate(mFootLayout, parent, false);
-                if (mFootView != null) {
-                    mFootHeight = mFootView.getLayoutParams().height;
-                    setFootVisible(false);
-                    return new EasyHolder(mFootView);
-                }
-                break;
+        } else if (viewType == EasyItemType.FOOT.getType()) {
+            mFootView = LayoutInflater.from(parent.getContext()).inflate(mFootLayout, parent, false);
+            if (mFootView != null) {
+                mFootHeight = mFootView.getLayoutParams().height;
+                setFootVisible(false);
+                return bindHolder(mFootView, EasyItemType.FOOT);
             }
         }
         return null;
@@ -110,26 +100,25 @@ abstract class EasyRecyclerBaseAdapterManager<T> extends RecyclerView.Adapter<Re
      * @return
      */
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(EasyHolder holder, final int position) {
         if (holder == null) {
             return;
         }
         if (position == 0 && mHeaderLayout != 0) {
-            onBindHeaderView(holder.itemView);
+            holder.onBindHeadData(holder.itemView);
             return;
         }
         if (isFootPosition(position) && mFootLayout != 0) {
-            onBindFooterView(holder.itemView);
+            holder.onBindFootData(holder.itemView);
             return;
         }
-        T t = mData.get(position - mHeadItemCount);
-        onBindView(holder.itemView, holder.getItemViewType(), t, position - mHeadItemCount);
+        holder.onBindData(holder.itemView, holder.getItemViewType(), position - mHeadItemCount);
     }
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-        boolean isSet = setSpanSize(0) <= 0;//如果没设置直接返回
+        boolean isSet = setGridLayoutItemRows(0) <= 0;//如果没设置直接返回
         if (isSet) {
             return;
         }
@@ -142,114 +131,16 @@ abstract class EasyRecyclerBaseAdapterManager<T> extends RecyclerView.Adapter<Re
                 @Override
                 public int getSpanSize(int position) {
                     int total = gridLayoutManager.getSpanCount();
-                    int spanSize = setSpanSize(position);
-                    if (spanSize > total || spanSize <= 0) {
+                    int rows = setGridLayoutItemRows(position);
+                    if (rows > total || rows <= 0) {
                         return total;
                     } else {
-                        return spanSize;
+                        return rows;
                     }
                 }
             });
         }
     }
-
-    /**
-     * ViewHolder
-     */
-    class EasyHolder extends RecyclerView.ViewHolder {
-        EasyHolder(View itemView) {
-            super(itemView);
-            initListener();
-        }
-
-        private void initListener() {
-            if (easyAdapterOnClickListener == null) {
-                return;
-            }
-            int[] clicks = bindClick();
-            int[] longClicks = bindLongClick();
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int pos = getAdapterPosition() - mHeadItemCount;
-                    if (pos < 0)
-                        return;
-                    easyAdapterOnClickListener.onItemClick(v, pos);
-                }
-            });
-
-            if (clicks != null) {
-                for (int id : clicks) {
-                    View view = itemView.findViewById(id);
-                    if (view == null) {
-                        EasyLog.w("点击设置事件失败，请检查ID是否正确id=" + id);
-                        continue;
-                    }
-                    view.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            int pos = getAdapterPosition() - mHeadItemCount;
-                            if (pos < 0)
-                                return;
-                            easyAdapterOnClickListener.onClick(v, pos);
-                        }
-                    });
-                }
-            }
-
-            if (longClicks != null) {
-                for (int id : longClicks) {
-                    View view = itemView.findViewById(id);
-                    if (view == null) {
-                        EasyLog.w("点击设置事件失败，请检查ID是否正确id=" + id);
-                        continue;
-                    }
-                    view.setOnLongClickListener(new View.OnLongClickListener() {
-                        @Override
-                        public boolean onLongClick(View v) {
-                            int pos = getAdapterPosition() - mHeadItemCount;
-                            if (pos < 0)
-                                return false;
-                            return easyAdapterOnClickListener.onLongClick(v, pos);
-                        }
-                    });
-                }
-            }
-        }
-    }
-
-    protected abstract int[] bindClick();
-
-    protected abstract int[] bindLongClick();
-
-    /**
-     * 设置合并头布局的跨度，只对GridLayoutManager有效
-     *
-     * @param position 下标
-     * @return 跨行
-     */
-    protected abstract int setSpanSize(int position);
-
-    /**
-     * 初始化item数据
-     *
-     * @return
-     */
-    protected abstract void onBindView(View view, int viewType, T data, int pos);
-
-    /**
-     * 头部view
-     *
-     * @param view
-     */
-    protected abstract void onBindHeaderView(View view);
-
-    /**
-     * 底部view
-     *
-     * @param view
-     */
-    protected abstract void onBindFooterView(View view);
 
     /**
      * 设置下拉显示/隐藏
@@ -348,4 +239,21 @@ abstract class EasyRecyclerBaseAdapterManager<T> extends RecyclerView.Adapter<Re
         }
     });
 
+    public EasyAdapterOnClickListener getEasyAdapterOnClickListener() {
+        return easyAdapterOnClickListener;
+    }
+
+    public void setEasyAdapterOnClickListener(EasyAdapterOnClickListener easyAdapterOnClickListener) {
+        this.easyAdapterOnClickListener = easyAdapterOnClickListener;
+    }
+
+    /**
+     * 设置合并头布局的跨度，只对GridLayoutManager有效
+     *
+     * @param position 下标
+     * @return 跨行
+     */
+    protected abstract int setGridLayoutItemRows(int position);
+
+    protected abstract EasyHolder bindHolder(View view, EasyItemType easyItemType);
 }

@@ -1,7 +1,6 @@
 package com.jen.easyui.recyclerview;
 
 import android.content.Context;
-import android.view.View;
 
 import java.util.List;
 
@@ -15,7 +14,7 @@ public abstract class EasyRecyclerWaterfallAdapter<T> extends EasyRecyclerWaterf
     /**
      * @param data 数据
      */
-    protected EasyRecyclerWaterfallAdapter(Context context, List<T> data) {
+    public EasyRecyclerWaterfallAdapter(Context context, List<T> data) {
         super(context, data);
     }
 
@@ -34,26 +33,8 @@ public abstract class EasyRecyclerWaterfallAdapter<T> extends EasyRecyclerWaterf
     }
 
     @Override
-    protected int[] bindClick() {
-        return new int[0];
-    }
-
-    @Override
-    protected int[] bindLongClick() {
-        return new int[0];
-    }
-
-    @Override
-    protected int setSpanSize(int position) {
+    protected int setGridLayoutItemRows(int position) {
         return 0;
     }
 
-    @Override
-    protected void onBindView(View view, int viewType, T data, int pos) {
-
-    }
-
-    public void setEasyAdapterClickEvent(EasyAdapterOnClickListener easyAdapterOnClickListener) {
-        super.easyAdapterOnClickListener = easyAdapterOnClickListener;
-    }
 }

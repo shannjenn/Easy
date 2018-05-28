@@ -9,9 +9,8 @@ import android.view.View;
  */
 public interface EasyAdapterOnClickListener {
 
-    void onClick(View view, int pos);
+    void onClick(View view, int position);
 
-    boolean onLongClick(View view, int pos);
+    boolean onLongClick(View view, int position);
 
-    void onItemClick(View view, int pos);
 }

@@ -1,7 +1,6 @@
 package com.jen.easyui.recyclerview;
 
 import android.content.Context;
-import android.view.View;
 
 import java.util.List;
 
@@ -16,7 +15,7 @@ public abstract class EasyRecyclerAdapter<T> extends EasyRecyclerAdapterManager<
      * @param context
      * @param data    数据
      */
-    protected EasyRecyclerAdapter(Context context, List<T> data) {
+    public EasyRecyclerAdapter(Context context, List<T> data) {
         super(context, data);
     }
 
@@ -26,26 +25,8 @@ public abstract class EasyRecyclerAdapter<T> extends EasyRecyclerAdapterManager<
     }
 
     @Override
-    protected int[] bindClick() {
-        return new int[0];
-    }
-
-    @Override
-    protected int[] bindLongClick() {
-        return new int[0];
-    }
-
-    @Override
-    protected int setSpanSize(int position) {
+    protected int setGridLayoutItemRows(int position) {
         return 0;
     }
 
-    @Override
-    protected void onBindView(View view, int viewType, T data, int pos) {
-
-    }
-
-    public void setEasyAdapterClickEvent(EasyAdapterOnClickListener easyAdapterOnClickListener) {
-        super.easyAdapterOnClickListener = easyAdapterOnClickListener;
-    }
 }

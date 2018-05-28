@@ -229,7 +229,7 @@ abstract class EasyRecyclerViewManager extends RecyclerView {
                 if (isLoading) {
                     return;
                 }
-                if (adapter != null && adapter instanceof EasyRecyclerBaseAdapterManager) {
+                if (adapter instanceof EasyRecyclerBaseAdapterManager) {
                     ((EasyRecyclerBaseAdapterManager) adapter).setFootVisible(true);
                     isLoading = true;
                 }

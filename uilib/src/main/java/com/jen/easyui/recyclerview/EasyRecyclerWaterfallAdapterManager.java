@@ -26,28 +26,24 @@ abstract class EasyRecyclerWaterfallAdapterManager<T> extends EasyRecyclerBaseAd
     @Override
     public int getItemViewType(int position) {
         int viewType = super.getItemViewType(position);
-        switch (viewType) {
-            case VIEW_TYPE_HEAD:
-            case VIEW_TYPE_FOOT:
-                return viewType;
+        int headType = EasyItemType.HEAD.getType();
+        int footType = EasyItemType.FOOT.getType();
+        if (viewType == headType || viewType == footType) {
+            return viewType;
         }
-        return getViewType(position - mHeadItemCount);
+        int type = getViewType(position - mHeadItemCount);
+        if (type == headType || type == footType) {
+            EasyLog.w("getViewType 值不能和EasyItemType值相同");
+            return 0;
+        } else {
+            return type;
+        }
     }
-
-    /**
-     * 获取布局类型
-     *
-     * @param position 下标
-     * @return
-     */
-    protected abstract int getViewType(int position);
 
     @Override
     public EasyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        switch (viewType) {
-            case VIEW_TYPE_HEAD:
-            case VIEW_TYPE_FOOT:
-                return super.onCreateViewHolder(parent, viewType);
+        if (viewType == EasyItemType.HEAD.getType() || viewType == EasyItemType.FOOT.getType()) {
+            return super.onCreateViewHolder(parent, viewType);
         }
         int[] layouts = onBindLayout();
         if (layouts == null) {
@@ -63,7 +59,7 @@ abstract class EasyRecyclerWaterfallAdapterManager<T> extends EasyRecyclerBaseAd
             EasyLog.w("找不到该值对应item布局R.layout.id：" + layouts[viewType]);
             return null;
         }
-        return new EasyHolder(view);
+        return bindHolder(view, EasyItemType.BODY);
     }
 
     /**
@@ -73,13 +69,11 @@ abstract class EasyRecyclerWaterfallAdapterManager<T> extends EasyRecyclerBaseAd
      */
     protected abstract int[] onBindLayout();
 
-    @Override
-    protected void onBindHeaderView(View view) {
-
-    }
-
-    @Override
-    protected void onBindFooterView(View view) {
-
-    }
+    /**
+     * 获取布局类型
+     *
+     * @param position 下标
+     * @return 设置值大于0，以此做区分EasyItemType的值小于0
+     */
+    protected abstract int getViewType(int position);
 }

@@ -11,8 +11,9 @@ import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
 import com.jen.easytest.model.RecyclerViewModel;
 import com.jen.easyui.base.EasyActivity;
-import com.jen.easyui.base.EasyToast;
 import com.jen.easyui.recyclerview.EasyAdapterOnClickListener;
+import com.jen.easyui.recyclerview.EasyHolder;
+import com.jen.easyui.recyclerview.EasyItemType;
 import com.jen.easyui.recyclerview.EasyLetterDecoration;
 import com.jen.easyui.recyclerview.EasyLetterView;
 import com.jen.easyui.recyclerview.EasyLetterViewManager;
@@ -120,7 +121,7 @@ public class RecyclerViewActivity extends EasyActivity {
                 }
             }
         });
-        easyAdapter1.setEasyAdapterClickEvent(new EasyAdapterOnClickListener() {
+        easyAdapter1.setEasyAdapterOnClickListener(new EasyAdapterOnClickListener() {
             @Override
             public void onClick(View view, int pos) {
 
@@ -131,11 +132,6 @@ public class RecyclerViewActivity extends EasyActivity {
                 return false;
             }
 
-            @Override
-            public void onItemClick(View view, int pos) {
-                EasyLog.d("onItemClick -------- ");
-                EasyToast.toast(mContext, "onItemClick = " + pos);
-            }
         });
     }
 
@@ -207,15 +203,35 @@ public class RecyclerViewActivity extends EasyActivity {
         }
 
         @Override
+        protected EasyHolder bindHolder(View view, EasyItemType viwType) {
+            return new MyHolder(view, viwType);
+        }
+
+        @Override
         protected int onBindLayout() {
             return R.layout.item_recycler_view;
         }
 
-        @Override
-        protected void onBindView(View view, int viewType, T data, int pos) {
-            super.onBindView(view, viewType, data, pos);
-            TextView tv_text = view.findViewById(R.id.tv_text);
-            tv_text.setText(data.getLetter());
+        class MyHolder extends EasyHolder {
+
+            /*public MyHolder(View itemView) {
+                super(itemView);
+            }*/
+            public MyHolder(View itemView, EasyItemType viewType) {
+                super(itemView, viewType);
+            }
+
+            @Override
+            protected EasyAdapterOnClickListener bindEasyAdapterOnClickListener() {
+                return null;
+            }
+
+            @Override
+            protected void onBindData(View view, int viewType, int position) {
+                TextView tv_text = view.findViewById(R.id.tv_text);
+                tv_text.setText(mData.get(position).getLetter());
+            }
+
         }
     }
 }

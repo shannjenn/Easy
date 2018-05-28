@@ -8,6 +8,9 @@ import android.widget.TextView;
 import com.jen.easy.imageLoader.ImageLoader;
 import com.jen.easytest.R;
 import com.jen.easytest.model.ImageLoaderModel;
+import com.jen.easyui.recyclerview.EasyAdapterOnClickListener;
+import com.jen.easyui.recyclerview.EasyHolder;
+import com.jen.easyui.recyclerview.EasyItemType;
 import com.jen.easyui.recyclerview.EasyRecyclerAdapter;
 
 import java.util.List;
@@ -26,19 +29,37 @@ public class ImageLoaderAdapter<T extends ImageLoaderModel> extends EasyRecycler
     }
 
     @Override
+    protected EasyHolder bindHolder(View view, EasyItemType viewType) {
+        return new MyHolder(view, viewType);
+    }
+
+    @Override
     protected int onBindLayout() {
         return R.layout.item_image_loader;
     }
 
-    @Override
-    protected void onBindView(View view, int viewType, T data, int pos) {
-        super.onBindView(view, viewType, data, pos);
-        ImageLoaderModel model = data;
 
-        ImageView icon = view.findViewById(R.id.iv_icon);
-        TextView tv_name = view.findViewById(R.id.tv_name);
+    class MyHolder extends EasyHolder {
 
-        tv_name.setText(model.getTitle());
-        ImageLoader.getInstance().setImage(model.getPic(), icon);
+        public MyHolder(View itemView, EasyItemType viewType) {
+            super(itemView, viewType);
+        }
+
+        @Override
+        protected EasyAdapterOnClickListener bindEasyAdapterOnClickListener() {
+            return null;
+        }
+
+        @Override
+        protected void onBindData(View view, int viewType, int position) {
+            ImageLoaderModel model = mData.get(position);
+
+            ImageView icon = view.findViewById(R.id.iv_icon);
+            TextView tv_name = view.findViewById(R.id.tv_name);
+
+            tv_name.setText(model.getTitle());
+            ImageLoader.getInstance().setImage(model.getPic(), icon);
+        }
+
     }
 }
