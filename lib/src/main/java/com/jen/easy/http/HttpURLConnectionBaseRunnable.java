@@ -61,9 +61,9 @@ class HttpURLConnectionBaseRunnable extends HttpURLConnectionRunnable {
             HttpParseManager parseManager = new HttpParseManager();
             Object parseObject = parseManager.parseJson(mResponseClass, result, headMap);
             if (parseObject == null) {
-                fail("解析数据解析出错");
+                fail("解析数据解析出错\n   ");
             } else {
-                EasyLog.d(TAG.EasyHttp, mUrlStr + " 成功!");
+                EasyLog.d(TAG.EasyHttp, mUrlStr + " 成功!\n   ");
                 baseListener.success(baseRequest.flagCode, baseRequest.flagStr, parseObject);
             }
         }
@@ -71,7 +71,7 @@ class HttpURLConnectionBaseRunnable extends HttpURLConnectionRunnable {
 
     @Override
     protected void fail(String result) {
-        EasyLog.w(TAG.EasyHttp, mUrlStr + " " + result);
+        EasyLog.w(TAG.EasyHttp, mUrlStr + " " + result+"\n   ");
         HttpBaseRequest baseRequest = (HttpBaseRequest) mRequest;
         if (baseListener != null)
             baseListener.fail(baseRequest.flagCode, baseRequest.flagStr, result);

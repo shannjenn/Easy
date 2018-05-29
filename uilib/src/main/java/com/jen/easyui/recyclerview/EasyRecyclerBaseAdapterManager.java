@@ -175,7 +175,7 @@ public abstract class EasyRecyclerBaseAdapterManager<T> extends RecyclerView.Ada
                 new android.os.Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        mFootView.setVisibility(View.VISIBLE);
+                        mFootView.setVisibility(View.INVISIBLE);
                         mFootView.getLayoutParams().height = mFootHeight;
                     }
                 }, 5);

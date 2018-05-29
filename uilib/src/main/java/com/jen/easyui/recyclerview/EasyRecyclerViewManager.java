@@ -5,15 +5,18 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.View;
 
 import com.jen.easyui.R;
+
 
 /**
  * 作者：ShannJenn
  * 时间：2017/09/08.
  */
 
-abstract class EasyRecyclerViewManager extends RecyclerView {
+public abstract class EasyRecyclerViewManager extends RecyclerView {
     /*头部item数量*/
     private int headItemCount;
     /*底部item数量*/
@@ -38,6 +41,7 @@ abstract class EasyRecyclerViewManager extends RecyclerView {
 
     private void init(Context context) {
         addOnScrollListener(onScrollListener);
+        setOnTouchListener(onTouchListener);
     }
 
     /**
@@ -212,7 +216,8 @@ abstract class EasyRecyclerViewManager extends RecyclerView {
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
             Adapter adapter = getAdapter();
-            if (newState == RecyclerView.SCROLL_STATE_IDLE && firstVisibleItem == 0) {//顶部
+            if (newState == RecyclerView.SCROLL_STATE_IDLE && firstVisibleItem == 0 && scrolledUp) {//顶部
+                scrolledUp = false;
                 if (isRefreshing) {
                     return;
                 }
@@ -223,9 +228,7 @@ abstract class EasyRecyclerViewManager extends RecyclerView {
                 if (refreshListener != null) {
                     refreshListener.onRefresh();
                 }
-            }
-
-            if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount()) {//底部
+            } else if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == adapter.getItemCount()) {//底部
                 if (isLoading) {
                     return;
                 }
@@ -250,6 +253,37 @@ abstract class EasyRecyclerViewManager extends RecyclerView {
                 lastVisibleItem = ((GridLayoutManager) layoutManager).findLastVisibleItemPosition();
                 firstVisibleItem = ((GridLayoutManager) layoutManager).findFirstVisibleItemPosition();
             }
+        }
+    };
+
+    private boolean scrolledUp = false;//向上滑动
+    private OnTouchListener onTouchListener = new OnTouchListener() {
+        private float y1 = 0;
+        private float y2 = 0;
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_MOVE: {
+                    if (y1 == 0)
+                        y1 = event.getY();
+                    break;
+                }
+                case MotionEvent.ACTION_UP: {
+                    y2 = event.getY();
+                    if (y2 - y1 > 10) {
+                        scrolledUp = true;
+                        y1 = 0;
+                        y2 = 0;
+                    }
+                    break;
+                }
+                default: {
+
+                    break;
+                }
+            }
+            return false;
         }
     };
 

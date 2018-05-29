@@ -122,7 +122,7 @@ public class HttpActivity extends EasyActivity {
         EasyMain.mHttp.start(airRequest);
         EasyLog.d("mAirResponse mAirResponse:");
 
-        ExampleRequest exampleRequest = new ExampleRequest();
+        /*ExampleRequest exampleRequest = new ExampleRequest();
         exampleRequest.setBookId(123);
         exampleRequest.setBookName("红楼梦");
         exampleRequest.setBookCode("abcdefg");
@@ -130,7 +130,7 @@ public class HttpActivity extends EasyActivity {
         exampleRequest.timeout = 30 * 1000;//设置超时
         exampleRequest.flagCode = 10;//设置请求码
 
-        http.start(exampleRequest);
+        http.start(exampleRequest);*/
 
     }
 
