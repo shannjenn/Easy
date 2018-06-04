@@ -74,11 +74,11 @@ class HttpParseManager {
             tObj = tClass.newInstance();
         } catch (InstantiationException e) {
             e.printStackTrace();
-            EasyLog.w(TAG.EasyHttp, "InstantiationException 创建对象出错");
+            EasyLog.w(TAG.EasyHttp, "InstantiationException 创建对象出错：" + tClass.getName());
             return null;
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-            EasyLog.w(TAG.EasyHttp, "IllegalAccessException 创建对象出错");
+            EasyLog.w(TAG.EasyHttp, "IllegalAccessException 创建对象出错" + tClass.getName());
             return null;
         }
 
@@ -298,6 +298,7 @@ class HttpParseManager {
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
+            showWarn("NumberFormatException： 参数：" + param);
         }
         return res;
     }
@@ -372,6 +373,7 @@ class HttpParseManager {
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
+            showWarn("NumberFormatException： 参数：" + param);
         }
         return res;
     }
@@ -408,6 +410,7 @@ class HttpParseManager {
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
+            showWarn("NumberFormatException： 参数：" + param);
         }
         return res;
     }
@@ -444,6 +447,7 @@ class HttpParseManager {
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
+            showWarn("NumberFormatException： 参数：" + param);
         }
         return res;
     }
@@ -480,6 +484,7 @@ class HttpParseManager {
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
+            showWarn("NumberFormatException： 参数：" + param);
         }
         return res;
     }
