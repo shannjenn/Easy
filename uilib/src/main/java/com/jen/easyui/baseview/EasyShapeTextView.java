@@ -1,4 +1,4 @@
-package com.jen.easyui.shape;
+package com.jen.easyui.baseview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -13,45 +13,45 @@ import com.jen.easyui.R;
  * 时间：2017/11/16.
  */
 
-abstract class EasyTextViewManager extends android.support.v7.widget.AppCompatTextView {
-    private ShapeSuper mShape;
+public class EasyShapeTextView extends android.support.v7.widget.AppCompatTextView {
+    private EasyShapeBase mShape;
 
     /*public EasyTextViewManager(Context context) {
         super(context);
-        mShape = new ShapeSuper(this);
+        mShape = new EasyShapeBase(this);
         initAttrs(context, null);
     }*/
 
-    public EasyTextViewManager(Context context, AttributeSet attrs) {
+    public EasyShapeTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mShape = new ShapeSuper(this);
+        mShape = new EasyShapeBase(this);
         initAttrs(context, attrs);
     }
 
-    public EasyTextViewManager(Context context, AttributeSet attrs, int defStyleAttr) {
+    public EasyShapeTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mShape = new ShapeSuper(this);
+        mShape = new EasyShapeBase(this);
         initAttrs(context, attrs);
     }
 
     protected void initAttrs(Context context, AttributeSet attrs) {
-        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.EasyTextView);
-        mShape.mStrokeWidth = (int) ta.getDimension(R.styleable.EasyTextView_stroke_width, 0);
-        mShape.mStrokeColor = ta.getColor(R.styleable.EasyTextView_stroke_color, 0);
-        mShape.mStrokeClickColor = ta.getColor(R.styleable.EasyTextView_stroke_click_color, 0);
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.EasyShapeTextView);
+        mShape.mStrokeWidth = (int) ta.getDimension(R.styleable.EasyShapeTextView_stroke_width, 0);
+        mShape.mStrokeColor = ta.getColor(R.styleable.EasyShapeTextView_stroke_color, 0);
+        mShape.mStrokeClickColor = ta.getColor(R.styleable.EasyShapeTextView_stroke_click_color, 0);
 
-        mShape.mCorners = (int) ta.getDimension(R.styleable.EasyTextView_corners, 0);
-        mShape.mCornersHalfRound = ta.getBoolean(R.styleable.EasyTextView_corners_half_round, false);
-        mShape.mCornersShowLeft = ta.getBoolean(R.styleable.EasyTextView_cornersShowLeft, true);
-        mShape.mCornersShowRight = ta.getBoolean(R.styleable.EasyTextView_cornersShowRight, true);
+        mShape.mCorners = (int) ta.getDimension(R.styleable.EasyShapeTextView_corners, 0);
+        mShape.mCornersHalfRound = ta.getBoolean(R.styleable.EasyShapeTextView_corners_half_round, false);
+        mShape.mCornersShowLeft = ta.getBoolean(R.styleable.EasyShapeTextView_cornersShowLeft, true);
+        mShape.mCornersShowRight = ta.getBoolean(R.styleable.EasyShapeTextView_cornersShowRight, true);
 
-        mShape.mSolidColor = ta.getColor(R.styleable.EasyTextView_solid_color, 0);
-        mShape.mSolidClickColor = ta.getColor(R.styleable.EasyTextView_solid_click_color, 0);
+        mShape.mSolidColor = ta.getColor(R.styleable.EasyShapeTextView_solid_color, 0);
+        mShape.mSolidClickColor = ta.getColor(R.styleable.EasyShapeTextView_solid_click_color, 0);
 
-        mShape.mTextColor = ta.getColor(R.styleable.EasyTextView_android_textColor, 0xFF000000);
-        mShape.mTextClickColor = ta.getColor(R.styleable.EasyTextView_text_click_color, 0xFF000000);
+        mShape.mTextColor = ta.getColor(R.styleable.EasyShapeTextView_android_textColor, 0xFF000000);
+        mShape.mTextClickColor = ta.getColor(R.styleable.EasyShapeTextView_text_click_color, 0xFF000000);
 
-        mShape.mClickType = ta.getInt(R.styleable.EasyTextView_click_type, 0);
+        mShape.mClickType = ta.getInt(R.styleable.EasyShapeTextView_click_type, 0);
 
         /*int padding = (int) ta.getDimension(R.styleable.EasyTextView_android_padding, 0);
         if (padding == 0) {
@@ -81,6 +81,7 @@ abstract class EasyTextViewManager extends android.support.v7.widget.AppCompatTe
         mShape.onFocusEvent(event);
         return super.onTouchEvent(event);
     }
+
     public boolean isSelect() {
         return mShape.isSelect();
     }

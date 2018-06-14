@@ -11,7 +11,7 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <com.jen.easyui.tabbar.EasyTabBarTop
+        <com.jen.easyui.baseview.EasyTabBarTop
             android:id="@+id/easy_tabar_scroll"
             android:layout_width="match_parent"
             android:layout_height="100dp"
@@ -42,7 +42,7 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <com.jen.easyui.tabbar.EasyTabBarBottom
+        <com.jen.easyui.baseview.EasyTabBarBottom
             android:id="@+id/easy_tabbar_txtimg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

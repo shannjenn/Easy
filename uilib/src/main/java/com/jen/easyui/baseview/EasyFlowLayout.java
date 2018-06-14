@@ -1,4 +1,4 @@
-package com.jen.easyui.flowlayout;
+package com.jen.easyui.baseview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -13,25 +13,24 @@ import com.jen.easyui.R;
  * 作者：ShannJenn
  * 时间：2017/11/16.
  */
-
-public class EasyFlowLayoutManager extends ViewGroup {
+abstract class EasyFlowLayout extends ViewGroup {
 
     private Context mContext;
     private int childSpaceH, childSpaceV;
     private int mHeight;
 
-    public EasyFlowLayoutManager(Context context) {
+    public EasyFlowLayout(Context context) {
         super(context);
         mContext = context;
     }
 
-    public EasyFlowLayoutManager(Context context, AttributeSet attrs) {
+    public EasyFlowLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
         initAttrs(attrs);
     }
 
-    public EasyFlowLayoutManager(Context context, AttributeSet attrs, int defStyleAttr) {
+    public EasyFlowLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.mContext = context;
         initAttrs(attrs);

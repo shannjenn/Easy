@@ -1,0 +1,18 @@
+<resources>
+    <declare-styleable name="EasyRadioButton">
+        <attr name="radioText" format="string" />
+        <attr name="radioTextSize" format="dimension" />
+        <attr name="radioTextColor" format="color" />
+        <attr name="radioTextPadding" format="dimension" />
+        <attr name="radioSrc" format="reference" />
+        <attr name="radioIsCheck" format="boolean" />
+        <attr name="radioCheckPadding" format="dimension" />
+        <attr name="radioShowBottomLine" format="boolean" />
+        <attr name="radioBottomLineColor" format="color" />
+        <attr name="radioCheckBox" format="boolean" />
+        <attr name="radioShowType">
+            <enum name="left" value="0" />
+            <enum name="right" value="1" />
+        </attr>
+    </declare-styleable>
+</resources>

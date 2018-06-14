@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.jen.easyui.shape.EasyTextView
+    <com.jen.easyui.baseview.EasyShapeTextView
         android:id="@+id/easyTextView"
         android:layout_width="match_parent"
         android:layout_height="64dp"
@@ -18,7 +18,7 @@
         app:stroke_color="#0000ff"
         app:stroke_width="2dp" />
 
-    <com.jen.easyui.shape.EasyEditText
+    <com.jen.easyui.baseview.EasyShapeEditTextView
         android:id="@+id/easyEditText"
         android:layout_width="match_parent"
         android:layout_height="64dp"
@@ -31,7 +31,7 @@
         app:stroke_focus_color="#ff0000"
         app:stroke_width="2dp" />
 
-    <com.jen.easyui.shape.EasyEditText
+    <com.jen.easyui.baseview.EasyShapeEditTextView
         android:id="@+id/easyEditText2"
         android:layout_width="match_parent"
         android:layout_height="64dp"
@@ -44,7 +44,7 @@
         app:stroke_focus_color="#ff0000"
         app:stroke_width="2dp" />
 
-    <com.jen.easyui.shape.EasyLinearLayout
+    <com.jen.easyui.baseview.EasyShapeLinearLayout
         android:id="@+id/easyLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="64dp"
@@ -64,7 +64,7 @@
             android:layout_height="50dp"
             android:background="@android:color/white"
             android:text="输入框输入框输入框输入框" />
-    </com.jen.easyui.shape.EasyLinearLayout>
+    </com.jen.easyui.baseview.EasyShapeLinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -75,7 +75,7 @@
         android:background="@drawable/shape_write_corners"
         android:orientation="horizontal">
 
-        <com.jen.easyui.shape.EasyEditText
+        <com.jen.easyui.baseview.EasyShapeEditTextView
             android:id="@+id/seachEdit"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -89,7 +89,7 @@
             app:stroke_color="#B20000"
             app:stroke_width="1dp" />
 
-        <com.jen.easyui.shape.EasyLinearLayout
+        <com.jen.easyui.baseview.EasyShapeLinearLayout
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
@@ -105,7 +105,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/img_search" />
-        </com.jen.easyui.shape.EasyLinearLayout>
+        </com.jen.easyui.baseview.EasyShapeLinearLayout>
     </RelativeLayout>
 
 </LinearLayout>

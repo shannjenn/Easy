@@ -1,0 +1,39 @@
+<resources>
+    <declare-styleable name="EasyItemLayout">
+        <attr name="itemEdit" format="boolean" />
+
+        <attr name="itemPaddingLeft" format="dimension" />
+        <attr name="itemPaddingRight" format="dimension" />
+        <attr name="itemPaddingTop" format="dimension" />
+        <attr name="itemPaddingBottom" format="dimension" />
+
+        <attr name="itemTitleText" format="string" />
+        <attr name="itemTitleTextSize" format="dimension" />
+        <attr name="itemTitleTextColor" format="color" />
+
+        <attr name="itemTxtSingleLine" format="boolean" />
+        <attr name="itemTxtText" format="string" />
+        <attr name="itemTxtTextSize" format="dimension" />
+        <attr name="itemTxtTextColor" format="color" />
+
+        <attr name="itemEditLines" format="integer" />
+        <attr name="itemEditMaxLength" format="integer" />
+        <attr name="itemEditTextSize" format="dimension" />
+        <attr name="itemEditTextColor" format="color" />
+
+        <attr name="itemCountText" format="string" />
+        <attr name="itemCountTextSize" format="dimension" />
+        <attr name="itemCountTextColor" format="color" />
+        <attr name="itemCountVisible" format="boolean" />
+
+        <attr name="itemBottomLineVisible" format="boolean" />
+
+        <attr name="android:layout_width" />
+        <attr name="android:layout_height" />
+        <attr name="android:paddingLeft" />
+        <attr name="android:paddingRight" />
+        <attr name="android:paddingTop" />
+        <attr name="android:paddingBottom" />
+        <attr name="android:padding" />
+    </declare-styleable>
+</resources>

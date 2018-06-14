@@ -1,4 +1,4 @@
-package com.jen.easyui.shape;
+package com.jen.easyui.baseview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -13,45 +13,45 @@ import com.jen.easyui.R;
  * 时间：2017/11/16.
  */
 
-abstract class EasyEditTextManager extends android.support.v7.widget.AppCompatEditText {
-    private ShapeSuper mShape;
+public class EasyShapeEditTextView extends android.support.v7.widget.AppCompatEditText {
+    private EasyShapeBase mShape;
 
     /*public EasyEditTextManager(Context context) {
         super(context);
-        mShape = new ShapeSuper(this);
+        mShape = new EasyShapeBase(this);
         initAttrs(context, null);
     }*/
 
-    public EasyEditTextManager(Context context, AttributeSet attrs) {
+    public EasyShapeEditTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mShape = new ShapeSuper(this);
+        mShape = new EasyShapeBase(this);
         initAttrs(context, attrs);
     }
 
-    public EasyEditTextManager(Context context, AttributeSet attrs, int defStyleAttr) {
+    public EasyShapeEditTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mShape = new ShapeSuper(this);
+        mShape = new EasyShapeBase(this);
         initAttrs(context, attrs);
     }
 
     protected void initAttrs(Context context, AttributeSet attrs) {
-        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.EasyEditText);
-        mShape.mStrokeWidth = (int) ta.getDimension(R.styleable.EasyEditText_stroke_width, 0);
-        mShape.mStrokeColor = ta.getColor(R.styleable.EasyEditText_stroke_color, 0);
-        mShape.mStrokeClickColor = ta.getColor(R.styleable.EasyEditText_stroke_focus_color, 0);
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.EasyShapeEditTextView);
+        mShape.mStrokeWidth = (int) ta.getDimension(R.styleable.EasyShapeEditTextView_stroke_width, 0);
+        mShape.mStrokeColor = ta.getColor(R.styleable.EasyShapeEditTextView_stroke_color, 0);
+        mShape.mStrokeClickColor = ta.getColor(R.styleable.EasyShapeEditTextView_stroke_focus_color, 0);
 
-        mShape.mCorners = (int) ta.getDimension(R.styleable.EasyEditText_corners, 0);
-        mShape.mCornersHalfRound = ta.getBoolean(R.styleable.EasyEditText_corners_half_round, false);
-        mShape.mCornersShowLeft = ta.getBoolean(R.styleable.EasyEditText_cornersShowLeft, true);
-        mShape.mCornersShowRight = ta.getBoolean(R.styleable.EasyEditText_cornersShowRight, true);
+        mShape.mCorners = (int) ta.getDimension(R.styleable.EasyShapeEditTextView_corners, 0);
+        mShape.mCornersHalfRound = ta.getBoolean(R.styleable.EasyShapeEditTextView_corners_half_round, false);
+        mShape.mCornersShowLeft = ta.getBoolean(R.styleable.EasyShapeEditTextView_cornersShowLeft, true);
+        mShape.mCornersShowRight = ta.getBoolean(R.styleable.EasyShapeEditTextView_cornersShowRight, true);
 
-        mShape.mSolidColor = ta.getColor(R.styleable.EasyEditText_solid_color, 0);
-        mShape.mSolidClickColor = ta.getColor(R.styleable.EasyEditText_solid_focus_color, 0);
+        mShape.mSolidColor = ta.getColor(R.styleable.EasyShapeEditTextView_solid_color, 0);
+        mShape.mSolidClickColor = ta.getColor(R.styleable.EasyShapeEditTextView_solid_focus_color, 0);
 
-        mShape.mTextColor = ta.getColor(R.styleable.EasyEditText_android_textColor, 0xFF000000);
-        mShape.mTextClickColor = ta.getColor(R.styleable.EasyEditText_text_focus_color, 0xFF000000);
+        mShape.mTextColor = ta.getColor(R.styleable.EasyShapeEditTextView_android_textColor, 0xFF000000);
+        mShape.mTextClickColor = ta.getColor(R.styleable.EasyShapeEditTextView_text_focus_color, 0xFF000000);
 
-        mShape.mClickType = ta.getInt(R.styleable.EasyEditText_click_type, 0);
+        mShape.mClickType = ta.getInt(R.styleable.EasyShapeEditTextView_click_type, 0);
 
         /*int padding = (int) ta.getDimension(R.styleable.EasyEditText_android_padding, 0);
         if (padding == 0) {

@@ -1,5 +1,5 @@
 <resources>
-    <declare-styleable name="EasyEditText">
+    <declare-styleable name="EasyShapeEditTextView">
         <attr name="stroke_width" />
         <attr name="stroke_color" />
         <attr name="stroke_focus_color" format="color" />

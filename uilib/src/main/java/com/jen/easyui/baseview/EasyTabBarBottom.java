@@ -1,4 +1,4 @@
-package com.jen.easyui.tabbar;
+package com.jen.easyui.baseview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -26,7 +26,7 @@ import com.jen.easyui.util.EasyDensityUtil;
  * 时间：2017/8/12.
  */
 
-abstract class EasyTabBarBottomManager extends RelativeLayout {
+public class EasyTabBarBottom extends RelativeLayout {
     private Context context;
     /*分割线默认颜色*/
     private final int LINE_DEFAULT_COLOR = 0xffE0E0E0;
@@ -70,19 +70,19 @@ abstract class EasyTabBarBottomManager extends RelativeLayout {
     private ViewPager mViewPager;
     private int mCurrentItem;
 
-    public EasyTabBarBottomManager(Context context) {
+    public EasyTabBarBottom(Context context) {
         super(context);
         this.context = context;
     }
 
-    public EasyTabBarBottomManager(Context context, @Nullable AttributeSet attrs) {
+    public EasyTabBarBottom(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
         initAttrs(attrs, 0);
         initView();
     }
 
-    public EasyTabBarBottomManager(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public EasyTabBarBottom(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
         initAttrs(attrs, defStyleAttr);
@@ -158,7 +158,7 @@ abstract class EasyTabBarBottomManager extends RelativeLayout {
     private void initView() {
         textViews = new TextView[itemSize];
         imageViews = new ImageView[itemSize];
-        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        RelativeLayout.LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         params.setMargins(0, topLineSize + topLineSpace, 0, bottomLineSize + bottomLineSpace);
         LinearLayout linearLayout = new LinearLayout(context);
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);

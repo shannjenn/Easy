@@ -1,5 +1,5 @@
 <resources>
-    <declare-styleable name="EasyRelativeLayout">
+    <declare-styleable name="EasyShapeRelativeLayout">
         <attr name="stroke_width" />
         <attr name="stroke_color" />
         <attr name="stroke_click_color" />

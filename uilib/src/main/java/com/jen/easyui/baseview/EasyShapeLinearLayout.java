@@ -1,4 +1,4 @@
-package com.jen.easyui.shape;
+package com.jen.easyui.baseview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -14,42 +14,42 @@ import com.jen.easyui.R;
  * 时间：2017/11/16.
  */
 
-abstract class EasyLinearLayoutManager extends LinearLayout {
-    private ShapeSuper mShape;
+public class EasyShapeLinearLayout extends LinearLayout {
+    private EasyShapeBase mShape;
 
     /*public EasyEditTextManager(Context context) {
         super(context);
-        mShape = new ShapeSuper(this);
+        mShape = new EasyShapeBase(this);
         initAttrs(context, null);
     }*/
 
-    public EasyLinearLayoutManager(Context context, AttributeSet attrs) {
+    public EasyShapeLinearLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mShape = new ShapeSuper(this);
+        mShape = new EasyShapeBase(this);
         initAttrs(context, attrs);
     }
 
-    public EasyLinearLayoutManager(Context context, AttributeSet attrs, int defStyleAttr) {
+    public EasyShapeLinearLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mShape = new ShapeSuper(this);
+        mShape = new EasyShapeBase(this);
         initAttrs(context, attrs);
     }
 
     private void initAttrs(Context context, AttributeSet attrs) {
-        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.EasyLinearLayout);
-        mShape.mStrokeWidth = (int) ta.getDimension(R.styleable.EasyLinearLayout_stroke_width, 0);
-        mShape.mStrokeColor = ta.getColor(R.styleable.EasyLinearLayout_stroke_color, 0);
-        mShape.mStrokeClickColor = ta.getColor(R.styleable.EasyLinearLayout_stroke_click_color, 0);
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.EasyShapeLinearLayout);
+        mShape.mStrokeWidth = (int) ta.getDimension(R.styleable.EasyShapeLinearLayout_stroke_width, 0);
+        mShape.mStrokeColor = ta.getColor(R.styleable.EasyShapeLinearLayout_stroke_color, 0);
+        mShape.mStrokeClickColor = ta.getColor(R.styleable.EasyShapeLinearLayout_stroke_click_color, 0);
 
-        mShape.mCorners = (int) ta.getDimension(R.styleable.EasyLinearLayout_corners, 0);
-        mShape.mCornersHalfRound = ta.getBoolean(R.styleable.EasyLinearLayout_corners_half_round, false);
-        mShape.mCornersShowLeft = ta.getBoolean(R.styleable.EasyLinearLayout_cornersShowLeft, true);
-        mShape.mCornersShowRight = ta.getBoolean(R.styleable.EasyLinearLayout_cornersShowRight, true);
+        mShape.mCorners = (int) ta.getDimension(R.styleable.EasyShapeLinearLayout_corners, 0);
+        mShape.mCornersHalfRound = ta.getBoolean(R.styleable.EasyShapeLinearLayout_corners_half_round, false);
+        mShape.mCornersShowLeft = ta.getBoolean(R.styleable.EasyShapeLinearLayout_cornersShowLeft, true);
+        mShape.mCornersShowRight = ta.getBoolean(R.styleable.EasyShapeLinearLayout_cornersShowRight, true);
 
-        mShape.mSolidColor = ta.getColor(R.styleable.EasyLinearLayout_solid_color, 0);
-        mShape.mSolidClickColor = ta.getColor(R.styleable.EasyLinearLayout_solid_click_color, 0);
+        mShape.mSolidColor = ta.getColor(R.styleable.EasyShapeLinearLayout_solid_color, 0);
+        mShape.mSolidClickColor = ta.getColor(R.styleable.EasyShapeLinearLayout_solid_click_color, 0);
 
-        mShape.mClickType = ta.getInt(R.styleable.EasyLinearLayout_click_type, 0);
+        mShape.mClickType = ta.getInt(R.styleable.EasyShapeLinearLayout_click_type, 0);
 
         /*int padding = (int) ta.getDimension(R.styleable.EasyLinearLayout_android_padding, 0);
         if (padding == 0) {

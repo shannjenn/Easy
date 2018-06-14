@@ -1,4 +1,4 @@
-package com.jen.easyui.headImage;
+package com.jen.easyui.baseview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -26,7 +26,7 @@ import com.jen.easyui.util.EasyDensityUtil;
  * 时间：2017/8/12.
  */
 
-abstract class EasyCustomImageManager extends AppCompatImageView {
+public class EasyCustomImageView extends AppCompatImageView {
     /**
      * (默认)android.widget.ImageView
      */
@@ -60,18 +60,18 @@ abstract class EasyCustomImageManager extends AppCompatImageView {
     private BitmapShader mShader;
     private Matrix mMatrix = new Matrix();
 
-    public EasyCustomImageManager(Context context, AttributeSet attrs) {
+    public EasyCustomImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initAttrs(context, attrs);
     }
 
     private void initAttrs(Context context, AttributeSet attrs) {
-        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.EasyCustomImage);
-        mType = ta.getInt(R.styleable.EasyCustomImage_type, DEFAULT_TYPE);
-        mBorderColor = ta.getColor(R.styleable.EasyCustomImage_borderColor, DEFAULT_BORDER_COLOR);
-        mBorderWidth = ta.getDimensionPixelSize(R.styleable.EasyCustomImage_borderWidth,
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.EasyCustomImageView);
+        mType = ta.getInt(R.styleable.EasyCustomImageView_type, DEFAULT_TYPE);
+        mBorderColor = ta.getColor(R.styleable.EasyCustomImageView_borderColor, DEFAULT_BORDER_COLOR);
+        mBorderWidth = ta.getDimensionPixelSize(R.styleable.EasyCustomImageView_borderWidth,
                 EasyDensityUtil.dip2px(context, DEFAULT_BORDER_WIDTH));
-        mRectRoundRadius = ta.getDimensionPixelSize(R.styleable.EasyCustomImage_rectRoundRadius,
+        mRectRoundRadius = ta.getDimensionPixelSize(R.styleable.EasyCustomImageView_rectRoundRadius,
                 EasyDensityUtil.dip2px(context, DEFAULT_RECT_ROUND_RADIUS));
         ta.recycle();
     }

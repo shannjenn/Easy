@@ -12,8 +12,8 @@ import com.jen.easytest.R;
 import com.jen.easytest.fragment.EmptyFragmentBlue;
 import com.jen.easytest.fragment.EmptyFragmentRed;
 import com.jen.easyui.base.EasyActivity;
-import com.jen.easyui.tabbar.EasyTabBarBottom;
-import com.jen.easyui.tabbar.EasyTabBarTop;
+import com.jen.easyui.baseview.EasyTabBarBottom;
+import com.jen.easyui.baseview.EasyTabBarTop;
 import com.jen.easyui.viewpager.EasyFragmentPagerAdapter;
 
 import java.util.ArrayList;

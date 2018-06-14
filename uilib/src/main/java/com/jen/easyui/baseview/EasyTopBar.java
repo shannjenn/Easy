@@ -1,4 +1,4 @@
-package com.jen.easyui.topbar;
+package com.jen.easyui.baseview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -22,9 +22,7 @@ import com.jen.easyui.util.EasyDensityUtil;
  * 作者：ShannJenn
  * 时间：2017/8/12.
  */
-abstract class EasyTopBarManager extends RelativeLayout {
-    private static final String TAG = EasyTopBarManager.class.getSimpleName();
-
+public class EasyTopBar extends RelativeLayout {
     private Context mContext;
 
     //左侧文字布局
@@ -73,21 +71,21 @@ abstract class EasyTopBarManager extends RelativeLayout {
     //显示显示底部的分割线。默认为显示
     private boolean isShowBottomLine = true;
 
-    public EasyTopBarManager(Context context) {
+    public EasyTopBar(Context context) {
         this(context, null);
         this.mContext = context;
         initAttrs(context, null);
         initView();
     }
 
-    public EasyTopBarManager(Context context, AttributeSet attrs) {
+    public EasyTopBar(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
         this.mContext = context;
         initAttrs(context, attrs);
         initView();
     }
 
-    public EasyTopBarManager(Context context, AttributeSet attrs, int defStyleAttr) {
+    public EasyTopBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.mContext = context;
         initAttrs(context, attrs);

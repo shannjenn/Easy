@@ -1,4 +1,4 @@
-package com.jen.easyui.tabbar;
+package com.jen.easyui.baseview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -14,6 +14,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,7 +32,7 @@ import java.util.List;
  * 作者：ShannJenn
  * 时间：2017/10/31.
  */
-abstract class EasyTabBarTopManager extends HorizontalScrollView {
+public class EasyTabBarTop extends HorizontalScrollView {
     private Context mContext;
     /*默认颜色*/
     private int COLOR_DEFAULT = 0xff000000;
@@ -100,17 +101,17 @@ abstract class EasyTabBarTopManager extends HorizontalScrollView {
     private RectF mRect = new RectF();
 
 
-    public EasyTabBarTopManager(Context context) {
+    public EasyTabBarTop(Context context) {
         this(context, null, 0);
     }
 
-    public EasyTabBarTopManager(Context context, AttributeSet attrs) {
+    public EasyTabBarTop(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
         this.mContext = context;
         initAttrs(attrs);
     }
 
-    public EasyTabBarTopManager(Context context, AttributeSet attrs, int defStyleAttr) {
+    public EasyTabBarTop(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.mContext = context;
         initAttrs(attrs);
@@ -157,7 +158,7 @@ abstract class EasyTabBarTopManager extends HorizontalScrollView {
         removeAllViews();
         mTabsContainer = new LinearLayout(mContext);
         mTabsContainer.setOrientation(LinearLayout.HORIZONTAL);
-        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
         addView(mTabsContainer, layoutParams);
     }
 
@@ -416,7 +417,7 @@ abstract class EasyTabBarTopManager extends HorizontalScrollView {
         super.onRestoreInstanceState(state);
     }*/
 
-    OnClickListener onClickListener = new OnClickListener() {
+    View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             mCurrentTab = (int) v.getTag();

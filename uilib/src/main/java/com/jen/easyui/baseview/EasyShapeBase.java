@@ -1,4 +1,4 @@
-package com.jen.easyui.shape;
+package com.jen.easyui.baseview;
 
 import android.graphics.Paint;
 import android.graphics.drawable.GradientDrawable;
@@ -12,7 +12,7 @@ import android.widget.TextView;
  * 时间：2018/03/12.
  */
 
-class ShapeSuper<T extends View> {
+class EasyShapeBase<T extends View> {
     private T t;
     private boolean isTextView;//是否为textView
 
@@ -47,7 +47,7 @@ class ShapeSuper<T extends View> {
     protected int mTextClickColor;
      /*------------------------------------------------只属于TextView属性end*/
 
-    public ShapeSuper(T t) {
+    public EasyShapeBase(T t) {
         this.t = t;
         isTextView = t instanceof TextView;
     }

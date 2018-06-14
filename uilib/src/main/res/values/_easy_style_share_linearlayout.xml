@@ -1,5 +1,5 @@
 <resources>
-    <declare-styleable name="EasyLinearLayout">
+    <declare-styleable name="EasyShapeLinearLayout">
         <attr name="stroke_width" />
         <attr name="stroke_color" />
         <attr name="stroke_click_color" />
