@@ -1,0 +1,8 @@
+<resources>
+    <declare-styleable name="EasyTagEditText">
+        <attr name="tagBackgroundColor" format="color" />
+        <attr name="tagBackgroundHeight" format="dimension" />
+        <attr name="tagTextColor" format="color" />
+        <attr name="tagTextSize" format="dimension" />
+    </declare-styleable>
+</resources>

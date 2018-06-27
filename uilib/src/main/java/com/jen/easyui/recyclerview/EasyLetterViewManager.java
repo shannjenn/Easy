@@ -85,7 +85,7 @@ public class EasyLetterViewManager extends View {
 
         textTouchColor = ta.getColor(R.styleable.EasyLetterView_textTouchColor, Color.RED);
         textDefaultColor = ta.getColor(R.styleable.EasyLetterView_textDefaultColor, Color.BLACK);
-        textSize = ta.getDimensionPixelOffset(R.styleable.EasyLetterView_textSize, EasyDensityUtil.sp2px(context, 14.0f));
+        textSize = ta.getDimensionPixelOffset(R.styleable.EasyLetterView_textSize, (int) EasyDensityUtil.sp2px(14.0f));
 
         backgroundTouchColor = ta.getColor(R.styleable.EasyLetterView_backgroundTouchColor, Color.TRANSPARENT);
         backgroundColor = ta.getLayoutDimension(R.styleable.EasyLetterView_android_background, Color.TRANSPARENT);
@@ -96,7 +96,7 @@ public class EasyLetterViewManager extends View {
         dialogTextBackground = ta.getResourceId(R.styleable.EasyLetterView_dialogTextBackground, -1);
         dialogTextBackgroundWith = ta.getDimensionPixelOffset(R.styleable.EasyLetterView_dialogTextBackgroundWith, 0);
         dialogTextBackgroundHeight = ta.getDimensionPixelOffset(R.styleable.EasyLetterView_dialogTextBackgroundHeight, 0);
-        dialogTextSize = ta.getDimensionPixelOffset(R.styleable.EasyLetterView_dialogTextSize, EasyDensityUtil.sp2px(context, 14.0f));
+        dialogTextSize = ta.getDimensionPixelOffset(R.styleable.EasyLetterView_dialogTextSize, (int) EasyDensityUtil.sp2px(14.0f));
         dialogTextColor = ta.getColor(R.styleable.EasyLetterView_dialogTextColor, Color.RED);
         dialogTextMarginRight = ta.getDimensionPixelOffset(R.styleable.EasyLetterView_dialogTextMarginRight, 0);
 
@@ -194,7 +194,7 @@ public class EasyLetterViewManager extends View {
             float x;
             float y = i * letterPerHeight + letterPerHeight / 2 + letterRect.height() / 2 + paddingTop;
             if (width < 0) {
-                int differ = EasyDensityUtil.dip2px(context, 20);//当布局宽度不固定时，暂时不做算法
+                int differ = (int) EasyDensityUtil.dp2px(20);//当布局宽度不固定时，暂时不做算法
                 x = getWidth() - (differ + letterWidth) / 2;
             } else {
                 x = getWidth() - (width + letterWidth) / 2;

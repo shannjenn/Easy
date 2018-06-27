@@ -3,8 +3,10 @@ package com.jen.easytest.activity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.jen.easy.Easy;
 import com.jen.easytest.R;
 import com.jen.easyui.base.EasyActivity;
+import com.jen.easyui.baseview.EasyTagEditText;
 
 /**
  * 作者：ShannJenn
@@ -12,6 +14,9 @@ import com.jen.easyui.base.EasyActivity;
  */
 
 public class DrawableActivity extends EasyActivity {
+
+    @Easy.BIND.ID(R.id.easyTagEditText)
+    EasyTagEditText easyTagEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +32,7 @@ public class DrawableActivity extends EasyActivity {
     @Override
     protected void initViews() {
 //        easyButon.setBackgroundColor(0xffff0000);
+//        easyTagEditText.setTagTextSize(18);
     }
 
     @Override
@@ -47,5 +53,19 @@ public class DrawableActivity extends EasyActivity {
     @Override
     public void fail(int flagCode, String flag, String msg) {
 
+    }
+
+    @Easy.BIND.Method({R.id.button})
+    private void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.button: {
+                easyTagEditText.insertTag(easyTagEditText.getInputText());
+                break;
+            }
+            default: {
+
+                break;
+            }
+        }
     }
 }

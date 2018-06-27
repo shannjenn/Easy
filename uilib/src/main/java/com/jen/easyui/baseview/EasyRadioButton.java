@@ -64,7 +64,7 @@ public class EasyRadioButton extends RelativeLayout {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.EasyRadioButton);
         radioText = ta.getString(R.styleable.EasyRadioButton_radioText);
         radioTextColor = ta.getColor(R.styleable.EasyRadioButton_radioTextColor, 0xff333333);
-        radioTextSize = ta.getDimension(R.styleable.EasyRadioButton_radioTextSize, EasyDensityUtil.sp2px(context, 14));
+        radioTextSize = ta.getDimension(R.styleable.EasyRadioButton_radioTextSize, EasyDensityUtil.sp2px(14));
         radioTextPadding = ta.getDimensionPixelOffset(R.styleable.EasyRadioButton_radioTextPadding, 0);
 
         radioSrc = ta.getDrawable(R.styleable.EasyRadioButton_radioSrc);
@@ -99,7 +99,7 @@ public class EasyRadioButton extends RelativeLayout {
 
         LayoutParams radioTextParam = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         LayoutParams radioImgParam = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        LayoutParams bottomLineParam = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, EasyDensityUtil.dip2px(mContext, 0.5f));
+        LayoutParams bottomLineParam = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, (int) EasyDensityUtil.dp2px(0.5f));
         radioTextParam.addRule(RelativeLayout.CENTER_VERTICAL);
         radioImgParam.addRule(RelativeLayout.CENTER_VERTICAL);
         bottomLineParam.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);

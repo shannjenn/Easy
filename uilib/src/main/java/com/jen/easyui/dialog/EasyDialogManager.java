@@ -123,9 +123,9 @@ abstract class EasyDialogManager extends Dialog implements View.OnClickListener 
 //        window.getDecorView().setPadding(0, 0, 0, 0); //消除边距
 
         WindowManager.LayoutParams lp = window.getAttributes();
-        lp.width = EasyDensityUtil.dip2px(context, mWidth);
+        lp.width = (int) EasyDensityUtil.dp2px(mWidth);
 //        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        lp.height = EasyDensityUtil.dip2px(context, mHeight);
+        lp.height = (int) EasyDensityUtil.dp2px(mHeight);
         window.setAttributes(lp);
     }
 

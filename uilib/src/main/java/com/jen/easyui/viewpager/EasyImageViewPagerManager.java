@@ -54,7 +54,7 @@ abstract class EasyImageViewPagerManager extends RelativeLayout {
 
         LayoutParams linearLayoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         linearLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-        linearLayoutParams.bottomMargin = EasyDensityUtil.dip2px(getContext(), DB_BOTTOM_MARGIN);
+        linearLayoutParams.bottomMargin = (int) EasyDensityUtil.dp2px(DB_BOTTOM_MARGIN);
         numLayout = new LinearLayout(getContext());
         numLayout.setLayoutParams(linearLayoutParams);
         addView(numLayout);
@@ -105,7 +105,7 @@ abstract class EasyImageViewPagerManager extends RelativeLayout {
      */
     protected void setNumCount(int numCount) {
         this.numCount = numCount;
-        int size = EasyDensityUtil.dip2px(getContext(), DB_NUM_SIZE);
+        int size = (int) EasyDensityUtil.dp2px(DB_NUM_SIZE);
         LinearLayout.LayoutParams poitParams = new LinearLayout.LayoutParams(size, size);
         poitParams.rightMargin = DB_NUM_DISTANCE;
 //        poitParams.setMargins(0, 0, DB_NUM_DISTANCE, 0);

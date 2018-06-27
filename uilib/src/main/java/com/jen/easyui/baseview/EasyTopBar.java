@@ -96,7 +96,7 @@ public class EasyTopBar extends RelativeLayout {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.EasyTopBar);
 
         mLeftText = ta.getString(R.styleable.EasyTopBar_leftText);
-        mLeftTextSize = ta.getDimensionPixelOffset(R.styleable.EasyTopBar_leftTextSize, EasyDensityUtil.sp2px(mContext, 16.0f));
+        mLeftTextSize = ta.getDimensionPixelOffset(R.styleable.EasyTopBar_leftTextSize, (int) EasyDensityUtil.sp2px(16.0f));
         mLeftTextColor = ta.getColor(R.styleable.EasyTopBar_leftTextColor, 0xFF000000);
 //        mLeftTextWithLeftImg = ta.getDrawable(R.styleable.EasyTopBar_leftTextWithImg);
 
@@ -105,13 +105,13 @@ public class EasyTopBar extends RelativeLayout {
         mLeftImageBackground = ta.getDrawable(R.styleable.EasyTopBar_leftImageBackground);
 
         mRightText = ta.getString(R.styleable.EasyTopBar_rightText);
-        mRightTextSize = ta.getDimensionPixelOffset(R.styleable.EasyTopBar_rightTextSize, EasyDensityUtil.sp2px(mContext, 16.0f));
+        mRightTextSize = ta.getDimensionPixelOffset(R.styleable.EasyTopBar_rightTextSize, (int) EasyDensityUtil.sp2px(16.0f));
         mRightTextColor = ta.getColor(R.styleable.EasyTopBar_rightTextColor, 0xFF000000);
 //        isShowFaceLeftImage = ta.getBoolean(R.styleable.EasyTopBar_showLeftFaceImage, false);
         mRightImage = ta.getDrawable(R.styleable.EasyTopBar_rightImage);
 
         mTitle = ta.getString(R.styleable.EasyTopBar_titleText);
-        mTitleTextSize = ta.getDimensionPixelOffset(R.styleable.EasyTopBar_titleTextSize, EasyDensityUtil.sp2px(mContext, 16.0f));
+        mTitleTextSize = ta.getDimensionPixelOffset(R.styleable.EasyTopBar_titleTextSize, (int) EasyDensityUtil.sp2px(16.0f));
         mTitleColor = ta.getColor(R.styleable.EasyTopBar_titleTextColor, 0xFF000000);
 
         isShowBottomLine = ta.getBoolean(R.styleable.EasyTopBar_isShowBottomLine, true);

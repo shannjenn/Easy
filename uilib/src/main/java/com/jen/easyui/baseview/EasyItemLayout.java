@@ -85,15 +85,15 @@ public class EasyItemLayout extends RelativeLayout {
     }
 
     private void initAttrs(AttributeSet attrs, int defStyleAttr) {
-        int defaultTextSize = EasyDensityUtil.sp2px(context, DEFAULT_TEXT_SIZE);
+        int defaultTextSize = (int) EasyDensityUtil.dp2px(DEFAULT_TEXT_SIZE);
         TypedArray a = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.EasyItemLayout, defStyleAttr, 0);
 
         itemEdit = a.getBoolean(R.styleable.EasyItemLayout_itemEdit, false);
 
-        itemPaddingLeft = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemPaddingLeft, EasyDensityUtil.dip2px(context, 10));
-        itemPaddingRight = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemPaddingRight, EasyDensityUtil.dip2px(context, 10));
-        itemPaddingTop = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemPaddingTop, EasyDensityUtil.dip2px(context, 10));
-        itemPaddingBottom = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemPaddingBottom, EasyDensityUtil.dip2px(context, 10));
+        itemPaddingLeft = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemPaddingLeft, (int) EasyDensityUtil.dp2px(10));
+        itemPaddingRight = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemPaddingRight, (int) EasyDensityUtil.dp2px(10));
+        itemPaddingTop = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemPaddingTop, (int) EasyDensityUtil.dp2px(10));
+        itemPaddingBottom = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemPaddingBottom, (int) EasyDensityUtil.dp2px(10));
 
         titleText = a.getString(R.styleable.EasyItemLayout_itemTitleText);
         titleTextSize = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemTitleTextSize, defaultTextSize);
@@ -152,7 +152,7 @@ public class EasyItemLayout extends RelativeLayout {
         if (editLines == 1) {
             et_content.setSingleLine(true);
         } else {
-            int etPaddingH = EasyDensityUtil.dip2px(context, 10);
+            int etPaddingH = (int) EasyDensityUtil.dp2px(10);
             et_content.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
             et_content.setGravity(Gravity.TOP);
             et_content.setSingleLine(false);

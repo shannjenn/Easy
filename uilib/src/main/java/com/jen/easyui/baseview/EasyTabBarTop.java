@@ -140,7 +140,7 @@ public class EasyTabBarTop extends HorizontalScrollView {
         mUnderlineColor = ta.getColor(R.styleable.EasyTabBarTop_underlineColor, COLOR_DEFAULT);
         mUnderlineHeight = ta.getDimension(R.styleable.EasyTabBarTop_underlineHeight, 0);
 
-        mTabTextsize = ta.getDimension(R.styleable.EasyTabBarTop_tabTextSize, EasyDensityUtil.sp2px(mContext, TEXT_SIZE_DEFAULT));
+        mTabTextsize = ta.getDimension(R.styleable.EasyTabBarTop_tabTextSize, EasyDensityUtil.sp2px(TEXT_SIZE_DEFAULT));
         mTabWidth = (int) ta.getDimension(R.styleable.EasyTabBarTop_tabWidth, -2f);//-2为WRAP_CONTENT属性
         mTabHeith = (int) ta.getDimension(R.styleable.EasyTabBarTop_tabHeight, -2f);
         mTabPaddingLeft = (int) ta.getDimension(R.styleable.EasyTabBarTop_tabPaddingLeft, 0);

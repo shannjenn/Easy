@@ -29,7 +29,7 @@ abstract class EasyTreeRecyclerAdapterManager<T extends EasyTreeItem> extends Ea
      */
     EasyTreeRecyclerAdapterManager(Context context, List<T> data) {
         super(context, data);
-        spaceSize = EasyDensityUtil.dip2px(mContext, itemLeftSpace());
+        spaceSize = (int) EasyDensityUtil.dp2px(itemLeftSpace());
     }
 
     @Override

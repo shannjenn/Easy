@@ -117,7 +117,7 @@ public class EasyTabBarBottom extends RelativeLayout {
         itemSize = a.getInt(R.styleable.EasyTabBarBottom_itemSize, 0);
         textSelectColor = a.getColor(R.styleable.EasyTabBarBottom_textSelectColor, DEFAULT_TEXT_COLOR);
         textUnSelectColor = a.getColor(R.styleable.EasyTabBarBottom_textUnSelectColor, DEFAULT_TEXT_COLOR);
-        textSize = a.getDimensionPixelOffset(R.styleable.EasyTabBarBottom_textSize, EasyDensityUtil.dip2px(context, DEFAULT_TEXT_SIZE));
+        textSize = a.getDimensionPixelOffset(R.styleable.EasyTabBarBottom_textSize, (int) EasyDensityUtil.dp2px(DEFAULT_TEXT_SIZE));
 
         String txt0 = a.getString(R.styleable.EasyTabBarBottom_text0);
         String txt1 = a.getString(R.styleable.EasyTabBarBottom_text1);

@@ -61,13 +61,13 @@ public class ImageLoaderConfig {
         return this;
     }
 
-    public ImageLoaderConfig imgHeight(int defautHeight) {
-        this.imgHeight = defautHeight;
+    public ImageLoaderConfig imgHeight(int defaultHeight) {
+        this.imgHeight = defaultHeight;
         return this;
     }
 
-    public ImageLoaderConfig imgWidth(int defautWidth) {
-        this.imgWidth = defautWidth;
+    public ImageLoaderConfig imgWidth(int defaultWidth) {
+        this.imgWidth = defaultWidth;
         return this;
     }
 

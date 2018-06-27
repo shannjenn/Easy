@@ -5,6 +5,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:text="按钮" />
+
+    <com.jen.easyui.baseview.EasyTagEditText
+        android:id="@+id/easyTagEditText"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:gravity="center_vertical"
+        android:textSize="18sp" />
+
     <com.jen.easyui.baseview.EasyShapeTextView
         android:id="@+id/easyTextView"
         android:layout_width="match_parent"

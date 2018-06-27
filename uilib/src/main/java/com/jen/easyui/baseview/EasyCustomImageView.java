@@ -70,9 +70,9 @@ public class EasyCustomImageView extends AppCompatImageView {
         mType = ta.getInt(R.styleable.EasyCustomImageView_type, DEFAULT_TYPE);
         mBorderColor = ta.getColor(R.styleable.EasyCustomImageView_borderColor, DEFAULT_BORDER_COLOR);
         mBorderWidth = ta.getDimensionPixelSize(R.styleable.EasyCustomImageView_borderWidth,
-                EasyDensityUtil.dip2px(context, DEFAULT_BORDER_WIDTH));
+                (int) EasyDensityUtil.dp2px(DEFAULT_BORDER_WIDTH));
         mRectRoundRadius = ta.getDimensionPixelSize(R.styleable.EasyCustomImageView_rectRoundRadius,
-                EasyDensityUtil.dip2px(context, DEFAULT_RECT_ROUND_RADIUS));
+                (int) EasyDensityUtil.dp2px(DEFAULT_RECT_ROUND_RADIUS));
         ta.recycle();
     }
 
