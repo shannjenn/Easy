@@ -6,9 +6,14 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.text.Editable;
+import android.text.Layout;
+import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.widget.TextView;
 
 import com.jen.easyui.R;
 import com.jen.easyui.util.EasyDensityUtil;
@@ -34,8 +39,18 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
 
     private int tagBackgroundColor;
     private int tagBackgroundHeight;//dp
+    private int tagStrokeColor;
+    private float tagStrokeWidth;//dp
     private int tagTextColor;
     private float tagTextSize;//sp
+
+    private boolean same;//标签是否可以相同
+
+    private long lastClickTime = -1;
+    private static final long CLICK_DELAY = 500;//长按事件时间
+    //    private String selectText;
+    private EasyTagListener easyTagListener;
+    private int flag;
 
     private final int H_ClEAR = 10;
     private Handler handler = new Handler(Looper.myLooper()) {
@@ -46,10 +61,8 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
                 case H_ClEAR: {
                     if (inputText.length() > 0) {
                         Editable editableText = getEditableText();
-//                        EasyLog.d("editableText=" + editableText + "inputText=" + inputText + " inputStartIndex=" + inputStartIndex);
                         editableText.delete(inputStartIndex, inputEndIndex);
                         resetInput();
-//                        inputText.clear();
                     }
                     break;
                 }
@@ -57,10 +70,13 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
         }
     };
 
-    /*public EasyTagEditText(Context context) {
-        super(context);
-        init();
-    }*/
+    public interface EasyTagListener {
+        void addTextChanged(int flag, String inputText);
+
+        void removeTags(int flag, List<EasyTag> tags);
+
+        void onLongClick(int flag, EasyTagEditText easyTagEditText, EasyTag easyTag, float x, float y);
+    }
 
     public EasyTagEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -77,8 +93,12 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
     private void initAttrs(Context context, AttributeSet attrs) {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.EasyTagEditText);
         tagBackgroundColor = ta.getColor(R.styleable.EasyTagEditText_tagBackgroundColor, 0xffcccccc);
-        float backGroundSize = ta.getDimension(R.styleable.EasyTagEditText_tagBackgroundHeight, EasyDensityUtil.sp2px(18));
-        tagBackgroundHeight = (int) EasyDensityUtil.px2dp(backGroundSize);
+        float backGroundHeight = ta.getDimension(R.styleable.EasyTagEditText_tagBackgroundHeight, EasyDensityUtil.sp2px(18));
+        tagBackgroundHeight = (int) EasyDensityUtil.px2dp(backGroundHeight);
+
+        tagStrokeColor = ta.getColor(R.styleable.EasyTagEditText_tagStrokeColor, 0xff666666);
+        tagStrokeWidth = ta.getDimension(R.styleable.EasyTagEditText_tagStrokeHeight, 0.5f);
+
         tagTextColor = ta.getColor(R.styleable.EasyTagEditText_tagTextColor, 0xff333333);
         float textSize = ta.getDimension(R.styleable.EasyTagEditText_tagTextSize, EasyDensityUtil.sp2px(14));
         tagTextSize = EasyDensityUtil.px2sp(textSize);
@@ -88,11 +108,16 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
 
     private void init() {
         addTextChangedListener(this);
+        setMovementMethod(new EasyTagLinkMovementMethod());
+        setLongClickable(false);
+        setText(" ");//解决光标不显示问题
+//        setTop();
     }
 
     @Override
     protected void onSelectionChanged(int selStart, int selEnd) {
         super.onSelectionChanged(selStart, selEnd);
+//        EasyLog.d("onSelectionChanged ---------- ");
         if (inputText == null) {
             return;
         }
@@ -104,6 +129,65 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
             if (inputText.length() == 0) {
                 resetInput();
             }
+        }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+//        EasyLog.d("onTouchEvent ---------- ");
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_UP: {
+                if (getText().length() == 0) {
+                    setText(" ");//解决光标不显示问题
+                }
+                break;
+            }
+        }
+        return super.onTouchEvent(event);
+    }
+
+    class EasyTagLinkMovementMethod extends LinkMovementMethod {
+        @Override
+        public boolean onTouchEvent(TextView widget, Spannable buffer, MotionEvent event) {
+//            EasyLog.d("EasyTagLinkMovementMethod onTouchEvent------");
+            int action = event.getAction();
+            if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_MOVE) {
+                int x = (int) event.getX();
+                int y = (int) event.getY();
+
+                x -= widget.getTotalPaddingLeft();
+                y -= widget.getTotalPaddingTop();
+
+                x += widget.getScrollX();
+                y += widget.getScrollY();
+
+                Layout layout = widget.getLayout();
+                int line = layout.getLineForVertical(y);
+                int off = layout.getOffsetForHorizontal(line, x);
+
+                EasyTag.EasyTagClick[] links = buffer.getSpans(off, off, EasyTag.EasyTagClick.class);
+
+                if (links.length != 0) {
+                    if (action == MotionEvent.ACTION_UP) {
+                        links[0].onClick(widget);
+                        lastClickTime = -1;
+                    } else if (action == MotionEvent.ACTION_DOWN) {
+//                        Selection.setSelection(buffer, buffer.getSpanStart(links[0]), buffer.getSpanEnd(links[0]));
+                        lastClickTime = System.currentTimeMillis();
+                    } else if (action == MotionEvent.ACTION_MOVE) {
+                        if (System.currentTimeMillis() - lastClickTime >= CLICK_DELAY && lastClickTime != -1) {//长按事件触发
+                            lastClickTime = -1;
+//                            EasyLog.d("EasyTagLinkMovementMethod 长按事件触发 easyTagClick.easyTag=" + links[0].easyTag, " x=" + x + " y=" + y);
+                            easyTagListener.onLongClick(flag, EasyTagEditText.this, links[0].easyTag, x, y);
+                        }
+                    }
+                    return true;
+                } else {
+//                    Selection.removeSelection(buffer);
+                }
+            }
+//            return super.onTouchEvent(widget, buffer, event);
+            return true;
         }
     }
 
@@ -133,18 +217,21 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
 //        EasyLog.d("onTextChanged start=" + start + " before=" + before + " count=" + count + " s=" + s);
-        if (mEasyTag == null || inputTextAfter.equals(s.toString())) {
-            inputTextAfter = s.toString();
-            return;
-        } else if (s.length() == 0) {
-            mEasyTag.clear();
-            resetInput();
+        if (inputText == null || inputTextAfter.equals(s.toString())) {
             inputTextAfter = s.toString();
             return;
         } else if (isInsert) {
             isInsert = false;
             resetInput();
             inputTextAfter = s.toString();
+            return;
+        } else if (s.length() == 0) {
+            mEasyTag.clear();
+            resetInput();
+            inputTextAfter = s.toString();
+            if (easyTagListener != null) {
+                easyTagListener.addTextChanged(flag, inputText.toString());
+            }
             return;
         }
 
@@ -157,7 +244,7 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
         }
         if (!isEditInput) {
             for (int i = start; i < start + count; i++) {
-                if (i == inputStartIndex && inputStartIndex == inputEndIndex) {
+                if (inputStartIndex == inputEndIndex) {
                     isEditInput = true;
                 } else if (i >= inputStartIndex && i <= inputEndIndex) {
                     isEditInput = true;
@@ -202,16 +289,21 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
             String cut = inputTextTemp.subSequence(startIndex, endIndex).toString();
             String beforeText = inputTextBefore.substring(start, start + before);
             String remain = beforeText.replace(cut, "");
+            List<EasyTag> removes = new ArrayList<>();
             for (int i = 0; i < mEasyTag.size(); i++) {
                 EasyTag easyTag = mEasyTag.get(i);
                 if (remain.contains(easyTag)) {
                     remain.replace(easyTag, "");
-                    mEasyTag.remove(i);
+                    removes.add(easyTag);
                     if (remain.length() == 0) {
                         break;
                     }
                     i--;
                 }
+            }
+            mEasyTag.removeAll(removes);
+            if (easyTagListener != null) {
+                easyTagListener.removeTags(flag, removes);
             }
         } else if (count > 0) {//增加
             int startIndex = start - inputStartIndex;//计算inputText开始删除的位置
@@ -221,8 +313,9 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
         }
         inputEndIndex = inputStartIndex + inputText.length();
         inputTextAfter = s.toString();
-//        EasyLog.d("onTextChanged inputText===" + inputText + " inputStartIndex=" + inputStartIndex + " inputEndIndex=" + inputEndIndex);
-//        EasyLog.d("inputTextAfter inputTextAfter=" + inputTextAfter);
+        if (easyTagListener != null) {
+            easyTagListener.addTextChanged(flag, inputText.toString());
+        }
     }
 
     @Override
@@ -230,6 +323,9 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
 
     }
 
+    /**
+     * 重置inputText
+     */
     private void resetInput() {
         inputText.clear();
         inputStartIndex = getSelectionStart();
@@ -242,16 +338,35 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
      * @param easyTag
      */
     public void insertTag(EasyTag easyTag) {
-        int index = getSelectionStart();
+        if (easyTag == null || easyTag.length() == 0) {
+            return;
+        }
         Editable editableText = getEditableText();
         editableText.replace(inputStartIndex, inputStartIndex + inputText.length(), "");
-        isInsert = true;
-        if (index < 0 || index > getText().length()) {
-            editableText.append(easyTag);
-        } else {
-            editableText.insert(index, easyTag);
+        if (!same && mEasyTag.contains(easyTag)) {
+            resetInput();
+            return;
         }
-        mEasyTag.add(easyTag);
+        int index = getSelectionStart();
+        isInsert = true;
+        int length = getText().length();
+        if (length == 0 || index == length) {
+            editableText.append(easyTag);
+            mEasyTag.add(easyTag);
+        } else {
+            int position = 0;
+            String tags = editableText.subSequence(0, index).toString();
+            StringBuilder builder = new StringBuilder("");
+            do {
+                if (tags.equals(builder.toString())) {
+                    break;
+                }
+                builder.append(mEasyTag.get(position));
+                position++;
+            } while (position < mEasyTag.size());
+            editableText.insert(index, easyTag);
+            mEasyTag.add(position, easyTag);
+        }
         resetInput();
     }
 
@@ -265,11 +380,24 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
                 .setText(tagText)
                 .setBackgroundColor(tagBackgroundColor)
                 .setBackgroundHeight(tagBackgroundHeight)
+                .setStrokeColor(tagStrokeColor)
+                .setStrokeWidth(tagStrokeWidth)
                 .setTextColor(tagTextColor)
                 .setTextSize(tagTextSize)
                 .init();
         EasyTag easyTag = new EasyTag(easyTagDrawable);
         insertTag(easyTag);
+    }
+
+    /**
+     * 插入标签
+     */
+    public void insertTag() {
+        insertTag(inputText.toString());
+    }
+
+    public void setEasyTagListener(EasyTagListener easyTagListener) {
+        this.easyTagListener = easyTagListener;
     }
 
     /**
@@ -299,5 +427,25 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
 
     public void setTagBackgroundHeight(int tagBackgroundHeight) {
         this.tagBackgroundHeight = tagBackgroundHeight;
+    }
+
+    public void setTagStrokeColor(int tagStrokeColor) {
+        this.tagStrokeColor = tagStrokeColor;
+    }
+
+    public void setTagStrokeWidth(float tagStrokeWidth) {
+        this.tagStrokeWidth = tagStrokeWidth;
+    }
+
+    public void setSame(boolean same) {
+        this.same = same;
+    }
+
+    public int getFlag() {
+        return flag;
+    }
+
+    public void setFlag(int flag) {
+        this.flag = flag;
     }
 }

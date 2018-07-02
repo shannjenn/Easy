@@ -717,19 +717,19 @@ abstract class DBDaoManager {
                     field.set(obj, value);
                 } else if (FieldType.isInt(fieldClass)) {
                     int value = cursor.getInt(cursor.getColumnIndex(column));
-                    field.setInt(obj, value);
+                    field.set(obj, value);
                 } else if (FieldType.isFloat(fieldClass)) {
                     float value = cursor.getFloat(cursor.getColumnIndex(column));
-                    field.setFloat(obj, value);
+                    field.set(obj, value);
                 } else if (FieldType.isDouble(fieldClass)) {
                     double value = cursor.getDouble(cursor.getColumnIndex(column));
-                    field.setDouble(obj, value);
+                    field.set(obj, value);
                 } else if (FieldType.isLong(fieldClass)) {
                     long value = cursor.getLong(cursor.getColumnIndex(column));
-                    field.setLong(obj, value);
+                    field.set(obj, value);
                 } else if (FieldType.isDouble(fieldClass)) {
                     boolean value = cursor.getInt(cursor.getColumnIndex(column)) > 0;
-                    field.setBoolean(obj, value);
+                    field.set(obj, value);
                 } else {
                     EasyLog.w(TAG.EasySQL, "valuation 不支持该类型：" + fieldClass);
                 }

@@ -137,28 +137,28 @@ class HttpParseManager {
                     field.set(tObj, res);
                 } else if (FieldType.isInt(fieldClass)) {
                     int res = parseInt(object, param);
-                    field.setInt(tObj, res);
+                    field.set(tObj, res);
                 } else if (FieldType.isLong(fieldClass)) {
                     long res = parseLong(object, param);
-                    field.setLong(tObj, res);
+                    field.set(tObj, res);
                 } else if (FieldType.isFloat(fieldClass)) {
                     float res = parseFloat(object, param);
-                    field.setFloat(tObj, res);
+                    field.set(tObj, res);
                 } else if (FieldType.isDouble(fieldClass)) {
                     double res = parseDouble(object, param);
-                    field.setDouble(tObj, res);
+                    field.set(tObj, res);
                 } else if (FieldType.isShort(fieldClass)) {
                     short res = parseShort(object, param);
-                    field.setShort(tObj, res);
+                    field.set(tObj, res);
                 } else if (FieldType.isBoolean(fieldClass)) {
                     boolean res = parseBoolean(object, param);
-                    field.setBoolean(tObj, res);
+                    field.set(tObj, res);
                 } else if (FieldType.isChar(fieldClass)) {
                     char res = parseCharacter(object, param);
-                    field.setChar(tObj, res);
+                    field.set(tObj, res);
                 } else if (FieldType.isByte(fieldClass)) {
                     byte res = parseByte(object, param);
-                    field.setByte(tObj, res);
+                    field.set(tObj, res);
                 } else if (FieldType.isObject(fieldClass)) {//解析Object通用类型
                     field.set(tObj, object);
                 } else if (FieldType.isList(fieldClass)) {//解析list

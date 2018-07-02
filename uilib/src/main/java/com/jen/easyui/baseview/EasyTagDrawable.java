@@ -19,19 +19,21 @@ import com.jen.easyui.util.EasyDensityUtil;
  */
 
 public class EasyTagDrawable extends Drawable {
-
-    private Paint bgPaint;
+    private Paint backgroundPaint;
+    private Paint strokePaint;
     private Paint textPaint;
 
     private int backgroundWidth;
     private int backgroundHeight = 18;//dp
     private int backgroundColor = 0xffcccccc;
+    private int strokeColor = 0xff666666;
+    private float strokeWidth = 0.5f;//dp
     private int textColor = 0xff333333;
     private String text = "";
     private float textSize = 14;//sp
 
-    private int padding = 20;
-    private int margin = 6;
+    private final int PADDING = 20;
+    private final int MARGIN = 6;
 
     public static EasyTagDrawable build() {
         return new EasyTagDrawable();
@@ -43,10 +45,17 @@ public class EasyTagDrawable extends Drawable {
 
     public EasyTagDrawable init() {
         //背景画笔
-        bgPaint = new Paint();
-        bgPaint.setAntiAlias(true);
-        bgPaint.setStyle(Paint.Style.FILL);
-        bgPaint.setColor(backgroundColor);
+        backgroundPaint = new Paint();
+        backgroundPaint.setAntiAlias(true);
+        backgroundPaint.setStyle(Paint.Style.FILL);
+        backgroundPaint.setColor(backgroundColor);
+
+        //边框画笔
+        strokePaint = new Paint();
+        strokePaint.setAntiAlias(true);
+        strokePaint.setStyle(Paint.Style.STROKE);
+        strokePaint.setColor(strokeColor);
+        strokePaint.setStrokeWidth(EasyDensityUtil.sp2px(strokeWidth));
 
         //文字画笔
         textPaint = new Paint();
@@ -73,14 +82,15 @@ public class EasyTagDrawable extends Drawable {
         Rect rect = getBounds();
         //画背景（圆角矩形框）
         RectF rectF = new RectF(getBounds());
-        rectF.bottom = backgroundHeight + padding;
+        rectF.bottom = backgroundHeight + PADDING;
         //留出空白，以免添加多个tag时出现挤在一起的情况
-        rectF.left = rectF.left + margin;
-        rectF.right = rectF.right - margin / 2;
-        rectF.top = rectF.top + margin;
-        rectF.bottom = rectF.bottom - margin / 2;
-        canvas.drawRoundRect(rectF, 360, 360, bgPaint);
-
+        rectF.left = rectF.left + MARGIN;
+        rectF.right = rectF.right - MARGIN / 2;
+        rectF.top = rectF.top + MARGIN;
+        rectF.bottom = rectF.bottom - MARGIN / 2;
+        canvas.translate(rect.left, rect.top + 15);
+        canvas.drawRoundRect(rectF, 360, 360, backgroundPaint);
+        canvas.drawRoundRect(rectF, 360, 360, strokePaint);
         int count = canvas.save();
         canvas.translate(rect.left, rect.top);
 
@@ -125,7 +135,7 @@ public class EasyTagDrawable extends Drawable {
     @Override
     public void setBounds(int left, int top, int right, int bottom) {
         //设置drawable的宽高
-        super.setBounds(left, top, backgroundWidth + padding, backgroundHeight + padding);
+        super.setBounds(left, top, backgroundWidth + PADDING, backgroundHeight + PADDING);
     }
 
     /**
@@ -175,12 +185,18 @@ public class EasyTagDrawable extends Drawable {
         return this;
     }
 
-    public int getBackgroundHeight() {
-        return backgroundHeight;
-    }
-
     public EasyTagDrawable setBackgroundHeight(int backgroundHeight) {
         this.backgroundHeight = backgroundHeight;
+        return this;
+    }
+
+    public EasyTagDrawable setStrokeColor(int strokeColor) {
+        this.strokeColor = strokeColor;
+        return this;
+    }
+
+    public EasyTagDrawable setStrokeWidth(float strokeWidth) {
+        this.strokeWidth = strokeWidth;
         return this;
     }
 }

@@ -1,12 +1,20 @@
 package com.jen.easytest.activity;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import com.jen.easy.Easy;
 import com.jen.easytest.R;
 import com.jen.easyui.base.EasyActivity;
+import com.jen.easyui.baseview.EasyTag;
 import com.jen.easyui.baseview.EasyTagEditText;
+import com.jen.easyui.popupwindow.EasyPopupWindow;
+
+import java.util.List;
 
 /**
  * 作者：ShannJenn
@@ -17,6 +25,8 @@ public class DrawableActivity extends EasyActivity {
 
     @Easy.BIND.ID(R.id.easyTagEditText)
     EasyTagEditText easyTagEditText;
+
+    EasyPopupWindow easyPopupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +41,30 @@ public class DrawableActivity extends EasyActivity {
 
     @Override
     protected void initViews() {
+        easyPopupWindow = new EasyPopupWindow(mContext);
+        View popView = LayoutInflater.from(this).inflate(R.layout._easy_dialog, null);
+        easyPopupWindow.setContentView(popView);
+        easyPopupWindow.setWidth(500);
+        easyPopupWindow.setHeight(300);
+        easyPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#00000000")));
+        easyPopupWindow.setOutsideTouchable(true);
+        easyPopupWindow.setFocusable(true);
 //        easyButon.setBackgroundColor(0xffff0000);
 //        easyTagEditText.setTagTextSize(18);
+        easyTagEditText.setTagBackgroundColor(0xffff0000);
+        easyTagEditText.setTagStrokeColor(0xffffff00);
+        easyTagEditText.setTagStrokeWidth(2);
+        easyTagEditText.setEasyTagListener(new EasyTagEditText.EasyTagListener() {
+            @Override
+            public void removeTags(List<EasyTag> tags) {
+
+            }
+
+            @Override
+            public void onLongClick(EasyTagEditText easyTagEditText, EasyTag easyTag, float x, float y) {
+                easyPopupWindow.showAtLocation(easyTagEditText, Gravity.NO_GRAVITY, (int) x, (int) y);
+            }
+        });
     }
 
     @Override
@@ -59,7 +91,7 @@ public class DrawableActivity extends EasyActivity {
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.button: {
-                easyTagEditText.insertTag(easyTagEditText.getInputText());
+                easyTagEditText.insertTag();
                 break;
             }
             default: {

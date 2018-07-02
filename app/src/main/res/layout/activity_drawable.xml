@@ -13,9 +13,11 @@
 
     <com.jen.easyui.baseview.EasyTagEditText
         android:id="@+id/easyTagEditText"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:background="@null"
         android:gravity="center_vertical"
+        android:minHeight="46dp"
         android:textSize="18sp" />
 
     <com.jen.easyui.baseview.EasyShapeTextView

@@ -2,10 +2,15 @@ package com.jen.easyui.baseview;
 
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ClickableSpan;
 import android.text.style.ImageSpan;
+import android.view.View;
 
 /**
- * Created by Administrator on 2018/6/20.
+ * 标签
+ * 作者：ShannJenn
+ * 时间：2018/06/20.
  */
 
 public class EasyTag extends SpannableString {
@@ -14,8 +19,23 @@ public class EasyTag extends SpannableString {
         super(easyTagDrawable.getText() + "\t");
 
         easyTagDrawable.setBounds();
+        int length = easyTagDrawable.getText().length() + 1;
         ImageSpan imageSpan = new ImageSpan(easyTagDrawable, ImageSpan.ALIGN_BASELINE);
-        super.setSpan(imageSpan, 0, easyTagDrawable.getText().length() + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        super.setSpan(imageSpan, 0, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        super.setSpan(new EasyTagClick(this), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
+
+    class EasyTagClick extends ClickableSpan {
+        public EasyTag easyTag;
+
+        public EasyTagClick(EasyTag easyTag) {
+            this.easyTag = easyTag;
+        }
+
+        @Override
+        public void onClick(View widget) {
+
+        }
+    }
 }
