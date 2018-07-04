@@ -2,6 +2,7 @@ package com.jen.easyui.baseview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Rect;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -28,8 +29,9 @@ import java.util.List;
  */
 
 public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText implements TextWatcher {
-    private final List<EasyTag> mEasyTag = new ArrayList<>();
+    private final List<String> mEasyTag = new ArrayList<>();
     private boolean isInsert;
+    private boolean isRemove;
 
     private int inputStartIndex;
     private int inputEndIndex;
@@ -44,15 +46,12 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
     private int tagTextColor;
     private float tagTextSize;//sp
 
-    private boolean same;//标签是否可以相同
-
-    private long lastClickTime = -1;
     private static final long CLICK_DELAY = 500;//长按事件时间
-    //    private String selectText;
     private EasyTagListener easyTagListener;
     private int flag;
 
     private final int H_ClEAR = 10;
+    private final int H_ON_LONG_CLICK = 11;
     private Handler handler = new Handler(Looper.myLooper()) {
         @Override
         public void handleMessage(Message msg) {
@@ -66,14 +65,21 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
                     }
                     break;
                 }
+                case H_ON_LONG_CLICK: {
+                    EasyTag easyTag = (EasyTag) msg.obj;
+                    int x = msg.arg1;
+                    int y = msg.arg2;
+                    easyTagListener.onLongClick(flag, EasyTagEditText.this, easyTag, x, y);
+                    break;
+                }
             }
         }
     };
 
     public interface EasyTagListener {
-        void addTextChanged(int flag, String inputText);
+        void inputTextChanged(int flag, String inputText);
 
-        void removeTags(int flag, List<EasyTag> tags);
+        void removeTags(int flag, List<String> tags);
 
         void onLongClick(int flag, EasyTagEditText easyTagEditText, EasyTag easyTag, float x, float y);
     }
@@ -110,8 +116,6 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
         addTextChangedListener(this);
         setMovementMethod(new EasyTagLinkMovementMethod());
         setLongClickable(false);
-        setText(" ");//解决光标不显示问题
-//        setTop();
     }
 
     @Override
@@ -133,8 +137,13 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
     }
 
     @Override
+    protected void onFocusChanged(boolean focused, int direction, Rect previouslyFocusedRect) {
+        super.onFocusChanged(focused, direction, previouslyFocusedRect);
+    }
+
+    @Override
     public boolean onTouchEvent(MotionEvent event) {
-//        EasyLog.d("onTouchEvent ---------- ");
+//        EasyLog.d("onTouchEvent ---------- event="+event.getAction());
         switch (event.getAction()) {
             case MotionEvent.ACTION_UP: {
                 if (getText().length() == 0) {
@@ -149,9 +158,11 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
     class EasyTagLinkMovementMethod extends LinkMovementMethod {
         @Override
         public boolean onTouchEvent(TextView widget, Spannable buffer, MotionEvent event) {
-//            EasyLog.d("EasyTagLinkMovementMethod onTouchEvent------");
             int action = event.getAction();
-            if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_MOVE) {
+//            EasyLog.d("EasyTagLinkMovementMethod onTouchEvent action=" + action);
+            if (action == MotionEvent.ACTION_UP) {
+                handler.removeMessages(H_ON_LONG_CLICK);
+            } else if (action == MotionEvent.ACTION_DOWN && easyTagListener != null) {
                 int x = (int) event.getX();
                 int y = (int) event.getY();
 
@@ -168,19 +179,12 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
                 EasyTag.EasyTagClick[] links = buffer.getSpans(off, off, EasyTag.EasyTagClick.class);
 
                 if (links.length != 0) {
-                    if (action == MotionEvent.ACTION_UP) {
-                        links[0].onClick(widget);
-                        lastClickTime = -1;
-                    } else if (action == MotionEvent.ACTION_DOWN) {
-//                        Selection.setSelection(buffer, buffer.getSpanStart(links[0]), buffer.getSpanEnd(links[0]));
-                        lastClickTime = System.currentTimeMillis();
-                    } else if (action == MotionEvent.ACTION_MOVE) {
-                        if (System.currentTimeMillis() - lastClickTime >= CLICK_DELAY && lastClickTime != -1) {//长按事件触发
-                            lastClickTime = -1;
-//                            EasyLog.d("EasyTagLinkMovementMethod 长按事件触发 easyTagClick.easyTag=" + links[0].easyTag, " x=" + x + " y=" + y);
-                            easyTagListener.onLongClick(flag, EasyTagEditText.this, links[0].easyTag, x, y);
-                        }
-                    }
+                    Message message = handler.obtainMessage();
+                    message.what = H_ON_LONG_CLICK;
+                    message.arg1 = x;
+                    message.arg2 = y;
+                    message.obj = links[0].easyTag;
+                    handler.sendMessageDelayed(message, CLICK_DELAY);
                     return true;
                 } else {
 //                    Selection.removeSelection(buffer);
@@ -225,12 +229,17 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
             resetInput();
             inputTextAfter = s.toString();
             return;
+        } else if (isRemove) {
+            isRemove = false;
+            resetInput();
+            inputTextAfter = s.toString();
+            return;
         } else if (s.length() == 0) {
             mEasyTag.clear();
             resetInput();
             inputTextAfter = s.toString();
             if (easyTagListener != null) {
-                easyTagListener.addTextChanged(flag, inputText.toString());
+                easyTagListener.inputTextChanged(flag, inputText.toString());
             }
             return;
         }
@@ -257,6 +266,23 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
                 inputEndIndex = inputEndIndex + count - before;
             }
             inputTextAfter = s.toString();
+
+            String deleteText = inputTextBefore.substring(start, start + before);
+            List<String> removes = new ArrayList<>();
+            for (int i = 0; i < mEasyTag.size(); i++) {
+                String easyTag = mEasyTag.get(i);
+                if (deleteText.contains(easyTag)) {
+                    deleteText.replace(easyTag, "");
+                    removes.add(easyTag);
+                    if (deleteText.length() == 0) {
+                        break;
+                    }
+                }
+            }
+            mEasyTag.removeAll(removes);
+            if (easyTagListener != null) {
+                easyTagListener.removeTags(flag, removes);
+            }
             return;
         }
 
@@ -289,16 +315,15 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
             String cut = inputTextTemp.subSequence(startIndex, endIndex).toString();
             String beforeText = inputTextBefore.substring(start, start + before);
             String remain = beforeText.replace(cut, "");
-            List<EasyTag> removes = new ArrayList<>();
+            List<String> removes = new ArrayList<>();
             for (int i = 0; i < mEasyTag.size(); i++) {
-                EasyTag easyTag = mEasyTag.get(i);
+                String easyTag = mEasyTag.get(i);
                 if (remain.contains(easyTag)) {
                     remain.replace(easyTag, "");
                     removes.add(easyTag);
                     if (remain.length() == 0) {
                         break;
                     }
-                    i--;
                 }
             }
             mEasyTag.removeAll(removes);
@@ -314,7 +339,7 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
         inputEndIndex = inputStartIndex + inputText.length();
         inputTextAfter = s.toString();
         if (easyTagListener != null) {
-            easyTagListener.addTextChanged(flag, inputText.toString());
+            easyTagListener.inputTextChanged(flag, inputText.toString());
         }
     }
 
@@ -330,6 +355,9 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
         inputText.clear();
         inputStartIndex = getSelectionStart();
         inputEndIndex = getSelectionStart();
+        if (inputStartIndex < 0) {
+            inputStartIndex = 0;
+        }
     }
 
     /**
@@ -342,17 +370,24 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
             return;
         }
         Editable editableText = getEditableText();
-        editableText.replace(inputStartIndex, inputStartIndex + inputText.length(), "");
-        if (!same && mEasyTag.contains(easyTag)) {
-            resetInput();
-            return;
+        if(inputText.length() > 0){
+            editableText.replace(inputStartIndex, inputStartIndex + inputText.length(), "");
+        }
+        for (int i = 0; i < mEasyTag.size(); i++) {
+            if (mEasyTag.get(i).toString().trim().equals(easyTag.toString().trim())) {//不可以相同标签
+                resetInput();
+                return;
+            }
         }
         int index = getSelectionStart();
+        if(index < 0){
+            index = 0;
+        }
         isInsert = true;
         int length = getText().length();
         if (length == 0 || index == length) {
             editableText.append(easyTag);
-            mEasyTag.add(easyTag);
+            mEasyTag.add(easyTag.toString());
         } else {
             int position = 0;
             String tags = editableText.subSequence(0, index).toString();
@@ -365,7 +400,7 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
                 position++;
             } while (position < mEasyTag.size());
             editableText.insert(index, easyTag);
-            mEasyTag.add(position, easyTag);
+            mEasyTag.add(position, easyTag.toString());
         }
         resetInput();
     }
@@ -396,6 +431,26 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
         insertTag(inputText.toString());
     }
 
+    /**
+     * 移除标签
+     *
+     * @param easyTag
+     */
+    public void removeTag(EasyTag easyTag) {
+        Editable editableText = getEditableText();
+        String text = editableText.toString();
+        int start = text.indexOf(easyTag.toString());
+        int end = start + easyTag.length();
+        isRemove = true;
+        editableText.delete(start, end);
+        mEasyTag.remove(easyTag.toString());
+        List<String> removes = new ArrayList<>();
+        removes.add(easyTag.toString());
+        if (easyTagListener != null) {
+            easyTagListener.removeTags(flag, removes);
+        }
+    }
+
     public void setEasyTagListener(EasyTagListener easyTagListener) {
         this.easyTagListener = easyTagListener;
     }
@@ -405,7 +460,7 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
      *
      * @return
      */
-    public List<EasyTag> getEasyTag() {
+    public List<String> getEasyTag() {
         return mEasyTag;
     }
 
@@ -435,10 +490,6 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
 
     public void setTagStrokeWidth(float tagStrokeWidth) {
         this.tagStrokeWidth = tagStrokeWidth;
-    }
-
-    public void setSame(boolean same) {
-        this.same = same;
     }
 
     public int getFlag() {

@@ -16,13 +16,13 @@ import android.view.View;
 public class EasyTag extends SpannableString {
 
     public EasyTag(EasyTagDrawable easyTagDrawable) {
-        super(easyTagDrawable.getText() + "\t");
+        super("\t" + easyTagDrawable.getText() + "\t");
 
         easyTagDrawable.setBounds();
-        int length = easyTagDrawable.getText().length() + 1;
+        int length = easyTagDrawable.getText().length() + 2;
         ImageSpan imageSpan = new ImageSpan(easyTagDrawable, ImageSpan.ALIGN_BASELINE);
         super.setSpan(imageSpan, 0, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        super.setSpan(new EasyTagClick(this), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        super.setSpan(new EasyTagClick(this), 0, length - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);//关系到点击事件
     }
 
 

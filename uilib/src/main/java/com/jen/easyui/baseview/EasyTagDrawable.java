@@ -33,7 +33,7 @@ public class EasyTagDrawable extends Drawable {
     private float textSize = 14;//sp
 
     private final int PADDING = 20;
-    private final int MARGIN = 6;
+    private final int MARGIN = 4;
 
     public static EasyTagDrawable build() {
         return new EasyTagDrawable();

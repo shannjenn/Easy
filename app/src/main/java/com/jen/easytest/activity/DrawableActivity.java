@@ -3,11 +3,11 @@ package com.jen.easytest.activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.jen.easy.Easy;
+import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
 import com.jen.easyui.base.EasyActivity;
 import com.jen.easyui.baseview.EasyTag;
@@ -56,14 +56,21 @@ public class DrawableActivity extends EasyActivity {
         easyTagEditText.setTagStrokeWidth(2);
         easyTagEditText.setEasyTagListener(new EasyTagEditText.EasyTagListener() {
             @Override
-            public void removeTags(List<EasyTag> tags) {
+            public void inputTextChanged(int flag, String inputText) {
 
             }
 
             @Override
-            public void onLongClick(EasyTagEditText easyTagEditText, EasyTag easyTag, float x, float y) {
-                easyPopupWindow.showAtLocation(easyTagEditText, Gravity.NO_GRAVITY, (int) x, (int) y);
+            public void removeTags(int flag, List<String> tags) {
+
             }
+
+            @Override
+            public void onLongClick(int flag, EasyTagEditText easyTagEditText, EasyTag easyTag, float x, float y) {
+                EasyLog.d("onLongClick ===========================================");
+//                easyTagEditText.removeTag(easyTag);
+            }
+
         });
     }
 
