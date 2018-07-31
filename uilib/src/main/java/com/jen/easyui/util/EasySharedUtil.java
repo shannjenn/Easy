@@ -19,15 +19,15 @@ import java.util.List;
  * 时间：2017/8/14.
  */
 
-abstract class SharedManager {
-    private final String TAG = "SharedManager";
+public class EasySharedUtil {
+    private final String TAG = "EasySharedUtil";
     private static final String xmlFileName = "easyShare";
     private final String Unicode = "UTF-8";
     private SharedPreferences config;
     private SharedPreferences.Editor editor;
 
 
-    SharedManager(Context context) {
+    public EasySharedUtil(Context context) {
         config = context.getSharedPreferences(xmlFileName, Context.MODE_PRIVATE);
     }
 
@@ -38,7 +38,7 @@ abstract class SharedManager {
      * @param defaultValue 默认值
      * @return 值
      */
-    protected String getString(String name, String defaultValue) {
+    public String getString(String name, String defaultValue) {
         return config.getString(name, defaultValue);
     }
 
@@ -48,7 +48,7 @@ abstract class SharedManager {
      * @param name  参数
      * @param value 值
      */
-    protected void setString(String name, String value) {
+    public void setString(String name, String value) {
         editor = config.edit();
         editor.putString(name, value);
         editor.apply();
@@ -61,7 +61,7 @@ abstract class SharedManager {
      * @param name 参数
      * @return 值
      */
-    protected boolean getBoolean(String name) {
+    public boolean getBoolean(String name) {
         return config.getBoolean(name, false);
     }
 
@@ -71,7 +71,7 @@ abstract class SharedManager {
      * @param name  参数
      * @param value 值
      */
-    protected void setBoolean(String name, boolean value) {
+    public void setBoolean(String name, boolean value) {
         editor = config.edit();
         editor.putBoolean(name, value);
         editor.apply();
@@ -84,7 +84,7 @@ abstract class SharedManager {
      * @param defaut 默认值
      * @return 值
      */
-    protected int getInt(String name, int defaut) {
+    public int getInt(String name, int defaut) {
         return config.getInt(name, defaut);
     }
 
@@ -94,7 +94,7 @@ abstract class SharedManager {
      * @param name  参数
      * @param value 值
      */
-    protected void setInt(String name, int value) {
+    public void setInt(String name, int value) {
         editor = config.edit();
         editor.putInt(name, value);
         editor.apply();
@@ -107,7 +107,7 @@ abstract class SharedManager {
      * @param list 值
      * @return 是否成功
      */
-    protected <T> boolean setList(String name, List<T> list) {
+    public <T> boolean setList(String name, List<T> list) {
         String value = list2String(list);
         if (value == null) {
             return false;
@@ -122,7 +122,7 @@ abstract class SharedManager {
      * @param name 参数
      * @return 值
      */
-    protected <T> List<T> getList(String name) {
+    public <T> List<T> getList(String name) {
         List<T> valueLlist = new ArrayList<>();
         String value = getString(name, null);
         if (null == value) {
@@ -139,7 +139,7 @@ abstract class SharedManager {
      * @param name 参数
      * @return 值
      */
-    protected Object getObject(String name) {
+    public Object getObject(String name) {
         String value = getString(name, null);
         if (null == value) {
             return null;
@@ -154,7 +154,7 @@ abstract class SharedManager {
      * @param obj  值
      * @return 是否成功
      */
-    protected boolean setObject(String name, Object obj) {
+    public boolean setObject(String name, Object obj) {
         String value = object2String(obj);
         if (null == value) {
             return false;
@@ -168,7 +168,7 @@ abstract class SharedManager {
      *
      * @param name 参数
      */
-    protected void removeValue(String name) {
+    public void removeValue(String name) {
         editor = config.edit();
         editor.remove(name);
         editor.apply();

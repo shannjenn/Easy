@@ -7,7 +7,7 @@ import com.jen.easy.Easy;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
 import com.jen.easyui.base.EasyActivity;
-import com.jen.easyui.util.DateFormat;
+import com.jen.easyui.util.EasyDateFormatUtil;
 
 /**
  * 作者：ShannJenn
@@ -15,7 +15,7 @@ import com.jen.easyui.util.DateFormat;
  */
 
 public class UtilActivity extends EasyActivity {
-    DateFormat format = new DateFormat();
+    EasyDateFormatUtil format = new EasyDateFormatUtil();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ public class UtilActivity extends EasyActivity {
                 String dateStr = format.format(System.currentTimeMillis());
                 String dateStr1 = format.format("1514554545415");
 
-                EasyLog.d("DateFormat-------------");
+                EasyLog.d("EasyDateFormatUtil-------------");
                 break;
             }
             default: {

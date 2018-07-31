@@ -1,3 +1,11 @@
 <resources>
     <string name="_easy_back">Back</string>
+    <string name="_easy_confirm">Confirm</string>
+    <string name="_easy_cancel">Cancel</string>
+    <string name="_easy_select_time">Please choose the time</string>
+    <string name="_easy_time_unit_year">y</string>
+    <string name="_easy_time_unit_month">m</string>
+    <string name="_easy_time_unit_day">d</string>
+    <string name="_easy_time_unit_hour">h</string>
+    <string name="_easy_time_unit_minute">min</string>
 </resources>

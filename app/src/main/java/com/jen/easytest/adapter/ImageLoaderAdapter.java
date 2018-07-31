@@ -29,6 +29,11 @@ public class ImageLoaderAdapter<T extends ImageLoaderModel> extends EasyRecycler
     }
 
     @Override
+    protected int setGridLayoutItemRows(int position) {
+        return 0;
+    }
+
+    @Override
     protected EasyHolder bindHolder(View view, EasyItemType viewType) {
         return new MyHolder(view, viewType);
     }

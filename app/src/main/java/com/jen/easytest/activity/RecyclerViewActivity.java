@@ -16,7 +16,6 @@ import com.jen.easyui.recyclerview.EasyHolder;
 import com.jen.easyui.recyclerview.EasyItemType;
 import com.jen.easyui.recyclerview.EasyLetterDecoration;
 import com.jen.easyui.recyclerview.EasyLetterView;
-import com.jen.easyui.recyclerview.EasyLetterViewManager;
 import com.jen.easyui.recyclerview.EasyRecyclerAdapter;
 import com.jen.easyui.recyclerview.EasyRecyclerView;
 
@@ -107,7 +106,7 @@ public class RecyclerViewActivity extends EasyActivity {
         recyclerView.addItemDecoration(itemDecoration);
 
 
-        lt_letter.setTouchListener(new EasyLetterViewManager.TouchListener() {
+        lt_letter.setTouchListener(new EasyLetterView.TouchListener() {
             @Override
             public void onTouch(String letter) {
 //                int pos = -1;
@@ -200,6 +199,11 @@ public class RecyclerViewActivity extends EasyActivity {
          */
         protected EasyAdapter1(Context context, List<T> data) {
             super(context, data);
+        }
+
+        @Override
+        protected int setGridLayoutItemRows(int position) {
+            return 0;
         }
 
         @Override

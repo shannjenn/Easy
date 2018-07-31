@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#33000000">
+
+    <LinearLayout
+        android:id="@+id/container_picker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#f2f7fa"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/container_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:gravity="center"
+                android:text="@string/_easy_cancel"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/_easy_select_time"
+                android:textColor="#111"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btn_confirm"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:gravity="center"
+                android:text="@string/_easy_confirm"
+                android:textColor="#0085f2"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/loop_contains"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal">
+
+            <com.jen.easyui.loopview.EasyLoopView
+                android:id="@+id/picker_year"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+            <com.jen.easyui.loopview.EasyLoopView
+                android:id="@+id/picker_month"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+            <com.jen.easyui.loopview.EasyLoopView
+                android:id="@+id/picker_day"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+            <com.jen.easyui.loopview.EasyLoopView
+                android:id="@+id/picker_clock"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+            <com.jen.easyui.loopview.EasyLoopView
+                android:id="@+id/picker_minute"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

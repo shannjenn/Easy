@@ -16,15 +16,15 @@ import java.util.List;
  * 时间：2017/8/14.
  */
 
-abstract class StringToListManager {
-    private final String TAG = "StringToListManager";
+public class EasyStringToListUtil {
+    private final String TAG = "EasyStringToListUtil";
     private String unicode = "utf-8";
 
-    protected void setUnicode(String unicode) {
+    public void setUnicode(String unicode) {
         this.unicode = unicode;
     }
 
-    protected <T> String list2String(List<T> list) {
+    public <T> String list2String(List<T> list) {
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
@@ -39,7 +39,7 @@ abstract class StringToListManager {
         return null;
     }
 
-    protected <T> List<T> string2List(String str) {
+    public <T> List<T> string2List(String str) {
         List list = null;
         try {
             byte[] mobileBytes = Base64.decode(str.getBytes(unicode), 0);
@@ -57,7 +57,7 @@ abstract class StringToListManager {
         return list;
     }
 
-    protected <T> String object2String(T obj) {
+    public <T> String object2String(T obj) {
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
@@ -72,7 +72,7 @@ abstract class StringToListManager {
         return null;
     }
 
-    protected Object string2Object(String str) {
+    public Object string2Object(String str) {
         try {
             byte[] mobileBytes = Base64.decode(str.getBytes(unicode), 0);
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(mobileBytes);

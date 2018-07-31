@@ -12,6 +12,7 @@ import com.jen.easytest.activity.ImageLoaderActivity;
 import com.jen.easytest.activity.RecyclerViewActivity;
 import com.jen.easytest.activity.SQLiteActivity;
 import com.jen.easytest.activity.TabBarActivity;
+import com.jen.easytest.activity.TimePickActivity;
 import com.jen.easytest.activity.UtilActivity;
 import com.jen.easyui.base.EasyActivity;
 
@@ -39,7 +40,8 @@ public class MainActivity extends EasyActivity {
     }
 
 
-    @Easy.BIND.Method({R.id.tabBar, R.id.drawable, R.id.http, R.id.imageLoader, R.id.dialog, R.id.sqlite, R.id.util, R.id.recycleView})
+    @Easy.BIND.Method({R.id.tabBar, R.id.drawable, R.id.http, R.id.imageLoader, R.id.dialog, R.id.sqlite, R.id.util, R.id.recycleView,
+            R.id.timePick})
     @Override
     protected void onBindClick(View view) {
         Class clazz = null;
@@ -74,6 +76,10 @@ public class MainActivity extends EasyActivity {
             }
             case R.id.recycleView: {
                 clazz = RecyclerViewActivity.class;
+                break;
+            }
+            case R.id.timePick: {
+                clazz = TimePickActivity.class;
                 break;
             }
             default: {

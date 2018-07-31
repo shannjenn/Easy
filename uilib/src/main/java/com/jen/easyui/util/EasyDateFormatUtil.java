@@ -11,12 +11,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-/**
- *
- */
-abstract class DateFormatManager {
-    private SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.SIMPLIFIED_CHINESE);//默认
- /*说明：
+/*说明：
  G 年代指示符(AD)
  y 年(yy:10 y/yyy/yyyy:2010)
  M 月(M:1 MM:01 MMM:Jan MMMM:January MMMMM:J)
@@ -40,13 +35,15 @@ abstract class DateFormatManager {
  z 时区(z/zz/zzz:PST zzzz:Pacific Standard Time)
  要忽略的字符都要用单引号('')括住！
  SimpleDateFormat sdf = new SimpleDateFormat("'日期'yyyy-MM-dd'Time'HH:mm:ss'Z'");*/
+public class EasyDateFormatUtil {
+    private SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.SIMPLIFIED_CHINESE);//默认
 
     /**
      * 设置时间格式
      *
      * @param dateFormat 格式(如:yyyy-MM-dd HH:mm:ss)
      */
-    protected void setFormat(@NonNull String dateFormat) {
+    public void setFormat(@NonNull String dateFormat) {
         mFormat = new SimpleDateFormat(dateFormat, Locale.SIMPLIFIED_CHINESE);
     }
 
@@ -54,7 +51,7 @@ abstract class DateFormatManager {
      * @param time 时间(13位时间戳)
      * @return
      */
-    protected String format(long time) {
+    public String format(long time) {
         Date date = new Date(time);
         return mFormat.format(date);
     }
@@ -65,7 +62,7 @@ abstract class DateFormatManager {
      * @param timeStamp 时间戳
      * @return 格式化时间
      */
-    protected String format(String timeStamp) {
+    public String format(String timeStamp) {
         if (timeStamp == null) {
             EasyLog.w("时间戳为空");
             return null;
@@ -85,7 +82,7 @@ abstract class DateFormatManager {
      * @param date 日期
      * @return
      */
-    protected String format(@NonNull Date date) {
+    public String format(@NonNull Date date) {
         return mFormat.format(date);
     }
 
@@ -93,8 +90,8 @@ abstract class DateFormatManager {
      * @param calendar 日期
      * @return
      */
-    protected String format(@NonNull Calendar calendar) {
-        return mFormat.format(calendar);
+    public String format(@NonNull Calendar calendar) {
+        return mFormat.format(calendar.getTime());
     }
 
 
@@ -102,7 +99,7 @@ abstract class DateFormatManager {
      * @param formatDate 如(yyyy-MM-dd HH:mm:ss)
      * @return
      */
-    protected Date parseToDate(String formatDate) {
+    public Date parseToDate(String formatDate) {
         Date date = null;
         try {
             date = mFormat.parse(formatDate);
@@ -116,7 +113,7 @@ abstract class DateFormatManager {
      * @param formatDate 如(yyyy-MM-dd HH:mm:ss)
      * @return
      */
-    protected long parseToMillisecond(String formatDate) {
+    public long parseToMillisecond(String formatDate) {
         long time = -1;
         Date date = parseToDate(formatDate);
         if (date != null) {
@@ -131,7 +128,7 @@ abstract class DateFormatManager {
      * @param time 时间
      * @return 格式化时间
      */
-    protected String beiJingToLocal(long time) {
+    public String beiJingToLocal(long time) {
         Date date = new Date(time);
 
         TimeZone oldZone = TimeZone.getTimeZone("GMT+8:00");
@@ -149,7 +146,7 @@ abstract class DateFormatManager {
      * @param date 时间
      * @return 时间
      */
-    protected Date beiJingToLocal(Date date) {
+    public Date beiJingToLocal(Date date) {
         if (date == null)
             return null;
 
@@ -167,7 +164,7 @@ abstract class DateFormatManager {
      * @param time 时间
      * @return 时间
      */
-    protected String localToBeiJing(long time) {
+    public String localToBeiJing(long time) {
         Date date = new Date(time);
 
         TimeZone bjZone = TimeZone.getTimeZone("GMT+8:00");
@@ -185,7 +182,7 @@ abstract class DateFormatManager {
      * @param date 时间
      * @return 时间
      */
-    protected Date localToBeiJing(Date date) {
+    public Date localToBeiJing(Date date) {
         if (date == null)
             return null;
 

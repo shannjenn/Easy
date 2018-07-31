@@ -235,10 +235,31 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
             inputTextAfter = s.toString();
             return;
         } else if (s.length() == 0) {
+            boolean isRemove = false;
+            if (before > 0) {
+                String deleteText = inputTextBefore.substring(start, start + before);
+                List<String> removes = new ArrayList<>();
+                for (int i = 0; i < mEasyTag.size(); i++) {
+                    String easyTag = mEasyTag.get(i);
+                    if (deleteText.contains(easyTag)) {
+                        deleteText.replace(easyTag, "");
+                        removes.add(easyTag);
+                        if (deleteText.length() == 0) {
+                            break;
+                        }
+                    }
+                }
+                if (removes.size() > 0 && easyTagListener != null) {
+                    isRemove = true;
+                    if (easyTagListener != null) {
+                        easyTagListener.removeTags(flag, removes);
+                    }
+                }
+            }
             mEasyTag.clear();
             resetInput();
             inputTextAfter = s.toString();
-            if (easyTagListener != null) {
+            if (easyTagListener != null && !isRemove) {
                 easyTagListener.inputTextChanged(flag, inputText.toString());
             }
             return;
@@ -370,7 +391,7 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
             return;
         }
         Editable editableText = getEditableText();
-        if(inputText.length() > 0){
+        if (inputText.length() > 0) {
             editableText.replace(inputStartIndex, inputStartIndex + inputText.length(), "");
         }
         for (int i = 0; i < mEasyTag.size(); i++) {
@@ -380,7 +401,7 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
             }
         }
         int index = getSelectionStart();
-        if(index < 0){
+        if (index < 0) {
             index = 0;
         }
         isInsert = true;

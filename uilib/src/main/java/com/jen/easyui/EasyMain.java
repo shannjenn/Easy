@@ -11,7 +11,7 @@ import com.jen.easy.log.EasyLog;
 import com.jen.easy.log.LogcatHelper;
 import com.jen.easy.sqlite.DBDao;
 import com.jen.easy.sqlite.DBHelper;
-import com.jen.easyui.util.Shared;
+import com.jen.easyui.util.EasySharedUtil;
 
 /**
  * 核心框架模块
@@ -46,7 +46,7 @@ public final class EasyMain {
     /**
      * 数据存储SharedPreferences
      */
-    public static Shared mShared;
+    public static EasySharedUtil mShared;
     /**
      * 图片加载工具
      */
@@ -66,7 +66,7 @@ public final class EasyMain {
                 .timeOut(10000)
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .build());
-        mShared = new Shared(application);
+        mShared = new EasySharedUtil(application);
         mDBHelper = new DBHelper(application);
         mDao = new DBDao(application);
 

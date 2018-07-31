@@ -60,4 +60,11 @@
         android:text="recycleView"
         android:textAllCaps="false" />
 
+    <Button
+        android:id="@+id/timePick"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:text="timePick"
+        android:textAllCaps="false" />
+
 </LinearLayout>
