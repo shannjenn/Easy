@@ -32,4 +32,11 @@
         android:layout_height="64dp"
         android:text="time_pick_4"
         android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/time_pick_5"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:text="time_pick_5"
+        android:textAllCaps="false" />
 </LinearLayout>

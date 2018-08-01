@@ -25,7 +25,7 @@ public class EasyTimePickerConfig {
      * 模式，年月日时分，年月日，时分，月日时分
      */
     public enum Type {
-        YEAR_MONTH_DAY_HOUR_MIN, YEAR_MONTH_DAY, YEAR_MONTH, MONTH_DAY_HOUR_MIN, HOURS_MIN,
+        YEAR_MONTH_DAY_HOUR_MIN, YEAR_MONTH_DAY, YEAR_MONTH, MONTH_DAY_HOUR_MIN, HOUR_MIN,
         YEAR_MONTH_DAY_HOUR_MIN_WEEK, YEAR_MONTH_DAY_WEEK, MONTH_DAY_HOUR_MIN_WEEK
     }
 
@@ -51,9 +51,9 @@ public class EasyTimePickerConfig {
     }
 
     /**
-     * 日期初始化
+     * 设置初始化日期
      */
-    public EasyTimePickerConfig initDate(long timeInMillis) {
+    public EasyTimePickerConfig setCurrentDate(long timeInMillis) {
         calendarGenerator.setInitCalendar(timeInMillis);
         return this;
     }

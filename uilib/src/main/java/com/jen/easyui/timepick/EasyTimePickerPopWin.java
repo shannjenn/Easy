@@ -53,7 +53,6 @@ public class EasyTimePickerPopWin extends PopupWindow implements OnClickListener
 
     public EasyTimePickerPopWin(EasyTimePickerConfig timePickerConfig) {
         this.config = timePickerConfig;
-        selectCalendar.clear();
         selectCalendar.setTimeInMillis(timePickerConfig.calendarGenerator.getInitCalendar().getTimeInMillis());
         initView(timePickerConfig.type);
     }
@@ -132,7 +131,7 @@ public class EasyTimePickerPopWin extends PopupWindow implements OnClickListener
                 yearLoopView.setVisibility(View.GONE);
                 break;
             }
-            case HOURS_MIN: {
+            case HOUR_MIN: {
                 yearLoopView.setVisibility(View.GONE);
                 monthLoopView.setVisibility(View.GONE);
                 dayLoopView.setVisibility(View.GONE);
@@ -195,7 +194,7 @@ public class EasyTimePickerPopWin extends PopupWindow implements OnClickListener
                 case YEAR_MONTH_DAY:
                 case YEAR_MONTH:
                 case MONTH_DAY_HOUR_MIN:
-                case HOURS_MIN: {
+                case HOUR_MIN: {
                     for (int i = 0; i < dayMaxInMonth; i++) {
                         list.add(format2LenStr(i + 1));
                     }
