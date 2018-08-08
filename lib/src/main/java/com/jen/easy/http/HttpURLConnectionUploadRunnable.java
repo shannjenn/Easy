@@ -70,7 +70,7 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
     protected void success(String result, Map<String, List<String>> headMap) {
         EasyLog.d(TAG.EasyHttp, mUrlStr + " 上传成功！");
         HttpUploadRequest request = (HttpUploadRequest) mRequest;
-        if (uploadListener != null) {
+        if (uploadListener != null && !request.closeRequest) {
             HttpParseManager parseManager = new HttpParseManager();
             Object parseObject = parseManager.parseJson(mResponseClass, result, headMap);
             if (parseObject == null) {
@@ -85,13 +85,13 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
     protected void fail(String msg) {
         EasyLog.w(TAG.EasyHttp, mUrlStr + " " + msg);
         HttpUploadRequest request = (HttpUploadRequest) mRequest;
-        if (uploadListener != null)
+        if (uploadListener != null && !request.closeRequest)
             uploadListener.fail(request.flagCode, request.flagStr, msg);
     }
 
     private void progress(long currentPoint, long endPoint) {
         HttpUploadRequest request = (HttpUploadRequest) mRequest;
-        if (uploadListener != null)
+        if (uploadListener != null && !request.closeRequest)
             uploadListener.progress(request.flagCode, request.flagStr, currentPoint, endPoint);
     }
 }

@@ -17,7 +17,7 @@ import java.util.Map;
 class HttpURLConnectionBaseRunnable extends HttpURLConnectionRunnable {
     private HttpBaseListener baseListener;
 
-    HttpURLConnectionBaseRunnable(HttpBaseRequest request,HttpBaseListener baseListener) {
+    HttpURLConnectionBaseRunnable(HttpBaseRequest request, HttpBaseListener baseListener) {
         super(request);
         this.baseListener = baseListener;
     }
@@ -57,7 +57,7 @@ class HttpURLConnectionBaseRunnable extends HttpURLConnectionRunnable {
     @Override
     protected void success(String result, Map<String, List<String>> headMap) {
         HttpBaseRequest baseRequest = (HttpBaseRequest) mRequest;
-        if (baseListener != null) {
+        if (baseListener != null && !baseRequest.closeRequest) {
             HttpParseManager parseManager = new HttpParseManager();
             Object parseObject = parseManager.parseJson(mResponseClass, result, headMap);
             if (parseObject == null) {
@@ -71,9 +71,9 @@ class HttpURLConnectionBaseRunnable extends HttpURLConnectionRunnable {
 
     @Override
     protected void fail(String result) {
-        EasyLog.w(TAG.EasyHttp, mUrlStr + " " + result+"\n   ");
+        EasyLog.w(TAG.EasyHttp, mUrlStr + " " + result + "\n   ");
         HttpBaseRequest baseRequest = (HttpBaseRequest) mRequest;
-        if (baseListener != null)
+        if (baseListener != null && !baseRequest.closeRequest)
             baseListener.fail(baseRequest.flagCode, baseRequest.flagStr, result);
     }
 }

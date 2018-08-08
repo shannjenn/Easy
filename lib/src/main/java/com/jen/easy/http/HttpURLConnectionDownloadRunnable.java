@@ -77,7 +77,7 @@ class HttpURLConnectionDownloadRunnable extends HttpURLConnectionRunnable {
     protected void success(String result, Map<String, List<String>> headMap) {
         EasyLog.d(TAG.EasyHttp, mUrlStr + " 下载成功！");
         HttpDownloadRequest request = (HttpDownloadRequest) mRequest;
-        if (downloadListener != null)
+        if (downloadListener != null && !request.closeRequest)
             downloadListener.success(request.flagCode, request.flagStr, request.filePath);
     }
 
@@ -85,13 +85,13 @@ class HttpURLConnectionDownloadRunnable extends HttpURLConnectionRunnable {
     protected void fail(String msg) {
         EasyLog.w(TAG.EasyHttp, mUrlStr + " " + msg);
         HttpDownloadRequest request = (HttpDownloadRequest) mRequest;
-        if (downloadListener != null)
+        if (downloadListener != null && !request.closeRequest)
             downloadListener.fail(request.flagCode, request.flagStr, msg);
     }
 
     private void progress(long currentPoint, long endPoint) {
         HttpDownloadRequest request = (HttpDownloadRequest) mRequest;
-        if (downloadListener != null)
+        if (downloadListener != null && !request.closeRequest)
             downloadListener.progress(request.flagCode, request.flagStr, currentPoint, endPoint);
     }
 }
