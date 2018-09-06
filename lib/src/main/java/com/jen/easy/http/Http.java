@@ -32,7 +32,7 @@ public class Http extends HttpManager {
      * @return 线程数
      */
     protected int getMaxThreadSize() {
-        return maxThreadSize;
+        return super.getMaxThreadSize();
     }
 
 }

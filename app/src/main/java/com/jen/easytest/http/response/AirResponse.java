@@ -6,7 +6,7 @@ import com.jen.easytest.model.Book;
 
 import java.util.List;
 
-public class ExampleResponse extends ExampleBaseResponse {
+public class AirResponse extends ExampleBaseResponse {
 
     @Easy.HTTP.ResponseParam("book_code")
     private String bookCode;

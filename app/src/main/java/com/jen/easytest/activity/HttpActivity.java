@@ -9,9 +9,9 @@ import com.jen.easy.http.imp.HttpBaseListener;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
 import com.jen.easytest.http.MD5Util;
-import com.jen.easytest.http.request.ExampleRequest;
+import com.jen.easytest.http.request.AirRequest;
 import com.jen.easytest.http.request.PutRequest;
-import com.jen.easytest.http.request.TaskProgressListRequest;
+import com.jen.easytest.http.request.QNRequest;
 import com.jen.easyui.EasyMain;
 import com.jen.easyui.base.EasyActivity;
 
@@ -71,12 +71,15 @@ public class HttpActivity extends EasyActivity {
     }
 
     private void get(){
-        TaskProgressListRequest taskProgressListRequest = new TaskProgressListRequest();
+        /*TaskProgressListRequest taskProgressListRequest = new TaskProgressListRequest();
         taskProgressListRequest.setTaskId(353631);
         taskProgressListRequest.setLimit(3);
         taskProgressListRequest.setPage(0);
         http.setHttpBaseListener(httpListener);
-        http.start(taskProgressListRequest);
+        http.start(taskProgressListRequest);*/
+
+        QNRequest qnRequest = new QNRequest();
+        EasyMain.mHttp.start(qnRequest);
     }
 
     private void post() {
@@ -104,7 +107,7 @@ public class HttpActivity extends EasyActivity {
         String sign = MD5Util.encrypt(signString);
 //        sign = "6D715C3DACEC16D640852DAC6272FB6B";
 
-        ExampleRequest airRequest = new ExampleRequest();
+        AirRequest airRequest = new AirRequest();
         airRequest.setCid(cid);
         airRequest.setFromCity(fromCity);
         airRequest.setFromCityName(fromCityName);
@@ -121,16 +124,6 @@ public class HttpActivity extends EasyActivity {
 
         EasyMain.mHttp.start(airRequest);
         EasyLog.d("mAirResponse mAirResponse:");
-
-        /*ExampleRequest exampleRequest = new ExampleRequest();
-        exampleRequest.setBookId(123);
-        exampleRequest.setBookName("红楼梦");
-        exampleRequest.setBookCode("abcdefg");
-
-        exampleRequest.timeout = 30 * 1000;//设置超时
-        exampleRequest.flagCode = 10;//设置请求码
-
-        http.start(exampleRequest);*/
 
     }
 

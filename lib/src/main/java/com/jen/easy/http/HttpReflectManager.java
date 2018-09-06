@@ -74,9 +74,9 @@ class HttpReflectManager {
 
         Class clazz = obj.getClass();
         String clazzName = clazz.getName();
-        String reqName = HttpBaseRequest.class.getName();
+//        String reqName = HttpBaseRequest.class.getName();
         String objName = Object.class.getName();
-        while (!clazzName.equals(reqName) && !clazzName.equals(objName)) {
+        while (/*!clazzName.equals(reqName) &&*/ !clazzName.equals(objName)) {
             boolean isNoRequestParam = clazz.isAnnotationPresent(Easy.HTTP.NoRequestParam.class);
             if (isNoRequestParam) {
                 clazz = clazz.getSuperclass();//获取父类
