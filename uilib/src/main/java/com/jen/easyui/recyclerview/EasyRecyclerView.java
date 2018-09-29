@@ -39,7 +39,7 @@ public class EasyRecyclerView extends RecyclerView {
     }
 
     private void init(Context context) {
-        addOnScrollListener(onScrollListener);
+//        addOnScrollListener(onScrollListener);
         setOnTouchListener(onTouchListener);
     }
 
@@ -207,7 +207,7 @@ public class EasyRecyclerView extends RecyclerView {
     /**
      * 滚动监听,加载更多、下拉刷新
      */
-    private OnScrollListener onScrollListener = new OnScrollListener() {
+    /*private OnScrollListener onScrollListener = new OnScrollListener() {
         int lastVisibleItem;
         int firstVisibleItem;
 
@@ -245,17 +245,17 @@ public class EasyRecyclerView extends RecyclerView {
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
             LayoutManager layoutManager = recyclerView.getLayoutManager();
-            if (layoutManager instanceof LinearLayoutManager) {
-                lastVisibleItem = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
-                firstVisibleItem = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
-            } else if (layoutManager instanceof GridLayoutManager) {
+            if (layoutManager instanceof GridLayoutManager) {
                 lastVisibleItem = ((GridLayoutManager) layoutManager).findLastVisibleItemPosition();
                 firstVisibleItem = ((GridLayoutManager) layoutManager).findFirstVisibleItemPosition();
+            } else if (layoutManager instanceof LinearLayoutManager) {
+                lastVisibleItem = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
+                firstVisibleItem = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
             }
         }
-    };
+    };*/
 
-    private boolean scrolledUp = false;//向上滑动
+//    private boolean scrolledUp = false;//向上滑动
     private OnTouchListener onTouchListener = new OnTouchListener() {
         private float y1 = 0;
         private float y2 = 0;
@@ -266,15 +266,53 @@ public class EasyRecyclerView extends RecyclerView {
                 case MotionEvent.ACTION_MOVE: {
                     if (y1 == 0)
                         y1 = event.getY();
+                    Adapter adapter = getAdapter();
+                    y2 = event.getY();
+                    if (y1 - y2 > 20) {
+                        if (isLoading) {
+                            break;
+                        }
+                        LayoutManager layoutManager = getLayoutManager();
+                        int lastVisibleItem = -10;
+                        if (layoutManager instanceof LinearLayoutManager) {
+                            lastVisibleItem = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
+                        }
+                        if (lastVisibleItem + 1 != adapter.getItemCount()) {
+                            break;
+                        }
+                        if (adapter instanceof EasyRecyclerBaseAdapter) {
+                            ((EasyRecyclerBaseAdapter) adapter).setFootVisible(true);
+                            isLoading = true;
+                            y1 = 0;
+                        }
+                        if (loadMoreListener != null) {
+                            loadMoreListener.onLoadMore();
+                        }
+                    } else if (y2 - y1 > 20) {
+                        if (isRefreshing) {
+                            break;
+                        }
+                        LayoutManager layoutManager = getLayoutManager();
+                        int firstVisibleItem = -1;
+                        if (layoutManager instanceof LinearLayoutManager) {
+                            firstVisibleItem = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
+                        }
+                        if (firstVisibleItem != 0) {
+                            break;
+                        }
+                        if (adapter != null && adapter instanceof EasyRecyclerBaseAdapter) {
+                            ((EasyRecyclerBaseAdapter) adapter).setHeaderVisible(true);
+                            isRefreshing = true;
+                            y1 = 0;
+                        }
+                        if (refreshListener != null) {
+                            refreshListener.onRefresh();
+                        }
+                    }
                     break;
                 }
                 case MotionEvent.ACTION_UP: {
-                    y2 = event.getY();
-                    if (y2 - y1 > 10) {
-                        scrolledUp = true;
-                        y1 = 0;
-                        y2 = 0;
-                    }
+                    y1 = 0;
                     break;
                 }
                 default: {

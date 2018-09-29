@@ -28,6 +28,14 @@ class HttpParseManager {
     private Map<String, List<String>> mHeadMap;
     //错误提示
     private List<String> mErrors = new ArrayList<>();
+    /**
+     * 网络请求运行状态
+     */
+    private HttpState state = HttpState.RUN;
+
+    void setHttpState(HttpState state){
+        this.state = state;
+    }
 
     /**
      * json解析
@@ -88,6 +96,9 @@ class HttpParseManager {
 
         Set<String> heads = head_field.keySet();
         for (String param : heads) {//设置head值
+            if (state == HttpState.STOP) {
+                return null;
+            }
             if (!mHeadMap.containsKey(param)) {
                 continue;
             }
@@ -118,6 +129,9 @@ class HttpParseManager {
         }
         Iterator<String> keys = jsonObject.keys();
         while (keys.hasNext()) {
+            if (state == HttpState.STOP) {
+                return null;
+            }
             String param = keys.next();
             if (!param_field.containsKey(param)) {
                 continue;
@@ -214,6 +228,9 @@ class HttpParseManager {
         }
         int length = jsonArray.length();
         for (int i = 0; i < length; i++) {
+            if (state == HttpState.STOP) {
+                break;
+            }
             Object jsonObj;
             try {
                 jsonObj = jsonArray.get(i);
@@ -227,7 +244,6 @@ class HttpParseManager {
                 if (tObj != null)
                     list.add(tObj);
             } else {
-
                 EasyLog.w(TAG.EasyHttp, "parseJsonArray 该数据不属于JSONObject类型");
             }
         }

@@ -21,14 +21,14 @@ import java.util.Set;
 
 abstract class HttpURLConnectionRunnable implements Runnable {
     HttpRequest mRequest;
-    Class mResponseClass;
+    Class mResponse;
 
     String mUrlStr;
     int mResponseCode = -1;//返回码
-//    boolean mHasParam = false;//是否有参数
+    //    boolean mHasParam = false;//是否有参数
     String mCharset;//编码
     boolean mIsGet = true;
-//    String mParamStr;
+    //    String mParamStr;
     final JSONObject mJsonParam = new JSONObject();
 
     HttpURLConnectionRunnable(HttpRequest param) {
@@ -41,7 +41,7 @@ abstract class HttpURLConnectionRunnable implements Runnable {
         Object[] method_url = HttpReflectManager.getUrl(mRequest);
         String method = (String) method_url[0];
         mRequest.url = (String) method_url[1];
-        mResponseClass = (Class) method_url[2];
+        Object response = method_url[2];
         mUrlStr = mRequest.url;
         if (TextUtils.isEmpty(mUrlStr)) {
             mUrlStr = "";
@@ -50,12 +50,16 @@ abstract class HttpURLConnectionRunnable implements Runnable {
         }
 
         if (mRequest instanceof HttpBaseRequest) {//===============基本数据处理
-            if (mResponseClass == null) {
+            if (response != null && response instanceof Class) {
+                mResponse = (Class) response;
+            } else {
                 fail("返回对象不能为空");
                 return;
             }
         } else if (mRequest instanceof HttpUploadRequest) {//===============上传请求处理
-            if (mResponseClass == null) {
+            if (response != null && response instanceof Class) {
+                mResponse = (Class) response;
+            } else {
                 fail("返回对象不能为空");
                 return;
             }
@@ -106,7 +110,9 @@ abstract class HttpURLConnectionRunnable implements Runnable {
 //            JSONObject mJsonParam = new JSONObject();
             Map<String, String> heads = new HashMap<>();
             HttpReflectManager.getRequestParams(mRequest, urls, mJsonParam, heads);
-
+            if (mRequest.state == HttpState.STOP) {
+                return;
+            }
             if (mIsGet) {
                 Iterator<String> paramKeys = mJsonParam.keys();
                 StringBuilder requestBuf = new StringBuilder("");
@@ -152,6 +158,9 @@ abstract class HttpURLConnectionRunnable implements Runnable {
                 headBuilder.append("=");
                 headBuilder.append(value);
                 headBuilder.append(" ");
+            }
+            if (mRequest.state == HttpState.STOP) {
+                return;
             }
             EasyLog.d(TAG.EasyHttp, "网络请求：" + method + " " + mUrlStr + " 请求头部：" + headBuilder.toString() + " 请求参数：" + mJsonParam.toString());
             childRun(connection);

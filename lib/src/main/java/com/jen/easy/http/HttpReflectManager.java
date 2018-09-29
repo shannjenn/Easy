@@ -61,29 +61,32 @@ class HttpReflectManager {
     /**
      * 获取网络请求参数
      *
-     * @param obj       对象数据
+     * @param request   对象数据
      * @param urls      拼接请求地址参数
      * @param jsonParam 请求参数
      * @param heads     请求头参数
      */
-    static void getRequestParams(Object obj, Map<String, String> urls, JSONObject jsonParam, Map<String, String> heads) {
-        if (obj == null || obj instanceof Class) {
+    static void getRequestParams(HttpRequest request, Map<String, String> urls, JSONObject jsonParam, Map<String, String> heads) {
+        if (request == null) {
             EasyLog.w(TAG.EasyHttp, "getRequestParams getRequestParams obj is null");
             return;
         }
 
-        Class clazz = obj.getClass();
+        Class clazz = request.getClass();
         String clazzName = clazz.getName();
 //        String reqName = HttpBaseRequest.class.getName();
         String objName = Object.class.getName();
         while (/*!clazzName.equals(reqName) &&*/ !clazzName.equals(objName)) {
+            if (request.state == HttpState.STOP) {
+                break;
+            }
             boolean isNoRequestParam = clazz.isAnnotationPresent(Easy.HTTP.NoRequestParam.class);
             if (isNoRequestParam) {
                 clazz = clazz.getSuperclass();//获取父类
                 clazzName = clazz.getName();
                 continue;//不获取请求参数
             }
-            getRequestParam(clazz, obj, urls, jsonParam, heads);
+            getRequestParam(clazz, request, urls, jsonParam, heads);
             clazz = clazz.getSuperclass();//获取父类
             clazzName = clazz.getName();
         }

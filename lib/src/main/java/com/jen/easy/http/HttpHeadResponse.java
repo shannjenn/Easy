@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * 作者：ShannJenn
  * 时间：2017/8/12.
- * 说明：基本数据请求
+ * 说明：http返回参数
  */
 public abstract class HttpHeadResponse {
 

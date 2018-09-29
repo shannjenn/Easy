@@ -41,13 +41,15 @@ class HttpURLConnectionBaseRunnable extends HttpURLConnectionRunnable {
             BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, mCharset));
             String s;
             while ((s = reader.readLine()) != null) {
+                if (mRequest.state == HttpState.STOP) {
+                    break;
+                }
                 resultBuffer.append(s);
             }
             reader.close();
             inStream.close();
             connection.disconnect();
             String result = resultBuffer.toString();
-            EasyLog.d(TAG.EasyHttp, mUrlStr + " 返回数据：" + result);
             success(result, headMap);
         } else {
             fail(" 网络请求异常：" + mResponseCode);
@@ -56,15 +58,19 @@ class HttpURLConnectionBaseRunnable extends HttpURLConnectionRunnable {
 
     @Override
     protected void success(String result, Map<String, List<String>> headMap) {
-        HttpBaseRequest baseRequest = (HttpBaseRequest) mRequest;
-        if (baseListener != null && !baseRequest.closeRequest) {
+        HttpBaseRequest request = (HttpBaseRequest) this.mRequest;
+        if (baseListener != null && request.state == HttpState.RUN) {
+            EasyLog.d(TAG.EasyHttp, mUrlStr + " 返回数据：" + result);
             HttpParseManager parseManager = new HttpParseManager();
-            Object parseObject = parseManager.parseJson(mResponseClass, result, headMap);
-            if (parseObject == null) {
+            parseManager.setHttpState(request.state);
+            Object parseObject = parseManager.parseJson(mResponse, result, headMap);
+            if (request.state == HttpState.STOP) {
+                EasyLog.d(TAG.EasyHttp, mUrlStr + " 线程停止!\n   ");
+            } else if (parseObject == null) {
                 fail("解析数据解析出错\n   ");
             } else {
                 EasyLog.d(TAG.EasyHttp, mUrlStr + " 成功!\n   ");
-                baseListener.success(baseRequest.flagCode, baseRequest.flagStr, parseObject);
+                baseListener.success(request.flagCode, request.flagStr, parseObject);
             }
         }
     }
@@ -72,8 +78,8 @@ class HttpURLConnectionBaseRunnable extends HttpURLConnectionRunnable {
     @Override
     protected void fail(String result) {
         EasyLog.w(TAG.EasyHttp, mUrlStr + " " + result + "\n   ");
-        HttpBaseRequest baseRequest = (HttpBaseRequest) mRequest;
-        if (baseListener != null && !baseRequest.closeRequest)
-            baseListener.fail(baseRequest.flagCode, baseRequest.flagStr, result);
+        HttpBaseRequest request = (HttpBaseRequest) mRequest;
+        if (baseListener != null && request.state == HttpState.RUN)
+            baseListener.fail(request.flagCode, request.flagStr, result);
     }
 }

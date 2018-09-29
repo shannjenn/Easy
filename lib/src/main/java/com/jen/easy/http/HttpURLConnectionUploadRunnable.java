@@ -70,10 +70,13 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
     protected void success(String result, Map<String, List<String>> headMap) {
         EasyLog.d(TAG.EasyHttp, mUrlStr + " 上传成功！");
         HttpUploadRequest request = (HttpUploadRequest) mRequest;
-        if (uploadListener != null && !request.closeRequest) {
+        if (uploadListener != null && request.state == HttpState.RUN) {
             HttpParseManager parseManager = new HttpParseManager();
-            Object parseObject = parseManager.parseJson(mResponseClass, result, headMap);
-            if (parseObject == null) {
+            parseManager.setHttpState(request.state);
+            Object parseObject = parseManager.parseJson(mResponse, result, headMap);
+            if (request.state == HttpState.STOP) {
+                EasyLog.d(TAG.EasyHttp, mUrlStr + " 线程停止!\n   ");
+            } else if (parseObject == null) {
                 fail("返回数据解析异常");
             } else {
                 uploadListener.success(request.flagCode, request.flagStr, parseObject);
@@ -85,13 +88,13 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
     protected void fail(String msg) {
         EasyLog.w(TAG.EasyHttp, mUrlStr + " " + msg);
         HttpUploadRequest request = (HttpUploadRequest) mRequest;
-        if (uploadListener != null && !request.closeRequest)
+        if (uploadListener != null && request.state == HttpState.RUN)
             uploadListener.fail(request.flagCode, request.flagStr, msg);
     }
 
     private void progress(long currentPoint, long endPoint) {
         HttpUploadRequest request = (HttpUploadRequest) mRequest;
-        if (uploadListener != null && !request.closeRequest)
+        if (uploadListener != null && request.state == HttpState.RUN)
             uploadListener.progress(request.flagCode, request.flagStr, currentPoint, endPoint);
     }
 }

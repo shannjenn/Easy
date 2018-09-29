@@ -47,7 +47,7 @@ public abstract class HttpRequest {
     public boolean useCaches = false;
 
     /**
-     * 关闭请求
+     * 网络请求运行状态
      */
-    boolean closeRequest;
+    HttpState state = HttpState.RUN;
 }

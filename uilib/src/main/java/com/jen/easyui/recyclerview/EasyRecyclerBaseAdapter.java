@@ -172,13 +172,13 @@ abstract class EasyRecyclerBaseAdapter<T> extends RecyclerView.Adapter<EasyHolde
             } else {
                 mFootView.getLayoutParams().height = 1;
                 mFootView.setVisibility(View.GONE);
-                new android.os.Handler().postDelayed(new Runnable() {
+                /*new android.os.Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         mFootView.setVisibility(View.INVISIBLE);
                         mFootView.getLayoutParams().height = mFootHeight;
                     }
-                }, 5);
+                }, 5);*/
             }
         }
     }
