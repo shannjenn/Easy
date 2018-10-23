@@ -93,9 +93,13 @@ public final class Easy {
         @Retention(RetentionPolicy.RUNTIME)
         public @interface GET {
             /**
-             * 参数名称
+             * 请求地址前序
              */
-            String URL() default "";
+            String URLBASE() default "";
+            /**
+             * 请求地址后序
+             */
+            String URLAPPEND() default "";
 
             /**
              * 返回实体类
@@ -110,9 +114,13 @@ public final class Easy {
         @Retention(RetentionPolicy.RUNTIME)
         public @interface POST {
             /**
-             * 参数名称
+             * 请求地址前序
              */
-            String URL() default "";
+            String URLBASE() default "";
+            /**
+             * 请求地址后序
+             */
+            String URLAPPEND() default "";
 
             /**
              * 返回实体类
@@ -127,9 +135,13 @@ public final class Easy {
         @Retention(RetentionPolicy.RUNTIME)
         public @interface PUT {
             /**
-             * 参数名称
+             * 请求地址前序
              */
-            String URL() default "";
+            String URLBASE() default "";
+            /**
+             * 请求地址后序
+             */
+            String URLAPPEND() default "";
 
             /**
              * 返回实体类

@@ -4,7 +4,7 @@ import com.jen.easy.Easy;
 import com.jen.easy.http.HttpBaseRequest;
 import com.jen.easytest.http.response.PutResponse;
 
-@Easy.HTTP.PUT(URL = "http://47.92.134.67:92/portal/followExperts/{id}", Response = PutResponse.class)
+@Easy.HTTP.PUT(URLBASE = "http://47.92.134.67:92/portal/followExperts/{id}", Response = PutResponse.class)
 public class PutRequest extends HttpBaseRequest {
 
     @Easy.HTTP.RequestParam(value = "id", type = Easy.HTTP.TYPE.URL)

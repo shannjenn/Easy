@@ -109,7 +109,7 @@ abstract class HttpURLConnectionRunnable implements Runnable {
             Map<String, String> urls = new HashMap<>();
 //            JSONObject mJsonParam = new JSONObject();
             Map<String, String> heads = new HashMap<>();
-            HttpReflectManager.getRequestParams(mRequest, urls, mJsonParam, heads);
+            HttpReflectManager.getRequestParams(null, mRequest, urls, mJsonParam, heads);
             if (mRequest.state == HttpState.STOP) {
                 return;
             }

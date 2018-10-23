@@ -10,6 +10,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +37,10 @@ class HttpReflectManager {
         if (isGet) {
             Easy.HTTP.GET get = request.getClass().getAnnotation(Easy.HTTP.GET.class);
             values[0] = "GET";
-            values[1] = request.url != null ? request.url : get.URL();
+            request.urlBase = request.urlBase != null ? request.urlBase : get.URLBASE();
+            request.urlAppend = request.urlAppend != null ? request.urlAppend : get.URLAPPEND();
+            request.url = request.url != null ? request.url : request.urlBase + request.urlAppend;
+            values[1] = request.url;
             values[2] = get.Response();
             return values;
         }
@@ -43,7 +48,10 @@ class HttpReflectManager {
         if (isPost) {
             Easy.HTTP.POST post = request.getClass().getAnnotation(Easy.HTTP.POST.class);
             values[0] = "POST";
-            values[1] = request.url != null ? request.url : post.URL();
+            request.urlBase = request.urlBase != null ? request.urlBase : post.URLBASE();
+            request.urlAppend = request.urlAppend != null ? request.urlAppend : post.URLAPPEND();
+            request.url = request.url != null ? request.url : request.urlBase + request.urlAppend;
+            values[1] = request.url;
             values[2] = post.Response();
             return values;
         }
@@ -51,7 +59,10 @@ class HttpReflectManager {
         if (isPut) {
             Easy.HTTP.PUT put = request.getClass().getAnnotation(Easy.HTTP.PUT.class);
             values[0] = "PUT";
-            values[1] = request.url != null ? request.url : put.URL();
+            request.urlBase = request.urlBase != null ? request.urlBase : put.URLBASE();
+            request.urlAppend = request.urlAppend != null ? request.urlAppend : put.URLAPPEND();
+            request.url = request.url != null ? request.url : request.urlBase + request.urlAppend;
+            values[1] = request.url;
             values[2] = put.Response();
             return values;
         }
@@ -61,32 +72,42 @@ class HttpReflectManager {
     /**
      * 获取网络请求参数
      *
+     * @param loopClass 避免死循环
      * @param request   对象数据
      * @param urls      拼接请求地址参数
      * @param jsonParam 请求参数
      * @param heads     请求头参数
      */
-    static void getRequestParams(HttpRequest request, Map<String, String> urls, JSONObject jsonParam, Map<String, String> heads) {
+    static void getRequestParams(List<String> loopClass, Object request, Map<String, String> urls, JSONObject jsonParam, Map<String, String> heads) {
         if (request == null) {
             EasyLog.w(TAG.EasyHttp, "getRequestParams getRequestParams obj is null");
             return;
         }
+        if (loopClass == null) {
+            loopClass = new ArrayList<>();
+        }
 
         Class clazz = request.getClass();
         String clazzName = clazz.getName();
+        if (loopClass.contains(clazzName)) {
+            EasyLog.w(TAG.EasyHttp, "不解析死循环引用：" + clazzName);
+            return;
+        } else {
+            loopClass.add(clazzName);
+        }
 //        String reqName = HttpBaseRequest.class.getName();
         String objName = Object.class.getName();
         while (/*!clazzName.equals(reqName) &&*/ !clazzName.equals(objName)) {
-            if (request.state == HttpState.STOP) {
+            /*if (request.state == HttpState.STOP) {
                 break;
-            }
+            }*/
             boolean isNoRequestParam = clazz.isAnnotationPresent(Easy.HTTP.NoRequestParam.class);
             if (isNoRequestParam) {
                 clazz = clazz.getSuperclass();//获取父类
                 clazzName = clazz.getName();
                 continue;//不获取请求参数
             }
-            getRequestParam(clazz, request, urls, jsonParam, heads);
+            getRequestParam(loopClass, clazz, request, urls, jsonParam, heads);
             clazz = clazz.getSuperclass();//获取父类
             clazzName = clazz.getName();
         }
@@ -96,13 +117,14 @@ class HttpReflectManager {
     /**
      * 获取单个类请求参数
      *
+     * @param loopClass 避免死循环
      * @param clazz     类
      * @param obj       对象数据
      * @param urls      拼接请求地址参数
      * @param jsonParam 请求参数
      * @param heads     请求头参数
      */
-    private static void getRequestParam(Class clazz, Object obj, Map<String, String> urls, JSONObject jsonParam, Map<String, String> heads) {
+    private static void getRequestParam(List<String> loopClass, Class clazz, Object obj, Map<String, String> urls, JSONObject jsonParam, Map<String, String> heads) {
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
             boolean isAnnotation = field.isAnnotationPresent(Easy.HTTP.RequestParam.class);
@@ -170,7 +192,7 @@ class HttpReflectManager {
                                 continue;
                             }
                             JSONObject item = new JSONObject();
-                            getRequestParam(itemObj.getClass(), itemObj, urls, item, heads);
+                            getRequestParams(loopClass, itemObj, urls, item, heads);
                             jsonArray.put(item);
                         }
                     }
@@ -179,7 +201,7 @@ class HttpReflectManager {
                     }
                 } else if (FieldType.isClass(field.getType())) {
                     JSONObject item = new JSONObject();
-                    getRequestParam(value.getClass(), value, urls, item, heads);
+                    getRequestParams(loopClass, value, urls, item, heads);
                     jsonParam.put(key, item);
                 } else {
                     EasyLog.w(TAG.EasyHttp, "不支持该类型：" + field.getName());
@@ -273,5 +295,24 @@ class HttpReflectManager {
                 }
             }
         }
+    }
+
+    /**
+     * 请求参数转Json
+     *
+     * @param object 请求参数
+     * @return JSONObject
+     */
+    public static JSONObject paramToJson(Object object) {
+        JSONObject jsonParam = new JSONObject();
+        if (object == null) {
+            EasyLog.w(TAG.EasyHttp, "toJson error, obj is not null");
+            return jsonParam;
+        }
+        Map<String, String> urls = new HashMap<>();
+        Map<String, String> heads = new HashMap<>();
+
+        getRequestParams(null, object, urls, jsonParam, heads);
+        return jsonParam;
     }
 }

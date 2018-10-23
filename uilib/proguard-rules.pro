@@ -24,8 +24,8 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--libraryjars 'E:\Program Files\Java\jdk1.8.0_20\jre\lib\rt.jar'
--libraryjars 'E:\Android\sdk\platforms\android-20\android.jar'
+#-libraryjars 'E:\Program Files\Java\jdk1.8.0_20\jre\lib\rt.jar'
+#-libraryjars 'E:\Android\sdk\platforms\android-20\android.jar'
 
 -optimizationpasses 5
 -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*

@@ -22,9 +22,19 @@ public abstract class HttpRequest {
     public String flagStr;
 
     /**
-     * 可以动态设置
+     * 如果url没设置值则url = urlBase + urlAppend
      */
     public String url;
+
+    /**
+     * 可以动态设置
+     */
+    public String urlBase;
+
+    /**
+     * 可以动态设置
+     */
+    public String urlAppend;
 
     /**
      * 请求超时

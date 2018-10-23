@@ -3,7 +3,7 @@ package com.jen.easytest.http.request;
 import com.jen.easy.Easy;
 import com.jen.easytest.http.response.AirResponse;
 
-@Easy.HTTP.POST(URL = "http://apics.baoku.com/api/air/query", Response = AirResponse.class)
+@Easy.HTTP.POST(URLBASE = "http://apics.baoku.com/api/air/query", Response = AirResponse.class)
 public class AirRequest extends ExampleBaseRequest {
 
 	@Easy.HTTP.RequestParam("cid")

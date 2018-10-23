@@ -27,6 +27,22 @@ public class Http extends HttpManager {
     }
 
     /**
+     * 停止
+     *
+     * @param request 停止对象
+     */
+    public void stop(HttpRequest request) {
+        super.stop(request);
+    }
+
+    /**
+     * 关闭后所有线程都不能再执行
+     */
+    public void shutdown() {
+        super.shutdown();
+    }
+
+    /**
      * 获取线程数
      *
      * @return 线程数
