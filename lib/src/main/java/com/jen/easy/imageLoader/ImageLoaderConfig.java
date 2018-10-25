@@ -6,8 +6,8 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 
-import com.jen.easy.constant.TAG;
-import com.jen.easy.log.EasyLog;
+import com.jen.easy.exception.ExceptionType;
+import com.jen.easy.exception.Throw;
 
 import java.io.File;
 
@@ -39,7 +39,7 @@ public class ImageLoaderConfig {
             if (!file.exists()) {
                 boolean result = file.mkdirs();
                 if (!result) {
-                    EasyLog.w(TAG.EasyImageLoader, "创建图片缓存目录失败1");
+                    Throw.exception(ExceptionType.IllegalArgumentException, "创建图片缓存目录失败1");
                 }
             }
         } else if (localPath == null) {
@@ -48,7 +48,7 @@ public class ImageLoaderConfig {
             if (!file.exists()) {
                 boolean result = file.mkdirs();
                 if (!result) {
-                    EasyLog.w(TAG.EasyImageLoader, "创建图片缓存目录失败2");
+                    Throw.exception(ExceptionType.IllegalArgumentException, "创建图片缓存目录失败2");
                 }
             }
         }

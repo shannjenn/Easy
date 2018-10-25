@@ -1,6 +1,8 @@
 package com.jen.easy.aop;
 
 import com.jen.easy.constant.TAG;
+import com.jen.easy.exception.ExceptionType;
+import com.jen.easy.exception.Throw;
 import com.jen.easy.log.EasyLog;
 
 import java.lang.reflect.InvocationHandler;
@@ -24,8 +26,8 @@ abstract class DynamicProxyManager implements InvocationHandler {
     private Object[] afterParams;
 
     protected Object bind(Object target) {
-        if (target == null || target instanceof Class) {
-            EasyLog.w(TAG.EasyAOP, "mBindView 绑定对象为空");
+        if (target == null) {
+            Throw.exception(ExceptionType.NullPointerException, "参数不能为空");
             return null;
         }
         this.target = target;
@@ -40,7 +42,7 @@ abstract class DynamicProxyManager implements InvocationHandler {
 
     protected void setBeforeMethod(Class<?> beforeClzz, Object... beforeParams) {
         if (beforeClzz == null) {
-            EasyLog.w(TAG.EasyAOP, "mBindView 切入对象为空");
+            Throw.exception(ExceptionType.NullPointerException, "Class参数不能为空");
             return;
         }
         try {
@@ -64,7 +66,7 @@ abstract class DynamicProxyManager implements InvocationHandler {
 
     protected void setAfterMethod(Class<?> afterClzz, Object... afterParams) {
         if (afterClzz == null) {
-            EasyLog.w(TAG.EasyAOP, "切入对象为空");
+            Throw.exception(ExceptionType.NullPointerException, "Class参数不能为空");
             return;
         }
         try {
@@ -88,7 +90,7 @@ abstract class DynamicProxyManager implements InvocationHandler {
     }
 
     @Override
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    public Object invoke(Object proxy, Method method, Object[] args) {
         Object result = null;
         try {
             if (beforeClzz != null) {

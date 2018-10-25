@@ -1,13 +1,13 @@
 package com.jen.easytest.http.request;
 
 import com.jen.easy.Easy;
-import com.jen.easy.http.HttpBaseRequest;
+import com.jen.easy.http.HttpBasicRequest;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Easy.HTTP.NoRequestParam
-public class ExampleBaseRequest extends HttpBaseRequest {
+public class ExampleBaseRequest extends HttpBasicRequest {
 
     @Easy.HTTP.RequestParam("_id")//请求参数为_id,值为当前id变量值
     private int id;

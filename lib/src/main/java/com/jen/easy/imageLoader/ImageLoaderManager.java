@@ -246,8 +246,8 @@ abstract class ImageLoaderManager {
         if (name.length() > config.getNameMaxLen()) {
             name = name.substring(name.length() - config.getNameMaxLen(), name.length());
         }
-        name = name.replaceAll(":", "_");
-        name = name.replaceAll("/", "_");
+        name = name.replace(":", "_");
+        name = name.replace("/", "_");
         return name;
     }
 

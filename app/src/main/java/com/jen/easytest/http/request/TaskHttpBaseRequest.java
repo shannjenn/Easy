@@ -1,13 +1,13 @@
 package com.jen.easytest.http.request;
 
 import com.jen.easy.Easy;
-import com.jen.easy.http.HttpBaseRequest;
+import com.jen.easy.http.HttpBasicRequest;
 
 /**
  * Created by zs on 2018/4/26.
  */
 
-public abstract class TaskHttpBaseRequest extends HttpBaseRequest {
+public abstract class TaskHttpBaseRequest extends HttpBasicRequest {
 
     public TaskHttpBaseRequest() {
         empNo = "6407001308";

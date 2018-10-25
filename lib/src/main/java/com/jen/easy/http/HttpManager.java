@@ -1,7 +1,9 @@
 package com.jen.easy.http;
 
 import com.jen.easy.constant.TAG;
-import com.jen.easy.http.imp.HttpBaseListener;
+import com.jen.easy.exception.ExceptionType;
+import com.jen.easy.exception.Throw;
+import com.jen.easy.http.imp.HttpBasicListener;
 import com.jen.easy.http.imp.HttpDownloadListener;
 import com.jen.easy.http.imp.HttpUploadListener;
 import com.jen.easy.log.EasyLog;
@@ -19,7 +21,7 @@ abstract class HttpManager {
     private ExecutorService pool;
     private int maxThreadSize;
     private HttpState state;
-    private HttpBaseListener httpBaseListener;
+    private HttpBasicListener httpBaseListener;
     private HttpDownloadListener httpDownloadListener;
     private HttpUploadListener httpUploadListener;
 
@@ -36,16 +38,16 @@ abstract class HttpManager {
      */
     protected void start(HttpRequest request) {
         if (state == HttpState.STOP) {
-            EasyLog.w("线程池已经关闭，不可以再操作 start");
+            EasyLog.i("线程池已经关闭，不可以再操作 start");
             return;
         }
         if (request == null) {
-            EasyLog.w(TAG.EasyHttp, "start 参数不能为空值");
+            Throw.exception(ExceptionType.NullPointerException, "参数不能为空");
             return;
         }
         request.state = state;//默认引用HttpManager state地址
-        if (request instanceof HttpBaseRequest) {
-            HttpURLConnectionBaseRunnable base = new HttpURLConnectionBaseRunnable((HttpBaseRequest) request, httpBaseListener);
+        if (request instanceof HttpBasicRequest) {
+            HttpURLConnectionBasicRunnable base = new HttpURLConnectionBasicRunnable((HttpBasicRequest) request, httpBaseListener);
             pool.execute(base);
         } else if (request instanceof HttpDownloadRequest) {
             HttpURLConnectionDownloadRunnable download = new HttpURLConnectionDownloadRunnable((HttpDownloadRequest) request, httpDownloadListener);
@@ -55,6 +57,7 @@ abstract class HttpManager {
             pool.execute(upload);
         } else {
             EasyLog.w(TAG.EasyHttp, "HttpRequest 错误");
+            Throw.exception(ExceptionType.IllegalArgumentException, "请求参数类型错误，请继承正确");
         }
     }
 
@@ -65,7 +68,7 @@ abstract class HttpManager {
      */
     protected void stop(HttpRequest request) {
         if (request == null) {
-            EasyLog.w(TAG.EasyHttp, "参数不能为空值");
+            Throw.exception(ExceptionType.NullPointerException, "参数不能为空");
         } else {
             request.state = HttpState.STOP;
         }
@@ -97,13 +100,13 @@ abstract class HttpManager {
         return maxThreadSize;
     }
 
-    public HttpBaseListener getHttpBaseListener() {
+    public HttpBasicListener getHttpBaseListener() {
         return httpBaseListener;
     }
 
-    public void setHttpBaseListener(HttpBaseListener httpBaseListener) {
+    public void setHttpBaseListener(HttpBasicListener httpBaseListener) {
         if (state == HttpState.STOP) {
-            EasyLog.w("线程池已经关闭，不可以再操作 setHttpBaseListener");
+            EasyLog.i("线程池已经关闭，不可以再操作 setHttpBaseListener");
             return;
         }
         this.httpBaseListener = httpBaseListener;
@@ -115,7 +118,7 @@ abstract class HttpManager {
 
     public void setHttpDownloadListener(HttpDownloadListener httpDownloadListener) {
         if (state == HttpState.STOP) {
-            EasyLog.w("线程池已经关闭，不可以再操作 setHttpDownloadListener");
+            EasyLog.i("线程池已经关闭，不可以再操作 setHttpDownloadListener");
             return;
         }
         this.httpDownloadListener = httpDownloadListener;
@@ -127,7 +130,7 @@ abstract class HttpManager {
 
     public void setHttpUploadListener(HttpUploadListener httpUploadListener) {
         if (state == HttpState.STOP) {
-            EasyLog.w("线程池已经关闭，不可以再操作 setHttpUploadListener");
+            EasyLog.i("线程池已经关闭，不可以再操作 setHttpUploadListener");
             return;
         }
         this.httpUploadListener = httpUploadListener;

@@ -4,29 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class javaClass {
-    public static void main(String[] args){
-
-        A a = new A();
-        a.state = HttpState.STOP;
-        B b = new B();
-        System.out.println(b.state);
-        b.state = a.state;
-        System.out.println(b.state);
-
-
-        Class aa = A.class;
-        if(aa instanceof Class){
-            System.out.println("aa is Class");
-        }
-
-        Object bb = a;
-        if(bb instanceof Class){
-            System.out.println("aa is Class");
-        }
+    public static void main(String[] args) {
+        String b = "bbbbbbb";
+        b = test();
+        System.out.println(b);
     }
 
-    public static class Student{
-//        private String aa;
+    private static String test(){
+        String a="a";
+        if(a.equals("a")){
+//            throw new NullPointerException("aaaaaaaaaaaaaa");
+        }
+
+        return a;
+    }
+
+    public static class Student {
+        //        private String aa;
         private int bb;
         private Integer b;
         private float cc;
@@ -38,10 +32,11 @@ public class javaClass {
 //        private Object eee;
     }
 
-    public static class A{
+    public static class A {
         public HttpState state = HttpState.RUN;
     }
-    public static class B{
+
+    public static class B {
         public HttpState state = HttpState.RUN;
     }
 }

@@ -1,8 +1,8 @@
 package com.jen.easy.bind;
 
 import com.jen.easy.Easy;
-import com.jen.easy.constant.TAG;
-import com.jen.easy.log.EasyLog;
+import com.jen.easy.exception.ExceptionType;
+import com.jen.easy.exception.Throw;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -26,8 +26,8 @@ abstract class BindReflectManager {
     /**
      * 获取字段
      *
-     * @param clazz
-     * @return
+     * @param clazz 类
+     * @return 值
      */
     static Map<String, Object> getFields(Class clazz) {
         Map<String, Object> objectMap = new HashMap<>();
@@ -36,7 +36,7 @@ abstract class BindReflectManager {
         objectMap.put(ID_TYPE, id_type);
         objectMap.put(ID_FIELD, id_field);
         if (clazz == null) {
-            EasyLog.w(TAG.EasyBind, "getFields clazz is null");
+            Throw.exception(ExceptionType.NullPointerException, "参数不能为空");
             return objectMap;
         }
 
@@ -66,7 +66,7 @@ abstract class BindReflectManager {
     static Map<Method, int[]> getMethods(Class clazz) {
         Map<Method, int[]> method_ids = new HashMap<>();
         if (clazz == null) {
-            EasyLog.w(TAG.EasyBind, "getMethods clazz is null");
+            Throw.exception(ExceptionType.NullPointerException, "参数不能为空");
             return method_ids;
         }
         Method[] methods = clazz.getDeclaredMethods();

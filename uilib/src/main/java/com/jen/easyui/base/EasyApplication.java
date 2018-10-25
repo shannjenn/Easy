@@ -64,7 +64,8 @@ public class EasyApplication extends Application {
     private LogCrashListener logcatCrashListener = new LogCrashListener() {
         @Override
         public boolean onBeforeHandleException(Throwable throwable) {
-            EasyLog.w("捕获到异常------------");
+//            EasyLog.w("捕获到异常------------");
+//            throwable.printStackTrace();
             Intent intent = new Intent(EasyApplication.getAppContext(), LogCrashActivity.class);
             startActivity(intent);
             return false;

@@ -1,8 +1,8 @@
 package com.jen.easy.aop;
 
 import com.jen.easy.Easy;
-import com.jen.easy.constant.TAG;
-import com.jen.easy.log.EasyLog;
+import com.jen.easy.exception.ExceptionType;
+import com.jen.easy.exception.Throw;
 
 import java.lang.reflect.Method;
 
@@ -15,12 +15,12 @@ class AOPReflectManager {
     /**
      * 获取方法
      *
-     * @param clazz
-     * @return
+     * @param clazz 类
+     * @return 方法
      */
     static Method getBefore(Class clazz) {
         if (clazz == null) {
-            EasyLog.w(TAG.EasyAOP, "clazz is null");
+            Throw.exception(ExceptionType.NullPointerException, "参数不能为空");
             return null;
         }
         Method[] methods = clazz.getDeclaredMethods();
@@ -36,12 +36,12 @@ class AOPReflectManager {
     /**
      * 获取方法
      *
-     * @param clazz
-     * @return
+     * @param clazz 类
+     * @return 方法
      */
     static Method getAfter(Class clazz) {
         if (clazz == null) {
-            EasyLog.w(TAG.EasyAOP, "clazz is null");
+            Throw.exception(ExceptionType.NullPointerException, "参数不能为空");
             return null;
         }
         Method[] methods = clazz.getDeclaredMethods();

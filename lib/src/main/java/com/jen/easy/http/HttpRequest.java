@@ -2,6 +2,13 @@ package com.jen.easy.http;
 
 import com.jen.easy.Easy;
 import com.jen.easy.constant.Unicode;
+import com.jen.easy.exception.ExceptionType;
+import com.jen.easy.exception.Throw;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 作者：ShannJenn
@@ -60,4 +67,35 @@ public abstract class HttpRequest {
      * 网络请求运行状态
      */
     HttpState state = HttpState.RUN;
+
+    /**
+     * 替换请求结果特殊符号
+     */
+    Map<String, String> responseFormatMap;
+
+    /**
+     * 替换请求结果特殊符号,如：\\\"code\\\": \\\"HKD\\\"
+     *
+     * @param regex       替换前
+     * @param replacement 替换后
+     */
+    public void addResponseFormat(String regex, String replacement) {
+        if (regex == null || replacement == null) {
+            Throw.exception(ExceptionType.NullPointerException, "格式化前后字符串不能为空");
+            return;
+        }
+        if (responseFormatMap == null) {
+            responseFormatMap = new HashMap<>();
+        }
+        responseFormatMap.put(regex, replacement);
+    }
+
+    /**
+     * 转Json
+     *
+     * @param obj 对象数据
+     */
+    public JSONObject toJson(Object obj) {
+        return HttpReflectManager.requestToJson(obj);
+    }
 }

@@ -3,6 +3,8 @@ package com.jen.easy.http;
 import com.jen.easy.Easy;
 import com.jen.easy.constant.FieldType;
 import com.jen.easy.constant.TAG;
+import com.jen.easy.exception.ExceptionType;
+import com.jen.easy.exception.Throw;
 import com.jen.easy.log.EasyLog;
 
 import org.json.JSONArray;
@@ -29,10 +31,10 @@ class HttpReflectManager {
      */
     static Object[] getUrl(HttpRequest request) {
         Object[] values = new Object[3];
-        if (request == null) {
-            EasyLog.w(TAG.EasyHttp, "getTableName obj is null");
+        /*if (request == null) {
+            Throw.exception(ExceptionType.NullPointerException, "getUrl 请求地址不能为空");
             return values;
-        }
+        }*/
         boolean isGet = request.getClass().isAnnotationPresent(Easy.HTTP.GET.class);
         if (isGet) {
             Easy.HTTP.GET get = request.getClass().getAnnotation(Easy.HTTP.GET.class);
@@ -79,23 +81,23 @@ class HttpReflectManager {
      * @param heads     请求头参数
      */
     static void getRequestParams(List<String> loopClass, Object request, Map<String, String> urls, JSONObject jsonParam, Map<String, String> heads) {
-        if (request == null) {
-            EasyLog.w(TAG.EasyHttp, "getRequestParams getRequestParams obj is null");
+        /*if (request == null) {
+            Throw.exception(ExceptionType.NullPointerException, "getRequestParams 参数不能为空");
             return;
-        }
-        if (loopClass == null) {
+        }*/
+        /*if (loopClass == null) {
             loopClass = new ArrayList<>();
-        }
+        }*/
 
         Class clazz = request.getClass();
         String clazzName = clazz.getName();
         if (loopClass.contains(clazzName)) {
-            EasyLog.w(TAG.EasyHttp, "不解析死循环引用：" + clazzName);
+            Throw.exception(ExceptionType.RuntimeException, "请求对象不能循环引用：" + clazzName);
             return;
         } else {
             loopClass.add(clazzName);
         }
-//        String reqName = HttpBaseRequest.class.getName();
+//        String reqName = HttpBasicRequest.class.getName();
         String objName = Object.class.getName();
         while (/*!clazzName.equals(reqName) &&*/ !clazzName.equals(objName)) {
             /*if (request.state == HttpState.STOP) {
@@ -204,6 +206,7 @@ class HttpReflectManager {
                     getRequestParams(loopClass, value, urls, item, heads);
                     jsonParam.put(key, item);
                 } else {
+                    Throw.exception(ExceptionType.ClassCastException, "不支持该类型参数请求：" + field.getName());
                     EasyLog.w(TAG.EasyHttp, "不支持该类型：" + field.getName());
                 }
             } catch (IllegalAccessException e) {
@@ -223,10 +226,10 @@ class HttpReflectManager {
      * @param head_field  头名称_变量
      */
     static void getResponseParams(Class clazz, Map<String, Field> param_field, Map<String, Field> head_field) {
-        if (clazz == null) {
-            EasyLog.w(TAG.EasyHttp, "getResponseParams clazz is not null");
+        /*if (clazz == null) {
+            Throw.exception(ExceptionType.NullPointerException, "getResponseParams clazz 空指针异常");
             return;
-        }
+        }*/
 
         Class myClass = clazz;
         String clazzName = myClass.getName();
@@ -284,7 +287,7 @@ class HttpReflectManager {
                 }
                 case HEAD: {
                     if (!FieldType.isString(fieldClass)) {
-                        EasyLog.w(TAG.EasyHttp, "请求头返回变量必须为String类型:" + paramName);
+                        Throw.exception(ExceptionType.ClassCastException, "请求头返回变量必须为String类型:" + paramName);
                         continue;
                     }
                     head_field.put(paramName, field);
@@ -303,16 +306,16 @@ class HttpReflectManager {
      * @param object 请求参数
      * @return JSONObject
      */
-    public static JSONObject paramToJson(Object object) {
+    static JSONObject requestToJson(Object object) {
         JSONObject jsonParam = new JSONObject();
         if (object == null) {
-            EasyLog.w(TAG.EasyHttp, "toJson error, obj is not null");
+            Throw.exception(ExceptionType.NullPointerException, "参数不能为空");
             return jsonParam;
         }
         Map<String, String> urls = new HashMap<>();
         Map<String, String> heads = new HashMap<>();
 
-        getRequestParams(null, object, urls, jsonParam, heads);
+        getRequestParams(new ArrayList<String>(), object, urls, jsonParam, heads);
         return jsonParam;
     }
 }

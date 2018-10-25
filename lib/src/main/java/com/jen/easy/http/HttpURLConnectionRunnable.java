@@ -3,6 +3,8 @@ package com.jen.easy.http;
 import android.text.TextUtils;
 
 import com.jen.easy.constant.TAG;
+import com.jen.easy.exception.ExceptionType;
+import com.jen.easy.exception.Throw;
 import com.jen.easy.log.EasyLog;
 
 import org.json.JSONException;
@@ -13,6 +15,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -45,31 +48,36 @@ abstract class HttpURLConnectionRunnable implements Runnable {
         mUrlStr = mRequest.url;
         if (TextUtils.isEmpty(mUrlStr)) {
             mUrlStr = "";
+            Throw.exception(ExceptionType.NullPointerException, "URL请求地址空");
             fail("URL地址为空");
             return;
         }
 
-        if (mRequest instanceof HttpBaseRequest) {//===============基本数据处理
-            if (response != null && response instanceof Class) {
+        if (mRequest instanceof HttpBasicRequest) {//===============基本数据处理
+            if (response instanceof Class) {
                 mResponse = (Class) response;
             } else {
+                Throw.exception(ExceptionType.NullPointerException, "返回对象不能为空");
                 fail("返回对象不能为空");
                 return;
             }
         } else if (mRequest instanceof HttpUploadRequest) {//===============上传请求处理
-            if (response != null && response instanceof Class) {
+            if (response instanceof Class) {
                 mResponse = (Class) response;
             } else {
+                Throw.exception(ExceptionType.NullPointerException, "返回对象不能为空");
                 fail("返回对象不能为空");
                 return;
             }
             HttpUploadRequest uploadRequest = (HttpUploadRequest) mRequest;
             if (TextUtils.isEmpty(uploadRequest.filePath)) {
+                Throw.exception(ExceptionType.NullPointerException, "文件地址不能为空");
                 fail("文件地址不能为空");
                 return;
             }
             File file = new File(uploadRequest.filePath);
             if (!file.isFile()) {
+                Throw.exception(ExceptionType.IllegalArgumentException, "文件地址参数错误");
                 fail("文件地址参数错误");
                 return;
             }
@@ -80,6 +88,7 @@ abstract class HttpURLConnectionRunnable implements Runnable {
                 if (file.exists()) {
                     boolean ret = file.delete();
                     if (!ret) {
+                        Throw.exception(ExceptionType.IllegalArgumentException, "删除旧文件失败，请检查文件路径是否正确");
                         fail("删除旧文件失败，请检查文件路径是否正确");
                         return;
                     }
@@ -87,6 +96,7 @@ abstract class HttpURLConnectionRunnable implements Runnable {
             }
 
             if (TextUtils.isEmpty(downloadRequest.filePath)) {
+                Throw.exception(ExceptionType.NullPointerException, "文件地址不能为空");
                 fail("文件地址不能为空");
                 return;
             }
@@ -95,6 +105,7 @@ abstract class HttpURLConnectionRunnable implements Runnable {
             if (!fileFolder.exists()) {
                 boolean ret = fileFolder.mkdirs();
                 if (!ret) {
+                    Throw.exception(ExceptionType.IllegalArgumentException, "保存文件失败，请检查文件路径是否正确");
                     fail("保存文件失败，请检查文件路径是否正确");
                     return;
                 }
@@ -109,13 +120,13 @@ abstract class HttpURLConnectionRunnable implements Runnable {
             Map<String, String> urls = new HashMap<>();
 //            JSONObject mJsonParam = new JSONObject();
             Map<String, String> heads = new HashMap<>();
-            HttpReflectManager.getRequestParams(null, mRequest, urls, mJsonParam, heads);
+            HttpReflectManager.getRequestParams(new ArrayList<String>(), mRequest, urls, mJsonParam, heads);
             if (mRequest.state == HttpState.STOP) {
                 return;
             }
             if (mIsGet) {
                 Iterator<String> paramKeys = mJsonParam.keys();
-                StringBuilder requestBuf = new StringBuilder("");
+                StringBuilder requestBuf = new StringBuilder();
                 boolean isFirst = true;
                 while (paramKeys.hasNext()) {
                     String key = paramKeys.next();
@@ -137,7 +148,7 @@ abstract class HttpURLConnectionRunnable implements Runnable {
             Set<String> urlKeys = urls.keySet();
             for (String key : urlKeys) {
                 String value = urls.get(key);
-                mUrlStr = mUrlStr.replaceAll("\\{" + key + "\\}", value);
+                mUrlStr = mUrlStr.replace("\\{" + key + "}", value);
             }
 
             URL url = new URL(mUrlStr);
@@ -150,7 +161,7 @@ abstract class HttpURLConnectionRunnable implements Runnable {
             connection.setRequestMethod(method);
 
             Set<String> headKeys = heads.keySet();
-            StringBuilder headBuilder = new StringBuilder("");
+            StringBuilder headBuilder = new StringBuilder();
             for (String key : headKeys) {//设置请求头
                 String value = heads.get(key);
                 connection.setRequestProperty(key, value);

@@ -12,7 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
-import com.jen.easy.http.imp.HttpBaseListener;
+import com.jen.easy.http.imp.HttpBasicListener;
 import com.jen.easy.log.EasyLog;
 import com.jen.easyui.EasyMain;
 import com.jen.easyui.dialog.EasyLoading;
@@ -21,7 +21,7 @@ import com.jen.easyui.dialog.EasyLoading;
  * 作者：ShannJenn
  * 时间：2017/10/26.
  */
-public abstract class EasyActivity<T> extends AppCompatActivity implements HttpBaseListener<T> {
+public abstract class EasyActivity<T> extends AppCompatActivity implements HttpBasicListener<T> {
     protected Context mContext;
     protected Handler mHandler = new Handler(Looper.getMainLooper());
     protected EasyLoading mLoading;

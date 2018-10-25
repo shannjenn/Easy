@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
 import com.jen.easy.constant.TAG;
+import com.jen.easy.exception.ExceptionType;
+import com.jen.easy.exception.Throw;
 import com.jen.easy.log.EasyLog;
 import com.jen.easy.sqlite.imp.DatabaseListener;
 
@@ -23,7 +25,7 @@ class Database {
         if (!parent.exists()) {
             boolean ret = parent.mkdirs();
             if (!ret) {
-                EasyLog.w(TAG.EasySQL, "创建数据库文件夹失败");
+                Throw.exception(ExceptionType.RuntimeException, "创建数据库文件夹失败");
             }
         }
     }
@@ -34,7 +36,7 @@ class Database {
     boolean createDB() {
         File file = new File(path);
         if (file.exists()) {
-            EasyLog.i(TAG.EasySQL, "数据库已经存在");
+//            EasyLog.i(TAG.EasySQL, "数据库已经存在");
             return true;
         }
         try {

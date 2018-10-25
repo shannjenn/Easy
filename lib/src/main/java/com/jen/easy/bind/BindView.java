@@ -33,7 +33,7 @@ public class BindView extends BindViewManager {
     /**
      * 解除绑定
      *
-     * @param activity
+     * @param activity activity
      */
     @Override
     public void unbind(Activity activity) {

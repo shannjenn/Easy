@@ -25,10 +25,10 @@ class DBReflectManager {
      * @return 返回表名
      */
     static String getTableName(Class clazz) {
-        if (clazz == null) {
-            EasyLog.w(TAG.EasySQL, "传入的Class为空");
+        /*if (clazz == null) {
+            Throw.exception(ExceptionType.NullPointerException, "传入的Class为空" );
             return null;
-        }
+        }*/
         boolean isAnnotation = clazz.isAnnotationPresent(Easy.DB.Table.class);
         if (!isAnnotation) {
             EasyLog.w(TAG.EasySQL, clazz.getName() + "未增加表注释");
@@ -46,10 +46,10 @@ class DBReflectManager {
      * @param column_field 列名_变量
      */
     static void getColumnNames(Class clazz, List<String> primaryKeys, Map<String, Field> column_field) {
-        if (clazz == null) {
+        /*if (clazz == null) {
             EasyLog.w(TAG.EasySQL, "getColumnNames clazz is not null");
             return;
-        }
+        }*/
 
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
@@ -86,10 +86,10 @@ class DBReflectManager {
      */
     static List<String> getPrimaryKeys(Class clazz) {
         List<String> primaryKeys = new ArrayList<>();
-        if (clazz == null) {
+        /*if (clazz == null) {
             EasyLog.w(TAG.EasySQL, "传入的Class为空");
             return primaryKeys;
-        }
+        }*/
 
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
@@ -122,10 +122,10 @@ class DBReflectManager {
      */
     static Map<String, String> getPrimaryKeysValues(Object obj) {
         Map<String, String> primaryKeys_values = new HashMap<>();
-        if (obj == null || obj instanceof Class) {
+        /*if (obj == null || obj instanceof Class) {
             EasyLog.w(TAG.EasySQL, "getPrimaryKeyValue clazz is not null");
             return primaryKeys_values;
-        }
+        }*/
         Field[] fields = obj.getClass().getDeclaredFields();
         for (Field field : fields) {
             boolean isAnnotation = field.isAnnotationPresent(Easy.DB.Column.class);

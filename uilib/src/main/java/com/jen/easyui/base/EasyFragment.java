@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jen.easy.http.imp.HttpBaseListener;
+import com.jen.easy.http.imp.HttpBasicListener;
 import com.jen.easyui.EasyMain;
 import com.jen.easyui.dialog.EasyLoading;
 
@@ -20,7 +20,7 @@ import com.jen.easyui.dialog.EasyLoading;
  * 时间：2017/01/09.
  */
 
-public abstract class EasyFragment<T> extends Fragment implements HttpBaseListener<T> {
+public abstract class EasyFragment<T> extends Fragment implements HttpBasicListener<T> {
     protected View rootView;
     protected Context mContext;
     protected Handler mHandler = new Handler(Looper.getMainLooper());

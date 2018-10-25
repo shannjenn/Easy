@@ -5,7 +5,7 @@ import android.view.View;
 
 import com.jen.easy.Easy;
 import com.jen.easy.http.Http;
-import com.jen.easy.http.imp.HttpBaseListener;
+import com.jen.easy.http.imp.HttpBasicListener;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
 import com.jen.easytest.http.MD5Util;
@@ -52,6 +52,7 @@ public class HttpActivity extends EasyActivity {
     protected void onBindClick(View view) {
         switch (view.getId()) {
             case R.id.get:
+//                Throw.exception(ExceptionType.NullPointerException,"空指针异常");
                 get();
                 break;
             case R.id.post:
@@ -142,7 +143,7 @@ public class HttpActivity extends EasyActivity {
     /**
      * 宝库数据返回
      */
-    HttpBaseListener httpListener = new HttpBaseListener() {
+    HttpBasicListener httpListener = new HttpBasicListener() {
         @Override
         public void fail(int flagCode, String flag, String msg) {
             EasyLog.d("exampleRequest fail:" + msg);

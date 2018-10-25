@@ -63,6 +63,10 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
         reader.close();
         String result = buffer.toString();
         EasyLog.d(TAG.EasyHttp, mUrlStr + " 完成，返回数据：" + result);
+        if (mRequest.responseFormatMap != null) {
+            result = HttpTools.replaceResponse(mRequest, result);
+            EasyLog.d(TAG.EasyHttp, mUrlStr + " 格式化后数据：" + result);
+        }
         success(result, null);
     }
 
@@ -75,7 +79,7 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
             parseManager.setHttpState(request.state);
             Object parseObject = parseManager.parseJson(mResponse, result, headMap);
             if (request.state == HttpState.STOP) {
-                EasyLog.d(TAG.EasyHttp, mUrlStr + " 线程停止!\n   ");
+                EasyLog.d(TAG.EasyHttp, mUrlStr + " 网络请求停止!\n   ");
             } else if (parseObject == null) {
                 fail("返回数据解析异常");
             } else {

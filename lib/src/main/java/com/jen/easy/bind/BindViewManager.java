@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.view.View;
 
 import com.jen.easy.constant.TAG;
+import com.jen.easy.exception.ExceptionType;
+import com.jen.easy.exception.Throw;
 import com.jen.easy.log.EasyLog;
 
 import java.lang.reflect.Field;
@@ -26,7 +28,7 @@ abstract class BindViewManager {
      */
     protected void bind(final Activity activity) {
         if (activity == null) {
-            EasyLog.w(TAG.EasyBind, "mBindView activity is null");
+            Throw.exception(ExceptionType.NullPointerException, "参数不能为空");
             return;
         }
         String name = activity.getClass().getName();
@@ -82,7 +84,7 @@ abstract class BindViewManager {
      */
     protected void inject(final Object obj, final View parent) {
         if (obj == null || parent == null) {
-            EasyLog.w(TAG.EasyBind, "inject obj or view is null");
+            Throw.exception(ExceptionType.NullPointerException, "参数不能为空");
             return;
         }
 
@@ -134,7 +136,7 @@ abstract class BindViewManager {
      */
     protected void unbind(Activity activity) {
         if (activity == null) {
-            EasyLog.w(TAG.EasyBind, "activity is null");
+            Throw.exception(ExceptionType.NullPointerException, "参数不能为空");
             return;
         }
         String name = activity.getClass().getName();
