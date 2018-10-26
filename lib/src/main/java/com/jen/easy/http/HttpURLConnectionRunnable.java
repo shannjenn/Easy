@@ -28,10 +28,8 @@ abstract class HttpURLConnectionRunnable implements Runnable {
 
     String mUrlStr;
     int mResponseCode = -1;//返回码
-    //    boolean mHasParam = false;//是否有参数
     String mCharset;//编码
     boolean mIsGet = true;
-    //    String mParamStr;
     final JSONObject mJsonParam = new JSONObject();
 
     HttpURLConnectionRunnable(HttpRequest param) {

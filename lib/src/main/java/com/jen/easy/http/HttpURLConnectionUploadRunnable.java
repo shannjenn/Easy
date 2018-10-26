@@ -34,7 +34,7 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
         File file = new File(request.filePath);
         DataInputStream in = new DataInputStream(new FileInputStream(file));
         long curBytes = request.startPoint;
-        int len = 0;
+        int len;
         byte[] bufferOut = new byte[1024];
         while ((len = in.read(bufferOut)) != -1 && !request.userCancel) {
             out.write(bufferOut, 0, len);
@@ -54,7 +54,7 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
         }
 
         // 读取返回数据
-        StringBuffer buffer = new StringBuffer("");
+        StringBuilder buffer = new StringBuilder();
         BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), mCharset));
         String line;
         while ((line = reader.readLine()) != null) {

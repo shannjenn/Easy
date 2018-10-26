@@ -26,7 +26,7 @@ class HttpURLConnectionDownloadRunnable extends HttpURLConnectionRunnable {
         HttpDownloadRequest request = (HttpDownloadRequest) mRequest;
         if (request.startPoint <= 1024 * 2) {
             request.startPoint = 0;
-        } else if (request.startPoint > 1024 * 2) {
+        } else {
             request.startPoint = request.startPoint - 1024 * 2;
         }
 
@@ -63,14 +63,14 @@ class HttpURLConnectionDownloadRunnable extends HttpURLConnectionRunnable {
                     progress(curBytes, request.endPoint);
                 }
             }
-            if (mRequest.state == HttpState.STOP) {
-
-            } else if (request.userCancel) {
-                fail("下载失败：用户取消下载");
-            } else if (curBytes == request.endPoint) {
-                success(null, null);
-            } else {
-                fail("下载失败：" + mResponseCode + " curBytes = " + curBytes + " endPoint = " + request.endPoint);
+            if (mRequest.state != HttpState.STOP) {
+                if (request.userCancel) {
+                    fail("下载失败：用户取消下载");
+                } else if (curBytes == request.endPoint) {
+                    success(null, null);
+                } else {
+                    fail("下载失败：" + mResponseCode + " curBytes = " + curBytes + " endPoint = " + request.endPoint);
+                }
             }
         } else {
             fail("下载失败：" + mResponseCode);

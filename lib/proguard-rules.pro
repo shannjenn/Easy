@@ -77,6 +77,9 @@
 -keep class com.jen.easy.http.HttpUploadRequest* {
     *;
 }
+-keep class com.jen.easy.http.HttpResponse* {
+    *;
+}
 -keep class com.jen.easy.http.HttpHeadResponse* {
     *;
 }

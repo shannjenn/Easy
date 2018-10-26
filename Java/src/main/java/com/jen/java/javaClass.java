@@ -5,6 +5,23 @@ import java.util.List;
 
 public class javaClass {
     public static void main(String[] args) {
+        HttpState httpState = HttpState.RUN;
+       long t1= System.currentTimeMillis();
+        if (httpState == HttpState.STOP) {
+
+        }
+        long t2= System.currentTimeMillis();
+        System.out.println(t2-t1);
+
+        String a =null;
+        long t3= System.currentTimeMillis();
+        if(a == null){
+
+        }
+        long t4= System.currentTimeMillis();
+        System.out.println(t4-t3);
+
+
         String b = "bbbbbbb";
         b = test();
         System.out.println(b);

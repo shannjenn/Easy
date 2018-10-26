@@ -10,7 +10,7 @@ import java.util.Map;
  * 时间：2017/8/12.
  * 说明：http返回参数
  */
-public abstract class HttpHeadResponse {
+public abstract class HttpHeadResponse extends HttpResponse {
 
     @Easy.HTTP.ResponseParam(noResp = true)
     protected Map<String, List<String>> heads;
