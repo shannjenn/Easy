@@ -46,7 +46,7 @@ class HttpReflectManager {
             EasyHttpGet get = request.getClass().getAnnotation(EasyHttpGet.class);
             values[0] = "GET";
             request.urlBase = request.urlBase != null ? request.urlBase : get.UrlBase();
-            request.urlAppend = request.urlAppend != null ? request.urlAppend : get.UrlAppand();
+            request.urlAppend = request.urlAppend != null ? request.urlAppend : get.UrlAppend();
             request.url = request.url != null ? request.url : request.urlBase + request.urlAppend;
             values[1] = request.url;
             values[2] = get.Response();
@@ -57,7 +57,7 @@ class HttpReflectManager {
             EasyHttpPost post = request.getClass().getAnnotation(EasyHttpPost.class);
             values[0] = "POST";
             request.urlBase = request.urlBase != null ? request.urlBase : post.UrlBase();
-            request.urlAppend = request.urlAppend != null ? request.urlAppend : post.UrlAppand();
+            request.urlAppend = request.urlAppend != null ? request.urlAppend : post.UrlAppend();
             request.url = request.url != null ? request.url : request.urlBase + request.urlAppend;
             values[1] = request.url;
             values[2] = post.Response();
@@ -68,7 +68,7 @@ class HttpReflectManager {
             EasyHttpPut put = request.getClass().getAnnotation(EasyHttpPut.class);
             values[0] = "PUT";
             request.urlBase = request.urlBase != null ? request.urlBase : put.UrlBase();
-            request.urlAppend = request.urlAppend != null ? request.urlAppend : put.UrlAppand();
+            request.urlAppend = request.urlAppend != null ? request.urlAppend : put.UrlAppend();
             request.url = request.url != null ? request.url : request.urlBase + request.urlAppend;
             values[1] = request.url;
             values[2] = put.Response();

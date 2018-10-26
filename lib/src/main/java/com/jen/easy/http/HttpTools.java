@@ -15,10 +15,10 @@ class HttpTools {
      * @return String
      */
     static String replaceResponse(HttpRequest request, String response) {
-        Set<String> regexps = request.responseFormatMap.keySet();
-        for (String regex : regexps) {
-            String replacement = request.responseFormatMap.get(regex);
-            response = response.replace(regex, replacement);
+        Set<String> oldChars = request.responseReplaceMap.keySet();
+        for (String oldChar : oldChars) {
+            String replacement = request.responseReplaceMap.get(oldChar);
+            response = response.replace(oldChar, replacement);
         }
         return response;
     }

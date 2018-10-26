@@ -70,13 +70,13 @@
 -keep class com.jen.easy.EasyHttpPut {
     *;
 }
--keep class com.jen.easy.EasyRequest {
+-keep class com.jen.easy.EasyRequest* {
     *;
 }
 -keep class com.jen.easy.EasyRequestInvalid {
     *;
 }
--keep class com.jen.easy.EasyResponse {
+-keep class com.jen.easy.EasyResponse* {
     *;
 }
 -keep class com.jen.easy.EasyResponseInvalid {

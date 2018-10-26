@@ -71,23 +71,23 @@ public abstract class HttpRequest {
     /**
      * 替换请求结果特殊符号
      */
-    Map<String, String> responseFormatMap;
+    Map<String, String> responseReplaceMap;
 
     /**
      * 替换请求结果特殊符号,如：\\\"code\\\": \\\"HKD\\\"
      *
-     * @param regex       替换前
-     * @param replacement 替换后
+     * @param oldChar       替换前
+     * @param newChar 替换后
      */
-    public void addResponseFormat(String regex, String replacement) {
-        if (regex == null || replacement == null) {
+    public void addResponseReplace(String oldChar, String newChar) {
+        if (oldChar == null || newChar == null) {
             Throw.exception(ExceptionType.NullPointerException, "格式化前后字符串不能为空");
             return;
         }
-        if (responseFormatMap == null) {
-            responseFormatMap = new HashMap<>();
+        if (responseReplaceMap == null) {
+            responseReplaceMap = new HashMap<>();
         }
-        responseFormatMap.put(regex, replacement);
+        responseReplaceMap.put(oldChar, newChar);
     }
 
     /**

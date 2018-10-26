@@ -20,7 +20,7 @@ public @interface EasyHttpGet {
     /**
      * 请求地址后序
      */
-    String UrlAppand() default "";
+    String UrlAppend() default "";
 
     /**
      * 返回实体类
