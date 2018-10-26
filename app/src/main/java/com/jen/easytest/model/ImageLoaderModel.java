@@ -2,51 +2,53 @@ package com.jen.easytest.model;
 
 import android.view.View;
 
-import com.jen.easy.Easy;
+import com.jen.easy.EasyColumn;
+import com.jen.easy.EasyResponse;
+import com.jen.easy.EasyTable;
 
 /**
  * Created by Administrator on 2018/3/2.
  */
-@Easy.DB.Table("ImageLoaderModel")
+@EasyTable("ImageLoaderModel")
 public class ImageLoaderModel {
-    @Easy.HTTP.ResponseParam("aid")
+    @EasyResponse("aid")
     private String aid;// 文章编号
 
-    @Easy.HTTP.ResponseParam("catid")
+    @EasyResponse("catid")
     private String catid;//分类编号
 
-    @Easy.HTTP.ResponseParam("title")
+    @EasyResponse("title")
     private String title;// 标题
 
-    @Easy.HTTP.ResponseParam("summary")
+    @EasyResponse("summary")
     private String summary;// 摘要
 
-    @Easy.HTTP.ResponseParam("pic")
+    @EasyResponse("pic")
     private String pic;//图片
 
-    @Easy.HTTP.ResponseParam("dateline")
+    @EasyResponse("dateline")
     private String dateline;// 发布时间戳
-    @Easy.HTTP.ResponseParam("movieid")
+    @EasyResponse("movieid")
     private String movieid;
 
     /**
      * 0正常数据，1轮播一，2轮播二
      */
-    @Easy.HTTP.ResponseParam(noResp = true)
-    @Easy.DB.Column(noColumn = true)
+    @EasyResponse(invalid = true)
+    @EasyColumn(invalid = true)
     private int viewType;
-    @Easy.HTTP.ResponseParam(noResp = true)
-    @Easy.DB.Column(noColumn = true)
+    @EasyResponse(invalid = true)
+    @EasyColumn(invalid = true)
     private int viewSize = 1;
 
-    @Easy.HTTP.ResponseParam(noResp = true)
-    @Easy.DB.Column(noColumn = true)
+    @EasyResponse(invalid = true)
+    @EasyColumn(invalid = true)
     int bitTitleVisible = View.GONE;//显示大标题
-    @Easy.HTTP.ResponseParam(noResp = true)
-    @Easy.DB.Column(noColumn = true)
+    @EasyResponse(invalid = true)
+    @EasyColumn(invalid = true)
     boolean showEnter;//显示进入
-    @Easy.HTTP.ResponseParam(noResp = true)
-    @Easy.DB.Column(noColumn = true)
+    @EasyResponse(invalid = true)
+    @EasyColumn(invalid = true)
     boolean showChange;//显示晃一晃
 
 

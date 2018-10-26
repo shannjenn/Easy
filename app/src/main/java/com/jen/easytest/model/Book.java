@@ -1,6 +1,6 @@
 package com.jen.easytest.model;
 
-import com.jen.easy.Easy;
+import com.jen.easy.EasyResponse;
 
 /**
  * Created by Administrator on 2018/3/28.
@@ -8,7 +8,7 @@ import com.jen.easy.Easy;
 
 public class Book {
 
-    @Easy.HTTP.ResponseParam(value = "_id")//返回参数名为_id
+    @EasyResponse(value = "_id")//返回参数名为_id
     private int id;
 
     private String name;//不注释默认作为参数返回,参数名与变量名一致，name
@@ -17,7 +17,7 @@ public class Book {
 
     private String des;
 
-    @Easy.HTTP.ResponseParam(noResp = true)//noResp = true，则不作为返回参数
+    @EasyResponse(invalid = true)//noResp = true，则不作为返回参数
     private boolean isCheck;
 
 

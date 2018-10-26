@@ -1,6 +1,6 @@
 package com.jen.easytest.http.response;
 
-import com.jen.easy.Easy;
+import com.jen.easy.EasyResponse;
 import com.jen.easytest.model.ImageLoaderModel;
 
 import java.util.List;
@@ -34,7 +34,7 @@ public class ImageLoaderResponse {
         String from;
         String to;
 
-        @Easy.HTTP.ResponseParam("data")
+        @EasyResponse("data")
         private List<ImageLoaderModel> data2;
 
 

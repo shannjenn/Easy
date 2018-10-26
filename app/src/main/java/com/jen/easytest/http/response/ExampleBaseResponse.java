@@ -1,6 +1,6 @@
 package com.jen.easytest.http.response;
 
-import com.jen.easy.Easy;
+import com.jen.easy.EasyResponse;
 import com.jen.easy.http.HttpHeadResponse;
 
 /**
@@ -11,13 +11,13 @@ import com.jen.easy.http.HttpHeadResponse;
 
 public class ExampleBaseResponse extends HttpHeadResponse {
 
-    @Easy.HTTP.ResponseParam("code")
+    @EasyResponse("code")
     protected String code;
 
-    @Easy.HTTP.ResponseParam("message")
+    @EasyResponse("message")
     protected String message;
 
-    @Easy.HTTP.ResponseParam(type = Easy.HTTP.TYPE.HEAD)
+    @EasyResponse(type = EasyResponse.Type.Head)
     private String head;
 
     public String getCode() {

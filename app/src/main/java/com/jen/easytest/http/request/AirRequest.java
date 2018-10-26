@@ -1,48 +1,49 @@
 package com.jen.easytest.http.request;
 
-import com.jen.easy.Easy;
+import com.jen.easy.EasyHttpPost;
+import com.jen.easy.EasyRequest;
 import com.jen.easytest.http.response.AirResponse;
 
-@Easy.HTTP.POST(URLBASE = "http://apics.baoku.com/api/air/query", Response = AirResponse.class)
+@EasyHttpPost(UrlBase = "http://apics.baoku.com/api/air/query", Response = AirResponse.class)
 public class AirRequest extends ExampleBaseRequest {
 
-	@Easy.HTTP.RequestParam("cid")
+	@EasyRequest("cid")
 	private String cid;// 商户公司编号
 
-	@Easy.HTTP.RequestParam("fromCity")
+	@EasyRequest("fromCity")
 	private String fromCity;// 起飞城市代码
 
-	@Easy.HTTP.RequestParam("fromCityName")
+	@EasyRequest("fromCityName")
 	private String fromCityName;// 起飞城市名称
 
-	@Easy.HTTP.RequestParam("arriveCity")
+	@EasyRequest("arriveCity")
 	String arriveCity;// 到达城市代码
 
-	@Easy.HTTP.RequestParam("arriveCityName")
+	@EasyRequest("arriveCityName")
 	String arriveCityName;// 到达城市名称
 
-	@Easy.HTTP.RequestParam("carrier")
+	@EasyRequest("carrier")
 	String carrier;// 航空公司 (可选)
 
-	@Easy.HTTP.RequestParam("codeLevel")
+	@EasyRequest("codeLevel")
 	String codeLevel;// 仓位级别 (可选)
 
-	@Easy.HTTP.RequestParam("goDate")
+	@EasyRequest("goDate")
 	String goDate;// 去程旅行日期
 
-	@Easy.HTTP.RequestParam("backDate")
+	@EasyRequest("backDate")
 	String backDate;// 返程旅行日期
 
-	@Easy.HTTP.RequestParam("level")
+	@EasyRequest("level")
 	String level;// 用户级别 (可选)
 
-	@Easy.HTTP.RequestParam("userCode")
+	@EasyRequest("userCode")
 	String userCode;// 用来唯一标识用户
 
-	@Easy.HTTP.RequestParam("signType")
+	@EasyRequest("signType")
 	String signType;// 签名方式
 
-	@Easy.HTTP.RequestParam("sign")
+	@EasyRequest("sign")
 	String sign;// 签名
 
 

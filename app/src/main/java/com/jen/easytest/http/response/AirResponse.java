@@ -1,58 +1,58 @@
 package com.jen.easytest.http.response;
 
 
-import com.jen.easy.Easy;
+import com.jen.easy.EasyResponse;
 import com.jen.easytest.model.Book;
 
 import java.util.List;
 
 public class AirResponse extends ExampleBaseResponse {
 
-    @Easy.HTTP.ResponseParam("book_code")
+    @EasyResponse("book_code")
     private String bookCode;
 
-    @Easy.HTTP.ResponseParam("books")
+    @EasyResponse("books")
     private List<Book> books;
 
 
 
-    @Easy.HTTP.ResponseParam(type = Easy.HTTP.TYPE.HEAD)
+    @EasyResponse(type = EasyResponse.Type.Head)
     private String Date;
 
-    @Easy.HTTP.ResponseParam("token")
+    @EasyResponse("token")
     private String token;
 
-    @Easy.HTTP.ResponseParam("code")
+    @EasyResponse("code")
     private String code;
 
-    @Easy.HTTP.ResponseParam("airFreeConsign")
+    @EasyResponse("airFreeConsign")
     private List<AirFreeConsign> airFreeConsign;
 
-//    @Easy.HTTP.ResponseParam("planeStyles")
+//    @EasyResponse("planeStyles")
 //    private List<PlaneStyles> planeStyles;
 
-    @Easy.HTTP.ResponseParam("airFlights")
+    @EasyResponse("airFlights")
     private List<AirFlight> airFlights;
 
 
     public static class AirFreeConsign {
 
-        @Easy.HTTP.ResponseParam("id")
+        @EasyResponse("id")
         private int id;
 
-        @Easy.HTTP.ResponseParam("classLevel")
+        @EasyResponse("classLevel")
         private String classLevel;
 
-        @Easy.HTTP.ResponseParam("consign")
+        @EasyResponse("consign")
         private String consign;
 
-        @Easy.HTTP.ResponseParam("remark")
+        @EasyResponse("remark")
         private String remark;
 
-        @Easy.HTTP.ResponseParam("applyCarrier")
+        @EasyResponse("applyCarrier")
         private String applyCarrier;
 
-        @Easy.HTTP.ResponseParam("updateTime")
+        @EasyResponse("updateTime")
         private String updateTime;
 
 
@@ -107,187 +107,187 @@ public class AirResponse extends ExampleBaseResponse {
 
     public static class AirFlight {
 
-        @Easy.HTTP.ResponseParam("airCraft")
+        @EasyResponse("airCraft")
         private String airCraft;
 
-        @Easy.HTTP.ResponseParam("airCraftDes")
+        @EasyResponse("airCraftDes")
         private String airCraftDes;
 
-        @Easy.HTTP.ResponseParam("airportTax")
+        @EasyResponse("airportTax")
         private float airportTax;
 
-        @Easy.HTTP.ResponseParam("arrivalDate")
+        @EasyResponse("arrivalDate")
         private String arrivalDate;
 
-        @Easy.HTTP.ResponseParam("arrivalTime")
+        @EasyResponse("arrivalTime")
         private String arrivalTime;
 
-        @Easy.HTTP.ResponseParam("boardCityCode")
+        @EasyResponse("boardCityCode")
         private String boardCityCode;
 
-        @Easy.HTTP.ResponseParam("boardCityName")
+        @EasyResponse("boardCityName")
         private String boardCityName;
 
-        @Easy.HTTP.ResponseParam("boardPoint")
+        @EasyResponse("boardPoint")
         private String boardPoint;
 
-        @Easy.HTTP.ResponseParam("boardPointAT")
+        @EasyResponse("boardPointAT")
         private String boardPointAT;
 
-        @Easy.HTTP.ResponseParam("boardPointName")
+        @EasyResponse("boardPointName")
         private String boardPointName;
 
-        @Easy.HTTP.ResponseParam("carrierCode")
+        @EasyResponse("carrierCode")
         private String carrierCode;
 
-        @Easy.HTTP.ResponseParam("carrierName")
+        @EasyResponse("carrierName")
         private String carrierName;
 
-        @Easy.HTTP.ResponseParam("carrierOrg")
+        @EasyResponse("carrierOrg")
         private String carrierOrg;
 
-        @Easy.HTTP.ResponseParam("departureDate")
+        @EasyResponse("departureDate")
         private String departureDate;
 
-        @Easy.HTTP.ResponseParam("departureTime")
+        @EasyResponse("departureTime")
         private String departureTime;
 
-        @Easy.HTTP.ResponseParam("flightNo")
+        @EasyResponse("flightNo")
         private String flightNo;
 
-        @Easy.HTTP.ResponseParam("flightTime")
+        @EasyResponse("flightTime")
         private String flightTime;
 
-        @Easy.HTTP.ResponseParam("flightType")
+        @EasyResponse("flightType")
         private String flightType;
 
-        @Easy.HTTP.ResponseParam("fuelSurTax")
+        @EasyResponse("fuelSurTax")
         private float fuelSurTax;
 
-        @Easy.HTTP.ResponseParam("meal")
+        @EasyResponse("meal")
         private String meal;
 
-        @Easy.HTTP.ResponseParam("offCityCode")
+        @EasyResponse("offCityCode")
         private String offCityCode;
 
-        @Easy.HTTP.ResponseParam("offCityName")
+        @EasyResponse("offCityName")
         private String offCityName;
 
-        @Easy.HTTP.ResponseParam("offPoint")
+        @EasyResponse("offPoint")
         private String offPoint;
 
-        @Easy.HTTP.ResponseParam("offPointAT")
+        @EasyResponse("offPointAT")
         private String offPointAT;
 
-        @Easy.HTTP.ResponseParam("offPointName")
+        @EasyResponse("offPointName")
         private String offPointName;
 
-        @Easy.HTTP.ResponseParam("otherTax")
+        @EasyResponse("otherTax")
         private float otherTax;
 
-        @Easy.HTTP.ResponseParam("sequence")
+        @EasyResponse("sequence")
         private String sequence;
 
-        @Easy.HTTP.ResponseParam("shortCarrName")
+        @EasyResponse("shortCarrName")
         private String shortCarrName;
 
-        @Easy.HTTP.ResponseParam("signature")
+        @EasyResponse("signature")
         private String signature;
 
-        @Easy.HTTP.ResponseParam("tpm")
+        @EasyResponse("tpm")
         private String tpm;
 
-        @Easy.HTTP.ResponseParam("viaPoint")
+        @EasyResponse("viaPoint")
         private String viaPoint;
 
-        @Easy.HTTP.ResponseParam("cclassPrice")
+        @EasyResponse("cclassPrice")
         private float cclassPrice;
 
-        @Easy.HTTP.ResponseParam("fclassPrice")
+        @EasyResponse("fclassPrice")
         private float fclassPrice;
 
-        @Easy.HTTP.ResponseParam("link")
+        @EasyResponse("link")
         private String link;
 
-        @Easy.HTTP.ResponseParam("unit")
+        @EasyResponse("unit")
         private int unit;
 
-        @Easy.HTTP.ResponseParam("yclassPrice")
+        @EasyResponse("yclassPrice")
         private float yclassPrice;
 
-        @Easy.HTTP.ResponseParam("zhongZhuan")
+        @EasyResponse("zhongZhuan")
         private boolean zhongZhuan;
 
-        @Easy.HTTP.ResponseParam("airCabins")
+        @EasyResponse("airCabins")
         private List<AirCabin> airCabins;
 
-        @Easy.HTTP.ResponseParam("lowCabin")
+        @EasyResponse("lowCabin")
         private AirCabin lowCabin;
 
 
         public static class AirCabin {
 
-            @Easy.HTTP.ResponseParam("agio")
+            @EasyResponse("agio")
             private int agio;
 
-            @Easy.HTTP.ResponseParam("airlieOffPrice")
+            @EasyResponse("airlieOffPrice")
             private float airlieOffPrice;
 
-            @Easy.HTTP.ResponseParam("airlineSavePrice")
+            @EasyResponse("airlineSavePrice")
             private float airlineSavePrice;
 
-            @Easy.HTTP.ResponseParam("carrierAgentFee")
+            @EasyResponse("carrierAgentFee")
             private float carrierAgentFee;
 
-            @Easy.HTTP.ResponseParam("carrierCustomerFee")
+            @EasyResponse("carrierCustomerFee")
             private float carrierCustomerFee;
 
-            @Easy.HTTP.ResponseParam("channel")
+            @EasyResponse("channel")
             private String channel;
 
-            @Easy.HTTP.ResponseParam("code")
+            @EasyResponse("code")
             private String code;
 
-            @Easy.HTTP.ResponseParam("codeDesc")
+            @EasyResponse("codeDesc")
             private String codeDesc;
 
-            @Easy.HTTP.ResponseParam("discount")
+            @EasyResponse("discount")
             private float discount;
 
-            @Easy.HTTP.ResponseParam("extCode")
+            @EasyResponse("extCode")
             private String extCode;
 
-            @Easy.HTTP.ResponseParam("fare")
+            @EasyResponse("fare")
             private float fare;
 
-            @Easy.HTTP.ResponseParam("farebase")
+            @EasyResponse("farebase")
             private String farebase;
 
-            @Easy.HTTP.ResponseParam("fdPrice")
+            @EasyResponse("fdPrice")
             private float fdPrice;
 
-            @Easy.HTTP.ResponseParam("originalprice")
+            @EasyResponse("originalprice")
             private float originalprice;
 
-            @Easy.HTTP.ResponseParam("raisePrice")
+            @EasyResponse("raisePrice")
             private float raisePrice;
 
-            @Easy.HTTP.ResponseParam("remark")
+            @EasyResponse("remark")
             private String remark;
 
-            @Easy.HTTP.ResponseParam("saleRange")
+            @EasyResponse("saleRange")
             private String saleRange;
 
-            @Easy.HTTP.ResponseParam("saveprice")
+            @EasyResponse("saveprice")
             private float saveprice;
 
-            @Easy.HTTP.ResponseParam("seatNum")
+            @EasyResponse("seatNum")
             private int seatNum;
 
-            @Easy.HTTP.ResponseParam("showSKpolicy")
+            @EasyResponse("showSKpolicy")
             private boolean showSKpolicy;
 
-            @Easy.HTTP.ResponseParam("signature")
+            @EasyResponse("signature")
             private String signature;
 
 

@@ -43,12 +43,52 @@
 -keep class * extends java.lang.annotation.Annotation { *; }
 
 ##############################################################
-###根目录
+###版本号
 ##############################################################
 -keep class com.jen.easy.Version {
     *;
 }
--keep class com.jen.easy.Easy* {
+
+##############################################################
+###注释类
+##############################################################
+-keep class com.jen.easy.EasyAopAfter {
+    *;
+}
+-keep class com.jen.easy.EasyAopBefore {
+    *;
+}
+-keep class com.jen.easy.EasyColumn {
+    *;
+}
+-keep class com.jen.easy.EasyHttpGet {
+    *;
+}
+-keep class com.jen.easy.EasyHttpPost {
+    *;
+}
+-keep class com.jen.easy.EasyHttpPut {
+    *;
+}
+-keep class com.jen.easy.EasyRequest {
+    *;
+}
+-keep class com.jen.easy.EasyRequestInvalid {
+    *;
+}
+-keep class com.jen.easy.EasyResponse {
+    *;
+}
+-keep class com.jen.easy.EasyResponseInvalid {
+    *;
+}
+-keep class com.jen.easy.EasyTable {
+    *;
+}
+-keep class com.jen.easy.EasyViewID {
+    *;
+}
+-keep class com.jen.easy.EasyViewMethod {
     *;
 }
 

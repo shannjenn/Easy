@@ -1,6 +1,7 @@
 package com.jen.easy.aop;
 
-import com.jen.easy.Easy;
+import com.jen.easy.EasyAopAfter;
+import com.jen.easy.EasyAopBefore;
 import com.jen.easy.exception.ExceptionType;
 import com.jen.easy.exception.Throw;
 
@@ -25,7 +26,7 @@ class AOPReflectManager {
         }
         Method[] methods = clazz.getDeclaredMethods();
         for (Method method : methods) {
-            boolean isAnno = method.isAnnotationPresent(Easy.AOP.before.class);
+            boolean isAnno = method.isAnnotationPresent(EasyAopBefore.class);
             if (!isAnno)
                 continue;
             return method;
@@ -46,7 +47,7 @@ class AOPReflectManager {
         }
         Method[] methods = clazz.getDeclaredMethods();
         for (Method method : methods) {
-            boolean isAnno = method.isAnnotationPresent(Easy.AOP.after.class);
+            boolean isAnno = method.isAnnotationPresent(EasyAopAfter.class);
             if (!isAnno)
                 continue;
             return method;

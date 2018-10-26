@@ -1,17 +1,17 @@
 package com.jen.easytest.http.response;
 
 
-import com.jen.easy.Easy;
+import com.jen.easy.EasyResponse;
 
 public class DownloadResponse {
 
-    @Easy.HTTP.ResponseParam("message")
+    @EasyResponse("message")
     private String message;
 
-    @Easy.HTTP.ResponseParam("token")
+    @EasyResponse("token")
     private String token;
 
-    @Easy.HTTP.ResponseParam("code")
+    @EasyResponse("code")
     private String code;
 
 }

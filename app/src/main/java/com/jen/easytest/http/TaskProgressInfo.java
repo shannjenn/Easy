@@ -1,7 +1,7 @@
 package com.jen.easytest.http;
 
 
-import com.jen.easy.Easy;
+import com.jen.easy.EasyResponse;
 
 import java.io.Serializable;
 import java.util.List;
@@ -20,13 +20,13 @@ public class TaskProgressInfo implements Serializable {
     /**
      * 项目ID
      */
-    @Easy.HTTP.ResponseParam("project_id")
+    @EasyResponse("project_id")
     private String projectId;
 
     /**
      * 任务ID
      */
-    @Easy.HTTP.ResponseParam("task_id")
+    @EasyResponse("task_id")
     private int taskId;
 
     /**
@@ -39,11 +39,11 @@ public class TaskProgressInfo implements Serializable {
     /**
      * 进度%
      */
-    @Easy.HTTP.ResponseParam("current_rate")
+    @EasyResponse("current_rate")
     private int currentRate;
 
     /*使用详情外面的current_value,该值只用传递*/
-    @Easy.HTTP.ResponseParam("current_value")
+    @EasyResponse("current_value")
     private int currentValue;
 
     /**
@@ -54,36 +54,36 @@ public class TaskProgressInfo implements Serializable {
     /**
      * 点赞数
      */
-    @Easy.HTTP.ResponseParam("praise_num")
+    @EasyResponse("praise_num")
     private int praiseNum;
 
     /**
      * 是否点过赞
      */
-    @Easy.HTTP.ResponseParam("is_praised")
+    @EasyResponse("is_praised")
     private int isPraised;
 
     /**
      * 是否点过踩
      */
-    @Easy.HTTP.ResponseParam("is_opposed")
+    @EasyResponse("is_opposed")
     private int isOpposed;
 
     /**
      * 创建时间
      */
-    @Easy.HTTP.ResponseParam("create_time")
+    @EasyResponse("create_time")
     private long createTime;
 
     /**
      * 创建人
      */
-    @Easy.HTTP.ResponseParam("creator")
+    @EasyResponse("creator")
     private TaskUserInfo creator;
     /**
      * 创建人
      */
-    @Easy.HTTP.ResponseParam("reply_list")
+    @EasyResponse("reply_list")
     private List<TaskProgressInfo> replys;
 
     /**
@@ -92,24 +92,24 @@ public class TaskProgressInfo implements Serializable {
     /*public static class Reply {
         private int id;
 
-        @Easy.HTTP.ResponseParam("parent_id")
+        @EasyResponse("parent_id")
         private int parentId;
 
-        @Easy.HTTP.ResponseParam("progress_id")
+        @EasyResponse("progress_id")
         private int progressId;
 
-        @Easy.HTTP.ResponseParam("task_id")
+        @EasyResponse("task_id")
         private int taskId;
 
         private String content;
 
-        @Easy.HTTP.ResponseParam("reply_list")
+        @EasyResponse("reply_list")
         private String createTime;
 
-        @Easy.HTTP.ResponseParam("creator")
+        @EasyResponse("creator")
         private TaskUserInfo creator;
 
-        @Easy.HTTP.ResponseParam("users")
+        @EasyResponse("users")
         private List<String> users;
 
         public int getId() {

@@ -3,7 +3,7 @@ package com.jen.easytest.activity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.jen.easy.Easy;
+import com.jen.easy.EasyViewMethod;
 import com.jen.easy.http.Http;
 import com.jen.easy.http.imp.HttpBasicListener;
 import com.jen.easy.log.EasyLog;
@@ -47,7 +47,7 @@ public class HttpActivity extends EasyActivity {
 
     }
 
-    @Easy.BIND.Method({R.id.get,R.id.post, R.id.put, R.id.upload, R.id.download})
+    @EasyViewMethod({R.id.get,R.id.post, R.id.put, R.id.upload, R.id.download})
     @Override
     protected void onBindClick(View view) {
         switch (view.getId()) {

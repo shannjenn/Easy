@@ -1,6 +1,6 @@
 package com.jen.easytest.http;
 
-import com.jen.easy.Easy;
+import com.jen.easy.EasyResponse;
 
 import java.io.Serializable;
 
@@ -12,7 +12,7 @@ public class TaskUserInfo implements Serializable {
     /**
      * 姓名+工号
      */
-    @Easy.HTTP.ResponseParam("name_en")
+    @EasyResponse("name_en")
     private String nameEn;
     /**
      * 工号

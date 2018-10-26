@@ -1,6 +1,12 @@
 package com.jen.easy.http;
 
-import com.jen.easy.Easy;
+import com.jen.easy.EasyHttpGet;
+import com.jen.easy.EasyHttpPost;
+import com.jen.easy.EasyHttpPut;
+import com.jen.easy.EasyRequest;
+import com.jen.easy.EasyRequestInvalid;
+import com.jen.easy.EasyResponse;
+import com.jen.easy.EasyResponseInvalid;
 import com.jen.easy.constant.FieldType;
 import com.jen.easy.constant.TAG;
 import com.jen.easy.exception.ExceptionType;
@@ -35,34 +41,34 @@ class HttpReflectManager {
             Throw.exception(ExceptionType.NullPointerException, "getUrl 请求地址不能为空");
             return values;
         }*/
-        boolean isGet = request.getClass().isAnnotationPresent(Easy.HTTP.GET.class);
+        boolean isGet = request.getClass().isAnnotationPresent(EasyHttpGet.class);
         if (isGet) {
-            Easy.HTTP.GET get = request.getClass().getAnnotation(Easy.HTTP.GET.class);
+            EasyHttpGet get = request.getClass().getAnnotation(EasyHttpGet.class);
             values[0] = "GET";
-            request.urlBase = request.urlBase != null ? request.urlBase : get.URLBASE();
-            request.urlAppend = request.urlAppend != null ? request.urlAppend : get.URLAPPEND();
+            request.urlBase = request.urlBase != null ? request.urlBase : get.UrlBase();
+            request.urlAppend = request.urlAppend != null ? request.urlAppend : get.UrlAppand();
             request.url = request.url != null ? request.url : request.urlBase + request.urlAppend;
             values[1] = request.url;
             values[2] = get.Response();
             return values;
         }
-        boolean isPost = request.getClass().isAnnotationPresent(Easy.HTTP.POST.class);
+        boolean isPost = request.getClass().isAnnotationPresent(EasyHttpPost.class);
         if (isPost) {
-            Easy.HTTP.POST post = request.getClass().getAnnotation(Easy.HTTP.POST.class);
+            EasyHttpPost post = request.getClass().getAnnotation(EasyHttpPost.class);
             values[0] = "POST";
-            request.urlBase = request.urlBase != null ? request.urlBase : post.URLBASE();
-            request.urlAppend = request.urlAppend != null ? request.urlAppend : post.URLAPPEND();
+            request.urlBase = request.urlBase != null ? request.urlBase : post.UrlBase();
+            request.urlAppend = request.urlAppend != null ? request.urlAppend : post.UrlAppand();
             request.url = request.url != null ? request.url : request.urlBase + request.urlAppend;
             values[1] = request.url;
             values[2] = post.Response();
             return values;
         }
-        boolean isPut = request.getClass().isAnnotationPresent(Easy.HTTP.PUT.class);
+        boolean isPut = request.getClass().isAnnotationPresent(EasyHttpPut.class);
         if (isPut) {
-            Easy.HTTP.PUT put = request.getClass().getAnnotation(Easy.HTTP.PUT.class);
+            EasyHttpPut put = request.getClass().getAnnotation(EasyHttpPut.class);
             values[0] = "PUT";
-            request.urlBase = request.urlBase != null ? request.urlBase : put.URLBASE();
-            request.urlAppend = request.urlAppend != null ? request.urlAppend : put.URLAPPEND();
+            request.urlBase = request.urlBase != null ? request.urlBase : put.UrlBase();
+            request.urlAppend = request.urlAppend != null ? request.urlAppend : put.UrlAppand();
             request.url = request.url != null ? request.url : request.urlBase + request.urlAppend;
             values[1] = request.url;
             values[2] = put.Response();
@@ -103,7 +109,7 @@ class HttpReflectManager {
             /*if (request.state == HttpState.STOP) {
                 break;
             }*/
-            boolean isNoRequestParam = clazz.isAnnotationPresent(Easy.HTTP.NoRequestParam.class);
+            boolean isNoRequestParam = clazz.isAnnotationPresent(EasyRequestInvalid.class);
             if (isNoRequestParam) {
                 clazz = clazz.getSuperclass();//获取父类
                 clazzName = clazz.getName();
@@ -129,12 +135,12 @@ class HttpReflectManager {
     private static void getRequestParam(List<String> loopClass, Class clazz, Object obj, Map<String, String> urls, JSONObject jsonParam, Map<String, String> heads) {
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
-            boolean isAnnotation = field.isAnnotationPresent(Easy.HTTP.RequestParam.class);
+            boolean isAnnotation = field.isAnnotationPresent(EasyRequest.class);
             String key = "";
-            Easy.HTTP.TYPE paramType = Easy.HTTP.TYPE.PARAM;
+            EasyRequest.Type paramType = EasyRequest.Type.Param;
             if (isAnnotation) {
-                Easy.HTTP.RequestParam param = field.getAnnotation(Easy.HTTP.RequestParam.class);
-                boolean noReq = param.noReq();
+                EasyRequest param = field.getAnnotation(EasyRequest.class);
+                boolean noReq = param.invalid();
                 if (noReq) {//不做参数传递
                     continue;
                 }
@@ -157,15 +163,15 @@ class HttpReflectManager {
                 if (value instanceof String || value instanceof Integer || value instanceof Float || value instanceof Long
                         || value instanceof Double || value instanceof Boolean) {
                     switch (paramType) {
-                        case PARAM: {
+                        case Param: {
                             jsonParam.put(key, value);
                             break;
                         }
-                        case HEAD: {
+                        case Head: {
                             heads.put(key, value + "");
                             break;
                         }
-                        case URL: {
+                        case Url: {
                             urls.put(key, value + "");
                             break;
                         }
@@ -236,7 +242,7 @@ class HttpReflectManager {
         String respName = HttpHeadResponse.class.getName();
         String objName = Object.class.getName();
         while (!clazzName.equals(respName) && !clazzName.equals(objName)) {
-            boolean isNoResponseParam = myClass.isAnnotationPresent(Easy.HTTP.NoResponseParam.class);
+            boolean isNoResponseParam = myClass.isAnnotationPresent(EasyResponseInvalid.class);
             if (isNoResponseParam) {
                 myClass = myClass.getSuperclass();//获取父类
                 clazzName = myClass.getName();
@@ -258,12 +264,12 @@ class HttpReflectManager {
     private static void getResponseParam(Class clazz, Map<String, Field> param_field, Map<String, Field> head_field) {
         Field[] fieldsSuper = clazz.getDeclaredFields();
         for (Field field : fieldsSuper) {
-            boolean isAnnotation = field.isAnnotationPresent(Easy.HTTP.ResponseParam.class);
+            boolean isAnnotation = field.isAnnotationPresent(EasyResponse.class);
             String paramName = "";
-            Easy.HTTP.TYPE paramType = Easy.HTTP.TYPE.PARAM;
+            EasyResponse.Type paramType = EasyResponse.Type.Param;
             if (isAnnotation) {
-                Easy.HTTP.ResponseParam param = field.getAnnotation(Easy.HTTP.ResponseParam.class);
-                boolean noResp = param.noResp();
+                EasyResponse param = field.getAnnotation(EasyResponse.class);
+                boolean noResp = param.invalid();
                 if (noResp) {//不做参数返回
                     continue;
                 }
@@ -278,22 +284,19 @@ class HttpReflectManager {
             }
             Class fieldClass = field.getType();
             switch (paramType) {
-                case PARAM: {
+                case Param: {
                     if (param_field.containsKey(paramName)) {//子类已经有不再重复增加
                         continue;
                     }
                     param_field.put(paramName, field);
                     break;
                 }
-                case HEAD: {
+                case Head: {
                     if (!FieldType.isString(fieldClass)) {
                         Throw.exception(ExceptionType.ClassCastException, "请求头返回变量必须为String类型:" + paramName);
                         continue;
                     }
                     head_field.put(paramName, field);
-                    break;
-                }
-                case URL: {
                     break;
                 }
             }

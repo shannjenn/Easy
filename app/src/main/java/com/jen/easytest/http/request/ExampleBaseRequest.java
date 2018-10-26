@@ -1,23 +1,24 @@
 package com.jen.easytest.http.request;
 
-import com.jen.easy.Easy;
+import com.jen.easy.EasyRequest;
+import com.jen.easy.EasyRequestInvalid;
 import com.jen.easy.http.HttpBasicRequest;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Easy.HTTP.NoRequestParam
+@EasyRequestInvalid
 public class ExampleBaseRequest extends HttpBasicRequest {
 
-    @Easy.HTTP.RequestParam("_id")//请求参数为_id,值为当前id变量值
+    @EasyRequest("_id")//请求参数为_id,值为当前id变量值
     private int id;
 
     private String name;//不注释默认作为参数请求,请求参数名与变量名一致，也就是name
 
-    @Easy.HTTP.RequestParam(noReq = true)//注释noReq = true，则不作为参数请求
+    @EasyRequest(invalid = true)//注释noReq = true，则不作为参数请求
     private int age;
 
-    @Easy.HTTP.RequestParam(value = "_type", type = Easy.HTTP.TYPE.HEAD)//注释isHeadReq = true，则作为head参数请求
+    @EasyRequest(value = "_type", type = EasyRequest.Type.Head)//注释isHeadReq = true，则作为head参数请求
     private String type;
 
 

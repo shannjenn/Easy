@@ -1,10 +1,10 @@
 package com.jen.easytest.http.request;
 
-import com.jen.easy.Easy;
+import com.jen.easy.EasyHttpGet;
 import com.jen.easytest.http.response.AirResponse;
 
 /*获取去哪儿票源的退改签说明接口（新增）*/
-@Easy.HTTP.GET(URLBASE = "http://mdmtest.zte.com.cn:8888/etrip/SystemFacade/AndroidService/AirticketBookHandle.ashx", Response = AirResponse.class)
+@EasyHttpGet(UrlBase = "http://mdmtest.zte.com.cn:8888/etrip/SystemFacade/AndroidService/AirticketBookHandle.ashx", Response = AirResponse.class)
 public class QNRequest extends ExampleBaseRequest {
 
     public QNRequest() {

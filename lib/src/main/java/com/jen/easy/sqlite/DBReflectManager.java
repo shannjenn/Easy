@@ -1,6 +1,7 @@
 package com.jen.easy.sqlite;
 
-import com.jen.easy.Easy;
+import com.jen.easy.EasyColumn;
+import com.jen.easy.EasyTable;
 import com.jen.easy.constant.FieldType;
 import com.jen.easy.constant.TAG;
 import com.jen.easy.log.EasyLog;
@@ -29,12 +30,12 @@ class DBReflectManager {
             Throw.exception(ExceptionType.NullPointerException, "传入的Class为空" );
             return null;
         }*/
-        boolean isAnnotation = clazz.isAnnotationPresent(Easy.DB.Table.class);
+        boolean isAnnotation = clazz.isAnnotationPresent(EasyTable.class);
         if (!isAnnotation) {
             EasyLog.w(TAG.EasySQL, clazz.getName() + "未增加表注释");
             return null;
         }
-        Easy.DB.Table table = (Easy.DB.Table) clazz.getAnnotation(Easy.DB.Table.class);
+        EasyTable table = (EasyTable) clazz.getAnnotation(EasyTable.class);
         return table.value();
     }
 
@@ -56,10 +57,10 @@ class DBReflectManager {
             String columnName = "";
             boolean isPrimary = false;
 
-            boolean isAnnotation = field.isAnnotationPresent(Easy.DB.Column.class);
+            boolean isAnnotation = field.isAnnotationPresent(EasyColumn.class);
             if (isAnnotation) {
-                Easy.DB.Column columnClass = field.getAnnotation(Easy.DB.Column.class);
-                boolean noColumn = columnClass.noColumn();
+                EasyColumn columnClass = field.getAnnotation(EasyColumn.class);
+                boolean noColumn = columnClass.invalid();
                 if (noColumn)
                     continue;
                 columnName = columnClass.value().trim();
@@ -93,12 +94,12 @@ class DBReflectManager {
 
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
-            boolean isAnnotation = field.isAnnotationPresent(Easy.DB.Column.class);
+            boolean isAnnotation = field.isAnnotationPresent(EasyColumn.class);
             if (!isAnnotation)
                 continue;
 
-            Easy.DB.Column columnClass = field.getAnnotation(Easy.DB.Column.class);
-            boolean noColumn = columnClass.noColumn();
+            EasyColumn columnClass = field.getAnnotation(EasyColumn.class);
+            boolean noColumn = columnClass.invalid();
             if (noColumn)
                 continue;
 
@@ -128,12 +129,12 @@ class DBReflectManager {
         }*/
         Field[] fields = obj.getClass().getDeclaredFields();
         for (Field field : fields) {
-            boolean isAnnotation = field.isAnnotationPresent(Easy.DB.Column.class);
+            boolean isAnnotation = field.isAnnotationPresent(EasyColumn.class);
             if (!isAnnotation)
                 continue;
 
-            Easy.DB.Column columnClass = field.getAnnotation(Easy.DB.Column.class);
-            boolean noColumn = columnClass.noColumn();
+            EasyColumn columnClass = field.getAnnotation(EasyColumn.class);
+            boolean noColumn = columnClass.invalid();
             if (noColumn)
                 continue;
 

@@ -1,6 +1,6 @@
 package com.jen.easy.http;
 
-import com.jen.easy.Easy;
+import com.jen.easy.EasyRequest;
 
 /**
  * 作者：ShannJenn
@@ -9,7 +9,7 @@ import com.jen.easy.Easy;
  */
 public abstract class HttpBasicRequest extends HttpRequest {
 
-    @Easy.HTTP.RequestParam(value = "Content-Type", type = Easy.HTTP.TYPE.HEAD)
+    @EasyRequest(value = "Content-Type", type = EasyRequest.Type.Head)
     protected String HEAD_CONTENT_TYPE = "application/Json;charset=UTF-8";
 
 }

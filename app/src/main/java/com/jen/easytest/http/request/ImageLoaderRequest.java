@@ -1,6 +1,6 @@
 package com.jen.easytest.http.request;
 
-import com.jen.easy.Easy;
+import com.jen.easy.EasyHttpGet;
 import com.jen.easy.http.HttpBasicRequest;
 import com.jen.easytest.http.response.ImageLoaderResponse;
 
@@ -15,7 +15,7 @@ import com.jen.easytest.http.response.ImageLoaderResponse;
         "财经百味","热点狙击","企业宣传","个人宣传",
         "汇誉团队","精英专访","机构风采","汇誉大电影",
         "港股指数直击","牛股火线快评","港股午盘直击","港股早盘直击"}};*/
-@Easy.HTTP.GET(URLBASE = "http://47.92.134.67:92/portal/articlecategorys/116", Response = ImageLoaderResponse.class)
+@EasyHttpGet(UrlBase = "http://47.92.134.67:92/portal/articlecategorys/116", Response = ImageLoaderResponse.class)
 public class ImageLoaderRequest extends HttpBasicRequest {
 
     private int page;

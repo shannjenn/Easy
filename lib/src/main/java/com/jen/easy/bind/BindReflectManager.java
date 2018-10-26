@@ -1,6 +1,7 @@
 package com.jen.easy.bind;
 
-import com.jen.easy.Easy;
+import com.jen.easy.EasyViewID;
+import com.jen.easy.EasyViewMethod;
 import com.jen.easy.exception.ExceptionType;
 import com.jen.easy.exception.Throw;
 
@@ -42,10 +43,10 @@ abstract class BindReflectManager {
 
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
-            boolean isAnno = field.isAnnotationPresent(Easy.BIND.ID.class);
+            boolean isAnno = field.isAnnotationPresent(EasyViewID.class);
             if (!isAnno)
                 continue;
-            Easy.BIND.ID easyID = field.getAnnotation(Easy.BIND.ID.class);
+            EasyViewID easyID = field.getAnnotation(EasyViewID.class);
             int id = easyID.value();
             if (id == -1)
                 continue;
@@ -71,10 +72,10 @@ abstract class BindReflectManager {
         }
         Method[] methods = clazz.getDeclaredMethods();
         for (Method method : methods) {
-            boolean isAnno = method.isAnnotationPresent(Easy.BIND.Method.class);
+            boolean isAnno = method.isAnnotationPresent(EasyViewMethod.class);
             if (!isAnno)
                 continue;
-            Easy.BIND.Method easyID = method.getAnnotation(Easy.BIND.Method.class);
+            EasyViewMethod easyID = method.getAnnotation(EasyViewMethod.class);
             int[] ids = easyID.value();
             method_ids.put(method, ids);
         }
