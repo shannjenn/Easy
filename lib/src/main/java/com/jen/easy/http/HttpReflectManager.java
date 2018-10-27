@@ -18,8 +18,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -306,19 +304,19 @@ class HttpReflectManager {
     /**
      * 请求参数转Json
      *
-     * @param object 请求参数
+     * @param request 请求参数
      * @return JSONObject
      */
-    static JSONObject requestToJson(Object object) {
+    /*static JSONObject requestToJson(HttpRequest request) {
         JSONObject jsonParam = new JSONObject();
-        if (object == null) {
+        if (request == null) {
             Throw.exception(ExceptionType.NullPointerException, "参数不能为空");
             return jsonParam;
         }
         Map<String, String> urls = new HashMap<>();
         Map<String, String> heads = new HashMap<>();
 
-        getRequestParams(new ArrayList<String>(), object, urls, jsonParam, heads);
+        getRequestParams(new ArrayList<String>(), request, urls, jsonParam, heads);
         return jsonParam;
-    }
+    }*/
 }

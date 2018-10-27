@@ -5,8 +5,6 @@ import com.jen.easy.constant.Unicode;
 import com.jen.easy.exception.ExceptionType;
 import com.jen.easy.exception.Throw;
 
-import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -88,14 +86,5 @@ public abstract class HttpRequest {
             responseReplaceMap = new HashMap<>();
         }
         responseReplaceMap.put(oldChar, newChar);
-    }
-
-    /**
-     * 转Json
-     *
-     * @param obj 对象数据
-     */
-    public JSONObject toJson(Object obj) {
-        return HttpReflectManager.requestToJson(obj);
     }
 }
