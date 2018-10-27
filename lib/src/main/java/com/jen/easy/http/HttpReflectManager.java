@@ -4,13 +4,13 @@ import com.jen.easy.EasyHttpGet;
 import com.jen.easy.EasyHttpPost;
 import com.jen.easy.EasyHttpPut;
 import com.jen.easy.EasyRequest;
-import com.jen.easy.EasyRequestInvalid;
 import com.jen.easy.EasyResponse;
-import com.jen.easy.EasyResponseInvalid;
 import com.jen.easy.constant.FieldType;
 import com.jen.easy.constant.TAG;
 import com.jen.easy.exception.ExceptionType;
 import com.jen.easy.exception.Throw;
+import com.jen.easy.invalid.Invalid;
+import com.jen.easy.invalid.InvalidType;
 import com.jen.easy.log.EasyLog;
 
 import org.json.JSONArray;
@@ -96,7 +96,7 @@ class HttpReflectManager {
         Class clazz = request.getClass();
         String clazzName = clazz.getName();
         if (loopClass.contains(clazzName)) {
-            Throw.exception(ExceptionType.RuntimeException, "请求对象不能循环引用：" + clazzName);
+            Throw.exception(ExceptionType.RuntimeException, "对象不能循环引用：" + clazzName);
             return;
         } else {
             loopClass.add(clazzName);
@@ -107,13 +107,10 @@ class HttpReflectManager {
             /*if (request.state == HttpState.STOP) {
                 break;
             }*/
-            boolean isNoRequestParam = clazz.isAnnotationPresent(EasyRequestInvalid.class);
-            if (isNoRequestParam) {
-                clazz = clazz.getSuperclass();//获取父类
-                clazzName = clazz.getName();
-                continue;//不获取请求参数
+            boolean isInvalid = Invalid.isEasyInvalid(clazz, InvalidType.Request);
+            if (!isInvalid) {
+                getRequestParam(loopClass, clazz, request, urls, jsonParam, heads);
             }
-            getRequestParam(loopClass, clazz, request, urls, jsonParam, heads);
             clazz = clazz.getSuperclass();//获取父类
             clazzName = clazz.getName();
         }
@@ -133,15 +130,15 @@ class HttpReflectManager {
     private static void getRequestParam(List<String> loopClass, Class clazz, Object obj, Map<String, String> urls, JSONObject jsonParam, Map<String, String> heads) {
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
+            boolean isInvalid = Invalid.isEasyInvalid(field, InvalidType.Request);
+            if (isInvalid) {
+                continue;
+            }
             boolean isAnnotation = field.isAnnotationPresent(EasyRequest.class);
             String key = "";
             EasyRequest.Type paramType = EasyRequest.Type.Param;
             if (isAnnotation) {
                 EasyRequest param = field.getAnnotation(EasyRequest.class);
-                boolean noReq = param.invalid();
-                if (noReq) {//不做参数传递
-                    continue;
-                }
                 paramType = param.type();
                 key = param.value().trim();
             }
@@ -210,8 +207,7 @@ class HttpReflectManager {
                     getRequestParams(loopClass, value, urls, item, heads);
                     jsonParam.put(key, item);
                 } else {
-                    Throw.exception(ExceptionType.ClassCastException, "不支持该类型参数请求：" + field.getName());
-                    EasyLog.w(TAG.EasyHttp, "不支持该类型：" + field.getName());
+                    Throw.exception(ExceptionType.IllegalArgumentException, "不支持该类型参数：" + field.getName());
                 }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
@@ -240,13 +236,10 @@ class HttpReflectManager {
         String respName = HttpHeadResponse.class.getName();
         String objName = Object.class.getName();
         while (!clazzName.equals(respName) && !clazzName.equals(objName)) {
-            boolean isNoResponseParam = myClass.isAnnotationPresent(EasyResponseInvalid.class);
-            if (isNoResponseParam) {
-                myClass = myClass.getSuperclass();//获取父类
-                clazzName = myClass.getName();
-                continue;//不获取请求参数
+            boolean isInvalid = Invalid.isEasyInvalid(myClass, InvalidType.Response);
+            if (!isInvalid) {
+                getResponseParam(myClass, param_field, head_field);
             }
-            getResponseParam(myClass, param_field, head_field);
             myClass = myClass.getSuperclass();
             clazzName = myClass.getName();
         }
@@ -262,15 +255,15 @@ class HttpReflectManager {
     private static void getResponseParam(Class clazz, Map<String, Field> param_field, Map<String, Field> head_field) {
         Field[] fieldsSuper = clazz.getDeclaredFields();
         for (Field field : fieldsSuper) {
+            boolean isInvalid = Invalid.isEasyInvalid(field, InvalidType.Response);
+            if (isInvalid) {
+                continue;
+            }
             boolean isAnnotation = field.isAnnotationPresent(EasyResponse.class);
             String paramName = "";
             EasyResponse.Type paramType = EasyResponse.Type.Param;
             if (isAnnotation) {
                 EasyResponse param = field.getAnnotation(EasyResponse.class);
-                boolean noResp = param.invalid();
-                if (noResp) {//不做参数返回
-                    continue;
-                }
                 paramType = param.type();
                 paramName = param.value().trim();
             }
@@ -300,23 +293,4 @@ class HttpReflectManager {
             }
         }
     }
-
-    /**
-     * 请求参数转Json
-     *
-     * @param request 请求参数
-     * @return JSONObject
-     */
-    /*static JSONObject requestToJson(HttpRequest request) {
-        JSONObject jsonParam = new JSONObject();
-        if (request == null) {
-            Throw.exception(ExceptionType.NullPointerException, "参数不能为空");
-            return jsonParam;
-        }
-        Map<String, String> urls = new HashMap<>();
-        Map<String, String> heads = new HashMap<>();
-
-        getRequestParams(new ArrayList<String>(), request, urls, jsonParam, heads);
-        return jsonParam;
-    }*/
 }

@@ -17,7 +17,7 @@ public class Book {
 
     private String des;
 
-    @EasyResponse(invalid = true)//noResp = true，则不作为返回参数
+//    @EasyResponse(invalid = true)//noResp = true，则不作为返回参数
     private boolean isCheck;
 
 

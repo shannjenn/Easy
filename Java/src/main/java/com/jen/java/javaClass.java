@@ -1,30 +1,30 @@
 package com.jen.java;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class javaClass {
     public static void main(String[] args) {
-        HttpState httpState = HttpState.RUN;
-       long t1= System.currentTimeMillis();
-        if (httpState == HttpState.STOP) {
-
-        }
-        long t2= System.currentTimeMillis();
-        System.out.println(t2-t1);
-
-        String a =null;
-        long t3= System.currentTimeMillis();
-        if(a == null){
-
-        }
-        long t4= System.currentTimeMillis();
-        System.out.println(t4-t3);
-
 
         String b = "bbbbbbb";
         b = test();
+
+
+        List<String>  array = new ArrayList<>();
+        Map<String,String> bbb = new HashMap<>();
+        if(array.getClass().isArray()){
+            System.out.println(array.getClass().toString()+"----");
+        }
+        if(bbb.getClass().isArray()){
+            System.out.println(bbb.getClass().toString()+"----");
+        }
+        if(array.getClass().isArray()){
+
+        }
         System.out.println(b);
+
     }
 
     private static String test(){

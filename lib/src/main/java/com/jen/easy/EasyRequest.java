@@ -28,11 +28,6 @@ public @interface EasyRequest {
     String value() default "";
 
     /**
-     * 失效，不做请求参数
-     */
-    boolean invalid() default false;
-
-    /**
      * 请求参数类型
      */
     Type type() default Type.Param;

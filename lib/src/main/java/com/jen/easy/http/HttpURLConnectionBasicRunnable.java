@@ -51,7 +51,7 @@ class HttpURLConnectionBasicRunnable extends HttpURLConnectionRunnable {
             connection.disconnect();
             String result = resultBuffer.toString();
             EasyLog.d(TAG.EasyHttp, mUrlStr + " 返回原始数据：" + result);
-            if (mRequest.responseReplaceMap != null) {
+            if (mRequest.responseReplaceMap != null && mRequest.responseReplaceMap.size() > 0) {
                 result = HttpTools.replaceResponse(mRequest, result);
                 EasyLog.d(TAG.EasyHttp, mUrlStr + " 格式化后数据：" + result);
             }

@@ -73,13 +73,7 @@
 -keep class com.jen.easy.EasyRequest* {
     *;
 }
--keep class com.jen.easy.EasyRequestInvalid {
-    *;
-}
 -keep class com.jen.easy.EasyResponse* {
-    *;
-}
--keep class com.jen.easy.EasyResponseInvalid {
     *;
 }
 -keep class com.jen.easy.EasyTable {
@@ -89,6 +83,12 @@
     *;
 }
 -keep class com.jen.easy.EasyViewMethod {
+    *;
+}
+-keep class com.jen.easy.invalid.EasyInvalid {
+    *;
+}
+-keep class com.jen.easy.invalid.InvalidType {
     *;
 }
 
@@ -130,6 +130,9 @@
     *;
 }
 -keep class com.jen.easy.http.imp.HttpUploadListener {
+    *;
+}
+-keep class com.jen.easy.http.JsonUtil {
     *;
 }
 

@@ -52,6 +52,7 @@ public class HttpActivity extends EasyActivity {
     protected void onBindClick(View view) {
         switch (view.getId()) {
             case R.id.get:
+//                JsonUtil.toJson("abc");
 //                Throw.exception(ExceptionType.NullPointerException,"空指针异常");
                 get();
                 break;

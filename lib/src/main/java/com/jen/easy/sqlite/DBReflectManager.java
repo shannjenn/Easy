@@ -4,6 +4,8 @@ import com.jen.easy.EasyColumn;
 import com.jen.easy.EasyTable;
 import com.jen.easy.constant.FieldType;
 import com.jen.easy.constant.TAG;
+import com.jen.easy.invalid.Invalid;
+import com.jen.easy.invalid.InvalidType;
 import com.jen.easy.log.EasyLog;
 
 import java.lang.reflect.Field;
@@ -54,15 +56,15 @@ class DBReflectManager {
 
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
+            boolean isInvalid = Invalid.isEasyInvalid(field,InvalidType.Column);
+            if (isInvalid)
+                continue;
             String columnName = "";
             boolean isPrimary = false;
 
             boolean isAnnotation = field.isAnnotationPresent(EasyColumn.class);
             if (isAnnotation) {
                 EasyColumn columnClass = field.getAnnotation(EasyColumn.class);
-                boolean noColumn = columnClass.invalid();
-                if (noColumn)
-                    continue;
                 columnName = columnClass.value().trim();
                 isPrimary = columnClass.primaryKey();
             }
@@ -94,19 +96,16 @@ class DBReflectManager {
 
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
+            boolean isInvalid = Invalid.isEasyInvalid(field,InvalidType.Column);
+            if (isInvalid)
+                continue;
             boolean isAnnotation = field.isAnnotationPresent(EasyColumn.class);
             if (!isAnnotation)
                 continue;
-
             EasyColumn columnClass = field.getAnnotation(EasyColumn.class);
-            boolean noColumn = columnClass.invalid();
-            if (noColumn)
-                continue;
-
             boolean isPrimary = columnClass.primaryKey();
             if (!isPrimary)
                 continue;
-
             String name = columnClass.value().trim();
             if (name.length() == 0)
                 name = field.getName();
@@ -129,19 +128,16 @@ class DBReflectManager {
         }*/
         Field[] fields = obj.getClass().getDeclaredFields();
         for (Field field : fields) {
+            boolean isInvalid = Invalid.isEasyInvalid(field,InvalidType.Column);
+            if (isInvalid)
+                continue;
             boolean isAnnotation = field.isAnnotationPresent(EasyColumn.class);
             if (!isAnnotation)
                 continue;
-
             EasyColumn columnClass = field.getAnnotation(EasyColumn.class);
-            boolean noColumn = columnClass.invalid();
-            if (noColumn)
-                continue;
-
             boolean isPrimary = columnClass.primaryKey();
             if (!isPrimary)
                 continue;
-
             String name = columnClass.value().trim();
             if (name.length() == 0)
                 name = field.getName();

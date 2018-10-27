@@ -1,7 +1,6 @@
 package com.jen.easy.http;
 
-import com.jen.easy.EasyResponse;
-import com.jen.easy.EasyResponseInvalid;
+import com.jen.easy.invalid.EasyInvalid;
 
 import java.util.List;
 import java.util.Map;
@@ -11,10 +10,9 @@ import java.util.Map;
  * 时间：2017/8/12.
  * 说明：http返回参数
  */
-@EasyResponseInvalid
+@EasyInvalid
 public abstract class HttpHeadResponse extends HttpResponse {
 
-    @EasyResponse(invalid = true)
     protected Map<String, List<String>> heads;
 
     public Map<String, List<String>> getHeads() {

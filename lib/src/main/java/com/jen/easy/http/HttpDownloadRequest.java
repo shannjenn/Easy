@@ -1,13 +1,13 @@
 package com.jen.easy.http;
 
-import com.jen.easy.EasyRequestInvalid;
+import com.jen.easy.invalid.EasyInvalid;
 
 /**
  * 作者：ShannJenn
  * 时间：2017/8/12.
  * 说明：下载文件请求参数
  */
-@EasyRequestInvalid
+@EasyInvalid
 public class HttpDownloadRequest extends HttpRequest {
     /**
      * 上传/下载文件位置

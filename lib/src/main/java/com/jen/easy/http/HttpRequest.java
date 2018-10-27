@@ -1,9 +1,9 @@
 package com.jen.easy.http;
 
-import com.jen.easy.EasyRequestInvalid;
 import com.jen.easy.constant.Unicode;
 import com.jen.easy.exception.ExceptionType;
 import com.jen.easy.exception.Throw;
+import com.jen.easy.invalid.EasyInvalid;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +13,7 @@ import java.util.Map;
  * 时间：2017/8/12.
  * 说明：http请求参数
  */
-@EasyRequestInvalid
+@EasyInvalid
 public abstract class HttpRequest {
 
     /**

@@ -13,7 +13,6 @@ public class Student {
 
     private String name;
 
-    @EasyColumn(invalid = true)
     private String name2;
 
     private int age;
@@ -22,13 +21,10 @@ public class Student {
     private int age2;
 
 
-    @EasyColumn(invalid = true)
     List<String> list;
 
-    @EasyColumn(invalid = true)
     List<Student> students;
 
-    @EasyColumn(invalid = true)
     List<Techer> techers;
 
 

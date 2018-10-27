@@ -2,7 +2,6 @@ package com.jen.easytest.model;
 
 import android.view.View;
 
-import com.jen.easy.EasyColumn;
 import com.jen.easy.EasyResponse;
 import com.jen.easy.EasyTable;
 
@@ -34,21 +33,12 @@ public class ImageLoaderModel {
     /**
      * 0正常数据，1轮播一，2轮播二
      */
-    @EasyResponse(invalid = true)
-    @EasyColumn(invalid = true)
+    
     private int viewType;
-    @EasyResponse(invalid = true)
-    @EasyColumn(invalid = true)
     private int viewSize = 1;
 
-    @EasyResponse(invalid = true)
-    @EasyColumn(invalid = true)
     int bitTitleVisible = View.GONE;//显示大标题
-    @EasyResponse(invalid = true)
-    @EasyColumn(invalid = true)
     boolean showEnter;//显示进入
-    @EasyResponse(invalid = true)
-    @EasyColumn(invalid = true)
     boolean showChange;//显示晃一晃
 
 
