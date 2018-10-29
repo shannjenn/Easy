@@ -1,0 +1,7 @@
+<resources>
+    <style name="easy_popup_window_anim_style" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/_easy_translate_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/_easy_translate_bottom_out</item>
+    </style>
+
+</resources>

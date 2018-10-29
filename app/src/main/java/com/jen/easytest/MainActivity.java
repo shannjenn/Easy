@@ -9,6 +9,7 @@ import com.jen.easytest.activity.DialogActivity;
 import com.jen.easytest.activity.DrawableActivity;
 import com.jen.easytest.activity.HttpActivity;
 import com.jen.easytest.activity.ImageLoaderActivity;
+import com.jen.easytest.activity.PopupWindowActivity;
 import com.jen.easytest.activity.RecyclerViewActivity;
 import com.jen.easytest.activity.SQLiteActivity;
 import com.jen.easytest.activity.TabBarActivity;
@@ -40,8 +41,8 @@ public class MainActivity extends EasyActivity {
     }
 
 
-    @EasyViewMethod({R.id.tabBar, R.id.drawable, R.id.http, R.id.imageLoader, R.id.dialog, R.id.sqlite, R.id.util, R.id.recycleView,
-            R.id.timePick})
+    @EasyViewMethod({R.id.tabBar, R.id.drawable, R.id.http, R.id.imageLoader, R.id.dialog, R.id.popupWindow,
+            R.id.sqlite, R.id.util, R.id.recycleView, R.id.timePick})
     @Override
     protected void onBindClick(View view) {
         Class clazz = null;
@@ -64,6 +65,10 @@ public class MainActivity extends EasyActivity {
             }
             case R.id.dialog: {
                 clazz = DialogActivity.class;
+                break;
+            }
+            case R.id.popupWindow: {
+                clazz = PopupWindowActivity.class;
                 break;
             }
             case R.id.sqlite: {

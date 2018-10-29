@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
 
+import com.jen.easyui.R;
 import com.jen.easyui.util.EasyDisplayUtil;
 
 /**
@@ -58,7 +59,7 @@ public class EasyPopupWindow extends PopupWindow {
      */
     private void initBasePopupWindow() {
 //        setAnimationStyle(R.style._easy_popup_window_anim);
-        setAnimationStyle(android.R.style.Animation_Dialog);
+        setAnimationStyle(R.style.easy_popup_window_anim_style);
         setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
         setOutsideTouchable(true);  //默认设置outside点击无响应
