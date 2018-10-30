@@ -3,6 +3,7 @@ package com.jen.easytest.activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,8 @@ public class PopupWindowActivity extends EasyActivity {
 
     @EasyViewID(R.id.popup_line)
     View popup_line;
+    @EasyViewID(R.id.popup_window)
+    View popup_window;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +62,8 @@ public class PopupWindowActivity extends EasyActivity {
     protected void onBindClick(View view) {
         switch (view.getId()) {
             case R.id.popup_window: {
-                mEasyPopupWindow.showAsDropDown(popup_line);
+//                mEasyPopupWindow.showAsDropDown(popup_line);
+                mEasyPopupWindow.showAtLocation(popup_window, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 break;
             }
             default: {

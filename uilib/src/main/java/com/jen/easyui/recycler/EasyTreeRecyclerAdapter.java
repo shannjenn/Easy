@@ -1,4 +1,4 @@
-package com.jen.easyui.recyclerview;
+package com.jen.easyui.recycler;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

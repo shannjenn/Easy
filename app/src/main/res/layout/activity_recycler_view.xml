@@ -35,13 +35,13 @@
             android:textAllCaps="false" />
     </LinearLayout>
 
-    <com.jen.easyui.recyclerview.EasyRecyclerView
+    <com.jen.easyui.recycler.EasyRecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/ll_type" />
 
-    <com.jen.easyui.recyclerview.EasyLetterView
+    <com.jen.easyui.recycler.EasyLetterView
         android:id="@+id/lt_letter"
         android:layout_width="50dp"
         android:layout_height="match_parent"

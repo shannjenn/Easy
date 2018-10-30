@@ -8,10 +8,10 @@ import android.widget.TextView;
 import com.jen.easy.imageLoader.ImageLoader;
 import com.jen.easytest.R;
 import com.jen.easytest.model.ImageLoaderModel;
-import com.jen.easyui.recyclerview.EasyAdapterOnClickListener;
-import com.jen.easyui.recyclerview.EasyHolder;
-import com.jen.easyui.recyclerview.EasyItemType;
-import com.jen.easyui.recyclerview.EasyRecyclerAdapter;
+import com.jen.easyui.recycler.EasyAdapterOnClickListener;
+import com.jen.easyui.recycler.EasyHolder;
+import com.jen.easyui.recycler.EasyItemType;
+import com.jen.easyui.recycler.EasyRecyclerAdapter;
 
 import java.util.List;
 

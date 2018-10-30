@@ -1,6 +1,6 @@
 package com.jen.easytest.model;
 
-import com.jen.easyui.recyclerview.EasyLetterItem;
+import com.jen.easyui.recycler.EasyLetterItem;
 
 /**
  * Created by Administrator on 2017/12/25.

@@ -1,4 +1,4 @@
-package com.jen.easyui.recyclerview;
+package com.jen.easyui.recycler;
 
 import android.content.Context;
 import android.content.res.TypedArray;

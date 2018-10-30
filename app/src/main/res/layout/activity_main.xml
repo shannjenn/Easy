@@ -1,76 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
+    <com.jen.easyui.baseview.EasyTopBar
+        android:layout_width="match_parent"
+        android:layout_height="46dp"/>
 
     <Button
         android:id="@+id/tabBar"
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:text="tabBar"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"/>
 
     <Button
         android:id="@+id/drawable"
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:text="drawable"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"/>
 
     <Button
         android:id="@+id/http"
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:text="http"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"/>
 
     <Button
         android:id="@+id/imageLoader"
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:text="imageLoader"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"/>
 
     <Button
         android:id="@+id/dialog"
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:text="dialog"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"/>
+
     <Button
         android:id="@+id/popupWindow"
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:text="PopupWindow"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"/>
 
     <Button
         android:id="@+id/sqlite"
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:text="sqlite"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"/>
 
     <Button
         android:id="@+id/util"
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:text="util"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"/>
 
     <Button
         android:id="@+id/recycleView"
         android:layout_width="match_parent"
         android:layout_height="46dp"
-        android:text="recycleView"
-        android:textAllCaps="false" />
+        android:text="RecycleView"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/recycleScroll"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:text="RecycleScroll"
+        android:textAllCaps="false"/>
 
     <Button
         android:id="@+id/timePick"
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:text="timePick"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"/>
 
 </LinearLayout>

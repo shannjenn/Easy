@@ -1,4 +1,4 @@
-package com.jen.easyui.recyclerview;
+package com.jen.easyui.recycler;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -40,6 +40,11 @@ public abstract class EasyRecyclerAdapter<T> extends EasyRecyclerBaseAdapter<T> 
             return null;
         }
         return bindHolder(view, EasyItemType.BODY);
+    }
+
+    @Override
+    protected int setGridLayoutItemRows(int position) {
+        return 0;
     }
 
     protected abstract int onBindLayout();

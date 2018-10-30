@@ -1,4 +1,4 @@
-package com.jen.easyui.recyclerview;
+package com.jen.easyui.recycler;
 
 /**
  * 作者：ShannJenn
