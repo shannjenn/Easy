@@ -17,10 +17,6 @@ abstract class EasyHolderManager extends RecyclerView.ViewHolder {
         super(itemView);
     }
 
-    public EasyHolderManager(View itemView, EasyItemType easyItemType) {
-        super(itemView);
-    }
-
     /**
      * 绑定点击事件
      *

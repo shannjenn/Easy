@@ -16,6 +16,7 @@ import java.util.List;
 
 public abstract class EasyRecyclerAdapter<T> extends EasyRecyclerBaseAdapter<T> {
     private final String TAG = EasyRecyclerAdapter.class.getSimpleName();
+
     /**
      * @param data 数据
      */
@@ -25,20 +26,17 @@ public abstract class EasyRecyclerAdapter<T> extends EasyRecyclerBaseAdapter<T> 
 
     @Override
     public EasyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == EasyItemType.HEAD.getType() || viewType == EasyItemType.FOOT.getType()) {
-            return super.onCreateViewHolder(parent, viewType);
-        }
         int layout = onBindLayout();
         if (layout == 0) {
-            Log.w(TAG,"找不到该值对应item布局R.layout.id：" + layout);
+            Log.w(TAG, "找不到该值对应item布局R.layout.id：" + layout);
             return null;
         }
         View view = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
         if (view == null) {
-            Log.w(TAG,"找不到该值对应item布局R.layout.id：" + layout);
+            Log.w(TAG, "找不到该值对应item布局R.layout.id：" + layout);
             return null;
         }
-        return bindHolder(view, EasyItemType.BODY);
+        return bindHolder(view);
     }
 
     @Override

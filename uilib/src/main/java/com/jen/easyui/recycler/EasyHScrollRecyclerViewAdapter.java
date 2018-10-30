@@ -37,9 +37,6 @@ public abstract class EasyHScrollRecyclerViewAdapter<T> extends EasyRecyclerBase
 
     @Override
     public EasyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == EasyItemType.HEAD.getType() || viewType == EasyItemType.FOOT.getType()) {
-            return super.onCreateViewHolder(parent, viewType);
-        }
         int layout = onBindLayout();
         if (layout == 0) {
             Log.w(TAG, "找不到该值对应item布局R.layout.id：" + layout);
@@ -76,7 +73,7 @@ public abstract class EasyHScrollRecyclerViewAdapter<T> extends EasyRecyclerBase
                 e.printStackTrace();
             }
         }
-        return bindHolder(view, EasyItemType.BODY);
+        return bindHolder(view);
     }
 
     @Override

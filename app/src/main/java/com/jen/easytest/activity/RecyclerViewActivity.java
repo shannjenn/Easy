@@ -14,7 +14,6 @@ import com.jen.easytest.model.RecyclerViewModel;
 import com.jen.easyui.base.EasyActivity;
 import com.jen.easyui.recycler.EasyAdapterOnClickListener;
 import com.jen.easyui.recycler.EasyHolder;
-import com.jen.easyui.recycler.EasyItemType;
 import com.jen.easyui.recycler.EasyLetterDecoration;
 import com.jen.easyui.recycler.EasyLetterView;
 import com.jen.easyui.recycler.EasyRecyclerAdapter;
@@ -184,8 +183,8 @@ public class RecyclerViewActivity extends EasyActivity {
         }
 
         @Override
-        protected EasyHolder bindHolder(View view, EasyItemType viwType) {
-            return new MyHolder(view, viwType);
+        protected EasyHolder bindHolder(View view) {
+            return new MyHolder(view);
         }
 
         @Override
@@ -194,13 +193,15 @@ public class RecyclerViewActivity extends EasyActivity {
         }
 
         class MyHolder extends EasyHolder {
-            public MyHolder(View itemView, EasyItemType viewType) {
-                super(itemView, viewType);
+            public MyHolder(View itemView) {
+                super(itemView);
             }
+
             @Override
             protected EasyAdapterOnClickListener bindEasyAdapterOnClickListener() {
                 return null;
             }
+
             @Override
             protected void onBindData(View view, int viewType, int position) {
                 TextView tv_text = view.findViewById(R.id.tv_text);

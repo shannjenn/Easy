@@ -152,5 +152,5 @@ abstract class EasyRecyclerBaseAdapter<T> extends RecyclerView.Adapter<EasyHolde
      */
     protected abstract int setGridLayoutItemRows(int position);
 
-    protected abstract EasyHolder bindHolder(View view, EasyItemType easyItemType);
+    protected abstract EasyHolder bindHolder(View view);
 }

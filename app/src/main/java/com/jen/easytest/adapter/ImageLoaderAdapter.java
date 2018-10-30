@@ -10,7 +10,6 @@ import com.jen.easytest.R;
 import com.jen.easytest.model.ImageLoaderModel;
 import com.jen.easyui.recycler.EasyAdapterOnClickListener;
 import com.jen.easyui.recycler.EasyHolder;
-import com.jen.easyui.recycler.EasyItemType;
 import com.jen.easyui.recycler.EasyRecyclerAdapter;
 
 import java.util.List;
@@ -34,8 +33,8 @@ public class ImageLoaderAdapter<T extends ImageLoaderModel> extends EasyRecycler
     }
 
     @Override
-    protected EasyHolder bindHolder(View view, EasyItemType viewType) {
-        return new MyHolder(view, viewType);
+    protected EasyHolder bindHolder(View view) {
+        return new MyHolder(view);
     }
 
     @Override
@@ -46,8 +45,8 @@ public class ImageLoaderAdapter<T extends ImageLoaderModel> extends EasyRecycler
 
     class MyHolder extends EasyHolder {
 
-        public MyHolder(View itemView, EasyItemType viewType) {
-            super(itemView, viewType);
+        public MyHolder(View itemView) {
+            super(itemView);
         }
 
         @Override

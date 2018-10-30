@@ -35,27 +35,13 @@ public abstract class EasyTreeRecyclerAdapter<T extends EasyTreeItem> extends Ea
 
     @Override
     public int getItemViewType(int position) {
-        int viewType = super.getItemViewType(position);
-        int headType = EasyItemType.HEAD.getType();
-        int footType = EasyItemType.FOOT.getType();
-        if (viewType == headType || viewType == footType) {
-            return viewType;
-        }
+//        int viewType = super.getItemViewType(position);
         int level = mData.get(position).getLevel();
-        int type = getViewType(level);
-        if (type == headType || type == footType) {
-            Log.w(TAG,"getViewType 值不能和EasyItemType值相同");
-            return 0;
-        } else {
-            return type;
-        }
+        return getViewType(level);
     }
 
     @Override
     public EasyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == EasyItemType.HEAD.getType() || viewType == EasyItemType.FOOT.getType()) {
-            return super.onCreateViewHolder(parent, viewType);
-        }
         int[] layouts = onBindLayout();
         if (layouts == null) {
             Log.w(TAG,"布局为空");
@@ -70,7 +56,7 @@ public abstract class EasyTreeRecyclerAdapter<T extends EasyTreeItem> extends Ea
             Log.w(TAG,"找不到该值对应item布局R.layout.id：" + layouts[viewType]);
             return super.onCreateViewHolder(parent, viewType);
         }
-        return bindHolder(view, EasyItemType.BODY);
+        return bindHolder(view);
     }
 
     @Override
