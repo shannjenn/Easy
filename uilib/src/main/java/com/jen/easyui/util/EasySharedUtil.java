@@ -3,8 +3,7 @@ package com.jen.easyui.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Base64;
-
-import com.jen.easy.log.EasyLog;
+import android.util.Log;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -184,7 +183,7 @@ public class EasySharedUtil {
             objectOutputStream.close();
             return str;
         } catch (IOException e) {
-            EasyLog.w(TAG, "list2String IOException");
+            Log.w(TAG, "list2String IOException");
             e.printStackTrace();
         }
         return null;
@@ -200,10 +199,10 @@ public class EasySharedUtil {
             objectInputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
-            EasyLog.w(TAG, "string2List IOException");
+            Log.w(TAG, "string2List IOException");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            EasyLog.w(TAG, "string2List ClassNotFoundException");
+            Log.w(TAG, "string2List ClassNotFoundException");
         }
         return list;
     }
@@ -217,7 +216,7 @@ public class EasySharedUtil {
             objectOutputStream.close();
             return str;
         } catch (IOException e) {
-            EasyLog.w(TAG, "object2String IOException");
+            Log.w(TAG, "object2String IOException");
             e.printStackTrace();
         }
         return null;
@@ -234,10 +233,10 @@ public class EasySharedUtil {
             return obj;
         } catch (IOException e) {
             e.printStackTrace();
-            EasyLog.w(TAG, "string2Object IOException");
+            Log.w(TAG, "string2Object IOException");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            EasyLog.w(TAG, "string2Object ClassNotFoundException");
+            Log.w(TAG, "string2Object ClassNotFoundException");
         }
         return null;
     }

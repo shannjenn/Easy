@@ -1,11 +1,10 @@
 package com.jen.easyui.recycler;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.jen.easy.log.EasyLog;
 
 import java.util.List;
 
@@ -16,6 +15,7 @@ import java.util.List;
  */
 
 public abstract class EasyRecyclerWaterfallAdapter<T> extends EasyRecyclerBaseAdapter<T> {
+    private final String TAG = EasyRecyclerWaterfallAdapter.class.getSimpleName();
     /**
      * @param data 数据
      */
@@ -33,7 +33,7 @@ public abstract class EasyRecyclerWaterfallAdapter<T> extends EasyRecyclerBaseAd
         }
         int type = getViewType(position);
         if (type == headType || type == footType) {
-            EasyLog.w("getViewType 值不能和EasyItemType值相同");
+            Log.w(TAG,"getViewType 值不能和EasyItemType值相同");
             return 0;
         } else {
             return type;
@@ -47,16 +47,16 @@ public abstract class EasyRecyclerWaterfallAdapter<T> extends EasyRecyclerBaseAd
         }
         int[] layouts = onBindLayout();
         if (layouts == null) {
-            EasyLog.w("布局为空");
+            Log.w(TAG,"布局为空");
             return null;
         }
         if (viewType < 0 || layouts.length < viewType) {
-            EasyLog.w("viewType：" + viewType + "错误");
+            Log.w(TAG,"viewType：" + viewType + "错误");
             return null;
         }
         View view = LayoutInflater.from(parent.getContext()).inflate(layouts[viewType], parent, false);
         if (view == null) {
-            EasyLog.w("找不到该值对应item布局R.layout.id：" + layouts[viewType]);
+            Log.w(TAG,"找不到该值对应item布局R.layout.id：" + layouts[viewType]);
             return null;
         }
         return bindHolder(view, EasyItemType.BODY);

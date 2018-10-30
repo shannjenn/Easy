@@ -1,11 +1,10 @@
 package com.jen.easyui.recycler;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.jen.easy.log.EasyLog;
 
 import java.util.List;
 
@@ -16,7 +15,7 @@ import java.util.List;
  */
 
 public abstract class EasyRecyclerAdapter<T> extends EasyRecyclerBaseAdapter<T> {
-
+    private final String TAG = EasyRecyclerAdapter.class.getSimpleName();
     /**
      * @param data 数据
      */
@@ -31,12 +30,12 @@ public abstract class EasyRecyclerAdapter<T> extends EasyRecyclerBaseAdapter<T> 
         }
         int layout = onBindLayout();
         if (layout == 0) {
-            EasyLog.w("找不到该值对应item布局R.layout.id：" + layout);
+            Log.w(TAG,"找不到该值对应item布局R.layout.id：" + layout);
             return null;
         }
         View view = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
         if (view == null) {
-            EasyLog.w("找不到该值对应item布局R.layout.id：" + layout);
+            Log.w(TAG,"找不到该值对应item布局R.layout.id：" + layout);
             return null;
         }
         return bindHolder(view, EasyItemType.BODY);

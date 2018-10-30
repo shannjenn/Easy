@@ -121,7 +121,7 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
     @Override
     protected void onSelectionChanged(int selStart, int selEnd) {
         super.onSelectionChanged(selStart, selEnd);
-//        EasyLog.d("onSelectionChanged ---------- ");
+//        Log.d("onSelectionChanged ---------- ");
         if (inputText == null) {
             return;
         }
@@ -143,7 +143,7 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-//        EasyLog.d("onTouchEvent ---------- event="+event.getAction());
+//        Log.d("onTouchEvent ---------- event="+event.getAction());
         switch (event.getAction()) {
             case MotionEvent.ACTION_UP: {
                 if (getText().length() == 0) {
@@ -159,7 +159,7 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
         @Override
         public boolean onTouchEvent(TextView widget, Spannable buffer, MotionEvent event) {
             int action = event.getAction();
-//            EasyLog.d("EasyTagLinkMovementMethod onTouchEvent action=" + action);
+//            Log.d("EasyTagLinkMovementMethod onTouchEvent action=" + action);
             if (action == MotionEvent.ACTION_UP) {
                 handler.removeMessages(H_ON_LONG_CLICK);
             } else if (action == MotionEvent.ACTION_DOWN && easyTagListener != null) {
@@ -207,7 +207,7 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         inputTextBefore = s.toString();
         handler.removeMessages(H_ClEAR);
-//        EasyLog.d("beforeTextChanged inputTextBefore=" + inputTextBefore);
+//        Log.d("beforeTextChanged inputTextBefore=" + inputTextBefore);
     }
 
     /**
@@ -220,7 +220,7 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
      */
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-//        EasyLog.d("onTextChanged start=" + start + " before=" + before + " count=" + count + " s=" + s);
+//        Log.d("onTextChanged start=" + start + " before=" + before + " count=" + count + " s=" + s);
         if (inputText == null || inputTextAfter.equals(s.toString())) {
             inputTextAfter = s.toString();
             return;

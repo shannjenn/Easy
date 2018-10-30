@@ -4,8 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
-
-import com.jen.easy.log.EasyLog;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +53,7 @@ abstract class EasyFragmentPagerAdapterManager extends FragmentStatePagerAdapter
     @Override
     public CharSequence getPageTitle(int position) {
         if (mTitles.size() <= position) {
-            EasyLog.d(TAG + "getPageTitle mTitles.size() <= position");
+            Log.d(TAG, "getPageTitle mTitles.size() <= position");
             return "";
         }
         return mTitles.get(position);
@@ -65,7 +64,7 @@ abstract class EasyFragmentPagerAdapterManager extends FragmentStatePagerAdapter
         try {
             super.finishUpdate(container);
         } catch (NullPointerException nullPointerException) {
-            EasyLog.d("Catch the NullPointerException in EasyFragmentPagerAdapterManager.finishUpdate");
+            Log.d("Catch the NullPointerException in EasyFragmentPagerAdapterManager.finishUpdate");
         }
     }*/
 

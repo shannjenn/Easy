@@ -3,9 +3,9 @@ package com.jen.easyui.base;
 import android.app.Application;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.jen.easy.http.Http;
-import com.jen.easy.log.EasyLog;
 import com.jen.easy.log.imp.LogCrashListener;
 import com.jen.easy.sqlite.imp.DatabaseListener;
 import com.jen.easyui.EasyMain;
@@ -16,6 +16,7 @@ import com.jen.easyui.EasyMain;
  */
 
 public class EasyApplication extends Application {
+    private final String TAG = EasyApplication.class.getSimpleName();
     private static EasyApplication mApp;
     private final int DB_VERSION = 1;//数据库版本号
 
@@ -41,7 +42,7 @@ public class EasyApplication extends Application {
      */
     private void createTB() {
         if (EasyMain.mDBHelper.getVersion() == 1) {//第一版开始全部执行创建,发版后使用升级操作
-            EasyLog.d("创建表------------");
+            Log.d(TAG, "创建表------------");
 //            EasyMain.mDBHelper.createTB(TablesTatus.class);
 
         }
@@ -53,7 +54,7 @@ public class EasyApplication extends Application {
     private DatabaseListener databaseListener = new DatabaseListener() {
         @Override
         public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {//升级数据库
-            EasyLog.d("升级数据库------------");
+            Log.d(TAG, "升级数据库------------");
         }
     };
 
@@ -64,7 +65,7 @@ public class EasyApplication extends Application {
     private LogCrashListener logcatCrashListener = new LogCrashListener() {
         @Override
         public boolean onBeforeHandleException(Throwable throwable) {
-//            EasyLog.w("捕获到异常------------");
+//            Log.w("捕获到异常------------");
 //            throwable.printStackTrace();
             Intent intent = new Intent(EasyApplication.getAppContext(), LogCrashActivity.class);
             startActivity(intent);

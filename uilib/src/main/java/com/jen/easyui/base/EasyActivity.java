@@ -9,11 +9,11 @@ import android.os.Looper;
 import android.support.annotation.LayoutRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.jen.easy.http.imp.HttpBasicListener;
-import com.jen.easy.log.EasyLog;
 import com.jen.easyui.EasyMain;
 import com.jen.easyui.dialog.EasyLoading;
 
@@ -22,6 +22,7 @@ import com.jen.easyui.dialog.EasyLoading;
  * 时间：2017/10/26.
  */
 public abstract class EasyActivity<T> extends AppCompatActivity implements HttpBasicListener<T> {
+    private final String TAG =AppCompatActivity.class.getSimpleName();
     protected Context mContext;
     protected Handler mHandler = new Handler(Looper.getMainLooper());
     protected EasyLoading mLoading;
@@ -91,7 +92,7 @@ public abstract class EasyActivity<T> extends AppCompatActivity implements HttpB
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         } else {
 //            Toast.makeText(this, "授权成功！", Toast.LENGTH_SHORT).show();
-            EasyLog.d("checkFilePermission: 已经授权！");
+            Log.d(TAG,"checkFilePermission: 已经授权！");
         }
     }
 }

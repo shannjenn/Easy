@@ -1,9 +1,8 @@
 package com.jen.easyui.recycler;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
-
-import com.jen.easy.log.EasyLog;
 
 /**
  * baseAdapter
@@ -12,6 +11,7 @@ import com.jen.easy.log.EasyLog;
  */
 
 abstract class EasyHolderManager extends RecyclerView.ViewHolder {
+    private final String TAG = EasyHolderManager.class.getSimpleName();
 
     public EasyHolderManager(View itemView) {
         super(itemView);
@@ -52,11 +52,11 @@ abstract class EasyHolderManager extends RecyclerView.ViewHolder {
 
     public void addOnClickEvent(View view, final int position) {
         if (bindEasyAdapterOnClickListener() == null) {
-            EasyLog.w("继承的" + EasyHolder.class.getSimpleName() + "未绑定bindEasyAdapterOnClickListener事件");
+            Log.w(TAG,"继承的" + EasyHolder.class.getSimpleName() + "未绑定bindEasyAdapterOnClickListener事件");
             return;
         }
         if (view == null) {
-            EasyLog.w("点击设置事件失败，请检查view是否不为空");
+            Log.w(TAG,"点击设置事件失败，请检查view是否不为空");
             return;
         }
         view.setOnClickListener(new View.OnClickListener() {
@@ -69,11 +69,11 @@ abstract class EasyHolderManager extends RecyclerView.ViewHolder {
 
     public void addOnLongClickEvent(View view, final int position) {
         if (bindEasyAdapterOnClickListener() == null) {
-            EasyLog.w("继承的" + EasyHolder.class.getSimpleName() + "未绑定bindEasyAdapterOnClickListener事件");
+            Log.w(TAG,"继承的" + EasyHolder.class.getSimpleName() + "未绑定bindEasyAdapterOnClickListener事件");
             return;
         }
         if (view == null) {
-            EasyLog.w("点击设置事件失败，请检查view是否不为空");
+            Log.w(TAG,"点击设置事件失败，请检查view是否不为空");
             return;
         }
         view.setOnLongClickListener(new View.OnLongClickListener() {

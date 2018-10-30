@@ -1,8 +1,7 @@
 package com.jen.easyui.util;
 
 import android.support.annotation.NonNull;
-
-import com.jen.easy.log.EasyLog;
+import android.util.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -36,6 +35,7 @@ import java.util.TimeZone;
  要忽略的字符都要用单引号('')括住！
  SimpleDateFormat sdf = new SimpleDateFormat("'日期'yyyy-MM-dd'Time'HH:mm:ss'Z'");*/
 public class EasyDateFormatUtil {
+    private final String TAG = EasyDateFormatUtil.class.getSimpleName();
     private SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.SIMPLIFIED_CHINESE);//默认
 
     /**
@@ -64,14 +64,14 @@ public class EasyDateFormatUtil {
      */
     public String format(String timeStamp) {
         if (timeStamp == null) {
-            EasyLog.w("时间戳为空");
+            Log.w(TAG,"时间戳为空");
             return null;
         }
         long time;
         try {
             time = Long.parseLong(timeStamp);
         } catch (NumberFormatException e) {
-            EasyLog.w("时间戳错误");
+            Log.w(TAG,"时间戳错误");
             return null;
         }
         Date date = new Date(time);
@@ -104,7 +104,7 @@ public class EasyDateFormatUtil {
         try {
             date = mFormat.parse(formatDate);
         } catch (ParseException e) {
-            EasyLog.w("时间格式不正确");
+            Log.w(TAG,"时间格式不正确");
         }
         return date;
     }

@@ -141,7 +141,7 @@ public class EasyLetterView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-//        EasyLog.d(TAG, "onDraw choosePosition = " + choosePosition);
+//        Log.d(TAG, "onDraw choosePosition = " + choosePosition);
         if (letterPerHeight == 0) {
             letterPerHeight = (getHeight() - paddingTop - paddingBottom) / letters.length;
         }

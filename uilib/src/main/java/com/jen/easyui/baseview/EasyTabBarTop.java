@@ -19,7 +19,6 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.jen.easy.log.EasyLog;
 import com.jen.easyui.R;
 import com.jen.easyui.util.EasyDensityUtil;
 
@@ -33,6 +32,7 @@ import java.util.List;
  * 时间：2017/10/31.
  */
 public class EasyTabBarTop extends HorizontalScrollView {
+    private final String TAG = EasyTabBarTop.class.getSimpleName();
     private Context mContext;
     /*默认颜色*/
     private int COLOR_DEFAULT = 0xff000000;
@@ -164,7 +164,7 @@ public class EasyTabBarTop extends HorizontalScrollView {
 
     public void setViewPager(ViewPager viewPager) {
         if (viewPager == null) {
-            EasyLog.w("EasyTabBarTxtScroll setViewPager viewPager is null");
+            Log.w(TAG,"EasyTabBarTxtScroll setViewPager viewPager is null");
             return;
         }
         isWithTitles = false;
@@ -174,7 +174,7 @@ public class EasyTabBarTop extends HorizontalScrollView {
 
     public void setViewPager(ViewPager viewPager, List<String> titles) {
         if (viewPager == null) {
-            EasyLog.w("EasyTabBarTxtScroll setViewPager viewPager is null");
+            Log.w(TAG,"EasyTabBarTxtScroll setViewPager viewPager is null");
             return;
         }
         isWithTitles = true;
@@ -182,7 +182,7 @@ public class EasyTabBarTop extends HorizontalScrollView {
         if (titles != null) {
             mTitles.addAll(titles);
         } else {
-            EasyLog.w("EasyTabBarTxtScroll setViewPager titles is null");
+            Log.w(TAG,"EasyTabBarTxtScroll setViewPager titles is null");
         }
         notifyDataSetChanged();
     }
@@ -305,7 +305,7 @@ public class EasyTabBarTop extends HorizontalScrollView {
         super.onDraw(canvas);
         //如果在自定义控件的构造函数或者其他绘制相关地方使用系统依赖的代码，会导致可视化编辑器无法报错并提
         if (isInEditMode()) {
-            EasyLog.w("onDraw isInEditMode");
+            Log.w(TAG,"onDraw isInEditMode");
             return;
         }
         drawUnderline(canvas);
@@ -319,7 +319,7 @@ public class EasyTabBarTop extends HorizontalScrollView {
      */
     private void drawIndicatorRoundRect(Canvas canvas) {
         if (mTabCount <= 0) {
-            EasyLog.w("drawIndicatorRoundRect mTabCount=" + mTabCount);
+            Log.w(TAG,"drawIndicatorRoundRect mTabCount=" + mTabCount);
             return;
         }
         TextView textView = (TextView) mTabsContainer.getChildAt(mScrollPostion);
@@ -436,7 +436,7 @@ public class EasyTabBarTop extends HorizontalScrollView {
          */
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//            EasyLog.d("onPageScrolled position=" + position
+//            Log.d("onPageScrolled position=" + position
 //                    + " positionOffset=" + positionOffset + " positionOffsetPixels=" + positionOffsetPixels);
             mScrollPostion = position;
             mPositionOffset = positionOffset;
@@ -446,7 +446,7 @@ public class EasyTabBarTop extends HorizontalScrollView {
 
         @Override
         public void onPageSelected(int position) {
-//            EasyLog.d("onPageSelected position=" + position);
+//            Log.d("onPageSelected position=" + position);
             updtaeTabText(position);
 //            mCurrentTab = position;
         }
@@ -456,7 +456,7 @@ public class EasyTabBarTop extends HorizontalScrollView {
          */
         @Override
         public void onPageScrollStateChanged(int state) {
-//            EasyLog.d("onPageScrollStateChanged state=" + state);
+//            Log.d("onPageScrollStateChanged state=" + state);
             if (state == 0) {
                 mCurrentTab = mScrollPostion;
             }

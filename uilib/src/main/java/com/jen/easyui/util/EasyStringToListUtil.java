@@ -1,8 +1,7 @@
 package com.jen.easyui.util;
 
 import android.util.Base64;
-
-import com.jen.easy.log.EasyLog;
+import android.util.Log;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -33,7 +32,7 @@ public class EasyStringToListUtil {
             objectOutputStream.close();
             return str;
         } catch (IOException e) {
-            EasyLog.w(TAG, "list2String IOException");
+            Log.w(TAG, "list2String IOException");
             e.printStackTrace();
         }
         return null;
@@ -49,10 +48,10 @@ public class EasyStringToListUtil {
             objectInputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
-            EasyLog.w(TAG, "string2List IOException");
+            Log.w(TAG, "string2List IOException");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            EasyLog.w(TAG, "string2List ClassNotFoundException");
+            Log.w(TAG, "string2List ClassNotFoundException");
         }
         return list;
     }
@@ -66,7 +65,7 @@ public class EasyStringToListUtil {
             objectOutputStream.close();
             return str;
         } catch (IOException e) {
-            EasyLog.w(TAG, "object2String IOException");
+            Log.w(TAG, "object2String IOException");
             e.printStackTrace();
         }
         return null;
@@ -83,10 +82,10 @@ public class EasyStringToListUtil {
             return obj;
         } catch (IOException e) {
             e.printStackTrace();
-            EasyLog.w(TAG, "string2Object IOException");
+            Log.w(TAG, "string2Object IOException");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            EasyLog.w(TAG, "string2Object ClassNotFoundException");
+            Log.w(TAG, "string2Object ClassNotFoundException");
         }
         return null;
     }

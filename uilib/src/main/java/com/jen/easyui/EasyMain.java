@@ -2,12 +2,12 @@ package com.jen.easyui;
 
 import android.app.Application;
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.jen.easy.bind.BindView;
 import com.jen.easy.http.Http;
 import com.jen.easy.imageLoader.ImageLoader;
 import com.jen.easy.imageLoader.ImageLoaderConfig;
-import com.jen.easy.log.EasyLog;
 import com.jen.easy.log.LogcatHelper;
 import com.jen.easy.sqlite.DBDao;
 import com.jen.easy.sqlite.DBHelper;
@@ -20,6 +20,7 @@ import com.jen.easyui.util.EasySharedUtil;
  */
 
 public final class EasyMain {
+    private static final String TAG = EasyMain.class.getSimpleName();
     private EasyMain() {
     }
 
@@ -53,7 +54,7 @@ public final class EasyMain {
     public static ImageLoader mImageLoader;
 
     public static void init(Application application) {
-        EasyLog.d("init EasyMain -------");
+        Log.d(TAG,"init EasyMain -------");
 
         mBindView = new BindView();
         mHttp = new Http(10);//默认最大10个线程
