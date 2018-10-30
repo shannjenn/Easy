@@ -31,7 +31,7 @@ public abstract class EasyRecyclerWaterfallAdapter<T> extends EasyRecyclerBaseAd
         if (viewType == headType || viewType == footType) {
             return viewType;
         }
-        int type = getViewType(position - mHeadItemCount);
+        int type = getViewType(position);
         if (type == headType || type == footType) {
             EasyLog.w("getViewType 值不能和EasyItemType值相同");
             return 0;

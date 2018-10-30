@@ -98,10 +98,10 @@ public class RecyclerViewActivity extends EasyActivity {
         easyAdapter1.setItemTouchSortEvent(recyclerView);
         recyclerView.setAdapter(easyAdapter1);
 
-        recyclerView.showHeader(true);
-        recyclerView.showFooter(true);
-        recyclerView.setRefreshListener(refreshListener);
-        recyclerView.setLoadMoreListener(loadMoreListener);
+//        recyclerView.showHeader(true);
+//        recyclerView.showFooter(true);
+//        recyclerView.setRefreshListener(refreshListener);
+//        recyclerView.setLoadMoreListener(loadMoreListener);
         EasyLetterDecoration itemDecoration = new EasyLetterDecoration(mData);
         itemDecoration.setLetterTextColor(0xffff0000);
         recyclerView.addItemDecoration(itemDecoration);
@@ -115,7 +115,7 @@ public class RecyclerViewActivity extends EasyActivity {
                     if (mData.get(i).getLetter().equals(letter)) {
 //                        pos = i;
                         EasyLog.d("touch = " + letter);
-                        recyclerView.scrollPositionToHeader(i);
+//                        recyclerView.scrollPositionToHeader(i);
                         break;
                     }
                 }
@@ -168,30 +168,6 @@ public class RecyclerViewActivity extends EasyActivity {
         }
     }
 
-    EasyRecyclerView.RefreshListener refreshListener = new EasyRecyclerView.RefreshListener() {
-        @Override
-        public void onRefresh() {
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    recyclerView.refreshFinish();
-                }
-            }, 2000);
-        }
-    };
-
-    EasyRecyclerView.LoadMoreListener loadMoreListener = new EasyRecyclerView.LoadMoreListener() {
-        @Override
-        public void onLoadMore() {
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    recyclerView.loadMoreFinish();
-                }
-            }, 2000);
-        }
-    };
-
     private class EasyAdapter1<T extends RecyclerViewModel> extends EasyRecyclerAdapter<T> {
 
         /**
@@ -218,19 +194,13 @@ public class RecyclerViewActivity extends EasyActivity {
         }
 
         class MyHolder extends EasyHolder {
-
-            /*public MyHolder(View itemView) {
-                super(itemView);
-            }*/
             public MyHolder(View itemView, EasyItemType viewType) {
                 super(itemView, viewType);
             }
-
             @Override
             protected EasyAdapterOnClickListener bindEasyAdapterOnClickListener() {
                 return null;
             }
-
             @Override
             protected void onBindData(View view, int viewType, int position) {
                 TextView tv_text = view.findViewById(R.id.tv_text);

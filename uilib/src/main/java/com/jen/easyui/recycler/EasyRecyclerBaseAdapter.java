@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -22,15 +21,6 @@ abstract class EasyRecyclerBaseAdapter<T> extends RecyclerView.Adapter<EasyHolde
     protected List<T> mData;//不包含header、footer
     protected EasyAdapterOnClickListener easyAdapterOnClickListener;
 
-    protected int mHeaderLayout;
-    protected int mFootLayout;
-    protected int mHeadItemCount;
-    protected int mFootItemCount;
-    private View mHeaderView;
-    private View mFootView;
-    private int mHeaderHeight;
-    private int mFootHeight;
-
     /**
      * @param data 数据
      */
@@ -44,53 +34,16 @@ abstract class EasyRecyclerBaseAdapter<T> extends RecyclerView.Adapter<EasyHolde
         if (mData == null || mData.size() == 0) {
             return 0;
         }
-        int count = 0;
-        mHeadItemCount = 0;
-        mFootItemCount = 0;
-        if (mHeaderLayout != 0) {
-            count++;
-            mHeadItemCount = 1;
-        }
-        if (mFootLayout != 0) {
-            count++;
-            mFootItemCount = 1;
-        }
-        count += mData.size();
-        return count;
-    }
-
-    protected boolean isFootPosition(int position) {
-        return position - mHeadItemCount > mData.size() - 1;
+        return mData.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0 && mHeaderLayout != 0) {
-            return EasyItemType.HEAD.getType();
-        }
-        if (isFootPosition(position) && mFootLayout != 0) {
-            return EasyItemType.FOOT.getType();
-        }
-        return super.getItemViewType(position - mHeadItemCount);
+        return super.getItemViewType(position);
     }
 
     @Override
     public EasyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == EasyItemType.HEAD.getType()) {
-            mHeaderView = LayoutInflater.from(parent.getContext()).inflate(mHeaderLayout, parent, false);
-            if (mHeaderView != null) {
-                mHeaderHeight = mHeaderView.getLayoutParams().height;
-                setHeaderVisible(false);
-                return bindHolder(mHeaderView, EasyItemType.HEAD);
-            }
-        } else if (viewType == EasyItemType.FOOT.getType()) {
-            mFootView = LayoutInflater.from(parent.getContext()).inflate(mFootLayout, parent, false);
-            if (mFootView != null) {
-                mFootHeight = mFootView.getLayoutParams().height;
-                setFootVisible(false);
-                return bindHolder(mFootView, EasyItemType.FOOT);
-            }
-        }
         return null;
     }
 
@@ -104,15 +57,7 @@ abstract class EasyRecyclerBaseAdapter<T> extends RecyclerView.Adapter<EasyHolde
         if (holder == null) {
             return;
         }
-        if (position == 0 && mHeaderLayout != 0) {
-            holder.onBindHeadData(holder.itemView);
-            return;
-        }
-        if (isFootPosition(position) && mFootLayout != 0) {
-            holder.onBindFootData(holder.itemView);
-            return;
-        }
-        holder.onBindData(holder.itemView, holder.getItemViewType(), position - mHeadItemCount);
+        holder.onBindData(holder.itemView, holder.getItemViewType(), position);
     }
 
     @Override
@@ -139,47 +84,6 @@ abstract class EasyRecyclerBaseAdapter<T> extends RecyclerView.Adapter<EasyHolde
                     }
                 }
             });
-        }
-    }
-
-    /**
-     * 设置下拉显示/隐藏
-     *
-     * @param visible
-     */
-    protected void setHeaderVisible(boolean visible) {
-        if (mHeaderView != null) {
-            if (visible) {
-                mHeaderView.getLayoutParams().height = mHeaderHeight;
-                mHeaderView.setVisibility(View.VISIBLE);
-            } else {
-                mHeaderView.getLayoutParams().height = 1;
-                mHeaderView.setVisibility(View.GONE);
-            }
-        }
-    }
-
-    /**
-     * 设置上拉显示/隐藏
-     *
-     * @param visible
-     */
-    protected void setFootVisible(boolean visible) {
-        if (mFootView != null) {
-            if (visible) {
-                mFootView.getLayoutParams().height = mFootHeight;
-                mFootView.setVisibility(View.VISIBLE);
-            } else {
-                mFootView.getLayoutParams().height = 1;
-                mFootView.setVisibility(View.GONE);
-                /*new android.os.Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mFootView.setVisibility(View.INVISIBLE);
-                        mFootView.getLayoutParams().height = mFootHeight;
-                    }
-                }, 5);*/
-            }
         }
     }
 
@@ -213,20 +117,13 @@ abstract class EasyRecyclerBaseAdapter<T> extends RecyclerView.Adapter<EasyHolde
         public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
             int fromPosition = viewHolder.getAdapterPosition();
             int toPosition = target.getAdapterPosition();
-            if (fromPosition < mHeadItemCount || toPosition < mHeadItemCount) {
-                return false;
-            }
-            if (fromPosition >= mData.size() + mHeadItemCount || toPosition >= mData.size() + mHeadItemCount) {
-                return false;
-            }
-
             if (fromPosition < toPosition) {
                 for (int i = fromPosition; i < toPosition; i++) {
-                    Collections.swap(mData, i - mHeadItemCount, i - mHeadItemCount + 1);
+                    Collections.swap(mData, i, i + 1);
                 }
             } else {
                 for (int i = fromPosition; i > toPosition; i--) {
-                    Collections.swap(mData, i - mHeadItemCount, i - mHeadItemCount - 1);
+                    Collections.swap(mData, i, i - 1);
                 }
             }
             notifyItemMoved(fromPosition, toPosition);

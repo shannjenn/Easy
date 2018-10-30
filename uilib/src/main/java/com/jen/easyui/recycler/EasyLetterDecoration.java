@@ -4,7 +4,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -49,18 +48,13 @@ public class EasyLetterDecoration<T extends EasyLetterItem> extends RecyclerView
         int position = ((RecyclerView.LayoutParams) view.getLayoutParams()).getViewLayoutPosition();
         if (position < 0)
             return;
-        int firstPos = parent.getHeadItemCount();
-        if (position < firstPos)
-            return;
-        if (position - firstPos >= mData.size())
-            return;
 
         int height;
-        if (position == firstPos) {
+        if (position == 0) {
             height = letterHeight;
         } else {
-            String letter = mData.get(position - firstPos).getLetter();
-            String lastLetter = mData.get(position - firstPos - 1).getLetter();
+            String letter = mData.get(position).getLetter();
+            String lastLetter = mData.get(position - 1).getLetter();
             if (!letter.equals(lastLetter) && letter.length() > 0) {
                 height = letterHeight;
             } else {
@@ -83,24 +77,20 @@ public class EasyLetterDecoration<T extends EasyLetterItem> extends RecyclerView
         int right = parent.getWidth() - parent.getPaddingRight();
         int childCount = parent.getChildCount();
 
-        int firstPos = parent.getHeadItemCount();
-        childCount -= parent.getFootItemCount();
         String lastLetter = "";
         for (int i = 0; i < childCount; i++) {
-            View child = parent.getChildAt(i + firstPos);
+            View child = parent.getChildAt(i);
             if (child == null)
                 continue;
             RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
             int position = params.getViewLayoutPosition();
-            if (position < firstPos || position - firstPos >= mData.size()) {
-                continue;
-            } else if (position == firstPos) {
-                drawTitle(canvas, left, right, child, params, position, parent.getHeadItemCount());
+            if (position == 0) {
+                drawTitle(canvas, left, right, child, params, position, 0);
             } else {
-                String letter = mData.get(position - firstPos).getLetter();
+                String letter = mData.get(position).getLetter();
                 if (!letter.equals(lastLetter)) {
                     lastLetter = letter;
-                    drawTitle(canvas, left, right, child, params, position, parent.getHeadItemCount());
+                    drawTitle(canvas, left, right, child, params, position, 0);
                 }
             }
         }
@@ -150,20 +140,14 @@ public class EasyLetterDecoration<T extends EasyLetterItem> extends RecyclerView
         RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();
         if (layoutManager instanceof LinearLayoutManager) {
             position = ((LinearLayoutManager) (layoutManager)).findFirstVisibleItemPosition();
-        } else if (layoutManager instanceof GridLayoutManager) {
-            position = ((GridLayoutManager) (layoutManager)).findFirstVisibleItemPosition();
         }
         if (position == -1)
             return;
-        if (parent.getHeadItemCount() > 0 && position == 0)//头部
-            return;
-
-        int firstPos = parent.getHeadItemCount();
         boolean flag = false;//Canvas是否位移过的标志
         View child = parent.findViewHolderForLayoutPosition(position).itemView;
-        String letter = mData.get(position - firstPos).getLetter();
-        if (position + 1 - firstPos < mData.size()) {
-            String nextLetter = mData.get(position + 1 - firstPos).getLetter();
+        String letter = mData.get(position).getLetter();
+        if (position + 1 < mData.size()) {
+            String nextLetter = mData.get(position + 1).getLetter();
             if (!letter.equals(nextLetter)) {
                 if (child.getHeight() + child.getTop() < letterHeight) {
                     canvas.save();

@@ -40,7 +40,7 @@ public abstract class EasyTreeRecyclerAdapter<T extends EasyTreeItem> extends Ea
         if (viewType == headType || viewType == footType) {
             return viewType;
         }
-        int level = mData.get(position - mHeadItemCount).getLevel();
+        int level = mData.get(position).getLevel();
         int type = getViewType(level);
         if (type == headType || type == footType) {
             EasyLog.w("getViewType 值不能和EasyItemType值相同");
@@ -77,16 +77,7 @@ public abstract class EasyTreeRecyclerAdapter<T extends EasyTreeItem> extends Ea
         if (holder == null) {
             return;
         }
-        if (position == 0 && mHeaderLayout != 0) {
-            super.onBindViewHolder(holder, position);
-            return;
-        }
-        if (isFootPosition(position) && mFootLayout != 0) {
-            super.onBindViewHolder(holder, position);
-            return;
-        }
-
-        EasyTreeItem data = mData.get(position - mHeadItemCount);
+        EasyTreeItem data = mData.get(position);
         if (!mLayoutParam.containsKey(data.getLevel())) {
             ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
             int height = layoutParams.height;
