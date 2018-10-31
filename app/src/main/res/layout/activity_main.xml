@@ -15,6 +15,12 @@
         android:layout_height="46dp"
         android:text="tabBar"
         android:textAllCaps="false"/>
+    <Button
+        android:id="@+id/basicView"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:text="BasicView"
+        android:textAllCaps="false"/>
 
     <Button
         android:id="@+id/drawable"

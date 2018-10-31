@@ -38,13 +38,17 @@ public class EasyRadioButton extends RelativeLayout {
     private RadioButton radioImgView;
     private View bottomLine;
 
+    private final int DEFAULT_TEXT_COLOR = 0xff333333;
+    private final int DEFAULT_BOTTOM_LINE_COLOR = 0xff333333;
+
     private GroupListener groupListener;
 
-    /*public EasyEditTextManager(Context context) {
+    public EasyRadioButton(Context context) {
         super(context);
-        mShape = new EasyShapeBase(this);
+        mContext = context;
         initAttrs(context, null);
-    }*/
+        initView();
+    }
 
     public EasyRadioButton(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -61,21 +65,28 @@ public class EasyRadioButton extends RelativeLayout {
     }
 
     private void initAttrs(Context context, AttributeSet attrs) {
-        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.EasyRadioButton);
-        radioText = ta.getString(R.styleable.EasyRadioButton_radioText);
-        radioTextColor = ta.getColor(R.styleable.EasyRadioButton_radioTextColor, 0xff333333);
-        radioTextSize = ta.getDimension(R.styleable.EasyRadioButton_radioTextSize, EasyDensityUtil.sp2px(14));
-        radioTextPadding = ta.getDimensionPixelOffset(R.styleable.EasyRadioButton_radioTextPadding, 0);
+        if (attrs != null) {
+            TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.EasyRadioButton);
+            radioText = ta.getString(R.styleable.EasyRadioButton_radioText);
+            radioTextColor = ta.getColor(R.styleable.EasyRadioButton_radioTextColor, DEFAULT_TEXT_COLOR);
+            radioTextSize = ta.getDimension(R.styleable.EasyRadioButton_radioTextSize, EasyDensityUtil.sp2px(14));
+            radioTextPadding = ta.getDimensionPixelOffset(R.styleable.EasyRadioButton_radioTextPadding, 0);
 
-        radioSrc = ta.getDrawable(R.styleable.EasyRadioButton_radioSrc);
-        radioShowType = ta.getInt(R.styleable.EasyRadioButton_radioShowType, 0);
-        radioIsCheck = ta.getBoolean(R.styleable.EasyRadioButton_radioIsCheck, false);
-        radioCheckBox = ta.getBoolean(R.styleable.EasyRadioButton_radioCheckBox, false);
-        radioCheckPadding = ta.getDimensionPixelOffset(R.styleable.EasyRadioButton_radioCheckPadding, 0);
-        radioShowBottomLine = ta.getBoolean(R.styleable.EasyRadioButton_radioShowBottomLine, false);
-        radioBottomLineColor = ta.getColor(R.styleable.EasyRadioButton_radioBottomLineColor, 0xff333333);
+            radioSrc = ta.getDrawable(R.styleable.EasyRadioButton_radioSrc);
+            radioShowType = ta.getInt(R.styleable.EasyRadioButton_radioShowType, 0);
+            radioIsCheck = ta.getBoolean(R.styleable.EasyRadioButton_radioIsCheck, false);
+            radioCheckBox = ta.getBoolean(R.styleable.EasyRadioButton_radioCheckBox, false);
+            radioCheckPadding = ta.getDimensionPixelOffset(R.styleable.EasyRadioButton_radioCheckPadding, 0);
+            radioShowBottomLine = ta.getBoolean(R.styleable.EasyRadioButton_radioShowBottomLine, false);
+            radioBottomLineColor = ta.getColor(R.styleable.EasyRadioButton_radioBottomLineColor, DEFAULT_BOTTOM_LINE_COLOR);
 
-        ta.recycle();
+            ta.recycle();
+        } else {
+            radioTextColor = DEFAULT_TEXT_COLOR;
+            radioTextSize = EasyDensityUtil.sp2px(14);
+            radioBottomLineColor = DEFAULT_BOTTOM_LINE_COLOR;
+        }
+
     }
 
     private void initView() {
@@ -95,7 +106,7 @@ public class EasyRadioButton extends RelativeLayout {
         radioImgView.setClickable(false);
 
         bottomLine = new View(mContext);
-        bottomLine.setBackgroundColor(mContext.getResources().getColor(radioBottomLineColor));
+        bottomLine.setBackgroundColor(radioBottomLineColor);
 
         LayoutParams radioTextParam = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         LayoutParams radioImgParam = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -159,7 +170,21 @@ public class EasyRadioButton extends RelativeLayout {
     }
 
     public void setText(String text) {
+        radioText = text;
         radioTextView.setText(text);
+    }
+
+    public void setRadioCheckBox(boolean isRadio){
+        radioCheckBox = isRadio;
+    }
+
+    public String getText() {
+        return radioText;
+    }
+
+    public void setRadioSrc(Drawable drawable) {
+        radioSrc = drawable;
+        radioImgView.setCompoundDrawablesWithIntrinsicBounds(null, null, radioSrc, null);
     }
 
     interface GroupListener {

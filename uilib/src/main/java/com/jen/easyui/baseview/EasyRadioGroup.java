@@ -40,6 +40,20 @@ public class EasyRadioGroup extends LinearLayout implements EasyRadioButton.Grou
     }
 
     @Override
+    public void addView(View child) {
+        super.addView(child);
+        if(child instanceof EasyRadioButton){
+            mChildren.add((EasyRadioButton) child);
+        }
+    }
+
+    @Override
+    public void removeAllViews() {
+        super.removeAllViews();
+        mChildren.clear();
+    }
+
+    @Override
     public void onViewAdded(View child) {
         super.onViewAdded(child);
     }
@@ -71,18 +85,42 @@ public class EasyRadioGroup extends LinearLayout implements EasyRadioButton.Grou
         }
     }
 
+    public void clearCheck() {
+        for (int i = 0; i < mChildren.size(); i++) {
+            EasyRadioButton easyRadioButton = mChildren.get(i);
+            if (easyRadioButton.isCheck()) {
+                easyRadioButton.setCheck(false);
+            }
+        }
+    }
+
     public List<EasyRadioButton> getChildren() {
         return mChildren;
     }
 
-    public int getCheckNum() {
+    /**
+     * @return
+     */
+    public List<Integer> getCheckNum() {
+        List<Integer> nums = new ArrayList<>();
         for (int i = 0; i < mChildren.size(); i++) {
             EasyRadioButton easyRadioButton = mChildren.get(i);
             if (easyRadioButton.isCheck()) {
-                return i;
+                nums.add(i);
             }
         }
-        return 0;
+        return nums;
+    }
+
+    public List<EasyRadioButton> getCheckButton() {
+        List<EasyRadioButton> buttons = new ArrayList<>();
+        for (int i = 0; i < mChildren.size(); i++) {
+            EasyRadioButton easyRadioButton = mChildren.get(i);
+            if (easyRadioButton.isCheck()) {
+                buttons.add(easyRadioButton);
+            }
+        }
+        return buttons;
     }
 
     public interface OnChildCheckListener {

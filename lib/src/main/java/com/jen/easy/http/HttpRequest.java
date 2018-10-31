@@ -5,8 +5,7 @@ import com.jen.easy.exception.ExceptionType;
 import com.jen.easy.exception.Throw;
 import com.jen.easy.invalid.EasyInvalid;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedHashMap;
 
 /**
  * 作者：ShannJenn
@@ -69,7 +68,7 @@ public abstract class HttpRequest {
     /**
      * 替换请求结果特殊符号
      */
-    Map<String, String> responseReplaceMap;
+    LinkedHashMap<String, String> responseReplaceMap;
 
     /**
      * 替换请求结果特殊符号,如：\\\"code\\\": \\\"HKD\\\"
@@ -83,7 +82,7 @@ public abstract class HttpRequest {
             return;
         }
         if (responseReplaceMap == null) {
-            responseReplaceMap = new HashMap<>();
+            responseReplaceMap = new LinkedHashMap<>();
         }
         responseReplaceMap.put(oldChar, newChar);
     }
