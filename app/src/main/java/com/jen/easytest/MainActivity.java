@@ -7,7 +7,6 @@ import android.view.View;
 import com.jen.easy.EasyViewMethod;
 import com.jen.easytest.activity.BasicViewActivity;
 import com.jen.easytest.activity.DialogActivity;
-import com.jen.easytest.activity.DrawableActivity;
 import com.jen.easytest.activity.HttpActivity;
 import com.jen.easytest.activity.ImageLoaderActivity;
 import com.jen.easytest.activity.PopupWindowActivity;
@@ -43,7 +42,7 @@ public class MainActivity extends EasyActivity {
     }
 
 
-    @EasyViewMethod({R.id.tabBar, R.id.basicView, R.id.drawable, R.id.http, R.id.imageLoader, R.id.dialog, R.id.popupWindow,
+    @EasyViewMethod({R.id.tabBar, R.id.basicView, R.id.http, R.id.imageLoader, R.id.dialog, R.id.popupWindow,
             R.id.sqlite, R.id.util, R.id.recycleView,R.id.recycleScroll, R.id.timePick})
     @Override
     protected void onBindClick(View view) {
@@ -55,10 +54,6 @@ public class MainActivity extends EasyActivity {
             }
             case R.id.basicView: {
                 clazz = BasicViewActivity.class;
-                break;
-            }
-            case R.id.drawable: {
-                clazz = DrawableActivity.class;
                 break;
             }
             case R.id.http: {

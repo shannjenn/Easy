@@ -1,7 +1,7 @@
 <resources>
-    <!-- pupupwindow的弹出和消失动画 -->
-    <style name="_easy_popup_window_anim">
-        <item name="android:windowEnterAnimation">@anim/_easy_popupwindow_in</item>
-        <item name="android:windowExitAnimation">@anim/_easy_popupwindow_out</item>
+    <style name="easy_popup_window_anim_style" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/_easy_popup_translate_in</item>
+        <item name="android:windowExitAnimation">@anim/_easy_popup_translate_out</item>
     </style>
+
 </resources>

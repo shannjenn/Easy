@@ -36,23 +36,40 @@ public class EasyShapeEditTextView extends android.support.v7.widget.AppCompatEd
 
     protected void initAttrs(Context context, AttributeSet attrs) {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.EasyShapeEditTextView);
-        mShape.mStrokeWidth = (int) ta.getDimension(R.styleable.EasyShapeEditTextView_stroke_width, 0);
-        mShape.mStrokeColor = ta.getColor(R.styleable.EasyShapeEditTextView_stroke_color, 0);
-        mShape.mStrokeClickColor = ta.getColor(R.styleable.EasyShapeEditTextView_stroke_focus_color, 0);
+        mShape.mStrokeWidth = (int) ta.getDimension(R.styleable.EasyShapeEditTextView_strokeWidth, 0);
+        mShape.mStrokeColor = ta.getColor(R.styleable.EasyShapeEditTextView_strokeColor, 0);
+        mShape.mStrokeClickColor = ta.getColor(R.styleable.EasyShapeEditTextView_strokeClickColor, 0);
 
         mShape.mCorners = (int) ta.getDimension(R.styleable.EasyShapeEditTextView_corners, 0);
-        mShape.mCornersHalfRound = ta.getBoolean(R.styleable.EasyShapeEditTextView_corners_half_round, false);
-        mShape.mCornersShowLeft = ta.getBoolean(R.styleable.EasyShapeEditTextView_cornersShowLeft, true);
-        mShape.mCornersShowRight = ta.getBoolean(R.styleable.EasyShapeEditTextView_cornersShowRight, true);
+        mShape.mCornerLeftTop = (int) ta.getDimension(R.styleable.EasyShapeEditTextView_cornerLeftTop, 0);
+        mShape.mCornerLeftBottom = (int) ta.getDimension(R.styleable.EasyShapeEditTextView_cornerLeftBottom, 0);
+        mShape.mCornerRightTop = (int) ta.getDimension(R.styleable.EasyShapeEditTextView_cornerRightTop, 0);
+        mShape.mCornerRightBottom = (int) ta.getDimension(R.styleable.EasyShapeEditTextView_cornerRightBottom, 0);
 
-        mShape.mSolidColor = ta.getColor(R.styleable.EasyShapeEditTextView_solid_color, 0);
-        mShape.mSolidClickColor = ta.getColor(R.styleable.EasyShapeEditTextView_solid_focus_color, 0);
+        mShape.mSolidColor = ta.getColor(R.styleable.EasyShapeEditTextView_solidColor, 0);
+        mShape.mSolidClickColor = ta.getColor(R.styleable.EasyShapeEditTextView_solidClickColor, 0);
 
-        mShape.mTextColor = ta.getColor(R.styleable.EasyShapeEditTextView_android_textColor, 0xFF000000);
-        mShape.mTextClickColor = ta.getColor(R.styleable.EasyShapeEditTextView_text_focus_color, 0xFF000000);
+        mShape.mLineWidth = (int) ta.getDimension(R.styleable.EasyShapeEditTextView_lineWidth, 0);
+        mShape.mLineLeftColor = ta.getColor(R.styleable.EasyShapeEditTextView_lineLeftColor, 0);
+        mShape.mLineRightColor = ta.getColor(R.styleable.EasyShapeEditTextView_lineRightColor, 0);
+        mShape.mLineTopColor = ta.getColor(R.styleable.EasyShapeEditTextView_lineTopColor, 0);
+        mShape.mLineBottomColor = ta.getColor(R.styleable.EasyShapeEditTextView_lineBottomColor, 0);
 
-        mShape.mClickType = ta.getInt(R.styleable.EasyShapeEditTextView_click_type, 0);
-
+        int clickType = ta.getInt(R.styleable.EasyShapeEditTextView_clickType, 0);
+        switch (clickType) {
+            case 0: {
+                mShape.mClickType = EasyShapeBase.ClickType.BUTTON;
+                break;
+            }
+            case 1: {
+                mShape.mClickType = EasyShapeBase.ClickType.CHECK;
+                break;
+            }
+            case -1: {
+                mShape.mClickType = EasyShapeBase.ClickType.ENABLE;
+                break;
+            }
+        }
         /*int padding = (int) ta.getDimension(R.styleable.EasyEditText_android_padding, 0);
         if (padding == 0) {
             mPaddingLeft = (int) ta.getDimension(R.styleable.EasyEditText_android_paddingLeft, 0);
@@ -78,15 +95,8 @@ public class EasyShapeEditTextView extends android.support.v7.widget.AppCompatEd
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        mShape.onFocusEvent(event);
-        return super.onTouchEvent(event);
+        return mShape.onFocusEvent(event);
+//        return super.onTouchEvent(event);
     }
 
-    public boolean isSelect() {
-        return mShape.isSelect();
-    }
-
-    public void setSelect(boolean select) {
-        mShape.setSelect(select);
-    }
 }

@@ -1,30 +1,41 @@
 package com.jen.java;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class javaClass {
     public static void main(String[] args) {
 
-        String b = "bbbbbbb";
-        b = test();
+        format("9999999999.99");
+        System.out.println("");
 
+    }
 
-        List<String>  array = new ArrayList<>();
-        Map<String,String> bbb = new HashMap<>();
-        if(array.getClass().isArray()){
-            System.out.println(array.getClass().toString()+"----");
+    private static void format(String text){
+        String[] arrr = text.split("\\.");
+        if (arrr.length > 1) {
+            text = arrr[0];
         }
-        if(bbb.getClass().isArray()){
-            System.out.println(bbb.getClass().toString()+"----");
+        int b = text.length() / 3;
+        String sss = "";
+        if (text.length() >= 3) {
+            int yushu = text.length() % 3;
+            if (yushu == 0) {
+                b = text.length() / 3 - 1;
+                yushu = 3;
+            }
+            for (int i = 0; i < b; i++) {
+                sss = sss + text.substring(0, yushu) + "," + text.substring(yushu, 3);
+                text = text.substring(3, text.length());
+            }
+            if (arrr.length > 1) {
+                sss = sss + text + "." + arrr[1];
+            } else {
+                sss = sss + text;
+            }
+            System.out.println(sss);
+//            mAomt.setText(sss);
         }
-        if(array.getClass().isArray()){
-
-        }
-        System.out.println(b);
-
     }
 
     private static String test(){
@@ -49,11 +60,4 @@ public class javaClass {
 //        private Object eee;
     }
 
-    public static class A {
-        public HttpState state = HttpState.RUN;
-    }
-
-    public static class B {
-        public HttpState state = HttpState.RUN;
-    }
 }

@@ -22,7 +22,7 @@ public class EasyPopupWindow extends PopupWindow {
     private final String TAG = EasyPopupWindow.class.getSimpleName() + " ";
 
     private Context mContext;
-    private float mShowAlpha = 0.88f;
+    private float mShowAlpha = 0.5f;
     private Drawable mBackgroundDrawable;
 
     public EasyPopupWindow(Context context) {
@@ -58,7 +58,6 @@ public class EasyPopupWindow extends PopupWindow {
      * 初始化BasePopupWindow的一些信息
      */
     private void initBasePopupWindow() {
-//        setAnimationStyle(R.style._easy_popup_window_anim);
         setAnimationStyle(R.style.easy_popup_window_anim_style);
         setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -96,11 +95,15 @@ public class EasyPopupWindow extends PopupWindow {
         dismissAnimator().start();
     }
 
+    public void setShowAlpha(float alpha){
+        mShowAlpha = alpha;
+    }
+
     /**
      * 窗口显示时，窗口背景透明度渐变动画
      */
     private ValueAnimator showAnimator() {
-        ValueAnimator animator = ValueAnimator.ofFloat(1.0f, mShowAlpha);
+        ValueAnimator animator = ValueAnimator.ofFloat(1.0f,mShowAlpha);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
             @Override
@@ -117,9 +120,8 @@ public class EasyPopupWindow extends PopupWindow {
      * 窗口隐藏时，窗口背景透明度渐变动画
      */
     private ValueAnimator dismissAnimator() {
-        ValueAnimator animator = ValueAnimator.ofFloat(mShowAlpha, 1.0f);
+        ValueAnimator animator = ValueAnimator.ofFloat(mShowAlpha,1.0f);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 float alpha = (float) animation.getAnimatedValue();
@@ -136,6 +138,4 @@ public class EasyPopupWindow extends PopupWindow {
     private void setWindowBackgroundAlpha(float alpha) {
         EasyDisplayUtil.setBackgroundAlpha((Activity) mContext, alpha);
     }
-
-
 }

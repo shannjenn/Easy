@@ -75,7 +75,7 @@ public class EasyRadioButton extends RelativeLayout {
             radioSrc = ta.getDrawable(R.styleable.EasyRadioButton_radioSrc);
             radioShowType = ta.getInt(R.styleable.EasyRadioButton_radioShowType, 0);
             radioIsCheck = ta.getBoolean(R.styleable.EasyRadioButton_radioIsCheck, false);
-            radioCheckBox = ta.getBoolean(R.styleable.EasyRadioButton_radioCheckBox, false);
+//            radioCheckBox = ta.getBoolean(R.styleable.EasyRadioButton_radioShowType, false);
             radioCheckPadding = ta.getDimensionPixelOffset(R.styleable.EasyRadioButton_radioCheckPadding, 0);
             radioShowBottomLine = ta.getBoolean(R.styleable.EasyRadioButton_radioShowBottomLine, false);
             radioBottomLineColor = ta.getColor(R.styleable.EasyRadioButton_radioBottomLineColor, DEFAULT_BOTTOM_LINE_COLOR);

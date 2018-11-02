@@ -1,20 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <com.jen.easyui.baseview.EasyRadioGroup
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <com.jen.easyui.baseview.EasyRadioButton
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="46dp"
-            app:radioSrc="@mipmap/ic_launcher"
-            app:radioText="111"
-            app:radioTextColor="#ff0000"/>
-    </com.jen.easyui.baseview.EasyRadioGroup>
-</LinearLayout>
+            android:layout_marginBottom="5dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="EasyShapeText："
+                android:textColor="#ff00ff"
+                android:textSize="14sp"/>
+
+            <com.jen.easyui.baseview.EasyShapeTextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="213313133331"
+                app:solidClickColor="#2997f0"
+                app:solidColor="#ff00ff"
+                app:strokeClickColor="#ff000f"
+                app:strokeColor="#00ffff"
+                app:strokeWidth="2dp"/>
+
+            <com.jen.easyui.baseview.EasyShapeTextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical"
+                android:text="2222222"
+                app:lineBottomColor="#ff0000"
+                app:lineLeftColor="#ff0000"
+                app:lineRightColor="#ff0000"
+                app:lineTopColor="@color/_easy_blue_text"
+                app:lineWidth="5dp"/>
+
+        </LinearLayout>
+
+        <com.jen.easyui.baseview.EasyRadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
+            <com.jen.easyui.baseview.EasyRadioButton
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                app:radioSrc="@mipmap/ic_launcher"
+                app:radioText="111"
+                app:radioTextColor="#ff0000"/>
+        </com.jen.easyui.baseview.EasyRadioGroup>
+    </LinearLayout>
+</ScrollView>

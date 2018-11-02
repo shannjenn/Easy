@@ -1,21 +1,25 @@
 <resources>
     <declare-styleable name="EasyShapeEditTextView">
-        <attr name="stroke_width" />
-        <attr name="stroke_color" />
-        <attr name="stroke_focus_color" format="color" />
+        <attr name="strokeWidth"/>
+        <attr name="strokeColor"/>
+        <attr name="strokeClickColor"/>
 
-        <attr name="corners" />
-        <attr name="corners_half_round" />
-        <attr name="cornersShowLeft" />
-        <attr name="cornersShowRight" />
+        <attr name="corners"/>
+        <attr name="cornerLeftTop"/>
+        <attr name="cornerLeftBottom"/>
+        <attr name="cornerRightTop"/>
+        <attr name="cornerRightBottom"/>
 
-        <attr name="solid_color" />
-        <attr name="solid_focus_color" format="color" />
+        <attr name="solidColor"/>
+        <attr name="solidClickColor"/>
 
-        <attr name="android:textColor" />
-        <attr name="text_focus_color" format="color" />
+        <attr name="lineLeftColor"/>
+        <attr name="lineRightColor"/>
+        <attr name="lineTopColor"/>
+        <attr name="lineBottomColor"/>
+        <attr name="lineWidth"/>
 
-        <attr name="click_type"/>
+        <attr name="clickType"/>
 
         <!--<attr name="android:paddingLeft" />
         <attr name="android:paddingRight" />

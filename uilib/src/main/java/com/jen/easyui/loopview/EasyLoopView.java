@@ -110,7 +110,7 @@ public class EasyLoopView extends View {
         selectedPaint.setColor(textColorSelect);
         selectedPaint.setAntiAlias(true);
         selectedPaint.setTextScaleX(1.05F);
-        selectedPaint.setTypeface(Typeface.MONOSPACE);
+        selectedPaint.setTypeface(Typeface.MONOSPACE);//字体样式
         selectedPaint.setTextSize(textSizeXp);
 
         unselectedPaint = new Paint();

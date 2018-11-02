@@ -23,7 +23,6 @@
 
         <activity android:name=".activity.TabBarActivity" />
         <activity android:name=".activity.BasicViewActivity" />
-        <activity android:name=".activity.DrawableActivity" />
         <activity android:name=".activity.HttpActivity" />
         <activity android:name=".activity.ImageLoaderActivity" />
         <activity android:name=".activity.DialogActivity" />

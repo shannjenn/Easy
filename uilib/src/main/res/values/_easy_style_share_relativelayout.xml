@@ -1,18 +1,25 @@
 <resources>
     <declare-styleable name="EasyShapeRelativeLayout">
-        <attr name="stroke_width" />
-        <attr name="stroke_color" />
-        <attr name="stroke_click_color" />
+        <attr name="strokeWidth"/>
+        <attr name="strokeColor"/>
+        <attr name="strokeClickColor"/>
 
-        <attr name="corners" />
-        <attr name="corners_half_round" />
-        <attr name="cornersShowLeft" />
-        <attr name="cornersShowRight" />
+        <attr name="corners"/>
+        <attr name="cornerLeftTop"/>
+        <attr name="cornerLeftBottom"/>
+        <attr name="cornerRightTop"/>
+        <attr name="cornerRightBottom"/>
 
-        <attr name="solid_color" />
-        <attr name="solid_click_color" />
+        <attr name="solidColor"/>
+        <attr name="solidClickColor"/>
 
-        <attr name="click_type"/>
+        <attr name="lineLeftColor"/>
+        <attr name="lineRightColor"/>
+        <attr name="lineTopColor"/>
+        <attr name="lineBottomColor"/>
+        <attr name="lineWidth"/>
+
+        <attr name="clickType"/>
 
         <!--<attr name="android:paddingLeft" />
         <attr name="android:paddingRight" />

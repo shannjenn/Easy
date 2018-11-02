@@ -46,7 +46,7 @@ public class EasyLetterView extends View {
 
     private int textDefaultColor;
     private int textTouchColor;
-    private int textSize;
+    private float textSize;
 
     private int backgroundTouchColor;
     private int backgroundColor;
@@ -56,7 +56,7 @@ public class EasyLetterView extends View {
     private int dialogTextBackground;
     private int dialogTextBackgroundWith;
     private int dialogTextBackgroundHeight;
-    private int dialogTextSize;
+    private float dialogTextSize;
     private int dialogTextColor;
     private int dialogTextMarginRight;
 
@@ -85,7 +85,7 @@ public class EasyLetterView extends View {
 
         textTouchColor = ta.getColor(R.styleable.EasyLetterView_textTouchColor, Color.RED);
         textDefaultColor = ta.getColor(R.styleable.EasyLetterView_textDefaultColor, Color.BLACK);
-        textSize = ta.getDimensionPixelOffset(R.styleable.EasyLetterView_textSize, (int) EasyDensityUtil.sp2px(14.0f));
+        textSize = ta.getDimension(R.styleable.EasyLetterView_textSize, EasyDensityUtil.sp2px(14.0f));
 
         backgroundTouchColor = ta.getColor(R.styleable.EasyLetterView_backgroundTouchColor, Color.TRANSPARENT);
         backgroundColor = ta.getLayoutDimension(R.styleable.EasyLetterView_android_background, Color.TRANSPARENT);
@@ -96,7 +96,7 @@ public class EasyLetterView extends View {
         dialogTextBackground = ta.getResourceId(R.styleable.EasyLetterView_dialogTextBackground, -1);
         dialogTextBackgroundWith = ta.getDimensionPixelOffset(R.styleable.EasyLetterView_dialogTextBackgroundWith, 0);
         dialogTextBackgroundHeight = ta.getDimensionPixelOffset(R.styleable.EasyLetterView_dialogTextBackgroundHeight, 0);
-        dialogTextSize = ta.getDimensionPixelOffset(R.styleable.EasyLetterView_dialogTextSize, (int) EasyDensityUtil.sp2px(14.0f));
+        dialogTextSize = ta.getDimension(R.styleable.EasyLetterView_dialogTextSize, EasyDensityUtil.sp2px(14.0f));
         dialogTextColor = ta.getColor(R.styleable.EasyLetterView_dialogTextColor, Color.RED);
         dialogTextMarginRight = ta.getDimensionPixelOffset(R.styleable.EasyLetterView_dialogTextMarginRight, 0);
 

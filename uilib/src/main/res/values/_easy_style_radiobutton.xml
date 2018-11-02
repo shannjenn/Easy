@@ -9,7 +9,6 @@
         <attr name="radioCheckPadding" format="dimension" />
         <attr name="radioShowBottomLine" format="boolean" />
         <attr name="radioBottomLineColor" format="color" />
-        <attr name="radioCheckBox" format="boolean" />
         <attr name="radioShowType">
             <enum name="left" value="0" />
             <enum name="right" value="1" />

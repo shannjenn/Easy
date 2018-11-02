@@ -1,25 +1,31 @@
 <resources>
     <declare-styleable name="EasyShapeTextView">
-        <attr name="stroke_width" format="dimension" />
-        <attr name="stroke_color" format="color" />
-        <attr name="stroke_click_color" format="color" />
+        <attr name="strokeWidth" format="dimension" />
+        <attr name="strokeColor" format="color" />
+        <attr name="strokeClickColor" format="color" />
 
         <attr name="corners" format="dimension" />
-        <attr name="corners_half_round" format="boolean" />
-        <attr name="cornersShowLeft" format="boolean" />
-        <attr name="cornersShowRight" format="boolean" />
+        <attr name="cornerLeftTop" format="dimension" />
+        <attr name="cornerLeftBottom" format="dimension" />
+        <attr name="cornerRightTop" format="dimension" />
+        <attr name="cornerRightBottom" format="dimension" />
 
-        <attr name="solid_color" format="color" />
-        <attr name="solid_click_color" format="color" />
+        <attr name="solidColor" format="color" />
+        <attr name="solidClickColor" format="color" />
+
+        <attr name="lineLeftColor" format="color" />
+        <attr name="lineRightColor" format="color" />
+        <attr name="lineTopColor" format="color" />
+        <attr name="lineBottomColor" format="color" />
+        <attr name="lineWidth" format="dimension" />
 
         <attr name="android:textColor" />
-        <attr name="text_click_color" format="color" />
+        <attr name="textClickColor" format="color" />
 
-        <attr name="click_type">
-            <enum name="enable" value="0" />
-            <enum name="click" value="1" />
-            <enum name="check" value="2" />
-            <enum name="radio" value="3" />
+        <attr name="clickType">
+            <enum name="button" value="0" />
+            <enum name="check" value="1" />
+            <enum name="enable" value="-1" />
         </attr>
 
         <!--<attr name="android:paddingLeft"/>
