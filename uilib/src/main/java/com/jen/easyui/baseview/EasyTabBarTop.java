@@ -239,7 +239,7 @@ public class EasyTabBarTop extends HorizontalScrollView {
         invalidate();
     }
 
-    private void updtaeTabText(int position) {
+    private void updateTabText(int position) {
         for (int i = 0; i < mTabCount; i++) {
             TextView textView = (TextView) mTabsContainer.getChildAt(i);
             textView.setTextColor(i == position ? mTabSelectTextColor : mTabUnSelectTextColor);
@@ -281,10 +281,10 @@ public class EasyTabBarTop extends HorizontalScrollView {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         if (mWidth <= 0) {
-            mWidth = getWidth();
+            mWidth = getMeasuredWidth();
         }
         if (mHeight <= 0) {
-            mHeight = getHeight();
+            mHeight = getMeasuredHeight();
         }
     }
 
@@ -422,7 +422,7 @@ public class EasyTabBarTop extends HorizontalScrollView {
         public void onClick(View v) {
             mCurrentTab = (int) v.getTag();
             mViewPager.setCurrentItem(mCurrentTab);
-            updtaeTabText(mCurrentTab);
+            updateTabText(mCurrentTab);
             scrollTabToCenter();
         }
     };
@@ -447,7 +447,7 @@ public class EasyTabBarTop extends HorizontalScrollView {
         @Override
         public void onPageSelected(int position) {
 //            Log.d("onPageSelected position=" + position);
-            updtaeTabText(position);
+            updateTabText(position);
 //            mCurrentTab = position;
         }
 

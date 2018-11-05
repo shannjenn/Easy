@@ -14,7 +14,7 @@
         <com.jen.easyui.baseview.EasyTabBarTop
             android:id="@+id/easy_tabar_scroll"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="46dp"
             app:indicatorColor="#0000ff"
             app:indicatorFit="tabText"
             app:indicatorPaddingLeft="10dp"

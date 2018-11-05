@@ -3,7 +3,10 @@ package com.jen.easyui.viewpager;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,33 +14,91 @@ import java.util.List;
  * 时间：2017/9/11.
  */
 
-public abstract class EasyFragmentPagerAdapter extends EasyFragmentPagerAdapterManager {
+public abstract class EasyFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
-    protected EasyFragmentPagerAdapter(FragmentManager fm, List<String> title, List<Fragment> fragments) {
-        super(fm, title, fragments);
+    protected FragmentManager fm;
+    protected final List<String> mTitles = new ArrayList<>();
+    protected final List<Fragment> mFragments = new ArrayList<>();
+
+    public EasyFragmentPagerAdapter(FragmentManager fm, List<String> title, List<Fragment> fragments) {
+        super(fm);
+        this.fm = fm;
+        mTitles.clear();
+        mTitles.addAll(title);
+        mFragments.clear();
+        mFragments.addAll(fragments);
     }
 
     public EasyFragmentPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
-        super(fm, fragments);
+        super(fm);
+        this.fm = fm;
+        mFragments.clear();
+        mFragments.addAll(fragments);
     }
 
-    /**
-     * 用此方法更新数据，不要使用notifyDataSetChanged();
-     * @param titles
-     * @param fragments
-     */
     @Override
-    public void upDatas(List<String> titles, List<Fragment> fragments) {
-        super.upDatas(titles, fragments);
+    public Fragment getItem(int position) {
+        return mFragments.get(position);
     }
 
     @Override
     public int getCount() {
-        return super.getCount();
+        int count = 0;
+        count = mFragments.size();
+        return count;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return super.getPageTitle(position);
+        if (mTitles.size() <= position) {
+            return "";
+        }
+        return mTitles.get(position);
     }
+
+    /*@Override
+    public void finishUpdate(ViewGroup container) {
+        try {
+            super.finishUpdate(container);
+        } catch (NullPointerException nullPointerException) {
+            Log.d("Catch the NullPointerException in EasyFragmentPagerAdapterManager.finishUpdate");
+        }
+    }*/
+
+    public void upDatas(List<String> titles, List<Fragment> fragments) {
+        FragmentTransaction ft = fm.beginTransaction();
+        for (Fragment f : mFragments) {
+            ft.remove(f);
+        }
+//        ft.commit();
+        ft.commitAllowingStateLoss();
+        ft = null;
+        fm.executePendingTransactions();
+
+        mTitles.clear();
+        mTitles.addAll(titles);
+        mFragments.clear();
+        mFragments.addAll(fragments);
+        notifyDataSetChanged();
+    }
+
+    public void upDatas(List<Fragment> fragments) {
+        FragmentTransaction ft = fm.beginTransaction();
+        for (Fragment f : mFragments) {
+            ft.remove(f);
+        }
+//        ft.commit();
+        ft.commitAllowingStateLoss();
+        ft = null;
+        fm.executePendingTransactions();
+
+        mFragments.clear();
+        mFragments.addAll(fragments);
+        notifyDataSetChanged();
+    }
+
+    /*@Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }*/
 }
