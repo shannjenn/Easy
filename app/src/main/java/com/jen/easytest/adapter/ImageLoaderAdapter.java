@@ -8,9 +8,9 @@ import android.widget.TextView;
 import com.jen.easy.imageLoader.ImageLoader;
 import com.jen.easytest.R;
 import com.jen.easytest.model.ImageLoaderModel;
-import com.jen.easyui.recycler.EasyAdapterOnClickListener;
 import com.jen.easyui.recycler.EasyHolder;
 import com.jen.easyui.recycler.EasyRecyclerAdapter;
+import com.jen.easyui.recycler.EasyRecyclerBaseAdapter;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class ImageLoaderAdapter<T extends ImageLoaderModel> extends EasyRecycler
 
     @Override
     protected EasyHolder bindHolder(View view) {
-        return new MyHolder(view);
+        return new MyHolder(this,view);
     }
 
     @Override
@@ -45,13 +45,8 @@ public class ImageLoaderAdapter<T extends ImageLoaderModel> extends EasyRecycler
 
     class MyHolder extends EasyHolder {
 
-        public MyHolder(View itemView) {
-            super(itemView);
-        }
-
-        @Override
-        protected EasyAdapterOnClickListener bindEasyAdapterOnClickListener() {
-            return null;
+        public MyHolder(EasyRecyclerBaseAdapter adapter, View itemView) {
+            super(adapter, itemView);
         }
 
         @Override

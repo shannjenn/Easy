@@ -16,7 +16,7 @@ import java.util.List;
  * 时间：2017/8/12.
  */
 
-abstract class EasyRecyclerBaseAdapter<T> extends RecyclerView.Adapter<EasyHolder> {
+public abstract class EasyRecyclerBaseAdapter<T> extends RecyclerView.Adapter<EasyHolder> {
     protected Context mContext;
     protected List<T> mData;//不包含header、footer
     protected EasyAdapterOnClickListener easyAdapterOnClickListener;

@@ -5,9 +5,9 @@ import android.view.View;
 
 import com.jen.easytest.R;
 import com.jen.easytest.model.RecyclerViewModel;
-import com.jen.easyui.recycler.EasyAdapterOnClickListener;
 import com.jen.easyui.recycler.EasyHScrollRecyclerViewAdapter;
 import com.jen.easyui.recycler.EasyHolder;
+import com.jen.easyui.recycler.EasyRecyclerBaseAdapter;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ public class RecyclerViewHScrollAdapter<T extends RecyclerViewModel> extends Eas
 
     @Override
     protected EasyHolder bindHolder(View view) {
-        return new myEasyHolder(view);
+        return new myEasyHolder(this,view);
     }
 
     @Override
@@ -41,13 +41,8 @@ public class RecyclerViewHScrollAdapter<T extends RecyclerViewModel> extends Eas
 
     private class myEasyHolder extends EasyHolder {
 
-        public myEasyHolder(View itemView) {
-            super(itemView);
-        }
-
-        @Override
-        protected EasyAdapterOnClickListener bindEasyAdapterOnClickListener() {
-            return null;
+        public myEasyHolder(EasyRecyclerBaseAdapter adapter, View itemView) {
+            super(adapter, itemView);
         }
 
         @Override

@@ -17,6 +17,7 @@ import com.jen.easyui.recycler.EasyHolder;
 import com.jen.easyui.recycler.EasyLetterDecoration;
 import com.jen.easyui.recycler.EasyLetterView;
 import com.jen.easyui.recycler.EasyRecyclerAdapter;
+import com.jen.easyui.recycler.EasyRecyclerBaseAdapter;
 import com.jen.easyui.recycler.EasyRecyclerView;
 
 import java.util.ArrayList;
@@ -184,7 +185,7 @@ public class RecyclerViewActivity extends EasyActivity {
 
         @Override
         protected EasyHolder bindHolder(View view) {
-            return new MyHolder(view);
+            return new MyHolder(this, view);
         }
 
         @Override
@@ -193,13 +194,9 @@ public class RecyclerViewActivity extends EasyActivity {
         }
 
         class MyHolder extends EasyHolder {
-            public MyHolder(View itemView) {
-                super(itemView);
-            }
 
-            @Override
-            protected EasyAdapterOnClickListener bindEasyAdapterOnClickListener() {
-                return null;
+            public MyHolder(EasyRecyclerBaseAdapter adapter, View itemView) {
+                super(adapter, itemView);
             }
 
             @Override
