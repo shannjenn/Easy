@@ -12,17 +12,16 @@ import android.view.View;
 
 abstract class EasyHolderManager extends RecyclerView.ViewHolder {
     private final String TAG = EasyHolderManager.class.getSimpleName();
+    protected EasyRecyclerBaseAdapter mAdapter;
 
-    public EasyHolderManager(View itemView) {
+    public EasyHolderManager(EasyRecyclerBaseAdapter adapter, View itemView) {
         super(itemView);
+        this.mAdapter = adapter;
     }
 
-    /**
-     * 绑定点击事件
-     *
-     * @return
-     */
-    protected abstract EasyAdapterOnClickListener bindEasyAdapterOnClickListener();
+    private void getAdapter() {
+        getAdapter();
+    }
 
     /**
      * 绑定头部数据
@@ -47,35 +46,41 @@ abstract class EasyHolderManager extends RecyclerView.ViewHolder {
 
 
     public void addOnClickEvent(View view, final int position) {
-        if (bindEasyAdapterOnClickListener() == null) {
-            Log.w(TAG,"继承的" + EasyHolder.class.getSimpleName() + "未绑定bindEasyAdapterOnClickListener事件");
+        if(mAdapter == null){
+            Log.e(TAG, "mAdapter 为空，点击事件不能生效" + EasyHolder.class.getSimpleName());
+            return;
+        }
+        if (mAdapter.easyAdapterOnClickListener == null) {
             return;
         }
         if (view == null) {
-            Log.w(TAG,"点击设置事件失败，请检查view是否不为空");
+            Log.w(TAG, "点击设置事件失败，请检查view是否不为空");
             return;
         }
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bindEasyAdapterOnClickListener().onClick(v, position);
+                mAdapter.easyAdapterOnClickListener.onClick(v, position);
             }
         });
     }
 
     public void addOnLongClickEvent(View view, final int position) {
-        if (bindEasyAdapterOnClickListener() == null) {
-            Log.w(TAG,"继承的" + EasyHolder.class.getSimpleName() + "未绑定bindEasyAdapterOnClickListener事件");
+        if(mAdapter == null){
+            Log.e(TAG, "mAdapter 为空，点击事件不能生效" + EasyHolder.class.getSimpleName());
+            return;
+        }
+        if (mAdapter.easyAdapterOnClickListener == null) {
             return;
         }
         if (view == null) {
-            Log.w(TAG,"点击设置事件失败，请检查view是否不为空");
+            Log.w(TAG, "点击设置事件失败，请检查view是否不为空");
             return;
         }
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                return bindEasyAdapterOnClickListener().onLongClick(v, position);
+                return mAdapter.easyAdapterOnClickListener.onLongClick(v, position);
             }
         });
     }

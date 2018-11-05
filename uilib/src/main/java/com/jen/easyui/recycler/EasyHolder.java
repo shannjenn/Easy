@@ -10,8 +10,8 @@ import android.view.View;
 
 public abstract class EasyHolder extends EasyHolderManager {
 
-    public EasyHolder(View itemView) {
-        super(itemView);
+    public EasyHolder(EasyRecyclerBaseAdapter adapter, View itemView) {
+        super(adapter, itemView);
     }
 
     @Override

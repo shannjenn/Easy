@@ -19,8 +19,13 @@ public abstract class EasyHScrollRecyclerViewAdapter<T> extends EasyRecyclerBase
     private final ArrayList<EasyHScrollView> mHScrollViews = new ArrayList<>();
     private int mScrollX;
 
-    ArrayList<EasyHScrollView> getHScrollViews() {
+    public ArrayList<EasyHScrollView> getHScrollViews() {
         return mHScrollViews;
+    }
+
+    public void addEasyHScrollView(EasyHScrollView easyHScrollView){
+        mHScrollViews.add(easyHScrollView);
+        setScroll(easyHScrollView);
     }
 
     int getScrollX() {
@@ -53,18 +58,7 @@ public abstract class EasyHScrollRecyclerViewAdapter<T> extends EasyRecyclerBase
             EasyHScrollView scrollView = (EasyHScrollView) v;
             if (!mHScrollViews.contains(scrollView)) {
                 mHScrollViews.add(scrollView);
-                scrollView.setScrollListener(new EasyHScrollView.ScrollListener() {
-                    @Override
-                    public void OnScrollChanged(int x, int y) {
-                        mScrollX = x;
-                        for (int i = 0; i < mHScrollViews.size(); i++) {
-                            EasyHScrollView easyHScrollView = mHScrollViews.get(i);
-                            if (easyHScrollView.getScrollX() != mScrollX) {
-                                easyHScrollView.scrollTo(mScrollX, 0);
-                            }
-                        }
-                    }
-                });
+                setScroll(scrollView);
             }
         } else {
             try {
@@ -79,6 +73,32 @@ public abstract class EasyHScrollRecyclerViewAdapter<T> extends EasyRecyclerBase
     @Override
     protected int setGridLayoutItemRows(int position) {
         return 0;
+    }
+
+    private void setScroll(EasyHScrollView scrollView){
+        scrollView.setScrollListener(new EasyHScrollView.ScrollListener() {
+            @Override
+            public void OnScrollChanged(int x, int y) {
+                mScrollX = x;
+                for (int i = 0; i < mHScrollViews.size(); i++) {
+                    EasyHScrollView easyHScrollView = mHScrollViews.get(i);
+                    if (easyHScrollView.getScrollX() != mScrollX) {
+                        easyHScrollView.scrollTo(mScrollX, 0);
+                    }
+                }
+            }
+        });
+    }
+
+    public void scrollTo(int scrollX) {
+        if (scrollX == mScrollX) {
+            return;
+        }
+        mScrollX = scrollX;
+        for (int i = 0; i < mHScrollViews.size(); i++) {
+            EasyHScrollView easyHScrollView = mHScrollViews.get(i);
+            easyHScrollView.scrollTo(mScrollX, 0);
+        }
     }
 
     protected abstract int onBindLayout();
