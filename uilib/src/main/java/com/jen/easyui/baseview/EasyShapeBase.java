@@ -25,20 +25,36 @@ class EasyShapeBase {
     int mStrokeColor;
     int mStrokeClickColor;
 
-    int mCorners;
-    int mCornerLeftTop;
-    int mCornerLeftBottom;
-    int mCornerRightTop;
-    int mCornerRightBottom;
+    float mCorners;
+    float mCornerLeftTop;
+    float mCornerLeftBottom;
+    float mCornerRightTop;
+    float mCornerRightBottom;
 //    boolean mCornersHalfRound;//是否半圆
 //    boolean mCornersShowLeft;
 //    boolean mCornersShowRight;
 
     int mLineLeftColor;
+    int mLineLeftMarginLeft;
+    int mLineLeftMarginTop;
+    int mLineLeftMarginBottom;
+
     int mLineRightColor;
+    int mLineRightMarginRight;
+    int mLineRightMarginTop;
+    int mLineRightMarginBottom;
+
     int mLineTopColor;
+    int mLineTopMarginTop;
+    int mLineTopMarginLeft;
+    int mLineTopMarginRight;
+
     int mLineBottomColor;
-    int mLineWidth;
+    int mLineBottomMarginBottom;
+    int mLineBottomMarginLeft;
+    int mLineBottomMarginRight;
+
+    float mLineWidth;
 
     int mSolidColor;
     int mSolidClickColor;
@@ -91,23 +107,36 @@ class EasyShapeBase {
     }
 
     void onDraw(Canvas canvas) {
-        int width = mView.getMeasuredWidth();
-        int height = mView.getMeasuredHeight();
+        int width = mView.getMeasuredWidth() - 1;
+        int height = mView.getMeasuredHeight() - 1;
+
         if (mLineLeftColor != 0) {
             mLinePaint.setColor(mLineLeftColor);  //设置画笔颜色
-            canvas.drawLine(0, 0, 0, height, mLinePaint);
+            int x = mLineLeftMarginLeft > 0 ? mLineLeftMarginLeft : 0;
+            int y1 = mLineLeftMarginTop > 0 ? mLineLeftMarginTop : 0;
+            int y2 = height - mLineLeftMarginBottom;
+            canvas.drawLine(x, y1, x, y2, mLinePaint);
         }
         if (mLineRightColor != 0) {
             mLinePaint.setColor(mLineRightColor);  //设置画笔颜色
-            canvas.drawLine(width, 0, width, height, mLinePaint);
+            int x = mLineRightMarginRight > 0 ? width - mLineRightMarginRight : width;
+            int y1 = mLineRightMarginTop > 0 ? mLineRightMarginTop : 0;
+            int y2 = height - mLineRightMarginBottom;
+            canvas.drawLine(x, y1, x, y2, mLinePaint);
         }
         if (mLineTopColor != 0) {
             mLinePaint.setColor(mLineTopColor);  //设置画笔颜色
-            canvas.drawLine(0, 0, width, 0, mLinePaint);
+            int x1 = mLineTopMarginLeft > 0 ? mLineTopMarginLeft : 0;
+            int x2 = mLineTopMarginRight > 0 ? width - mLineTopMarginRight : width;
+            int y = mLineTopMarginTop > 0 ? mLineTopMarginTop : 0;
+            canvas.drawLine(x1, y, x2, y, mLinePaint);
         }
         if (mLineBottomColor != 0) {
             mLinePaint.setColor(mLineBottomColor);  //设置画笔颜色
-            canvas.drawLine(0, height, width, height, mLinePaint);
+            int x1 = mLineBottomMarginLeft > 0 ? mLineBottomMarginLeft : 0;
+            int x2 = mLineBottomMarginRight > 0 ? width - mLineBottomMarginRight : width;
+            int y = mLineBottomMarginBottom > 0 ? height - mLineBottomMarginBottom : height;
+            canvas.drawLine(x1, y, x2, y, mLinePaint);
         }
     }
 

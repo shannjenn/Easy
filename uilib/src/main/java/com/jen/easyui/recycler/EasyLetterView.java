@@ -94,11 +94,11 @@ public class EasyLetterView extends View {
         lettersByComma = ta.getString(R.styleable.EasyLetterView_lettersByComma);//自定义Letter逗号隔开
 
         dialogTextBackground = ta.getResourceId(R.styleable.EasyLetterView_dialogTextBackground, -1);
-        dialogTextBackgroundWith = ta.getDimensionPixelOffset(R.styleable.EasyLetterView_dialogTextBackgroundWith, 0);
-        dialogTextBackgroundHeight = ta.getDimensionPixelOffset(R.styleable.EasyLetterView_dialogTextBackgroundHeight, 0);
+        dialogTextBackgroundWith = ta.getDimensionPixelSize(R.styleable.EasyLetterView_dialogTextBackgroundWith, 0);
+        dialogTextBackgroundHeight = ta.getDimensionPixelSize(R.styleable.EasyLetterView_dialogTextBackgroundHeight, 0);
         dialogTextSize = ta.getDimension(R.styleable.EasyLetterView_dialogTextSize, EasyDensityUtil.sp2px(14.0f));
         dialogTextColor = ta.getColor(R.styleable.EasyLetterView_dialogTextColor, Color.RED);
-        dialogTextMarginRight = ta.getDimensionPixelOffset(R.styleable.EasyLetterView_dialogTextMarginRight, 0);
+        dialogTextMarginRight = ta.getDimensionPixelSize(R.styleable.EasyLetterView_dialogTextMarginRight, 0);
 
         ta.recycle();
         init();

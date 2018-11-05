@@ -17,6 +17,23 @@
         <attr name="lineRightColor" format="color" />
         <attr name="lineTopColor" format="color" />
         <attr name="lineBottomColor" format="color" />
+
+        <attr name="lineLeftMarginLeft" format="dimension" />
+        <attr name="lineLeftMarginTop" format="dimension" />
+        <attr name="lineLeftMarginBottom" format="dimension" />
+
+        <attr name="lineRightMarginRight" format="dimension" />
+        <attr name="lineRightMarginTop" format="dimension" />
+        <attr name="lineRightMarginBottom" format="dimension" />
+
+        <attr name="lineTopMarginTop" format="dimension" />
+        <attr name="lineTopMarginLeft" format="dimension" />
+        <attr name="lineTopMarginRight" format="dimension" />
+
+        <attr name="lineBottomMarginBottom" format="dimension" />
+        <attr name="lineBottomMarginLeft" format="dimension" />
+        <attr name="lineBottomMarginRight" format="dimension" />
+
         <attr name="lineWidth" format="dimension" />
 
         <attr name="android:textColor" />

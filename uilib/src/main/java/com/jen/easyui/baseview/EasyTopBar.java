@@ -132,6 +132,9 @@ public class EasyTopBar extends RelativeLayout implements View.OnClickListener {
         if (mLeftImage != null) {
             ivLeft.setImageDrawable(mLeftImage);
         }
+        if (mRightImage != null) {
+            ivRight.setImageDrawable(mRightImage);
+        }
         if (mTitle != null) {
             tvTitle.setText(mTitle);
             if (mTitleTextSize != -1) {

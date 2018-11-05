@@ -99,14 +99,23 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
     private void initAttrs(Context context, AttributeSet attrs) {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.EasyTagEditText);
         tagBackgroundColor = ta.getColor(R.styleable.EasyTagEditText_tagBackgroundColor, 0xffcccccc);
-        float backGroundHeight = ta.getDimension(R.styleable.EasyTagEditText_tagBackgroundHeight, EasyDensityUtil.sp2px(18));
+        float backGroundHeight = ta.getDimensionPixelSize(R.styleable.EasyTagEditText_tagBackgroundHeight, -1);
+        if (backGroundHeight == -1) {
+            backGroundHeight = EasyDensityUtil.sp2px(18);
+        }
         tagBackgroundHeight = (int) EasyDensityUtil.px2dp(backGroundHeight);
 
         tagStrokeColor = ta.getColor(R.styleable.EasyTagEditText_tagStrokeColor, 0xff666666);
-        tagStrokeWidth = ta.getDimension(R.styleable.EasyTagEditText_tagStrokeHeight, 0.5f);
+        tagStrokeWidth = ta.getDimensionPixelSize(R.styleable.EasyTagEditText_tagStrokeHeight, -1);
+        if (tagStrokeWidth == -1) {
+            tagStrokeWidth = EasyDensityUtil.sp2px(18);
+        }
 
         tagTextColor = ta.getColor(R.styleable.EasyTagEditText_tagTextColor, 0xff333333);
-        float textSize = ta.getDimension(R.styleable.EasyTagEditText_tagTextSize, EasyDensityUtil.sp2px(14));
+        float textSize = ta.getDimensionPixelSize(R.styleable.EasyTagEditText_tagTextSize, -1);
+        if (textSize == -1) {
+            textSize = EasyDensityUtil.sp2px(18);
+        }
         tagTextSize = EasyDensityUtil.px2sp(textSize);
 
         ta.recycle();

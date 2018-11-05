@@ -107,17 +107,17 @@ public class EasyTabBarBottom extends RelativeLayout {
     private void initAttrs(AttributeSet attrs, int defStyleAttr) {
         TypedArray a = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.EasyTabBarBottom, defStyleAttr, 0);
         topLineColor = a.getColor(R.styleable.EasyTabBarBottom_topLineColor, LINE_DEFAULT_COLOR);
-        topLineSize = a.getDimensionPixelOffset(R.styleable.EasyTabBarBottom_topLineSize, 0);
-        topLineSpace = a.getDimensionPixelOffset(R.styleable.EasyTabBarBottom_topLineSpace, 0);
+        topLineSize = a.getDimensionPixelSize(R.styleable.EasyTabBarBottom_topLineSize, 0);
+        topLineSpace = a.getDimensionPixelSize(R.styleable.EasyTabBarBottom_topLineSpace, 0);
         bottomLineColor = a.getColor(R.styleable.EasyTabBarBottom_bottomLineColor, LINE_DEFAULT_COLOR);
-        bottomLineSize = a.getDimensionPixelOffset(R.styleable.EasyTabBarBottom_bottomLineSize, 0);
-        bottomLineSpace = a.getDimensionPixelOffset(R.styleable.EasyTabBarBottom_bottomLineSpace, 0);
+        bottomLineSize = a.getDimensionPixelSize(R.styleable.EasyTabBarBottom_bottomLineSize, 0);
+        bottomLineSpace = a.getDimensionPixelSize(R.styleable.EasyTabBarBottom_bottomLineSpace, 0);
         height = a.getLayoutDimension(R.styleable.EasyTabBarBottom_android_layout_height, 0);
         width = a.getLayoutDimension(R.styleable.EasyTabBarBottom_android_layout_width, 0);
         itemSize = a.getInt(R.styleable.EasyTabBarBottom_itemSize, 0);
         textSelectColor = a.getColor(R.styleable.EasyTabBarBottom_textSelectColor, DEFAULT_TEXT_COLOR);
         textUnSelectColor = a.getColor(R.styleable.EasyTabBarBottom_textUnSelectColor, DEFAULT_TEXT_COLOR);
-        textSize = a.getDimensionPixelOffset(R.styleable.EasyTabBarBottom_textSize, (int) EasyDensityUtil.dp2px(DEFAULT_TEXT_SIZE));
+        textSize = a.getDimensionPixelSize(R.styleable.EasyTabBarBottom_textSize, (int) EasyDensityUtil.dp2px(DEFAULT_TEXT_SIZE));
 
         String txt0 = a.getString(R.styleable.EasyTabBarBottom_text0);
         String txt1 = a.getString(R.styleable.EasyTabBarBottom_text1);

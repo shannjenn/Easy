@@ -17,6 +17,23 @@
         <attr name="lineRightColor"/>
         <attr name="lineTopColor"/>
         <attr name="lineBottomColor"/>
+
+        <attr name="lineLeftMarginLeft"/>
+        <attr name="lineLeftMarginTop"/>
+        <attr name="lineLeftMarginBottom"/>
+
+        <attr name="lineRightMarginRight"/>
+        <attr name="lineRightMarginTop"/>
+        <attr name="lineRightMarginBottom"/>
+
+        <attr name="lineTopMarginTop"/>
+        <attr name="lineTopMarginLeft"/>
+        <attr name="lineTopMarginRight"/>
+
+        <attr name="lineBottomMarginBottom"/>
+        <attr name="lineBottomMarginLeft"/>
+        <attr name="lineBottomMarginRight"/>
+
         <attr name="lineWidth"/>
 
         <attr name="clickType"/>

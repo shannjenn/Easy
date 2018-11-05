@@ -10,6 +10,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <com.jen.easyui.baseview.EasyTopBar
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            app:topBarRightImage="@mipmap/ic_launcher"
+            app:topBarTitleText="TopBar"
+            app:topBarTitleTextSize="14sp"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="46dp"
@@ -40,12 +47,49 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:gravity="center_vertical"
+                android:padding="5dp"
                 android:text="2222222"
                 app:lineBottomColor="#ff0000"
+                app:lineBottomMarginBottom="5dp"
+                app:lineBottomMarginLeft="5dp"
+                app:lineBottomMarginRight="5dp"
                 app:lineLeftColor="#ff0000"
+                app:lineLeftMarginBottom="5dp"
+                app:lineLeftMarginLeft="5dp"
+                app:lineLeftMarginTop="5dp"
                 app:lineRightColor="#ff0000"
-                app:lineTopColor="@color/_easy_blue_text"
+                app:lineRightMarginBottom="5dp"
+                app:lineRightMarginRight="5dp"
+                app:lineRightMarginTop="5dp"
+                app:lineTopColor="#ff0000"
+                app:lineTopMarginLeft="5dp"
+                app:lineTopMarginRight="5dp"
+                app:lineTopMarginTop="5dp"
                 app:lineWidth="5dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_marginBottom="5dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="EasyShapeLinearLayout："
+                android:textColor="#ff00ff"
+                android:textSize="14sp"/>
+
+            <com.jen.easyui.baseview.EasyShapeLinearLayout
+                android:layout_width="46dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                app:lineBottomColor="#ff0000"
+                app:lineTopColor="#ff0000"
+                app:lineWidth="1px"/>
 
         </LinearLayout>
 

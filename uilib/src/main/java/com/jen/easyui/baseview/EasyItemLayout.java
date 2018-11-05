@@ -90,34 +90,34 @@ public class EasyItemLayout extends RelativeLayout {
 
         itemEdit = a.getBoolean(R.styleable.EasyItemLayout_itemEdit, false);
 
-        itemPaddingLeft = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemPaddingLeft, (int) EasyDensityUtil.dp2px(10));
-        itemPaddingRight = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemPaddingRight, (int) EasyDensityUtil.dp2px(10));
-        itemPaddingTop = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemPaddingTop, (int) EasyDensityUtil.dp2px(10));
-        itemPaddingBottom = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemPaddingBottom, (int) EasyDensityUtil.dp2px(10));
+        itemPaddingLeft = a.getDimensionPixelSize(R.styleable.EasyItemLayout_itemPaddingLeft, (int) EasyDensityUtil.dp2px(10));
+        itemPaddingRight = a.getDimensionPixelSize(R.styleable.EasyItemLayout_itemPaddingRight, (int) EasyDensityUtil.dp2px(10));
+        itemPaddingTop = a.getDimensionPixelSize(R.styleable.EasyItemLayout_itemPaddingTop, (int) EasyDensityUtil.dp2px(10));
+        itemPaddingBottom = a.getDimensionPixelSize(R.styleable.EasyItemLayout_itemPaddingBottom, (int) EasyDensityUtil.dp2px(10));
 
         titleText = a.getString(R.styleable.EasyItemLayout_itemTitleText);
-        titleTextSize = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemTitleTextSize, defaultTextSize);
+        titleTextSize = a.getDimensionPixelSize(R.styleable.EasyItemLayout_itemTitleTextSize, defaultTextSize);
         titleTextColor = a.getColor(R.styleable.EasyItemLayout_itemTitleTextColor, DEFAULT_TEXT_COLOR_TITLE);
 
         contentText = a.getString(R.styleable.EasyItemLayout_itemTxtText);
-        contentTextSize = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemTxtTextSize, defaultTextSize);
+        contentTextSize = a.getDimensionPixelSize(R.styleable.EasyItemLayout_itemTxtTextSize, defaultTextSize);
         contentTextColor = a.getColor(R.styleable.EasyItemLayout_itemTxtTextColor, DEFAULT_TEXT_COLOR_CONTENT);
         contentTextSingleLine = a.getBoolean(R.styleable.EasyItemLayout_itemTxtSingleLine, false);
 
-        editTextSize = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemEditTextSize, defaultTextSize);
+        editTextSize = a.getDimensionPixelSize(R.styleable.EasyItemLayout_itemEditTextSize, defaultTextSize);
         editTextColor = a.getColor(R.styleable.EasyItemLayout_itemEditTextColor, DEFAULT_TEXT_COLOR_CONTENT);
         editLines = a.getInt(R.styleable.EasyItemLayout_itemEditLines, 1);
         itemEditMaxLength = a.getInt(R.styleable.EasyItemLayout_itemEditMaxLength, 0);
 
         countText = a.getString(R.styleable.EasyItemLayout_itemCountText);
-        countTextSize = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemCountTextSize, defaultTextSize);
+        countTextSize = a.getDimensionPixelSize(R.styleable.EasyItemLayout_itemCountTextSize, defaultTextSize);
         countTextColor = a.getColor(R.styleable.EasyItemLayout_itemCountTextColor, DEFAULT_TEXT_COLOR_COUNT);
         countVisible = a.getBoolean(R.styleable.EasyItemLayout_itemCountVisible, true);
 
         bottomLineVisible = a.getBoolean(R.styleable.EasyItemLayout_itemBottomLineVisible, true);
 
-//        paddingTop = a.getDimensionPixelOffset(R.styleable.itemItemLayout_android_paddingTop, 0);
-//        paddingBottom = a.getDimensionPixelOffset(R.styleable.itemItemLayout_android_paddingBottom, 0);
+//        paddingTop = a.getDimensionPixelSize(R.styleable.itemItemLayout_android_paddingTop, 0);
+//        paddingBottom = a.getDimensionPixelSize(R.styleable.itemItemLayout_android_paddingBottom, 0);
 
         a.recycle();
     }
