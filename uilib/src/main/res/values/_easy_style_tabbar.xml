@@ -1,0 +1,43 @@
+<resources>
+    <!--导航布局:可以滚动-->
+    <declare-styleable name="EasyTabBar">
+        <!-- 游标indicator -->
+        <attr name="tabBarIndicatorColor" format="color" />
+        <attr name="tabBarIndicatorHeight" format="dimension" />
+        <attr name="tabBarIndicatorWidth" format="dimension" /><!--如果设置值，indicatorFit不适用-->
+        <attr name="tabBarIndicatorCornerRadius" format="dimension" />
+        <attr name="tabBarIndicatorType">
+            <enum name="line" value="0" />
+            <enum name="block" value="1" />
+        </attr>
+        <attr name="tabBarIndicatorFit">
+            <enum name="tabText" value="0" />
+            <enum name="tabWidth" value="1" />
+        </attr>
+        <attr name="tabBarIndicatorPaddingLeft" format="dimension" /><!--与indicatorFit一起使用的-->
+        <attr name="tabBarIndicatorPaddingRight" format="dimension" /><!--与indicatorFit一起使用的-->
+
+        <!-- 下划线underline -->
+        <attr name="tabBarUnderlineColor" format="color" />
+        <attr name="tabBarUnderlineHeight" format="dimension" />
+
+        <!-- 标题title -->
+        <attr name="tabBarTextSize" format="dimension" />
+        <attr name="tabBarTextSelectColor" format="color" />
+        <attr name="tabBarTextUnSelectColor" format="color" />
+        <attr name="tabBarTextBold" format="boolean" />
+        <attr name="tabBarTextItalic" format="boolean" />
+
+        <attr name="tabBarTabWidth" format="dimension" />
+        <attr name="tabBarTabHeight" format="dimension" />
+        <attr name="tabBarTabPaddingLeft" format="dimension" />
+        <attr name="tabBarTabPaddingRight" format="dimension" />
+        <attr name="tabBarTabPaddingTop" format="dimension" />
+        <attr name="tabBarTabPaddingBottom" format="dimension" />
+        <attr name="tabBarTabWeight" format="boolean" /><!--tab加起来宽度不够mTabsContainer宽度时，平均分布-->
+
+        <attr name="android:layout_width" />
+        <attr name="android:layout_height" />
+
+    </declare-styleable>
+</resources>

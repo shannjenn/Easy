@@ -13,7 +13,7 @@ import com.jen.easytest.fragment.EmptyFragmentBlue;
 import com.jen.easytest.fragment.EmptyFragmentRed;
 import com.jen.easyui.base.EasyActivity;
 import com.jen.easyui.baseview.EasyTabBarBottom;
-import com.jen.easyui.baseview.EasyTabBarTop;
+import com.jen.easyui.baseview.EasyTabBar;
 import com.jen.easyui.viewpager.EasyFragmentPagerAdapter;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class TabBarActivity extends EasyActivity {
     EasyTabBarBottom easy_tabbar_txtimg;
 
     @EasyViewID(R.id.easy_tabar_scroll)
-    EasyTabBarTop easy_tabar_scroll;
+    EasyTabBar easy_tabar_scroll;
 
     @EasyViewID(R.id.viewpager_scroll)
     ViewPager viewpager_scroll;

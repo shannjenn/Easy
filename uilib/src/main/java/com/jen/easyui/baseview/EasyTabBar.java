@@ -31,8 +31,8 @@ import java.util.List;
  * 作者：ShannJenn
  * 时间：2017/10/31.
  */
-public class EasyTabBarTop extends HorizontalScrollView {
-    private final String TAG = EasyTabBarTop.class.getSimpleName();
+public class EasyTabBar extends HorizontalScrollView {
+    private final String TAG = EasyTabBar.class.getSimpleName();
     private Context mContext;
     /*默认颜色*/
     private int COLOR_DEFAULT = 0xff000000;
@@ -101,17 +101,17 @@ public class EasyTabBarTop extends HorizontalScrollView {
     private RectF mRect = new RectF();
 
 
-    public EasyTabBarTop(Context context) {
+    public EasyTabBar(Context context) {
         this(context, null, 0);
     }
 
-    public EasyTabBarTop(Context context, AttributeSet attrs) {
+    public EasyTabBar(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
         this.mContext = context;
         initAttrs(attrs);
     }
 
-    public EasyTabBarTop(Context context, AttributeSet attrs, int defStyleAttr) {
+    public EasyTabBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.mContext = context;
         initAttrs(attrs);
@@ -123,35 +123,35 @@ public class EasyTabBarTop extends HorizontalScrollView {
         setClipChildren(false);//是否限制子View在其范围内
         setClipToPadding(false);//控件的绘制区域是否在padding里面
 
-        TypedArray ta = mContext.obtainStyledAttributes(attrs, R.styleable.EasyTabBarTop);
+        TypedArray ta = mContext.obtainStyledAttributes(attrs, R.styleable.EasyTabBar);
 
-        mHeight = ta.getLayoutDimension(R.styleable.EasyTabBarTop_android_layout_height, 0);
-        mWidth = ta.getLayoutDimension(R.styleable.EasyTabBarTop_android_layout_width, 0);
+        mHeight = ta.getLayoutDimension(R.styleable.EasyTabBar_android_layout_height, 0);
+        mWidth = ta.getLayoutDimension(R.styleable.EasyTabBar_android_layout_width, 0);
 
-        mIndicatorColor = ta.getColor(R.styleable.EasyTabBarTop_indicatorColor, INDICATOR_COLOR_DEFAULT);
-        mIndicatorHeight = ta.getDimension(R.styleable.EasyTabBarTop_indicatorHeight, 0);
-        mIndicatorWidth = ta.getDimension(R.styleable.EasyTabBarTop_indicatorWidth, 0);
-        mIndicatorCornerRadius = ta.getDimension(R.styleable.EasyTabBarTop_indicatorCornerRadius, -1);
-        mIndicatorType = ta.getInt(R.styleable.EasyTabBarTop_indicatorType, INDICATOR_TYPE_LINE);
-        mIndicatorFit = ta.getInt(R.styleable.EasyTabBarTop_indicatorFit, INDICATOR_FIT_WIDTH);
-        mIndicatorPaddingLeft = (int) ta.getDimension(R.styleable.EasyTabBarTop_indicatorPaddingLeft, 0);
-        mIndicatorPaddingRight = (int) ta.getDimension(R.styleable.EasyTabBarTop_indicatorPaddingRight, 0);
+        mIndicatorColor = ta.getColor(R.styleable.EasyTabBar_tabBarIndicatorColor, INDICATOR_COLOR_DEFAULT);
+        mIndicatorHeight = ta.getDimension(R.styleable.EasyTabBar_tabBarIndicatorHeight, 0);
+        mIndicatorWidth = ta.getDimension(R.styleable.EasyTabBar_tabBarIndicatorWidth, 0);
+        mIndicatorCornerRadius = ta.getDimension(R.styleable.EasyTabBar_tabBarIndicatorCornerRadius, -1);
+        mIndicatorType = ta.getInt(R.styleable.EasyTabBar_tabBarIndicatorType, INDICATOR_TYPE_LINE);
+        mIndicatorFit = ta.getInt(R.styleable.EasyTabBar_tabBarIndicatorFit, INDICATOR_FIT_WIDTH);
+        mIndicatorPaddingLeft = (int) ta.getDimension(R.styleable.EasyTabBar_tabBarIndicatorPaddingLeft, 0);
+        mIndicatorPaddingRight = (int) ta.getDimension(R.styleable.EasyTabBar_tabBarIndicatorPaddingRight, 0);
 
-        mUnderlineColor = ta.getColor(R.styleable.EasyTabBarTop_underlineColor, COLOR_DEFAULT);
-        mUnderlineHeight = ta.getDimension(R.styleable.EasyTabBarTop_underlineHeight, 0);
+        mUnderlineColor = ta.getColor(R.styleable.EasyTabBar_tabBarUnderlineColor, COLOR_DEFAULT);
+        mUnderlineHeight = ta.getDimension(R.styleable.EasyTabBar_tabBarUnderlineHeight, 0);
 
-        mTabTextsize = ta.getDimension(R.styleable.EasyTabBarTop_tabTextSize, EasyDensityUtil.sp2px(TEXT_SIZE_DEFAULT));
-        mTabWidth = (int) ta.getDimension(R.styleable.EasyTabBarTop_tabWidth, -2f);//-2为WRAP_CONTENT属性
-        mTabHeith = (int) ta.getDimension(R.styleable.EasyTabBarTop_tabHeight, -2f);
-        mTabPaddingLeft = (int) ta.getDimension(R.styleable.EasyTabBarTop_tabPaddingLeft, 0);
-        mTabPaddingRight = (int) ta.getDimension(R.styleable.EasyTabBarTop_tabPaddingRight, 0);
-        mTabPaddingTop = (int) ta.getDimension(R.styleable.EasyTabBarTop_tabPaddingTop, 0);
-        mTabPaddingBottom = (int) ta.getDimension(R.styleable.EasyTabBarTop_tabPaddingBottom, 0);
-        mTabSelectTextColor = ta.getColor(R.styleable.EasyTabBarTop_tabSelectTextColor, TEXT_COLOR_SELECT_DEFAULT);
-        mTabUnSelectTextColor = ta.getColor(R.styleable.EasyTabBarTop_tabUnSelectTextColor, TEXT_COLOR_UNSELECT_DEFAULT);
-        mTabTextBold = ta.getBoolean(R.styleable.EasyTabBarTop_tabTextBold, false);
-        mTabTextItalic = ta.getBoolean(R.styleable.EasyTabBarTop_tabTextItalic, false);
-        mTabWeight = ta.getBoolean(R.styleable.EasyTabBarTop_tabWeight, false);
+        mTabTextsize = ta.getDimension(R.styleable.EasyTabBar_tabBarTextSize, EasyDensityUtil.sp2px(TEXT_SIZE_DEFAULT));
+        mTabWidth = (int) ta.getDimension(R.styleable.EasyTabBar_tabBarTabWidth, -2f);//-2为WRAP_CONTENT属性
+        mTabHeith = (int) ta.getDimension(R.styleable.EasyTabBar_tabBarTabHeight, -2f);
+        mTabPaddingLeft = (int) ta.getDimension(R.styleable.EasyTabBar_tabBarTabPaddingLeft, 0);
+        mTabPaddingRight = (int) ta.getDimension(R.styleable.EasyTabBar_tabBarTabPaddingRight, 0);
+        mTabPaddingTop = (int) ta.getDimension(R.styleable.EasyTabBar_tabBarTabPaddingTop, 0);
+        mTabPaddingBottom = (int) ta.getDimension(R.styleable.EasyTabBar_tabBarTabPaddingBottom, 0);
+        mTabSelectTextColor = ta.getColor(R.styleable.EasyTabBar_tabBarTextSelectColor, TEXT_COLOR_SELECT_DEFAULT);
+        mTabUnSelectTextColor = ta.getColor(R.styleable.EasyTabBar_tabBarTextUnSelectColor, TEXT_COLOR_UNSELECT_DEFAULT);
+        mTabTextBold = ta.getBoolean(R.styleable.EasyTabBar_tabBarTextBold, false);
+        mTabTextItalic = ta.getBoolean(R.styleable.EasyTabBar_tabBarTextItalic, false);
+        mTabWeight = ta.getBoolean(R.styleable.EasyTabBar_tabBarTabWeight, false);
 
         ta.recycle();
 

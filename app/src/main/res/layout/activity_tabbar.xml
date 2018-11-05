@@ -11,23 +11,23 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <com.jen.easyui.baseview.EasyTabBarTop
+        <com.jen.easyui.baseview.EasyTabBar
             android:id="@+id/easy_tabar_scroll"
             android:layout_width="match_parent"
             android:layout_height="46dp"
-            app:indicatorColor="#0000ff"
-            app:indicatorFit="tabText"
-            app:indicatorPaddingLeft="10dp"
-            app:indicatorPaddingRight="10dp"
-            app:indicatorType="block"
-            app:tabPaddingBottom="5dp"
-            app:tabPaddingLeft="15dp"
-            app:tabPaddingRight="15dp"
-            app:tabPaddingTop="5dp"
-            app:tabTextSize="18sp"
-            app:tabWeight="true"
-            app:underlineColor="#ff0000"
-            app:underlineHeight="1dp" />
+            app:tabBarIndicatorColor="#0000ff"
+            app:tabBarIndicatorFit="tabText"
+            app:tabBarIndicatorPaddingLeft="10dp"
+            app:tabBarIndicatorPaddingRight="10dp"
+            app:tabBarIndicatorType="block"
+            app:tabBarTabPaddingBottom="5dp"
+            app:tabBarTabPaddingLeft="15dp"
+            app:tabBarTabPaddingRight="15dp"
+            app:tabBarTabPaddingTop="5dp"
+            app:tabBarTextSize="18sp"
+            app:tabBarTabWeight="true"
+            app:tabBarUnderlineColor="#ff0000"
+            app:tabBarUnderlineHeight="1dp" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager_scroll"
