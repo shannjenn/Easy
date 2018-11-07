@@ -163,6 +163,9 @@ class HttpReflectManager {
                             break;
                         }
                         case Head: {
+                            if(heads.containsKey(key)){
+                                continue;
+                            }
                             heads.put(key, value + "");
                             break;
                         }

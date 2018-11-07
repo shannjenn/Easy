@@ -12,6 +12,7 @@ import com.jen.easytest.http.MD5Util;
 import com.jen.easytest.http.request.AirRequest;
 import com.jen.easytest.http.request.PutRequest;
 import com.jen.easytest.http.request.QNRequest;
+import com.jen.easytest.http.request.StockChooseConditionResultRequest;
 import com.jen.easyui.EasyMain;
 import com.jen.easyui.base.EasyActivity;
 
@@ -124,7 +125,10 @@ public class HttpActivity extends EasyActivity {
         airRequest.setSignType(signType);
         airRequest.setSign(sign);
 
-        EasyMain.mHttp.start(airRequest);
+        StockChooseConditionResultRequest stockChooseConditionResultRequest = new StockChooseConditionResultRequest();
+
+//        EasyMain.mHttp.start(airRequest);
+        EasyMain.mHttp.start(stockChooseConditionResultRequest);
         EasyLog.d("mAirResponse mAirResponse:");
 
     }

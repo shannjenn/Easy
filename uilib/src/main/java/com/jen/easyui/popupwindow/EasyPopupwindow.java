@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.PopupWindow;
 
 import com.jen.easyui.R;
@@ -63,6 +64,8 @@ public class EasyPopupWindow extends PopupWindow {
         setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
         setOutsideTouchable(true);  //默认设置outside点击无响应
         setFocusable(true);
+        setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
+        setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
     }
 
     @Override

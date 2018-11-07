@@ -10,7 +10,6 @@ public class QNRequest extends ExampleBaseRequest {
     public QNRequest() {
         CommandName = "GETRULES";
         charset = "gb2312";//该接口不支持utf-8
-        HEAD_CONTENT_TYPE = "text/plain;charset=gb2312";
         Token = "";
         LANG = "2052";
     }
