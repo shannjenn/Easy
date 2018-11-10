@@ -6,8 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 作者：ShannJenn
@@ -16,19 +18,20 @@ import java.util.List;
 
 public abstract class EasyHScrollRecyclerViewAdapter<T> extends EasyRecyclerBaseAdapter<T> {
     private final String TAG = EasyHScrollRecyclerViewAdapter.class.getSimpleName();
-    private final ArrayList<EasyHScrollView> mHScrollViews = new ArrayList<>();
-    private int mScrollX;
+    protected final Map<Integer, EasyHScrollView> mHScrollViews = new HashMap<>();
+    protected int mScrollX;
+    private ScrollListener mScrollListener;
 
-    public ArrayList<EasyHScrollView> getHScrollViews() {
+    public Map<Integer, EasyHScrollView> getHScrollViews() {
         return mHScrollViews;
     }
 
-    public void addEasyHScrollView(EasyHScrollView easyHScrollView){
-        mHScrollViews.add(easyHScrollView);
+    public void addEasyHScrollView(EasyHScrollView easyHScrollView) {
+        mHScrollViews.put(-1, easyHScrollView);
         setScroll(easyHScrollView);
     }
 
-    int getScrollX() {
+    public int getScrollX() {
         return mScrollX;
     }
 
@@ -52,14 +55,17 @@ public abstract class EasyHScrollRecyclerViewAdapter<T> extends EasyRecyclerBase
             Log.w(TAG, "找不到该值对应item布局R.layout.id：" + layout);
             return null;
         }
+        return bindHolder(view);
+    }
 
-        View v = view.findViewById(onBindEasyHScrollViewId());
+    @Override
+    public void onBindViewHolder(EasyHolder holder, int position) {
+        super.onBindViewHolder(holder, position);
+        View v = holder.itemView.findViewById(onBindEasyHScrollViewId());
         if (v instanceof EasyHScrollView) {
             EasyHScrollView scrollView = (EasyHScrollView) v;
-            if (!mHScrollViews.contains(scrollView)) {
-                mHScrollViews.add(scrollView);
-                setScroll(scrollView);
-            }
+            mHScrollViews.put(position, scrollView);
+            setScroll(scrollView);
         } else {
             try {
                 throw new RuntimeException("未引用：" + EasyHScrollView.class.getName() + ",请正确调用onBindEasyHScrollViewId");
@@ -67,7 +73,6 @@ public abstract class EasyHScrollRecyclerViewAdapter<T> extends EasyRecyclerBase
                 e.printStackTrace();
             }
         }
-        return bindHolder(view);
     }
 
     @Override
@@ -75,35 +80,51 @@ public abstract class EasyHScrollRecyclerViewAdapter<T> extends EasyRecyclerBase
         return 0;
     }
 
-    private void setScroll(EasyHScrollView scrollView){
+    private void setScroll(final EasyHScrollView scrollView) {
+        if (scrollView.getScaleX() != mScrollX) {
+            scrollView.smoothScrollTo(mScrollX, 0);
+        }
         scrollView.setScrollListener(new EasyHScrollView.ScrollListener() {
             @Override
             public void OnScrollChanged(int x, int y) {
                 mScrollX = x;
-                for (int i = 0; i < mHScrollViews.size(); i++) {
-                    EasyHScrollView easyHScrollView = mHScrollViews.get(i);
-                    if (easyHScrollView.getScrollX() != mScrollX) {
-                        easyHScrollView.scrollTo(mScrollX, 0);
-                    }
+                scrollAllToX();
+                if (mScrollListener != null) {
+                    mScrollListener.OnScrollChanged(scrollView, x, y);
+                }
+            }
+
+            @Override
+            public void onOverScrolled(int scrollX, int scrollY, boolean clampedX, boolean clampedY) {
+                if (mScrollListener != null) {
+                    mScrollListener.onOverScrolled(scrollX, scrollY, clampedX, clampedY);
                 }
             }
         });
     }
 
-    public void scrollTo(int scrollX) {
-        if (scrollX == mScrollX) {
-            return;
+    public void scrollAllToX() {
+        Set<Integer> keys = mHScrollViews.keySet();
+        for (int key : keys) {
+            EasyHScrollView view = mHScrollViews.get(key);
+            if (view != null && view.getScrollX() != mScrollX) {
+                view.smoothScrollTo(mScrollX, 0);
+            }
         }
-        mScrollX = scrollX;
-        for (int i = 0; i < mHScrollViews.size(); i++) {
-            EasyHScrollView easyHScrollView = mHScrollViews.get(i);
-            easyHScrollView.scrollTo(mScrollX, 0);
-        }
+    }
+
+    public interface ScrollListener {
+        void OnScrollChanged(EasyHScrollView scrollView, int x, int y);
+
+        void onOverScrolled(int scrollX, int scrollY, boolean clampedX, boolean clampedY);
+    }
+
+    public void setScrollListener(ScrollListener scrollListener) {
+        mScrollListener = scrollListener;
     }
 
     protected abstract int onBindLayout();
 
     protected abstract int onBindEasyHScrollViewId();
-
 
 }

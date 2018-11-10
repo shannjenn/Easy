@@ -6,8 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
-import java.util.ArrayList;
-
 /**
  * 作者：ShannJenn
  * 时间：2018/10/30.
@@ -77,19 +75,8 @@ public class EasyHScrollRecyclerView extends RecyclerView {
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
-        scrollAllItem(EasyHScrollRecyclerView.this.getAdapter());
+        EasyHScrollRecyclerViewAdapter easyAdapter = (EasyHScrollRecyclerViewAdapter) EasyHScrollRecyclerView.this.getAdapter();
+        easyAdapter.scrollAllToX();
     }
 
-    private void scrollAllItem(Adapter adapter) {
-        if (adapter instanceof EasyHScrollRecyclerViewAdapter) {
-            EasyHScrollRecyclerViewAdapter easyHScrollRecyclerViewAdapter = (EasyHScrollRecyclerViewAdapter) adapter;
-            ArrayList hScrollViews = easyHScrollRecyclerViewAdapter.getHScrollViews();
-            for (int i = 0; i < hScrollViews.size(); i++) {
-                EasyHScrollView view = (EasyHScrollView) hScrollViews.get(i);
-                if (view.getScrollX() != easyHScrollRecyclerViewAdapter.getScrollX()) {
-                    view.scrollTo(easyHScrollRecyclerViewAdapter.getScrollX(), 0);
-                }
-            }
-        }
-    }
 }
