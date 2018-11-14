@@ -39,6 +39,8 @@ public class EasyTopBar extends RelativeLayout implements View.OnClickListener {
     private Drawable mLeftImage;//左侧图标资源
     private Drawable mLeftImageBackground;//左侧图片背景
 
+    private ImageView ivClose;//左侧关闭图标
+    private boolean isShowCloseIcon;
 
     private TextView tvTitle;//中间标题布局
     private String mTitle;//中间标题
@@ -54,6 +56,8 @@ public class EasyTopBar extends RelativeLayout implements View.OnClickListener {
 
     private ImageView ivRight;//右侧图片布局
     private Drawable mRightImage;
+    private int mRightImageWidth;
+    private int mRightImageHeight;
 
     private View viewLine;//底部线条
     private boolean isShowBottomLine = true;
@@ -61,8 +65,6 @@ public class EasyTopBar extends RelativeLayout implements View.OnClickListener {
     public EasyTopBar(Context context) {
         this(context, null);
         this.mContext = context;
-        initAttrs(context, null);
-        initView();
     }
 
     public EasyTopBar(Context context, AttributeSet attrs) {
@@ -91,11 +93,15 @@ public class EasyTopBar extends RelativeLayout implements View.OnClickListener {
         mLeftImage = ta.getDrawable(R.styleable.EasyTopBar_topBarLeftImage);
         mLeftImageBackground = ta.getDrawable(R.styleable.EasyTopBar_topBarLeftImageBackground);
 
+        isShowCloseIcon = ta.getBoolean(R.styleable.EasyTopBar_topBarCloseShow, false);
+
         mRightText = ta.getString(R.styleable.EasyTopBar_topBarRightText);
         mRightTextSize = ta.getDimension(R.styleable.EasyTopBar_topBarRightTextSize, -1);
         mRightTextColor = ta.getColor(R.styleable.EasyTopBar_topBarRightTextColor, -1);
 //        isShowFaceLeftImage = ta.getBoolean(R.styleable.EasyTopBar_showLeftFaceImage, false);
         mRightImage = ta.getDrawable(R.styleable.EasyTopBar_topBarRightImage);
+        mRightImageWidth = ta.getDimensionPixelSize(R.styleable.EasyTopBar_topBarRightImageWidth, -1);
+        mRightImageHeight = ta.getDimensionPixelSize(R.styleable.EasyTopBar_topBarRightImageHeight, -1);
 
         mTitle = ta.getString(R.styleable.EasyTopBar_topBarTitleText);
         mTitleTextSize = ta.getDimension(R.styleable.EasyTopBar_topBarTitleTextSize, -1);
@@ -107,18 +113,15 @@ public class EasyTopBar extends RelativeLayout implements View.OnClickListener {
     }
 
     private void initView() {
-//        LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        RelativeLayout mMainContainer = (RelativeLayout) mInflater.inflate(R.layout._easy_topbar, null);
-        LayoutInflater.from(mContext).inflate(R.layout._easy_topbar, this);
-//        addView(mMainContainer);
+        LayoutInflater.from(mContext).inflate(R.layout._easy_topbar, this,true);
 
-        tvLeft = (TextView) findViewById(R.id.btn_left);
-        ivLeft = (ImageView) findViewById(R.id.iv_left);
-        tvTitle = (TextView) findViewById(R.id.tv_title);
-        tvRight = (TextView) findViewById(R.id.btn_right);
-        ivRight = (ImageView) findViewById(R.id.iv_right);
-        viewLine = findViewById(R.id.line_view_topbar);
-
+        tvLeft = (TextView) findViewById(R.id.top_bar_tv_left);
+        ivLeft = (ImageView) findViewById(R.id.top_bar_iv_left);
+        ivClose = findViewById(R.id.top_bar_iv_close);
+        tvTitle = (TextView) findViewById(R.id.top_bar_tv_title);
+        tvRight = (TextView) findViewById(R.id.top_bar_tv_right);
+        ivRight = (ImageView) findViewById(R.id.top_bar_iv_right);
+        viewLine = findViewById(R.id.top_bar_line_view);
 
         if (!TextUtils.isEmpty(mLeftText)) {
             tvLeft.setText(mLeftText);
@@ -132,8 +135,18 @@ public class EasyTopBar extends RelativeLayout implements View.OnClickListener {
         if (mLeftImage != null) {
             ivLeft.setImageDrawable(mLeftImage);
         }
+        ivClose.setVisibility(isShowCloseIcon ? View.VISIBLE : View.GONE);
+
         if (mRightImage != null) {
             ivRight.setImageDrawable(mRightImage);
+            if (mRightImageWidth != -1) {
+                RelativeLayout.LayoutParams params = (LayoutParams) ivRight.getLayoutParams();
+                params.width = mRightImageWidth;
+            }
+            if (mRightImageHeight != -1) {
+                RelativeLayout.LayoutParams params = (LayoutParams) ivRight.getLayoutParams();
+                params.height = mRightImageHeight;
+            }
         }
         if (mTitle != null) {
             tvTitle.setText(mTitle);
@@ -155,9 +168,16 @@ public class EasyTopBar extends RelativeLayout implements View.OnClickListener {
         }
         viewLine.setVisibility(isShowBottomLine ? VISIBLE : GONE);
         ivLeft.setOnClickListener(this);
+        ivClose.setOnClickListener(this);
     }
 
-    public void setTitle(String text) {
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+
+    }
+
+    public void setTitle(CharSequence text) {
         tvTitle.setText(text);
     }
 
@@ -169,17 +189,28 @@ public class EasyTopBar extends RelativeLayout implements View.OnClickListener {
         tvRight.setText(text);
     }
 
+    public TextView getRightText() {
+        return tvRight;
+    }
+
+    public ImageView getRightImageView() {
+        return ivRight;
+    }
+
     public void bindOnBackClick(Activity mActivity) {
         this.mActivity = mActivity;
     }
 
     @Override
     public void onClick(View v) {
+        if (mActivity == null) {
+            return;
+        }
         int i = v.getId();
-        if (i == R.id.iv_left) {
-            if (mActivity != null)
-                mActivity.onBackPressed();
-
+        if (i == R.id.top_bar_iv_left) {
+            mActivity.onBackPressed();
+        } else if (i == R.id.top_bar_iv_close) {
+            mActivity.finish();
         }
     }
 

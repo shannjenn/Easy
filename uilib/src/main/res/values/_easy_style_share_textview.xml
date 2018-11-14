@@ -1,6 +1,8 @@
 <resources>
     <declare-styleable name="EasyShapeTextView">
         <attr name="strokeWidth" format="dimension" />
+        <attr name="strokeDashGapWidth" format="dimension" />
+        <attr name="strokeDashGap" format="dimension" />
         <attr name="strokeColor" format="color" />
         <attr name="strokeClickColor" format="color" />
 

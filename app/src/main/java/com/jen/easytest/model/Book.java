@@ -1,12 +1,15 @@
 package com.jen.easytest.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.jen.easy.EasyResponse;
 
 /**
  * Created by Administrator on 2018/3/28.
  */
 
-public class Book {
+public class Book implements Parcelable {
 
     @EasyResponse(value = "_id")//返回参数名为_id
     private int id;
@@ -60,4 +63,38 @@ public class Book {
     public void setCheck(boolean check) {
         isCheck = check;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeLong(date);
+        dest.writeString(des);
+        dest.writeByte((byte) (isCheck ? 1 : 0));
+    }
+
+    protected Book(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        date = in.readLong();
+        des = in.readString();
+        isCheck = in.readByte() != 0;
+    }
+
+    public static final Creator<Book> CREATOR = new Creator<Book>() {
+        @Override
+        public Book createFromParcel(Parcel in) {
+            return new Book(in);
+        }
+
+        @Override
+        public Book[] newArray(int size) {
+            return new Book[size];
+        }
+    };
 }

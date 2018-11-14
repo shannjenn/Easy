@@ -38,6 +38,9 @@ public class EasyShapeTextView extends android.support.v7.widget.AppCompatTextVi
     protected void initAttrs(Context context, AttributeSet attrs) {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.EasyShapeTextView);
         mShape.mStrokeWidth = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_strokeWidth, 0);
+        mShape.mStrokeDashGapWidth = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_strokeDashGapWidth, 0);
+        mShape.mStrokeDashGap = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_strokeDashGap, 0);
+        mShape.mStrokeWidth = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_strokeWidth, 0);
         mShape.mStrokeColor = ta.getColor(R.styleable.EasyShapeTextView_strokeColor, 0);
         mShape.mStrokeClickColor = ta.getColor(R.styleable.EasyShapeTextView_strokeClickColor, 0);
 
@@ -125,7 +128,7 @@ public class EasyShapeTextView extends android.support.v7.widget.AppCompatTextVi
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        return mShape.onFocusEvent(event);
-//        return super.onTouchEvent(event);
+        mShape.onFocusEvent(event);
+        return super.onTouchEvent(event);
     }
 }

@@ -1,4 +1,4 @@
-package com.jen.easyui.dialog.imp;
+package com.jen.easyui.dialog;
 
 import android.view.View;
 

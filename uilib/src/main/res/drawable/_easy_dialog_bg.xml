@@ -6,7 +6,7 @@
     <!--         android:width="0.1dp" -->
     <!--         android:color="#d2d2d2" /> -->
     <!-- 圆角 -->
-    <corners android:radius="5dp" />
+    <corners android:radius="2dp" />
     <!-- 实心 -->
     <solid android:color="@android:color/white" />
 

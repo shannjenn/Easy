@@ -22,6 +22,8 @@ class EasyShapeBase {
     private int mHeight;
 
     int mStrokeWidth;
+    float mStrokeDashGapWidth;
+    float mStrokeDashGap;
     int mStrokeColor;
     int mStrokeClickColor;
 
@@ -90,7 +92,7 @@ class EasyShapeBase {
 
     public void init() {
         mDrawable = new GradientDrawable();
-        mDrawable.setStroke(mStrokeWidth, mStrokeColor);
+        mDrawable.setStroke(mStrokeWidth, mStrokeColor, mStrokeDashGapWidth, mStrokeDashGap);
         mDrawable.setColor(mSolidColor);
         mDrawable.setGradientType(GradientDrawable.LINEAR_GRADIENT);
         if (mCorners > 0) {
@@ -220,7 +222,7 @@ class EasyShapeBase {
             case MotionEvent.ACTION_DOWN: {
                 switch (mClickType) {
                     case BUTTON: {
-                        mDrawable.setStroke(mStrokeWidth, mStrokeClickColor);
+                        mDrawable.setStroke(mStrokeWidth, mStrokeClickColor, mStrokeDashGapWidth, mStrokeDashGap);
                         mDrawable.setColor(mSolidClickColor);
                         if (isTextView) {
                             ((TextView) mView).setTextColor(mTextClickColor);
@@ -230,13 +232,13 @@ class EasyShapeBase {
                     case CHECK: {
                         isCheck = !isCheck;
                         if (isCheck) {
-                            mDrawable.setStroke(mStrokeWidth, mStrokeClickColor);
+                            mDrawable.setStroke(mStrokeWidth, mStrokeClickColor, mStrokeDashGapWidth, mStrokeDashGap);
                             mDrawable.setColor(mSolidClickColor);
                             if (isTextView) {
                                 ((TextView) mView).setTextColor(mTextClickColor);
                             }
                         } else {
-                            mDrawable.setStroke(mStrokeWidth, mStrokeColor);
+                            mDrawable.setStroke(mStrokeWidth, mStrokeColor, mStrokeDashGapWidth, mStrokeDashGap);
                             mDrawable.setColor(mSolidColor);
                             if (isTextView) {
                                 ((TextView) mView).setTextColor(mTextColor);
@@ -249,7 +251,7 @@ class EasyShapeBase {
             }
             case MotionEvent.ACTION_UP: {
                 if (mClickType == ClickType.BUTTON) {
-                    mDrawable.setStroke(mStrokeWidth, mStrokeColor);
+                    mDrawable.setStroke(mStrokeWidth, mStrokeColor, mStrokeDashGapWidth, mStrokeDashGap);
                     mDrawable.setColor(mSolidColor);
                     if (isTextView) {
                         ((TextView) mView).setTextColor(mTextColor);

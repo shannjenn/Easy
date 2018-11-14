@@ -2,6 +2,8 @@ package com.jen.easyui.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,8 +17,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jen.easyui.R;
-import com.jen.easyui.dialog.imp.EasyDialogListener;
-import com.jen.easyui.util.EasyDensityUtil;
 
 /**
  * 用Build创建
@@ -28,8 +28,8 @@ import com.jen.easyui.util.EasyDensityUtil;
 public class EasyDialog extends Dialog implements View.OnClickListener {
     private Context context;
 
-    private float mWidth = 380;//宽度（db）
-    private float mHeight = 200;//高度（db）
+//    private float mWidth;//宽度（db）
+//    private float mHeight;//高度（db）
 
     private Drawable icon;
     private String txtTile;
@@ -118,20 +118,17 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
 
     @Override
     public void show() {
-        super.show();
         Window window = getWindow();
-//        window.setGravity(Gravity.BOTTOM); //可设置dialog的位置
-//        window.getDecorView().setPadding(0, 0, 0, 0); //消除边距
-
-        WindowManager.LayoutParams lp = window.getAttributes();
-        lp.width = (int) EasyDensityUtil.dp2px(mWidth);
-//        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        lp.height = (int) EasyDensityUtil.dp2px(mHeight);
-        window.setAttributes(lp);
+        if(window != null){
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        }
+        super.show();
     }
 
     @Override
     public void onClick(View v) {
+        dismiss();
         if (easyDialogListener == null) {
             return;
         }
@@ -199,7 +196,7 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
         this.txtMiddle = txtMiddle;
     }
 
-    public float getWidth() {
+    /*public float getWidth() {
         return mWidth;
     }
 
@@ -217,7 +214,7 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
         if (height <= 0)
             return;
         this.mHeight = height;
-    }
+    }*/
 
 
     /**
@@ -225,57 +222,86 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
      * 作者：ShannJenn
      * 时间：2018/1/15.
      */
-    public static class Build extends EasyDialogBuilder {
+    public static class Build {
+
+        private Context context;
+
+        private float width;//宽度(db)
+        private float height;//高度(db)
+
+        private Drawable icon;
+        private String txtTitle;
+        private String txtContent;
+        private String txtLeft;
+        private String txtMiddle;
+        private String txtRight;
+
+        private EasyDialogListener easyDialogListener;
 
         public Build(Context context) {
-            super(context);
+            this.context = context;
         }
 
-        @Override
-        public Build setIcon(Drawable icon) {
-            super.setIcon(icon);
-            return this;
-        }
-
-        @Override
-        public Build setTitle(String txt) {
-            super.setTitle(txt);
-            return this;
-        }
-
-        @Override
-        public Build setContent(String txt) {
-            super.setContent(txt);
-            return this;
-        }
-
-        @Override
-        public Build setLeftButton(String txt) {
-            super.setLeftButton(txt);
-            return this;
-        }
-
-        @Override
-        public Build setMiddleButton(String txt) {
-            super.setMiddleButton(txt);
-            return this;
-        }
-
-        @Override
-        public Build setRightButton(String txt) {
-            super.setRightButton(txt);
-            return this;
-        }
-
-        @Override
-        public Build setEasyDialogListener(EasyDialogListener easyDialogListener) {
-            super.setEasyDialogListener(easyDialogListener);
-            return this;
-        }
-
-        @Override
         public EasyDialog create() {
-            return super.create();
+            EasyDialog dialog = new EasyDialog(context, R.style._easy_dialog);
+            dialog.setIcon(icon);
+            dialog.setTxtTile(txtTitle);
+            dialog.setTxtContent(txtContent);
+            dialog.setTxtLeft(txtLeft);
+            dialog.setTxtMiddle(txtMiddle);
+            dialog.setTxtRight(txtRight);
+            dialog.setEasyDialogListener(easyDialogListener);
+
+//            dialog.setWidth(width);
+//            dialog.setHeight(height);
+
+            dialog.initViews();
+            return dialog;
+        }
+
+        public Build setIcon(Drawable icon) {
+            this.icon = icon;
+            return this;
+        }
+
+        public Build setTitle(String txt) {
+            txtTitle = txt;
+            return this;
+        }
+
+        public Build setContent(String txt) {
+            txtContent = txt;
+            return this;
+        }
+
+        public Build setLeftButton(String txt) {
+            txtLeft = txt;
+            return this;
+        }
+
+        public Build setMiddleButton(String txt) {
+            txtMiddle = txt;
+            return this;
+        }
+
+        public Build setRightButton(String txt) {
+            txtRight = txt;
+            return this;
+        }
+
+        public Build setEasyDialogListener(EasyDialogListener easyDialogListener) {
+            this.easyDialogListener = easyDialogListener;
+            return this;
+        }
+
+        public Build setWidth(float width) {
+            this.width = width;
+            return this;
+        }
+
+        public Build setHeight(float height) {
+            this.height = height;
+            return this;
         }
     }
 }

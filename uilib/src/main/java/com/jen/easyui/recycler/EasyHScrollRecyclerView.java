@@ -76,7 +76,7 @@ public class EasyHScrollRecyclerView extends RecyclerView {
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
         EasyHScrollRecyclerViewAdapter easyAdapter = (EasyHScrollRecyclerViewAdapter) EasyHScrollRecyclerView.this.getAdapter();
-        easyAdapter.scrollAllToX();
+        easyAdapter.recyclerViewOnScrollChanged(this, l, t, oldl, oldt);
     }
 
 }

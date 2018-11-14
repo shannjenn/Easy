@@ -103,6 +103,18 @@ public abstract class EasyHScrollRecyclerViewAdapter<T> extends EasyRecyclerBase
         });
     }
 
+    /**
+     * EasyHScrollRecyclerView 滑动
+     *
+     * @param l
+     * @param t
+     * @param oldl
+     * @param oldt
+     */
+    public void recyclerViewOnScrollChanged(EasyHScrollRecyclerView recyclerView, int l, int t, int oldl, int oldt) {
+        scrollAllToX();
+    }
+
     public void scrollAllToX() {
         Set<Integer> keys = mHScrollViews.keySet();
         for (int key : keys) {

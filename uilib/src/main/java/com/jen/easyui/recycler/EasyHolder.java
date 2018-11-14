@@ -1,8 +1,11 @@
 package com.jen.easyui.recycler;
 
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 /**
  * baseAdapter
@@ -75,5 +78,35 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
                 return mAdapter.easyAdapterOnClickListener.onLongClick(v, position);
             }
         });
+    }
+
+    public void setTextView(int id, String text) {
+        if (mView == null) {
+            return;
+        }
+        View view = mView.findViewById(id);
+        if (view instanceof TextView) {
+            ((TextView) view).setText(text);
+        }
+    }
+
+    public void setImageView(int id, int sourceid) {
+        if (mView == null) {
+            return;
+        }
+        View view = mView.findViewById(id);
+        if (view instanceof ImageView) {
+            ((ImageView) view).setImageResource(sourceid);
+        }
+    }
+
+    public void setImageView(int id, Drawable drawable) {
+        if (mView == null) {
+            return;
+        }
+        View view = mView.findViewById(id);
+        if (view instanceof ImageView) {
+            ((ImageView) view).setImageDrawable(drawable);
+        }
     }
 }

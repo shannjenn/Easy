@@ -3,8 +3,10 @@ package com.jen.easytest.activity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.jen.easy.EasyViewID;
 import com.jen.easytest.R;
 import com.jen.easyui.base.EasyActivity;
+import com.jen.easyui.baseview.EasyTopBar;
 
 /**
  * 作者：ShannJenn
@@ -13,8 +15,8 @@ import com.jen.easyui.base.EasyActivity;
 
 public class BasicViewActivity extends EasyActivity {
 
-//    @EasyViewID(R.id.easy_tabbar_txtimg)
-//    EasyTabBarBottom easy_tabbar_txtimg;
+    @EasyViewID(R.id.topBar)
+    EasyTopBar topBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,7 @@ public class BasicViewActivity extends EasyActivity {
 
     @Override
     protected void initViews() {
+        topBar.bindOnBackClick(this);
         initScroll();
     }
 

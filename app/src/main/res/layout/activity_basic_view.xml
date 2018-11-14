@@ -11,8 +11,10 @@
         android:orientation="vertical">
 
         <com.jen.easyui.baseview.EasyTopBar
+            android:id="@+id/topBar"
             android:layout_width="match_parent"
             android:layout_height="46dp"
+            app:topBarCloseShow="false"
             app:topBarRightImage="@mipmap/ic_launcher"
             app:topBarTitleText="TopBar"
             app:topBarTitleTextSize="14sp"/>

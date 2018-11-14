@@ -1,6 +1,8 @@
 <resources>
     <declare-styleable name="EasyShapeRelativeLayout">
         <attr name="strokeWidth"/>
+        <attr name="strokeDashGapWidth"/>
+        <attr name="strokeDashGap"/>
         <attr name="strokeColor"/>
         <attr name="strokeClickColor"/>
 

@@ -8,7 +8,7 @@ import com.jen.easytest.R;
 import com.jen.easyui.base.EasyActivity;
 import com.jen.easyui.dialog.EasyDialog;
 import com.jen.easyui.dialog.EasyLoading;
-import com.jen.easyui.dialog.imp.EasyDialogListener;
+import com.jen.easyui.dialog.EasyDialogListener;
 
 /**
  * 作者：ShannJenn
@@ -45,19 +45,16 @@ public class DialogActivity extends EasyActivity {
                     @Override
                     public void leftButton(View view) {
 //                        EasyToast.toast("点击左边按钮");
-                        dialog.hide();
                     }
 
                     @Override
                     public void middleButton(View view) {
 //                        EasyToast.toast("点击中间按钮");
-                        dialog.hide();
                     }
 
                     @Override
                     public void rightButton(View view) {
 //                        EasyToast.toast("点击右边按钮");
-                        dialog.hide();
                     }
                 })
                 .create();

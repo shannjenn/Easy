@@ -13,10 +13,15 @@
         <attr name="topBarLeftImageBackground" format="reference" />
         <!--<attr name="showLeftImage" format="boolean" />-->
 
+        <attr name="topBarCloseShow" format="boolean" />
+
         <attr name="topBarRightText" format="string" />
         <attr name="topBarRightTextColor" format="color" />
-        <attr name="topBarRightImage" format="reference" />
         <attr name="topBarRightTextSize" format="dimension" />
+
+        <attr name="topBarRightImage" format="reference" />
+        <attr name="topBarRightImageWidth" format="dimension" />
+        <attr name="topBarRightImageHeight" format="dimension" />
 
         <!--<attr name="showLeftFaceImage" format="boolean" />-->
 
