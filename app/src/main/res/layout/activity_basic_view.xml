@@ -34,17 +34,31 @@
                 android:textSize="14sp"/>
 
             <com.jen.easyui.baseview.EasyShapeTextView
+                android:id="@+id/easy_tv_shape"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:text="213313133331"
-                app:solidClickColor="#2997f0"
-                app:solidColor="#ff00ff"
-                app:strokeClickColor="#ff000f"
-                app:strokeColor="#00ffff"
-                app:strokeWidth="2dp"/>
+                app:clickType="check"
+                app:corners="3dp"
+                app:solidClickColor="#ff00ff"
+                app:solidColor="#ff0000"
+                app:strokeClickColor="#00ffff"
+                app:strokeColor="#0000ff"
+                app:strokeWidth="5dp"/>
 
             <com.jen.easyui.baseview.EasyShapeTextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="3dp"
+                android:gravity="center_vertical"
+                android:text="213313133331"
+                app:clickType="check"
+                app:corners="3dp"
+                app:solidClickColor="#ff00ff"
+                app:solidColor="#ff0000"/>
+
+            <!--<com.jen.easyui.baseview.EasyShapeTextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
@@ -67,7 +81,7 @@
                 app:lineTopMarginLeft="5dp"
                 app:lineTopMarginRight="5dp"
                 app:lineTopMarginTop="5dp"
-                app:lineWidth="5dp"/>
+                app:lineWidth="5dp"/>-->
 
         </LinearLayout>
 
@@ -89,15 +103,43 @@
                 android:layout_width="46dp"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
+                app:clickType="check"
                 app:lineBottomColor="#ff0000"
                 app:lineTopColor="#ff0000"
                 app:lineWidth="1px"/>
 
         </LinearLayout>
 
+        <com.jen.easyui.baseview.EasyItemLayout
+            android:id="@+id/easy_item_layout"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:gravity="center_vertical"
+            app:itemArrowVisible="true"
+            app:itemCountMarginRight="20dp"
+            app:itemCountText="12"
+            app:itemIsEdit="false"
+            app:itemTitleText="EasyItemLayout"
+            app:itemTxtText="121"/>
+
+        <com.jen.easyui.baseview.EasyItemLayout
+            android:id="@+id/easy_item_layout2"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:gravity="center_vertical"
+            app:itemArrowVisible="true"
+            app:itemCountMarginRight="20dp"
+            app:itemCountText="12"
+            app:itemEditLines="5"
+            app:itemEditTextHint="121"
+            app:itemEditTextMarginBottom="0dp"
+            app:itemIsEdit="true"
+            app:itemTitleText="ItemLayout"
+            app:itemTxtText="121"/>
+
         <com.jen.easyui.baseview.EasyRadioGroup
             android:layout_width="match_parent"
-            android:layout_height="200dp">
+            android:layout_height="wrap_content">
 
             <com.jen.easyui.baseview.EasyRadioButton
                 android:layout_width="match_parent"
@@ -106,5 +148,29 @@
                 app:radioText="111"
                 app:radioTextColor="#ff0000"/>
         </com.jen.easyui.baseview.EasyRadioGroup>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_marginBottom="5dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="EasyShapeEditTextView："
+                android:textColor="#ff00ff"
+                android:textSize="14sp"/>
+
+            <com.jen.easyui.baseview.EasyShapeEditTextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="54654"
+                app:lineBottomColor="#ff0000"
+                app:lineBottomMarginBottom="6dp"
+                app:lineWidth="1dp"/>
+
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

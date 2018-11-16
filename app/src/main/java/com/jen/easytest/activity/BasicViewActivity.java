@@ -6,6 +6,8 @@ import android.view.View;
 import com.jen.easy.EasyViewID;
 import com.jen.easytest.R;
 import com.jen.easyui.base.EasyActivity;
+import com.jen.easyui.baseview.EasyItemLayout;
+import com.jen.easyui.baseview.EasyShapeTextView;
 import com.jen.easyui.baseview.EasyTopBar;
 
 /**
@@ -17,6 +19,11 @@ public class BasicViewActivity extends EasyActivity {
 
     @EasyViewID(R.id.topBar)
     EasyTopBar topBar;
+
+    @EasyViewID(R.id.easy_tv_shape)
+    EasyShapeTextView easy_tv_shape;
+    @EasyViewID(R.id.easy_item_layout)
+    EasyItemLayout easy_item_layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +40,23 @@ public class BasicViewActivity extends EasyActivity {
     protected void initViews() {
         topBar.bindOnBackClick(this);
         initScroll();
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+//                easy_tv_shape.getShape().setSolidColor(0xffff0000);
+                easy_tv_shape.getShape().setCheck(true);
+            }
+        }, 5000);
+
+        easy_item_layout.setTitle("1111");
+        easy_item_layout.setContentText("122211");
+
+        /*easy_tv_shape.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                easy_tv_shape.getShape().setSolidColor(0xffff0000);
+            }
+        });*/
     }
 
     @Override
@@ -45,9 +69,9 @@ public class BasicViewActivity extends EasyActivity {
 
     }
 
-    private void initScroll(){
-    }
+    private void initScroll() {
 
+    }
 
 
 }

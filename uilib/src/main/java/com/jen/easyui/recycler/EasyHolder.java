@@ -37,7 +37,7 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
             Log.e(TAG, "mAdapter 为空，点击事件不能生效" + EasyHolder.class.getSimpleName());
             return;
         }
-        if (mAdapter.easyAdapterOnClickListener == null) {
+        if (mAdapter.easyItemClickListener == null) {
             return;
         }
         if (mView == null) {
@@ -51,7 +51,7 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAdapter.easyAdapterOnClickListener.onClick(v, position);
+                mAdapter.easyItemClickListener.onViewClick(v, position);
             }
         });
     }
@@ -61,7 +61,7 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
             Log.e(TAG, "mAdapter 为空，点击事件不能生效" + EasyHolder.class.getSimpleName());
             return;
         }
-        if (mAdapter.easyAdapterOnClickListener == null) {
+        if (mAdapter.easyItemClickListener == null) {
             return;
         }
         if (mView == null) {
@@ -75,7 +75,7 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                return mAdapter.easyAdapterOnClickListener.onLongClick(v, position);
+                return mAdapter.easyItemClickListener.onViewLongClick(v, position);
             }
         });
     }

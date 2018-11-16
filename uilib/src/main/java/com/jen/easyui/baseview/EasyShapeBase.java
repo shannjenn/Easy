@@ -13,7 +13,7 @@ import android.widget.TextView;
  * 时间：2018/03/12.
  */
 
-class EasyShapeBase {
+public class EasyShapeBase {
     private View mView;
     private boolean isTextView;//是否为textView
 
@@ -62,17 +62,16 @@ class EasyShapeBase {
     int mSolidClickColor;
 
     /*点击类型：normal：点击变色，check：check，-1：不允许点击*/
-    ClickType mClickType = ClickType.BUTTON;
+    ClickType mClickType = ClickType.NON;
     private boolean isCheck;
 
     enum ClickType {
         BUTTON,//按钮效果点击变色,默认效果
         CHECK,//check效果
-        ENABLE//不允许点击效果
+        NON//没有点击效果
     }
-//    boolean isCheck;
-    /*------------------------------------------------公共属性end*/
 
+    /*------------------------------------------------公共属性end*/
 //    private int mPaddingLeft;
 //    private int mPaddingRight;
 //    private int mPaddingTop;
@@ -216,7 +215,7 @@ class EasyShapeBase {
      * @param event e
      */
     boolean onFocusEvent(MotionEvent event) {
-        if (mClickType == ClickType.ENABLE)
+        if (mClickType == ClickType.NON)
             return true;
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN: {
@@ -263,4 +262,40 @@ class EasyShapeBase {
         return true;
     }
 
+    public void setSolidColor(int color) {
+        mSolidColor = color;
+        mDrawable.setColor(mSolidColor);
+    }
+
+    public ClickType getClickType() {
+        return mClickType;
+    }
+
+    public void setClickType(ClickType clickType) {
+        mClickType = clickType;
+    }
+
+    public boolean isCheck() {
+        return isCheck;
+    }
+
+    public void setCheck(boolean check) {
+        if (mClickType != ClickType.CHECK) {
+            return;
+        }
+        isCheck = check;
+        if (isCheck) {
+            mDrawable.setStroke(mStrokeWidth, mStrokeClickColor, mStrokeDashGapWidth, mStrokeDashGap);
+            mDrawable.setColor(mSolidClickColor);
+            if (isTextView) {
+                ((TextView) mView).setTextColor(mTextClickColor);
+            }
+        } else {
+            mDrawable.setStroke(mStrokeWidth, mStrokeColor, mStrokeDashGapWidth, mStrokeDashGap);
+            mDrawable.setColor(mSolidColor);
+            if (isTextView) {
+                ((TextView) mView).setTextColor(mTextColor);
+            }
+        }
+    }
 }

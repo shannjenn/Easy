@@ -113,7 +113,7 @@ public class EasyTopBar extends RelativeLayout implements View.OnClickListener {
     }
 
     private void initView() {
-        LayoutInflater.from(mContext).inflate(R.layout._easy_topbar, this,true);
+        LayoutInflater.from(mContext).inflate(R.layout._easy_topbar, this, true);
 
         tvLeft = (TextView) findViewById(R.id.top_bar_tv_left);
         ivLeft = (ImageView) findViewById(R.id.top_bar_iv_left);
@@ -158,6 +158,7 @@ public class EasyTopBar extends RelativeLayout implements View.OnClickListener {
             }
         }
         if (mRightText != null) {
+            tvRight.setVisibility(VISIBLE);
             tvRight.setText(mRightText);
             if (mRightTextSize != -1) {
                 tvRight.setTextSize(TypedValue.COMPLEX_UNIT_PX, mRightTextSize);
@@ -165,6 +166,8 @@ public class EasyTopBar extends RelativeLayout implements View.OnClickListener {
             if (mRightTextColor != -1) {
                 tvRight.setTextColor(mRightTextColor);
             }
+        } else {
+            tvRight.setVisibility(GONE);
         }
         viewLine.setVisibility(isShowBottomLine ? VISIBLE : GONE);
         ivLeft.setOnClickListener(this);

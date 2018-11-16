@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'easy'
             keyPassword 'easy_code_520'
-            storeFile file('E:/projects/easy/keystore/release.jks')
+            storeFile file('E:/myProject/easy/keystore/release.jks')
             storePassword 'easy_code_520'
         }
     }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jen.easy.EasyViewID;
 import com.jen.easy.EasyViewMethod;
@@ -12,8 +13,8 @@ import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
 import com.jen.easytest.model.RecyclerViewModel;
 import com.jen.easyui.base.EasyActivity;
-import com.jen.easyui.recycler.EasyAdapterOnClickListener;
 import com.jen.easyui.recycler.EasyHolder;
+import com.jen.easyui.recycler.EasyItemClickListener;
 import com.jen.easyui.recycler.EasyLetterDecoration;
 import com.jen.easyui.recycler.EasyLetterView;
 import com.jen.easyui.recycler.EasyRecyclerAdapter;
@@ -106,7 +107,6 @@ public class RecyclerViewActivity extends EasyActivity {
         itemDecoration.setLetterTextColor(0xffff0000);
         recyclerView.addItemDecoration(itemDecoration);
 
-
         lt_letter.setTouchListener(new EasyLetterView.TouchListener() {
             @Override
             public void onTouch(String letter) {
@@ -121,17 +121,22 @@ public class RecyclerViewActivity extends EasyActivity {
                 }
             }
         });
-        easyAdapter1.setEasyAdapterOnClickListener(new EasyAdapterOnClickListener() {
+        easyAdapter1.setEasyItemClickListener(new EasyItemClickListener() {
             @Override
-            public void onClick(View view, int pos) {
+            public void onItemClick(View view, int position) {
+                Toast.makeText(mContext, position + "", Toast.LENGTH_LONG).show();
+//                EasyToast.toast(position + "");
+            }
+
+            @Override
+            public void onViewClick(View view, int position) {
 
             }
 
             @Override
-            public boolean onLongClick(View view, int pos) {
+            public boolean onViewLongClick(View view, int position) {
                 return false;
             }
-
         });
     }
 

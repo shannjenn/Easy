@@ -75,7 +75,7 @@ public class EasyShapeLinearLayout extends LinearLayout {
         mShape.mLineBottomMarginLeft = ta.getDimensionPixelSize(R.styleable.EasyShapeLinearLayout_lineBottomMarginLeft, 0);
         mShape.mLineBottomMarginRight = ta.getDimensionPixelSize(R.styleable.EasyShapeLinearLayout_lineBottomMarginRight, 0);
 
-        int clickType = ta.getInt(R.styleable.EasyShapeLinearLayout_clickType, 0);
+        int clickType = ta.getInt(R.styleable.EasyShapeLinearLayout_clickType, -1);
         switch (clickType) {
             case 0: {
                 mShape.mClickType = EasyShapeBase.ClickType.BUTTON;
@@ -86,7 +86,7 @@ public class EasyShapeLinearLayout extends LinearLayout {
                 break;
             }
             case -1: {
-                mShape.mClickType = EasyShapeBase.ClickType.ENABLE;
+                mShape.mClickType = EasyShapeBase.ClickType.NON;
                 break;
             }
         }

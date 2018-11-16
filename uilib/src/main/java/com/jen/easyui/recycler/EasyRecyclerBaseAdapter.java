@@ -19,7 +19,7 @@ import java.util.List;
 public abstract class EasyRecyclerBaseAdapter<T> extends RecyclerView.Adapter<EasyHolder> {
     protected Context mContext;
     protected List<T> mData;//不包含header、footer
-    protected EasyAdapterOnClickListener easyAdapterOnClickListener;
+    protected EasyItemClickListener easyItemClickListener;
 
     /**
      * @param data 数据
@@ -53,9 +53,17 @@ public abstract class EasyRecyclerBaseAdapter<T> extends RecyclerView.Adapter<Ea
      * @return
      */
     @Override
-    public void onBindViewHolder(EasyHolder holder, final int position) {
+    public void onBindViewHolder(final EasyHolder holder, final int position) {
         if (holder == null) {
             return;
+        }
+        if (easyItemClickListener != null) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    easyItemClickListener.onItemClick(holder.itemView, position);
+                }
+            });
         }
         holder.onBindData(holder.itemView, holder.getItemViewType(), position);
     }
@@ -136,12 +144,12 @@ public abstract class EasyRecyclerBaseAdapter<T> extends RecyclerView.Adapter<Ea
         }
     });
 
-    public EasyAdapterOnClickListener getEasyAdapterOnClickListener() {
-        return easyAdapterOnClickListener;
+    public EasyItemClickListener getEasyItemClickListener() {
+        return easyItemClickListener;
     }
 
-    public void setEasyAdapterOnClickListener(EasyAdapterOnClickListener easyAdapterOnClickListener) {
-        this.easyAdapterOnClickListener = easyAdapterOnClickListener;
+    public void setEasyItemClickListener(EasyItemClickListener easyItemClickListener) {
+        this.easyItemClickListener = easyItemClickListener;
     }
 
     /**

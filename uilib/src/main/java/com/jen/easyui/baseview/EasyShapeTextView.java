@@ -78,7 +78,7 @@ public class EasyShapeTextView extends android.support.v7.widget.AppCompatTextVi
         mShape.mLineBottomMarginLeft = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_lineBottomMarginLeft, 0);
         mShape.mLineBottomMarginRight = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_lineBottomMarginRight, 0);
 
-        int clickType = ta.getInt(R.styleable.EasyShapeTextView_clickType, 0);
+        int clickType = ta.getInt(R.styleable.EasyShapeTextView_clickType, -1);
         switch (clickType) {
             case 0: {
                 mShape.mClickType = EasyShapeBase.ClickType.BUTTON;
@@ -89,7 +89,7 @@ public class EasyShapeTextView extends android.support.v7.widget.AppCompatTextVi
                 break;
             }
             case -1: {
-                mShape.mClickType = EasyShapeBase.ClickType.ENABLE;
+                mShape.mClickType = EasyShapeBase.ClickType.NON;
                 break;
             }
         }
@@ -130,5 +130,9 @@ public class EasyShapeTextView extends android.support.v7.widget.AppCompatTextVi
     public boolean onTouchEvent(MotionEvent event) {
         mShape.onFocusEvent(event);
         return super.onTouchEvent(event);
+    }
+
+    public EasyShapeBase getShape(){
+        return mShape;
     }
 }

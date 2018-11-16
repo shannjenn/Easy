@@ -1,6 +1,8 @@
 <resources>
     <declare-styleable name="EasyShapeEditTextView">
         <attr name="strokeWidth"/>
+        <attr name="strokeDashGapWidth"/>
+        <attr name="strokeDashGap"/>
         <attr name="strokeColor"/>
         <attr name="strokeClickColor"/>
 
@@ -36,12 +38,9 @@
 
         <attr name="lineWidth"/>
 
-        <attr name="clickType"/>
+        <attr name="android:textColor" />
+        <attr name="textClickColor" />
 
-        <!--<attr name="android:paddingLeft" />
-        <attr name="android:paddingRight" />
-        <attr name="android:paddingTop" />
-        <attr name="android:paddingBottom" />
-        <attr name="android:padding" />-->
+        <attr name="clickType"/>
     </declare-styleable>
 </resources>

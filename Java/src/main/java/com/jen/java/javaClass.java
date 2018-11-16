@@ -1,17 +1,33 @@
 package com.jen.java;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class javaClass {
     public static void main(String[] args) {
 
-        format("9999999999.99");
-        System.out.println("");
+        String str = formatDouble(-14540.23254554, 2);
+        System.out.println(str);
 
     }
 
-    private static void format(String text){
+    private static String formatDouble(double value, int decimal) {
+        String unit = "%." + decimal + "f";
+        return String.format(unit, value);
+    }
+
+    private String fromt_2(double num) {
+        DecimalFormat df = new DecimalFormat("#.00");
+        return df.format(num);
+    }
+
+    private String fromt_3(double num) {
+        DecimalFormat df = new DecimalFormat("#.000");
+        return df.format(num);
+    }
+
+    private static void format(String text) {
         String[] arrr = text.split("\\.");
         if (arrr.length > 1) {
             text = arrr[0];
@@ -38,9 +54,9 @@ public class javaClass {
         }
     }
 
-    private static String test(){
-        String a="a";
-        if(a.equals("a")){
+    private static String test() {
+        String a = "a";
+        if (a.equals("a")) {
 //            throw new NullPointerException("aaaaaaaaaaaaaa");
         }
 
