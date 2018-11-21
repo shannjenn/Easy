@@ -7,7 +7,9 @@ import java.util.List;
 public class javaClass {
     public static void main(String[] args) {
 
-        String str = formatDouble(-14540.23254554, 2);
+        double aa = 2751545454645646546.235;
+
+        String str = formatDouble(aa/100000000, 2);
         System.out.println(str);
 
     }

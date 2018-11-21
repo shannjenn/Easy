@@ -29,9 +29,10 @@
         <activity android:name=".activity.PopupWindowActivity" />
         <activity android:name=".activity.SQLiteActivity" />
         <activity android:name=".activity.UtilActivity" />
-        <activity android:name=".activity.RecyclerViewActivity" />
+        <activity android:name=".activity.recyclerView.RecyclerViewMainActivity" />
         <activity android:name=".activity.TimePickActivity" />
-        <activity android:name=".activity.RecyclerHScrollActivity" />
+        <activity android:name=".activity.recyclerView.RecyclerHScrollActivity" />
+        <activity android:name=".activity.recyclerView.RecyclerViewLetterActivity" />
 
     </application>
 

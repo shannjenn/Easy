@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="55dp"
+    android:background="@android:color/white">
+
+    <ImageView
+        android:id="@+id/iv_stock_info_icon"
+        android:layout_width="46dp"
+        android:layout_height="match_parent"
+        android:src="@mipmap/ic_launcher"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/tv_stock_info_name"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/iv_stock_info_icon"
+        android:singleLine="true"
+        android:text="名称"
+        android:textColor="#666666"
+        android:textSize="15sp"/>
+
+
+    <ImageView
+        android:id="@+id/iv_stock_info_arrow_left"
+        android:layout_width="15dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@id/tv_stock_info_name"
+        android:src="@drawable/_arrow_right"/>
+
+    <ImageView
+        android:id="@+id/iv_stock_info_arrow_right"
+        android:layout_width="15dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/_arrow_right"/>
+
+    <com.jen.easyui.recycler.EasyHScrollView
+        android:id="@+id/easy_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toStartOf="@id/iv_stock_info_arrow_right"
+        android:layout_toEndOf="@id/iv_stock_info_arrow_left"
+        android:fadingEdge="none"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <com.jen.easytest.activity.recyclerView.adapter.SortStockTextView
+                android:id="@+id/tv_stock_info_price"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|right"
+                android:singleLine="true"
+                android:text="stock_info_price"
+                android:textColor="#666666"
+                android:textSize="14sp"/>
+
+            <com.jen.easytest.activity.recyclerView.adapter.SortStockTextView
+                android:id="@+id/tv_stock_info_changePct"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|right"
+                android:singleLine="true"
+                android:text="stock_info_changePct"
+                android:textColor="#666666"
+                android:textSize="14sp"/>
+
+            <com.jen.easytest.activity.recyclerView.adapter.SortStockTextView
+                android:id="@+id/tv_stock_info_change"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|right"
+                android:singleLine="true"
+                android:text="stock_info_change"
+                android:textColor="#666666"
+                android:textSize="14sp"/>
+
+            <com.jen.easytest.activity.recyclerView.adapter.SortStockTextView
+                android:id="@+id/tv_stock_info_totalVal"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|right"
+                android:singleLine="true"
+                android:text="stock_info_totalVal"
+                android:textColor="#666666"
+                android:textSize="14sp"/>
+
+            <com.jen.easytest.activity.recyclerView.adapter.SortStockTextView
+                android:id="@+id/tv_stock_info_turnOver"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|right"
+                android:singleLine="true"
+                android:text="stock_info_turnOver"
+                android:textColor="#666666"
+                android:textSize="14sp"/>
+
+            <com.jen.easytest.activity.recyclerView.adapter.SortStockTextView
+                android:id="@+id/tv_stock_info_totalVolume"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|right"
+                android:singleLine="true"
+                android:text="stock_info_totalVolume"
+                android:textColor="#666666"
+                android:textSize="14sp"/>
+
+            <com.jen.easytest.activity.recyclerView.adapter.SortStockTextView
+                android:id="@+id/tv_stock_info_turnRate"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|right"
+                android:singleLine="true"
+                android:text="stock_info_turnRate"
+                android:textColor="#666666"
+                android:textSize="14sp"/>
+
+            <com.jen.easytest.activity.recyclerView.adapter.SortStockTextView
+                android:id="@+id/tv_stock_info_pe"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|right"
+                android:singleLine="true"
+                android:text="stock_info_pe"
+                android:textColor="#666666"
+                android:textSize="14sp"/>
+
+            <com.jen.easytest.activity.recyclerView.adapter.SortStockTextView
+                android:id="@+id/tv_stock_info_pb"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|right"
+                android:singleLine="true"
+                android:text="stock_info_pb"
+                android:textColor="#666666"
+                android:textSize="14sp"/>
+
+            <com.jen.easytest.activity.recyclerView.adapter.SortStockTextView
+                android:id="@+id/tv_stock_info_amplitude"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|right"
+                android:singleLine="true"
+                android:text="stock_info_amplitude"
+                android:textColor="#666666"
+                android:textSize="14sp"/>
+
+            <com.jen.easytest.activity.recyclerView.adapter.SortStockTextView
+                android:id="@+id/tv_stock_info_volRate"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|right"
+                android:singleLine="true"
+                android:text="stock_info_volRate"
+                android:textColor="#666666"
+                android:textSize="14sp"/>
+
+            <com.jen.easytest.activity.recyclerView.adapter.SortStockTextView
+                android:id="@+id/tv_stock_info_committee"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|right"
+                android:singleLine="true"
+                android:text="stock_info_committee"
+                android:textColor="#666666"
+                android:textSize="14sp"/>
+
+            <!--<com.jen.easytest.activity.recyclerView.adapter.SortStockTextView
+                android:id="@+id/tv_stock_info_sevenDayChgPct"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|right"
+                android:text="stock_info_sevenDayChgPct"
+                android:textColor="@color/main_gray_color"
+                android:textSize="14sp"
+                android:visibility="gone"/>-->
+
+            <!--<com.jen.easytest.activity.recyclerView.adapter.SortStockTextView
+                android:id="@+id/tv_stock_info_prevClose"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|right"
+                android:text="stock_info_prevClose"
+                android:textColor="@color/main_gray_color"
+                android:textSize="14sp"/>-->
+        </LinearLayout>
+    </com.jen.easyui.recycler.EasyHScrollView>
+
+    <View
+        android:id="@+id/v_line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/open_bg"/>
+</RelativeLayout>

@@ -1,4 +1,4 @@
-package com.jen.easytest.activity;
+package com.jen.easytest.activity.recyclerView;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -29,7 +29,7 @@ import java.util.List;
  * Created by Administrator on 2017/12/25.
  */
 
-public class RecyclerViewActivity extends EasyActivity {
+public class RecyclerViewLetterActivity extends EasyActivity {
 
     @EasyViewID(R.id.recyclerView)
     EasyRecyclerView recyclerView;
@@ -47,7 +47,7 @@ public class RecyclerViewActivity extends EasyActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recycler_view);
+        setContentView(R.layout.activity_recycler_view_main);
     }
 
     @Override

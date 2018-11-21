@@ -1,4 +1,4 @@
-package com.jen.easytest.activity;
+package com.jen.easytest.activity.recyclerView;
 
 import android.os.Build;
 import android.os.Bundle;
