@@ -83,4 +83,11 @@
         android:text="timePick"
         android:textAllCaps="false"/>
 
+    <Button
+        android:id="@+id/ImageViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:text="ImageViewPager"
+        android:textAllCaps="false"/>
+
 </LinearLayout>

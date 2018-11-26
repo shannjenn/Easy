@@ -14,7 +14,7 @@ import java.util.List;
  * 时间：2017/9/11.
  */
 
-public abstract class EasyFragmentPagerAdapter extends FragmentStatePagerAdapter {
+public class EasyFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
     protected FragmentManager fm;
     protected final List<String> mTitles = new ArrayList<>();
@@ -24,7 +24,9 @@ public abstract class EasyFragmentPagerAdapter extends FragmentStatePagerAdapter
         super(fm);
         this.fm = fm;
         mTitles.clear();
-        mTitles.addAll(title);
+        if (title != null && title.size() > 0) {
+            mTitles.addAll(title);
+        }
         mFragments.clear();
         mFragments.addAll(fragments);
     }
@@ -65,7 +67,7 @@ public abstract class EasyFragmentPagerAdapter extends FragmentStatePagerAdapter
         }
     }*/
 
-    public void upDatas(List<String> titles, List<Fragment> fragments) {
+    public void upDatas(List<String> title, List<Fragment> fragments) {
         FragmentTransaction ft = fm.beginTransaction();
         for (Fragment f : mFragments) {
             ft.remove(f);
@@ -76,7 +78,9 @@ public abstract class EasyFragmentPagerAdapter extends FragmentStatePagerAdapter
         fm.executePendingTransactions();
 
         mTitles.clear();
-        mTitles.addAll(titles);
+        if (title != null && title.size() > 0) {
+            mTitles.addAll(title);
+        }
         mFragments.clear();
         mFragments.addAll(fragments);
         notifyDataSetChanged();

@@ -46,6 +46,7 @@ public class EasyItemLayout extends RelativeLayout {
 
     String titleText;
     int titleTextSize;
+    int titleWidth;
     int titleTextColor;
 
     String contentText;
@@ -66,6 +67,7 @@ public class EasyItemLayout extends RelativeLayout {
     boolean arrowVisible;
 
     boolean bottomLineVisible;
+    int bottomLineMarginLeft;
 
     public EasyItemLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -89,6 +91,7 @@ public class EasyItemLayout extends RelativeLayout {
 
         titleText = a.getString(R.styleable.EasyItemLayout_itemTitleText);
         titleTextSize = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemTitleTextSize, defaultTextSize);
+        titleWidth = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemTitleWidth, -1);
         titleTextColor = a.getColor(R.styleable.EasyItemLayout_itemTitleTextColor, DEFAULT_TEXT_COLOR_TITLE);
 
         contentText = a.getString(R.styleable.EasyItemLayout_itemTxtText);
@@ -111,6 +114,7 @@ public class EasyItemLayout extends RelativeLayout {
         arrowVisible = a.getBoolean(R.styleable.EasyItemLayout_itemArrowVisible, false);
 
         bottomLineVisible = a.getBoolean(R.styleable.EasyItemLayout_itemBottomLineVisible, false);
+        bottomLineMarginLeft = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemBottomLineMarginLeft, 0);
 
 //        paddingTop = a.getDimensionPixelOffset(R.styleable.itemItemLayout_android_paddingTop, 0);
 //        paddingBottom = a.getDimensionPixelOffset(R.styleable.itemItemLayout_android_paddingBottom, 0);
@@ -133,10 +137,18 @@ public class EasyItemLayout extends RelativeLayout {
         iv_item_layout_arrow.setVisibility(arrowVisible ? VISIBLE : GONE);
 
         v_item_layout_bottomLine.setVisibility(bottomLineVisible ? VISIBLE : GONE);
+        if (bottomLineMarginLeft > 0) {
+            RelativeLayout.LayoutParams line_params = (RelativeLayout.LayoutParams) v_item_layout_bottomLine.getLayoutParams();
+            line_params.leftMargin = bottomLineMarginLeft;
+        }
 
         tv_item_layout_title.setText(titleText);
         tv_item_layout_title.setTextSize(TypedValue.COMPLEX_UNIT_PX, titleTextSize);
         tv_item_layout_title.setTextColor(titleTextColor);
+        if (titleWidth > 0) {
+            RelativeLayout.LayoutParams title_params = (RelativeLayout.LayoutParams) tv_item_layout_title.getLayoutParams();
+            title_params.width = titleWidth;
+        }
 
         tv_item_layout_content.setText(contentText);
         tv_item_layout_content.setTextSize(TypedValue.COMPLEX_UNIT_PX, contentTextSize);

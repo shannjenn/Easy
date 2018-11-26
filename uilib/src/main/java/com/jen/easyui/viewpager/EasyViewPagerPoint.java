@@ -17,8 +17,8 @@ import com.jen.easyui.util.EasyDensityUtil;
  * 时间：2017/9/11.
  */
 
-public abstract class EasyImageViewPager extends RelativeLayout {
-    private final String TAG = EasyImageViewPager.class.getSimpleName() + " ";
+public class EasyViewPagerPoint extends RelativeLayout {
+    private final String TAG = EasyViewPagerPoint.class.getSimpleName() + " ";
     /*小圆点离底部距离db*/
     private final float DB_BOTTOM_MARGIN = 20.0f;
     /*小圆点大小db*/
@@ -36,12 +36,12 @@ public abstract class EasyImageViewPager extends RelativeLayout {
 
     private EasyImagePagerChageListener pagerChageListener;
 
-    public EasyImageViewPager(Context context) {
+    public EasyViewPagerPoint(Context context) {
         super(context);
         initLayout();
     }
 
-    public EasyImageViewPager(Context context, AttributeSet attrs) {
+    public EasyViewPagerPoint(Context context, AttributeSet attrs) {
         super(context, attrs);
         initLayout();
     }
@@ -93,7 +93,7 @@ public abstract class EasyImageViewPager extends RelativeLayout {
         }
     };
 
-    protected void setAdapter(PagerAdapter adapter) {
+    public void setAdapter(PagerAdapter adapter) {
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(onPageChangeListener);
     }
@@ -103,16 +103,16 @@ public abstract class EasyImageViewPager extends RelativeLayout {
      *
      * @param numCount
      */
-    protected void setNumCount(int numCount) {
+    public void setNumCount(int numCount) {
         this.numCount = numCount;
         int size = (int) EasyDensityUtil.dp2px(DB_NUM_SIZE);
         LinearLayout.LayoutParams poitParams = new LinearLayout.LayoutParams(size, size);
         poitParams.rightMargin = DB_NUM_DISTANCE;
 //        poitParams.setMargins(0, 0, DB_NUM_DISTANCE, 0);
 
-        View poit = new View(getContext());
-        poit.setLayoutParams(poitParams);
         for (int i = 0; i < numCount; i++) {
+            View poit = new View(getContext());
+            poit.setLayoutParams(poitParams);
             if (i == 0) {
                 poit.setBackgroundResource(R.drawable._easy_viewpager_num_select);
             } else {
@@ -122,7 +122,7 @@ public abstract class EasyImageViewPager extends RelativeLayout {
         }
     }
 
-    protected void addOnPageChangeListener(EasyImagePagerChageListener pagerChageListener) {
+    public void addOnPageChangeListener(EasyImagePagerChageListener pagerChageListener) {
         this.pagerChageListener = pagerChageListener;
     }
 

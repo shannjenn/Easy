@@ -48,6 +48,7 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
     protected View v_right_button_line;
 
     private EasyDialogListener easyDialogListener;
+    protected int flagCode;
 
     EasyDialog(@NonNull Context context) {
         super(context);
@@ -119,7 +120,7 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
     @Override
     public void show() {
         Window window = getWindow();
-        if(window != null){
+        if (window != null) {
             window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         }
@@ -134,11 +135,11 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
         }
         int id = v.getId();
         if (id == R.id.btn_left) {
-            easyDialogListener.leftButton(v);
+            easyDialogListener.leftButton(flagCode);
         } else if (id == R.id.btn_middle) {
-            easyDialogListener.middleButton(v);
+            easyDialogListener.middleButton(flagCode);
         } else if (id == R.id.btn_right) {
-            easyDialogListener.rightButton(v);
+            easyDialogListener.rightButton(flagCode);
         }
     }
 
@@ -196,6 +197,14 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
         this.txtMiddle = txtMiddle;
     }
 
+    public int getFlagCode() {
+        return flagCode;
+    }
+
+    public void setFlagCode(int flagCode) {
+        this.flagCode = flagCode;
+    }
+
     /*public float getWidth() {
         return mWidth;
     }
@@ -236,11 +245,14 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
         private String txtMiddle;
         private String txtRight;
 
+        private int flagCode;
+
         private EasyDialogListener easyDialogListener;
 
         public Build(Context context) {
             this.context = context;
         }
+
 
         public EasyDialog create() {
             EasyDialog dialog = new EasyDialog(context, R.style._easy_dialog);
@@ -251,6 +263,7 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
             dialog.setTxtMiddle(txtMiddle);
             dialog.setTxtRight(txtRight);
             dialog.setEasyDialogListener(easyDialogListener);
+            dialog.setFlagCode(flagCode);
 
 //            dialog.setWidth(width);
 //            dialog.setHeight(height);
@@ -301,6 +314,11 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
 
         public Build setHeight(float height) {
             this.height = height;
+            return this;
+        }
+
+        public Build setFlagCode(int flagCode) {
+            this.flagCode = flagCode;
             return this;
         }
     }

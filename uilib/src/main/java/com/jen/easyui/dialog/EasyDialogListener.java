@@ -1,16 +1,14 @@
 package com.jen.easyui.dialog;
 
-import android.view.View;
-
 /**
  * 作者：ShannJenn
  * 时间：2017/10/26.
  */
 
 public interface EasyDialogListener {
-    void leftButton(View view);
+    void leftButton(int flagCode);
 
-    void middleButton(View view);
+    void middleButton(int flagCode);
 
-    void rightButton(View view);
+    void rightButton(int flagCode);
 }

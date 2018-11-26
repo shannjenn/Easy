@@ -7,6 +7,7 @@
 
         <attr name="itemTitleText" format="string" />
         <attr name="itemTitleTextSize" format="dimension" />
+        <attr name="itemTitleWidth" format="dimension" />
         <attr name="itemTitleTextColor" format="color" />
 
         <attr name="itemTxtLines" format="integer" />
@@ -30,6 +31,7 @@
         <attr name="itemArrowVisible" format="boolean" />
 
         <attr name="itemBottomLineVisible" format="boolean" />
+        <attr name="itemBottomLineMarginLeft" format="dimension" />
 
         <attr name="android:layout_width" />
         <attr name="android:layout_height" />
