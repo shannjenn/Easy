@@ -12,6 +12,12 @@ public class javaClass {
         String str = formatDouble(aa/100000000, 2);
         System.out.println(str);
 
+        Class a = Student.class;
+
+        Class<School> b = School.class;
+
+        b = a;
+        System.out.println(b.getName());
     }
 
     private static String formatDouble(double value, int decimal) {
@@ -76,6 +82,11 @@ public class javaClass {
 //        private List<String> ee;
 //        private Student e;
 //        private Object eee;
+    }
+
+    public static class School {
+        //        private String aa;
+        private int ddddd;
     }
 
 }

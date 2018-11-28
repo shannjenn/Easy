@@ -5,7 +5,7 @@ package com.jen.easy.http.imp;
  * 时间：2017/9/4:21:44
  * 说明：基本数据网络请求监听
  */
-public interface HttpBasicListener<T> {
+public interface HttpBasicListener {
 
     /**
      * 成功
@@ -14,7 +14,7 @@ public interface HttpBasicListener<T> {
      * @param flag     flag标记
      * @param response 返回对象
      */
-    void success(int flagCode, String flag, T response);
+    void success(int flagCode, String flag, Object response);
 
     /**
      * 失败

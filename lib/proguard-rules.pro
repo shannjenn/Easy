@@ -41,6 +41,8 @@
 
 -keepattributes *Annotation*
 -keep class * extends java.lang.annotation.Annotation { *; }
+#泛型不混淆
+-keepattributes Signature
 
 ##############################################################
 ###版本号

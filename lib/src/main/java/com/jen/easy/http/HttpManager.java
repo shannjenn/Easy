@@ -25,7 +25,7 @@ abstract class HttpManager {
     private HttpDownloadListener httpDownloadListener;
     private HttpUploadListener httpUploadListener;
 
-    protected HttpManager(int maxThreadSize) {
+    public HttpManager(int maxThreadSize) {
         this.maxThreadSize = maxThreadSize;
         state = HttpState.RUN;
         pool = Executors.newFixedThreadPool(maxThreadSize);
@@ -36,7 +36,7 @@ abstract class HttpManager {
      *
      * @param request 请求对象
      */
-    protected void start(HttpRequest request) {
+    public void start(HttpRequest request) {
         if (state == HttpState.STOP) {
             EasyLog.i("线程池已经关闭，不可以再操作 start");
             return;
@@ -66,7 +66,7 @@ abstract class HttpManager {
      *
      * @param request 停止对象
      */
-    protected void stop(HttpRequest request) {
+    public void stop(HttpRequest request) {
         if (request == null) {
             Throw.exception(ExceptionType.NullPointerException, "参数不能为空");
         } else {
@@ -77,7 +77,7 @@ abstract class HttpManager {
     /**
      * 关闭后所有线程都不能再执行
      */
-    protected void shutdown() {
+    public void shutdown() {
         if (state == HttpState.STOP) {
             return;
         }
@@ -96,7 +96,7 @@ abstract class HttpManager {
         }
     }
 
-    protected int getMaxThreadSize() {
+    public int getMaxThreadSize() {
         return maxThreadSize;
     }
 

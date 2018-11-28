@@ -47,7 +47,7 @@ public class Http extends HttpManager {
      *
      * @return 线程数
      */
-    protected int getMaxThreadSize() {
+    public int getMaxThreadSize() {
         return super.getMaxThreadSize();
     }
 

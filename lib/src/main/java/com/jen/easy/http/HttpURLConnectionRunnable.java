@@ -37,10 +37,15 @@ abstract class HttpURLConnectionRunnable implements Runnable {
 
     @Override
     public void run() {
-        Object[] method_url = HttpReflectManager.getUrl(mRequest);
-        String method = (String) method_url[0];
-        mRequest.url = (String) method_url[1];
-        Object response = method_url[2];
+        HttpReflectManager.RequestType requestType = HttpReflectManager.getRequestType(mRequest);
+        if(requestType == null){
+            Throw.exception(ExceptionType.RuntimeException, "请求参数未加注释");
+            fail("请求参数未加注释");
+            return;
+        }
+        String method = requestType.method;
+        mRequest.url = requestType.url;
+        Class response = requestType.response;
         mUrlStr = mRequest.url;
         if (TextUtils.isEmpty(mUrlStr)) {
             mUrlStr = "";
@@ -50,21 +55,9 @@ abstract class HttpURLConnectionRunnable implements Runnable {
         }
 
         if (mRequest instanceof HttpBasicRequest) {//===============基本数据处理
-            if (response instanceof Class) {
-                mResponse = (Class) response;
-            } else {
-                Throw.exception(ExceptionType.NullPointerException, "返回对象不能为空");
-                fail("返回对象不能为空");
-                return;
-            }
+            mResponse = response;
         } else if (mRequest instanceof HttpUploadRequest) {//===============上传请求处理
-            if (response instanceof Class) {
-                mResponse = (Class) response;
-            } else {
-                Throw.exception(ExceptionType.NullPointerException, "返回对象不能为空");
-                fail("返回对象不能为空");
-                return;
-            }
+            mResponse = response;
             HttpUploadRequest uploadRequest = (HttpUploadRequest) mRequest;
             if (TextUtils.isEmpty(uploadRequest.filePath)) {
                 Throw.exception(ExceptionType.NullPointerException, "文件地址不能为空");

@@ -5,7 +5,7 @@ package com.jen.easy.http.imp;
  * 时间：2017/9/4:21:44
  * 说明：上传监听
  */
-public interface HttpUploadListener<T> {
+public interface HttpUploadListener {
 
     /**
      * 成功
@@ -14,7 +14,7 @@ public interface HttpUploadListener<T> {
      * @param flag     flag标记
      * @param response 返回对象
      */
-    void success(int flagCode, String flag, T response);
+    void success(int flagCode, String flag, Object response);
 
     /**
      * 失败

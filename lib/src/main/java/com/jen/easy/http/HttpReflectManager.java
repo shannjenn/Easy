@@ -39,6 +39,12 @@ class HttpReflectManager {
         final Map<String, String> heads = new HashMap<>();
     }
 
+    static class RequestType {
+        String method;
+        String url;
+        Class response;
+    }
+
     /**
      * 返回实体
      */
@@ -52,46 +58,47 @@ class HttpReflectManager {
      *
      * @return 请求信息
      */
-    static Object[] getUrl(HttpRequest request) {
-        Object[] values = new Object[3];
+    static RequestType getRequestType(HttpRequest request) {
+//        Object[] values = new Object[3];
         /*if (request == null) {
             Throw.exception(ExceptionType.NullPointerException, "getUrl 请求地址不能为空");
             return values;
         }*/
+        RequestType requestType = new RequestType();
         boolean isGet = request.getClass().isAnnotationPresent(EasyHttpGet.class);
         if (isGet) {
             EasyHttpGet get = request.getClass().getAnnotation(EasyHttpGet.class);
-            values[0] = "GET";
+            requestType.method = "GET";
             request.urlBase = request.urlBase != null ? request.urlBase : get.UrlBase();
             request.urlAppend = request.urlAppend != null ? request.urlAppend : get.UrlAppend();
             request.url = request.url != null ? request.url : request.urlBase + request.urlAppend;
-            values[1] = request.url;
-            values[2] = get.Response();
-            return values;
+            requestType.url = request.url;
+            requestType.response = get.Response();
+            return requestType;
         }
         boolean isPost = request.getClass().isAnnotationPresent(EasyHttpPost.class);
         if (isPost) {
             EasyHttpPost post = request.getClass().getAnnotation(EasyHttpPost.class);
-            values[0] = "POST";
+            requestType.method = "POST";
             request.urlBase = request.urlBase != null ? request.urlBase : post.UrlBase();
             request.urlAppend = request.urlAppend != null ? request.urlAppend : post.UrlAppend();
             request.url = request.url != null ? request.url : request.urlBase + request.urlAppend;
-            values[1] = request.url;
-            values[2] = post.Response();
-            return values;
+            requestType.url = request.url;
+            requestType.response = post.Response();
+            return requestType;
         }
         boolean isPut = request.getClass().isAnnotationPresent(EasyHttpPut.class);
         if (isPut) {
             EasyHttpPut put = request.getClass().getAnnotation(EasyHttpPut.class);
-            values[0] = "PUT";
+            requestType.method = "PUT";
             request.urlBase = request.urlBase != null ? request.urlBase : put.UrlBase();
             request.urlAppend = request.urlAppend != null ? request.urlAppend : put.UrlAppend();
             request.url = request.url != null ? request.url : request.urlBase + request.urlAppend;
-            values[1] = request.url;
-            values[2] = put.Response();
-            return values;
+            requestType.url = request.url;
+            requestType.response = put.Response();
+            return requestType;
         }
-        return values;
+        return null;
     }
 
     /**
