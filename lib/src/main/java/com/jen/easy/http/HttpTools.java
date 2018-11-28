@@ -10,6 +10,8 @@ import java.util.Set;
 class HttpTools {
 
     /**
+     * 返回数据时替换字符
+     *
      * @param request  not null
      * @param response not null
      * @return String
@@ -21,5 +23,18 @@ class HttpTools {
             response = response.replace(oldChar, replacement);
         }
         return response;
+    }
+
+    /**
+     * 解析Http返回数据
+     *
+     * @param tClass
+     * @param obj
+     * @param <T>
+     * @return
+     */
+    public static <T> T parseResponse(Class<T> tClass, String obj) {
+        HttpParseManager parseManager = new HttpParseManager();
+        return parseManager.parseJson(tClass, obj, null);
     }
 }

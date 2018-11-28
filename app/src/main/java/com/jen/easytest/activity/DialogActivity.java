@@ -43,18 +43,18 @@ public class DialogActivity extends EasyActivity {
                 .setRightButton("右边")
                 .setEasyDialogListener(new EasyDialogListener() {
                     @Override
-                    public void leftButton(View view) {
-//                        EasyToast.toast("点击左边按钮");
+                    public void leftButton(int flagCode) {
+
                     }
 
                     @Override
-                    public void middleButton(View view) {
-//                        EasyToast.toast("点击中间按钮");
+                    public void middleButton(int flagCode) {
+
                     }
 
                     @Override
-                    public void rightButton(View view) {
-//                        EasyToast.toast("点击右边按钮");
+                    public void rightButton(int flagCode) {
+
                     }
                 })
                 .create();

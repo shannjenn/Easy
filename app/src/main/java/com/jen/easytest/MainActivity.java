@@ -10,6 +10,8 @@ import com.jen.easytest.activity.DialogActivity;
 import com.jen.easytest.activity.HttpActivity;
 import com.jen.easytest.activity.ImageLoaderActivity;
 import com.jen.easytest.activity.ImageViewPagerActivity;
+import com.jen.easytest.activity.OnclickTestActivity;
+import com.jen.easytest.activity.PickerViewActivity;
 import com.jen.easytest.activity.PopupWindowActivity;
 import com.jen.easytest.activity.SQLiteActivity;
 import com.jen.easytest.activity.TabBarActivity;
@@ -43,7 +45,8 @@ public class MainActivity extends EasyActivity {
 
 
     @EasyViewMethod({R.id.tabBar, R.id.basicView, R.id.http, R.id.imageLoader, R.id.dialog, R.id.popupWindow,
-            R.id.sqlite, R.id.util, R.id.recycleView, R.id.timePick,R.id.ImageViewPager})
+            R.id.sqlite, R.id.util, R.id.recycleView, R.id.timePick, R.id.ImageViewPager, R.id.OnclickTest,
+            R.id.PickerView})
     @Override
     protected void onBindClick(View view) {
         Class clazz = null;
@@ -88,12 +91,16 @@ public class MainActivity extends EasyActivity {
                 clazz = TimePickActivity.class;
                 break;
             }
+            case R.id.PickerView: {
+                clazz = PickerViewActivity.class;
+                break;
+            }
             case R.id.ImageViewPager: {
                 clazz = ImageViewPagerActivity.class;
                 break;
             }
-            default: {
-
+            case R.id.OnclickTest: {
+                clazz = OnclickTestActivity.class;
                 break;
             }
         }

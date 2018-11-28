@@ -31,6 +31,8 @@
         <activity android:name=".activity.UtilActivity" />
         <activity android:name=".activity.TimePickActivity" />
         <activity android:name=".activity.ImageViewPagerActivity" />
+        <activity android:name=".activity.OnclickTestActivity" />
+        <activity android:name=".activity.PickerViewActivity" />
 
 
         <activity android:name=".activity.recyclerView.RecyclerViewMainActivity" />

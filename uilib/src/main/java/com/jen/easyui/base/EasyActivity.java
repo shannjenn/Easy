@@ -27,6 +27,8 @@ public abstract class EasyActivity<T> extends AppCompatActivity implements HttpB
     protected Handler mHandler = new Handler(Looper.getMainLooper());
     protected EasyLoading mLoading;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

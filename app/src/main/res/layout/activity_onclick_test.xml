@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.jen.easytest.widget.OnclickTestLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.jen.easytest.widget.OnclickTestView
+        android:id="@+id/tv_onclickTest"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:text="DateFormat"
+        android:textAllCaps="false"/>
+
+</com.jen.easytest.widget.OnclickTestLayout>

@@ -48,6 +48,7 @@ public class EasyItemLayout extends RelativeLayout {
     int titleTextSize;
     int titleWidth;
     int titleTextColor;
+    int titleTextMarginLeft;
 
     String contentText;
     int contentTextSize;
@@ -93,6 +94,7 @@ public class EasyItemLayout extends RelativeLayout {
         titleTextSize = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemTitleTextSize, defaultTextSize);
         titleWidth = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemTitleWidth, -1);
         titleTextColor = a.getColor(R.styleable.EasyItemLayout_itemTitleTextColor, DEFAULT_TEXT_COLOR_TITLE);
+        titleTextMarginLeft = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemTitleMarginLeft, 0);
 
         contentText = a.getString(R.styleable.EasyItemLayout_itemTxtText);
         contentTextSize = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemTxtTextSize, defaultTextSize);
@@ -145,9 +147,12 @@ public class EasyItemLayout extends RelativeLayout {
         tv_item_layout_title.setText(titleText);
         tv_item_layout_title.setTextSize(TypedValue.COMPLEX_UNIT_PX, titleTextSize);
         tv_item_layout_title.setTextColor(titleTextColor);
+        RelativeLayout.LayoutParams title_params = (RelativeLayout.LayoutParams) tv_item_layout_title.getLayoutParams();
         if (titleWidth > 0) {
-            RelativeLayout.LayoutParams title_params = (RelativeLayout.LayoutParams) tv_item_layout_title.getLayoutParams();
             title_params.width = titleWidth;
+        }
+        if (titleTextMarginLeft > 0) {
+            title_params.leftMargin = titleTextMarginLeft;
         }
 
         tv_item_layout_content.setText(contentText);

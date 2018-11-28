@@ -1,93 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <com.jen.easyui.baseview.EasyTopBar
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="46dp"
-        app:topBarTitleText="TopBar"
-        app:topBarTitleTextSize="14sp"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/tabBar"
-        android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:text="TabBar"
-        android:textAllCaps="false"
-        android:textSize="14sp"/>
+        <com.jen.easyui.baseview.EasyTopBar
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            app:topBarTitleText="TopBar"
+            app:topBarTitleTextSize="14sp"/>
 
-    <Button
-        android:id="@+id/basicView"
-        android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:text="BasicView"
-        android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/tabBar"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:text="TabBar"
+            android:textAllCaps="false"
+            android:textSize="14sp"/>
 
-    <Button
-        android:id="@+id/http"
-        android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:text="http"
-        android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/basicView"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:text="BasicView"
+            android:textAllCaps="false"/>
 
-    <Button
-        android:id="@+id/imageLoader"
-        android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:text="imageLoader"
-        android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/http"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:text="http"
+            android:textAllCaps="false"/>
 
-    <Button
-        android:id="@+id/dialog"
-        android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:text="dialog"
-        android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/imageLoader"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:text="imageLoader"
+            android:textAllCaps="false"/>
 
-    <Button
-        android:id="@+id/popupWindow"
-        android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:text="PopupWindow"
-        android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/dialog"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:text="dialog"
+            android:textAllCaps="false"/>
 
-    <Button
-        android:id="@+id/sqlite"
-        android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:text="sqlite"
-        android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/popupWindow"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:text="PopupWindow"
+            android:textAllCaps="false"/>
 
-    <Button
-        android:id="@+id/util"
-        android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:text="util"
-        android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/sqlite"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:text="sqlite"
+            android:textAllCaps="false"/>
 
-    <Button
-        android:id="@+id/recycleView"
-        android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:text="RecycleView"
-        android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/util"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:text="util"
+            android:textAllCaps="false"/>
 
-    <Button
-        android:id="@+id/timePick"
-        android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:text="timePick"
-        android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/recycleView"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:text="RecycleView"
+            android:textAllCaps="false"/>
 
-    <Button
-        android:id="@+id/ImageViewPager"
-        android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:text="ImageViewPager"
-        android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/timePick"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:text="timePick"
+            android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/PickerView"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:text="PickerView"
+            android:textAllCaps="false"/>
 
-</LinearLayout>
+        <Button
+            android:id="@+id/ImageViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:text="ImageViewPager"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:id="@+id/OnclickTest"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:text="OnclickTest"
+            android:textAllCaps="false"/>
+
+    </LinearLayout>
+</ScrollView>

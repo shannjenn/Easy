@@ -9,6 +9,7 @@
         <attr name="itemTitleTextSize" format="dimension" />
         <attr name="itemTitleWidth" format="dimension" />
         <attr name="itemTitleTextColor" format="color" />
+        <attr name="itemTitleMarginLeft" format="dimension" />
 
         <attr name="itemTxtLines" format="integer" />
         <attr name="itemTxtText" format="string" />

@@ -131,9 +131,7 @@ public class EasyLoopView extends View {
         linePaint.setTypeface(Typeface.MONOSPACE);
         linePaint.setTextSize(textSizeXp);
 
-        if (android.os.Build.VERSION.SDK_INT >= 11) {
-            setLayerType(LAYER_TYPE_SOFTWARE, null);
-        }
+        setLayerType(LAYER_TYPE_SOFTWARE, null);
         simpleOnGestureListener = new EasyLoopViewGestureListener(this);
         gestureDetector = new GestureDetector(context, simpleOnGestureListener);
         gestureDetector.setIsLongpressEnabled(false);
