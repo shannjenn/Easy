@@ -188,9 +188,9 @@ abstract class HttpURLConnectionRunnable implements Runnable {
      * @return String
      */
     String replaceStringBeforeParseResponse(String response) {
-        Set<String> oldChars = mRequest.responseReplaceStringBeforeParse.keySet();
+        Set<String> oldChars = mRequest.replaceHttpResultMap.keySet();
         for (String oldChar : oldChars) {
-            String replacement = mRequest.responseReplaceStringBeforeParse.get(oldChar);
+            String replacement = mRequest.replaceHttpResultMap.get(oldChar);
             response = response.replace(oldChar, replacement);
         }
         return response;

@@ -63,7 +63,7 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
         reader.close();
         String result = buffer.toString();
         EasyLog.d(TAG.EasyHttp, mUrlStr + " 完成，返回数据：" + result);
-        if (mRequest.responseReplaceStringBeforeParse != null) {
+        if (mRequest.replaceHttpResultMap != null) {
             result = replaceStringBeforeParseResponse(result);
             EasyLog.d(TAG.EasyHttp, mUrlStr + " 格式化后数据：" + result);
         }

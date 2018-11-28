@@ -68,7 +68,7 @@ public abstract class HttpRequest {
     /**
      * 替换请求结果特殊符号(解析返回数据前替换特殊字符如：斜杠/)
      */
-    LinkedHashMap<String, String> responseReplaceStringBeforeParse;
+    LinkedHashMap<String, String> replaceHttpResultMap;
 
     /**
      * 替换请求结果特殊符号,如：\\\"code\\\": \\\"HKD\\\"
@@ -76,14 +76,14 @@ public abstract class HttpRequest {
      * @param oldChar       替换前
      * @param newChar 替换后
      */
-    public void addResponseReplace(String oldChar, String newChar) {
+    public void addReplaceStringBeforeResponse(String oldChar, String newChar) {
         if (oldChar == null || newChar == null) {
             Throw.exception(ExceptionType.NullPointerException, "格式化前后字符串不能为空");
             return;
         }
-        if (responseReplaceStringBeforeParse == null) {
-            responseReplaceStringBeforeParse = new LinkedHashMap<>();
+        if (replaceHttpResultMap == null) {
+            replaceHttpResultMap = new LinkedHashMap<>();
         }
-        responseReplaceStringBeforeParse.put(oldChar, newChar);
+        replaceHttpResultMap.put(oldChar, newChar);
     }
 }
