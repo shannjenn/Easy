@@ -132,7 +132,7 @@
 -keep class com.jen.easy.http.imp.HttpUploadListener {
     *;
 }
--keep class com.jen.easy.http.JsonUtil {
+-keep class com.jen.easy.http.HttpTool {
     *;
 }
 

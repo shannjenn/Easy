@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.jen.easy.EasyViewMethod;
 import com.jen.easy.http.Http;
+import com.jen.easy.http.HttpTestUtil;
 import com.jen.easy.http.imp.HttpBasicListener;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
@@ -48,13 +49,12 @@ public class HttpActivity extends EasyActivity {
 
     }
 
-    @EasyViewMethod({R.id.get,R.id.post, R.id.put, R.id.upload, R.id.download})
-    @Override
+    @EasyViewMethod({R.id.get, R.id.post, R.id.put, R.id.upload, R.id.download})
     protected void onBindClick(View view) {
         switch (view.getId()) {
             case R.id.get:
 //                JsonUtil.toJson("abc");
-//                Throw.exception(ExceptionType.NullPointerException,"空指针异常");
+//                Throw.exception(ExceptionType.NullPointerException;"空指针异常");
                 get();
                 break;
             case R.id.post:
@@ -64,16 +64,34 @@ public class HttpActivity extends EasyActivity {
                 put();
                 break;
             case R.id.upload:
+                /*JSONObject jsonObject = new JSONObject();
+                if(jsonObject.length() ==0){
+                    EasyLog.d("0000000000");
+                }
+                try {
+                    jsonObject.put("name","sdf");
+                } catch (JSONException e) {
+                    EasyLog.d("error");
+                    e.printStackTrace();
+                }
+                if(jsonObject.length() ==0){
+                    EasyLog.d("1111111");
+                }*/
 
                 break;
             case R.id.download:
                 download();
                 break;
+            case R.id.HttpReflectManager_getRequestParams: {
+                AirRequest airRequest = new AirRequest();
+                HttpTestUtil.HttpReflectManager_getRequestParams(airRequest);
+                break;
+            }
 
         }
     }
 
-    private void get(){
+    private void get() {
         /*TaskProgressListRequest taskProgressListRequest = new TaskProgressListRequest();
         taskProgressListRequest.setTaskId(353631);
         taskProgressListRequest.setLimit(3);
@@ -150,23 +168,33 @@ public class HttpActivity extends EasyActivity {
      */
     HttpBasicListener httpListener = new HttpBasicListener() {
         @Override
+        public void success(int flagCode, String flag, Object response) {
+
+        }
+
+        @Override
         public void fail(int flagCode, String flag, String msg) {
+
+        }
+
+        /*@Override
+        public void fail(int flagCode; String flag; String msg) {
             EasyLog.d("exampleRequest fail:" + msg);
         }
 
         @Override
-        public void success(int flagCode, String flag, Object airResponse) {
+        public void success(int flagCode; String flag; Object airResponse) {
             EasyLog.d("exampleRequest success");
-        }
+        }*/
     };
 
-    @Override
-    public void success(int flagCode, String flag, Object response) {
+    /*@Override
+    public void success(int flagCode; String flag; Object response) {
 
     }
 
     @Override
-    public void fail(int flagCode, String flag, String msg) {
+    public void fail(int flagCode; String flag; String msg) {
 
-    }
+    }*/
 }

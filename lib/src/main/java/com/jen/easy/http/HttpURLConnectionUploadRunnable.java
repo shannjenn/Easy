@@ -63,8 +63,8 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
         reader.close();
         String result = buffer.toString();
         EasyLog.d(TAG.EasyHttp, mUrlStr + " 完成，返回数据：" + result);
-        if (mRequest.responseReplaceMap != null) {
-            result = HttpTools.replaceResponse(mRequest, result);
+        if (mRequest.responseReplaceStringBeforeParse != null) {
+            result = replaceStringBeforeParseResponse(result);
             EasyLog.d(TAG.EasyHttp, mUrlStr + " 格式化后数据：" + result);
         }
         success(result, null);
@@ -77,7 +77,7 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
         if (uploadListener != null && request.state == HttpState.RUN) {
             HttpParseManager parseManager = new HttpParseManager();
             parseManager.setHttpState(request.state);
-            Object parseObject = parseManager.parseJson(mResponse, result, headMap);
+            Object parseObject = parseManager.parseResponseFromJSONString(mResponse, result, headMap);
             if (request.state == HttpState.STOP) {
                 EasyLog.d(TAG.EasyHttp, mUrlStr + " 网络请求停止!\n   ");
             } else if (parseObject == null) {

@@ -12,7 +12,6 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +41,7 @@ class HttpParseManager {
      * @param obj    数据
      * @return 值
      */
-    <T> T parseJson(Class<T> tClass, String obj, Map<String, List<String>> headMap) {
+    <T> T parseResponseFromJSONString(Class<T> tClass, String obj, Map<String, List<String>> headMap) {
         EasyLog.d(TAG.EasyHttp, "解析：" + tClass.getName() + "----开始");
         this.mHeadMap = headMap;
         T t;
@@ -54,7 +53,7 @@ class HttpParseManager {
             EasyLog.w(TAG.EasyHttp, "parseJson方法解析错误JSONException");
             return null;
         }
-        t = parseJsonObject(tClass, object);
+        t = parseResponseFromJSONObject(tClass, object);
         if (t instanceof HttpHeadResponse) {
             ((HttpHeadResponse) t).setHeads(headMap);
         }
@@ -70,7 +69,7 @@ class HttpParseManager {
      * @param jsonObject 数据
      * @return 值
      */
-    private <T> T parseJsonObject(Class<T> tClass, JSONObject jsonObject) {
+    private <T> T parseResponseFromJSONObject(Class<T> tClass, JSONObject jsonObject) {
         /*if (tClass == null || jsonObject == null) {
             throwError(ExceptionType.NullPointerException, "参数不能为空");
             return null;
@@ -88,23 +87,23 @@ class HttpParseManager {
             return null;
         }
 
-        Map<String, Field> param_field = new HashMap<>();
-        Map<String, Field> head_field = new HashMap<>();
-        HttpReflectManager.getResponseParams(tObj.getClass(), param_field, head_field);
+        HttpReflectManager.ResponseObject responseObject = HttpReflectManager.getResponseHeadAndBody(tObj.getClass());
+        Map<String, Field> body = responseObject.body;
+        Map<String, Field> heads = responseObject.heads;
 
-        Set<String> heads = head_field.keySet();
-        for (String param : heads) {//设置head值
+        Set<String> headKeys = heads.keySet();
+        for (String headKey : headKeys) {//设置head值
             if (state == HttpState.STOP) {
                 return null;
             }
-            if (!mHeadMap.containsKey(param)) {
+            if (!mHeadMap.containsKey(headKey)) {
                 continue;
             }
-            Field field = head_field.get(param);
+            Field field = heads.get(headKey);
             field.setAccessible(true);
 
             StringBuilder buffer = new StringBuilder();
-            List<String> values = mHeadMap.get(param);
+            List<String> values = mHeadMap.get(headKey);
             for (int i = 0; i < values.size(); i++) {
                 if (i == 0) {
                     buffer.append(values.get(i));
@@ -117,11 +116,11 @@ class HttpParseManager {
                 field.set(tObj, buffer.toString());
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
-                showWarn("IllegalAccessException：header 参数：" + param);
+                showWarn("IllegalAccessException：header 参数：" + headKey);
             }
         }
 
-        if (param_field.size() == 0) {
+        if (body.size() == 0) {
             return null;
         }
         Iterator<String> keys = jsonObject.keys();
@@ -130,10 +129,10 @@ class HttpParseManager {
                 return null;
             }
             String param = keys.next();
-            if (!param_field.containsKey(param)) {
+            if (!body.containsKey(param)) {
                 continue;
             }
-            Field field = param_field.get(param);
+            Field field = body.get(param);
             field.setAccessible(true);
             Class fieldClass = field.getType();
 
@@ -177,20 +176,20 @@ class HttpParseManager {
                         String type = field.getGenericType().toString();
                         String clazzName = type.substring(type.indexOf("<") + 1, type.indexOf(">"));
                         Class clazz2 = Class.forName(clazzName);
-                        List objList = parseJsonArray(clazz2, (JSONArray) object);
+                        List objList = parseResponseFromJSONArray(clazz2, (JSONArray) object);
                         field.set(tObj, objList);
                     } else {
                         throwError(ExceptionType.ClassCastException, "数据类型错误" + fieldClass + ",该数据为List类型");
                     }
                 } else if (FieldType.isClass(fieldClass)) {//解析指定class
                     if (object instanceof JSONObject) {
-                        Object obj = parseJsonObject(field.getType(), (JSONObject) object);
+                        Object obj = parseResponseFromJSONObject(field.getType(), (JSONObject) object);
                         field.set(tObj, obj);
                     } else {
                         throwError(ExceptionType.ClassCastException, "数据类型错误" + fieldClass + ",该数据为Class类型");
                     }
                 } else {
-                    throwError(ExceptionType.ClassCastException, "不支持该数据类型解析" + fieldClass);
+                    throwError(ExceptionType.RuntimeException, "不支持该数据类型解析" + fieldClass);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -216,7 +215,7 @@ class HttpParseManager {
      * @param jsonArray JSONArray
      * @return 值
      */
-    private <T> List<T> parseJsonArray(Class<T> TClass, JSONArray jsonArray) {
+    private <T> List<T> parseResponseFromJSONArray(Class<T> TClass, JSONArray jsonArray) {
         List<T> list = new ArrayList<>();
         int length = jsonArray.length();
         for (int i = 0; i < length; i++) {
@@ -228,15 +227,15 @@ class HttpParseManager {
                 jsonObj = jsonArray.get(i);
             } catch (JSONException e) {
                 e.printStackTrace();
-                EasyLog.w(TAG.EasyHttp, "parseJsonArray JSONException");
+                EasyLog.w(TAG.EasyHttp, "parseResponseFromJSONArray JSONException");
                 continue;
             }
             if (jsonObj instanceof JSONObject) {
-                T tObj = parseJsonObject(TClass, (JSONObject) jsonObj);
+                T tObj = parseResponseFromJSONObject(TClass, (JSONObject) jsonObj);
                 if (tObj != null)
                     list.add(tObj);
             } else {
-                throwError(ExceptionType.ClassCastException, "parseJsonArray 该数据不属于JSONObject类型");
+                throwError(ExceptionType.ClassCastException, "parseResponseFromJSONArray 该数据不属于JSONObject类型");
             }
         }
         return list;

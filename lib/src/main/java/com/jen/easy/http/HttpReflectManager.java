@@ -18,6 +18,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +29,23 @@ import java.util.Map;
  */
 
 class HttpReflectManager {
+
+    /**
+     * 请求实体
+     */
+    static class RequestObject {
+        final Map<String, String> urls = new HashMap<>();
+        final JSONObject body = new JSONObject();
+        final Map<String, String> heads = new HashMap<>();
+    }
+
+    /**
+     * 返回实体
+     */
+    static class ResponseObject {
+        final Map<String, Field> body = new HashMap<>();
+        final Map<String, Field> heads = new HashMap<>();
+    }
 
     /**
      * 获取请求信息
@@ -76,17 +95,29 @@ class HttpReflectManager {
     }
 
     /**
+     * 获取请求实体
+     *
+     * @param request 请求参数
+     * @return RequestObject
+     */
+    static RequestObject getRequestHeadAndBody(Object request) {
+        RequestObject requestObject = new RequestObject();
+        parseRequest(new ArrayList<String>(), request, requestObject.urls, requestObject.body, requestObject.heads);
+        return requestObject;
+    }
+
+    /**
      * 获取网络请求参数
      *
-     * @param loopClass 避免死循环
-     * @param request   对象数据
-     * @param urls      拼接请求地址参数
-     * @param jsonParam 请求参数
-     * @param heads     请求头参数
+     * @param loopList 避免死循环
+     * @param request  对象数据
+     * @param urls     拼接请求地址参数
+     * @param body     返回的 请求参数
+     * @param heads    返回的 请求头参数
      */
-    static void getRequestParams(List<String> loopClass, Object request, Map<String, String> urls, JSONObject jsonParam, Map<String, String> heads) {
+    private static void parseRequest(List<String> loopList, Object request, Map<String, String> urls, JSONObject body, Map<String, String> heads) {
         /*if (request == null) {
-            Throw.exception(ExceptionType.NullPointerException, "getRequestParams 参数不能为空");
+            Throw.exception(ExceptionType.NullPointerException, "parseRequest 参数不能为空");
             return;
         }*/
         /*if (loopClass == null) {
@@ -95,11 +126,11 @@ class HttpReflectManager {
 
         Class clazz = request.getClass();
         String clazzName = clazz.getName();
-        if (loopClass.contains(clazzName)) {
-            Throw.exception(ExceptionType.RuntimeException, "对象不能循环引用：" + clazzName);
+        if (loopList.contains(clazzName)) {
+            Throw.exception(ExceptionType.RuntimeException, "无限死循环引用错误：" + clazzName);
             return;
         } else {
-            loopClass.add(clazzName);
+            loopList.add(clazzName);
         }
 //        String reqName = HttpBasicRequest.class.getName();
         String objName = Object.class.getName();
@@ -109,7 +140,7 @@ class HttpReflectManager {
             }*/
             boolean isInvalid = Invalid.isEasyInvalid(clazz, InvalidType.Request);
             if (!isInvalid) {
-                getRequestParam(loopClass, clazz, request, urls, jsonParam, heads);
+                parseRequestEntity(loopList, clazz, request, urls, body, heads);
             }
             clazz = clazz.getSuperclass();//获取父类
             clazzName = clazz.getName();
@@ -120,14 +151,14 @@ class HttpReflectManager {
     /**
      * 获取单个类请求参数
      *
-     * @param loopClass 避免死循环
-     * @param clazz     类
-     * @param obj       对象数据
-     * @param urls      拼接请求地址参数
-     * @param jsonParam 请求参数
-     * @param heads     请求头参数
+     * @param loopList 避免死循环
+     * @param clazz    类
+     * @param obj      对象数据
+     * @param urls     拼接请求地址参数
+     * @param body     请求参数
+     * @param heads    请求头参数
      */
-    private static void getRequestParam(List<String> loopClass, Class clazz, Object obj, Map<String, String> urls, JSONObject jsonParam, Map<String, String> heads) {
+    private static void parseRequestEntity(List<String> loopList, Class clazz, Object obj, Map<String, String> urls, JSONObject body, Map<String, String> heads) {
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
             boolean isInvalid = Invalid.isEasyInvalid(field, InvalidType.Request);
@@ -159,11 +190,11 @@ class HttpReflectManager {
                         || value instanceof Double || value instanceof Boolean) {
                     switch (paramType) {
                         case Param: {
-                            jsonParam.put(key, value);
+                            body.put(key, value);
                             break;
                         }
                         case Head: {
-                            if(heads.containsKey(key)){
+                            if (heads.containsKey(key)) {
                                 continue;
                             }
                             heads.put(key, value + "");
@@ -198,27 +229,41 @@ class HttpReflectManager {
                                 continue;
                             }
                             JSONObject item = new JSONObject();
-                            getRequestParams(loopClass, itemObj, urls, item, heads);
+                            parseRequest(loopList, itemObj, urls, item, heads);
                             jsonArray.put(item);
                         }
                     }
                     if (jsonArray.length() > 0) {
-                        jsonParam.put(key, jsonArray);
+                        body.put(key, jsonArray);
                     }
                 } else if (FieldType.isClass(field.getType())) {
                     JSONObject item = new JSONObject();
-                    getRequestParams(loopClass, value, urls, item, heads);
-                    jsonParam.put(key, item);
+                    parseRequest(loopList, value, urls, item, heads);
+                    if (item.length() != 0) {//有值才加入
+                        body.put(key, item);
+                    }
                 } else {
                     Throw.exception(ExceptionType.IllegalArgumentException, "不支持该类型参数：" + field.getName());
                 }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
-                EasyLog.w(TAG.EasyHttp, "getRequestParams IllegalAccessException");
+                EasyLog.w(TAG.EasyHttp, "parseRequest IllegalAccessException");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * 解析返回实体类参数
+     *
+     * @param clazz HttpResponse
+     * @return ResponseObject
+     */
+    static ResponseObject getResponseHeadAndBody(Class clazz) {
+        ResponseObject responseObject = new ResponseObject();
+        parseResponse(clazz, responseObject.body, responseObject.heads);
+        return responseObject;
     }
 
     /**
@@ -228,9 +273,9 @@ class HttpReflectManager {
      * @param param_field 名称_变量
      * @param head_field  头名称_变量
      */
-    static void getResponseParams(Class clazz, Map<String, Field> param_field, Map<String, Field> head_field) {
+    private static void parseResponse(Class clazz, Map<String, Field> param_field, Map<String, Field> head_field) {
         /*if (clazz == null) {
-            Throw.exception(ExceptionType.NullPointerException, "getResponseParams clazz 空指针异常");
+            Throw.exception(ExceptionType.NullPointerException, "parseResponse clazz 空指针异常");
             return;
         }*/
 
@@ -241,7 +286,7 @@ class HttpReflectManager {
         while (!clazzName.equals(respName) && !clazzName.equals(objName)) {
             boolean isInvalid = Invalid.isEasyInvalid(myClass, InvalidType.Response);
             if (!isInvalid) {
-                getResponseParam(myClass, param_field, head_field);
+                parseResponseEntity(myClass, param_field, head_field);
             }
             myClass = myClass.getSuperclass();
             clazzName = myClass.getName();
@@ -255,7 +300,7 @@ class HttpReflectManager {
      * @param param_field 名称_变量
      * @param head_field  头名称_变量
      */
-    private static void getResponseParam(Class clazz, Map<String, Field> param_field, Map<String, Field> head_field) {
+    private static void parseResponseEntity(Class clazz, Map<String, Field> param_field, Map<String, Field> head_field) {
         Field[] fieldsSuper = clazz.getDeclaredFields();
         for (Field field : fieldsSuper) {
             boolean isInvalid = Invalid.isEasyInvalid(field, InvalidType.Response);

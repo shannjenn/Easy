@@ -15,8 +15,6 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +28,7 @@ abstract class HttpURLConnectionRunnable implements Runnable {
     int mResponseCode = -1;//返回码
     String mCharset;//编码
     boolean mIsGet = true;
-    final JSONObject mJsonParam = new JSONObject();
+    JSONObject mBody;
 
     HttpURLConnectionRunnable(HttpRequest param) {
         super();
@@ -115,20 +113,20 @@ abstract class HttpURLConnectionRunnable implements Runnable {
         mCharset = mRequest.charset;//编码
         mIsGet = method.toUpperCase().equals("GET");
         try {
-            Map<String, String> urls = new HashMap<>();
-//            JSONObject mJsonParam = new JSONObject();
-            Map<String, String> heads = new HashMap<>();
-            HttpReflectManager.getRequestParams(new ArrayList<String>(), mRequest, urls, mJsonParam, heads);
+            HttpReflectManager.RequestObject requestObject = HttpReflectManager.getRequestHeadAndBody(mRequest);
+            Map<String, String> urls = requestObject.urls;
+            Map<String, String> heads = requestObject.heads;
+            mBody = requestObject.body;
             if (mRequest.state == HttpState.STOP) {
                 return;
             }
             if (mIsGet) {
-                Iterator<String> paramKeys = mJsonParam.keys();
+                Iterator<String> paramKeys = mBody.keys();
                 StringBuilder requestBuf = new StringBuilder();
                 boolean isFirst = true;
                 while (paramKeys.hasNext()) {
                     String key = paramKeys.next();
-                    Object value = mJsonParam.get(key);
+                    Object value = mBody.get(key);
                     if (isFirst) {
                         isFirst = false;
                     } else {
@@ -171,7 +169,7 @@ abstract class HttpURLConnectionRunnable implements Runnable {
             if (mRequest.state == HttpState.STOP) {
                 return;
             }
-            EasyLog.d(TAG.EasyHttp, "网络请求：" + method + " " + mUrlStr + " 请求头部：" + headBuilder.toString() + " 请求参数：" + mJsonParam.toString());
+            EasyLog.d(TAG.EasyHttp, "网络请求：" + method + " " + mUrlStr + " 请求头部：" + headBuilder.toString() + " 请求参数：" + mBody.toString());
             childRun(connection);
             connection.disconnect();
         } catch (IOException e) {
@@ -181,6 +179,21 @@ abstract class HttpURLConnectionRunnable implements Runnable {
             e.printStackTrace();
             fail("JSONException 网络请求异常：" + mResponseCode);
         }
+    }
+
+    /**
+     * 返回数据时替换字符
+     *
+     * @param response not null
+     * @return String
+     */
+    String replaceStringBeforeParseResponse(String response) {
+        Set<String> oldChars = mRequest.responseReplaceStringBeforeParse.keySet();
+        for (String oldChar : oldChars) {
+            String replacement = mRequest.responseReplaceStringBeforeParse.get(oldChar);
+            response = response.replace(oldChar, replacement);
+        }
+        return response;
     }
 
     protected abstract void childRun(HttpURLConnection connection) throws IOException;

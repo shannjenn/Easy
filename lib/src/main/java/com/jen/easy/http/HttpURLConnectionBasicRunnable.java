@@ -27,7 +27,7 @@ class HttpURLConnectionBasicRunnable extends HttpURLConnectionRunnable {
         if (!mIsGet) {
             connection.connect();
             DataOutputStream out = new DataOutputStream(connection.getOutputStream());
-            out.write(mJsonParam.toString().getBytes(Unicode.DEFAULT));
+            out.write(mBody.toString().getBytes(Unicode.DEFAULT));
             out.flush();
             out.close();
         }
@@ -51,8 +51,8 @@ class HttpURLConnectionBasicRunnable extends HttpURLConnectionRunnable {
             connection.disconnect();
             String result = resultBuffer.toString();
             EasyLog.d(TAG.EasyHttp, mUrlStr + " 返回原始数据：" + result);
-            if (mRequest.responseReplaceMap != null && mRequest.responseReplaceMap.size() > 0) {
-                result = HttpTools.replaceResponse(mRequest, result);
+            if (mRequest.responseReplaceStringBeforeParse != null && mRequest.responseReplaceStringBeforeParse.size() > 0) {
+                result = replaceStringBeforeParseResponse(result);
                 EasyLog.d(TAG.EasyHttp, mUrlStr + " 格式化后数据：" + result);
             }
             success(result, headMap);
@@ -67,7 +67,7 @@ class HttpURLConnectionBasicRunnable extends HttpURLConnectionRunnable {
         if (baseListener != null && request.state == HttpState.RUN) {
             HttpParseManager parseManager = new HttpParseManager();
             parseManager.setHttpState(request.state);
-            Object parseObject = parseManager.parseJson(mResponse, result, headMap);
+            Object parseObject = parseManager.parseResponseFromJSONString(mResponse, result, headMap);
             if (request.state == HttpState.STOP) {
                 EasyLog.d(TAG.EasyHttp, mUrlStr + " 网络请求已停止!\n   ");
             } else if (parseObject == null) {

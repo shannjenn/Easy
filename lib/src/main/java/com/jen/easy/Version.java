@@ -9,9 +9,9 @@ public final class Version {
     /**
      * 版本号(初版：1)
      */
-    public final static int VERSION_CODE = 13;
+    public final static int VERSION_CODE = 14;
     /**
      * 版本名称(初版：1.0.0)
      */
-    public final static String VERSION_NAME = "1.1.2";
+    public final static String VERSION_NAME = "1.1.3";
 }

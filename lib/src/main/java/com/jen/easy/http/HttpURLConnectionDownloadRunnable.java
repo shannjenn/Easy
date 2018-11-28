@@ -37,7 +37,7 @@ class HttpURLConnectionDownloadRunnable extends HttpURLConnectionRunnable {
         if (!mIsGet) {
             connection.connect();
             DataOutputStream out = new DataOutputStream(connection.getOutputStream());
-            out.write(mJsonParam.toString().getBytes(Unicode.DEFAULT));
+            out.write(mBody.toString().getBytes(Unicode.DEFAULT));
             out.flush();
             out.close();
         }

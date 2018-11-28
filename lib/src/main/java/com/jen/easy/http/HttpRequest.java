@@ -66,9 +66,9 @@ public abstract class HttpRequest {
     HttpState state = HttpState.RUN;
 
     /**
-     * 替换请求结果特殊符号
+     * 替换请求结果特殊符号(解析返回数据前替换特殊字符如：斜杠/)
      */
-    LinkedHashMap<String, String> responseReplaceMap;
+    LinkedHashMap<String, String> responseReplaceStringBeforeParse;
 
     /**
      * 替换请求结果特殊符号,如：\\\"code\\\": \\\"HKD\\\"
@@ -81,9 +81,9 @@ public abstract class HttpRequest {
             Throw.exception(ExceptionType.NullPointerException, "格式化前后字符串不能为空");
             return;
         }
-        if (responseReplaceMap == null) {
-            responseReplaceMap = new LinkedHashMap<>();
+        if (responseReplaceStringBeforeParse == null) {
+            responseReplaceStringBeforeParse = new LinkedHashMap<>();
         }
-        responseReplaceMap.put(oldChar, newChar);
+        responseReplaceStringBeforeParse.put(oldChar, newChar);
     }
 }
