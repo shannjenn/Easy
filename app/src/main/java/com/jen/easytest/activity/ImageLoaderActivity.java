@@ -51,7 +51,7 @@ public class ImageLoaderActivity<T extends ImageLoaderResponse> extends EasyActi
         List<ImageLoaderModel> list = EasyMain.mDao.searchAll(ImageLoaderModel.class);
         mData.addAll(list);
         mData.addAll(list);
-        adapter = new ImageLoaderAdapter(this, mData);
+        adapter = new ImageLoaderAdapter<>(this, mData);
 
         RecyclerView.LayoutManager manager = new GridLayoutManager(this, 2);
         recycle.setLayoutManager(manager);
@@ -73,12 +73,13 @@ public class ImageLoaderActivity<T extends ImageLoaderResponse> extends EasyActi
     }
 
     @Override
-    public void success(int flagCode, String flag, T response) {
-        super.success(flagCode, flag, response);
-        mData.clear();
-        mData.addAll(response.getData().getData2());
-        EasyMain.mDao.replace(mData);
-        adapter.notifyDataSetChanged();
+    public void success(int flagCode, String flag, Object object) {
+        super.success(flagCode, flag, object);
+
+//        mData.clear();
+//        mData.addAll(response.getData().getData2());
+//        EasyMain.mDao.replace(mData);
+//        adapter.notifyDataSetChanged();
     }
 
     @Override

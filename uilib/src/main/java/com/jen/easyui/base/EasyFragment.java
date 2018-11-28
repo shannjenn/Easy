@@ -20,7 +20,7 @@ import com.jen.easyui.dialog.EasyLoading;
  * 时间：2017/01/09.
  */
 
-public abstract class EasyFragment<T> extends Fragment implements HttpBasicListener<T> {
+public abstract class EasyFragment<T> extends Fragment implements HttpBasicListener {
     protected View rootView;
     protected Context mContext;
     protected Handler mHandler = new Handler(Looper.getMainLooper());
@@ -67,7 +67,7 @@ public abstract class EasyFragment<T> extends Fragment implements HttpBasicListe
     }
 
     @Override
-    public void success(int flagCode, String flag, T response) {
+    public void success(int flagCode, String flag, Object response) {
 
     }
 

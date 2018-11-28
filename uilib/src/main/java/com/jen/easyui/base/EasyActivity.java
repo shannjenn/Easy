@@ -21,7 +21,7 @@ import com.jen.easyui.dialog.EasyLoading;
  * 作者：ShannJenn
  * 时间：2017/10/26.
  */
-public abstract class EasyActivity<T> extends AppCompatActivity implements HttpBasicListener<T> {
+public abstract class EasyActivity<T> extends AppCompatActivity implements HttpBasicListener {
     private final String TAG =AppCompatActivity.class.getSimpleName();
     protected Context mContext;
     protected Handler mHandler = new Handler(Looper.getMainLooper());
@@ -71,7 +71,7 @@ public abstract class EasyActivity<T> extends AppCompatActivity implements HttpB
     protected abstract void onBindClick(View view);
 
     @Override
-    public void success(int flagCode, String flag, T response) {
+    public void success(int flagCode, String flag, Object response) {
 
     }
 
