@@ -26,17 +26,12 @@ public abstract class HttpRequest {
     public String flagStr;
 
     /**
-     * 如果url没设置值则url = urlBase + urlAppend
-     */
-    public String url;
-
-    /**
-     * 可以动态设置
+     * url前端部分
      */
     public String urlBase;
 
     /**
-     * 可以动态设置
+     * url后端部分，可以动态设置
      */
     public String urlAppend;
 
@@ -59,6 +54,11 @@ public abstract class HttpRequest {
      * 是否使用caches(默认false)
      */
     public boolean useCaches = false;
+
+    /**
+     * 返回对象
+     */
+    public Class response;
 
     /**
      * 网络请求运行状态
@@ -87,4 +87,6 @@ public abstract class HttpRequest {
         }
         replaceHttpResultMap.put(oldChar, newChar);
     }
+
+
 }

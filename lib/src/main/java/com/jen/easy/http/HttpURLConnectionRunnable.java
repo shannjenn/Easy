@@ -44,9 +44,9 @@ abstract class HttpURLConnectionRunnable implements Runnable {
             return;
         }
         String method = requestType.method;
-        mRequest.url = requestType.url;
+//        mRequest.url = requestType.url;
         Class response = requestType.response;
-        mUrlStr = mRequest.url;
+        mUrlStr = requestType.url;
         if (TextUtils.isEmpty(mUrlStr)) {
             mUrlStr = "";
             Throw.exception(ExceptionType.NullPointerException, "URL请求地址空");

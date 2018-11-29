@@ -10,7 +10,7 @@ public class javaClass {
         double aa = 2751545454645646546.235;
 
         String str = formatDouble(aa/100000000, 2);
-        System.out.println(str);
+        Class a = null;
     }
 
     private static String formatDouble(double value, int decimal) {

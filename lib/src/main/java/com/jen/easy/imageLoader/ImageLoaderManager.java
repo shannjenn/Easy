@@ -228,7 +228,7 @@ abstract class ImageLoaderManager {
         String name = urlChangeToName(imageUrl);
         String filePath = config.getLocalPath() + File.separator + name;
         HttpDownloadRequest request = new HttpDownloadRequest();//网络获取图片请求参数
-        request.url = imageUrl;
+        request.urlBase = imageUrl;
         request.timeout = config.getTimeOut();
         request.filePath = filePath;
         request.flagStr = imageUrl;

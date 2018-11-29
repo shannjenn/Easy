@@ -71,9 +71,9 @@ class HttpReflectManager {
             requestType.method = "GET";
             request.urlBase = request.urlBase != null ? request.urlBase : get.UrlBase();
             request.urlAppend = request.urlAppend != null ? request.urlAppend : get.UrlAppend();
-            request.url = request.url != null ? request.url : request.urlBase + request.urlAppend;
-            requestType.url = request.url;
-            requestType.response = get.Response();
+//            request.url = request.url != null ? request.url : request.urlBase + request.urlAppend;
+            requestType.url = request.urlBase + request.urlAppend;
+            requestType.response = request.response != null ? request.response : get.Response();
             return requestType;
         }
         boolean isPost = request.getClass().isAnnotationPresent(EasyHttpPost.class);
@@ -82,9 +82,9 @@ class HttpReflectManager {
             requestType.method = "POST";
             request.urlBase = request.urlBase != null ? request.urlBase : post.UrlBase();
             request.urlAppend = request.urlAppend != null ? request.urlAppend : post.UrlAppend();
-            request.url = request.url != null ? request.url : request.urlBase + request.urlAppend;
-            requestType.url = request.url;
-            requestType.response = post.Response();
+//            request.url = request.url != null ? request.url : request.urlBase + request.urlAppend;
+            requestType.url = request.urlBase + request.urlAppend;
+            requestType.response = request.response != null ? request.response : post.Response();
             return requestType;
         }
         boolean isPut = request.getClass().isAnnotationPresent(EasyHttpPut.class);
@@ -93,9 +93,9 @@ class HttpReflectManager {
             requestType.method = "PUT";
             request.urlBase = request.urlBase != null ? request.urlBase : put.UrlBase();
             request.urlAppend = request.urlAppend != null ? request.urlAppend : put.UrlAppend();
-            request.url = request.url != null ? request.url : request.urlBase + request.urlAppend;
-            requestType.url = request.url;
-            requestType.response = put.Response();
+//            request.url = request.url != null ? request.url : request.urlBase + request.urlAppend;
+            requestType.url = request.urlBase + request.urlAppend;
+            requestType.response = request.response != null ? request.response : put.Response();
             return requestType;
         }
         return null;
