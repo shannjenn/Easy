@@ -3,7 +3,6 @@ package com.jen.easytest.http.request;
 import com.jen.easy.EasyRequest;
 import com.jen.easy.http.HttpBasicRequest;
 import com.jen.easy.invalid.EasyInvalid;
-import com.jen.easy.invalid.InvalidType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +16,7 @@ public class ExampleBaseRequest extends HttpBasicRequest {
 
     private String name;//不注释默认作为参数请求,请求参数名与变量名一致，也就是name
 
-    @EasyInvalid({InvalidType.Response, InvalidType.Request})
-//    @EasyRequest(invalid = true)//注释noReq = true，则不作为参数请求
+    @EasyInvalid({EasyInvalid.Type.Response, EasyInvalid.Type.Request})
     private int age;
 
     @EasyRequest(value = "_type", type = EasyRequest.Type.Head)//注释isHeadReq = true，则作为head参数请求
@@ -31,6 +29,7 @@ public class ExampleBaseRequest extends HttpBasicRequest {
         tests.add("list3");
     }
 
+    @EasyInvalid(EasyInvalid.Type.Request)
     private String cid;// 商户公司编号
 
     private String fromCity;// 起飞城市代码

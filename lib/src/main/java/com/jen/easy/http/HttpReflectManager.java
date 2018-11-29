@@ -9,8 +9,8 @@ import com.jen.easy.constant.FieldType;
 import com.jen.easy.constant.TAG;
 import com.jen.easy.exception.ExceptionType;
 import com.jen.easy.exception.Throw;
+import com.jen.easy.invalid.EasyInvalid;
 import com.jen.easy.invalid.Invalid;
-import com.jen.easy.invalid.InvalidType;
 import com.jen.easy.log.EasyLog;
 
 import org.json.JSONArray;
@@ -145,7 +145,7 @@ class HttpReflectManager {
             /*if (request.status == HttpState.STOP) {
                 break;
             }*/
-            boolean isInvalid = Invalid.isEasyInvalid(clazz, InvalidType.Request);
+            boolean isInvalid = Invalid.isEasyInvalid(clazz, EasyInvalid.Type.Request);
             if (!isInvalid) {
                 parseRequestEntity(loopList, clazz, request, urls, body, heads);
             }
@@ -168,7 +168,7 @@ class HttpReflectManager {
     private static void parseRequestEntity(List<String> loopList, Class clazz, Object obj, Map<String, String> urls, JSONObject body, Map<String, String> heads) {
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
-            boolean isInvalid = Invalid.isEasyInvalid(field, InvalidType.Request);
+            boolean isInvalid = Invalid.isEasyInvalid(field, EasyInvalid.Type.Request);
             if (isInvalid) {
                 continue;
             }
@@ -292,7 +292,7 @@ class HttpReflectManager {
         String respName = HttpHeadResponse.class.getName();
         String objName = Object.class.getName();
         while (!clazzName.equals(respName) && !clazzName.equals(objName)) {
-            boolean isInvalid = Invalid.isEasyInvalid(myClass, InvalidType.Response);
+            boolean isInvalid = Invalid.isEasyInvalid(myClass, EasyInvalid.Type.Response);
             if (!isInvalid) {
                 parseResponseEntity(myClass, param_field, head_field);
             }
@@ -311,7 +311,7 @@ class HttpReflectManager {
     private static void parseResponseEntity(Class clazz, Map<String, Field> param_field, Map<String, Field> head_field) {
         Field[] fieldsSuper = clazz.getDeclaredFields();
         for (Field field : fieldsSuper) {
-            boolean isInvalid = Invalid.isEasyInvalid(field, InvalidType.Response);
+            boolean isInvalid = Invalid.isEasyInvalid(field, EasyInvalid.Type.Response);
             if (isInvalid) {
                 continue;
             }
