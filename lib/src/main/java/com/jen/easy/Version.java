@@ -17,5 +17,5 @@ public final class Version {
     /**
      * 时间(初版：2017.07.18)
      */
-    public final static String time = "2018.11.29";
+    public final static String TIME = "2018.11.29";
 }
