@@ -11,13 +11,6 @@ public class javaClass {
 
         String str = formatDouble(aa/100000000, 2);
         System.out.println(str);
-
-        Class a = Student.class;
-
-        Class<School> b = School.class;
-
-        b = a;
-        System.out.println(b.getName());
     }
 
     private static String formatDouble(double value, int decimal) {

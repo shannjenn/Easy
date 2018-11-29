@@ -63,7 +63,8 @@ public abstract class HttpRequest {
     /**
      * 网络请求运行状态
      */
-    HttpState state = HttpState.RUN;
+    @HttpState
+    int status = HttpState.RUN;
 
     /**
      * 替换请求结果特殊符号(解析返回数据前替换特殊字符如：斜杠/)
@@ -73,7 +74,7 @@ public abstract class HttpRequest {
     /**
      * 替换请求结果特殊符号,如：\\\"code\\\": \\\"HKD\\\"
      *
-     * @param oldChar       替换前
+     * @param oldChar 替换前
      * @param newChar 替换后
      */
     public void addReplaceStringBeforeResponse(String oldChar, String newChar) {

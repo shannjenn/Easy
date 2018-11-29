@@ -110,7 +110,7 @@ abstract class HttpURLConnectionRunnable implements Runnable {
             Map<String, String> urls = requestObject.urls;
             Map<String, String> heads = requestObject.heads;
             mBody = requestObject.body;
-            if (mRequest.state == HttpState.STOP) {
+            if (mRequest.status == HttpState.STOP) {
                 return;
             }
             if (mIsGet) {
@@ -159,7 +159,7 @@ abstract class HttpURLConnectionRunnable implements Runnable {
                 headBuilder.append(value);
                 headBuilder.append(" ");
             }
-            if (mRequest.state == HttpState.STOP) {
+            if (mRequest.status == HttpState.STOP) {
                 return;
             }
             EasyLog.d(TAG.EasyHttp, "网络请求：" + method + " " + mUrlStr + " 请求头部：" + headBuilder.toString() + " 请求参数：" + mBody.toString());

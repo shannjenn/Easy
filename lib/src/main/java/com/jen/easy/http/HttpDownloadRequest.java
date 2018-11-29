@@ -28,7 +28,7 @@ public class HttpDownloadRequest extends HttpRequest {
     /**
      * 用户停止
      */
-    public boolean userCancel;
+    public boolean cancel;
 
     /**
      * 是否在下载删除旧文件，默认删除

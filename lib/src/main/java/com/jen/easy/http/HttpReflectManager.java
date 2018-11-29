@@ -142,7 +142,7 @@ class HttpReflectManager {
 //        String reqName = HttpBasicRequest.class.getName();
         String objName = Object.class.getName();
         while (/*!clazzName.equals(reqName) &&*/ !clazzName.equals(objName)) {
-            /*if (request.state == HttpState.STOP) {
+            /*if (request.status == HttpState.STOP) {
                 break;
             }*/
             boolean isInvalid = Invalid.isEasyInvalid(clazz, InvalidType.Request);

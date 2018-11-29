@@ -28,6 +28,6 @@ public class HttpUploadRequest extends HttpRequest {
     /**
      * 用户停止
      */
-    public boolean userCancel;
+    public boolean cancel;
 
 }

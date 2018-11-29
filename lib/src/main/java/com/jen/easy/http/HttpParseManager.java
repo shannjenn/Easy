@@ -27,12 +27,6 @@ class HttpParseManager {
     private Map<String, List<String>> mHeadMap;
     /*错误提示*/
     private List<String> mErrors = new ArrayList<>();
-    /*网络请求运行状态*/
-    private HttpState state = HttpState.RUN;
-
-    void setHttpState(HttpState state) {
-        this.state = state;
-    }
 
     /**
      * json解析
@@ -93,9 +87,6 @@ class HttpParseManager {
 
         Set<String> headKeys = heads.keySet();
         for (String headKey : headKeys) {//设置head值
-            if (state == HttpState.STOP) {
-                return null;
-            }
             if (!mHeadMap.containsKey(headKey)) {
                 continue;
             }
@@ -125,9 +116,6 @@ class HttpParseManager {
         }
         Iterator<String> keys = jsonObject.keys();
         while (keys.hasNext()) {
-            if (state == HttpState.STOP) {
-                return null;
-            }
             String param = keys.next();
             if (!body.containsKey(param)) {
                 continue;
@@ -219,9 +207,6 @@ class HttpParseManager {
         List<T> list = new ArrayList<>();
         int length = jsonArray.length();
         for (int i = 0; i < length; i++) {
-            if (state == HttpState.STOP) {
-                break;
-            }
             Object jsonObj;
             try {
                 jsonObj = jsonArray.get(i);

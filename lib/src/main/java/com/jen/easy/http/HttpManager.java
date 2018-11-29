@@ -20,14 +20,15 @@ import java.util.concurrent.TimeUnit;
 abstract class HttpManager {
     private ExecutorService pool;
     private int maxThreadSize;
-    private HttpState state;
+    @HttpState
+    private int status;
     private HttpBasicListener httpBaseListener;
     private HttpDownloadListener httpDownloadListener;
     private HttpUploadListener httpUploadListener;
 
     public HttpManager(int maxThreadSize) {
         this.maxThreadSize = maxThreadSize;
-        state = HttpState.RUN;
+        status = HttpState.RUN;
         pool = Executors.newFixedThreadPool(maxThreadSize);
     }
 
@@ -37,7 +38,7 @@ abstract class HttpManager {
      * @param request 请求对象
      */
     public void start(HttpRequest request) {
-        if (state == HttpState.STOP) {
+        if (status == HttpState.STOP) {
             EasyLog.i("线程池已经关闭，不可以再操作 start");
             return;
         }
@@ -45,7 +46,6 @@ abstract class HttpManager {
             Throw.exception(ExceptionType.NullPointerException, "参数不能为空");
             return;
         }
-        request.state = state;//默认引用HttpManager state地址
         if (request instanceof HttpBasicRequest) {
             HttpURLConnectionBasicRunnable base = new HttpURLConnectionBasicRunnable((HttpBasicRequest) request, httpBaseListener);
             pool.execute(base);
@@ -70,7 +70,7 @@ abstract class HttpManager {
         if (request == null) {
             Throw.exception(ExceptionType.NullPointerException, "参数不能为空");
         } else {
-            request.state = HttpState.STOP;
+            request.status = HttpState.STOP;
         }
     }
 
@@ -78,10 +78,10 @@ abstract class HttpManager {
      * 关闭后所有线程都不能再执行
      */
     public void shutdown() {
-        if (state == HttpState.STOP) {
+        if (status == HttpState.STOP) {
             return;
         }
-        state = HttpState.STOP;
+        status = HttpState.STOP;
         httpBaseListener = null;
         httpDownloadListener = null;
         httpUploadListener = null;
@@ -105,7 +105,7 @@ abstract class HttpManager {
     }
 
     public void setHttpBaseListener(HttpBasicListener httpBaseListener) {
-        if (state == HttpState.STOP) {
+        if (status == HttpState.STOP) {
             EasyLog.i("线程池已经关闭，不可以再操作 setHttpBaseListener");
             return;
         }
@@ -117,7 +117,7 @@ abstract class HttpManager {
     }
 
     public void setHttpDownloadListener(HttpDownloadListener httpDownloadListener) {
-        if (state == HttpState.STOP) {
+        if (status == HttpState.STOP) {
             EasyLog.i("线程池已经关闭，不可以再操作 setHttpDownloadListener");
             return;
         }
@@ -129,7 +129,7 @@ abstract class HttpManager {
     }
 
     public void setHttpUploadListener(HttpUploadListener httpUploadListener) {
-        if (state == HttpState.STOP) {
+        if (status == HttpState.STOP) {
             EasyLog.i("线程池已经关闭，不可以再操作 setHttpUploadListener");
             return;
         }

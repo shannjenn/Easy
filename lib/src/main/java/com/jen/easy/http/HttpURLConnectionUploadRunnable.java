@@ -36,9 +36,9 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
         long curBytes = request.startPoint;
         int len;
         byte[] bufferOut = new byte[1024];
-        while ((len = in.read(bufferOut)) != -1 && !request.userCancel) {
+        while ((len = in.read(bufferOut)) != -1) {
             out.write(bufferOut, 0, len);
-            if (request.userCancel) {
+            if (request.cancel || request.status == HttpState.STOP) {
                 break;
             } else {
                 progress(curBytes, request.endPoint);
@@ -48,7 +48,11 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
         out.flush();
         out.close();
 
-        if (request.userCancel) {
+        if (mRequest.status == HttpState.STOP) {
+            EasyLog.d(TAG.EasyHttp, mUrlStr + " 网络请求停止!\n   ");
+            return;
+        }
+        if (request.cancel) {
             fail("上传失败：用户取消上传");
             return;
         }
@@ -61,6 +65,10 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
             buffer.append(line);
         }
         reader.close();
+        if (mRequest.status == HttpState.STOP) {//拦截数据解析
+            EasyLog.d(TAG.EasyHttp, mUrlStr + " 网络请求停止!\n   ");
+            return;
+        }
         String result = buffer.toString();
         EasyLog.d(TAG.EasyHttp, mUrlStr + " 完成，返回数据：" + result);
         if (mRequest.replaceHttpResultMap != null) {
@@ -73,17 +81,13 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
     @Override
     protected void success(String result, Map<String, List<String>> headMap) {
         EasyLog.d(TAG.EasyHttp, mUrlStr + " 上传成功！");
-        HttpUploadRequest request = (HttpUploadRequest) mRequest;
-        if (uploadListener != null && request.state == HttpState.RUN) {
+        if (uploadListener != null) {
             HttpParseManager parseManager = new HttpParseManager();
-            parseManager.setHttpState(request.state);
             Object parseObject = parseManager.parseResponseFromJSONString(mResponse, result, headMap);
-            if (request.state == HttpState.STOP) {
-                EasyLog.d(TAG.EasyHttp, mUrlStr + " 网络请求停止!\n   ");
-            } else if (parseObject == null) {
+            if (parseObject == null) {
                 fail("返回数据解析异常");
             } else {
-                uploadListener.success(request.flagCode, request.flagStr, parseObject);
+                uploadListener.success(mRequest.flagCode, mRequest.flagStr, parseObject);
             }
         }
     }
@@ -91,14 +95,14 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
     @Override
     protected void fail(String msg) {
         EasyLog.w(TAG.EasyHttp, mUrlStr + " " + msg);
-        HttpUploadRequest request = (HttpUploadRequest) mRequest;
-        if (uploadListener != null && request.state == HttpState.RUN)
-            uploadListener.fail(request.flagCode, request.flagStr, msg);
+        if (uploadListener != null) {
+            uploadListener.fail(mRequest.flagCode, mRequest.flagStr, msg);
+        }
     }
 
     private void progress(long currentPoint, long endPoint) {
-        HttpUploadRequest request = (HttpUploadRequest) mRequest;
-        if (uploadListener != null && request.state == HttpState.RUN)
-            uploadListener.progress(request.flagCode, request.flagStr, currentPoint, endPoint);
+        if (uploadListener != null) {
+            uploadListener.progress(mRequest.flagCode, mRequest.flagStr, currentPoint, endPoint);
+        }
     }
 }

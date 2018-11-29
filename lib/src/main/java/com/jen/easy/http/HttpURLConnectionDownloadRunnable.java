@@ -52,25 +52,23 @@ class HttpURLConnectionDownloadRunnable extends HttpURLConnectionRunnable {
             RandomAccessFile randFile = new RandomAccessFile(request.filePath, "rwd");
             randFile.seek(request.startPoint);
             int len;
-            while ((len = inStream.read(buffer)) != -1 && !request.userCancel) {
+            while ((len = inStream.read(buffer)) != -1) {
                 randFile.write(buffer, 0, len);
                 curBytes += len;
-                if (mRequest.state == HttpState.STOP) {
-                    break;
-                } else if (request.userCancel) {
+                if (request.cancel || mRequest.status == HttpState.STOP) {
                     break;
                 } else {
                     progress(curBytes, request.endPoint);
                 }
             }
-            if (mRequest.state != HttpState.STOP) {
-                if (request.userCancel) {
-                    fail("下载失败：用户取消下载");
-                } else if (curBytes == request.endPoint) {
-                    success(null, null);
-                } else {
-                    fail("下载失败：" + mResponseCode + " curBytes = " + curBytes + " endPoint = " + request.endPoint);
-                }
+            if (mRequest.status == HttpState.STOP) {
+                EasyLog.d(TAG.EasyHttp, mUrlStr + " 网络请求停止!\n   ");
+            } else if (request.cancel) {
+                fail("下载失败：用户取消下载");
+            } else if (curBytes == request.endPoint) {
+                success(null, null);
+            } else {
+                fail("下载失败：" + mResponseCode + " curBytes = " + curBytes + " endPoint = " + request.endPoint);
             }
         } else {
             fail("下载失败：" + mResponseCode);
@@ -80,22 +78,23 @@ class HttpURLConnectionDownloadRunnable extends HttpURLConnectionRunnable {
     @Override
     protected void success(String result, Map<String, List<String>> headMap) {
         EasyLog.d(TAG.EasyHttp, mUrlStr + " 下载成功！");
-        HttpDownloadRequest request = (HttpDownloadRequest) mRequest;
-        if (downloadListener != null && request.state == HttpState.RUN)
-            downloadListener.success(request.flagCode, request.flagStr, request.filePath);
+        if (downloadListener != null) {
+            HttpDownloadRequest request = (HttpDownloadRequest) mRequest;
+            downloadListener.success(mRequest.flagCode, mRequest.flagStr, request.filePath);
+        }
     }
 
     @Override
     protected void fail(String msg) {
         EasyLog.w(TAG.EasyHttp, mUrlStr + " " + msg);
-        HttpDownloadRequest request = (HttpDownloadRequest) mRequest;
-        if (downloadListener != null && request.state == HttpState.RUN)
-            downloadListener.fail(request.flagCode, request.flagStr, msg);
+        if (downloadListener != null && mRequest.status == HttpState.RUN) {
+            downloadListener.fail(mRequest.flagCode, mRequest.flagStr, msg);
+        }
     }
 
     private void progress(long currentPoint, long endPoint) {
-        HttpDownloadRequest request = (HttpDownloadRequest) mRequest;
-        if (downloadListener != null && request.state == HttpState.RUN)
-            downloadListener.progress(request.flagCode, request.flagStr, currentPoint, endPoint);
+        if (downloadListener != null && mRequest.status == HttpState.RUN) {
+            downloadListener.progress(mRequest.flagCode, mRequest.flagStr, currentPoint, endPoint);
+        }
     }
 }
