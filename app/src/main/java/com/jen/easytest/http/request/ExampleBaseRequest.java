@@ -17,7 +17,7 @@ public class ExampleBaseRequest extends HttpBasicRequest {
 
     private String name;//不注释默认作为参数请求,请求参数名与变量名一致，也就是name
 
-    @EasyInvalid({InvalidType.Response,InvalidType.Request})
+    @EasyInvalid({InvalidType.Response, InvalidType.Request})
 //    @EasyRequest(invalid = true)//注释noReq = true，则不作为参数请求
     private int age;
 

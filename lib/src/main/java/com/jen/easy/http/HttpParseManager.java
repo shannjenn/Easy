@@ -596,7 +596,7 @@ class HttpParseManager {
      * @param exception 异常类型
      * @param error     错误信息
      */
-    private void throwError(ExceptionType exception, String error) {
+    private void throwError(@ExceptionType int exception, String error) {
         if (!mErrors.contains(error)) {
             Throw.exception(exception, error);
             mErrors.add(error);

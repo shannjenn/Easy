@@ -13,13 +13,14 @@ public class Invalid {
      * @param type  类型
      * @return boolean
      */
-    public static boolean isEasyInvalid(Class clazz, InvalidType type) {
+    public static boolean isEasyInvalid(Class clazz, @InvalidType int type) {
         boolean isInvalid = false;
         boolean isEasyInvalid = clazz.isAnnotationPresent(EasyInvalid.class);
         if (isEasyInvalid) {
             EasyInvalid param = (EasyInvalid) clazz.getAnnotation(EasyInvalid.class);
-            InvalidType[] types = param.value();
-            for (InvalidType invalidType : types) {
+            @InvalidType
+            int[] types = param.value();
+            for (int invalidType : types) {
                 if (type == invalidType) {
                     isInvalid = true;
                     break;
@@ -34,13 +35,14 @@ public class Invalid {
      * @param type  类型
      * @return boolean
      */
-    public static boolean isEasyInvalid(Field field, InvalidType type) {
+    public static boolean isEasyInvalid(Field field, @InvalidType int type) {
         boolean isInvalid = false;
         boolean isEasyInvalid = field.isAnnotationPresent(EasyInvalid.class);
         if (isEasyInvalid) {
             EasyInvalid param = field.getAnnotation(EasyInvalid.class);
-            InvalidType[] types = param.value();
-            for (InvalidType invalidType : types) {
+            @InvalidType
+            int[] types = param.value();
+            for (int invalidType : types) {
                 if (type == invalidType) {
                     isInvalid = true;
                     break;

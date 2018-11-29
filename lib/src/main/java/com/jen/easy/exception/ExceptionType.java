@@ -1,5 +1,10 @@
 package com.jen.easy.exception;
 
+import android.support.annotation.IntDef;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 /**
  * 作者：ShannJenn
  * 时间：2017/8/12.
@@ -17,11 +22,13 @@ package com.jen.easy.exception;
  * * 9、SecurityException - 安全异常
  * * 10、UnsupportedOperationException - 不支持的操作异常
  */
-
-public enum ExceptionType {
-    NullPointerException,
-    ClassCastException,
-    NumberFormatException,
-    IllegalArgumentException,
-    RuntimeException
+@IntDef({ExceptionType.NullPointerException, ExceptionType.ClassCastException, ExceptionType.NumberFormatException,
+        ExceptionType.IllegalArgumentException, ExceptionType.RuntimeException})
+@Retention(RetentionPolicy.SOURCE)
+public @interface ExceptionType {
+    int NullPointerException = 0;
+    int ClassCastException = 1;
+    int NumberFormatException = 2;
+    int IllegalArgumentException = 3;
+    int RuntimeException = 4;
 }

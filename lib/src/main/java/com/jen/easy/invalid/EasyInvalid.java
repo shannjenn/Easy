@@ -16,5 +16,6 @@ public @interface EasyInvalid {
     /**
      * 参数名称
      */
-    InvalidType[] value() default {InvalidType.Request, InvalidType.Response, InvalidType.Column};
+    @InvalidType
+    int[] value() default {InvalidType.Request, InvalidType.Response, InvalidType.Column};
 }

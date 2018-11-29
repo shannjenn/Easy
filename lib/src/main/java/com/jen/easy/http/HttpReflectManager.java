@@ -174,7 +174,8 @@ class HttpReflectManager {
             }
             boolean isAnnotation = field.isAnnotationPresent(EasyRequest.class);
             String key = "";
-            EasyRequest.Type paramType = EasyRequest.Type.Param;
+            @EasyRequest.Type
+            int paramType = EasyRequest.Type.Param;
             if (isAnnotation) {
                 EasyRequest param = field.getAnnotation(EasyRequest.class);
                 paramType = param.type();
@@ -196,18 +197,18 @@ class HttpReflectManager {
                 if (value instanceof String || value instanceof Integer || value instanceof Float || value instanceof Long
                         || value instanceof Double || value instanceof Boolean) {
                     switch (paramType) {
-                        case Param: {
+                        case EasyRequest.Type.Param: {
                             body.put(key, value);
                             break;
                         }
-                        case Head: {
+                        case EasyRequest.Type.Head: {
                             if (heads.containsKey(key)) {
                                 continue;
                             }
                             heads.put(key, value + "");
                             break;
                         }
-                        case Url: {
+                        case EasyRequest.Type.Url: {
                             urls.put(key, value + "");
                             break;
                         }
@@ -316,7 +317,8 @@ class HttpReflectManager {
             }
             boolean isAnnotation = field.isAnnotationPresent(EasyResponse.class);
             String paramName = "";
-            EasyResponse.Type paramType = EasyResponse.Type.Param;
+            @EasyResponse.Type
+            int paramType = EasyResponse.Type.Param;
             if (isAnnotation) {
                 EasyResponse param = field.getAnnotation(EasyResponse.class);
                 paramType = param.type();
@@ -330,14 +332,14 @@ class HttpReflectManager {
             }
             Class fieldClass = field.getType();
             switch (paramType) {
-                case Param: {
+                case EasyResponse.Type.Param: {
                     if (param_field.containsKey(paramName)) {//子类已经有不再重复增加
                         continue;
                     }
                     param_field.put(paramName, field);
                     break;
                 }
-                case Head: {
+                case EasyResponse.Type.Head: {
                     if (!FieldType.isString(fieldClass)) {
                         Throw.exception(ExceptionType.ClassCastException, "请求头返回变量必须为String类型:" + paramName);
                         continue;

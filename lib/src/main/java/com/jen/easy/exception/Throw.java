@@ -9,21 +9,22 @@ public class Throw {
 
     /**
      * 异常捕获
+     *
      * @param type 抛出异常
      * @param msg  抛出类型
      */
-    public static void exception(ExceptionType type, String msg) {
+    public static void exception(@ExceptionType int type, String msg) {
         try {
             switch (type) {
-                case NullPointerException:
+                case ExceptionType.NullPointerException:
                     throw new NullPointerException(msg);
-                case ClassCastException:
+                case ExceptionType.ClassCastException:
                     throw new ClassCastException(msg);
-                case NumberFormatException:
+                case ExceptionType.NumberFormatException:
                     throw new NumberFormatException(msg);
-                case IllegalArgumentException:
+                case ExceptionType.IllegalArgumentException:
                     throw new IllegalArgumentException(msg);
-                case RuntimeException:
+                case ExceptionType.RuntimeException:
                     throw new RuntimeException(msg);
             }
         } catch (NullPointerException e) {

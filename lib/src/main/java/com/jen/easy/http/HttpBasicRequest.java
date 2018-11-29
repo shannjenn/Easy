@@ -9,9 +9,6 @@ import com.jen.easy.EasyRequest;
  */
 public abstract class HttpBasicRequest extends HttpRequest {
 
-//    @EasyRequest(value = "Content-Type", type = EasyRequest.Type.Head)
-//    protected String HEAD_CONTENT_TYPE = "application/Json;charset=UTF-8";
-
     @EasyRequest(value = "Content-Type", type = EasyRequest.Type.Head)
     protected String head_content_type = "application/json";
 
