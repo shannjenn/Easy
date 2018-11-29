@@ -28,24 +28,27 @@ import java.util.concurrent.TimeUnit;
  */
 public class EasyLoopView extends View {
     //默认值
-    private final float TEXT_SIZE_DEFAULT = 16;//SP
-    private final int TEXT_COLOR_SELECT_DEFAULT = 0xff0085f2;//选中的颜色
-    private final int TEXT_COLOR_UN_SELECT_DEFAULT = 0xffaaaaaa;//未选中的颜色
-    private final int TEXT_VERTICAL_SPACING_DEFAULT = 100;//字体垂直间隔
-    private final int LINE_COLOR_DEFAULT = 0x660085f2;//线条的颜色 透明
-    private final int VIEW_HORIZONTAL_SPACING_DEFAULT = 20;//view左右间隔px
-    private final int UNIT_TEXT_COLOR_DEFAULT = 0xff0085f2;//单位颜色
-    private final int UNIT_HORIZONTAL_SPACING_DEFAULT = 40;//单位间隔px
+//    private final float TEXT_SIZE_DEFAULT = 16;//SP
+//    private final int TEXT_COLOR_SELECT_DEFAULT = 0xff0085f2;//选中的颜色
+//    private final int TEXT_COLOR_UN_SELECT_DEFAULT = 0xffaaaaaa;//未选中的颜色
+//    private final int TEXT_VERTICAL_MARGIN_DEFAULT = 100;//字体垂直间隔
+//    private final int LINE_COLOR_DEFAULT = 0x660085f2;//线条的颜色 透明
+//    private final int VIEW_HORIZONTAL_MARGIN_DEFAULT = 20;//view左右间隔px
+//    private final int UNIT_TEXT_COLOR_DEFAULT = 0xff0085f2;//单位颜色
+//    private final int UNIT_HORIZONTAL_MARGIN_DEFAULT = 40;//单位间隔px
 
-    private float textSize = TEXT_SIZE_DEFAULT;
-    private int textColorSelect = TEXT_COLOR_SELECT_DEFAULT;
-    private int textColorUnSelect = TEXT_COLOR_UN_SELECT_DEFAULT;
-    public int textVerticalSpacing = TEXT_VERTICAL_SPACING_DEFAULT;
-    private int lineColor = LINE_COLOR_DEFAULT;
-    public int viewHorizontalSpacing = VIEW_HORIZONTAL_SPACING_DEFAULT;
+    private int textSize;
+    private int textColorSelect;
+    private int textColorUnSelect;
+    public int textVerticalMargin;
+
+    public int viewHorizontalMargin;
+
+    private int lineColor;
+
     private String unitText;
-    private int unitTextColor = UNIT_TEXT_COLOR_DEFAULT;
-    public int unitHorizontalSpacing = UNIT_HORIZONTAL_SPACING_DEFAULT;
+    private int unitTextColor;
+    public int unitHorizontalMargin;
 
     Context context;
     private ScheduledExecutorService mExecutor = Executors.newSingleThreadScheduledExecutor();
@@ -53,7 +56,6 @@ public class EasyLoopView extends View {
 
     public EasyLoopViewListener loopListener;
     private GestureDetector gestureDetector;
-    private GestureDetector.SimpleOnGestureListener simpleOnGestureListener;
     public EasyLoopViewHandler loopViewHandler;
     private int selectedItem;
 
@@ -102,37 +104,50 @@ public class EasyLoopView extends View {
     private void initLoopView(Context context, AttributeSet attrs) {
         this.context = context;
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.EasyLoopView);
-        layoutWidth = a.getLayoutDimension(R.styleable.EasyLoopView_android_layout_width, 0);
+        int textSizeXp = (int) EasyDensityUtil.sp2px(161);
 
-        float textSizeXp = EasyDensityUtil.sp2px(textSize);
+        textSize = a.getDimensionPixelOffset(R.styleable.EasyLoopView_loopViewTextSize, textSizeXp);
+        textColorSelect = a.getColor(R.styleable.EasyLoopView_loopViewTextSelectColor, 0xff0085f2);
+        textColorUnSelect = a.getColor(R.styleable.EasyLoopView_loopViewTextUnSelectColor, 0xffaaaaaa);
+        textVerticalMargin = a.getDimensionPixelOffset(R.styleable.EasyLoopView_loopViewTextVerticalMargin, 100);
+
+        viewHorizontalMargin = a.getDimensionPixelOffset(R.styleable.EasyLoopView_loopViewHorizontalMargin, 20);
+
+        lineColor = a.getColor(R.styleable.EasyLoopView_loopViewLineColor, 0x660085f2);
+
+        unitText = a.getString(R.styleable.EasyLoopView_loopViewUnitText);
+        unitTextColor = a.getColor(R.styleable.EasyLoopView_loopViewUnitTextColor, 0xff0085f2);
+        unitHorizontalMargin = a.getColor(R.styleable.EasyLoopView_loopViewUnitHorizontalMargin, 40);
+
+        layoutWidth = a.getLayoutDimension(R.styleable.EasyLoopView_android_layout_width, 0);
 
         selectedPaint = new Paint();
         selectedPaint.setColor(textColorSelect);
         selectedPaint.setAntiAlias(true);
         selectedPaint.setTextScaleX(1.05F);
         selectedPaint.setTypeface(Typeface.MONOSPACE);//字体样式
-        selectedPaint.setTextSize(textSizeXp);
+        selectedPaint.setTextSize(textSize);
 
         unselectedPaint = new Paint();
         unselectedPaint.setColor(textColorUnSelect);
         unselectedPaint.setAntiAlias(true);
         unselectedPaint.setTypeface(Typeface.MONOSPACE);
-        unselectedPaint.setTextSize(textSizeXp);
+        unselectedPaint.setTextSize(textSize);
 
         unitPaint = new Paint();
         unitPaint.setColor(unitTextColor);
         unitPaint.setAntiAlias(true);
         unitPaint.setTypeface(Typeface.MONOSPACE);
-        unitPaint.setTextSize(textSizeXp);
+        unitPaint.setTextSize(textSize);
 
         linePaint = new Paint();
         linePaint.setColor(lineColor);
         linePaint.setAntiAlias(true);
         linePaint.setTypeface(Typeface.MONOSPACE);
-        linePaint.setTextSize(textSizeXp);
+        linePaint.setTextSize(textSize);
 
         setLayerType(LAYER_TYPE_SOFTWARE, null);
-        simpleOnGestureListener = new EasyLoopViewGestureListener(this);
+        GestureDetector.SimpleOnGestureListener simpleOnGestureListener = new EasyLoopViewGestureListener(this);
         gestureDetector = new GestureDetector(context, simpleOnGestureListener);
         gestureDetector.setIsLongpressEnabled(false);
         loopViewHandler = new EasyLoopViewHandler(this);
@@ -158,11 +173,11 @@ public class EasyLoopView extends View {
             unitTextWidth = rect.width();
         }
 
-        halfCircumference = (maxTextHeight + textVerticalSpacing) * (itemCount - 1);
+        halfCircumference = (maxTextHeight + textVerticalMargin) * (itemCount - 1);
         measuredHeight = (int) ((halfCircumference * 2) / Math.PI);
         radius = (int) (halfCircumference / Math.PI);
-        firstLineY = (int) ((measuredHeight - (maxTextHeight + textVerticalSpacing)) / 2.0F);
-        secondLineY = (int) ((measuredHeight + (maxTextHeight + textVerticalSpacing)) / 2.0F);
+        firstLineY = (int) ((measuredHeight - (maxTextHeight + textVerticalMargin)) / 2.0F);
+        secondLineY = (int) ((measuredHeight + (maxTextHeight + textVerticalMargin)) / 2.0F);
 //        preCurrentIndex = initPosition;
         totalScrollY = 0;
         rawY = 0;
@@ -173,7 +188,7 @@ public class EasyLoopView extends View {
 //        int specMode = MeasureSpec.getMode(widthMeasureSpec);//得到模式
 //        int specSize = MeasureSpec.getSize(widthMeasureSpec);//得到大小
         if (layoutWidth == ViewGroup.LayoutParams.WRAP_CONTENT) {
-            int widthSpec = maxTextWidth + unitTextWidth + unitHorizontalSpacing + viewHorizontalSpacing * 2;
+            int widthSpec = maxTextWidth + unitTextWidth + unitHorizontalMargin + viewHorizontalMargin * 2;
             widthMeasureSpec = MeasureSpec.makeMeasureSpec(widthSpec, MeasureSpec.EXACTLY);
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -193,7 +208,7 @@ public class EasyLoopView extends View {
         }
         int size = arrayList.size();
         String[] as = new String[itemCount];
-        int change = totalScrollY / ((maxTextHeight + textVerticalSpacing));
+        int change = totalScrollY / ((maxTextHeight + textVerticalMargin));
         preCurrentIndex = initPosition + change % size;
         if (preCurrentIndex < 0) {
             preCurrentIndex = size + preCurrentIndex;
@@ -202,7 +217,7 @@ public class EasyLoopView extends View {
             preCurrentIndex = preCurrentIndex - size;
         }
 
-        int j2 = totalScrollY % (maxTextHeight + textVerticalSpacing);
+        int j2 = totalScrollY % (maxTextHeight + textVerticalMargin);
         int k1 = 0;
         while (k1 < itemCount) {
             int l1 = preCurrentIndex - (itemCount / 2 - k1);
@@ -220,11 +235,11 @@ public class EasyLoopView extends View {
 
         int left;
         if (unitText != null) {
-            left = (measuredWidth - maxTextWidth - unitTextWidth - unitHorizontalSpacing) / 2;
+            left = (measuredWidth - maxTextWidth - unitTextWidth - unitHorizontalMargin) / 2;
 
             canvas.save();
             canvas.clipRect(0, 0, measuredWidth, measuredHeight);
-            canvas.drawText(unitText, left + maxTextWidth + unitHorizontalSpacing, measuredHeight / 2 + unitTextWidth / 2, unitPaint);
+            canvas.drawText(unitText, left + maxTextWidth + unitHorizontalMargin, measuredHeight / 2 + unitTextWidth / 2, unitPaint);
             canvas.restore();
         } else {
             left = (measuredWidth - maxTextWidth) / 2;
@@ -238,7 +253,7 @@ public class EasyLoopView extends View {
         int j1 = 0;
         while (j1 < itemCount) {
             canvas.save();
-            int itemHeight = maxTextHeight + textVerticalSpacing;
+            int itemHeight = maxTextHeight + textVerticalMargin;
             double radian = ((itemHeight * j1 - j2) * Math.PI) / halfCircumference;
             float angle = (float) (90D - (radian / Math.PI) * 180D);
             if (angle >= 90F || angle <= -90F) {
@@ -280,7 +295,7 @@ public class EasyLoopView extends View {
     }
 
     public void smoothScroll() {
-        int offset = totalScrollY % ((maxTextHeight + textVerticalSpacing));
+        int offset = totalScrollY % ((maxTextHeight + textVerticalMargin));
         cancelFuture();
         mFuture = mExecutor.scheduleWithFixedDelay(new EasyLoopViewScrollOffsetTimerTask(this, offset),
                 0, 10, TimeUnit.MILLISECONDS);
@@ -355,7 +370,7 @@ public class EasyLoopView extends View {
         loopListener = LoopListener;
     }
 
-    public void setTextSize(float size) {
+    public void setTextSize(int size) {
         textSize = size;
         float textSizeXp = EasyDensityUtil.sp2px(textSize);
         unselectedPaint.setTextSize(textSizeXp);
@@ -382,6 +397,7 @@ public class EasyLoopView extends View {
         this.textColorSelect = textColorSelect;
         selectedPaint.setColor(textColorSelect);
     }
+
     public void setTextColorUnSelect(int textColorUnSelect) {
         this.textColorUnSelect = textColorUnSelect;
         unselectedPaint.setColor(textColorUnSelect);

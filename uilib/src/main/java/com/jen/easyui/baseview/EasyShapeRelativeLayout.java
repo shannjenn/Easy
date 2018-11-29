@@ -44,16 +44,16 @@ public class EasyShapeRelativeLayout extends RelativeLayout {
         mShape.mStrokeColor = ta.getColor(R.styleable.EasyShapeRelativeLayout_strokeColor, 0);
         mShape.mStrokeClickColor = ta.getColor(R.styleable.EasyShapeRelativeLayout_strokeClickColor, 0);
 
-        mShape.mCorners =  ta.getDimension(R.styleable.EasyShapeRelativeLayout_corners, 0);
-        mShape.mCornerLeftTop =  ta.getDimension(R.styleable.EasyShapeRelativeLayout_cornerLeftTop, 0);
-        mShape.mCornerLeftBottom =  ta.getDimension(R.styleable.EasyShapeRelativeLayout_cornerLeftBottom, 0);
-        mShape.mCornerRightTop =  ta.getDimension(R.styleable.EasyShapeRelativeLayout_cornerRightTop, 0);
-        mShape.mCornerRightBottom =  ta.getDimension(R.styleable.EasyShapeRelativeLayout_cornerRightBottom, 0);
+        mShape.mCorners =  ta.getDimensionPixelOffset(R.styleable.EasyShapeRelativeLayout_corners, 0);
+        mShape.mCornerLeftTop =  ta.getDimensionPixelOffset(R.styleable.EasyShapeRelativeLayout_cornerLeftTop, 0);
+        mShape.mCornerLeftBottom =  ta.getDimensionPixelOffset(R.styleable.EasyShapeRelativeLayout_cornerLeftBottom, 0);
+        mShape.mCornerRightTop =  ta.getDimensionPixelOffset(R.styleable.EasyShapeRelativeLayout_cornerRightTop, 0);
+        mShape.mCornerRightBottom =  ta.getDimensionPixelOffset(R.styleable.EasyShapeRelativeLayout_cornerRightBottom, 0);
 
         mShape.mSolidColor = ta.getColor(R.styleable.EasyShapeRelativeLayout_solidColor, 0);
         mShape.mSolidClickColor = ta.getColor(R.styleable.EasyShapeRelativeLayout_solidClickColor, 0);
 
-        mShape.mLineWidth = ta.getDimension(R.styleable.EasyShapeRelativeLayout_lineWidth, 0);
+        mShape.mLineWidth = ta.getDimensionPixelOffset(R.styleable.EasyShapeRelativeLayout_lineWidth, 0);
         mShape.mLineLeftColor = ta.getColor(R.styleable.EasyShapeRelativeLayout_lineLeftColor, 0);
         mShape.mLineRightColor = ta.getColor(R.styleable.EasyShapeRelativeLayout_lineRightColor, 0);
         mShape.mLineTopColor = ta.getColor(R.styleable.EasyShapeRelativeLayout_lineTopColor, 0);
@@ -90,19 +90,6 @@ public class EasyShapeRelativeLayout extends RelativeLayout {
                 break;
             }
         }
-        /*int padding =  ta.getDimension(R.styleable.EasyRelativeLayout_android_padding, 0);
-        if (padding == 0) {
-            mPaddingLeft =  ta.getDimension(R.styleable.EasyRelativeLayout_android_paddingLeft, 0);
-            mPaddingRight =  ta.getDimension(R.styleable.EasyRelativeLayout_android_paddingRight, 0);
-            mPaddingTop =  ta.getDimension(R.styleable.EasyRelativeLayout_android_paddingTop, 0);
-            mPaddingBottom =  ta.getDimension(R.styleable.EasyRelativeLayout_android_paddingBottom, 0);
-        } else {
-            mPaddingLeft = padding;
-            mPaddingRight = padding;
-            mPaddingTop = padding;
-            mPaddingBottom = padding;
-        }*/
-
         ta.recycle();
         mShape.init();
     }

@@ -53,7 +53,7 @@ public class EasyShapeLinearLayout extends LinearLayout {
         mShape.mSolidColor = ta.getColor(R.styleable.EasyShapeLinearLayout_solidColor, 0);
         mShape.mSolidClickColor = ta.getColor(R.styleable.EasyShapeLinearLayout_solidClickColor, 0);
 
-        mShape.mLineWidth = ta.getDimension(R.styleable.EasyShapeLinearLayout_lineWidth, 0);
+        mShape.mLineWidth = ta.getDimensionPixelOffset(R.styleable.EasyShapeLinearLayout_lineWidth, 0);
         mShape.mLineLeftColor = ta.getColor(R.styleable.EasyShapeLinearLayout_lineLeftColor, 0);
         mShape.mLineRightColor = ta.getColor(R.styleable.EasyShapeLinearLayout_lineRightColor, 0);
         mShape.mLineTopColor = ta.getColor(R.styleable.EasyShapeLinearLayout_lineTopColor, 0);
@@ -90,19 +90,6 @@ public class EasyShapeLinearLayout extends LinearLayout {
                 break;
             }
         }
-        /*int padding =  ta.getDimension(R.styleable.EasyLinearLayout_android_padding, 0);
-        if (padding == 0) {
-            mPaddingLeft =  ta.getDimension(R.styleable.EasyLinearLayout_android_paddingLeft, 0);
-            mPaddingRight =  ta.getDimension(R.styleable.EasyLinearLayout_android_paddingRight, 0);
-            mPaddingTop =  ta.getDimension(R.styleable.EasyLinearLayout_android_paddingTop, 0);
-            mPaddingBottom =  ta.getDimension(R.styleable.EasyLinearLayout_android_paddingBottom, 0);
-        } else {
-            mPaddingLeft = padding;
-            mPaddingRight = padding;
-            mPaddingTop = padding;
-            mPaddingBottom = padding;
-        }*/
-
         ta.recycle();
         mShape.init();
     }

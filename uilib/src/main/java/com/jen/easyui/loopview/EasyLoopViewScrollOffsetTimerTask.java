@@ -24,7 +24,7 @@ final class EasyLoopViewScrollOffsetTimerTask extends TimerTask {
     @Override
     public final void run() {
         if (realTotalOffset == Integer.MAX_VALUE) {
-            float itemHeight = loopView.textVerticalSpacing * loopView.maxTextHeight;
+            float itemHeight = loopView.textVerticalMargin * loopView.maxTextHeight;
             offset = (int) ((offset + itemHeight) % itemHeight);
             if ((float) offset > itemHeight / 2.0F) {
                 realTotalOffset = (int) (itemHeight - (float) offset);

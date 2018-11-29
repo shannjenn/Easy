@@ -38,8 +38,8 @@ abstract class EasyFlowLayout extends ViewGroup {
 
     private void initAttrs(AttributeSet attrs) {
         TypedArray ta = mContext.obtainStyledAttributes(attrs, R.styleable.EasyFlowLayout);
-        childSpaceH = (int) ta.getDimension(R.styleable.EasyFlowLayout_childSpaceH, 0);
-        childSpaceV = (int) ta.getDimension(R.styleable.EasyFlowLayout_childSpaceV, 0);
+        childSpaceH = (int) ta.getDimensionPixelOffset(R.styleable.EasyFlowLayout_childSpaceH, 0);
+        childSpaceV = (int) ta.getDimensionPixelOffset(R.styleable.EasyFlowLayout_childSpaceV, 0);
     }
 
     @Override

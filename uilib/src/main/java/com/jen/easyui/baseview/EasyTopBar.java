@@ -85,7 +85,7 @@ public class EasyTopBar extends RelativeLayout implements View.OnClickListener {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.EasyTopBar);
 
         mLeftText = ta.getString(R.styleable.EasyTopBar_topBarLeftText);
-        mLeftTextSize = ta.getDimension(R.styleable.EasyTopBar_topBarLeftTextSize, -1);
+        mLeftTextSize = ta.getDimensionPixelOffset(R.styleable.EasyTopBar_topBarLeftTextSize, -1);
         mLeftTextColor = ta.getColor(R.styleable.EasyTopBar_topBarLeftTextColor, -1);
 //        mLeftTextWithLeftImg = ta.getDrawable(R.styleable.EasyTopBar_leftTextWithImg);
 
@@ -96,7 +96,7 @@ public class EasyTopBar extends RelativeLayout implements View.OnClickListener {
         isShowCloseIcon = ta.getBoolean(R.styleable.EasyTopBar_topBarCloseShow, false);
 
         mRightText = ta.getString(R.styleable.EasyTopBar_topBarRightText);
-        mRightTextSize = ta.getDimension(R.styleable.EasyTopBar_topBarRightTextSize, -1);
+        mRightTextSize = ta.getDimensionPixelOffset(R.styleable.EasyTopBar_topBarRightTextSize, -1);
         mRightTextColor = ta.getColor(R.styleable.EasyTopBar_topBarRightTextColor, -1);
 //        isShowFaceLeftImage = ta.getBoolean(R.styleable.EasyTopBar_showLeftFaceImage, false);
         mRightImage = ta.getDrawable(R.styleable.EasyTopBar_topBarRightImage);
@@ -104,7 +104,7 @@ public class EasyTopBar extends RelativeLayout implements View.OnClickListener {
         mRightImageHeight = ta.getDimensionPixelSize(R.styleable.EasyTopBar_topBarRightImageHeight, -1);
 
         mTitle = ta.getString(R.styleable.EasyTopBar_topBarTitleText);
-        mTitleTextSize = ta.getDimension(R.styleable.EasyTopBar_topBarTitleTextSize, -1);
+        mTitleTextSize = ta.getDimensionPixelOffset(R.styleable.EasyTopBar_topBarTitleTextSize, -1);
         mTitleColor = ta.getColor(R.styleable.EasyTopBar_topBarTitleTextColor, -1);
 
         isShowBottomLine = ta.getBoolean(R.styleable.EasyTopBar_topBarShowBottomLine, true);

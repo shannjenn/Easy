@@ -1,21 +1,24 @@
 <resources>
     <declare-styleable name="EasyLoopView">
-        <!--<attr name="loopTextSize" format="dimension" />
-        <attr name="loopTextSelectColor" format="color" />
-        <attr name="loopTextUnSelectColor" format="color" />
-        <attr name="loopTextVerticalSpacing" format="dimension" />
-        <attr name="loopHorizontalSpacing" format="dimension" />
-        <attr name="loopLineColor" format="color" />
-        <attr name="loopUnitText" format="string" />
-        <attr name="loopUnitTextColor" format="color" />
-        <attr name="loopUnitHorizontalSpacing" format="dimension" />-->
+        <attr name="loopViewTextSize" format="dimension"/>
+        <attr name="loopViewTextSelectColor" format="color"/>
+        <attr name="loopViewTextUnSelectColor" format="color"/>
+        <attr name="loopViewTextVerticalMargin" format="dimension"/>
 
-        <attr name="android:layout_width" />
-        <attr name="android:layout_height" />
-        <attr name="android:paddingLeft" />
-        <attr name="android:paddingRight" />
-        <attr name="android:paddingTop" />
-        <attr name="android:paddingBottom" />
-        <attr name="android:padding" />
+        <attr name="loopViewHorizontalMargin" format="dimension"/>
+
+        <attr name="loopViewLineColor" format="color"/>
+
+        <attr name="loopViewUnitText" format="string"/>
+        <attr name="loopViewUnitTextColor" format="color"/>
+        <attr name="loopViewUnitHorizontalMargin" format="dimension"/>
+
+        <attr name="android:layout_width"/>
+        <attr name="android:layout_height"/>
+        <attr name="android:paddingLeft"/>
+        <attr name="android:paddingRight"/>
+        <attr name="android:paddingTop"/>
+        <attr name="android:paddingBottom"/>
+        <attr name="android:padding"/>
     </declare-styleable>
 </resources>
