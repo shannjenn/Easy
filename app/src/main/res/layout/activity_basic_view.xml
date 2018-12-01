@@ -133,7 +133,7 @@
             app:itemEditLines="5"
             app:itemEditTextHint="121"
             app:itemEditTextMarginBottom="0dp"
-            app:itemIsEdit="true"
+            app:itemIsEdit="false"
             app:itemTitleText="ItemLayout"
             app:itemTxtText="121"/>
 
@@ -166,11 +166,20 @@
             <com.jen.easyui.baseview.EasyShapeEditTextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:enabled="false"
+                android:focusable="false"
                 android:hint="54654"
                 app:lineBottomColor="#ff0000"
                 app:lineBottomMarginBottom="6dp"
                 app:lineWidth="1dp"/>
 
         </LinearLayout>
+
+        <com.jen.easyui.loopview.EasyLoopView
+            android:id="@+id/loop_view"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="#eeeeee"
+            app:loopViewTextSize="20dp"/>
     </LinearLayout>
 </ScrollView>

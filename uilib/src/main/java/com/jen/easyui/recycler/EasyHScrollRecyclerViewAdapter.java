@@ -20,7 +20,7 @@ public abstract class EasyHScrollRecyclerViewAdapter<T> extends EasyRecyclerBase
     private final String TAG = EasyHScrollRecyclerViewAdapter.class.getSimpleName();
     protected final Map<Integer, EasyHScrollView> mHScrollViews = new HashMap<>();
     protected int mScrollX;
-    private ScrollListener mScrollListener;
+    private EasyHScrollView.ScrollListener mScrollListener;
 
     public Map<Integer, EasyHScrollView> getHScrollViews() {
         return mHScrollViews;
@@ -90,7 +90,7 @@ public abstract class EasyHScrollRecyclerViewAdapter<T> extends EasyRecyclerBase
                 mScrollX = x;
                 scrollAllToX();
                 if (mScrollListener != null) {
-                    mScrollListener.OnScrollChanged(scrollView, x, y);
+                    mScrollListener.OnScrollChanged(x, y);
                 }
             }
 
@@ -98,6 +98,13 @@ public abstract class EasyHScrollRecyclerViewAdapter<T> extends EasyRecyclerBase
             public void onOverScrolled(int scrollX, int scrollY, boolean clampedX, boolean clampedY) {
                 if (mScrollListener != null) {
                     mScrollListener.onOverScrolled(scrollX, scrollY, clampedX, clampedY);
+                }
+            }
+
+            @Override
+            public void onItemClick(int position) {
+                if (mScrollListener != null) {
+                    mScrollListener.onItemClick(position);
                 }
             }
         });
@@ -125,13 +132,8 @@ public abstract class EasyHScrollRecyclerViewAdapter<T> extends EasyRecyclerBase
         }
     }
 
-    public interface ScrollListener {
-        void OnScrollChanged(EasyHScrollView scrollView, int x, int y);
 
-        void onOverScrolled(int scrollX, int scrollY, boolean clampedX, boolean clampedY);
-    }
-
-    public void setScrollListener(ScrollListener scrollListener) {
+    public void setScrollListener(EasyHScrollView.ScrollListener scrollListener) {
         mScrollListener = scrollListener;
     }
 

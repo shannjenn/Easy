@@ -86,6 +86,7 @@
             android:layout_height="46dp"
             android:text="timePick"
             android:textAllCaps="false"/>
+
         <Button
             android:id="@+id/PickerView"
             android:layout_width="match_parent"

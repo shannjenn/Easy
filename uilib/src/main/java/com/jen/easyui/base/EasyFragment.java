@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jen.easy.bind.BindView;
 import com.jen.easy.http.imp.HttpBasicListener;
-import com.jen.easyui.EasyMain;
 import com.jen.easyui.dialog.EasyLoading;
 
 /**
@@ -25,6 +25,7 @@ public abstract class EasyFragment<T> extends Fragment implements HttpBasicListe
     protected Context mContext;
     protected Handler mHandler = new Handler(Looper.getMainLooper());
     protected EasyLoading mLoading;
+    protected BindView mBindView;
 
     @Override
     public void onAttach(Context context) {
@@ -38,7 +39,8 @@ public abstract class EasyFragment<T> extends Fragment implements HttpBasicListe
 //        return super.onCreateView(inflater, container, savedInstanceState);
         if (rootView == null) {
             rootView = inflater.inflate(inflateLayout(), container, false);
-            EasyMain.mBindView.inject(this, rootView);
+            mBindView = new BindView();
+            mBindView.inject(this, rootView);
             mLoading = new EasyLoading(getContext());
 //            httpListener.setListenerImp(this);
         }

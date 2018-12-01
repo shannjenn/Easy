@@ -42,7 +42,7 @@ public class PickerViewActivity extends EasyActivity {
 //        pick_1.setData(data);
 //        pick_1.setSelected(0);
 
-        pick_1.setArrayList((ArrayList) data);
+        pick_1.setData((ArrayList) data);
         pick_1.setInitPosition(0);
     }
 

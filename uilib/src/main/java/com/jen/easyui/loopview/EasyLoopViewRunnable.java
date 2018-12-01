@@ -17,7 +17,7 @@ final class EasyLoopViewRunnable implements Runnable {
     public final void run() {
         EasyLoopViewListener listener = loopView.loopListener;
         int selectedItem = loopView.getSelectedItem();
-        loopView.arrayList.get(selectedItem);
+        loopView.mData.get(selectedItem);
         listener.onItemSelect(loopView, selectedItem);
     }
 }

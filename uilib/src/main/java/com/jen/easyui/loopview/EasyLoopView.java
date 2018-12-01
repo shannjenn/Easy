@@ -16,6 +16,7 @@ import com.jen.easyui.R;
 import com.jen.easyui.util.EasyDensityUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -64,7 +65,7 @@ public class EasyLoopView extends View {
     private Paint unitPaint; // paint that draw unit text
     private Paint linePaint; // paint that draw line besides center text
 
-    public final ArrayList arrayList = new ArrayList();
+    public final List<String> mData = new ArrayList();
     private int maxTextWidth;
     private int unitTextWidth;
     public int maxTextHeight;
@@ -121,6 +122,8 @@ public class EasyLoopView extends View {
 
         layoutWidth = a.getLayoutDimension(R.styleable.EasyLoopView_android_layout_width, 0);
 
+        a.recycle();
+
         selectedPaint = new Paint();
         selectedPaint.setColor(textColorSelect);
         selectedPaint.setAntiAlias(true);
@@ -155,8 +158,8 @@ public class EasyLoopView extends View {
 
     private void initData() {
         Rect rect = new Rect();
-        for (int i = 0, len = arrayList.size(); i < len; i++) {
-            String s1 = (String) arrayList.get(i);
+        for (int i = 0, len = mData.size(); i < len; i++) {
+            String s1 = mData.get(i);
             selectedPaint.getTextBounds(s1, 0, s1.length(), rect);
             int textWidth = rect.width();
             if (textWidth > maxTextWidth) {
@@ -202,12 +205,11 @@ public class EasyLoopView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (arrayList.size() == 0) {
+        if (mData.size() == 0) {
             super.onDraw(canvas);
             return;
         }
-        int size = arrayList.size();
-        String[] as = new String[itemCount];
+        int size = mData.size();
         int change = totalScrollY / ((maxTextHeight + textVerticalMargin));
         preCurrentIndex = initPosition + change % size;
         if (preCurrentIndex < 0) {
@@ -218,25 +220,12 @@ public class EasyLoopView extends View {
         }
 
         int j2 = totalScrollY % (maxTextHeight + textVerticalMargin);
-        int k1 = 0;
-        while (k1 < itemCount) {
-            int l1 = preCurrentIndex - (itemCount / 2 - k1);
-            if (l1 < 0)
-                l1 = l1 + size;
-            if (l1 > size - 1)
-                l1 = l1 % size;
-            if (size == 1)
-                l1 = 0;
-            as[k1] = (String) arrayList.get(l1);
-            k1++;
-        }
         canvas.drawLine(0.0F, firstLineY, measuredWidth, firstLineY, linePaint);
         canvas.drawLine(0.0F, secondLineY, measuredWidth, secondLineY, linePaint);
 
         int left;
         if (unitText != null) {
             left = (measuredWidth - maxTextWidth - unitTextWidth - unitHorizontalMargin) / 2;
-
             canvas.save();
             canvas.clipRect(0, 0, measuredWidth, measuredHeight);
             canvas.drawText(unitText, left + maxTextWidth + unitHorizontalMargin, measuredHeight / 2 + unitTextWidth / 2, unitPaint);
@@ -244,17 +233,37 @@ public class EasyLoopView extends View {
         } else {
             left = (measuredWidth - maxTextWidth) / 2;
         }
-
-        onDrawLoopView(canvas, as, arrayList, itemCount, j2, left);
+        String[] texts = getTexts(size);
+        onDrawLoopView(canvas, texts, mData, itemCount, j2, left);
         super.onDraw(canvas);
     }
 
-    private void onDrawLoopView(Canvas canvas, String[] as, ArrayList arrayList, int itemCount, int j2, int left) {
-        int j1 = 0;
-        while (j1 < itemCount) {
+    /**
+     * 获取画文字
+     *
+     * @param size .
+     * @return .
+     */
+    private String[] getTexts(int size) {
+        String[] texts = new String[itemCount];
+        for (int i = 0; i < itemCount; i++) {
+            int position = preCurrentIndex - (itemCount / 2 - i);
+            if (position < 0)
+                position = position + size;
+            if (position > size - 1)
+                position = position % size;
+            if (size == 1)
+                position = 0;
+            texts[i] = mData.get(position);
+        }
+        return texts;
+    }
+
+    private void onDrawLoopView(Canvas canvas, String[] texts, List<String> arrayList, int itemCount, int j2, int left) {
+        for (int i = 0; i < itemCount; i++) {
             canvas.save();
             int itemHeight = maxTextHeight + textVerticalMargin;
-            double radian = ((itemHeight * j1 - j2) * Math.PI) / halfCircumference;
+            double radian = ((itemHeight * i - j2) * Math.PI) / halfCircumference;
             float angle = (float) (90D - (radian / Math.PI) * 180D);
             if (angle >= 90F || angle <= -90F) {
                 canvas.restore();
@@ -265,32 +274,31 @@ public class EasyLoopView extends View {
                 if (translateY <= firstLineY && maxTextHeight + translateY >= firstLineY) {
                     canvas.save();
                     canvas.clipRect(0, 0, measuredWidth, firstLineY - translateY);
-                    canvas.drawText(as[j1], left, maxTextHeight, unselectedPaint);
+                    canvas.drawText(texts[i], left, maxTextHeight, unselectedPaint);
                     canvas.restore();
                     canvas.save();
                     canvas.clipRect(0, firstLineY - translateY, measuredWidth, itemHeight);
-                    canvas.drawText(as[j1], left, maxTextHeight, selectedPaint);
+                    canvas.drawText(texts[i], left, maxTextHeight, selectedPaint);
                     canvas.restore();
                 } else if (translateY <= secondLineY && maxTextHeight + translateY >= secondLineY) {
                     canvas.save();
                     canvas.clipRect(0, 0, measuredWidth, secondLineY - translateY);
-                    canvas.drawText(as[j1], left, maxTextHeight, selectedPaint);
+                    canvas.drawText(texts[i], left, maxTextHeight, selectedPaint);
                     canvas.restore();
                     canvas.save();
                     canvas.clipRect(0, secondLineY - translateY, measuredWidth, itemHeight);
-                    canvas.drawText(as[j1], left, maxTextHeight, unselectedPaint);
+                    canvas.drawText(texts[i], left, maxTextHeight, unselectedPaint);
                     canvas.restore();
                 } else if (translateY >= firstLineY && maxTextHeight + translateY <= secondLineY) {
                     canvas.clipRect(0, 0, measuredWidth, itemHeight);
-                    canvas.drawText(as[j1], left, maxTextHeight, selectedPaint);
-                    selectedItem = arrayList.indexOf(as[j1]);
+                    canvas.drawText(texts[i], left, maxTextHeight, selectedPaint);
+                    selectedItem = arrayList.indexOf(texts[i]);
                 } else {
                     canvas.clipRect(0, 0, measuredWidth, itemHeight);
-                    canvas.drawText(as[j1], left, maxTextHeight, unselectedPaint);
+                    canvas.drawText(texts[i], left, maxTextHeight, unselectedPaint);
                 }
                 canvas.restore();
             }
-            j1++;
         }
     }
 
@@ -319,10 +327,10 @@ public class EasyLoopView extends View {
         this.initPosition = initPosition;
     }
 
-    public final void setArrayList(ArrayList list) {
+    public final void setData(List<String> list) {
         if (list != null && list.size() > 0) {
-            arrayList.clear();
-            arrayList.addAll(list);
+            mData.clear();
+            mData.addAll(list);
         }
         initData();
         invalidate();

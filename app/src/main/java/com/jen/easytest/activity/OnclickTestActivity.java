@@ -42,7 +42,6 @@ public class OnclickTestActivity extends EasyActivity {
     }
 
     @EasyViewMethod({R.id.tv_onclickTest})
-    @Override
     protected void onBindClick(View view) {
         switch (view.getId()) {
             case R.id.tv_onclickTest: {

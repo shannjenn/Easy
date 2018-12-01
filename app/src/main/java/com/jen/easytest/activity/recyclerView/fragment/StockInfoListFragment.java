@@ -15,7 +15,6 @@ import com.jen.easytest.activity.recyclerView.adapter.StockInfoListAdapter;
 import com.jen.easytest.http.request.StockChooseConditionResultRequest;
 import com.jen.easyui.base.EasyFragment;
 import com.jen.easyui.recycler.EasyHScrollRecyclerView;
-import com.jen.easyui.recycler.EasyHScrollRecyclerViewAdapter;
 import com.jen.easyui.recycler.EasyHScrollView;
 import com.jen.easyui.recycler.EasyItemClickListener;
 
@@ -195,9 +194,11 @@ public class StockInfoListFragment extends EasyFragment {
     /**
      * 左右滑动事件
      */
-    private EasyHScrollRecyclerViewAdapter.ScrollListener mScrollListener = new EasyHScrollRecyclerViewAdapter.ScrollListener() {
+    private EasyHScrollView.ScrollListener mScrollListener = new EasyHScrollView.ScrollListener() {
+
         @Override
-        public void OnScrollChanged(EasyHScrollView scrollView, int x, int y) {
+        public void OnScrollChanged(int x, int y) {
+
         }
 
         @Override
@@ -214,6 +215,11 @@ public class StockInfoListFragment extends EasyFragment {
                 iv_stock_info_arrow_left.setVisibility(View.VISIBLE);
                 iv_stock_info_arrow_right.setVisibility(View.VISIBLE);
             }
+        }
+
+        @Override
+        public void onItemClick(int position) {
+
         }
     };
 
@@ -306,10 +312,10 @@ public class StockInfoListFragment extends EasyFragment {
         if (response instanceof StockChooseConditionResultResponse) {
             switch (flagCode) {
                 case H_FLAG_RESULT_REFRESH: {
-                    List<StockInfo> list = ((StockChooseConditionResultResponse) response).getResult().getData();
-                    if (list.size() > 0) {
+                    List<StockInfo> mData = ((StockChooseConditionResultResponse) response).getResult().getData();
+                    if (mData.size() > 0) {
                         mData.clear();
-                        mData.addAll(list);
+                        mData.addAll(mData);
 //                        Collections.sort(mData);
                         mAdapter.updateSort(easyRecycler.getLayoutManager());
                     }
@@ -320,9 +326,9 @@ public class StockInfoListFragment extends EasyFragment {
                     break;
                 }
                 case H_FLAG_RESULT_LOAD_MORE: {
-                    List<StockInfo> list = ((StockChooseConditionResultResponse) response).getResult().getData();
-                    if (list.size() > 0) {
-                        mData.addAll(list);
+                    List<StockInfo> mData = ((StockChooseConditionResultResponse) response).getResult().getData();
+                    if (mData.size() > 0) {
+                        mData.addAll(mData);
 //                        Collections.sort(mData);
                         mAdapter.updateSort(easyRecycler.getLayoutManager());
                     }

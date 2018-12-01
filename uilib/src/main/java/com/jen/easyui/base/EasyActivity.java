@@ -13,8 +13,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.jen.easy.bind.BindView;
 import com.jen.easy.http.imp.HttpBasicListener;
-import com.jen.easyui.EasyMain;
 import com.jen.easyui.dialog.EasyLoading;
 
 /**
@@ -26,13 +26,16 @@ public abstract class EasyActivity<T> extends AppCompatActivity implements HttpB
     protected Context mContext;
     protected Handler mHandler = new Handler(Looper.getMainLooper());
     protected EasyLoading mLoading;
-
+    protected BindView mBindView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
+        mBindView = new BindView();
+        mLoading = new EasyLoading(this);
+        mLoading.setCancelable(false);
 //        setContentView(setLayout());
         checkFilePermission();
     }
@@ -40,9 +43,7 @@ public abstract class EasyActivity<T> extends AppCompatActivity implements HttpB
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
-        EasyMain.mBindView.bind(this);
-        mLoading = new EasyLoading(this);
-        mLoading.setCancelable(false);
+        mBindView.bind(this);
         intDataBeforeView();
         initViews();
         loadDataAfterView();
@@ -51,7 +52,7 @@ public abstract class EasyActivity<T> extends AppCompatActivity implements HttpB
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EasyMain.mBindView.unbind(this);
+        mBindView.unbind(this);
         if (mHandler != null) {
             mHandler.removeMessages(0);
             mHandler = null;

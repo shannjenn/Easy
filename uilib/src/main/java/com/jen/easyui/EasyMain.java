@@ -4,7 +4,6 @@ import android.app.Application;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-import com.jen.easy.bind.BindView;
 import com.jen.easy.http.Http;
 import com.jen.easy.imageLoader.ImageLoader;
 import com.jen.easy.imageLoader.ImageLoaderConfig;
@@ -27,7 +26,7 @@ public final class EasyMain {
     /**
      * ID绑定（结合注释@EasyMouse.BIND使用）
      */
-    public static BindView mBindView;
+//    public static BindView mBindView;
     /**
      * 网络请求（结合注释@EasyMouse.HTTP使用）
      */
@@ -56,7 +55,7 @@ public final class EasyMain {
     public static void init(Application application) {
         Log.d(TAG,"init EasyMain -------");
 
-        mBindView = new BindView();
+//        mBindView = new BindView();
         mHttp = new Http(10);//默认最大10个线程
         mLog = new LogcatHelper(application);
         mImageLoader = ImageLoader.getInstance();

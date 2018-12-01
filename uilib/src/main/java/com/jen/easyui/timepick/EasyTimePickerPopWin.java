@@ -170,13 +170,13 @@ public class EasyTimePickerPopWin extends PopupWindow implements OnClickListener
         for (int z = 0; z < 60; z++) {
             minuteList.add(format2LenStr(z));
         }
-        yearLoopView.setArrayList((ArrayList) yearList);
+        yearLoopView.setData(yearList);
         yearLoopView.setInitPosition(selectCalendar.get(Calendar.YEAR) - minYear);
-        monthLoopView.setArrayList((ArrayList) monthList);
+        monthLoopView.setData(monthList);
         monthLoopView.setInitPosition(selectCalendar.get(Calendar.MONTH));
-        hourLoopView.setArrayList((ArrayList) hourList);
+        hourLoopView.setData(hourList);
         hourLoopView.setInitPosition(selectCalendar.get(Calendar.HOUR_OF_DAY));
-        minuteLoopView.setArrayList((ArrayList) minuteList);
+        minuteLoopView.setData(minuteList);
         minuteLoopView.setInitPosition(selectCalendar.get(Calendar.MINUTE));
 
         initDayPickerView(); // init day loop view
@@ -222,7 +222,7 @@ public class EasyTimePickerPopWin extends PopupWindow implements OnClickListener
             }
             dayList.clear();
             dayList.addAll(list);
-            dayLoopView.setArrayList((ArrayList) dayList);
+            dayLoopView.setData((ArrayList) dayList);
             dayLoopView.setInitPosition(selectCalendar.get(Calendar.DAY_OF_MONTH) - 1);
         }
     }
