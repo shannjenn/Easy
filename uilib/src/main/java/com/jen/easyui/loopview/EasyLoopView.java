@@ -219,7 +219,7 @@ public class EasyLoopView extends View {
             preCurrentIndex = preCurrentIndex - size;
         }
 
-        int j2 = totalScrollY % (maxTextHeight + textVerticalMargin);
+        int scrollY = totalScrollY % (maxTextHeight + textVerticalMargin);
         canvas.drawLine(0.0F, firstLineY, measuredWidth, firstLineY, linePaint);
         canvas.drawLine(0.0F, secondLineY, measuredWidth, secondLineY, linePaint);
 
@@ -233,19 +233,19 @@ public class EasyLoopView extends View {
         } else {
             left = (measuredWidth - maxTextWidth) / 2;
         }
-        String[] texts = getTexts(size);
-        onDrawLoopView(canvas, texts, mData, itemCount, j2, left);
+        List<String> texts = getTexts();
+        onDrawLoopView(canvas, texts, scrollY, left);
         super.onDraw(canvas);
     }
 
     /**
      * 获取画文字
      *
-     * @param size .
      * @return .
      */
-    private String[] getTexts(int size) {
-        String[] texts = new String[itemCount];
+    private List<String> getTexts() {
+        int size = mData.size();
+        List<String> texts = new ArrayList<>();
         for (int i = 0; i < itemCount; i++) {
             int position = preCurrentIndex - (itemCount / 2 - i);
             if (position < 0)
@@ -254,16 +254,17 @@ public class EasyLoopView extends View {
                 position = position % size;
             if (size == 1)
                 position = 0;
-            texts[i] = mData.get(position);
+            texts.add(mData.get(position));
         }
         return texts;
     }
 
-    private void onDrawLoopView(Canvas canvas, String[] texts, List<String> arrayList, int itemCount, int j2, int left) {
-        for (int i = 0; i < itemCount; i++) {
+    private void onDrawLoopView(Canvas canvas, List<String> texts, int scrollY, int left) {
+        int count = texts.size();
+        for (int i = 0; i < count; i++) {
             canvas.save();
             int itemHeight = maxTextHeight + textVerticalMargin;
-            double radian = ((itemHeight * i - j2) * Math.PI) / halfCircumference;
+            double radian = ((itemHeight * i - scrollY) * Math.PI) / halfCircumference;
             float angle = (float) (90D - (radian / Math.PI) * 180D);
             if (angle >= 90F || angle <= -90F) {
                 canvas.restore();
@@ -274,28 +275,28 @@ public class EasyLoopView extends View {
                 if (translateY <= firstLineY && maxTextHeight + translateY >= firstLineY) {
                     canvas.save();
                     canvas.clipRect(0, 0, measuredWidth, firstLineY - translateY);
-                    canvas.drawText(texts[i], left, maxTextHeight, unselectedPaint);
+                    canvas.drawText(texts.get(i), left, maxTextHeight, unselectedPaint);
                     canvas.restore();
                     canvas.save();
                     canvas.clipRect(0, firstLineY - translateY, measuredWidth, itemHeight);
-                    canvas.drawText(texts[i], left, maxTextHeight, selectedPaint);
+                    canvas.drawText(texts.get(i), left, maxTextHeight, selectedPaint);
                     canvas.restore();
                 } else if (translateY <= secondLineY && maxTextHeight + translateY >= secondLineY) {
                     canvas.save();
                     canvas.clipRect(0, 0, measuredWidth, secondLineY - translateY);
-                    canvas.drawText(texts[i], left, maxTextHeight, selectedPaint);
+                    canvas.drawText(texts.get(i), left, maxTextHeight, selectedPaint);
                     canvas.restore();
                     canvas.save();
                     canvas.clipRect(0, secondLineY - translateY, measuredWidth, itemHeight);
-                    canvas.drawText(texts[i], left, maxTextHeight, unselectedPaint);
+                    canvas.drawText(texts.get(i), left, maxTextHeight, unselectedPaint);
                     canvas.restore();
                 } else if (translateY >= firstLineY && maxTextHeight + translateY <= secondLineY) {
                     canvas.clipRect(0, 0, measuredWidth, itemHeight);
-                    canvas.drawText(texts[i], left, maxTextHeight, selectedPaint);
-                    selectedItem = arrayList.indexOf(texts[i]);
+                    canvas.drawText(texts.get(i), left, maxTextHeight, selectedPaint);
+                    selectedItem = mData.indexOf(texts.get(i));
                 } else {
                     canvas.clipRect(0, 0, measuredWidth, itemHeight);
-                    canvas.drawText(texts[i], left, maxTextHeight, unselectedPaint);
+                    canvas.drawText(texts.get(i), left, maxTextHeight, unselectedPaint);
                 }
                 canvas.restore();
             }
@@ -349,26 +350,27 @@ public class EasyLoopView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent motionevent) {
         switch (motionevent.getAction()) {
-            case MotionEvent.ACTION_DOWN:
+            case MotionEvent.ACTION_DOWN: {
                 rawY = motionevent.getRawY();
                 break;
-            case MotionEvent.ACTION_MOVE:
+            }
+            case MotionEvent.ACTION_MOVE: {
                 float tempRawY = motionevent.getRawY();
                 totalScrollY = (int) ((float) totalScrollY + rawY - tempRawY);
                 rawY = tempRawY;
                 break;
-            case MotionEvent.ACTION_UP:
-            default:
-                if (!gestureDetector.onTouchEvent(motionevent)
-                        && motionevent.getAction() == MotionEvent.ACTION_UP) {
+            }
+            case MotionEvent.ACTION_UP: {
+            }
+            default: {
+                if (!gestureDetector.onTouchEvent(motionevent) && motionevent.getAction() == MotionEvent.ACTION_UP) {
                     smoothScroll();
                 }
                 return true;
+            }
         }
         invalidate();
-
-        if (!gestureDetector.onTouchEvent(motionevent)
-                && motionevent.getAction() == MotionEvent.ACTION_UP) {
+        if (!gestureDetector.onTouchEvent(motionevent) && motionevent.getAction() == MotionEvent.ACTION_UP) {
             smoothScroll();
         }
         return true;
