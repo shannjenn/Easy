@@ -17,7 +17,6 @@ import android.widget.PopupWindow;
 
 import com.jen.easyui.R;
 import com.jen.easyui.loopview.EasyLoopView;
-import com.jen.easyui.loopview.EasyLoopViewListener;
 import com.jen.easyui.util.EasyDateFormatUtil;
 
 import java.util.ArrayList;
@@ -293,7 +292,7 @@ public class EasyTimePickerPopWin extends PopupWindow implements OnClickListener
         }
     }
 
-    private EasyLoopViewListener loopViewListener = new EasyLoopViewListener() {
+    private EasyLoopView.EasyLoopViewListener loopViewListener = new EasyLoopView.EasyLoopViewListener() {
         @Override
         public void onItemSelect(EasyLoopView loopView, int item) {
             if (loopView == yearLoopView) {

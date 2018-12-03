@@ -6,6 +6,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.os.Looper;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -17,6 +19,7 @@ import com.jen.easyui.util.EasyDensityUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -57,7 +60,6 @@ public class EasyLoopView extends View {
 
     public EasyLoopViewListener loopListener;
     private GestureDetector gestureDetector;
-    public EasyLoopViewHandler loopViewHandler;
     private int selectedItem;
 
     private Paint selectedPaint; // paint that draw center text
@@ -65,7 +67,7 @@ public class EasyLoopView extends View {
     private Paint unitPaint; // paint that draw unit text
     private Paint linePaint; // paint that draw line besides center text
 
-    public final List<String> mData = new ArrayList();
+    public final List<String> mData = new ArrayList<>();
     private int maxTextWidth;
     private int unitTextWidth;
     public int maxTextHeight;
@@ -91,6 +93,125 @@ public class EasyLoopView extends View {
         super(context);
         initLoopView(context);
     }*/
+
+    public interface EasyLoopViewListener {
+        void onItemSelect(EasyLoopView loopView, int item);
+    }
+
+
+    static final int H_1000 = 1000;
+    static final int H_2000 = 2000;
+    static final int H_3000 = 3000;
+    private android.os.Handler loopViewHandler = new android.os.Handler(Looper.myLooper()) {
+        @Override
+        public final void handleMessage(Message msg) {
+            if (msg.what == H_1000)
+                invalidate();
+            while (true) {
+                if (msg.what == H_2000)
+                    smoothScroll();
+                else if (msg.what == H_3000)
+                    itemSelected();
+                super.handleMessage(msg);
+                return;
+            }
+        }
+    };
+
+    class ScrollOffsetTimerTask extends TimerTask {
+        int realTotalOffset;
+        int realOffset;
+        int offset;
+
+        ScrollOffsetTimerTask(int offset) {
+            super();
+            this.offset = offset;
+            realTotalOffset = Integer.MAX_VALUE;
+            realOffset = 0;
+        }
+
+        @Override
+        public final void run() {
+            if (realTotalOffset == Integer.MAX_VALUE) {
+                float itemHeight = textVerticalMargin * maxTextHeight;
+                offset = (int) ((offset + itemHeight) % itemHeight);
+                if ((float) offset > itemHeight / 2.0F) {
+                    realTotalOffset = (int) (itemHeight - (float) offset);
+                } else {
+                    realTotalOffset = -offset;
+                }
+            }
+            realOffset = (int) ((float) realTotalOffset * 0.4F);
+            if (realOffset == 0) {
+                if (realTotalOffset < 0) {
+                    realOffset = -1;
+                } else {
+                    realOffset = 1;
+                }
+            }
+            if (Math.abs(realTotalOffset) <= 0) {
+                cancelFuture();
+                loopViewHandler.sendMessageDelayed(loopViewHandler.obtainMessage(H_3000), 200L);
+            } else {
+                totalScrollY = totalScrollY + realOffset;
+                loopViewHandler.sendMessage(loopViewHandler.obtainMessage(H_1000));
+                realTotalOffset = realTotalOffset - realOffset;
+            }
+        }
+    }
+
+    class ScrollVelocityTimerTask extends TimerTask {
+        float tempY;
+        final float velocityY;
+
+        ScrollVelocityTimerTask(float velocityY) {
+            super();
+            this.velocityY = velocityY;
+            tempY = Integer.MAX_VALUE;
+        }
+
+        @Override
+        public final void run() {
+            if (tempY == Integer.MAX_VALUE) {
+                if (Math.abs(velocityY) > 2000F) {
+                    if (velocityY > 0.0F) {
+                        tempY = 2000F;
+                    } else {
+                        tempY = -2000F;
+                    }
+                } else {
+                    tempY = velocityY;
+                }
+            }
+            if (Math.abs(tempY) >= 0.0F && Math.abs(tempY) <= 20F) {
+                cancelFuture();
+                loopViewHandler.sendMessage(loopViewHandler.obtainMessage(H_2000));
+                return;
+            }
+            int i = (int) ((tempY * 10F) / 1000F);
+            totalScrollY = totalScrollY - i;
+            if (tempY < 0.0F) {
+                tempY = tempY + 20F;
+            } else {
+                tempY = tempY - 20F;
+            }
+            loopViewHandler.sendMessage(loopViewHandler.obtainMessage(H_1000));
+        }
+    }
+
+    private GestureDetector.SimpleOnGestureListener gestureListener = new GestureDetector.SimpleOnGestureListener() {
+        @Override
+        public final boolean onDown(MotionEvent motionevent) {
+            cancelFuture();
+            return true;
+        }
+
+        @Override
+        public final boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            smoothScroll(velocityY * 1.2f);
+            return true;
+        }
+    };
 
     public EasyLoopView(Context context, AttributeSet attributeset) {
         super(context, attributeset);
@@ -150,10 +271,9 @@ public class EasyLoopView extends View {
         linePaint.setTextSize(textSize);
 
         setLayerType(LAYER_TYPE_SOFTWARE, null);
-        GestureDetector.SimpleOnGestureListener simpleOnGestureListener = new EasyLoopViewGestureListener(this);
-        gestureDetector = new GestureDetector(context, simpleOnGestureListener);
+        gestureDetector = new GestureDetector(context, gestureListener);
         gestureDetector.setIsLongpressEnabled(false);
-        loopViewHandler = new EasyLoopViewHandler(this);
+//        loopViewHandler = new EasyLoopViewHandler(this);
     }
 
     private void initData() {
@@ -304,17 +424,14 @@ public class EasyLoopView extends View {
     }
 
     public void smoothScroll() {
-        int offset = totalScrollY % ((maxTextHeight + textVerticalMargin));
         cancelFuture();
-        mFuture = mExecutor.scheduleWithFixedDelay(new EasyLoopViewScrollOffsetTimerTask(this, offset),
-                0, 10, TimeUnit.MILLISECONDS);
+        int offset = totalScrollY % ((maxTextHeight + textVerticalMargin));
+        mFuture = mExecutor.scheduleWithFixedDelay(new ScrollOffsetTimerTask(offset), 0, 10, TimeUnit.MILLISECONDS);
     }
 
     public final void smoothScroll(float velocityY) {
         cancelFuture();
-        int velocityFling = 20;
-        mFuture = mExecutor.scheduleWithFixedDelay(new EasyLoopViewScrollVelocityTimerTask(this, velocityY),
-                0, velocityFling, TimeUnit.MILLISECONDS);
+        mFuture = mExecutor.scheduleWithFixedDelay(new ScrollVelocityTimerTask(velocityY), 0, 20, TimeUnit.MILLISECONDS);
     }
 
     public void cancelFuture() {
@@ -343,7 +460,8 @@ public class EasyLoopView extends View {
 
     public void itemSelected() {
         if (loopListener != null) {
-            postDelayed(new EasyLoopViewRunnable(this), 200L);
+            int selectedItem = getSelectedItem();
+            loopListener.onItemSelect(this, selectedItem);
         }
     }
 
