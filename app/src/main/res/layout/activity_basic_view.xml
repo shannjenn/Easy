@@ -175,11 +175,27 @@
 
         </LinearLayout>
 
-        <com.jen.easyui.loopview.EasyLoopView
-            android:id="@+id/loop_view"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:background="#eeeeee"
-            app:loopViewTextSize="20dp"/>
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.jen.easyui.loopview.EasyLoopView
+                android:id="@+id/loop_view"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_weight="1"
+                android:background="#eeeeee"
+                app:loopViewTextSize="20dp"/>
+
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="#ff0000"/>
+
+
     </LinearLayout>
 </ScrollView>

@@ -1,0 +1,54 @@
+<resources>
+    <!--滚动选择器通用属性-->
+    <declare-styleable name="ScrollPickerView">
+        <!-- 中间item的背景-->
+        <attr name="ScrollPickerCenterItemBackground" format="reference|color"/>
+        <!-- 可见的item数量，默认为3个-->
+        <attr name="ScrollPickerVisibleItemCount" format="integer"/>
+        <!-- 中间item的位置,默认为 mVisibleItemCount / 2-->
+        <attr name="ScrollPickerCenterItemPosition" format="integer"/>
+        <!-- 是否循环滚动，默认为true，开启-->
+        <attr name="ScrollPickerIsCirculation" format="boolean"/>
+        <!-- 不允许父组件拦截触摸事件，设置为true为不允许拦截，此时该设置才生效 -->
+        <attr name="ScrollPickerDisallowInterceptTouch" format="boolean"/>
+        <!-- 滚动的方向-->
+        <attr name="ScrollPickerOrientation" format="string">
+            <enum name="horizontal" value="1"/>
+            <enum name="vertical" value="2"/>
+        </attr>
+    </declare-styleable>
+
+    <!--文字选择器-->
+    <declare-styleable name="StringScrollPicker">
+        <!--文字渐变大小-->
+        <attr name="ScrollPickerMinTextSize" format="dimension"/>
+        <attr name="ScrollPickerMaxTextSize" format="dimension"/>
+        <!--文字渐变颜色-->
+        <attr name="ScrollPickerStartColor" format="color"/>
+        <attr name="ScrollPickerEndColor" format="color"/>
+        <!--文字最大行宽-->
+        <attr name="ScrollPickerMaxLineWidth" format="dimension"/>
+        <!--文字对齐方式-->
+        <attr name="ScrollPickerAlignment" format="enum">
+            <enum name="center" value="1"/>
+            <enum name="left" value="2"/>
+            <enum name="right" value="3"/>
+        </attr>
+    </declare-styleable>
+
+    <!--图片选择器-->
+    <declare-styleable name="BitmapScrollPicker">
+        <!-- 绘制图片的方式-->
+        <attr name="ScrollPickerBitmapMode" format="string">
+            <enum name="fill" value="1"/>
+            <enum name="center" value="2"/>
+            <enum name="size" value="3"/>
+        </attr>
+        <!-- 绘制图片的方式为size时，指定的图片绘制大小-->
+        <attr name="ScrollPickerDrawBitmapWidth" format="dimension"/>
+        <attr name="ScrollPickerDrawBitmapHeight" format="dimension"/>
+        <!-- item内容缩放倍数-->
+        <attr name="ScrollPickerMinScale" format="float"/>
+        <attr name="ScrollPickerMaxScale" format="float"/>
+    </declare-styleable>
+</resources>

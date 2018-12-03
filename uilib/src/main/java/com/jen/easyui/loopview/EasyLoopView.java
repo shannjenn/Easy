@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.AttributeSet;
@@ -99,18 +100,18 @@ public class EasyLoopView extends View {
     }
 
 
-    static final int H_1000 = 1000;
-    static final int H_2000 = 2000;
-    static final int H_3000 = 3000;
-    private android.os.Handler loopViewHandler = new android.os.Handler(Looper.myLooper()) {
+    static final int H_INVALIDATE = 1000;
+    static final int H_SMOOTH_SCROLL = 2000;
+    static final int H_ITEM_SELECTED = 3000;
+    private Handler loopViewHandler = new android.os.Handler(Looper.myLooper()) {
         @Override
         public final void handleMessage(Message msg) {
-            if (msg.what == H_1000)
+            if (msg.what == H_INVALIDATE)
                 invalidate();
             while (true) {
-                if (msg.what == H_2000)
+                if (msg.what == H_SMOOTH_SCROLL)
                     smoothScroll();
-                else if (msg.what == H_3000)
+                else if (msg.what == H_ITEM_SELECTED)
                     itemSelected();
                 super.handleMessage(msg);
                 return;
@@ -151,10 +152,10 @@ public class EasyLoopView extends View {
             }
             if (Math.abs(realTotalOffset) <= 0) {
                 cancelFuture();
-                loopViewHandler.sendMessageDelayed(loopViewHandler.obtainMessage(H_3000), 200L);
+                loopViewHandler.sendMessageDelayed(loopViewHandler.obtainMessage(H_ITEM_SELECTED), 200L);
             } else {
                 totalScrollY = totalScrollY + realOffset;
-                loopViewHandler.sendMessage(loopViewHandler.obtainMessage(H_1000));
+                loopViewHandler.sendMessage(loopViewHandler.obtainMessage(H_INVALIDATE));
                 realTotalOffset = realTotalOffset - realOffset;
             }
         }
@@ -185,7 +186,7 @@ public class EasyLoopView extends View {
             }
             if (Math.abs(tempY) >= 0.0F && Math.abs(tempY) <= 20F) {
                 cancelFuture();
-                loopViewHandler.sendMessage(loopViewHandler.obtainMessage(H_2000));
+                loopViewHandler.sendMessage(loopViewHandler.obtainMessage(H_SMOOTH_SCROLL));
                 return;
             }
             int i = (int) ((tempY * 10F) / 1000F);
@@ -195,7 +196,7 @@ public class EasyLoopView extends View {
             } else {
                 tempY = tempY - 20F;
             }
-            loopViewHandler.sendMessage(loopViewHandler.obtainMessage(H_1000));
+            loopViewHandler.sendMessage(loopViewHandler.obtainMessage(H_INVALIDATE));
         }
     }
 
