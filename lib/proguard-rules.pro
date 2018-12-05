@@ -78,6 +78,9 @@
 -keep class com.jen.easy.EasyResponse* {
     *;
 }
+-keep class com.jen.easy.invalid.EasyInvalid* {
+    *;
+}
 -keep class com.jen.easy.EasyTable {
     *;
 }
@@ -85,12 +88,6 @@
     *;
 }
 -keep class com.jen.easy.EasyViewMethod {
-    *;
-}
--keep class com.jen.easy.invalid.EasyInvalid {
-    *;
-}
--keep class com.jen.easy.invalid.InvalidType {
     *;
 }
 

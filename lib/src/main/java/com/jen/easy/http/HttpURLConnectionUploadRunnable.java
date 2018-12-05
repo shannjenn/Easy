@@ -1,5 +1,6 @@
 package com.jen.easy.http;
 
+import com.jen.easy.constant.FieldType;
 import com.jen.easy.constant.TAG;
 import com.jen.easy.http.imp.HttpUploadListener;
 import com.jen.easy.log.EasyLog;
@@ -82,12 +83,16 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
     protected void success(String result, Map<String, List<String>> headMap) {
         EasyLog.d(TAG.EasyHttp, mUrlStr + " 上传成功！");
         if (uploadListener != null) {
-            HttpParseManager parseManager = new HttpParseManager();
-            Object parseObject = parseManager.parseResponseFromJSONString(mResponse, result, headMap);
-            if (parseObject == null) {
-                fail("返回数据解析异常");
+            if (FieldType.isObject(mResponse) || FieldType.isString(mResponse)) {//Object和String类型不做数据解析
+                uploadListener.success(mRequest.flagCode, mRequest.flagStr, result);
             } else {
-                uploadListener.success(mRequest.flagCode, mRequest.flagStr, parseObject);
+                HttpParseManager parseManager = new HttpParseManager();
+                Object parseObject = parseManager.parseResponseFromJSONString(mResponse, result, headMap);
+                if (parseObject == null) {
+                    fail("返回数据解析异常");
+                } else {
+                    uploadListener.success(mRequest.flagCode, mRequest.flagStr, parseObject);
+                }
             }
         }
     }

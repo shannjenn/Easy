@@ -7,6 +7,7 @@ import com.jen.easy.EasyViewMethod;
 import com.jen.easy.http.Http;
 import com.jen.easy.http.HttpTestUtil;
 import com.jen.easy.http.imp.HttpBasicListener;
+import com.jen.easy.invalid.EasyInvalid;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
 import com.jen.easytest.http.MD5Util;
@@ -26,6 +27,7 @@ import java.util.Date;
  */
 
 public class HttpActivity extends EasyActivity {
+    @EasyInvalid(EasyInvalid.Type.Request)
     Http http = new Http(5);//设置请求最大线程数量值5
 
     @Override

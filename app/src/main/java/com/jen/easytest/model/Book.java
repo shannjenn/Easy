@@ -3,6 +3,7 @@ package com.jen.easytest.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.jen.easy.EasyRequest;
 import com.jen.easy.EasyResponse;
 
 /**
@@ -14,13 +15,14 @@ public class Book implements Parcelable {
     @EasyResponse(value = "_id")//返回参数名为_id
     private int id;
 
+    @EasyRequest(type = EasyRequest.Type.Param)
     private String name;//不注释默认作为参数返回,参数名与变量名一致，name
 
     private long date;
 
     private String des;
 
-//    @EasyResponse(invalid = true)//noResp = true，则不作为返回参数
+    //    @EasyResponse(invalid = true)//noResp = true，则不作为返回参数
     private boolean isCheck;
 
 

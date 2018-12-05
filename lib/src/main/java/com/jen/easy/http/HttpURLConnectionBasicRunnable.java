@@ -1,5 +1,6 @@
 package com.jen.easy.http;
 
+import com.jen.easy.constant.FieldType;
 import com.jen.easy.constant.TAG;
 import com.jen.easy.constant.Unicode;
 import com.jen.easy.http.imp.HttpBasicListener;
@@ -67,13 +68,18 @@ class HttpURLConnectionBasicRunnable extends HttpURLConnectionRunnable {
         if (mRequest.status == HttpState.STOP) {
             EasyLog.d(TAG.EasyHttp, mUrlStr + " 网络请求停止!\n   ");
         } else if (baseListener != null) {
-            HttpParseManager parseManager = new HttpParseManager();
-            Object parseObject = parseManager.parseResponseFromJSONString(mResponse, result, headMap);
-            if (parseObject == null) {
-                fail("解析数据解析出错\n   ");
-            } else {
+            if (FieldType.isObject(mResponse) || FieldType.isString(mResponse)) {//Object和String类型不做数据解析
                 EasyLog.d(TAG.EasyHttp, mUrlStr + " 成功!\n   ");
-                baseListener.success(mRequest.flagCode, mRequest.flagStr, parseObject);
+                baseListener.success(mRequest.flagCode, mRequest.flagStr, result);
+            } else {
+                HttpParseManager parseManager = new HttpParseManager();
+                Object parseObject = parseManager.parseResponseFromJSONString(mResponse, result, headMap);
+                if (parseObject == null) {
+                    fail("解析数据解析出错\n   ");
+                } else {
+                    EasyLog.d(TAG.EasyHttp, mUrlStr + " 成功!\n   ");
+                    baseListener.success(mRequest.flagCode, mRequest.flagStr, parseObject);
+                }
             }
         }
     }

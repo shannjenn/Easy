@@ -1,7 +1,5 @@
 package com.jen.easy;
 
-import android.support.annotation.IntDef;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -15,14 +13,9 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface EasyResponse {
-
-    @IntDef({Type.Param, Type.Head})
-    @Retention(RetentionPolicy.SOURCE)
-    @interface Type {
-        /*（请求/返回）参数*/
-        int Param = 0;
-        /*（请求/返回）头部*/
-        int Head = 1;
+    enum Type {
+        Param,//返回参数
+        Head//返回头部
     }
 
     /**
@@ -33,6 +26,5 @@ public @interface EasyResponse {
     /**
      * 请求参数类型
      */
-    @EasyResponse.Type
-    int type() default Type.Param;
+    Type type() default Type.Param;
 }

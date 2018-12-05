@@ -97,8 +97,10 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
         if (txtContent != null) {//始终显示
             tv_content.setText(txtContent);
         }
-        if (txtLeft != null) {//始终显示
+        if (txtLeft != null) {
             btn_left.setText(txtLeft);
+        } else {
+            btn_left.setVisibility(View.GONE);
         }
 
         if (txtMiddle != null) {
@@ -143,8 +145,9 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
         }
     }
 
-    public void setEasyDialogListener(EasyDialogListener easyDialogListener) {
+    public EasyDialog setEasyDialogListener(EasyDialogListener easyDialogListener) {
         this.easyDialogListener = easyDialogListener;
+        return this;
     }
 
 
