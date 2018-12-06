@@ -1,7 +1,6 @@
 package com.jen.easytest.http.request;
 
 import com.jen.easy.EasyHttpPost;
-import com.jen.easy.EasyRequest;
 import com.jen.easy.http.HttpBasicRequest;
 
 /**
@@ -11,7 +10,6 @@ import com.jen.easy.http.HttpBasicRequest;
  */
 @EasyHttpPost(UrlAppend = "http://192.168.10.250:9001/mktinfo_api/get_assentList")
 public class StockChooseConditionResultRequest extends HttpBasicRequest {
-    @EasyRequest(value = "Content-Type", type = EasyRequest.Type.Head)
     protected String HEAD_CONTENT_TYPE = "application/json";
 
     private Params params;

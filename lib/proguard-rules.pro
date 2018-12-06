@@ -72,13 +72,22 @@
 -keep class com.jen.easy.EasyHttpPut {
     *;
 }
--keep class com.jen.easy.EasyRequest* {
+-keep class com.jen.easy.EasyRequest {
     *;
 }
--keep class com.jen.easy.EasyResponse* {
+-keep class com.jen.easy.EasyRequestType {
     *;
 }
--keep class com.jen.easy.invalid.EasyInvalid* {
+-keep class com.jen.easy.EasyResponse {
+    *;
+}
+-keep class com.jen.easy.EasyResponseType {
+    *;
+}
+-keep class com.jen.easy.invalid.EasyInvalid {
+    *;
+}
+-keep class com.jen.easy.invalid.EasyInvalidType {
     *;
 }
 -keep class com.jen.easy.EasyTable {

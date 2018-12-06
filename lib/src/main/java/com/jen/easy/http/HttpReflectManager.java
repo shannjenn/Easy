@@ -4,12 +4,14 @@ import com.jen.easy.EasyHttpGet;
 import com.jen.easy.EasyHttpPost;
 import com.jen.easy.EasyHttpPut;
 import com.jen.easy.EasyRequest;
+import com.jen.easy.EasyRequestType;
 import com.jen.easy.EasyResponse;
+import com.jen.easy.EasyResponseType;
 import com.jen.easy.constant.FieldType;
 import com.jen.easy.constant.TAG;
 import com.jen.easy.exception.ExceptionType;
 import com.jen.easy.exception.Throw;
-import com.jen.easy.invalid.EasyInvalid;
+import com.jen.easy.invalid.EasyInvalidType;
 import com.jen.easy.invalid.Invalid;
 import com.jen.easy.log.EasyLog;
 
@@ -145,7 +147,7 @@ class HttpReflectManager {
             /*if (request.status == HttpState.STOP) {
                 break;
             }*/
-            boolean isInvalid = Invalid.isEasyInvalid(clazz, EasyInvalid.Type.Request);
+            boolean isInvalid = Invalid.isEasyInvalid(clazz, EasyInvalidType.Request);
             if (!isInvalid) {
                 parseRequestEntity(loopList, clazz, request, urls, body, heads);
             }
@@ -168,13 +170,13 @@ class HttpReflectManager {
     private static void parseRequestEntity(List<String> loopList, Class clazz, Object obj, Map<String, String> urls, JSONObject body, Map<String, String> heads) {
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
-            boolean isInvalid = Invalid.isEasyInvalid(field, EasyInvalid.Type.Request);
+            boolean isInvalid = Invalid.isEasyInvalid(field, EasyInvalidType.Request);
             if (isInvalid) {
                 continue;
             }
             boolean isAnnotation = field.isAnnotationPresent(EasyRequest.class);
             String key = "";
-            EasyRequest.Type paramType = EasyRequest.Type.Param;
+            EasyRequestType paramType = EasyRequestType.Param;
             if (isAnnotation) {
                 EasyRequest param = field.getAnnotation(EasyRequest.class);
                 paramType = param.type();
@@ -291,7 +293,7 @@ class HttpReflectManager {
         String respName = HttpHeadResponse.class.getName();
         String objName = Object.class.getName();
         while (!clazzName.equals(respName) && !clazzName.equals(objName)) {
-            boolean isInvalid = Invalid.isEasyInvalid(myClass, EasyInvalid.Type.Response);
+            boolean isInvalid = Invalid.isEasyInvalid(myClass, EasyInvalidType.Response);
             if (!isInvalid) {
                 parseResponseEntity(myClass, param_field, head_field);
             }
@@ -310,13 +312,13 @@ class HttpReflectManager {
     private static void parseResponseEntity(Class clazz, Map<String, Field> param_field, Map<String, Field> head_field) {
         Field[] fieldsSuper = clazz.getDeclaredFields();
         for (Field field : fieldsSuper) {
-            boolean isInvalid = Invalid.isEasyInvalid(field, EasyInvalid.Type.Response);
+            boolean isInvalid = Invalid.isEasyInvalid(field, EasyInvalidType.Response);
             if (isInvalid) {
                 continue;
             }
             boolean isAnnotation = field.isAnnotationPresent(EasyResponse.class);
             String paramName = "";
-            EasyResponse.Type paramType = EasyResponse.Type.Param;
+            EasyResponseType paramType = EasyResponseType.Param;
             if (isAnnotation) {
                 EasyResponse param = field.getAnnotation(EasyResponse.class);
                 paramType = param.type();

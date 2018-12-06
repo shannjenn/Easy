@@ -17,7 +17,6 @@ public class ExampleBaseResponse extends HttpHeadResponse {
     @EasyResponse("message")
     protected String message;
 
-    @EasyResponse(type = EasyResponse.Type.Head)
     private String head;
 
     public String getCode() {

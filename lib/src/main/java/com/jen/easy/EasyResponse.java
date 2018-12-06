@@ -13,11 +13,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface EasyResponse {
-    enum Type {
-        Param,//返回参数
-        Head//返回头部
-    }
-
     /**
      * 参数名称
      */
@@ -26,5 +21,5 @@ public @interface EasyResponse {
     /**
      * 请求参数类型
      */
-    Type type() default Type.Param;
+    EasyResponseType type() default EasyResponseType.Param;
 }

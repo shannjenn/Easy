@@ -14,14 +14,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface EasyInvalid {
 
-    enum Type {
-        Request,//请求参数失效
-        Response,//返回参数失效
-        Column//数据库列失效
-    }
-
     /**
      * 参数名称
      */
-    Type[] value() default {Type.Request, Type.Response, Type.Column};
+    EasyInvalidType[] value() default {EasyInvalidType.Request, EasyInvalidType.Response, EasyInvalidType.Column};
 }

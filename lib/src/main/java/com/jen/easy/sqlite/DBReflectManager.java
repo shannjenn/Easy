@@ -4,7 +4,7 @@ import com.jen.easy.EasyColumn;
 import com.jen.easy.EasyTable;
 import com.jen.easy.constant.FieldType;
 import com.jen.easy.constant.TAG;
-import com.jen.easy.invalid.EasyInvalid;
+import com.jen.easy.invalid.EasyInvalidType;
 import com.jen.easy.invalid.Invalid;
 import com.jen.easy.log.EasyLog;
 
@@ -56,7 +56,7 @@ class DBReflectManager {
 
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
-            boolean isInvalid = Invalid.isEasyInvalid(field, EasyInvalid.Type.Column);
+            boolean isInvalid = Invalid.isEasyInvalid(field, EasyInvalidType.Column);
             if (isInvalid)
                 continue;
             String columnName = "";
@@ -96,7 +96,7 @@ class DBReflectManager {
 
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
-            boolean isInvalid = Invalid.isEasyInvalid(field, EasyInvalid.Type.Column);
+            boolean isInvalid = Invalid.isEasyInvalid(field, EasyInvalidType.Column);
             if (isInvalid)
                 continue;
             boolean isAnnotation = field.isAnnotationPresent(EasyColumn.class);
@@ -128,7 +128,7 @@ class DBReflectManager {
         }*/
         Field[] fields = obj.getClass().getDeclaredFields();
         for (Field field : fields) {
-            boolean isInvalid = Invalid.isEasyInvalid(field, EasyInvalid.Type.Column);
+            boolean isInvalid = Invalid.isEasyInvalid(field, EasyInvalidType.Column);
             if (isInvalid)
                 continue;
             boolean isAnnotation = field.isAnnotationPresent(EasyColumn.class);

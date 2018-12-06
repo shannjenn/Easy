@@ -13,12 +13,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface EasyRequest {
-    enum Type {
-        Param,//请求参数
-        Head,//请求头部
-        Url//请求地址
-    }
-
     /**
      * 参数名称
      */
@@ -27,5 +21,5 @@ public @interface EasyRequest {
     /**
      * 请求参数类型
      */
-    Type type() default Type.Param;
+    EasyRequestType type() default EasyRequestType.Param;
 }

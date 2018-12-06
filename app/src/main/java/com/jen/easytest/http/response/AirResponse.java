@@ -16,7 +16,6 @@ public class AirResponse extends ExampleBaseResponse {
 
 
 
-    @EasyResponse(type = EasyResponse.Type.Head)
     private String Date;
 
     @EasyResponse("token")
