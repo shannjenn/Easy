@@ -1,0 +1,16 @@
+<resources>
+    <declare-styleable name="EasyRotateTextView">
+        <attr name="rotateDegree" format="integer"/>
+        <attr name="rotateText" format="string"/>
+        <attr name="rotateTextSize" format="dimension"/>
+        <attr name="rotateTextColor" format="color"/>
+
+        <attr name="android:layout_width" />
+        <attr name="android:layout_height" />
+        <attr name="android:paddingLeft" />
+        <attr name="android:paddingRight" />
+        <attr name="android:paddingTop" />
+        <attr name="android:paddingBottom" />
+        <attr name="android:padding" />
+    </declare-styleable>
+</resources>
