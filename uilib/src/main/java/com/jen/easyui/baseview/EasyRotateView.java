@@ -18,7 +18,7 @@ import com.jen.easyui.util.EasyDensityUtil;
  * 时间：2018/12/06.
  * 说明：
  */
-public class EasyRotateTextView extends View {
+public class EasyRotateView extends View {
     private Paint paint;
     private String text;
     private int textSize;
@@ -32,16 +32,16 @@ public class EasyRotateTextView extends View {
     private int widthSpec;
     private int heightSpec;
 
-    public EasyRotateTextView(Context context) {
+    public EasyRotateView(Context context) {
         super(context);
     }
 
-    public EasyRotateTextView(Context context, @Nullable AttributeSet attrs) {
+    public EasyRotateView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         initAttrs(attrs);
     }
 
-    public EasyRotateTextView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public EasyRotateView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initAttrs(attrs);
     }
@@ -49,14 +49,14 @@ public class EasyRotateTextView extends View {
 
     private void initAttrs(AttributeSet attrs) {
         int txtSize = (int) EasyDensityUtil.dp2px(14);
-        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.EasyRotateTextView);
-        text = a.getString(R.styleable.EasyRotateTextView_rotateText);
-        textSize = a.getDimensionPixelSize(R.styleable.EasyRotateTextView_rotateTextSize, txtSize);
-        textColor = a.getColor(R.styleable.EasyRotateTextView_rotateTextColor, 0xff000000);
-        degree = a.getInt(R.styleable.EasyRotateTextView_rotateDegree, 90);
+        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.EasyRotateView);
+        text = a.getString(R.styleable.EasyRotateView_rotateText);
+        textSize = a.getDimensionPixelSize(R.styleable.EasyRotateView_rotateTextSize, txtSize);
+        textColor = a.getColor(R.styleable.EasyRotateView_rotateTextColor, 0xff000000);
+        degree = a.getInt(R.styleable.EasyRotateView_rotateDegree, 90);
 
-        layoutWidth = a.getLayoutDimension(R.styleable.EasyRotateTextView_android_layout_width, 0);
-        layoutHeight = a.getLayoutDimension(R.styleable.EasyRotateTextView_android_layout_height, 0);
+        layoutWidth = a.getLayoutDimension(R.styleable.EasyRotateView_android_layout_width, 0);
+        layoutHeight = a.getLayoutDimension(R.styleable.EasyRotateView_android_layout_height, 0);
 
         a.recycle();
         init();

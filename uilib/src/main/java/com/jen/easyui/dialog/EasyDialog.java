@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -33,7 +34,20 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
 
     private Drawable icon;
     private String txtTile;
-    private String txtContent;
+    private TitleGravity titleGravity = TitleGravity.Left;
+
+    public enum TitleGravity {
+        Left,
+        Center
+    }
+
+    private CharSequence txtContent;
+    private ContentGravity contentGravity = ContentGravity.Center;
+    public enum ContentGravity {
+        Left,
+        Center
+    }
+
     private String txtLeft;
     private String txtRight;
     private String txtMiddle;
@@ -90,12 +104,36 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
         }
         if (txtTile != null) {
             tv_title.setText(txtTile);
+            switch (titleGravity) {
+                case Left: {
+                    tv_title.setGravity(Gravity.CENTER_VERTICAL);
+                    break;
+                }
+                case Center: {
+                    tv_title.setGravity(Gravity.CENTER);
+                    break;
+                }
+                default:
+                    break;
+            }
         } else {
             tv_title.setVisibility(View.GONE);
         }
 
-        if (txtContent != null) {//始终显示
+        if (txtContent != null) {
             tv_content.setText(txtContent);
+            switch (contentGravity) {
+                case Left: {
+                    tv_content.setGravity(Gravity.CENTER_VERTICAL);
+                    break;
+                }
+                case Center: {
+                    tv_content.setGravity(Gravity.CENTER);
+                    break;
+                }
+                default:
+                    break;
+            }
         }
         if (txtLeft != null) {
             btn_left.setText(txtLeft);
@@ -168,11 +206,19 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
         this.txtTile = txtTile;
     }
 
-    public String getTxtContent() {
+    public void setTitleGravity(TitleGravity titleGravity) {
+        this.titleGravity = titleGravity;
+    }
+
+    public CharSequence getTxtContent() {
         return txtContent;
     }
 
-    public void setTxtContent(String txtContent) {
+    public void setContentGravity(ContentGravity contentGravity) {
+        this.contentGravity = contentGravity;
+    }
+
+    public void setTxtContent(CharSequence txtContent) {
         this.txtContent = txtContent;
     }
 
@@ -243,7 +289,9 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
 
         private Drawable icon;
         private String txtTitle;
-        private String txtContent;
+        private TitleGravity titleGravity = TitleGravity.Left;
+        private CharSequence txtContent;
+        private ContentGravity contentGravity = ContentGravity.Center;
         private String txtLeft;
         private String txtMiddle;
         private String txtRight;
@@ -267,6 +315,8 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
             dialog.setTxtRight(txtRight);
             dialog.setEasyDialogListener(easyDialogListener);
             dialog.setFlagCode(flagCode);
+            dialog.setTitleGravity(titleGravity);
+            dialog.setContentGravity(contentGravity);
 
 //            dialog.setWidth(width);
 //            dialog.setHeight(height);
@@ -285,8 +335,18 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
             return this;
         }
 
-        public Build setContent(String txt) {
+        public Build setTitleGravity(TitleGravity titleGravity) {
+            this.titleGravity = titleGravity;
+            return this;
+        }
+
+        public Build setContent(CharSequence txt) {
             txtContent = txt;
+            return this;
+        }
+
+        public Build setContentGravity(ContentGravity contentGravity) {
+            this.contentGravity = contentGravity;
             return this;
         }
 

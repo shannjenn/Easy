@@ -1,5 +1,5 @@
 <resources>
-    <declare-styleable name="EasyRotateTextView">
+    <declare-styleable name="EasyRotateView">
         <attr name="rotateDegree" format="integer"/>
         <attr name="rotateText" format="string"/>
         <attr name="rotateTextSize" format="dimension"/>

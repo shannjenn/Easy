@@ -51,6 +51,7 @@ public class EasyItemLayout extends RelativeLayout {
     int titleTextMarginLeft;
 
     String contentText;
+    String contentHint;
     int contentTextSize;
     int contentTextColor;
     int contentTextLines;//默认1
@@ -97,6 +98,7 @@ public class EasyItemLayout extends RelativeLayout {
         titleTextMarginLeft = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemTitleMarginLeft, 0);
 
         contentText = a.getString(R.styleable.EasyItemLayout_itemTxtText);
+        contentHint = a.getString(R.styleable.EasyItemLayout_itemTxtHint);
         contentTextSize = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemTxtTextSize, defaultTextSize);
         contentTextColor = a.getColor(R.styleable.EasyItemLayout_itemTxtTextColor, DEFAULT_TEXT_COLOR_CONTENT);
         contentTextLines = a.getInt(R.styleable.EasyItemLayout_itemTxtLines, 1);
@@ -156,6 +158,7 @@ public class EasyItemLayout extends RelativeLayout {
         }
 
         tv_item_layout_content.setText(contentText);
+        tv_item_layout_content.setHint(contentHint);
         tv_item_layout_content.setTextSize(TypedValue.COMPLEX_UNIT_PX, contentTextSize);
         tv_item_layout_content.setTextColor(contentTextColor);
         tv_item_layout_content.setLines(contentTextLines);

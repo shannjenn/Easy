@@ -9,8 +9,37 @@ public class javaClass {
 
         double aa = 2751545454645646546.235;
 
-        String str = formatDouble(aa/100000000, 2);
+        String str = formatDouble(aa / 100000000, 2);
         Class a = null;
+
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                SynTest.getIns().syn();
+            }
+        }.start();
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                SynTest.getIns().syn();
+            }
+        }.start();
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                SynTest.getIns().syn();
+            }
+        }.start();
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                SynTest.getIns().syn();
+            }
+        }.start();
     }
 
     private static String formatDouble(double value, int decimal) {
@@ -80,6 +109,33 @@ public class javaClass {
     public static class School {
         //        private String aa;
         private int ddddd;
+    }
+
+    public static class SynTest {
+        private static SynTest mSynTest;
+
+        private SynTest() {
+
+        }
+
+        public static SynTest getIns() {
+            if (mSynTest == null) {
+                synchronized (SynTest.class) {
+                    if (mSynTest == null) {
+                        mSynTest = new SynTest();
+                    }
+                }
+            }
+            return mSynTest;
+        }
+
+        public synchronized void syn() {
+            System.out.println("synchronized running .........");
+            for (int i = 0; i < 1000; i++) {
+                System.out.println(i);
+            }
+        }
+
     }
 
 }

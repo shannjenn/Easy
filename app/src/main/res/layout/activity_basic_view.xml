@@ -175,7 +175,7 @@
 
         </LinearLayout>
 
-        <com.jen.easyui.baseview.EasyRotateTextView
+        <com.jen.easyui.baseview.EasyRotateView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:rotateDegree="90"

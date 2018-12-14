@@ -13,6 +13,7 @@
 
         <attr name="itemTxtLines" format="integer" />
         <attr name="itemTxtText" format="string" />
+        <attr name="itemTxtHint" format="string" />
         <attr name="itemTxtTextSize" format="dimension" />
         <attr name="itemTxtTextColor" format="color" />
 
