@@ -7,6 +7,7 @@ import com.jen.easy.EasyViewID;
 import com.jen.easytest.R;
 import com.jen.easyui.base.EasyActivity;
 import com.jen.easyui.baseview.EasyItemLayout;
+import com.jen.easyui.baseview.EasyRotateView;
 import com.jen.easyui.baseview.EasyShapeTextView;
 import com.jen.easyui.baseview.EasyTopBar;
 
@@ -27,8 +28,8 @@ public class BasicViewActivity extends EasyActivity {
     EasyShapeTextView easy_tv_shape;
     @EasyViewID(R.id.easy_item_layout)
     EasyItemLayout easy_item_layout;
-//    @EasyViewID(R.id.loop_view)
-//    EasyLoopView loop_view;
+    @EasyViewID(R.id.rote_view)
+    EasyRotateView rote_view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +77,9 @@ public class BasicViewActivity extends EasyActivity {
         list.add("JJJ");
         list.add("KKK");
 //        loop_view.setData(list);
+
+        rote_view.appendText("测试",0xff00ffff);
+        rote_view.update();
     }
 
     @Override

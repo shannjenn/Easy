@@ -176,11 +176,15 @@
         </LinearLayout>
 
         <com.jen.easyui.baseview.EasyRotateView
+            android:id="@+id/rote_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:rotateDegree="90"
-            app:rotateText="abcdefghk看阿萨德镂空设计大佛拉克丝京东阿斯利康大姐夫欧尼水电费阿斯蒂芬水电费蓝色短裤123123132131"
-            app:rotateTextColor="#ff0000"
+            app:rotateTextColor="#000"
+            app:rotateSpanTextColor="#ff0000"
+            app:rotateSpanIndexEnd="20"
+            app:rotateSpanIndexStart="10"
+            app:rotateText="abcdefghkad阿萨德镂空设计欧尼水电蓝色短裤12"
             app:rotateTextSize="24dp"/>
 
         <View

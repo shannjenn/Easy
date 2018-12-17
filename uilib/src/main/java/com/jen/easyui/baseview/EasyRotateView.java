@@ -13,17 +13,26 @@ import android.view.ViewGroup;
 import com.jen.easyui.R;
 import com.jen.easyui.util.EasyDensityUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 作者：ShannJenn
  * 时间：2018/12/06.
- * 说明：
+ * 说明：目前只支持90度文字(布局只设置2两颜色，多种颜色请调用appendText)
  */
 public class EasyRotateView extends View {
     private Paint paint;
-    private String text;
-    private int textSize;
-    private int textColor;
+    private String textDefault;
+    private int textSizeDefault;
+    private int textColorDefault;
     private int degree;
+
+    private final List<Span> mDefault = new ArrayList<>();
+    private final List<Span> mSpans = new ArrayList<>();
+    private int spanTextColor;
+    private int spanIndexStart;
+    private int spanIndexEnd;
 
     private int layoutWidth;
     private int layoutHeight;
@@ -31,6 +40,11 @@ public class EasyRotateView extends View {
     private float baseline;
     private int widthSpec;
     private int heightSpec;
+
+    private class Span {
+        public String text;
+        public int color;
+    }
 
     public EasyRotateView(Context context) {
         super(context);
@@ -50,10 +64,14 @@ public class EasyRotateView extends View {
     private void initAttrs(AttributeSet attrs) {
         int txtSize = (int) EasyDensityUtil.dp2px(14);
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.EasyRotateView);
-        text = a.getString(R.styleable.EasyRotateView_rotateText);
-        textSize = a.getDimensionPixelSize(R.styleable.EasyRotateView_rotateTextSize, txtSize);
-        textColor = a.getColor(R.styleable.EasyRotateView_rotateTextColor, 0xff000000);
+        textDefault = a.getString(R.styleable.EasyRotateView_rotateText);
+        textSizeDefault = a.getDimensionPixelSize(R.styleable.EasyRotateView_rotateTextSize, txtSize);
+        textColorDefault = a.getColor(R.styleable.EasyRotateView_rotateTextColor, 0xff000000);
         degree = a.getInt(R.styleable.EasyRotateView_rotateDegree, 90);
+
+        spanTextColor = a.getColor(R.styleable.EasyRotateView_rotateSpanTextColor, 0xff000000);
+        spanIndexStart = a.getInt(R.styleable.EasyRotateView_rotateSpanIndexStart, -1);
+        spanIndexEnd = a.getInt(R.styleable.EasyRotateView_rotateSpanIndexEnd, -1);
 
         layoutWidth = a.getLayoutDimension(R.styleable.EasyRotateView_android_layout_width, 0);
         layoutHeight = a.getLayoutDimension(R.styleable.EasyRotateView_android_layout_height, 0);
@@ -64,12 +82,12 @@ public class EasyRotateView extends View {
 
     private void init() {
         paint = new Paint();
-        paint.setColor(textColor);
+        paint.setColor(textColorDefault);
         paint.setAntiAlias(true);
-        paint.setTextSize(textSize);
+        paint.setTextSize(textSizeDefault);
 
-        if (text == null) {
-            text = "";
+        if (textDefault == null) {
+            textDefault = "";
         }
         //计算baseline
         //dy 代表的是：高度的一半到 baseLine的距离
@@ -81,13 +99,51 @@ public class EasyRotateView extends View {
 
         widthSpec = fontMetrics.bottom - fontMetrics.top;
 
+        StringBuilder builder = new StringBuilder(textDefault);
+        for (int i = 0; i < mSpans.size(); i++) {
+            builder.append(mSpans.get(i).text);
+        }
         Rect rect = new Rect();
-        paint.getTextBounds(text, 0, text.length(), rect);
-        heightSpec = rect.width() + 2;
-//        int h = rect.height();
+        paint.getTextBounds(builder.toString(), 0, builder.length(), rect);
+        heightSpec = rect.left + rect.right + 2;
+
+        mDefault.clear();
+        if (spanIndexStart >= 0 & spanIndexEnd > 0 && spanIndexEnd <= textDefault.length()
+                && spanIndexEnd > spanIndexStart) {
+            if (spanIndexStart > 0) {
+                addDefault(textDefault.substring(0, spanIndexStart), textColorDefault);
+            }
+            addDefault(textDefault.substring(spanIndexStart, spanIndexEnd), spanTextColor);
+            if (spanIndexEnd < textDefault.length()) {
+                addDefault(textDefault.substring(spanIndexEnd, textDefault.length()), textColorDefault);
+            }
+        }
     }
 
-    private void update() {
+    private void addDefault(String text, int color) {
+        if (text == null || text.length() == 0) {
+            return;
+        }
+        Span span = new Span();
+        span.text = text;
+        span.color = color;
+        mDefault.add(span);
+    }
+
+    private void addSpan(String text, int color) {
+        if (text == null || text.length() == 0) {
+            return;
+        }
+        Span span = new Span();
+        span.text = text;
+        span.color = color;
+        mSpans.add(span);
+    }
+
+    /**
+     * 最后要更新
+     */
+    public void update() {
         init();
         invalidate();
     }
@@ -111,35 +167,56 @@ public class EasyRotateView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.rotate(degree);
-//        baseline = 1000;
-        canvas.drawText(text, 1, -baseline, paint);
+        if (mSpans.size() == 0) {
+            canvas.drawText(textDefault, 1, -baseline, paint);
+        } else {
+            int x = 1;
+            for (int i = 0; i < mDefault.size(); i++) {
+                Span span = mDefault.get(i);
+                x = drawTextSpan(canvas, span, x);
+            }
+            for (int i = 0; i < mSpans.size(); i++) {
+                Span span = mSpans.get(i);
+                x = drawTextSpan(canvas, span, x);
+            }
+        }
+
+    }
+
+    private int drawTextSpan(Canvas canvas, Span span, int x) {
+        canvas.save();
+        paint.setColor(span.color);
+        canvas.drawText(span.text, x, -baseline, paint);
+        canvas.restore();
+
+        Rect rect = new Rect();
+        paint.getTextBounds(span.text, 0, span.text.length(), rect);
+        x = rect.right + x;
+        return x;
     }
 
     public String getText() {
-        return text == null ? "" : text;
+        return textDefault == null ? "" : textDefault;
     }
 
-    public void setText(String text) {
-        this.text = text;
-        update();
+    public void setText(String textDefault) {
+        this.textDefault = textDefault;
     }
 
     public int getTextSize() {
-        return textSize;
+        return textSizeDefault;
     }
 
-    public void setTextSize(int textSize) {
-        this.textSize = textSize;
-        update();
+    public void setTextSize(int textSizeDefault) {
+        this.textSizeDefault = textSizeDefault;
     }
 
     public int getTextColor() {
-        return textColor;
+        return textColorDefault;
     }
 
-    public void setTextColor(int textColor) {
-        this.textColor = textColor;
-        update();
+    public void setTextColor(int textColorDefault) {
+        this.textColorDefault = textColorDefault;
     }
 
     public int getDegree() {
@@ -148,6 +225,33 @@ public class EasyRotateView extends View {
 
     public void setDegree(int degree) {
         this.degree = degree;
-        update();
+    }
+
+    public int getSpanTextColor() {
+        return spanTextColor;
+    }
+
+    public void setSpanTextColor(int spanTextColor) {
+        this.spanTextColor = spanTextColor;
+    }
+
+    public int getSpanIndexStart() {
+        return spanIndexStart;
+    }
+
+    public void setSpanIndexStart(int spanIndexStart) {
+        this.spanIndexStart = spanIndexStart;
+    }
+
+    public int getSpanIndexEnd() {
+        return spanIndexEnd;
+    }
+
+    public void setSpanIndexEnd(int spanIndexEnd) {
+        this.spanIndexEnd = spanIndexEnd;
+    }
+
+    public void appendText(String text, int color) {
+        addSpan(text, color);
     }
 }
