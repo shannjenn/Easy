@@ -176,15 +176,27 @@
         </LinearLayout>
 
         <com.jen.easyui.baseview.EasyRotateView
+            android:id="@+id/rote_view2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:rotateDegree="0"
+            app:rotateSpanIndexEnd="20"
+            app:rotateSpanIndexStart="10"
+            app:rotateSpanTextColor="#ff0000"
+            app:rotateText="abcdefg萨德镂空设计欧尼水电蓝色短裤12"
+            app:rotateTextColor="#000"
+            app:rotateTextSize="24dp"/>
+
+        <com.jen.easyui.baseview.EasyRotateView
             android:id="@+id/rote_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:rotateDegree="90"
-            app:rotateTextColor="#000"
-            app:rotateSpanTextColor="#ff0000"
             app:rotateSpanIndexEnd="20"
             app:rotateSpanIndexStart="10"
+            app:rotateSpanTextColor="#ff0000"
             app:rotateText="abcdefghkad阿萨德镂空设计欧尼水电蓝色短裤12"
+            app:rotateTextColor="#000"
             app:rotateTextSize="24dp"/>
 
         <View

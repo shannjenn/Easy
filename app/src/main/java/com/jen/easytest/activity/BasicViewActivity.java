@@ -30,6 +30,8 @@ public class BasicViewActivity extends EasyActivity {
     EasyItemLayout easy_item_layout;
     @EasyViewID(R.id.rote_view)
     EasyRotateView rote_view;
+    @EasyViewID(R.id.rote_view2)
+    EasyRotateView rote_view2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +82,8 @@ public class BasicViewActivity extends EasyActivity {
 
         rote_view.appendText("测试",0xff00ffff);
         rote_view.update();
+        rote_view2.appendText("测试",0xff00ffff);
+        rote_view2.update();
     }
 
     @Override

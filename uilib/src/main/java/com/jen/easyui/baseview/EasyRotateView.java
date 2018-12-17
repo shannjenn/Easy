@@ -19,7 +19,8 @@ import java.util.List;
 /**
  * 作者：ShannJenn
  * 时间：2018/12/06.
- * 说明：目前只支持90度文字(布局只设置2两颜色，多种颜色请调用appendText)
+ * 说明：目前只支持0/90度文字(布局只设置2两颜色，多种颜色请调用appendText)
+ * 暂时不支持换行显示
  */
 public class EasyRotateView extends View {
     private Paint paint;
@@ -38,6 +39,7 @@ public class EasyRotateView extends View {
     private int layoutHeight;
 
     private float baseline;
+    private float drawY;
     private int widthSpec;
     private int heightSpec;
 
@@ -89,23 +91,22 @@ public class EasyRotateView extends View {
         if (textDefault == null) {
             textDefault = "";
         }
-        //计算baseline
-        //dy 代表的是：高度的一半到 baseLine的距离
-        Paint.FontMetricsInt fontMetrics = paint.getFontMetricsInt();
-        // top 是一个负值  bottom 是一个正值    top，bttom的值代表是  bottom是baseLine到文字底部的距离（正值）
-        // 必须要清楚的，可以自己打印就好
-        int dy = (fontMetrics.bottom - fontMetrics.top) / 2 - fontMetrics.bottom;
-        baseline = getHeight() / 2 + dy;
-
-        widthSpec = fontMetrics.bottom - fontMetrics.top;
-
         StringBuilder builder = new StringBuilder(textDefault);
         for (int i = 0; i < mSpans.size(); i++) {
             builder.append(mSpans.get(i).text);
         }
+        Paint.FontMetricsInt fontMetrics = paint.getFontMetricsInt();
+        baseline = (fontMetrics.bottom - fontMetrics.top) / 2 - fontMetrics.bottom;
         Rect rect = new Rect();
         paint.getTextBounds(builder.toString(), 0, builder.length(), rect);
-        heightSpec = rect.left + rect.right + 2;
+
+        if (degree == 0) {//0度
+            heightSpec = fontMetrics.bottom - fontMetrics.top;
+            widthSpec = rect.left + rect.right + 2;
+        } else if (degree % 90 == 0) {//90度
+            widthSpec = fontMetrics.bottom - fontMetrics.top;
+            heightSpec = rect.left + rect.right + 2;
+        }
 
         mDefault.clear();
         if (spanIndexStart >= 0 & spanIndexEnd > 0 && spanIndexEnd <= textDefault.length()
@@ -117,6 +118,8 @@ public class EasyRotateView extends View {
             if (spanIndexEnd < textDefault.length()) {
                 addDefault(textDefault.substring(spanIndexEnd, textDefault.length()), textColorDefault);
             }
+        } else {
+            addDefault(textDefault, textColorDefault);
         }
     }
 
@@ -151,12 +154,12 @@ public class EasyRotateView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         if (layoutWidth == ViewGroup.LayoutParams.WRAP_CONTENT) {
-            if (degree % 90 == 0) {
+            if (degree == 0 || degree % 90 == 0) {
                 widthMeasureSpec = MeasureSpec.makeMeasureSpec(widthSpec, MeasureSpec.EXACTLY);
             }
         }
         if (layoutHeight == ViewGroup.LayoutParams.WRAP_CONTENT) {
-            if (degree % 90 == 0) {
+            if (degree == 0 || degree % 90 == 0) {
                 heightMeasureSpec = MeasureSpec.makeMeasureSpec(heightSpec, MeasureSpec.EXACTLY);
             }
         }
@@ -167,26 +170,47 @@ public class EasyRotateView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.rotate(degree);
-        if (mSpans.size() == 0) {
-            canvas.drawText(textDefault, 1, -baseline, paint);
-        } else {
-            int x = 1;
+        if (degree == 0) {//0度
+            drawY = getHeight() / 2 + baseline;
+            float x = 1;
             for (int i = 0; i < mDefault.size(); i++) {
                 Span span = mDefault.get(i);
-                x = drawTextSpan(canvas, span, x);
+                x = drawText0(canvas, span, x);
             }
             for (int i = 0; i < mSpans.size(); i++) {
                 Span span = mSpans.get(i);
-                x = drawTextSpan(canvas, span, x);
+                x = drawText0(canvas, span, x);
+            }
+        } else if (degree % 90 == 0) {//90度
+            drawY = (getWidth() - widthSpec) / 2 + baseline;
+            float x = 1;
+            for (int i = 0; i < mDefault.size(); i++) {
+                Span span = mDefault.get(i);
+                x = drawText90(canvas, span, x);
+            }
+            for (int i = 0; i < mSpans.size(); i++) {
+                Span span = mSpans.get(i);
+                x = drawText90(canvas, span, x);
             }
         }
-
     }
 
-    private int drawTextSpan(Canvas canvas, Span span, int x) {
+    private float drawText0(Canvas canvas, Span span, float x) {
         canvas.save();
         paint.setColor(span.color);
-        canvas.drawText(span.text, x, -baseline, paint);
+        canvas.drawText(span.text, x, drawY, paint);
+        canvas.restore();
+
+        Rect rect = new Rect();
+        paint.getTextBounds(span.text, 0, span.text.length(), rect);
+        x = rect.right + x;
+        return x;
+    }
+
+    private float drawText90(Canvas canvas, Span span, float x) {
+        canvas.save();
+        paint.setColor(span.color);
+        canvas.drawText(span.text, x, -drawY, paint);
         canvas.restore();
 
         Rect rect = new Rect();
