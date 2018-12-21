@@ -33,14 +33,15 @@ class Database {
     /**
      * 创建数据库
      */
-    boolean createDB() {
+    boolean init() {
         File file = new File(path);
         if (file.exists()) {
-//            EasyLog.i(TAG.EasySQL, "数据库已经存在");
+            EasyLog.i(TAG.EasySQL, "数据库存在");
             return true;
         }
         try {
             SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(path, null);
+            EasyLog.w(TAG.EasySQL, "数据库创建成功");
             db.close();
             return true;
         } catch (SQLiteException e) {

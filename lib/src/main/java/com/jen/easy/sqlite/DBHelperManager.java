@@ -29,8 +29,8 @@ abstract class DBHelperManager {
         }
     }
 
-    protected boolean create() {
-        return database.createDB();
+    protected boolean init() {
+        return database.init();
     }
 
     /**
