@@ -9,7 +9,10 @@ public class javaClass {
 
         double aa = 2751545454645646546.235;
 
-        String str = formatDouble(aa / 100000000, 2);
+        String value = formatDecimal(-5.12, 1);
+        System.out.print(value);
+
+        /*String str = formatDouble(aa / 100000000, 2);
         Class a = null;
 
         new Thread() {
@@ -39,7 +42,30 @@ public class javaClass {
                 super.run();
                 SynTest.getIns().syn();
             }
-        }.start();
+        }.start();*/
+    }
+
+    public static String formatDecimal(Object value, int decimal) {
+        if (value == null) {
+//            EasyLog.e(TAG, "formatDecimal error -------- ");
+            return "";
+        }
+        Double valueD = null;
+        if (value instanceof Double) {
+            valueD = (Double) value;
+        } else {
+            try {
+                valueD = Double.parseDouble(String.valueOf(value));
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+        if (valueD == null) {
+//            EasyLog.e(TAG, "formatDecimal NumberFormatException error -------- ");
+            return "";
+        }
+        String unit = "%." + decimal + "f";//f>float
+        return String.format(unit, valueD);
     }
 
     private static String formatDouble(double value, int decimal) {

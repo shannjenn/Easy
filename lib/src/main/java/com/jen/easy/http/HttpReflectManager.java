@@ -111,45 +111,40 @@ class HttpReflectManager {
      */
     static RequestObject getRequestHeadAndBody(Object request) {
         RequestObject requestObject = new RequestObject();
-        parseRequest(new ArrayList<String>(), request, requestObject.urls, requestObject.body, requestObject.heads);
+        parseRequest(new HashMap<String, Integer>(), request, requestObject.urls, requestObject.body, requestObject.heads);
         return requestObject;
     }
 
     /**
      * 获取网络请求参数
      *
-     * @param loopList 避免死循环
-     * @param request  对象数据
-     * @param urls     拼接请求地址参数
-     * @param body     返回的 请求参数
-     * @param heads    返回的 请求头参数
+     * @param loopMap 避免死循环
+     * @param request 对象数据
+     * @param urls    拼接请求地址参数
+     * @param body    返回的 请求参数
+     * @param heads   返回的 请求头参数
      */
-    private static void parseRequest(List<String> loopList, Object request, Map<String, String> urls, JSONObject body, Map<String, String> heads) {
-        /*if (request == null) {
-            Throw.exception(ExceptionType.NullPointerException, "parseRequest 参数不能为空");
-            return;
-        }*/
-        /*if (loopClass == null) {
-            loopClass = new ArrayList<>();
-        }*/
-
+    private static void parseRequest(HashMap<String, Integer> loopMap, Object request, Map<String, String> urls, JSONObject body, Map<String, String> heads) {
         Class clazz = request.getClass();
         String clazzName = clazz.getName();
-        if (loopList.contains(clazzName)) {
-            Throw.exception(ExceptionType.RuntimeException, "无限死循环引用错误：" + clazzName);
-            return;
+
+        if (loopMap.containsKey(clazzName)) {
+            int value = loopMap.get(clazzName);
+            if (value == 1000) {//超过1000默认死循环
+                Throw.exception(ExceptionType.RuntimeException, "无限死循环引用错误：" + clazzName);
+                return;
+            } else {
+                loopMap.put(clazzName, value + 1);
+            }
         } else {
-            loopList.add(clazzName);
+            loopMap.put(clazzName, 1);
         }
-//        String reqName = HttpBasicRequest.class.getName();
+
         String objName = Object.class.getName();
-        while (/*!clazzName.equals(reqName) &&*/ !clazzName.equals(objName)) {
-            /*if (request.status == HttpState.STOP) {
-                break;
-            }*/
+        while (!clazzName.equals(objName)) {
             boolean isInvalid = Invalid.isEasyInvalid(clazz, EasyInvalidType.Request);
             if (!isInvalid) {
-                parseRequestEntity(loopList, clazz, request, urls, body, heads);
+                parseRequestEntity(loopMap, clazz, request, urls, body, heads);
             }
             clazz = clazz.getSuperclass();//获取父类
             clazzName = clazz.getName();
@@ -160,14 +155,14 @@ class HttpReflectManager {
     /**
      * 获取单个类请求参数
      *
-     * @param loopList 避免死循环
-     * @param clazz    类
-     * @param obj      对象数据
-     * @param urls     拼接请求地址参数
-     * @param body     请求参数
-     * @param heads    请求头参数
+     * @param loopMap 避免死循环
+     * @param clazz   类
+     * @param obj     对象数据
+     * @param urls    拼接请求地址参数
+     * @param body    请求参数
+     * @param heads   请求头参数
      */
-    private static void parseRequestEntity(List<String> loopList, Class clazz, Object obj, Map<String, String> urls, JSONObject body, Map<String, String> heads) {
+    private static void parseRequestEntity(HashMap<String, Integer> loopMap, Class clazz, Object obj, Map<String, String> urls, JSONObject body, Map<String, String> heads) {
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
             boolean isInvalid = Invalid.isEasyInvalid(field, EasyInvalidType.Request);
@@ -238,8 +233,10 @@ class HttpReflectManager {
                                 continue;
                             }
                             JSONObject item = new JSONObject();
-                            parseRequest(loopList, itemObj, urls, item, heads);
-                            jsonArray.put(item);
+                            parseRequest(loopMap, itemObj, urls, item, heads);
+                            if (item.length() > 0) {
+                                jsonArray.put(item);
+                            }
                         }
                     }
                     if (jsonArray.length() > 0) {
@@ -247,7 +244,7 @@ class HttpReflectManager {
                     }
                 } else if (FieldType.isClass(field.getType())) {
                     JSONObject item = new JSONObject();
-                    parseRequest(loopList, value, urls, item, heads);
+                    parseRequest(loopMap, value, urls, item, heads);
                     if (item.length() != 0) {//有值才加入
                         body.put(key, item);
                     }
@@ -262,6 +259,104 @@ class HttpReflectManager {
             }
         }
     }
+
+    /*private static JSONObject getRequestBody(Object obj) {
+        JSONObject body = new JSONObject();
+        Field[] fields = obj.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            boolean isInvalid = Invalid.isEasyInvalid(field, EasyInvalidType.Request);
+            if (isInvalid) {
+                continue;
+            }
+            boolean isAnnotation = field.isAnnotationPresent(EasyRequest.class);
+            String key = "";
+            EasyRequestType paramType = EasyRequestType.Param;
+            if (isAnnotation) {
+                EasyRequest param = field.getAnnotation(EasyRequest.class);
+                paramType = param.type();
+                key = param.value().trim();
+            }
+            if (key.length() == 0) {
+                key = field.getName();
+            }
+
+            if (FieldType.isOtherField(key)) {
+                continue;
+            }
+            field.setAccessible(true);
+            try {
+                Object value = field.get(obj);
+                if (value == null) {
+                    continue;
+                }
+                if (value instanceof String || value instanceof Integer || value instanceof Float || value instanceof Long
+                        || value instanceof Double || value instanceof Boolean) {
+                    switch (paramType) {
+                        case Param: {
+                            body.put(key, value);
+                            break;
+                        }
+                        case Head: {
+                            if (heads.containsKey(key)) {
+                                continue;
+                            }
+                            heads.put(key, value + "");
+                            break;
+                        }
+                        case Url: {
+                            urls.put(key, value + "");
+                            break;
+                        }
+                    }
+                } else if (value instanceof List) {
+                    List listObj = (List) value;
+                    if (listObj.size() <= 0) {
+                        continue;
+                    }
+                    Object item0 = listObj.get(0);
+                    boolean isBasic = item0 instanceof String || item0 instanceof Integer || item0 instanceof Float
+                            || item0 instanceof Long || item0 instanceof Double || item0 instanceof Boolean;
+                    JSONArray jsonArray = new JSONArray();
+                    if (isBasic) {
+                        for (int i = 0; i < listObj.size(); i++) {
+                            Object itemObj = listObj.get(i);
+                            if (itemObj == null) {
+                                continue;
+                            }
+                            jsonArray.put(itemObj);
+                        }
+                    } else {
+                        for (int i = 0; i < listObj.size(); i++) {
+                            Object itemObj = listObj.get(i);
+                            if (itemObj == null) {
+                                continue;
+                            }
+                            JSONObject item = new JSONObject();
+                            parseRequest(loopMap, itemObj, urls, item, heads);
+                            jsonArray.put(item);
+                        }
+                    }
+                    if (jsonArray.length() > 0) {
+                        body.put(key, jsonArray);
+                    }
+                } else if (FieldType.isClass(field.getType())) {
+                    JSONObject item = new JSONObject();
+                    parseRequest(loopMap, value, urls, item, heads);
+                    if (item.length() != 0) {//有值才加入
+                        body.put(key, item);
+                    }
+                } else {
+                    Throw.exception(ExceptionType.IllegalArgumentException, "不支持该类型参数：" + field.getName());
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+                EasyLog.w(TAG.EasyHttp, "parseRequest IllegalAccessException");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }*/
+
 
     /**
      * 解析返回实体类参数

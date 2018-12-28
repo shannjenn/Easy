@@ -14,6 +14,8 @@ import com.jen.easytest.http.request.AirRequest;
 import com.jen.easytest.http.request.PutRequest;
 import com.jen.easytest.http.request.QNRequest;
 import com.jen.easytest.http.request.StockChooseConditionResultRequest;
+import com.jen.easytest.request.OrderConditionSaveRequest;
+import com.jen.easytest.request.OrderRuleModel;
 import com.jen.easyui.EasyMain;
 import com.jen.easyui.base.EasyActivity;
 
@@ -146,9 +148,24 @@ public class HttpActivity extends EasyActivity {
         StockChooseConditionResultRequest stockChooseConditionResultRequest = new StockChooseConditionResultRequest();
 
 //        EasyMain.mHttp.start(airRequest);
-        EasyMain.mHttp.start(stockChooseConditionResultRequest);
+//        EasyMain.mHttp.start(stockChooseConditionResultRequest);
         EasyLog.d("mAirResponse mAirResponse:");
 
+
+        OrderConditionSaveRequest request = new OrderConditionSaveRequest();
+        OrderRuleModel model1 = new OrderRuleModel();
+        model1.setCycleUp("100");
+        OrderRuleModel model2 = new OrderRuleModel();
+        model2.setCycleUp("200");
+        OrderRuleModel model3 = new OrderRuleModel();
+        model3.setCycleUp("300");
+        OrderRuleModel model4 = new OrderRuleModel();
+
+        request.params.add(model1);
+        request.params.add(model2);
+        request.params.add(model3);
+        request.params.add(model4);
+        EasyMain.mHttp.start(request);
     }
 
     private void put() {

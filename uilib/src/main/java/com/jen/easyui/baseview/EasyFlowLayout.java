@@ -13,7 +13,7 @@ import com.jen.easyui.R;
  * 作者：ShannJenn
  * 时间：2017/11/16.
  */
-abstract class EasyFlowLayout extends ViewGroup {
+public class EasyFlowLayout extends ViewGroup {
 
     private Context mContext;
     private int childSpaceH, childSpaceV;

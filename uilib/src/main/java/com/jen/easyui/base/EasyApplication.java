@@ -28,7 +28,7 @@ public class EasyApplication extends Application {
         EasyMain.mLog.start();
         EasyMain.mLog.setListener(logcatCrashListener);
 
-        EasyMain.mDBHelper.create();
+        EasyMain.mDBHelper.init();
         EasyMain.mDBHelper.setVersion(DB_VERSION);
         EasyMain.mDBHelper.setDatabaseListener(databaseListener);
         createTB();

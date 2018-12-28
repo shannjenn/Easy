@@ -5,13 +5,20 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.text.Layout;
+import android.text.StaticLayout;
+import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jen.easy.log.EasyLog;
 import com.jen.easyui.R;
 import com.jen.easyui.util.EasyDensityUtil;
+import com.jen.easyui.util.EasyDisplayUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +30,16 @@ import java.util.List;
  * 暂时不支持换行显示
  */
 public class EasyRotateView extends View {
-    private Paint paint;
+    private TextPaint textPaint;
+    private StaticLayout staticLayout;
+    private DrawClipRect drawXY = new DrawClipRect();
+
     private String textDefault;
     private int textSizeDefault;
     private int textColorDefault;
     private int degree;
 
+    private String totalText;
     private final List<Span> mDefault = new ArrayList<>();
     private final List<Span> mSpans = new ArrayList<>();
     private int spanTextColor;
@@ -38,7 +49,9 @@ public class EasyRotateView extends View {
     private int layoutWidth;
     private int layoutHeight;
 
+    private int screenWidth;
     private float baseline;
+    //    private float textHeight;
     private float drawY;
     private int widthSpec;
     private int heightSpec;
@@ -46,6 +59,13 @@ public class EasyRotateView extends View {
     private class Span {
         public String text;
         public int color;
+    }
+
+    private class DrawClipRect {
+        public float l;
+        public float r;
+        public float t;
+        public float b;
     }
 
     public EasyRotateView(Context context) {
@@ -78,34 +98,40 @@ public class EasyRotateView extends View {
         layoutWidth = a.getLayoutDimension(R.styleable.EasyRotateView_android_layout_width, 0);
         layoutHeight = a.getLayoutDimension(R.styleable.EasyRotateView_android_layout_height, 0);
 
+        screenWidth = EasyDisplayUtil.getScreenWidth(getContext());
         a.recycle();
         init();
     }
 
     private void init() {
-        paint = new Paint();
-        paint.setColor(textColorDefault);
-        paint.setAntiAlias(true);
-        paint.setTextSize(textSizeDefault);
-
         if (textDefault == null) {
             textDefault = "";
         }
+
+        textPaint = new TextPaint();
+        textPaint.setColor(textColorDefault);
+        textPaint.setAntiAlias(true);
+        textPaint.setTextSize(textSizeDefault);
         StringBuilder builder = new StringBuilder(textDefault);
         for (int i = 0; i < mSpans.size(); i++) {
             builder.append(mSpans.get(i).text);
         }
-        Paint.FontMetricsInt fontMetrics = paint.getFontMetricsInt();
+        totalText = builder.toString();
+
+        Paint.FontMetricsInt fontMetrics = textPaint.getFontMetricsInt();
         baseline = (fontMetrics.bottom - fontMetrics.top) / 2 - fontMetrics.bottom;
         Rect rect = new Rect();
-        paint.getTextBounds(builder.toString(), 0, builder.length(), rect);
+        textPaint.getTextBounds(totalText, 0, totalText.length(), rect);
+//        textHeight = rect.bottom;
 
-        if (degree == 0) {//0度
-            heightSpec = fontMetrics.bottom - fontMetrics.top;
-            widthSpec = rect.left + rect.right + 2;
-        } else if (degree % 90 == 0) {//90度
-            widthSpec = fontMetrics.bottom - fontMetrics.top;
-            heightSpec = rect.left + rect.right + 2;
+        if (widthSpec == 0 || heightSpec == 0) {
+            if (degree == 0) {//0度
+                heightSpec = fontMetrics.bottom - fontMetrics.top;
+                widthSpec = rect.left + rect.right + 2;
+            } else if (degree % 90 == 0) {//90度
+                widthSpec = fontMetrics.bottom - fontMetrics.top;
+                heightSpec = rect.left + rect.right + 2;
+            }
         }
 
         mDefault.clear();
@@ -147,6 +173,7 @@ public class EasyRotateView extends View {
      * 最后要更新
      */
     public void update() {
+        staticLayout = null;
         init();
         invalidate();
     }
@@ -160,26 +187,53 @@ public class EasyRotateView extends View {
         }
         if (layoutHeight == ViewGroup.LayoutParams.WRAP_CONTENT) {
             if (degree == 0 || degree % 90 == 0) {
-                heightMeasureSpec = MeasureSpec.makeMeasureSpec(heightSpec, MeasureSpec.EXACTLY);
+                heightMeasureSpec = MeasureSpec.makeMeasureSpec(heightSpec + 5, MeasureSpec.EXACTLY);
             }
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        EasyLog.d("left=" + left + " top=" + top + " right=" + right + " bottom=" + bottom);
+        EasyLog.d("widthSpec=" + widthSpec);
+        if (screenWidth < right) {
+            widthSpec = screenWidth - left;
+            requestLayout();
+            invalidate();
+//            new Handler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    requestLayout();
+//                    invalidate();
+//                }
+//            }, 1000);
+            return;
+        }
+        super.onLayout(changed, left, top, right, bottom);
+    }
+
+    @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.rotate(degree);
+
+        if (staticLayout == null) {
+            staticLayout = new StaticLayout(totalText, textPaint, getWidth(),
+                    Layout.Alignment.ALIGN_NORMAL, 1.0F, 0.0F, true);
+        }
         if (degree == 0) {//0度
-            drawY = getHeight() / 2 + baseline;
-            float x = 1;
+            drawXY.l = 1;
+            drawXY.t = 0;
+            drawXY.b = heightSpec;
             for (int i = 0; i < mDefault.size(); i++) {
                 Span span = mDefault.get(i);
-                x = drawText0(canvas, span, x);
+                drawXY.r = drawXY.l + getTextWidth(span.text);
+                drawXY = drawText0(canvas, span, drawXY);
             }
             for (int i = 0; i < mSpans.size(); i++) {
                 Span span = mSpans.get(i);
-                x = drawText0(canvas, span, x);
+                drawXY = drawText0(canvas, span, drawXY);
             }
         } else if (degree % 90 == 0) {//90度
             drawY = (getWidth() - widthSpec) / 2 + baseline;
@@ -195,26 +249,50 @@ public class EasyRotateView extends View {
         }
     }
 
-    private float drawText0(Canvas canvas, Span span, float x) {
+    private float getTextWidth(String text) {
+        Rect rect = new Rect();
+        textPaint.getTextBounds(text, 0, text.length(), rect);
+        return rect.right;
+    }
+
+    private DrawClipRect drawText0(Canvas canvas, Span span, DrawClipRect drawXY) {
+        textPaint.setColor(span.color);
+
         canvas.save();
-        paint.setColor(span.color);
-        canvas.drawText(span.text, x, drawY, paint);
+        RectF rectF = new RectF(drawXY.l, drawXY.t, drawXY.r, drawXY.b);
+        canvas.clipRect(rectF);
+        staticLayout.draw(canvas);
         canvas.restore();
 
-        Rect rect = new Rect();
-        paint.getTextBounds(span.text, 0, span.text.length(), rect);
-        x = rect.right + x;
-        return x;
+        if (drawXY.l < getWidth() && getWidth() < drawXY.r) {
+            Span spanCut = new Span();
+            spanCut.color = span.color;
+            for (int i = 0; i < span.text.length(); i++) {
+                Rect rect2 = new Rect();
+                textPaint.getTextBounds(span.text, 0, i + 1, rect2);
+                if (rect2.right + drawXY.l > getWidth()) {
+                    spanCut.text = span.text.substring(i, span.text.length());
+                    drawXY.l = 1;
+                    drawXY.r = drawXY.l + getTextWidth(span.text);
+                    drawXY.t = drawXY.t + heightSpec;
+                    drawXY.b = drawXY.t + heightSpec;
+                    break;
+                }
+            }
+            return drawText0(canvas, spanCut, drawXY);
+        }
+        drawXY.l = drawXY.r;
+        return drawXY;
     }
 
     private float drawText90(Canvas canvas, Span span, float x) {
         canvas.save();
-        paint.setColor(span.color);
-        canvas.drawText(span.text, x, -drawY, paint);
+        textPaint.setColor(span.color);
+        canvas.drawText(span.text, x, -drawY, textPaint);
         canvas.restore();
 
         Rect rect = new Rect();
-        paint.getTextBounds(span.text, 0, span.text.length(), rect);
+        textPaint.getTextBounds(span.text, 0, span.text.length(), rect);
         x = rect.right + x;
         return x;
     }

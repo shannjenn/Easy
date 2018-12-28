@@ -57,7 +57,7 @@ abstract class HttpManager {
             pool.execute(upload);
         } else {
             EasyLog.w(TAG.EasyHttp, "HttpRequest 错误");
-            Throw.exception(ExceptionType.IllegalArgumentException, "请求参数类型错误，请继承正确");
+            Throw.exception(ExceptionType.IllegalArgumentException, "请求参数类型错误，请继承正确:" + request.getClass().getName());
         }
     }
 

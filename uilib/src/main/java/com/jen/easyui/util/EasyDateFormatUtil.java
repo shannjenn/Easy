@@ -3,6 +3,8 @@ package com.jen.easyui.util;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.jen.easy.sqlite.DBDao;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -37,14 +39,31 @@ import java.util.TimeZone;
 public class EasyDateFormatUtil {
     private final String TAG = EasyDateFormatUtil.class.getSimpleName();
     private SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.SIMPLIFIED_CHINESE);//默认
+    private static EasyDateFormatUtil me;
+
+    public EasyDateFormatUtil() {
+
+    }
+
+    public static EasyDateFormatUtil getIns() {
+        if (me == null) {
+            synchronized (EasyDateFormatUtil.class) {
+                if (me == null) {
+                    me = new EasyDateFormatUtil();
+                }
+            }
+        }
+        return me;
+    }
 
     /**
      * 设置时间格式
      *
      * @param dateFormat 格式(如:yyyy-MM-dd HH:mm:ss)
      */
-    public void setFormat(@NonNull String dateFormat) {
+    public EasyDateFormatUtil setFormat(@NonNull String dateFormat) {
         mFormat = new SimpleDateFormat(dateFormat, Locale.SIMPLIFIED_CHINESE);
+        return this;
     }
 
     /**
@@ -64,14 +83,14 @@ public class EasyDateFormatUtil {
      */
     public String format(String timeStamp) {
         if (timeStamp == null) {
-            Log.w(TAG,"时间戳为空");
+            Log.w(TAG, "时间戳为空");
             return null;
         }
         long time;
         try {
             time = Long.parseLong(timeStamp);
         } catch (NumberFormatException e) {
-            Log.w(TAG,"时间戳错误");
+            Log.w(TAG, "时间戳错误");
             return null;
         }
         Date date = new Date(time);
@@ -104,7 +123,7 @@ public class EasyDateFormatUtil {
         try {
             date = mFormat.parse(formatDate);
         } catch (ParseException e) {
-            Log.w(TAG,"时间格式不正确");
+            Log.w(TAG, "时间格式不正确");
         }
         return date;
     }

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -17,177 +16,195 @@
             app:topBarCloseShow="false"
             app:topBarRightImage="@mipmap/ic_launcher"
             app:topBarTitleText="TopBar"
-            app:topBarTitleTextSize="14sp"/>
+            app:topBarTitleTextSize="14sp" />
 
-        <LinearLayout
+        <EditText
+            android:id="@+id/et_input"
             android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:layout_marginBottom="5dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@null"
+            android:gravity="center"
+            android:hint="输入数量"
+            android:imeActionLabel="完成"
+            android:imeOptions="actionDone"
+            android:inputType="numberSigned"
+            android:singleLine="true"
+            android:textColor="#999"
+            android:textSize="19sp" />
 
-            <TextView
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:text="EasyShapeText："
-                android:textColor="#ff00ff"
-                android:textSize="14sp"/>
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="46dp"-->
+        <!--android:layout_marginBottom="5dp"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:orientation="horizontal">-->
 
-            <com.jen.easyui.baseview.EasyShapeTextView
-                android:id="@+id/easy_tv_shape"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:text="213313133331"
-                app:clickType="check"
-                app:corners="3dp"
-                app:solidClickColor="#ff00ff"
-                app:solidColor="#ff0000"
-                app:strokeClickColor="#00ffff"
-                app:strokeColor="#0000ff"
-                app:strokeWidth="5dp"/>
+        <!--<TextView-->
+        <!--android:layout_width="120dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="EasyShapeText："-->
+        <!--android:textColor="#ff00ff"-->
+        <!--android:textSize="14sp"/>-->
 
-            <com.jen.easyui.baseview.EasyShapeTextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="3dp"
-                android:gravity="center_vertical"
-                android:text="213313133331"
-                app:clickType="check"
-                app:corners="3dp"
-                app:solidClickColor="#ff00ff"
-                app:solidColor="#ff0000"/>
+        <!--<com.jen.easyui.baseview.EasyShapeTextView-->
+        <!--android:id="@+id/easy_tv_shape"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:text="213313133331"-->
+        <!--app:clickType="check"-->
+        <!--app:corners="3dp"-->
+        <!--app:solidClickColor="#ff00ff"-->
+        <!--app:solidColor="#ff0000"-->
+        <!--app:strokeClickColor="#00ffff"-->
+        <!--app:strokeColor="#0000ff"-->
+        <!--app:strokeWidth="5dp"/>-->
 
-            <!--<com.jen.easyui.baseview.EasyShapeTextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:gravity="center_vertical"
-                android:padding="5dp"
-                android:text="2222222"
-                app:lineBottomColor="#ff0000"
-                app:lineBottomMarginBottom="5dp"
-                app:lineBottomMarginLeft="5dp"
-                app:lineBottomMarginRight="5dp"
-                app:lineLeftColor="#ff0000"
-                app:lineLeftMarginBottom="5dp"
-                app:lineLeftMarginLeft="5dp"
-                app:lineLeftMarginTop="5dp"
-                app:lineRightColor="#ff0000"
-                app:lineRightMarginBottom="5dp"
-                app:lineRightMarginRight="5dp"
-                app:lineRightMarginTop="5dp"
-                app:lineTopColor="#ff0000"
-                app:lineTopMarginLeft="5dp"
-                app:lineTopMarginRight="5dp"
-                app:lineTopMarginTop="5dp"
-                app:lineWidth="5dp"/>-->
+        <!--<com.jen.easyui.baseview.EasyShapeTextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_marginStart="3dp"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:text="213313133331"-->
+        <!--app:clickType="check"-->
+        <!--app:corners="3dp"-->
+        <!--app:solidClickColor="#ff00ff"-->
+        <!--app:solidColor="#ff0000"/>-->
 
-        </LinearLayout>
+        <!--&lt;!&ndash;<com.jen.easyui.baseview.EasyShapeTextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:padding="5dp"-->
+        <!--android:text="2222222"-->
+        <!--app:lineBottomColor="#ff0000"-->
+        <!--app:lineBottomMarginBottom="5dp"-->
+        <!--app:lineBottomMarginLeft="5dp"-->
+        <!--app:lineBottomMarginRight="5dp"-->
+        <!--app:lineLeftColor="#ff0000"-->
+        <!--app:lineLeftMarginBottom="5dp"-->
+        <!--app:lineLeftMarginLeft="5dp"-->
+        <!--app:lineLeftMarginTop="5dp"-->
+        <!--app:lineRightColor="#ff0000"-->
+        <!--app:lineRightMarginBottom="5dp"-->
+        <!--app:lineRightMarginRight="5dp"-->
+        <!--app:lineRightMarginTop="5dp"-->
+        <!--app:lineTopColor="#ff0000"-->
+        <!--app:lineTopMarginLeft="5dp"-->
+        <!--app:lineTopMarginRight="5dp"-->
+        <!--app:lineTopMarginTop="5dp"-->
+        <!--app:lineWidth="5dp"/>&ndash;&gt;-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:layout_marginBottom="5dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+        <!--</LinearLayout>-->
 
-            <TextView
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:text="EasyShapeLinearLayout："
-                android:textColor="#ff00ff"
-                android:textSize="14sp"/>
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="46dp"-->
+        <!--android:layout_marginBottom="5dp"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:orientation="horizontal">-->
 
-            <com.jen.easyui.baseview.EasyShapeLinearLayout
-                android:layout_width="46dp"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                app:clickType="check"
-                app:lineBottomColor="#ff0000"
-                app:lineTopColor="#ff0000"
-                app:lineWidth="1px"/>
+        <!--<TextView-->
+        <!--android:layout_width="120dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="EasyShapeLinearLayout："-->
+        <!--android:textColor="#ff00ff"-->
+        <!--android:textSize="14sp"/>-->
 
-        </LinearLayout>
+        <!--<com.jen.easyui.baseview.EasyShapeLinearLayout-->
+        <!--android:layout_width="46dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:gravity="center_vertical"-->
+        <!--app:clickType="check"-->
+        <!--app:lineBottomColor="#ff0000"-->
+        <!--app:lineTopColor="#ff0000"-->
+        <!--app:lineWidth="1px"/>-->
 
-        <com.jen.easyui.baseview.EasyItemLayout
-            android:id="@+id/easy_item_layout"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:gravity="center_vertical"
-            app:itemArrowVisible="true"
-            app:itemCountMarginRight="20dp"
-            app:itemCountText="12"
-            app:itemIsEdit="false"
-            app:itemTitleText="EasyItemLayout"
-            app:itemTxtText="121"/>
+        <!--</LinearLayout>-->
 
-        <com.jen.easyui.baseview.EasyItemLayout
-            android:id="@+id/easy_item_layout2"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:gravity="center_vertical"
-            app:itemArrowVisible="true"
-            app:itemCountMarginRight="20dp"
-            app:itemCountText="12"
-            app:itemEditLines="5"
-            app:itemEditTextHint="121"
-            app:itemEditTextMarginBottom="0dp"
-            app:itemIsEdit="false"
-            app:itemTitleText="ItemLayout"
-            app:itemTxtText="121"/>
+        <!--<com.jen.easyui.baseview.EasyItemLayout-->
+        <!--android:id="@+id/easy_item_layout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="45dp"-->
+        <!--android:gravity="center_vertical"-->
+        <!--app:itemArrowVisible="true"-->
+        <!--app:itemCountMarginRight="20dp"-->
+        <!--app:itemCountText="12"-->
+        <!--app:itemIsEdit="false"-->
+        <!--app:itemTitleText="EasyItemLayout"-->
+        <!--app:itemTxtText="121"/>-->
 
-        <com.jen.easyui.baseview.EasyRadioGroup
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <!--<com.jen.easyui.baseview.EasyItemLayout-->
+        <!--android:id="@+id/easy_item_layout2"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="45dp"-->
+        <!--android:gravity="center_vertical"-->
+        <!--app:itemArrowVisible="true"-->
+        <!--app:itemCountMarginRight="20dp"-->
+        <!--app:itemCountText="12"-->
+        <!--app:itemEditLines="5"-->
+        <!--app:itemEditTextHint="121"-->
+        <!--app:itemEditTextMarginBottom="0dp"-->
+        <!--app:itemIsEdit="false"-->
+        <!--app:itemTitleText="ItemLayout"-->
+        <!--app:itemTxtText="121"/>-->
 
-            <com.jen.easyui.baseview.EasyRadioButton
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                app:radioSrc="@mipmap/ic_launcher"
-                app:radioText="111"
-                app:radioTextColor="#ff0000"/>
-        </com.jen.easyui.baseview.EasyRadioGroup>
+        <!--<com.jen.easyui.baseview.EasyRadioGroup-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:layout_marginBottom="5dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+        <!--<com.jen.easyui.baseview.EasyRadioButton-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="46dp"-->
+        <!--app:radioSrc="@mipmap/ic_launcher"-->
+        <!--app:radioText="111"-->
+        <!--app:radioTextColor="#ff0000"/>-->
+        <!--</com.jen.easyui.baseview.EasyRadioGroup>-->
 
-            <TextView
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:text="EasyShapeEditTextView："
-                android:textColor="#ff00ff"
-                android:textSize="14sp"/>
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="46dp"-->
+        <!--android:layout_marginBottom="5dp"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:orientation="horizontal">-->
 
-            <com.jen.easyui.baseview.EasyShapeEditTextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:enabled="false"
-                android:focusable="false"
-                android:hint="54654"
-                app:lineBottomColor="#ff0000"
-                app:lineBottomMarginBottom="6dp"
-                app:lineWidth="1dp"/>
+        <!--<TextView-->
+        <!--android:layout_width="120dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="EasyShapeEditTextView："-->
+        <!--android:textColor="#ff00ff"-->
+        <!--android:textSize="14sp"/>-->
 
-        </LinearLayout>
+        <!--<com.jen.easyui.baseview.EasyShapeEditTextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:enabled="false"-->
+        <!--android:focusable="false"-->
+        <!--android:hint="54654"-->
+        <!--app:lineBottomColor="#ff0000"-->
+        <!--app:lineBottomMarginBottom="6dp"-->
+        <!--app:lineWidth="1dp"/>-->
 
-        <com.jen.easyui.baseview.EasyRotateView
-            android:id="@+id/rote_view2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:rotateDegree="0"
-            app:rotateSpanIndexEnd="20"
-            app:rotateSpanIndexStart="10"
-            app:rotateSpanTextColor="#ff0000"
-            app:rotateText="abcdefg萨德镂空设计欧尼水电蓝色短裤12"
-            app:rotateTextColor="#000"
-            app:rotateTextSize="24dp"/>
+        <!--</LinearLayout>-->
 
-        <com.jen.easyui.baseview.EasyRotateView
+        <!--<com.jen.easyui.baseview.EasyRotateView-->
+        <!--android:id="@+id/rote_view2"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:rotateDegree="0"-->
+        <!--app:rotateSpanIndexEnd="20"-->
+        <!--app:rotateSpanIndexStart="18"-->
+        <!--app:rotateSpanTextColor="#ff0000"-->
+        <!--app:rotateText="abcdefg萨德镂空设计欧收款的尼水电蓝色短裤12gg"-->
+        <!--app:rotateTextColor="#000"-->
+        <!--app:rotateTextSize="24dp"/>-->
+
+        <!--<com.jen.easyui.baseview.EasyRotateView
             android:id="@+id/rote_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -197,11 +214,11 @@
             app:rotateSpanTextColor="#ff0000"
             app:rotateText="abcdefghkad阿萨德镂空设计欧尼水电蓝色短裤12"
             app:rotateTextColor="#000"
-            app:rotateTextSize="24dp"/>
+            app:rotateTextSize="24dp"/>-->
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:background="#ff0000"/>
+        <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="20dp"-->
+        <!--android:background="#ff0000"/>-->
     </LinearLayout>
 </ScrollView>
