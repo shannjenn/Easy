@@ -12,7 +12,6 @@ import com.jen.easytest.adapter.ImageLoaderAdapter;
 import com.jen.easytest.http.request.ImageLoaderRequest;
 import com.jen.easytest.http.response.ImageLoaderResponse;
 import com.jen.easytest.model.ImageLoaderModel;
-import com.jen.easyui.EasyMain;
 import com.jen.easyui.base.EasyActivity;
 
 import java.util.ArrayList;
@@ -42,15 +41,15 @@ public class ImageLoaderActivity<T extends ImageLoaderResponse> extends EasyActi
     @Override
     protected void intDataBeforeView() {
 //        checkFilePermission();
-        EasyMain.mImageLoader.setImage("http://pic4.nipic.com/20091217/3885730_124701000519_2.jpg", iv_pic);
+//        EasyMain.mImageLoader.setImage("http://pic4.nipic.com/20091217/3885730_124701000519_2.jpg", iv_pic);
 
     }
 
     @Override
     protected void initViews() {
-        List<ImageLoaderModel> list = EasyMain.mDao.searchAll(ImageLoaderModel.class);
-        mData.addAll(list);
-        mData.addAll(list);
+//        List<ImageLoaderModel> list = EasyMain.mDao.searchAll(ImageLoaderModel.class);
+//        mData.addAll(list);
+//        mData.addAll(list);
         adapter = new ImageLoaderAdapter<>(this, mData);
 
         RecyclerView.LayoutManager manager = new GridLayoutManager(this, 2);
@@ -62,8 +61,8 @@ public class ImageLoaderActivity<T extends ImageLoaderResponse> extends EasyActi
     protected void loadDataAfterView() {
         if (mData.size() == 0) {
             ImageLoaderRequest request = new ImageLoaderRequest();
-            EasyMain.mHttp.setHttpBaseListener(this);
-            EasyMain.mHttp.start(request);
+//            EasyMain.mHttp.setHttpBaseListener(this);
+//            EasyMain.mHttp.start(request);
         }
     }
 

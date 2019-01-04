@@ -96,6 +96,10 @@ abstract class HttpManager {
         }
     }
 
+    public boolean isShutdown(){
+        return status == HttpState.STOP;
+    }
+
     public int getMaxThreadSize() {
         return maxThreadSize;
     }

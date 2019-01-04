@@ -43,6 +43,14 @@ public class Http extends HttpManager {
     }
 
     /**
+     * 所有线程是否关闭
+     */
+    @Override
+    public boolean isShutdown() {
+        return super.isShutdown();
+    }
+
+    /**
      * 获取线程数
      *
      * @return 线程数

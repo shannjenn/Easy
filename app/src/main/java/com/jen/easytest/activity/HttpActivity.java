@@ -16,7 +16,6 @@ import com.jen.easytest.http.request.QNRequest;
 import com.jen.easytest.http.request.StockChooseConditionResultRequest;
 import com.jen.easytest.request.OrderConditionSaveRequest;
 import com.jen.easytest.request.OrderRuleModel;
-import com.jen.easyui.EasyMain;
 import com.jen.easyui.base.EasyActivity;
 
 import java.text.SimpleDateFormat;
@@ -34,7 +33,7 @@ public class HttpActivity extends EasyActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_http);
-        EasyMain.mHttp.setHttpBaseListener(httpListener);
+//        EasyMain.mHttp.setHttpBaseListener(httpListener);
     }
 
     @Override
@@ -102,7 +101,7 @@ public class HttpActivity extends EasyActivity {
         http.start(taskProgressListRequest);*/
 
         QNRequest qnRequest = new QNRequest();
-        EasyMain.mHttp.start(qnRequest);
+//        EasyMain.mHttp.start(qnRequest);
     }
 
     private void post() {
@@ -165,7 +164,7 @@ public class HttpActivity extends EasyActivity {
         request.params.add(model2);
         request.params.add(model3);
         request.params.add(model4);
-        EasyMain.mHttp.start(request);
+//        EasyMain.mHttp.start(request);
     }
 
     private void put() {
@@ -173,7 +172,7 @@ public class HttpActivity extends EasyActivity {
         putRequest.setToken("16643-bdf0737cafb1c1a32451a0d93692edba");
 
         putRequest.setId("16643");
-        EasyMain.mHttp.start(putRequest);
+//        EasyMain.mHttp.start(putRequest);
     }
 
     private void download() {

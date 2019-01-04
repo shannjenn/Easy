@@ -130,7 +130,7 @@ class HttpReflectManager {
 
         if (loopMap.containsKey(clazzName)) {
             int value = loopMap.get(clazzName);
-            if (value == 1000) {//超过1000默认死循环
+            if (value == 100) {//超过100默认死循环
                 Throw.exception(ExceptionType.RuntimeException, "无限死循环引用错误：" + clazzName);
                 return;
             } else {
@@ -179,6 +179,9 @@ class HttpReflectManager {
             }
             if (key.length() == 0) {
                 key = field.getName();
+                if (key.contains("this$")) {//防止内部类自引用
+                    continue;
+                }
             }
 
             if (FieldType.isOtherField(key)) {

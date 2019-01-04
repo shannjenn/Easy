@@ -5,10 +5,8 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.jen.easy.http.Http;
 import com.jen.easy.log.imp.LogCrashListener;
 import com.jen.easy.sqlite.imp.DatabaseListener;
-import com.jen.easyui.EasyMain;
 
 /**
  * 作者：ShannJenn
@@ -24,16 +22,16 @@ public class EasyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mApp = this;
-        EasyMain.init(this);
-        EasyMain.mLog.start();
-        EasyMain.mLog.setListener(logcatCrashListener);
-
-        EasyMain.mDBHelper.init();
-        EasyMain.mDBHelper.setVersion(DB_VERSION);
-        EasyMain.mDBHelper.setDatabaseListener(databaseListener);
+//        EasyMain.init(this);
+//        EasyMain.mLog.start();
+//        EasyMain.mLog.setListener(logcatCrashListener);
+//
+//        EasyMain.mDBHelper.init();
+//        EasyMain.mDBHelper.setVersion(DB_VERSION);
+//        EasyMain.mDBHelper.setDatabaseListener(databaseListener);
         createTB();
 
-        EasyMain.mHttp = new Http(5);
+//        EasyMain.mHttp = new Http(5);
     }
 
 
@@ -41,11 +39,11 @@ public class EasyApplication extends Application {
      * 创建表
      */
     private void createTB() {
-        if (EasyMain.mDBHelper.getVersion() == 1) {//第一版开始全部执行创建,发版后使用升级操作
-            Log.d(TAG, "创建表------------");
-//            EasyMain.mDBHelper.createTB(TablesTatus.class);
-
-        }
+//        if (EasyMain.mDBHelper.getVersion() == 1) {//第一版开始全部执行创建,发版后使用升级操作
+//            Log.d(TAG, "创建表------------");
+////            EasyMain.mDBHelper.createTB(TablesTatus.class);
+//
+//        }
     }
 
     /**

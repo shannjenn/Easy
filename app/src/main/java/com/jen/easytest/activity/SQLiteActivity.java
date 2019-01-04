@@ -7,9 +7,8 @@ import com.jen.easy.EasyViewMethod;
 import com.jen.easy.sqlite.DBDao;
 import com.jen.easytest.R;
 import com.jen.easytest.sqlite.Student;
-import com.jen.easyui.EasyMain;
 import com.jen.easyui.base.EasyActivity;
-import com.jen.easyui.base.EasyToast;
+import com.jen.easyui.util.EasyToast;
 
 import java.util.List;
 
@@ -55,14 +54,14 @@ public class SQLiteActivity extends EasyActivity {
 
                 boolean insertResult = dbDao.insert(student);
                 boolean replaceResult = dbDao.replace(student);
-                List<Student> list = EasyMain.mDao.searchAll(Student.class);
+//                List<Student> list = EasyMain.mDao.searchAll(Student.class);
 
-                EasyToast.toast(this, "结果：" + replaceResult);
+                EasyToast.show("结果：" + replaceResult);
                 break;
             }
             case R.id.search: {
                 List<Student> list = dbDao.searchAll(Student.class);
-                EasyToast.toast(this, "结果：" + list.size());
+                EasyToast.show("结果：" + list.size());
                 break;
             }
             default: {
