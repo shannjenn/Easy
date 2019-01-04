@@ -11,6 +11,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -47,7 +49,7 @@ class HttpParseManager {
             EasyLog.w(TAG.EasyHttp, "parseJson方法解析错误JSONException");
             return null;
         }
-        t = parseResponseFromJSONObject(tClass, object);
+        t = parseJSONObject(tClass, object);
         if (t instanceof HttpHeadResponse) {
             ((HttpHeadResponse) t).setHeads(headMap);
         }
@@ -57,13 +59,13 @@ class HttpParseManager {
     }
 
     /**
-     * 解析接口返回json格式值
+     * 解析实体
      *
      * @param tClass     类
      * @param jsonObject 数据
      * @return 值
      */
-    private <T> T parseResponseFromJSONObject(Class<T> tClass, JSONObject jsonObject) {
+    private <T> T parseJSONObject(Class<T> tClass, JSONObject jsonObject) {
         /*if (tClass == null || jsonObject == null) {
             throwError(ExceptionType.NullPointerException, "参数不能为空");
             return null;
@@ -90,30 +92,17 @@ class HttpParseManager {
             if (!mHeadMap.containsKey(headKey)) {
                 continue;
             }
+            String value = parseHeader(headKey);//解析头部
             Field field = heads.get(headKey);
             field.setAccessible(true);
-
-            StringBuilder buffer = new StringBuilder();
-            List<String> values = mHeadMap.get(headKey);
-            for (int i = 0; i < values.size(); i++) {
-                if (i == 0) {
-                    buffer.append(values.get(i));
-                } else {
-                    buffer.append("&");
-                    buffer.append(values.get(i));
-                }
-            }
             try {
-                field.set(tObj, buffer.toString());
+                field.set(tObj, value);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
                 showWarn("IllegalAccessException：header 参数：" + headKey);
             }
         }
 
-        if (body.size() == 0) {
-            return null;
-        }
         Iterator<String> keys = jsonObject.keys();
         while (keys.hasNext()) {
             String param = keys.next();
@@ -130,64 +119,18 @@ class HttpParseManager {
                         || (!(object instanceof String) && object.toString().equals("null"))) {
                     continue;
                 }
-                if (FieldType.isString(fieldClass)) {
-                    String res = parseString(object, param);
-                    field.set(tObj, res);
-                } else if (FieldType.isInt(fieldClass)) {
-                    int res = parseInt(object, param);
-                    field.set(tObj, res);
-                } else if (FieldType.isLong(fieldClass)) {
-                    long res = parseLong(object, param);
-                    field.set(tObj, res);
-                } else if (FieldType.isFloat(fieldClass)) {
-                    float res = parseFloat(object, param);
-                    field.set(tObj, res);
-                } else if (FieldType.isDouble(fieldClass)) {
-                    double res = parseDouble(object, param);
-                    field.set(tObj, res);
-                } else if (FieldType.isShort(fieldClass)) {
-                    short res = parseShort(object, param);
-                    field.set(tObj, res);
-                } else if (FieldType.isBoolean(fieldClass)) {
-                    boolean res = parseBoolean(object, param);
-                    field.set(tObj, res);
-                } else if (FieldType.isChar(fieldClass)) {
-                    char res = parseCharacter(object, param);
-                    field.set(tObj, res);
-                } else if (FieldType.isByte(fieldClass)) {
-                    byte res = parseByte(object, param);
-                    field.set(tObj, res);
-                } else if (FieldType.isObject(fieldClass)) {//解析Object通用类型
-                    field.set(tObj, object);
-                } else if (FieldType.isList(fieldClass)) {//解析list
-                    if (object instanceof JSONArray) {
-                        String type = field.getGenericType().toString();
-                        String clazzName = type.substring(type.indexOf("<") + 1, type.indexOf(">"));
-                        Class clazz2 = Class.forName(clazzName);
-                        List objList = parseResponseFromJSONArray(clazz2, (JSONArray) object);
-                        field.set(tObj, objList);
-                    } else {
-                        throwError(ExceptionType.ClassCastException, "数据类型错误" + fieldClass + ",该数据为List类型");
-                    }
-                } else if (FieldType.isClass(fieldClass)) {//解析指定class
-                    if (object instanceof JSONObject) {
-                        Object obj = parseResponseFromJSONObject(field.getType(), (JSONObject) object);
-                        field.set(tObj, obj);
-                    } else {
-                        throwError(ExceptionType.ClassCastException, "数据类型错误" + fieldClass + ",该数据为Class类型");
-                    }
-                } else {
-                    throwError(ExceptionType.RuntimeException, "不支持该数据类型解析" + fieldClass);
+                Type type = field.getGenericType();
+                Object value = parseField(object, fieldClass, type);//解析返回数据实体
+                if (value == null) {
+                    continue;
                 }
+                field.set(tObj, value);
             } catch (JSONException e) {
                 e.printStackTrace();
                 showWarn("JSONException：类型：" + fieldClass + " 参数：" + param);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
                 showWarn("IllegalAccessException：类型：" + fieldClass + " 参数：" + param);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-                showWarn("ClassNotFoundException：类型：" + fieldClass + " 参数：" + param);
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
                 showWarn("IllegalArgumentException：类型：" + fieldClass + " 参数：" + param);
@@ -197,14 +140,83 @@ class HttpParseManager {
     }
 
     /**
+     * 解析头部
+     *
+     * @param headKey key
+     */
+    private String parseHeader(String headKey) {
+        StringBuilder buffer = new StringBuilder();
+        List<String> values = mHeadMap.get(headKey);
+        for (int i = 0; i < values.size(); i++) {
+            if (i == 0) {
+                buffer.append(values.get(i));
+            } else {
+                buffer.append("&");
+                buffer.append(values.get(i));
+            }
+        }
+        return buffer.toString();
+    }
+
+    /**
+     * 解析返回数据变量
+     *
+     * @param object     数据
+     * @param fieldClass 变量
+     * @param type       可以为null，为空时不做List解析
+     * @return 返回值
+     */
+    private Object parseField(Object object, Class fieldClass, Type type) {
+//        Class fieldClass = field.getType();
+        if (FieldType.isString(fieldClass)) {
+            return parseString(object);
+        } else if (FieldType.isInt(fieldClass)) {
+            return parseInt(object);
+        } else if (FieldType.isLong(fieldClass)) {
+            return parseLong(object);
+        } else if (FieldType.isFloat(fieldClass)) {
+            return parseFloat(object);
+        } else if (FieldType.isDouble(fieldClass)) {
+            return parseDouble(object);
+        } else if (FieldType.isShort(fieldClass)) {
+            return parseShort(object);
+        } else if (FieldType.isBoolean(fieldClass)) {
+            return parseBoolean(object);
+        } else if (FieldType.isChar(fieldClass)) {
+            return parseCharacter(object);
+        } else if (FieldType.isByte(fieldClass)) {
+            return parseByte(object);
+        } else if (FieldType.isObject(fieldClass)) {//解析Object通用类型
+            return object;
+        } else if (FieldType.isList(fieldClass)) {//解析list
+            if (object instanceof JSONArray) {
+                return parseJSONArray(type, (JSONArray) object);
+            } else {
+                throwError(ExceptionType.ClassCastException, "数据类型错误" + fieldClass + ",该数据为List类型");
+            }
+        } else if (FieldType.isEntityClass(fieldClass)) {//解析指定class
+            if (object instanceof JSONObject) {
+                return parseJSONObject(fieldClass, (JSONObject) object);
+            } else {
+                throwError(ExceptionType.ClassCastException, "数据类型错误" + fieldClass + ",该数据为Class类型");
+            }
+        } else {
+            throwError(ExceptionType.RuntimeException, "不支持该数据类型解析" + fieldClass);
+        }
+        return null;
+    }
+
+    /**
      * 解析jsonArray
      *
-     * @param TClass    类
-     * @param jsonArray JSONArray
-     * @return 值
+     * @param jsonArray 值
+     * @return 返回
      */
-    private <T> List<T> parseResponseFromJSONArray(Class<T> TClass, JSONArray jsonArray) {
-        List<T> list = new ArrayList<>();
+    private List<Object> parseJSONArray(Type type, JSONArray jsonArray) {
+        if (type == null) {
+            return null;
+        }
+        List<Object> list = new ArrayList<>();
         int length = jsonArray.length();
         for (int i = 0; i < length; i++) {
             Object jsonObj;
@@ -212,16 +224,61 @@ class HttpParseManager {
                 jsonObj = jsonArray.get(i);
             } catch (JSONException e) {
                 e.printStackTrace();
-                EasyLog.w(TAG.EasyHttp, "parseResponseFromJSONArray JSONException");
+                EasyLog.w(TAG.EasyHttp, "JSONArray数据解析错误 JSONException");
                 continue;
             }
-            if (jsonObj instanceof JSONObject) {
-                T tObj = parseResponseFromJSONObject(TClass, (JSONObject) jsonObj);
-                if (tObj != null)
-                    list.add(tObj);
-            } else {
-                throwError(ExceptionType.ClassCastException, "parseResponseFromJSONArray 该数据不属于JSONObject类型");
+            Type type1 = null;
+            if (type instanceof ParameterizedType) {
+                type1 = ((ParameterizedType) type).getActualTypeArguments()[0];
             }
+            if (type1 == null) {
+                continue;
+            }
+            if (jsonObj instanceof JSONObject) {//实体解析
+                try {
+                    Class clazz = Class.forName(type1.toString().replace("class ", ""));
+                    if (FieldType.isEntityClass(clazz)) {
+                        Object object = parseJSONObject(clazz, (JSONObject) jsonObj);
+                        if (object != null) {
+                            list.add(object);
+                        } else {
+                            throwError(ExceptionType.ClassCastException, "JSONArray数据解析错误：" + type.toString());
+                        }
+                    } else {
+                        throwError(ExceptionType.ClassCastException, "JSONArray数据解析错误：" + type.toString());
+                    }
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                    showWarn("ClassNotFoundException：JSONArray数据解析错误，集合：" + type.toString() + " 集合对象：" + type1.toString());
+                }
+            } else if (jsonObj instanceof JSONArray) {
+                if (FieldType.isList(type1)) {
+                    List<Object> childList = parseJSONArray(type1, (JSONArray) jsonObj);
+                    if (childList != null) {
+                        list.add(childList);
+                    } else {
+                        throwError(ExceptionType.ClassCastException, "JSONArray数据解析错误：" + type.toString());
+                    }
+                } else {
+                    throwError(ExceptionType.ClassCastException, "JSONArray数据解析错误：" + type.toString());
+                }
+            } else {//数据为基本类型/Object
+                try {
+                    Class clazz = Class.forName(type1.toString().replace("class ", ""));
+                    Object value = parseField(jsonObj, clazz, null);
+                    if (value != null) {
+                        list.add(value);
+                    } else {
+                        throwError(ExceptionType.ClassCastException, "JSONArray数据解析错误：" + type.toString());
+                    }
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                    showWarn("ClassNotFoundException：JSONArray数据解析错误，集合：" + type.toString() + " 集合对象：" + type1.toString());
+                }
+            }
+        }
+        if (list.size() == 0) {
+            list = null;
         }
         return list;
     }
@@ -232,7 +289,7 @@ class HttpParseManager {
      * @param obj 值
      * @return 返回
      */
-    private String parseString(Object obj, String param) {
+    private String parseString(Object obj) {
         String res = null;
         if (obj instanceof String) {
             res = (String) obj;
@@ -253,7 +310,7 @@ class HttpParseManager {
         } else if (obj instanceof Byte) {
             res = String.valueOf(obj);
         } else {
-            throwError(ExceptionType.ClassCastException, "param=" + param + "该数据类型值不支持转换为 String 类型");
+            throwError(ExceptionType.ClassCastException, obj + " 不支持 String 类型转换");
         }
         return res;
     }
@@ -264,7 +321,7 @@ class HttpParseManager {
      * @param obj 值
      * @return 返回
      */
-    private int parseInt(Object obj, String param) {
+    private int parseInt(Object obj) {
         int res = 0;
         try {
             if (obj instanceof Integer) {
@@ -272,19 +329,19 @@ class HttpParseManager {
             } else if (obj instanceof String) {
                 res = Integer.valueOf((String) obj);
             } else if (obj instanceof Boolean) {
-                throwError(ExceptionType.ClassCastException, "param=" + param + "Boolean 值不支持转换为 Integer 类型");
+                throwError(ExceptionType.ClassCastException, obj + " 不支持 int 类型转换");
             } else if (obj instanceof Float) {
                 Float value = (Float) obj;
                 res = value.intValue();
-                showWarn("param=" + param + "Float 转换为 Integer 类型 可能会丢失精度");
+                showWarn("Float 转换为 Integer 类型 可能会丢失精度");
             } else if (obj instanceof Long) {
                 Long value = (Long) obj;
                 res = value.intValue();
-                showWarn("param=" + param + "Long 转换为 Integer 类型 可能会丢失精度");
+                showWarn("Long 转换为 Integer 类型 可能会丢失精度");
             } else if (obj instanceof Double) {
                 Double value = (Double) obj;
                 res = value.intValue();
-                showWarn("param=" + param + "Double 转换为 Integer 类型 可能会丢失精度");
+                showWarn("Double 转换为 Integer 类型 可能会丢失精度");
             } else if (obj instanceof Short) {
                 Short value = (Short) obj;
                 res = value.intValue();
@@ -294,11 +351,11 @@ class HttpParseManager {
                 Byte value = (Byte) obj;
                 res = value.intValue();
             } else {
-                throwError(ExceptionType.ClassCastException, "param=" + param + "该类型值不支持转换为 Integer 类型");
+                throwError(ExceptionType.ClassCastException, obj + " 不支持 int 类型转换");
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
-            showWarn("NumberFormatException： 参数：" + param);
+            showWarn("NumberFormatException ：" + obj);
         }
         return res;
     }
@@ -309,28 +366,28 @@ class HttpParseManager {
      * @param obj 值
      * @return 返回
      */
-    private boolean parseBoolean(Object obj, String param) {
+    private boolean parseBoolean(Object obj) {
         boolean res = false;
         if (obj instanceof Boolean) {
             res = (boolean) obj;
         } else if (obj instanceof String) {
-            throwError(ExceptionType.ClassCastException, "param=" + param + "该 String 值不支持转换为 Boolean 类型");
+            throwError(ExceptionType.ClassCastException, obj + " 不支持 boolean 类型转换");
         } else if (obj instanceof Integer) {
-            throwError(ExceptionType.ClassCastException, "param=" + param + "Integer 值不支持转换为 Boolean 类型");
+            throwError(ExceptionType.ClassCastException, obj + " 不支持 boolean 类型转换");
         } else if (obj instanceof Float) {
-            throwError(ExceptionType.ClassCastException, "param=" + param + "Float 值不支持转换为 Boolean 类型");
+            throwError(ExceptionType.ClassCastException, obj + " 不支持 boolean 类型转换");
         } else if (obj instanceof Long) {
-            throwError(ExceptionType.ClassCastException, "param=" + param + "Long 值不支持转换为 Boolean 类型");
+            throwError(ExceptionType.ClassCastException, obj + " 不支持 boolean 类型转换");
         } else if (obj instanceof Double) {
-            throwError(ExceptionType.ClassCastException, "param=" + param + "Double 值不支持转换为 Boolean 类型");
+            throwError(ExceptionType.ClassCastException, obj + " 不支持 boolean 类型转换");
         } else if (obj instanceof Short) {
-            throwError(ExceptionType.ClassCastException, "param=" + param + "Short 值不支持转换为 Boolean 类型");
+            throwError(ExceptionType.ClassCastException, obj + " 不支持 boolean 类型转换");
         } else if (obj instanceof Character) {
-            throwError(ExceptionType.ClassCastException, "param=" + param + "Character 值不支持转换为 Boolean 类型");
+            throwError(ExceptionType.ClassCastException, obj + " 不支持 boolean 类型转换");
         } else if (obj instanceof Byte) {
-            throwError(ExceptionType.ClassCastException, "param=" + param + "Byte 值不支持转换为 Boolean 类型");
+            throwError(ExceptionType.ClassCastException, obj + " 不支持 boolean 类型转换");
         } else {
-            throwError(ExceptionType.ClassCastException, "param=" + param + "该类型值不支持转换为 Boolean 类型");
+            throwError(ExceptionType.ClassCastException, obj + " 不支持 boolean 类型转换");
         }
         return res;
     }
@@ -341,7 +398,7 @@ class HttpParseManager {
      * @param obj 值
      * @return 返回
      */
-    private float parseFloat(Object obj, String param) {
+    private float parseFloat(Object obj) {
         float res = 0.0f;
         try {
             if (obj instanceof Float) {
@@ -351,17 +408,17 @@ class HttpParseManager {
             } else if (obj instanceof Integer) {
                 Integer value = (Integer) obj;
                 res = value.floatValue();
-                showWarn("param=" + param + "Integer 转换为 Float 类型 可能会丢失精度");
+                showWarn(obj + " 转换为 Float 类型 可能会丢失精度");
             } else if (obj instanceof Boolean) {
-                throwError(ExceptionType.ClassCastException, "param=" + param + "Boolean 值不支持转换为 Float 类型");
+                throwError(ExceptionType.ClassCastException, obj + " 不支持 float 类型转换");
             } else if (obj instanceof Long) {
                 Long value = (Long) obj;
                 res = value.floatValue();
-                showWarn("param=" + param + "Long 转换为 Float 类型 可能会丢失精度");
+                showWarn(obj + " 转换为 Float 类型 可能会丢失精度");
             } else if (obj instanceof Double) {
                 Double value = (Double) obj;
                 res = value.floatValue();
-                showWarn("param=" + param + "Double 转换为 Float 类型 可能会丢失精度");
+                showWarn(obj + " 转换为 Float 类型 可能会丢失精度");
             } else if (obj instanceof Short) {
                 Short value = (Short) obj;
                 res = value.floatValue();
@@ -371,11 +428,11 @@ class HttpParseManager {
                 Byte value = (Byte) obj;
                 res = value.floatValue();
             } else {
-                throwError(ExceptionType.ClassCastException, "param=" + param + "该类型值不支持转换为 Float 类型");
+                throwError(ExceptionType.ClassCastException, obj + " 不支持 float 类型转换");
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
-            showWarn("NumberFormatException： 参数：" + param);
+            showWarn("NumberFormatException：" + obj);
         }
         return res;
     }
@@ -386,7 +443,7 @@ class HttpParseManager {
      * @param obj 值
      * @return 返回
      */
-    private long parseLong(Object obj, String param) {
+    private long parseLong(Object obj) {
         long res = 0;
         try {
             if (obj instanceof Long) {
@@ -397,15 +454,15 @@ class HttpParseManager {
                 Integer value = (Integer) obj;
                 res = value.longValue();
             } else if (obj instanceof Boolean) {
-                throwError(ExceptionType.ClassCastException, "param=" + param + "Boolean 值不支持转换为 Long 类型");
+                throwError(ExceptionType.ClassCastException, obj + " 不支持 Long 类型转换");
             } else if (obj instanceof Float) {
                 Float value = (Float) obj;
                 res = value.longValue();
-                showWarn("param=" + param + "Float 转换为 Long 类型 可能会丢失精度");
+                showWarn(obj + " 转换为 Long 类型 可能会丢失精度");
             } else if (obj instanceof Double) {
                 Double value = (Double) obj;
                 res = value.longValue();
-                showWarn("param=" + param + "Double 转换为 Long 类型 可能会丢失精度");
+                showWarn(obj + " 转换为 Long 类型 可能会丢失精度");
             } else if (obj instanceof Short) {
                 Short value = (Short) obj;
                 res = value.longValue();
@@ -415,11 +472,11 @@ class HttpParseManager {
                 Byte value = (Byte) obj;
                 res = value.longValue();
             } else {
-                throwError(ExceptionType.ClassCastException, "param=" + param + "该类型值不支持转换为 Long 类型");
+                throwError(ExceptionType.ClassCastException, obj + " 不支持 Long 类型转换");
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
-            showWarn("NumberFormatException： 参数：" + param);
+            showWarn("NumberFormatException：" + obj);
         }
         return res;
     }
@@ -430,7 +487,7 @@ class HttpParseManager {
      * @param obj 值
      * @return 返回
      */
-    private double parseDouble(Object obj, String param) {
+    private double parseDouble(Object obj) {
         double res = 0;
         try {
             if (obj instanceof Double) {
@@ -440,16 +497,16 @@ class HttpParseManager {
             } else if (obj instanceof Integer) {
                 Integer value = (Integer) obj;
                 res = value.doubleValue();
-                showWarn("param=" + param + "Integer 转换为 Double 类型 可能会丢失精度");
+                showWarn(obj + "  转换为 double 可能会丢失精度");
             } else if (obj instanceof Boolean) {
-                throwError(ExceptionType.ClassCastException, "param=" + param + "Boolean 值不支持转换为 Double 类型");
+                throwError(ExceptionType.ClassCastException, obj + " 不支持 double 类型转换");
             } else if (obj instanceof Float) {
                 Float value = (Float) obj;
                 res = value.doubleValue();
             } else if (obj instanceof Long) {
                 Long value = (Long) obj;
                 res = value.doubleValue();
-                showWarn("param=" + param + "Long 转换为 Double 类型 可能会丢失精度");
+                showWarn(obj + "  转换为 double 可能会丢失精度");
             } else if (obj instanceof Short) {
                 Short value = (Short) obj;
                 res = value.doubleValue();
@@ -459,11 +516,11 @@ class HttpParseManager {
                 Byte value = (Byte) obj;
                 res = value.doubleValue();
             } else {
-                throwError(ExceptionType.ClassCastException, "param=" + param + "该类型值不支持转换为 Double 类型");
+                throwError(ExceptionType.ClassCastException, obj + " 不支持 double 类型转换");
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
-            showWarn("NumberFormatException： 参数：" + param);
+            showWarn("NumberFormatException：" + obj);
         }
         return res;
     }
@@ -474,7 +531,7 @@ class HttpParseManager {
      * @param obj 值
      * @return 返回
      */
-    private short parseShort(Object obj, String param) {
+    private short parseShort(Object obj) {
         short res = 0;
         try {
             if (obj instanceof Short) {
@@ -484,32 +541,32 @@ class HttpParseManager {
             } else if (obj instanceof Integer) {
                 Integer value = (Integer) obj;
                 res = value.shortValue();
-                showWarn("param=" + param + "Integer 转换为 Short 类型 可能会丢失精度");
+                showWarn(obj + "  转换为 Short 可能会丢失精度");
             } else if (obj instanceof Boolean) {
-                throwError(ExceptionType.ClassCastException, "param=" + param + "Boolean 值不支持转换为 Short 类型");
+                throwError(ExceptionType.ClassCastException, obj + " 不支持 Short 类型转换");
             } else if (obj instanceof Float) {
                 Float value = (Float) obj;
                 res = value.shortValue();
-                showWarn("param=" + param + "Float 转换为 Short 类型 可能会丢失精度");
+                showWarn(obj + "  转换为 Short 可能会丢失精度");
             } else if (obj instanceof Long) {
                 Long value = (Long) obj;
                 res = value.shortValue();
-                showWarn("param=" + param + "Long 转换为 Short 类型 可能会丢失精度");
+                showWarn(obj + "  转换为 Short 可能会丢失精度");
             } else if (obj instanceof Double) {
                 Double value = (Double) obj;
                 res = value.shortValue();
-                showWarn("param=" + param + "Double 转换为 Short 类型 可能会丢失精度");
+                showWarn(obj + "  转换为 Short 可能会丢失精度");
             } else if (obj instanceof Character) {
                 res = Short.valueOf(String.valueOf(obj));
             } else if (obj instanceof Byte) {
                 Byte value = (Byte) obj;
                 res = value.shortValue();
             } else {
-                throwError(ExceptionType.ClassCastException, "param=" + param + "该类型值不支持转换为 Short 类型");
+                throwError(ExceptionType.ClassCastException, obj + " 不支持 Short 类型转换");
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
-            showWarn("NumberFormatException： 参数：" + param);
+            showWarn("NumberFormatException：" + obj);
         }
         return res;
     }
@@ -520,28 +577,28 @@ class HttpParseManager {
      * @param obj 值
      * @return 返回
      */
-    private char parseCharacter(Object obj, String param) {
+    private char parseCharacter(Object obj) {
         char res = 0;
         if (obj instanceof Character) {
             res = (char) obj;
         } else if (obj instanceof String) {
-            throwError(ExceptionType.ClassCastException, "param=" + param + "String 值不支持转换为 Character 类型");
+            throwError(ExceptionType.ClassCastException, obj + " 不支持 char 类型转换");
         } else if (obj instanceof Integer) {
-            throwError(ExceptionType.ClassCastException, "param=" + param + "Integer 值不支持转换为 Character 类型");
+            throwError(ExceptionType.ClassCastException, obj + " 不支持 char 类型转换");
         } else if (obj instanceof Boolean) {
-            throwError(ExceptionType.ClassCastException, "param=" + param + "Boolean 值不支持转换为 Character 类型");
+            throwError(ExceptionType.ClassCastException, obj + " 不支持 char 类型转换");
         } else if (obj instanceof Float) {
-            throwError(ExceptionType.ClassCastException, "param=" + param + "Float 值不支持转换为 Character 类型");
+            throwError(ExceptionType.ClassCastException, obj + " 不支持 char 类型转换");
         } else if (obj instanceof Long) {
-            throwError(ExceptionType.ClassCastException, "param=" + param + "Long 值不支持转换为 Character 类型");
+            throwError(ExceptionType.ClassCastException, obj + " 不支持 char 类型转换");
         } else if (obj instanceof Double) {
-            throwError(ExceptionType.ClassCastException, "param=" + param + "Double 值不支持转换为 Character 类型");
+            throwError(ExceptionType.ClassCastException, obj + " 不支持 char 类型转换");
         } else if (obj instanceof Short) {
-            throwError(ExceptionType.ClassCastException, "param=" + param + "Short 值不支持转换为 Character 类型");
+            throwError(ExceptionType.ClassCastException, obj + " 不支持 char 类型转换");
         } else if (obj instanceof Byte) {
-            throwError(ExceptionType.ClassCastException, "param=" + param + "Byte 值不支持转换为 Character 类型");
+            throwError(ExceptionType.ClassCastException, obj + " 不支持 char 类型转换");
         } else {
-            throwError(ExceptionType.ClassCastException, "param=" + param + "该类型值不支持转换为 Character 类型");
+            throwError(ExceptionType.ClassCastException, obj + " 不支持 char 类型转换");
         }
         return res;
     }
@@ -552,28 +609,28 @@ class HttpParseManager {
      * @param obj 值
      * @return 返回
      */
-    private byte parseByte(Object obj, String param) {
+    private byte parseByte(Object obj) {
         byte res = 0;
         if (obj instanceof Byte) {
             res = (byte) obj;
         } else if (obj instanceof String) {
-            throwError(ExceptionType.ClassCastException, "param=" + param + "String 值不支持转换为 Byte 类型");
+            throwError(ExceptionType.ClassCastException, obj + " 不支持 byte 类型转换");
         } else if (obj instanceof Integer) {
-            throwError(ExceptionType.ClassCastException, "param=" + param + "Integer 值不支持转换为 Byte 类型");
+            throwError(ExceptionType.ClassCastException, obj + " 不支持 byte 类型转换");
         } else if (obj instanceof Boolean) {
-            throwError(ExceptionType.ClassCastException, "param=" + param + "Boolean 值不支持转换为 Byte 类型");
+            throwError(ExceptionType.ClassCastException, obj + " 不支持 byte 类型转换");
         } else if (obj instanceof Float) {
-            throwError(ExceptionType.ClassCastException, "param=" + param + "Float 值不支持转换为 Byte 类型");
+            throwError(ExceptionType.ClassCastException, obj + " 不支持 byte 类型转换");
         } else if (obj instanceof Long) {
-            throwError(ExceptionType.ClassCastException, "param=" + param + "Long 值不支持转换为 Byte 类型");
+            throwError(ExceptionType.ClassCastException, obj + " 不支持 byte 类型转换");
         } else if (obj instanceof Double) {
-            throwError(ExceptionType.ClassCastException, "param=" + param + "Double 值不支持转换为 Byte 类型");
+            throwError(ExceptionType.ClassCastException, obj + " 不支持 byte 类型转换");
         } else if (obj instanceof Short) {
-            throwError(ExceptionType.ClassCastException, "param=" + param + "Short 值不支持转换为 Byte 类型");
+            throwError(ExceptionType.ClassCastException, obj + " 不支持 byte 类型转换");
         } else if (obj instanceof Character) {
-            throwError(ExceptionType.ClassCastException, "param=" + param + "Character 值不支持转换为 Byte 类型");
+            throwError(ExceptionType.ClassCastException, obj + " 不支持 byte 类型转换");
         } else {
-            throwError(ExceptionType.ClassCastException, "param=" + param + "该类型值不支持转换为 Byte 类型");
+            throwError(ExceptionType.ClassCastException, obj + " 不支持 byte 类型转换");
         }
         return res;
     }

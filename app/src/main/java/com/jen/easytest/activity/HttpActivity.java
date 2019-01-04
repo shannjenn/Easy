@@ -97,7 +97,8 @@ public class HttpActivity extends EasyActivity {
     }
 
     private void testParse() {
-        String data = "{\"code\":0,\"result\":{\"data\":[[\"310.6\",\"5.600\",\"0.01836065573770499\",\"60\",\"HKD\",\"100\"]]}}";
+//        String data = "{\"code\":0,\"result\":{\"data\":[[\"310.6\",\"5.600\",\"0.01836065573770499\",\"60\",\"HKD\",\"100\"]]}}";
+        String data = "{\"code\":0,\"result\":{\"data\":[[\"310.6\",\"5.600\"]],\"data1\":[[31,5]],\"data2\":[[310.6,5.600]],\"data3\":[{\"id\": 111,\"name\": \"名字\"}]}}";
         HttpTool.parseResponse(StockQuotationResponse.class, data);
     }
 

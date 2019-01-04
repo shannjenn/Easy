@@ -20,7 +20,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -245,7 +244,7 @@ class HttpReflectManager {
                     if (jsonArray.length() > 0) {
                         body.put(key, jsonArray);
                     }
-                } else if (FieldType.isClass(field.getType())) {
+                } else if (FieldType.isEntityClass(field.getType())) {
                     JSONObject item = new JSONObject();
                     parseRequest(loopMap, value, urls, item, heads);
                     if (item.length() != 0) {//有值才加入

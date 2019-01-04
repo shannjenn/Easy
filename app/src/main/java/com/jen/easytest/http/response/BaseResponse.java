@@ -5,6 +5,7 @@ package com.jen.easytest.http.response;
  */
 public class BaseResponse {
     private int code;
+    private int code1;
 
     private String message;
     private String updateMsg;

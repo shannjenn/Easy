@@ -1,6 +1,8 @@
 package com.jen.easytest.http.response;
 
 
+import com.jen.easytest.sqlite.Student;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,17 +16,11 @@ public class StockQuotationResponse extends BaseResponse {
 
     public static class Result {
         private List<List<String>> data;
+        private List<List<Integer>> data1;
+        private List<List<Integer>> data2;
+        private List<Student> data3;
+//        private List<Student> data3;
 
-        public List<List<String>> getData() {
-            if (data == null) {
-                return new ArrayList<>();
-            }
-            return data;
-        }
-
-        public void setData(List<List<String>> data) {
-            this.data = data;
-        }
     }
 
     public Result getResult() {

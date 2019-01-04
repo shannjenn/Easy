@@ -260,9 +260,7 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
                 }
                 if (removes.size() > 0 && easyTagListener != null) {
                     isRemove = true;
-                    if (easyTagListener != null) {
-                        easyTagListener.removeTags(flag, removes);
-                    }
+                    easyTagListener.removeTags(flag, removes);
                 }
             }
             mEasyTag.clear();

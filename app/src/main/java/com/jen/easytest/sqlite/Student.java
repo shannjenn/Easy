@@ -15,10 +15,10 @@ public class Student {
 
     private String name2;
 
-    private int age;
+    private int age = -1;
 
     @EasyColumn("age2")
-    private int age2;
+    private Integer age2;
 
 
     List<String> list;

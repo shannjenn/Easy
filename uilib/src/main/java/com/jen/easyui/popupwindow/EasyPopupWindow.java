@@ -13,13 +13,14 @@ import android.widget.PopupWindow;
 import com.jen.easyui.R;
 import com.jen.easyui.util.EasyDisplayUtil;
 
+
 /**
  * 说明：简单下拉框使用spinner即可
  * 作者：ShannJenn
  * 时间：2017/09/09.
  */
 
-public class EasyPopupWindow extends PopupWindow {
+public class EasyPopupWindow extends PopupWindow{
     private final String TAG = EasyPopupWindow.class.getSimpleName() + " ";
 
     private Context mContext;
