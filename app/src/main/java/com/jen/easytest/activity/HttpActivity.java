@@ -6,6 +6,7 @@ import android.view.View;
 import com.jen.easy.EasyViewMethod;
 import com.jen.easy.http.Http;
 import com.jen.easy.http.HttpTestUtil;
+import com.jen.easy.http.HttpTool;
 import com.jen.easy.http.imp.HttpBasicListener;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
@@ -14,6 +15,7 @@ import com.jen.easytest.http.request.AirRequest;
 import com.jen.easytest.http.request.PutRequest;
 import com.jen.easytest.http.request.QNRequest;
 import com.jen.easytest.http.request.StockChooseConditionResultRequest;
+import com.jen.easytest.http.response.StockQuotationResponse;
 import com.jen.easytest.request.OrderConditionSaveRequest;
 import com.jen.easytest.request.OrderRuleModel;
 import com.jen.easyui.base.EasyActivity;
@@ -50,9 +52,11 @@ public class HttpActivity extends EasyActivity {
 
     }
 
-    @EasyViewMethod({R.id.get, R.id.post, R.id.put, R.id.upload, R.id.download})
+    @EasyViewMethod({R.id.get, R.id.post, R.id.put, R.id.upload, R.id.download, R.id.parse})
     protected void onBindClick(View view) {
         switch (view.getId()) {
+            case R.id.parse:
+                testParse();
             case R.id.get:
 //                JsonUtil.toJson("abc");
 //                Throw.exception(ExceptionType.NullPointerException;"空指针异常");
@@ -90,6 +94,11 @@ public class HttpActivity extends EasyActivity {
             }
 
         }
+    }
+
+    private void testParse() {
+        String data = "{\"code\":0,\"result\":{\"data\":[[\"310.6\",\"5.600\",\"0.01836065573770499\",\"60\",\"HKD\",\"100\"]]}}";
+        HttpTool.parseResponse(StockQuotationResponse.class, data);
     }
 
     private void get() {

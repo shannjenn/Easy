@@ -6,6 +6,12 @@
     android:orientation="vertical">
 
     <Button
+        android:id="@+id/parse"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:text="数据解析测试"
+        android:textAllCaps="false"/>
+    <Button
         android:id="@+id/get"
         android:layout_width="match_parent"
         android:layout_height="64dp"
