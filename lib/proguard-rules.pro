@@ -143,6 +143,9 @@
 -keep class com.jen.easy.http.HttpTool {
     *;
 }
+-keep class com.jen.easy.http.HttpRequestStatus {
+    *;
+}
 
 ##############################################################
 ###Log模块

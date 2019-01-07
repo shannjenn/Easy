@@ -20,15 +20,13 @@ import java.util.concurrent.TimeUnit;
 abstract class HttpManager {
     private ExecutorService pool;
     private int maxThreadSize;
-    @HttpState
-    private int status;
+    private boolean isShutdown;
     private HttpBasicListener httpBaseListener;
     private HttpDownloadListener httpDownloadListener;
     private HttpUploadListener httpUploadListener;
 
     public HttpManager(int maxThreadSize) {
         this.maxThreadSize = maxThreadSize;
-        status = HttpState.RUN;
         pool = Executors.newFixedThreadPool(maxThreadSize);
     }
 
@@ -38,7 +36,7 @@ abstract class HttpManager {
      * @param request 请求对象
      */
     public void start(HttpRequest request) {
-        if (status == HttpState.STOP) {
+        if (isShutdown) {
             EasyLog.i("线程池已经关闭，不可以再操作 start");
             return;
         }
@@ -46,6 +44,7 @@ abstract class HttpManager {
             Throw.exception(ExceptionType.NullPointerException, "参数不能为空");
             return;
         }
+        request.status = HttpRequestStatus.RUN;
         if (request instanceof HttpBasicRequest) {
             HttpURLConnectionBasicRunnable base = new HttpURLConnectionBasicRunnable((HttpBasicRequest) request, httpBaseListener);
             pool.execute(base);
@@ -62,26 +61,13 @@ abstract class HttpManager {
     }
 
     /**
-     * 停止
-     *
-     * @param request 停止对象
-     */
-    public void stop(HttpRequest request) {
-        if (request == null) {
-            Throw.exception(ExceptionType.NullPointerException, "参数不能为空");
-        } else {
-            request.status = HttpState.STOP;
-        }
-    }
-
-    /**
      * 关闭后所有线程都不能再执行
      */
     public void shutdown() {
-        if (status == HttpState.STOP) {
+        if (isShutdown) {
             return;
         }
-        status = HttpState.STOP;
+        isShutdown = true;
         httpBaseListener = null;
         httpDownloadListener = null;
         httpUploadListener = null;
@@ -96,8 +82,8 @@ abstract class HttpManager {
         }
     }
 
-    public boolean isShutdown(){
-        return status == HttpState.STOP;
+    public boolean isShutdown() {
+        return isShutdown;
     }
 
     public int getMaxThreadSize() {
@@ -109,7 +95,7 @@ abstract class HttpManager {
     }
 
     public void setHttpBaseListener(HttpBasicListener httpBaseListener) {
-        if (status == HttpState.STOP) {
+        if (isShutdown) {
             EasyLog.i("线程池已经关闭，不可以再操作 setHttpBaseListener");
             return;
         }
@@ -121,7 +107,7 @@ abstract class HttpManager {
     }
 
     public void setHttpDownloadListener(HttpDownloadListener httpDownloadListener) {
-        if (status == HttpState.STOP) {
+        if (isShutdown) {
             EasyLog.i("线程池已经关闭，不可以再操作 setHttpDownloadListener");
             return;
         }
@@ -133,7 +119,7 @@ abstract class HttpManager {
     }
 
     public void setHttpUploadListener(HttpUploadListener httpUploadListener) {
-        if (status == HttpState.STOP) {
+        if (isShutdown) {
             EasyLog.i("线程池已经关闭，不可以再操作 setHttpUploadListener");
             return;
         }

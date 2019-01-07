@@ -47,7 +47,7 @@ class HttpURLConnectionBasicRunnable extends HttpURLConnectionRunnable {
             reader.close();
             inStream.close();
             connection.disconnect();
-            if (mRequest.status == HttpState.STOP) {//拦截数据解析
+            if (mRequest.getStatus() != HttpRequestStatus.RUN) {//拦截数据解析
                 EasyLog.d(TAG.EasyHttp, mUrlStr + " 网络请求停止!\n   ");
                 return;
             }
@@ -57,17 +57,21 @@ class HttpURLConnectionBasicRunnable extends HttpURLConnectionRunnable {
                 result = replaceStringBeforeParseResponse(result);
                 EasyLog.d(TAG.EasyHttp, mUrlStr + " 格式化后数据：" + result);
             }
+            mRequest.status = HttpRequestStatus.FINISH;
             success(result, headMap);
         } else {
+            if (mRequest.getStatus() != HttpRequestStatus.RUN) {//拦截数据解析
+                EasyLog.d(TAG.EasyHttp, mUrlStr + " 网络请求停止!\n   ");
+                return;
+            }
+            mRequest.status = HttpRequestStatus.FINISH;
             fail(" 网络请求异常：" + mResponseCode);
         }
     }
 
     @Override
     protected void success(String result, Map<String, List<String>> headMap) {
-        if (mRequest.status == HttpState.STOP) {
-            EasyLog.d(TAG.EasyHttp, mUrlStr + " 网络请求停止!\n   ");
-        } else if (baseListener != null) {
+        if (baseListener != null) {
             if (FieldType.isObject(mResponse) || FieldType.isString(mResponse)) {//Object和String类型不做数据解析
                 EasyLog.d(TAG.EasyHttp, mUrlStr + " 成功!\n   ");
                 baseListener.success(mRequest.flagCode, mRequest.flagStr, result);
@@ -87,9 +91,7 @@ class HttpURLConnectionBasicRunnable extends HttpURLConnectionRunnable {
     @Override
     protected void fail(String result) {
         EasyLog.w(TAG.EasyHttp, mUrlStr + " " + result + "\n   ");
-        if (mRequest.status == HttpState.STOP) {
-            EasyLog.d(TAG.EasyHttp, mUrlStr + " 网络请求停止!\n   ");
-        } else if (baseListener != null)
+        if (baseListener != null)
             baseListener.fail(mRequest.flagCode, mRequest.flagStr, result);
     }
 }

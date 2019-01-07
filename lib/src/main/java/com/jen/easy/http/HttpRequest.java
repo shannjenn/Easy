@@ -63,8 +63,8 @@ public abstract class HttpRequest {
     /**
      * 网络请求运行状态
      */
-    @HttpState
-    int status = HttpState.RUN;
+    @HttpRequestStatus
+    int status = HttpRequestStatus.RUN;
 
     /**
      * 替换请求结果特殊符号(解析返回数据前替换特殊字符如：斜杠/)
@@ -88,5 +88,12 @@ public abstract class HttpRequest {
         replaceHttpResultMap.put(oldChar, newChar);
     }
 
+    @HttpRequestStatus
+    public int getStatus() {
+        return status;
+    }
 
+    public void stop() {
+        this.status = HttpRequestStatus.STOP;
+    }
 }

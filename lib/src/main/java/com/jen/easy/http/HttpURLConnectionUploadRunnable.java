@@ -39,7 +39,7 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
         byte[] bufferOut = new byte[1024];
         while ((len = in.read(bufferOut)) != -1) {
             out.write(bufferOut, 0, len);
-            if (request.cancel || request.status == HttpState.STOP) {
+            if (request.status != HttpRequestStatus.RUN) {
                 break;
             } else {
                 progress(curBytes, request.endPoint);
@@ -49,15 +49,6 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
         out.flush();
         out.close();
 
-        if (mRequest.status == HttpState.STOP) {
-            EasyLog.d(TAG.EasyHttp, mUrlStr + " 网络请求停止!\n   ");
-            return;
-        }
-        if (request.cancel) {
-            fail("上传失败：用户取消上传");
-            return;
-        }
-
         // 读取返回数据
         StringBuilder buffer = new StringBuilder();
         BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), mCharset));
@@ -66,7 +57,7 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
             buffer.append(line);
         }
         reader.close();
-        if (mRequest.status == HttpState.STOP) {//拦截数据解析
+        if (mRequest.status != HttpRequestStatus.RUN) {//拦截数据解析
             EasyLog.d(TAG.EasyHttp, mUrlStr + " 网络请求停止!\n   ");
             return;
         }
@@ -76,6 +67,7 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
             result = replaceStringBeforeParseResponse(result);
             EasyLog.d(TAG.EasyHttp, mUrlStr + " 格式化后数据：" + result);
         }
+        mRequest.status = HttpRequestStatus.FINISH;
         success(result, null);
     }
 

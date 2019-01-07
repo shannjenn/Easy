@@ -25,9 +25,5 @@ public class HttpUploadRequest extends HttpRequest {
      * 是否断点下载
      */
     public boolean isBreak;
-    /**
-     * 用户停止
-     */
-    public boolean cancel;
 
 }

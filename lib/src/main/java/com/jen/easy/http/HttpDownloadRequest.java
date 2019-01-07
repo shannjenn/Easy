@@ -26,11 +26,6 @@ public class HttpDownloadRequest extends HttpRequest {
      */
     public boolean isBreak;
     /**
-     * 用户停止
-     */
-    public boolean cancel;
-
-    /**
      * 是否在下载删除旧文件，默认删除
      */
     public boolean deleteOldFile = true;

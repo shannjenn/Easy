@@ -10,9 +10,10 @@ import java.lang.annotation.RetentionPolicy;
  * 时间：2017/8/12.
  * 说明：网络请求运行状态
  */
-@IntDef({HttpState.RUN, HttpState.STOP})
+@IntDef({HttpRequestStatus.RUN, HttpRequestStatus.STOP, HttpRequestStatus.FINISH})
 @Retention(RetentionPolicy.SOURCE)
-@interface HttpState {
-    int RUN = 0;
-    int STOP = 1;
+public @interface HttpRequestStatus {
+    int RUN = 0;//正在运行
+    int STOP = 1;//被停止
+    int FINISH = 2;//完成
 }
