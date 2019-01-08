@@ -1,7 +1,7 @@
 package com.jen.easy.log;
 
 import com.jen.easy.constant.TAG;
-import com.jen.easy.log.imp.LogCrashListener;
+import com.jen.easy.log.imp.LogcatCrashListener;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,10 +9,15 @@ import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.lang.Thread.UncaughtExceptionHandler;
 
+/**
+ * 作者：ShannJenn
+ * 时间：2017/8/12.
+ * 说明：日志抓取
+ */
 class LogcatCrash implements UncaughtExceptionHandler {
     private static LogcatCrash instance; // 单例模式
-    private LogCrashListener mListener;
-    private UncaughtExceptionHandler defalutHandler; // 系统默认的UncaughtException处理类
+    private LogcatCrashListener mListener;
+    private UncaughtExceptionHandler exceptionHandler; // 系统默认的UncaughtException处理类
 
     private LogcatCrash() {
     }
@@ -24,7 +29,11 @@ class LogcatCrash implements UncaughtExceptionHandler {
      */
     static LogcatCrash getInstance() {
         if (instance == null) {
-            instance = new LogcatCrash();
+            synchronized (LogcatCrash.class) {
+                if (instance == null) {
+                    instance = new LogcatCrash();
+                }
+            }
         }
         return instance;
     }
@@ -33,25 +42,25 @@ class LogcatCrash implements UncaughtExceptionHandler {
      * 异常处理初始化
      */
     void start() {
-        if (LogcatPath.getLogPath() == null) {
+        if (LogcatPath.getInstance().getPath() == null) {
             return;
         }
         // 获取系统默认的UncaughtException处理器
-        defalutHandler = Thread.getDefaultUncaughtExceptionHandler();
+        exceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
         // 设置该CrashHandler为程序的默认处理器
         Thread.setDefaultUncaughtExceptionHandler(this);
     }
 
     void stop() {
-        if (defalutHandler != null)
-            Thread.setDefaultUncaughtExceptionHandler(defalutHandler);
+        if (exceptionHandler != null)
+            Thread.setDefaultUncaughtExceptionHandler(exceptionHandler);
     }
 
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
         boolean userCatch = false;
         if (mListener != null) {
-            File file = new File(LogcatPath.getLogPath(), "LogcatCrash-" + LogcatDate.getFileName() + ".txt");
+            File file = new File(LogcatPath.getInstance().getPath(), "LogcatCrash-" + LogcatDate.getFileName() + ".txt");
             try {
                 FileOutputStream outputStream = new FileOutputStream(file, true);
                 PrintWriter p = new PrintWriter(outputStream);
@@ -66,11 +75,11 @@ class LogcatCrash implements UncaughtExceptionHandler {
 
             userCatch = mListener.onBeforeHandleException(ex);
         }
-        if (!userCatch && defalutHandler != null) {
+        if (!userCatch && exceptionHandler != null) {
             // 如果用户没有处理则让系统默认的异常处理器来处理
-            defalutHandler.uncaughtException(thread, ex);
+            exceptionHandler.uncaughtException(thread, ex);
         } else {
-            EasyLog.w(TAG.EasyLogcat,"用户来处理异常");
+            EasyLog.w(TAG.EasyLogcat, "用户来处理异常");
             /*try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -83,7 +92,7 @@ class LogcatCrash implements UncaughtExceptionHandler {
         }
     }
 
-    void setListener(LogCrashListener listener) {
+    void setListener(LogcatCrashListener listener) {
         this.mListener = listener;
     }
 

@@ -1,36 +1,27 @@
 package com.jen.easy.log;
 
-import android.content.Context;
-
 import com.jen.easy.constant.TAG;
-import com.jen.easy.log.imp.LogCrashListener;
+import com.jen.easy.log.imp.LogcatCrashListener;
 
 /**
  * ClassName:LogcatHelperManager Function: log日志统计保存
  *
- * @author Jen
- * @Date 2017-7-13 下午6:13:54
- * @see
- * @since Ver 1.1
+ * 作者：ShannJenn
+ * 时间：2017/8/12.
+ * 说明：日志抓取
  */
 abstract class LogcatHelperManager {
 
-    protected LogcatHelperManager(Context context) {
-        init(context);
-    }
-
-    private void init(Context context) {
-        EasyLog.d(TAG.EasyLogcat, "LogcatHelperManager init");
-        LogcatPath.setDefaultPath(context);
+    LogcatHelperManager() {
     }
 
     /**
      * 设置Log路径
      *
-     * @param path
+     * @param path .
      */
     protected void setLogPath(String path) {
-        LogcatPath.setLogPath(path);
+        LogcatPath.getInstance().setPath(path);
     }
 
     /**
@@ -38,7 +29,7 @@ abstract class LogcatHelperManager {
      *
      * @param level :'d','i','w','e'
      */
-    protected void setLevel(char level) {
+    protected void setLevel(@LogcatLevel int level) {
         LogDumper.getInstance().setLogLevel(level);
     }
 
@@ -46,11 +37,11 @@ abstract class LogcatHelperManager {
      * 开始日志记录
      */
     protected void start() {
-        if (LogcatPath.getLogPath() == null) {
+        if (LogcatPath.getInstance().getPath() == null) {
             EasyLog.w(TAG.EasyLogcat, "日志路径为空，LogcatHelper日志未能启动--------------------");
             return;
         }
-        EasyLog.w(TAG.EasyLogcat, "日志路径为:" + LogcatPath.getLogPath());
+        EasyLog.w(TAG.EasyLogcat, "日志路径为:" + LogcatPath.getInstance().getPath());
         LogDumper.getInstance().startLogs();
         LogcatCrash.getInstance().start();
     }
@@ -66,7 +57,7 @@ abstract class LogcatHelperManager {
     /**
      * 抓取崩溃监听
      */
-    protected void setListener(LogCrashListener listener) {
+    protected void setListener(LogcatCrashListener listener) {
         LogcatCrash.getInstance().setListener(listener);
     }
 }

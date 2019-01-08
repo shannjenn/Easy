@@ -30,36 +30,38 @@ class LogDumper extends Thread {
      */
     static LogDumper getInstance() {
         if (instance == null) {
-            instance = new LogDumper();
+            synchronized (LogDumper.class) {
+                if (instance == null) {
+                    instance = new LogDumper();
+                }
+            }
         }
         return instance;
     }
 
-    public void setPID(int PID) {
+    void setPID(int PID) {
         this.PID = String.valueOf(PID);
     }
 
-    void setLogLevel(char level) {
+    void setLogLevel(@LogcatLevel int level) {
         switch (level) {
-            case 'd':
-                cmds = "logcat *:e *:d | grep \"(" + PID + ")\"";// d到e级别
-                break;
-            case 'i':
-                cmds = "logcat *:e *:i | grep \"(" + PID + ")\"";// i到e级别
-                break;
-            case 'w':
-                cmds = "logcat *:e *:w | grep \"(" + PID + ")\"";// w到e级别
-                break;
-            case 'e':
+            case LogcatLevel.E:
                 cmds = "logcat *:e | grep \"(" + PID + ")\"";// e级别
                 break;
-            default:
+            case LogcatLevel.W:
+                cmds = "logcat *:e *:w | grep \"(" + PID + ")\"";// w到e级别
+                break;
+            case LogcatLevel.I:
+                cmds = "logcat *:e *:i | grep \"(" + PID + ")\"";// i到e级别
+                break;
+            case LogcatLevel.D:
+                cmds = "logcat *:e *:d | grep \"(" + PID + ")\"";// d到e级别
                 break;
         }
     }
 
     void startLogs() {
-        if (LogcatPath.getLogPath() == null) {
+        if (LogcatPath.getInstance().getPath() == null) {
             return;
         }
         running = true;
@@ -76,7 +78,7 @@ class LogDumper extends Thread {
         try {
             logcatProc = Runtime.getRuntime().exec(cmds);
             reader = new BufferedReader(new InputStreamReader(logcatProc.getInputStream(), Unicode.DEFAULT), 1024);
-            String line = null;
+            String line;
             while (running && (line = reader.readLine()) != null) {
                 if (!running) {
                     break;
@@ -86,7 +88,7 @@ class LogDumper extends Thread {
                 }
                 if (line.contains(PID)) {
                     try {
-                        File file = new File(LogcatPath.getLogPath(), "LogcatHelper-" + LogcatDate.getFileName() + ".txt");
+                        File file = new File(LogcatPath.getInstance().getPath(), "LogcatHelper-" + LogcatDate.getFileName() + ".txt");
                         FileOutputStream out = new FileOutputStream(file, true);
                         out.write((LogcatDate.getDateEN() + "  " + line + "\n").getBytes(Unicode.DEFAULT));
                         out.flush();

@@ -11,4 +11,6 @@ public interface EasyDialogListener {
     void middleButton(int flagCode);
 
     void rightButton(int flagCode);
+
+    void dismiss(int flagCode);
 }

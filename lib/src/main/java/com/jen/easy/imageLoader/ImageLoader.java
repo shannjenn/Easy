@@ -19,9 +19,11 @@ public class ImageLoader extends ImageLoaderManager {
      * 单例
      */
     public static ImageLoader getInstance() {
-        synchronized (ImageLoader.class) {
-            if (mInstance == null) {
-                mInstance = new ImageLoader();
+        if (mInstance == null) {
+            synchronized (ImageLoader.class) {
+                if (mInstance == null) {
+                    mInstance = new ImageLoader();
+                }
             }
         }
         return mInstance;

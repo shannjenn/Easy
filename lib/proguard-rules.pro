@@ -159,7 +159,10 @@
 -keep class com.jen.easy.log.LogcatHelper {
     *;
 }
--keep class com.jen.easy.log.imp.LogCrashListener {
+-keep class com.jen.easy.log.LogcatLevel {
+    *;
+}
+-keep class com.jen.easy.log.imp.LogcatCrashListener {
     *;
 }
 

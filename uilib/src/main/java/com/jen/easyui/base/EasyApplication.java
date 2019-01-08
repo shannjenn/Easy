@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.jen.easy.log.imp.LogCrashListener;
+import com.jen.easy.log.imp.LogcatCrashListener;
 import com.jen.easy.sqlite.imp.DatabaseListener;
 
 /**
@@ -29,6 +29,7 @@ public class EasyApplication extends Application {
 //        EasyMain.mDBHelper.init();
 //        EasyMain.mDBHelper.setVersion(DB_VERSION);
 //        EasyMain.mDBHelper.setDatabaseListener(databaseListener);
+
         createTB();
 
 //        EasyMain.mHttp = new Http(5);
@@ -60,7 +61,7 @@ public class EasyApplication extends Application {
     /**
      * 异常捕获，返回true用户处理，false系统处理并抛出异常
      */
-    private LogCrashListener logcatCrashListener = new LogCrashListener() {
+    private LogcatCrashListener logcatCrashListener = new LogcatCrashListener() {
         @Override
         public boolean onBeforeHandleException(Throwable throwable) {
 //            Log.w("捕获到异常------------");

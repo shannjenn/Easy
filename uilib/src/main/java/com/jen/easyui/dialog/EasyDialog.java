@@ -43,6 +43,7 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
 
     private CharSequence txtContent;
     private ContentGravity contentGravity = ContentGravity.Center;
+
     public enum ContentGravity {
         Left,
         Center
@@ -165,6 +166,19 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
             window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         }
         super.show();
+    }
+
+    @Override
+    public void dismiss() {
+        super.dismiss();
+        if (easyDialogListener != null) {
+            easyDialogListener.dismiss(flagCode);
+        }
+    }
+
+    @Override
+    public void hide() {
+        super.hide();
     }
 
     @Override

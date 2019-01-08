@@ -56,6 +56,11 @@ public class DialogActivity extends EasyActivity {
                     public void rightButton(int flagCode) {
 
                     }
+
+                    @Override
+                    public void dismiss(int flagCode) {
+
+                    }
                 })
                 .create();
     }

@@ -1,8 +1,6 @@
 package com.jen.easy.log;
 
-import android.content.Context;
-
-import com.jen.easy.log.imp.LogCrashListener;
+import com.jen.easy.log.imp.LogcatCrashListener;
 
 /**
  * 作者：ShannJenn
@@ -14,14 +12,14 @@ public class LogcatHelper extends LogcatHelperManager {
     /**
      * 新建实例
      */
-    public LogcatHelper(Context context) {
-        super(context);
+    public LogcatHelper() {
+        super();
     }
 
     /**
      * 设置Log路径
      *
-     * @param path
+     * @param path .
      */
     @Override
     public void setLogPath(String path) {
@@ -34,7 +32,7 @@ public class LogcatHelper extends LogcatHelperManager {
      * @param level :'d','i','w','e'
      */
     @Override
-    public void setLevel(char level) {
+    public void setLevel(@LogcatLevel int level) {
         super.setLevel(level);
     }
 
@@ -58,7 +56,7 @@ public class LogcatHelper extends LogcatHelperManager {
      * 抓取崩溃监听
      */
     @Override
-    public void setListener(LogCrashListener listener) {
+    public void setListener(LogcatCrashListener listener) {
         super.setListener(listener);
     }
 }

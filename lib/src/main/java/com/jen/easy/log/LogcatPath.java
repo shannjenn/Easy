@@ -1,6 +1,5 @@
 package com.jen.easy.log;
 
-import android.content.Context;
 import android.os.Environment;
 
 import com.jen.easy.constant.TAG;
@@ -8,43 +7,72 @@ import com.jen.easy.constant.TAG;
 import java.io.File;
 
 class LogcatPath {
-    private static String logPath;
+    private static LogcatPath me;
+    private String path;
 
-    static void setDefaultPath(Context context) {
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {// 优先保存到SD卡中
-            logPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "_LogcatHelper";
-        } else {// 如果SD卡不存在，就保存到本应用的目录下
-            logPath = context.getFilesDir().getAbsolutePath() + File.separator + "_LogcatHelper";
+    static LogcatPath getInstance() {
+        if (me == null) {
+            synchronized (LogcatPath.class) {
+                if (me == null) {
+                    me = new LogcatPath();
+                }
+            }
         }
-        /*if (logPath == null)
-            return;*/
-        File file = new File(logPath);
+        return me;
+    }
+
+    private LogcatPath() {
+        initPath();
+    }
+
+    private void initPath() {
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {// 优先保存到SD卡中
+            path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "_LogcatHelper";
+        }
+        File file = new File(path);
         if (!file.exists()) {
             boolean ret = file.mkdirs();
             if (!ret) {
-                logPath = null;
+                path = null;
             }
         }
     }
 
-    static String getLogPath() {
-        return logPath;
+//    static void setDefaultPath(Context context) {
+//        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {// 优先保存到SD卡中
+//            path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "_LogcatHelper";
+//        } else {// 如果SD卡不存在，就保存到本应用的目录下
+//            path = context.getFilesDir().getAbsolutePath() + File.separator + "_LogcatHelper";
+//        }
+//        /*if (path == null)
+//            return;*/
+//        File file = new File(path);
+//        if (!file.exists()) {
+//            boolean ret = file.mkdirs();
+//            if (!ret) {
+//                path = null;
+//            }
+//        }
+//    }
+
+    String getPath() {
+        return path;
     }
 
-    static void setLogPath(String logPath) {
-        if (logPath == null) {
-            EasyLog.w(TAG.EasyLogcat,"设置的日志路径不能为空：");
+    void setPath(String path) {
+        if (path == null) {
+            EasyLog.w(TAG.EasyLogcat, "设置的日志路径不能为空：");
             return;
         }
-        File file = new File(logPath);
+        File file = new File(path);
         if (!file.exists()) {
             boolean ret = file.mkdirs();
             if (!ret) {
-                EasyLog.w(TAG.EasyLogcat,"设置的日志路径不正确：" + logPath);
+                EasyLog.w(TAG.EasyLogcat, "设置的日志路径不正确：" + path);
                 return;
             }
         }
-        LogcatPath.logPath = logPath;
+        this.path = path;
     }
 
 }
