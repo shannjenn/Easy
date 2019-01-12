@@ -1,5 +1,6 @@
 package com.jen.java;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,7 @@ public class javaClass {
         double aa = 2751545454645646546.235;
 
         String value = formatDecimal(-5.12, 1);
-        System.out.print(value);
+        System.out.println(value);
 
         /*String str = formatDouble(aa / 100000000, 2);
         Class a = null;
@@ -43,6 +44,18 @@ public class javaClass {
                 SynTest.getIns().syn();
             }
         }.start();*/
+
+        System.out.println(round(1.225,2));
+    }
+
+
+    public static double round(Double v, int scale) {
+//        if (scale < 0) {
+//            throw new IllegalArgumentException("The scale must be a positive integer or zero");
+//        }
+        BigDecimal b = null == v ? new BigDecimal("0.0") : new BigDecimal(Double.toString(v));
+        BigDecimal one = new BigDecimal("1");
+        return b.divide(one, scale, BigDecimal.ROUND_HALF_DOWN).doubleValue();
     }
 
     public static String formatDecimal(Object value, int decimal) {

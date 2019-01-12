@@ -15,7 +15,6 @@ import com.jen.easy.log.EasyLog;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -49,11 +48,8 @@ abstract class DBDaoManager {
             Throw.exception(ExceptionType.RuntimeException, "表名不能为空，请注释");
             return null;
         }
-        List<String> primaryKeys = new ArrayList<>();
-        Map<String, Field> column_field = new HashMap<>();
-        DBReflectManager.getColumnNames(clazz, primaryKeys, column_field);
-
-        if (primaryKeys.size() == 0) {
+        DBReflectManager.ColumnInfo columnInfo = DBReflectManager.getColumnInfo(clazz);
+        if (columnInfo.primaryKeys.size() == 0) {
             Throw.exception(ExceptionType.RuntimeException, "主键不能为空，请注释");
             return null;
         }
@@ -67,14 +63,14 @@ abstract class DBDaoManager {
             return null;
         }
         try {
-            String selection = primaryKeys.get(0) + "=?";
+            String selection = columnInfo.primaryKeys.get(0) + "=?";
             String[] selectionArgs = {id};
             Cursor cursor = db.query(tableName, null, selection, selectionArgs, null, null, null);
             if (cursor == null || cursor.getCount() == 0) {
                 return null;
             }
             cursor.moveToFirst();
-            T obj = valuation(clazz, column_field, cursor);
+            T obj = valuation(clazz, columnInfo, cursor);
             cursor.close();
             db.close();
             return obj;
@@ -110,10 +106,9 @@ abstract class DBDaoManager {
             Throw.exception(ExceptionType.RuntimeException, "表名不能为空，请注释");
             return objs;
         }
-        Map<String, Field> column_field = new HashMap<>();
-        DBReflectManager.getColumnNames(clazz, null, column_field);
+        DBReflectManager.ColumnInfo columnInfo = DBReflectManager.getColumnInfo(clazz);
 
-        if (column_field.size() == 0)
+        if (columnInfo.columns.size() == 0)
             return objs;
         String limit = null;
         if (pageNo > 0) {
@@ -135,7 +130,7 @@ abstract class DBDaoManager {
             }
             cursor.moveToFirst();
             do {
-                T obj = valuation(clazz, column_field, cursor);
+                T obj = valuation(clazz, columnInfo, cursor);
                 objs.add(obj);
             } while (cursor.moveToNext());
             cursor.close();
@@ -220,10 +215,9 @@ abstract class DBDaoManager {
                     Throw.exception(ExceptionType.RuntimeException, "表名不能为空，请注释");
                     return false;
                 }
-                Map<String, Field> column_field = new HashMap<>();
-                DBReflectManager.getColumnNames(list.get(0).getClass(), null, column_field);
+                DBReflectManager.ColumnInfo columnInfo = DBReflectManager.getColumnInfo(list.get(0).getClass());
                 for (int i = 0; i < list.size(); i++) {
-                    ContentValues values = contentValues(list.get(i), column_field);
+                    ContentValues values = contentValues(list.get(i), columnInfo);
                     db.insert(tableName, null, values);
                 }
 
@@ -238,11 +232,10 @@ abstract class DBDaoManager {
                     Throw.exception(ExceptionType.RuntimeException, "表名不能为空，请注释");
                     return false;
                 }
-                Map<String, Field> column_field = new HashMap<>();
-                DBReflectManager.getColumnNames(objects[0].getClass(), null, column_field);
+                DBReflectManager.ColumnInfo columnInfo = DBReflectManager.getColumnInfo(objects[0].getClass());
 
                 for (Object obj : objects) {
-                    ContentValues values = contentValues(obj, column_field);
+                    ContentValues values = contentValues(obj, columnInfo);
                     db.insert(tableName, null, values);
                 }
 
@@ -254,15 +247,14 @@ abstract class DBDaoManager {
                 }
                 Object[] collection = map.values().toArray();
                 String tableName = DBReflectManager.getTableName(collection[0].getClass());
-                Map<String, Field> column_field = new HashMap<>();
-                DBReflectManager.getColumnNames(collection[0].getClass(), null, column_field);
+                DBReflectManager.ColumnInfo columnInfo = DBReflectManager.getColumnInfo(collection[0].getClass());
                 if (tableName == null) {
                     Throw.exception(ExceptionType.RuntimeException, "表名不能为空，请注释");
                     return false;
                 }
 
                 for (Object value : collection) {
-                    ContentValues values = contentValues(value, column_field);
+                    ContentValues values = contentValues(value, columnInfo);
                     db.insert(tableName, null, values);
                 }
             } else {
@@ -271,9 +263,8 @@ abstract class DBDaoManager {
                     Throw.exception(ExceptionType.RuntimeException, "表名不能为空，请注释");
                     return false;
                 }
-                Map<String, Field> column_field = new HashMap<>();
-                DBReflectManager.getColumnNames(t.getClass(), null, column_field);
-                ContentValues values = contentValues(t, column_field);
+                DBReflectManager.ColumnInfo columnInfo = DBReflectManager.getColumnInfo(t.getClass());
+                ContentValues values = contentValues(t, columnInfo);
                 db.insert(tableName, null, values);
             }
             db.setTransactionSuccessful();
@@ -289,7 +280,7 @@ abstract class DBDaoManager {
     }
 
     /**
-     * 插入或者更新数据
+     * 插入或者更新数据(替换有值的项，没值的项不做修改)
      * <p>
      *
      * @param t 如：对象List集合、对象数组、对象Map集合value值、单个对象
@@ -321,10 +312,9 @@ abstract class DBDaoManager {
                     Throw.exception(ExceptionType.RuntimeException, "表名不能为空，请注释");
                     return false;
                 }
-                Map<String, Field> column_field = new HashMap<>();
-                DBReflectManager.getColumnNames(list.get(0).getClass(), null, column_field);
+                DBReflectManager.ColumnInfo columnInfo = DBReflectManager.getColumnInfo(list.get(0).getClass());
                 for (int i = 0; i < list.size(); i++) {
-                    ContentValues values = contentValues(list.get(i), column_field);
+                    ContentValues values = contentValues(list.get(i), columnInfo);
                     db.replace(tableName, null, values);
                 }
             } else if (t instanceof Object[]) {
@@ -338,10 +328,9 @@ abstract class DBDaoManager {
                     Throw.exception(ExceptionType.RuntimeException, "表名不能为空，请注释");
                     return false;
                 }
-                Map<String, Field> column_field = new HashMap<>();
-                DBReflectManager.getColumnNames(objs[0].getClass(), null, column_field);
+                DBReflectManager.ColumnInfo columnInfo = DBReflectManager.getColumnInfo(objs[0].getClass());
                 for (Object obj : objs) {
-                    ContentValues values = contentValues(obj, column_field);
+                    ContentValues values = contentValues(obj, columnInfo);
                     db.replace(tableName, null, values);
                 }
             } else if (t instanceof Map) {
@@ -356,10 +345,9 @@ abstract class DBDaoManager {
                     Throw.exception(ExceptionType.RuntimeException, "表名不能为空，请注释");
                     return false;
                 }
-                Map<String, Field> column_field = new HashMap<>();
-                DBReflectManager.getColumnNames(collection[0].getClass(), null, column_field);
+                DBReflectManager.ColumnInfo columnInfo = DBReflectManager.getColumnInfo(collection[0].getClass());
                 for (Object value : collection) {
-                    ContentValues values = contentValues(value, column_field);
+                    ContentValues values = contentValues(value, columnInfo);
                     db.replace(tableName, null, values);
                 }
             } else {
@@ -368,9 +356,8 @@ abstract class DBDaoManager {
                     Throw.exception(ExceptionType.RuntimeException, "表名不能为空，请注释");
                     return false;
                 }
-                Map<String, Field> column_field = new HashMap<>();
-                DBReflectManager.getColumnNames(t.getClass(), null, column_field);
-                ContentValues values = contentValues(t, column_field);
+                DBReflectManager.ColumnInfo columnInfo = DBReflectManager.getColumnInfo(t.getClass());
+                ContentValues values = contentValues(t, columnInfo);
                 db.replace(tableName, null, values);
             }
             db.setTransactionSuccessful();
@@ -541,7 +528,7 @@ abstract class DBDaoManager {
                     if (primaryKeys_values.size() == 0)
                         continue;
                     int index = 0;
-                    StringBuilder whereCause = new StringBuilder("");
+                    StringBuilder whereCause = new StringBuilder();
                     String[] selectArg = new String[primaryKeys_values.size()];
                     Set<String> sets = primaryKeys_values.keySet();
                     for (String key : sets) {
@@ -560,7 +547,7 @@ abstract class DBDaoManager {
                 if (primaryKeys_values.size() == 0)
                     return false;
                 int index = 0;
-                StringBuilder whereCause = new StringBuilder("");
+                StringBuilder whereCause = new StringBuilder();
                 String[] selectArg = new String[primaryKeys_values.size()];
                 Set<String> sets = primaryKeys_values.keySet();
                 for (String key : sets) {
@@ -654,17 +641,17 @@ abstract class DBDaoManager {
      * param obj
      * return
      */
-    private ContentValues contentValues(Object obj, Map<String, Field> column_field) {
+    private ContentValues contentValues(Object obj, DBReflectManager.ColumnInfo columnInfo) {
         ContentValues values = new ContentValues();
         try {
-            Set<String> sets = column_field.keySet();
-            for (String column : sets) {
-                Field field = column_field.get(column);
+            List<String> columns = columnInfo.columns;
+            for (int i = 0; i < columns.size(); i++) {
+                String column = columns.get(i);
+                Field field = columnInfo.fields.get(i);
                 field.setAccessible(true);
                 Object value = field.get(obj);
                 if (value == null)
                     continue;
-
                 if (value instanceof Character) {
                     values.put(column, (char) value + "");
                 } else if (value instanceof String) {
@@ -702,17 +689,17 @@ abstract class DBDaoManager {
      * param cursor
      * return
      */
-    private <T> T valuation(Class<T> clazz, Map<String, Field> column_field, Cursor cursor) {
+    private <T> T valuation(Class<T> clazz, DBReflectManager.ColumnInfo columnInfo, Cursor cursor) {
         T obj = null;
         Class fieldClass = null;
         try {
             obj = clazz.newInstance();
-            Set<String> sets = column_field.keySet();
-            for (String column : sets) {
-                Field field = column_field.get(column);
+            List<String> columns = columnInfo.columns;
+            for (int i = 0; i < columns.size(); i++) {
+                String column = columns.get(i);
+                Field field = columnInfo.fields.get(i);
                 field.setAccessible(true);
                 fieldClass = field.getType();
-
                 if (FieldType.isString(fieldClass)) {
                     String value = cursor.getString(cursor.getColumnIndex(column));
                     field.set(obj, value);

@@ -79,56 +79,51 @@ abstract class DBHelperManager {
             return;
         }*/
 
-        List<String> primaryKey = new ArrayList<>();
-        Map<String, Field> column_field = new HashMap<>();
-        DBReflectManager.getColumnNames(clazz, primaryKey, column_field);
-
-        if (column_field.size() == 0) {
+        DBReflectManager.ColumnInfo columnInfo = DBReflectManager.getColumnInfo(clazz);
+        List<String> primaryKeys = columnInfo.primaryKeys;
+        List<String> columns = columnInfo.columns;
+        List<Field> fields = columnInfo.fields;
+        if (columnInfo.columns.size() == 0) {
             Throw.exception(ExceptionType.RuntimeException, "创建数据库失败，列名为空");
             return;
         }
 
-        StringBuilder primaryKeySql = new StringBuilder("");
-        StringBuilder fieldSql = new StringBuilder("");
-
-        Set<String> sets = column_field.keySet();
-        for (String fieldName : sets) {
-            Field field = column_field.get(fieldName);
+        StringBuilder primaryKeySql = new StringBuilder();
+        StringBuilder fieldSql = new StringBuilder();
+        for (int i = 0; i < columns.size(); i++) {
+            String name = columns.get(i);
+            Field field = fields.get(i);
             String type = FieldType.getDBColumnType(field.getType());
             if (type == null) {
-                Throw.exception(ExceptionType.RuntimeException, "创建表失败，不支持该类型：" + fieldName);
+                Throw.exception(ExceptionType.RuntimeException, "创建表失败，不支持该类型：" + name);
                 return;
             }
-
-            fieldSql.append(fieldName);
+            fieldSql.append(name);
             fieldSql.append(" ");
             fieldSql.append(type);
             fieldSql.append(",");
         }
-
-        for (int i = 0; i < primaryKey.size(); i++) {
+        for (int i = 0; i < primaryKeys.size(); i++) {
             if (i == 0) {
                 primaryKeySql.append("primary key (");
-                primaryKeySql.append(primaryKey.get(i));
+                primaryKeySql.append(primaryKeys.get(i));
             }
             if (i > 0) {
                 primaryKeySql.append(",");
-                primaryKeySql.append(primaryKey.get(i));
+                primaryKeySql.append(primaryKeys.get(i));
             }
-            if (i + 1 == primaryKey.size()) {
+            if (i + 1 == primaryKeys.size()) {
                 primaryKeySql.append(")");
             }
         }
         if (primaryKeySql.length() == 0) {
             fieldSql.deleteCharAt(fieldSql.length() - 1);
         }
-
         final String sql = "create table if not exists " + tableName +
                 "(" +
                 fieldSql.toString() +
                 primaryKeySql.toString() +
                 ")";
-
         SQLiteDatabase db = getWriteDatabase();
         try {
             db.beginTransaction();

@@ -22,6 +22,21 @@ import java.util.Map;
 class DBReflectManager {
 
     /**
+     * 列明信息
+     */
+    static class ColumnInfo {
+        List<String> primaryKeys;//主键
+        List<String> columns;//列名
+        List<Field> fields;//变量
+
+        ColumnInfo() {
+            primaryKeys = new ArrayList<>();
+            columns = new ArrayList<>();
+            fields = new ArrayList<>();
+        }
+    }
+
+    /**
      * 获取表名
      *
      * @param clazz 类
@@ -44,15 +59,11 @@ class DBReflectManager {
     /**
      * 获取字字段(包含主键)
      *
-     * @param clazz        类
-     * @param primaryKeys  主键
-     * @param column_field 列名_变量
+     * @param clazz 类
      */
-    static void getColumnNames(Class clazz, List<String> primaryKeys, Map<String, Field> column_field) {
-        /*if (clazz == null) {
-            EasyLog.w(TAG.EasySQL, "getColumnNames clazz is not null");
-            return;
-        }*/
+    static ColumnInfo getColumnInfo(Class clazz) {
+        ColumnInfo columnInfo = new ColumnInfo();
+
 
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
@@ -75,10 +86,12 @@ class DBReflectManager {
             if (FieldType.isOtherField(columnName)) {
                 continue;
             }
-            if (isPrimary && primaryKeys != null)
-                primaryKeys.add(columnName);
-            column_field.put(columnName, field);
+            if (isPrimary)
+                columnInfo.primaryKeys.add(columnName);
+            columnInfo.columns.add(columnName);
+            columnInfo.fields.add(field);
         }
+        return columnInfo;
     }
 
     /**

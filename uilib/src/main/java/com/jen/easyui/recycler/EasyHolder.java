@@ -102,6 +102,28 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
         addOnLongClickEvent(mView, id, position);
     }
 
+
+    /**
+     * 设置隐藏
+     *
+     * @param parent  父级ID
+     * @param id      ID
+     * @param visible 显示或者隐藏
+     */
+    public void setVisible(View parent, int id, int visible) {
+        if (parent == null) {
+            return;
+        }
+        View view = parent.findViewById(id);
+        if (view != null) {
+            view.setVisibility(visible);
+        }
+    }
+
+    public void setVisible(int id, int visible) {
+        setVisible(mView, id, visible);
+    }
+
     /**
      * 设置文本
      *
@@ -123,8 +145,33 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
         setTextView(mView, id, text);
     }
 
+    public void setTextView(int id, int strId) {
+        setTextView(mView, id, strId);
+    }
+
     public void setTextView(View parent, int id, int strId) {
         setTextView(parent, id, mAdapter.mContext.getString(strId));
+    }
+
+    /**
+     * 设置颜色
+     *
+     * @param parent 父级ID
+     * @param id     ID
+     * @param color  颜色
+     */
+    public void setTextColor(View parent, int id, int color) {
+        if (parent == null) {
+            return;
+        }
+        View view = parent.findViewById(id);
+        if (view instanceof TextView) {
+            ((TextView) view).setTextColor(color);
+        }
+    }
+
+    public void setTextColor(int id, int color) {
+        setTextColor(mView, id, color);
     }
 
     /**

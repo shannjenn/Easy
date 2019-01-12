@@ -9,13 +9,13 @@ public final class Version {
     /**
      * 版本号(初版：1)
      */
-    public final static int VERSION_CODE = 22;
+    public final static int VERSION_CODE = 23;
     /**
      * 版本名称(初版：1.0.0)
      */
-    public final static String VERSION_NAME = "1.2.1";
+    public final static String VERSION_NAME = "1.2.2";
     /**
      * 时间(初版：2017.07.18)
      */
-    public final static String TIME = "2019.01.08";
+    public final static String TIME = "2019.01.12";
 }
