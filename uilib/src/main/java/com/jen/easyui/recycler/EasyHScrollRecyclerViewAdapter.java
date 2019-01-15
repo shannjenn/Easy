@@ -1,6 +1,9 @@
 package com.jen.easyui.recycler;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,25 +25,41 @@ public abstract class EasyHScrollRecyclerViewAdapter<T> extends EasyRecyclerBase
     protected int mScrollX;
     private EasyHScrollView.ScrollListener mScrollListener;
 
-    public Map<Integer, EasyHScrollView> getHScrollViews() {
-        return mHScrollViews;
-    }
-
-    public void addEasyHScrollView(EasyHScrollView easyHScrollView) {
-        mHScrollViews.put(-1, easyHScrollView);
-        setScroll(easyHScrollView);
-    }
-
-    public int getScrollX() {
-        return mScrollX;
-    }
+    private final int DELAYED_TIME = 50;//时间
+    private final int H_UPDATE_SCROLL = 100;
+    protected Handler mHandler = new Handler(Looper.myLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case H_UPDATE_SCROLL: {
+                    EasyHScrollView scrollView = (EasyHScrollView) msg.obj;
+                    setScroll(scrollView);
+                    break;
+                }
+            }
+        }
+    };
 
     /**
-     * @param context
+     * @param context .
      * @param data    数据
      */
     protected EasyHScrollRecyclerViewAdapter(Context context, List<T> data) {
         super(context, data);
+    }
+
+    public Map<Integer, EasyHScrollView> getHScrollViews() {
+        return mHScrollViews;
+    }
+
+    public void addEasyHScrollView(EasyHScrollView headHScrollView) {
+        mHScrollViews.put(-1, headHScrollView);
+        setScroll(headHScrollView);
+    }
+
+    public int getScrollX() {
+        return mScrollX;
     }
 
     @Override
@@ -65,7 +84,10 @@ public abstract class EasyHScrollRecyclerViewAdapter<T> extends EasyRecyclerBase
         if (v instanceof EasyHScrollView) {
             EasyHScrollView scrollView = (EasyHScrollView) v;
             mHScrollViews.put(position, scrollView);
-            setScroll(scrollView);
+            Message message = mHandler.obtainMessage();
+            message.what = H_UPDATE_SCROLL;
+            message.obj = scrollView;
+            mHandler.sendMessageDelayed(message, DELAYED_TIME);
         } else {
             try {
                 throw new RuntimeException("未引用：" + EasyHScrollView.class.getName() + ",请正确调用onBindEasyHScrollViewId");
@@ -81,8 +103,8 @@ public abstract class EasyHScrollRecyclerViewAdapter<T> extends EasyRecyclerBase
     }
 
     private void setScroll(final EasyHScrollView scrollView) {
-        if (scrollView.getScaleX() != mScrollX) {
-            scrollView.smoothScrollTo(mScrollX, 0);
+        if (scrollView.getScrollX() != mScrollX) {
+            scrollView.scrollTo(mScrollX, 0);
         }
         scrollView.setScrollListener(new EasyHScrollView.ScrollListener() {
             @Override
@@ -113,10 +135,10 @@ public abstract class EasyHScrollRecyclerViewAdapter<T> extends EasyRecyclerBase
     /**
      * EasyHScrollRecyclerView 滑动
      *
-     * @param l
-     * @param t
-     * @param oldl
-     * @param oldt
+     * @param l    left
+     * @param t    top
+     * @param oldl .
+     * @param oldt .
      */
     public void recyclerViewOnScrollChanged(EasyHScrollRecyclerView recyclerView, int l, int t, int oldl, int oldt) {
         scrollAllToX();
@@ -127,7 +149,7 @@ public abstract class EasyHScrollRecyclerViewAdapter<T> extends EasyRecyclerBase
         for (int key : keys) {
             EasyHScrollView view = mHScrollViews.get(key);
             if (view != null && view.getScrollX() != mScrollX) {
-                view.smoothScrollTo(mScrollX, 0);
+                view.scrollTo(mScrollX, 0);
             }
         }
     }
