@@ -11,41 +11,9 @@ public class javaClass {
         double aa = 2751545454645646546.235;
 
         String value = formatDecimal(-5.12, 1);
-        System.out.println(value);
+//        System.out.println(value);
 
-        /*String str = formatDouble(aa / 100000000, 2);
-        Class a = null;
-
-        new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                SynTest.getIns().syn();
-            }
-        }.start();
-        new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                SynTest.getIns().syn();
-            }
-        }.start();
-        new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                SynTest.getIns().syn();
-            }
-        }.start();
-        new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                SynTest.getIns().syn();
-            }
-        }.start();*/
-
-        System.out.println(round(1.225,2));
+        System.out.println((2));
     }
 
 

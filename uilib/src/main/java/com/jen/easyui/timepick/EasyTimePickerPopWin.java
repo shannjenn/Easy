@@ -91,11 +91,13 @@ public class EasyTimePickerPopWin extends PopupWindow implements OnClickListener
             }
         }
 
-        yearLoopView.setTextSize(config.loopTextSize);
-        monthLoopView.setTextSize(config.loopTextSize);
-        dayLoopView.setTextSize(config.loopTextSize);
-        hourLoopView.setTextSize(config.loopTextSize);
-        minuteLoopView.setTextSize(config.loopTextSize);
+        if (config.loopTextSize != null) {
+            yearLoopView.setTextSize(config.loopTextSize);
+            monthLoopView.setTextSize(config.loopTextSize);
+            dayLoopView.setTextSize(config.loopTextSize);
+            hourLoopView.setTextSize(config.loopTextSize);
+            minuteLoopView.setTextSize(config.loopTextSize);
+        }
 
         initPickerViews(); // init year and month loop view
 

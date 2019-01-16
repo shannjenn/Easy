@@ -89,6 +89,7 @@ public class EasyLoopView extends View {
     private float rawY;
 
     private int layoutWidth;
+    private float layoutWeight;
 
     /*public LoopView(Context context) {
         super(context);
@@ -227,7 +228,7 @@ public class EasyLoopView extends View {
     private void initLoopView(Context context, AttributeSet attrs) {
         this.context = context;
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.EasyLoopView);
-        int textSizeXp = (int) EasyDensityUtil.sp2px(161);
+        int textSizeXp = (int) EasyDensityUtil.sp2px(16);
 
         textSize = a.getDimensionPixelOffset(R.styleable.EasyLoopView_loopViewTextSize, textSizeXp);
         textColorSelect = a.getColor(R.styleable.EasyLoopView_loopViewTextSelectColor, 0xff0085f2);
@@ -243,6 +244,7 @@ public class EasyLoopView extends View {
         unitHorizontalMargin = a.getColor(R.styleable.EasyLoopView_loopViewUnitHorizontalMargin, 40);
 
         layoutWidth = a.getLayoutDimension(R.styleable.EasyLoopView_android_layout_width, 0);
+        layoutWeight = a.getFloat(R.styleable.EasyLoopView_android_layout_weight, 0f);
 
         a.recycle();
 
@@ -311,7 +313,7 @@ public class EasyLoopView extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 //        int specMode = MeasureSpec.getMode(widthMeasureSpec);//得到模式
 //        int specSize = MeasureSpec.getSize(widthMeasureSpec);//得到大小
-        if (layoutWidth == ViewGroup.LayoutParams.WRAP_CONTENT) {
+        if (layoutWidth == ViewGroup.LayoutParams.WRAP_CONTENT && layoutWeight == 0) {
             int widthSpec = maxTextWidth + unitTextWidth + unitHorizontalMargin + viewHorizontalMargin * 2;
             widthMeasureSpec = MeasureSpec.makeMeasureSpec(widthSpec, MeasureSpec.EXACTLY);
         }
@@ -499,7 +501,7 @@ public class EasyLoopView extends View {
         loopListener = LoopListener;
     }
 
-    public void setTextSize(int size) {
+    public void setTextSize(Integer size) {
         textSize = size;
         float textSizeXp = EasyDensityUtil.sp2px(textSize);
         unselectedPaint.setTextSize(textSizeXp);

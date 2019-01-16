@@ -46,7 +46,7 @@ public class TimePickActivity extends EasyActivity {
         switch (view.getId()) {
             case R.id.time_pick_1: {
                 EasyTimePickerConfig timePickerConfig = new EasyTimePickerConfig(this)
-                        .setLoopTextSize(16) // pick view text size
+//                        .setLoopTextSize(16) // pick view text size
                         .setType(EasyTimePickerConfig.Type.YEAR_MONTH_DAY_WEEK);
                 EasyTimePickerPopWin pickerPopWin = new EasyTimePickerPopWin(timePickerConfig);
                 pickerPopWin.setTimePickedListener(new EasyTimePickListener() {
@@ -65,7 +65,7 @@ public class TimePickActivity extends EasyActivity {
             }
             case R.id.time_pick_2: {
                 EasyTimePickerConfig timePickerConfig = new EasyTimePickerConfig(this)
-                        .setLoopTextSize(16) // pick view text size
+//                        .setLoopTextSize(16) // pick view text size
                         .setType(EasyTimePickerConfig.Type.YEAR_MONTH_DAY_HOUR_MIN_WEEK)
                         .setCurrentDate(System.currentTimeMillis() - 24 * 3600 * 1000);
                 EasyTimePickerPopWin pickerPopWin = new EasyTimePickerPopWin(timePickerConfig);
@@ -85,7 +85,7 @@ public class TimePickActivity extends EasyActivity {
             }
             case R.id.time_pick_3: {
                 EasyTimePickerConfig timePickerConfig = new EasyTimePickerConfig(this)
-                        .setLoopTextSize(16) // pick view text size
+//                        .setLoopTextSize(16) // pick view text size
                         .setType(EasyTimePickerConfig.Type.YEAR_MONTH_DAY)
                         .setUnit(EasyTimePickerConfig.Unit.YEAR_MONTH_DAY_HOUR_MIN);
                 EasyTimePickerPopWin pickerPopWin = new EasyTimePickerPopWin(timePickerConfig);
@@ -105,7 +105,7 @@ public class TimePickActivity extends EasyActivity {
             }
             case R.id.time_pick_4: {
                 EasyTimePickerConfig timePickerConfig = new EasyTimePickerConfig(this)
-                        .setLoopTextSize(16) // pick view text size
+//                        .setLoopTextSize(16) // pick view text size
                         .setType(EasyTimePickerConfig.Type.YEAR_MONTH_DAY_HOUR_MIN)
                         .setUnit(EasyTimePickerConfig.Unit.YEAR_MONTH_DAY_HOUR_MIN);
                 EasyTimePickerPopWin pickerPopWin = new EasyTimePickerPopWin(timePickerConfig);
@@ -125,7 +125,7 @@ public class TimePickActivity extends EasyActivity {
             }
             case R.id.time_pick_5: {
                 EasyTimePickerConfig timePickerConfig = new EasyTimePickerConfig(this)
-                        .setLoopTextSize(16) // pick view text size
+//                        .setLoopTextSize(16) // pick view text size
                         .setType(EasyTimePickerConfig.Type.HOUR_MIN)
                         .setUnit(EasyTimePickerConfig.Unit.YEAR_MONTH_DAY_HOUR_MIN);
                 EasyTimePickerPopWin pickerPopWin = new EasyTimePickerPopWin(timePickerConfig);

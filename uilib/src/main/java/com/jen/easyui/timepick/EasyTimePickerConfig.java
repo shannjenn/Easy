@@ -9,7 +9,7 @@ import com.jen.easyui.R;
  * 时间：2018/07/31.
  */
 public class EasyTimePickerConfig {
-    int loopTextSize = 16;
+    Integer loopTextSize;
     Context context;
     final EasyCalendarGenerator calendarGenerator = new EasyCalendarGenerator();
     Type type = Type.YEAR_MONTH_DAY_HOUR_MIN;
@@ -77,7 +77,7 @@ public class EasyTimePickerConfig {
     /**
      * 轴大小
      */
-    public EasyTimePickerConfig setLoopTextSize(int textSize) {
+    public EasyTimePickerConfig setLoopTextSize(Integer textSize) {
         this.loopTextSize = textSize;
         return this;
     }
