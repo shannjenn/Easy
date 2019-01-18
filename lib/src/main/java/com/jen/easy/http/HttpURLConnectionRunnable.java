@@ -38,7 +38,7 @@ abstract class HttpURLConnectionRunnable implements Runnable {
     @Override
     public void run() {
         HttpReflectManager.RequestType requestType = HttpReflectManager.getRequestType(mRequest);
-        if(requestType == null){
+        if (requestType == null) {
             Throw.exception(ExceptionType.RuntimeException, "请求参数未加注释");
             fail("请求参数未加注释");
             return;
@@ -156,7 +156,7 @@ abstract class HttpURLConnectionRunnable implements Runnable {
                 headBuilder.append(value);
                 headBuilder.append(" ");
             }
-            if (mRequest.status != HttpRequestStatus.RUN) {
+            if (mRequest.requestStatus == RequestStatus.stop) {
                 return;
             }
             EasyLog.d(TAG.EasyHttp, "网络请求：" + method + " " + mUrlStr + " 请求头部：" + headBuilder.toString() + " 请求参数：" + mBody.toString());

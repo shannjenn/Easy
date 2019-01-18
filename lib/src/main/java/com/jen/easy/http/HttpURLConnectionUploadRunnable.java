@@ -39,7 +39,7 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
         byte[] bufferOut = new byte[1024];
         while ((len = in.read(bufferOut)) != -1) {
             out.write(bufferOut, 0, len);
-            if (request.status != HttpRequestStatus.RUN) {
+            if (request.requestStatus == RequestStatus.stop) {
                 break;
             } else {
                 progress(curBytes, request.endPoint);
@@ -57,7 +57,7 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
             buffer.append(line);
         }
         reader.close();
-        if (mRequest.status != HttpRequestStatus.RUN) {//拦截数据解析
+        if (mRequest.requestStatus == RequestStatus.stop) {//拦截数据解析
             EasyLog.d(TAG.EasyHttp, mUrlStr + " 网络请求停止!\n   ");
             return;
         }
@@ -67,7 +67,7 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
             result = replaceStringBeforeParseResponse(result);
             EasyLog.d(TAG.EasyHttp, mUrlStr + " 格式化后数据：" + result);
         }
-        mRequest.status = HttpRequestStatus.FINISH;
+        mRequest.requestStatus = RequestStatus.finish;
         success(result, null);
     }
 

@@ -44,7 +44,7 @@ abstract class HttpManager {
             Throw.exception(ExceptionType.NullPointerException, "参数不能为空");
             return;
         }
-        request.status = HttpRequestStatus.RUN;
+        request.requestStatus = RequestStatus.running;
         if (request instanceof HttpBasicRequest) {
             HttpURLConnectionBasicRunnable base = new HttpURLConnectionBasicRunnable((HttpBasicRequest) request, httpBaseListener);
             pool.execute(base);

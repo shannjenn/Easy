@@ -143,7 +143,7 @@
 -keep class com.jen.easy.http.HttpTool {
     *;
 }
--keep class com.jen.easy.http.HttpRequestStatus {
+-keep class com.jen.easy.http.RequestStatus {
     *;
 }
 

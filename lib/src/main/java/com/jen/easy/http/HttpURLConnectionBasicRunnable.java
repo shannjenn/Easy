@@ -47,7 +47,7 @@ class HttpURLConnectionBasicRunnable extends HttpURLConnectionRunnable {
             reader.close();
             inStream.close();
             connection.disconnect();
-            if (mRequest.getStatus() != HttpRequestStatus.RUN) {//拦截数据解析
+            if (mRequest.getRequestStatus() == RequestStatus.stop) {//拦截数据解析
                 EasyLog.d(TAG.EasyHttp, mUrlStr + " 网络请求停止!\n   ");
                 return;
             }
@@ -57,14 +57,14 @@ class HttpURLConnectionBasicRunnable extends HttpURLConnectionRunnable {
                 result = replaceStringBeforeParseResponse(result);
                 EasyLog.d(TAG.EasyHttp, mUrlStr + " 格式化后数据：" + result);
             }
-            mRequest.status = HttpRequestStatus.FINISH;
+            mRequest.requestStatus = RequestStatus.finish;
             success(result, headMap);
         } else {
-            if (mRequest.getStatus() != HttpRequestStatus.RUN) {//拦截数据解析
+            if (mRequest.getRequestStatus() == RequestStatus.stop) {//拦截数据解析
                 EasyLog.d(TAG.EasyHttp, mUrlStr + " 网络请求停止!\n   ");
                 return;
             }
-            mRequest.status = HttpRequestStatus.FINISH;
+            mRequest.requestStatus = RequestStatus.finish;
             fail(" 网络请求异常：" + mResponseCode);
         }
     }

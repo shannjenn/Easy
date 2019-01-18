@@ -55,28 +55,28 @@ class HttpURLConnectionDownloadRunnable extends HttpURLConnectionRunnable {
             while ((len = inStream.read(buffer)) != -1) {
                 randFile.write(buffer, 0, len);
                 curBytes += len;
-                if (mRequest.status != HttpRequestStatus.RUN) {
+                if (mRequest.requestStatus == RequestStatus.stop) {
                     break;
                 } else {
                     progress(curBytes, request.endPoint);
                 }
             }
-            if (mRequest.status != HttpRequestStatus.RUN) {
+            if (mRequest.requestStatus == RequestStatus.stop) {
                 EasyLog.d(TAG.EasyHttp, mUrlStr + " 网络请求停止!\n   ");
                 return;
             }
-            request.status = HttpRequestStatus.FINISH;
+            request.requestStatus = RequestStatus.finish;
             if (curBytes == request.endPoint) {
                 success(null, null);
             } else {
                 fail("下载失败：" + mResponseCode + " curBytes = " + curBytes + " endPoint = " + request.endPoint);
             }
         } else {
-            if (mRequest.status != HttpRequestStatus.RUN) {
+            if (mRequest.requestStatus == RequestStatus.stop) {
                 EasyLog.d(TAG.EasyHttp, mUrlStr + " 网络请求停止!\n   ");
                 return;
             }
-            request.status = HttpRequestStatus.FINISH;
+            request.requestStatus = RequestStatus.finish;
             fail("下载失败：" + mResponseCode);
         }
     }
@@ -93,13 +93,13 @@ class HttpURLConnectionDownloadRunnable extends HttpURLConnectionRunnable {
     @Override
     protected void fail(String msg) {
         EasyLog.w(TAG.EasyHttp, mUrlStr + " " + msg);
-        if (downloadListener != null && mRequest.status == HttpRequestStatus.RUN) {
+        if (downloadListener != null) {
             downloadListener.fail(mRequest.flagCode, mRequest.flagStr, msg);
         }
     }
 
     private void progress(long currentPoint, long endPoint) {
-        if (downloadListener != null && mRequest.status == HttpRequestStatus.RUN) {
+        if (downloadListener != null) {
             downloadListener.progress(mRequest.flagCode, mRequest.flagStr, currentPoint, endPoint);
         }
     }
