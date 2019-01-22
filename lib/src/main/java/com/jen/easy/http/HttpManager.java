@@ -30,12 +30,26 @@ abstract class HttpManager {
         pool = Executors.newFixedThreadPool(maxThreadSize);
     }
 
+    public void start(HttpRequest request) {
+        start(request, 0, null);
+    }
+
+    public void start(HttpRequest request, int flagCode) {
+        start(request, flagCode, null);
+    }
+
+    public void start(HttpRequest request, String flagStr) {
+        start(request, 0, flagStr);
+    }
+
     /**
      * 开始
      *
-     * @param request 请求对象
+     * @param request  请求对象
+     * @param flagCode 请求标识
+     * @param flagStr  请求标识
      */
-    public void start(HttpRequest request) {
+    public void start(HttpRequest request, int flagCode, String flagStr) {
         if (isShutdown) {
             EasyLog.i("线程池已经关闭，不可以再操作 start");
             return;
@@ -46,13 +60,13 @@ abstract class HttpManager {
         }
         request.requestStatus = RequestStatus.running;
         if (request instanceof HttpBasicRequest) {
-            HttpURLConnectionBasicRunnable base = new HttpURLConnectionBasicRunnable((HttpBasicRequest) request, httpBaseListener);
+            HttpURLConnectionBasicRunnable base = new HttpURLConnectionBasicRunnable((HttpBasicRequest) request, httpBaseListener, flagCode, flagStr);
             pool.execute(base);
         } else if (request instanceof HttpDownloadRequest) {
-            HttpURLConnectionDownloadRunnable download = new HttpURLConnectionDownloadRunnable((HttpDownloadRequest) request, httpDownloadListener);
+            HttpURLConnectionDownloadRunnable download = new HttpURLConnectionDownloadRunnable((HttpDownloadRequest) request, httpDownloadListener, flagCode, flagStr);
             pool.execute(download);
         } else if (request instanceof HttpUploadRequest) {
-            HttpURLConnectionUploadRunnable upload = new HttpURLConnectionUploadRunnable((HttpUploadRequest) request, httpUploadListener);
+            HttpURLConnectionUploadRunnable upload = new HttpURLConnectionUploadRunnable((HttpUploadRequest) request, httpUploadListener, flagCode, flagStr);
             pool.execute(upload);
         } else {
             EasyLog.w(TAG.EasyHttp, "HttpRequest 错误");

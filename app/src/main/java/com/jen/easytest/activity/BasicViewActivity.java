@@ -3,12 +3,9 @@ package com.jen.easytest.activity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.jen.easy.EasyViewID;
+import com.jen.easy.EasyBindId;
 import com.jen.easytest.R;
 import com.jen.easyui.base.EasyActivity;
-import com.jen.easyui.baseview.EasyItemLayout;
-import com.jen.easyui.baseview.EasyRotateView;
-import com.jen.easyui.baseview.EasyShapeTextView;
 import com.jen.easyui.baseview.EasyTopBar;
 
 import java.util.ArrayList;
@@ -21,16 +18,16 @@ import java.util.List;
 
 public class BasicViewActivity extends EasyActivity {
 
-    @EasyViewID(R.id.topBar)
+    @EasyBindId(R.id.topBar)
     EasyTopBar topBar;
 
-//    @EasyViewID(R.id.easy_tv_shape)
+//    @EasyBindId(R.id.easy_tv_shape)
 //    EasyShapeTextView easy_tv_shape;
-//    @EasyViewID(R.id.easy_item_layout)
+//    @EasyBindId(R.id.easy_item_layout)
 //    EasyItemLayout easy_item_layout;
-    //    @EasyViewID(R.id.rote_view)
+    //    @EasyBindId(R.id.rote_view)
 //    EasyRotateView rote_view;
-//    @EasyViewID(R.id.rote_view2)
+//    @EasyBindId(R.id.rote_view2)
 //    EasyRotateView rote_view2;
 
     @Override

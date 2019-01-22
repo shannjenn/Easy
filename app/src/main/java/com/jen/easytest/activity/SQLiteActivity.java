@@ -3,7 +3,7 @@ package com.jen.easytest.activity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.jen.easy.EasyViewMethod;
+import com.jen.easy.EasyBindClick;
 import com.jen.easy.sqlite.DBDao;
 import com.jen.easytest.R;
 import com.jen.easytest.sqlite.Student;
@@ -41,7 +41,7 @@ public class SQLiteActivity extends EasyActivity {
 
     }
 
-    @EasyViewMethod({R.id.replace, R.id.search})
+    @EasyBindClick({R.id.replace, R.id.search})
     @Override
     protected void onBindClick(View view) {
         switch (view.getId()) {

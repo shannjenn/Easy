@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface EasyViewMethod {
+public @interface EasyBindClick {
     /**
      * 绑定点击事件
      */

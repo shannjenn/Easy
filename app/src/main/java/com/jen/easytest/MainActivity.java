@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.jen.easy.EasyViewMethod;
+import com.jen.easy.EasyBindClick;
 import com.jen.easytest.activity.BasicViewActivity;
 import com.jen.easytest.activity.DialogActivity;
 import com.jen.easytest.activity.HttpActivity;
@@ -44,7 +44,7 @@ public class MainActivity extends EasyActivity {
     }
 
 
-    @EasyViewMethod({R.id.tabBar, R.id.basicView, R.id.http, R.id.imageLoader, R.id.dialog, R.id.popupWindow,
+    @EasyBindClick({R.id.tabBar, R.id.basicView, R.id.http, R.id.imageLoader, R.id.dialog, R.id.popupWindow,
             R.id.sqlite, R.id.util, R.id.recycleView, R.id.timePick, R.id.ImageViewPager, R.id.OnclickTest,
             R.id.PickerView})
     @Override

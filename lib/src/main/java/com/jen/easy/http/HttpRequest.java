@@ -15,15 +15,15 @@ import java.util.LinkedHashMap;
 @EasyInvalid
 public abstract class HttpRequest {
 
-    /**
-     * 请求标识
-     */
-    public int flagCode;
-
-    /**
-     * 请求标识
-     */
-    public String flagStr;
+//    /**
+//     * 请求标识
+//     */
+//    public int flagCode;
+//
+//    /**
+//     * 请求标识
+//     */
+//    public String flagStr;
 
     /**
      * url前端部分

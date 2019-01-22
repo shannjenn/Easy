@@ -7,8 +7,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.jen.easy.EasyViewID;
-import com.jen.easy.EasyViewMethod;
+import com.jen.easy.EasyBindClick;
+import com.jen.easy.EasyBindId;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
 import com.jen.easytest.model.RecyclerViewModel;
@@ -31,13 +31,13 @@ import java.util.List;
 
 public class RecyclerViewLetterActivity extends EasyActivity {
 
-    @EasyViewID(R.id.recyclerView)
+    @EasyBindId(R.id.recyclerView)
     EasyRecyclerView recyclerView;
 
-    @EasyViewID(R.id.lt_letter)
+    @EasyBindId(R.id.lt_letter)
     EasyLetterView lt_letter;
 
-    @EasyViewID(R.id.tv_letter_show)
+    @EasyBindId(R.id.tv_letter_show)
     TextView tv_letter_show;
 
     List<RecyclerViewModel> mData = new ArrayList<>();
@@ -150,7 +150,7 @@ public class RecyclerViewLetterActivity extends EasyActivity {
 
     }
 
-    @EasyViewMethod({R.id.EasyRecyclerAdapter, R.id.EasyRecyclerWaterfallAdapter, R.id.EasyTreeRecyclerAdapter})
+    @EasyBindClick({R.id.EasyRecyclerAdapter, R.id.EasyRecyclerWaterfallAdapter, R.id.EasyTreeRecyclerAdapter})
     @Override
     protected void onBindClick(View view) {
         switch (view.getId()) {

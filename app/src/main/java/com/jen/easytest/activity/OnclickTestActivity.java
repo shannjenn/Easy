@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.jen.easy.EasyViewID;
-import com.jen.easy.EasyViewMethod;
+import com.jen.easy.EasyBindClick;
+import com.jen.easy.EasyBindId;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
 import com.jen.easyui.base.EasyActivity;
@@ -17,7 +17,7 @@ import com.jen.easyui.base.EasyActivity;
 
 public class OnclickTestActivity extends EasyActivity {
 
-    @EasyViewID(R.id.tv_onclickTest)
+    @EasyBindId(R.id.tv_onclickTest)
     TextView tv_onclickTest;
 
     @Override
@@ -41,7 +41,7 @@ public class OnclickTestActivity extends EasyActivity {
 
     }
 
-    @EasyViewMethod({R.id.tv_onclickTest})
+    @EasyBindClick({R.id.tv_onclickTest})
     protected void onBindClick(View view) {
         switch (view.getId()) {
             case R.id.tv_onclickTest: {

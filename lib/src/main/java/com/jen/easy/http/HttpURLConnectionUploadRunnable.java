@@ -19,8 +19,8 @@ import java.util.Map;
 class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
     private HttpUploadListener uploadListener;
 
-    HttpURLConnectionUploadRunnable(HttpUploadRequest request, HttpUploadListener uploadListener) {
-        super(request);
+    HttpURLConnectionUploadRunnable(HttpUploadRequest request, HttpUploadListener uploadListener, int flagCode, String flagStr) {
+        super(request, flagCode, flagStr);
         this.uploadListener = uploadListener;
     }
 
@@ -76,14 +76,14 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
         EasyLog.d(TAG.EasyHttp, mUrlStr + " 上传成功！");
         if (uploadListener != null) {
             if (FieldType.isObject(mResponse) || FieldType.isString(mResponse)) {//Object和String类型不做数据解析
-                uploadListener.success(mRequest.flagCode, mRequest.flagStr, result);
+                uploadListener.success(flagCode, flagStr, result);
             } else {
                 HttpParseManager parseManager = new HttpParseManager();
                 Object parseObject = parseManager.parseResponseFromJSONString(mResponse, result, headMap);
                 if (parseObject == null) {
                     fail("返回数据解析异常");
                 } else {
-                    uploadListener.success(mRequest.flagCode, mRequest.flagStr, parseObject);
+                    uploadListener.success(flagCode, flagStr, parseObject);
                 }
             }
         }
@@ -93,13 +93,13 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
     protected void fail(String msg) {
         EasyLog.w(TAG.EasyHttp, mUrlStr + " " + msg);
         if (uploadListener != null) {
-            uploadListener.fail(mRequest.flagCode, mRequest.flagStr, msg);
+            uploadListener.fail(flagCode, flagStr, msg);
         }
     }
 
     private void progress(long currentPoint, long endPoint) {
         if (uploadListener != null) {
-            uploadListener.progress(mRequest.flagCode, mRequest.flagStr, currentPoint, endPoint);
+            uploadListener.progress(flagCode, flagStr, currentPoint, endPoint);
         }
     }
 }

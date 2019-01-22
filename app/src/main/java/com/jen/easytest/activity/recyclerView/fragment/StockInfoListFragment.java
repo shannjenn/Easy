@@ -5,8 +5,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.jen.easy.EasyViewID;
-import com.jen.easy.EasyViewMethod;
+import com.jen.easy.EasyBindClick;
+import com.jen.easy.EasyBindId;
 import com.jen.easy.http.HttpBasicRequest;
 import com.jen.easytest.R;
 import com.jen.easytest.activity.recyclerView.adapter.SortStockTextView;
@@ -27,45 +27,45 @@ import java.util.List;
  */
 
 public class StockInfoListFragment extends EasyFragment {
-//    @EasyViewID(R.id.smart_refresh)
+    //    @EasyBindId(R.id.smart_refresh)
 //    private SmartRefreshLayout smart_refresh;
-    @EasyViewID(R.id.easyRecycler)
+    @EasyBindId(R.id.easyRecycler)
     private EasyHScrollRecyclerView easyRecycler;
-    @EasyViewID(R.id.easy_scroll_view)
+    @EasyBindId(R.id.easy_scroll_view)
     private EasyHScrollView easy_scroll_view;
 
-    @EasyViewID(R.id.tv_stock_info_price)
+    @EasyBindId(R.id.tv_stock_info_price)
     private SortStockTextView tv_stock_info_price;
-    @EasyViewID(R.id.tv_stock_info_changePct)
+    @EasyBindId(R.id.tv_stock_info_changePct)
     private SortStockTextView tv_stock_info_changePct;
-    @EasyViewID(R.id.tv_stock_info_change)
+    @EasyBindId(R.id.tv_stock_info_change)
     private SortStockTextView tv_stock_info_change;
-    @EasyViewID(R.id.tv_stock_info_totalVal)
+    @EasyBindId(R.id.tv_stock_info_totalVal)
     private SortStockTextView tv_stock_info_totalVal;
-    @EasyViewID(R.id.tv_stock_info_turnOver)
+    @EasyBindId(R.id.tv_stock_info_turnOver)
     private SortStockTextView tv_stock_info_turnOver;
-    @EasyViewID(R.id.tv_stock_info_totalVolume)
+    @EasyBindId(R.id.tv_stock_info_totalVolume)
     private SortStockTextView tv_stock_info_totalVolume;
-    @EasyViewID(R.id.tv_stock_info_turnRate)
+    @EasyBindId(R.id.tv_stock_info_turnRate)
     private SortStockTextView tv_stock_info_turnRate;
-    @EasyViewID(R.id.tv_stock_info_pe)
+    @EasyBindId(R.id.tv_stock_info_pe)
     private SortStockTextView tv_stock_info_pe;
-    @EasyViewID(R.id.tv_stock_info_pb)
+    @EasyBindId(R.id.tv_stock_info_pb)
     private SortStockTextView tv_stock_info_pb;
-    @EasyViewID(R.id.tv_stock_info_amplitude)
+    @EasyBindId(R.id.tv_stock_info_amplitude)
     private SortStockTextView tv_stock_info_amplitude;
-    @EasyViewID(R.id.tv_stock_info_volRate)
+    @EasyBindId(R.id.tv_stock_info_volRate)
     private SortStockTextView tv_stock_info_volRate;
-    @EasyViewID(R.id.tv_stock_info_committee)
+    @EasyBindId(R.id.tv_stock_info_committee)
     private SortStockTextView tv_stock_info_committee;
-//    @EasyViewID(R.id.tv_stock_info_sevenDayChgPct)
+//    @EasyBindId(R.id.tv_stock_info_sevenDayChgPct)
 //    private SortStockTextView tv_stock_info_sevenDayChgPct;
-//    @EasyViewID(R.id.tv_stock_info_prevClose)
+//    @EasyBindId(R.id.tv_stock_info_prevClose)
 //    private SortStockTextView tv_stock_info_prevClose;
 
-    @EasyViewID(R.id.iv_stock_info_arrow_left)
+    @EasyBindId(R.id.iv_stock_info_arrow_left)
     private ImageView iv_stock_info_arrow_left;
-    @EasyViewID(R.id.iv_stock_info_arrow_right)
+    @EasyBindId(R.id.iv_stock_info_arrow_right)
     private ImageView iv_stock_info_arrow_right;
 
     private StockInfoListAdapter<StockInfo> mAdapter;
@@ -126,8 +126,8 @@ public class StockInfoListFragment extends EasyFragment {
     protected void loadDataAfterView() {
         if (mStartRequest) {
             if (mRequest instanceof StockChooseConditionResultRequest) {
-                mRequest.flagCode = H_FLAG_RESULT_REFRESH;
-//                mHttpManager.start(mRequest);
+//                mRequest.flagCode = H_FLAG_RESULT_REFRESH;
+//                mHttpManager.start(mRequest,H_FLAG_RESULT_REFRESH);
             }
         }
     }
@@ -161,7 +161,7 @@ public class StockInfoListFragment extends EasyFragment {
      *
      * @param view
      */
-    @EasyViewMethod({R.id.tv_stock_info_price, R.id.tv_stock_info_changePct, R.id.tv_stock_info_change, R.id.tv_stock_info_totalVal
+    @EasyBindClick({R.id.tv_stock_info_price, R.id.tv_stock_info_changePct, R.id.tv_stock_info_change, R.id.tv_stock_info_totalVal
             , R.id.tv_stock_info_turnOver, R.id.tv_stock_info_totalVolume, R.id.tv_stock_info_turnRate, R.id.tv_stock_info_pe
             , R.id.tv_stock_info_pb, R.id.tv_stock_info_amplitude, R.id.tv_stock_info_volRate, R.id.tv_stock_info_committee})
     private void onClickSort(View view) {
@@ -177,7 +177,7 @@ public class StockInfoListFragment extends EasyFragment {
 //            mAdapter.updateSort(easyRecycler.getLayoutManager());
             if (mRequest instanceof StockChooseConditionResultRequest) {//改为服务器进行排序
                 StockChooseConditionResultRequest request = (StockChooseConditionResultRequest) mRequest;
-                request.flagCode = H_FLAG_RESULT_REFRESH;
+//                request.flagCode = H_FLAG_RESULT_REFRESH;
                 request.getParams().setPage(1);
                 if (StockInfo.sort == SortStockTextView.Sort.DEFAULT) {
                     request.getParams().setSortField("");

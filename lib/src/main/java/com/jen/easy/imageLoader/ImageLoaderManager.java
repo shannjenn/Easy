@@ -231,8 +231,7 @@ abstract class ImageLoaderManager {
         request.urlBase = imageUrl;
         request.timeout = config.getTimeOut();
         request.filePath = filePath;
-        request.flagStr = imageUrl;
-        mHttp.start(request);
+        mHttp.start(request, imageUrl);
     }
 
     /**

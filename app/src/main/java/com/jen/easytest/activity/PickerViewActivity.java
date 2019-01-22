@@ -3,7 +3,7 @@ package com.jen.easytest.activity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.jen.easy.EasyViewID;
+import com.jen.easy.EasyBindId;
 import com.jen.easytest.R;
 import com.jen.easyui.base.EasyActivity;
 import com.jen.easyui.loopview.EasyLoopView;
@@ -18,7 +18,7 @@ import java.util.List;
 
 public class PickerViewActivity extends EasyActivity {
 
-    @EasyViewID(R.id.pick_1)
+    @EasyBindId(R.id.pick_1)
     EasyLoopView pick_1;
 
     @Override

@@ -8,8 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jen.easy.EasyViewID;
-import com.jen.easy.EasyViewMethod;
+import com.jen.easy.EasyBindClick;
+import com.jen.easy.EasyBindId;
 import com.jen.easytest.R;
 import com.jen.easyui.base.EasyActivity;
 import com.jen.easyui.popupwindow.EasyPopupWindow;
@@ -23,9 +23,9 @@ public class PopupWindowActivity extends EasyActivity {
 
     EasyPopupWindow mEasyPopupWindow;
 
-    @EasyViewID(R.id.popup_line)
+    @EasyBindId(R.id.popup_line)
     View popup_line;
-    @EasyViewID(R.id.popup_window)
+    @EasyBindId(R.id.popup_window)
     View popup_window;
 
     @Override
@@ -57,7 +57,7 @@ public class PopupWindowActivity extends EasyActivity {
 
     }
 
-    @EasyViewMethod({R.id.popup_window})
+    @EasyBindClick({R.id.popup_window})
     @Override
     protected void onBindClick(View view) {
         switch (view.getId()) {

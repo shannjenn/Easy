@@ -3,7 +3,7 @@ package com.jen.easytest.activity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.jen.easy.EasyViewMethod;
+import com.jen.easy.EasyBindClick;
 import com.jen.easytest.R;
 import com.jen.easyui.base.EasyActivity;
 import com.jen.easyui.dialog.EasyDialog;
@@ -70,7 +70,7 @@ public class DialogActivity extends EasyActivity {
 
     }
 
-    @EasyViewMethod({R.id.loading, R.id.dialog})
+    @EasyBindClick({R.id.loading, R.id.dialog})
     @Override
     protected void onBindClick(View view) {
         switch (view.getId()) {

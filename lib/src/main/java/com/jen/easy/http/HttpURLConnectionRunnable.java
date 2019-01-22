@@ -21,6 +21,8 @@ import java.util.Map;
 import java.util.Set;
 
 abstract class HttpURLConnectionRunnable implements Runnable {
+    int flagCode;//请求标识
+    String flagStr;//请求标识
     HttpRequest mRequest;
     Class mResponse;
 
@@ -30,9 +32,11 @@ abstract class HttpURLConnectionRunnable implements Runnable {
     boolean mIsGet = true;
     JSONObject mBody;
 
-    HttpURLConnectionRunnable(HttpRequest param) {
+    HttpURLConnectionRunnable(HttpRequest param, int flagCode, String flagStr) {
         super();
         this.mRequest = param;
+        this.flagCode = flagCode;
+        this.flagStr = flagStr;
     }
 
     @Override

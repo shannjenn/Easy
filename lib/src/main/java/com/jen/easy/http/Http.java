@@ -26,6 +26,21 @@ public class Http extends HttpManager {
         super.start(request);
     }
 
+    @Override
+    public void start(HttpRequest request, int flagCode) {
+        super.start(request, flagCode);
+    }
+
+    @Override
+    public void start(HttpRequest request, String flagStr) {
+        super.start(request, flagStr);
+    }
+
+    @Override
+    public void start(HttpRequest request, int flagCode, String flagStr) {
+        super.start(request, flagCode, flagStr);
+    }
+
     /**
      * 关闭后所有线程都不能再执行
      */

@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.jen.easy.EasyViewID;
+import com.jen.easy.EasyBindId;
 import com.jen.easy.bind.BindView;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
@@ -82,42 +82,42 @@ public class StockInfoListAdapter<T extends StockInfo> extends EasyHScrollRecycl
     }
 
     class Temp {
-        @EasyViewID(R.id.iv_stock_info_icon)
+        @EasyBindId(R.id.iv_stock_info_icon)
         private ImageView iv_stock_info_icon;
-        @EasyViewID(R.id.tv_stock_info_assetId)
+        @EasyBindId(R.id.tv_stock_info_assetId)
         private TextView tv_stock_info_assetId;
-        @EasyViewID(R.id.tv_stock_info_name)
+        @EasyBindId(R.id.tv_stock_info_name)
         private TextView tv_stock_info_name;
-        @EasyViewID(R.id.tv_stock_info_price)
+        @EasyBindId(R.id.tv_stock_info_price)
         private TextView tv_stock_info_price;
-        @EasyViewID(R.id.tv_stock_info_changePct)
+        @EasyBindId(R.id.tv_stock_info_changePct)
         private EasyShapeTextView tv_stock_info_changePct;
-        @EasyViewID(R.id.tv_stock_info_change)
+        @EasyBindId(R.id.tv_stock_info_change)
         private EasyShapeTextView tv_stock_info_change;
-        @EasyViewID(R.id.tv_stock_info_totalVal)
+        @EasyBindId(R.id.tv_stock_info_totalVal)
         private EasyShapeTextView tv_stock_info_totalVal;
-        @EasyViewID(R.id.tv_stock_info_turnOver)
+        @EasyBindId(R.id.tv_stock_info_turnOver)
         private TextView tv_stock_info_turnOver;
-        @EasyViewID(R.id.tv_stock_info_totalVolume)
+        @EasyBindId(R.id.tv_stock_info_totalVolume)
         private TextView tv_stock_info_totalVolume;
-        @EasyViewID(R.id.tv_stock_info_turnRate)
+        @EasyBindId(R.id.tv_stock_info_turnRate)
         private TextView tv_stock_info_turnRate;
-        @EasyViewID(R.id.tv_stock_info_pe)
+        @EasyBindId(R.id.tv_stock_info_pe)
         private TextView tv_stock_info_pe;
-        @EasyViewID(R.id.tv_stock_info_pb)
+        @EasyBindId(R.id.tv_stock_info_pb)
         private TextView tv_stock_info_pb;
-        @EasyViewID(R.id.tv_stock_info_amplitude)
+        @EasyBindId(R.id.tv_stock_info_amplitude)
         private TextView tv_stock_info_amplitude;
-        @EasyViewID(R.id.tv_stock_info_volRate)
+        @EasyBindId(R.id.tv_stock_info_volRate)
         private TextView tv_stock_info_volRate;
-        @EasyViewID(R.id.tv_stock_info_committee)
+        @EasyBindId(R.id.tv_stock_info_committee)
         private TextView tv_stock_info_committee;
-//        @EasyViewID(R.id.tv_stock_info_sevenDayChgPct)
+//        @EasyBindId(R.id.tv_stock_info_sevenDayChgPct)
 //        private TextView tv_stock_info_sevenDayChgPct;
-//        @EasyViewID(R.id.tv_stock_info_prevClose)
+//        @EasyBindId(R.id.tv_stock_info_prevClose)
 //        private TextView tv_stock_info_prevClose;
 
-//        @EasyViewID(R.id.easy_scroll_view)
+//        @EasyBindId(R.id.easy_scroll_view)
 //        private EasyHScrollView easy_scroll_view;
 
         Temp(View view) {

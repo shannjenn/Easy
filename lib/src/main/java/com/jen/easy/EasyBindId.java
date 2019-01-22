@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface EasyViewID {
+public @interface EasyBindId {
     /**
      * 绑定ID值
      */

@@ -16,8 +16,8 @@ import java.util.Map;
 class HttpURLConnectionDownloadRunnable extends HttpURLConnectionRunnable {
     private HttpDownloadListener downloadListener;
 
-    HttpURLConnectionDownloadRunnable(HttpDownloadRequest request, HttpDownloadListener downloadListener) {
-        super(request);
+    HttpURLConnectionDownloadRunnable(HttpDownloadRequest request, HttpDownloadListener downloadListener, int flagCode, String flagStr) {
+        super(request, flagCode, flagStr);
         this.downloadListener = downloadListener;
     }
 
@@ -86,7 +86,7 @@ class HttpURLConnectionDownloadRunnable extends HttpURLConnectionRunnable {
         EasyLog.d(TAG.EasyHttp, mUrlStr + " 下载成功！");
         if (downloadListener != null) {
             HttpDownloadRequest request = (HttpDownloadRequest) mRequest;
-            downloadListener.success(mRequest.flagCode, mRequest.flagStr, request.filePath);
+            downloadListener.success(flagCode, flagStr, request.filePath);
         }
     }
 
@@ -94,13 +94,13 @@ class HttpURLConnectionDownloadRunnable extends HttpURLConnectionRunnable {
     protected void fail(String msg) {
         EasyLog.w(TAG.EasyHttp, mUrlStr + " " + msg);
         if (downloadListener != null) {
-            downloadListener.fail(mRequest.flagCode, mRequest.flagStr, msg);
+            downloadListener.fail(flagCode, flagStr, msg);
         }
     }
 
     private void progress(long currentPoint, long endPoint) {
         if (downloadListener != null) {
-            downloadListener.progress(mRequest.flagCode, mRequest.flagStr, currentPoint, endPoint);
+            downloadListener.progress(flagCode, flagStr, currentPoint, endPoint);
         }
     }
 }

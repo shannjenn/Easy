@@ -12,7 +12,7 @@ public class BindView extends BindViewManager {
     /**
      * 绑定
      *
-     * @param activity
+     * @param activity .
      */
     @Override
     public void bind(Activity activity) {

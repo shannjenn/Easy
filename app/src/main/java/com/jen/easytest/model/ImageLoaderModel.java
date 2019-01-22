@@ -3,6 +3,7 @@ package com.jen.easytest.model;
 import android.view.View;
 
 import com.jen.easy.EasyResponse;
+import com.jen.easy.EasyResponseType;
 import com.jen.easy.EasyTable;
 
 /**
@@ -10,7 +11,8 @@ import com.jen.easy.EasyTable;
  */
 @EasyTable("ImageLoaderModel")
 public class ImageLoaderModel {
-    @EasyResponse("aid")
+
+    @EasyResponse(value = "aid")
     private String aid;// 文章编号
 
     @EasyResponse("catid")
@@ -33,7 +35,7 @@ public class ImageLoaderModel {
     /**
      * 0正常数据，1轮播一，2轮播二
      */
-    
+
     private int viewType;
     private int viewSize = 1;
 

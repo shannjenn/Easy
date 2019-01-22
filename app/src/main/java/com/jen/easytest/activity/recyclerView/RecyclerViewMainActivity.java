@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.jen.easy.EasyViewMethod;
+import com.jen.easy.EasyBindClick;
 import com.jen.easytest.R;
 import com.jen.easyui.base.EasyActivity;
 
@@ -37,7 +37,7 @@ public class RecyclerViewMainActivity extends EasyActivity {
     }
 
 
-    @EasyViewMethod({R.id.recycleHScroll, R.id.recycleViewLetter})
+    @EasyBindClick({R.id.recycleHScroll, R.id.recycleViewLetter})
     @Override
     protected void onBindClick(View view) {
         Class clazz = null;

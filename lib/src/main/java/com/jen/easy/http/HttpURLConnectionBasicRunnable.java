@@ -18,8 +18,8 @@ import java.util.Map;
 class HttpURLConnectionBasicRunnable extends HttpURLConnectionRunnable {
     private HttpBasicListener baseListener;
 
-    HttpURLConnectionBasicRunnable(HttpBasicRequest request, HttpBasicListener baseListener) {
-        super(request);
+    HttpURLConnectionBasicRunnable(HttpBasicRequest request, HttpBasicListener baseListener, int flagCode, String flagStr) {
+        super(request, flagCode, flagStr);
         this.baseListener = baseListener;
     }
 
@@ -74,7 +74,7 @@ class HttpURLConnectionBasicRunnable extends HttpURLConnectionRunnable {
         if (baseListener != null) {
             if (FieldType.isObject(mResponse) || FieldType.isString(mResponse)) {//Object和String类型不做数据解析
                 EasyLog.d(TAG.EasyHttp, mUrlStr + " 成功!\n   ");
-                baseListener.success(mRequest.flagCode, mRequest.flagStr, result);
+                baseListener.success(flagCode, flagStr, result);
             } else {
                 HttpParseManager parseManager = new HttpParseManager();
                 Object parseObject = parseManager.parseResponseFromJSONString(mResponse, result, headMap);
@@ -82,7 +82,7 @@ class HttpURLConnectionBasicRunnable extends HttpURLConnectionRunnable {
                     fail("解析数据解析出错\n   ");
                 } else {
                     EasyLog.d(TAG.EasyHttp, mUrlStr + " 成功!\n   ");
-                    baseListener.success(mRequest.flagCode, mRequest.flagStr, parseObject);
+                    baseListener.success(flagCode, flagStr, parseObject);
                 }
             }
         }
@@ -92,6 +92,6 @@ class HttpURLConnectionBasicRunnable extends HttpURLConnectionRunnable {
     protected void fail(String result) {
         EasyLog.w(TAG.EasyHttp, mUrlStr + " " + result + "\n   ");
         if (baseListener != null)
-            baseListener.fail(mRequest.flagCode, mRequest.flagStr, result);
+            baseListener.fail(flagCode, flagStr, result);
     }
 }

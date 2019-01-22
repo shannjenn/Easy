@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.jen.easy.EasyViewID;
+import com.jen.easy.EasyBindId;
 import com.jen.easytest.R;
 import com.jen.easytest.adapter.ImageLoaderAdapter;
 import com.jen.easytest.http.request.ImageLoaderRequest;
@@ -24,9 +24,9 @@ import java.util.List;
 
 public class ImageLoaderActivity<T extends ImageLoaderResponse> extends EasyActivity<T> {
 
-    @EasyViewID(R.id.iv_pic)
+    @EasyBindId(R.id.iv_pic)
     ImageView iv_pic;
-    @EasyViewID(R.id.recycle)
+    @EasyBindId(R.id.recycle)
     RecyclerView recycle;
 
     ImageLoaderAdapter adapter;

@@ -6,8 +6,8 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.jen.easy.EasyViewID;
-import com.jen.easy.EasyViewMethod;
+import com.jen.easy.EasyBindClick;
+import com.jen.easy.EasyBindId;
 import com.jen.easytest.R;
 import com.jen.easytest.adapter.RecyclerViewHScrollAdapter;
 import com.jen.easytest.model.RecyclerViewModel;
@@ -19,7 +19,7 @@ import java.util.List;
 
 public class RecyclerHScrollActivity extends EasyActivity {
 
-    @EasyViewID(R.id.easyRecyclerScrollView)
+    @EasyBindId(R.id.easyRecyclerScrollView)
     EasyHScrollRecyclerView recyclerView;
 
     RecyclerViewHScrollAdapter mAdapter;
@@ -103,7 +103,7 @@ public class RecyclerHScrollActivity extends EasyActivity {
     }
 
 
-    @EasyViewMethod({})
+    @EasyBindClick({})
     @Override
     protected void onBindClick(View view) {
         switch (view.getId()) {

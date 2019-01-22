@@ -35,20 +35,16 @@ abstract class BindViewManager {
         if (!mapAct.containsKey(name)) {
             mapAct.put(name, activity);
         }
-
-        Map<String, Object> objectMap = BindReflectManager.getFields(activity.getClass());
-        Map<Integer, String> id_type = (Map<Integer, String>) objectMap.get(BindReflectManager.ID_TYPE);
-        Map<Integer, Field> id_field = (Map<Integer, Field>) objectMap.get(BindReflectManager.ID_FIELD);
-        Set<Integer> sets = id_type.keySet();
-        for (int id : sets) {
-            View view = activity.findViewById(id);
-            Field fild = id_field.get(id);
-            fild.setAccessible(true);
+        BindReflectManager.FieldInfo fieldInfo = BindReflectManager.getFields(activity.getClass());
+        for (int i = 0; i < fieldInfo.ids.size(); i++) {
+            View view = activity.findViewById(fieldInfo.ids.get(i));
+            Field field = fieldInfo.fields.get(i);
+            field.setAccessible(true);
             try {
-                fild.set(activity, view);
+                field.set(activity, view);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
-                EasyLog.w(TAG.EasyBind, "mBindView  fild set value error");
+                EasyLog.w(TAG.EasyBind, "mBindView  field set value error " + activity.getClass());
             }
         }
 
@@ -68,10 +64,10 @@ abstract class BindViewManager {
                             method.invoke(activity, view);
                         } catch (IllegalAccessException e) {
                             e.printStackTrace();
-                            EasyLog.w(TAG.EasyBind, "mBindView  IllegalAccessException");
+                            EasyLog.e(TAG.EasyBind, "mBindView  IllegalAccessException " + activity.getClass());
                         } catch (InvocationTargetException e) {
                             e.printStackTrace();
-                            EasyLog.w(TAG.EasyBind, "mBindView  InvocationTargetException");
+                            EasyLog.e(TAG.EasyBind, "mBindView  InvocationTargetException " + activity.getClass());
                         }
                     }
                 });
@@ -87,20 +83,16 @@ abstract class BindViewManager {
             Throw.exception(ExceptionType.NullPointerException, "参数不能为空");
             return;
         }
-
-        Map<String, Object> objectMap = BindReflectManager.getFields(obj.getClass());
-        Map<Integer, String> id_type = (Map<Integer, String>) objectMap.get(BindReflectManager.ID_TYPE);
-        Map<Integer, Field> id_field = (Map<Integer, Field>) objectMap.get(BindReflectManager.ID_FIELD);
-        Set<Integer> sets = id_type.keySet();
-        for (int id : sets) {
-            View view = parent.findViewById(id);
-            Field fild = id_field.get(id);
-            fild.setAccessible(true);
+        BindReflectManager.FieldInfo fieldInfo = BindReflectManager.getFields(obj.getClass());
+        for (int i = 0; i < fieldInfo.ids.size(); i++) {
+            View view = parent.findViewById(fieldInfo.ids.get(i));
+            Field field = fieldInfo.fields.get(i);
+            field.setAccessible(true);
             try {
-                fild.set(obj, view);
+                field.set(obj, view);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
-                EasyLog.w(TAG.EasyBind, "inject fild set value error");
+                EasyLog.w(TAG.EasyBind, "inject field set value error " + obj.getClass());
             }
         }
 
@@ -118,10 +110,10 @@ abstract class BindViewManager {
                             method.invoke(obj, view);
                         } catch (IllegalAccessException e) {
                             e.printStackTrace();
-                            EasyLog.w(TAG.EasyBind, "inject  IllegalAccessException");
+                            EasyLog.e(TAG.EasyBind, "inject  IllegalAccessException " + obj.getClass());
                         } catch (InvocationTargetException e) {
                             e.printStackTrace();
-                            EasyLog.w(TAG.EasyBind, "inject  InvocationTargetException");
+                            EasyLog.e(TAG.EasyBind, "inject  InvocationTargetException " + obj.getClass());
                         }
                     }
                 });
@@ -132,7 +124,7 @@ abstract class BindViewManager {
     /**
      * 解除绑定
      *
-     * @param activity
+     * @param activity .
      */
     protected void unbind(Activity activity) {
         if (activity == null) {

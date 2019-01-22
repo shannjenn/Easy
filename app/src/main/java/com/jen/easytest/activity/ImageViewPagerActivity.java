@@ -3,7 +3,7 @@ package com.jen.easytest.activity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.jen.easy.EasyViewID;
+import com.jen.easy.EasyBindId;
 import com.jen.easytest.R;
 import com.jen.easytest.adapter.ImageViewPagerAdapter;
 import com.jen.easyui.base.EasyActivity;
@@ -19,7 +19,7 @@ import java.util.List;
 
 public class ImageViewPagerActivity extends EasyActivity {
 
-    @EasyViewID(R.id.image_view_pager)
+    @EasyBindId(R.id.image_view_pager)
     EasyViewPagerPoint image_view_pager;
 
     ImageViewPagerAdapter mAdapter;

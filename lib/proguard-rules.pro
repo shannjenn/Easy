@@ -93,10 +93,10 @@
 -keep class com.jen.easy.EasyTable {
     *;
 }
--keep class com.jen.easy.EasyViewID {
+-keep class com.jen.easy.EasyBindId {
     *;
 }
--keep class com.jen.easy.EasyViewMethod {
+-keep class com.jen.easy.EasyBindClick {
     *;
 }
 

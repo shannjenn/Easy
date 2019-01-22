@@ -1,13 +1,15 @@
 package com.jen.easy.bind;
 
-import com.jen.easy.EasyViewID;
-import com.jen.easy.EasyViewMethod;
+import com.jen.easy.EasyBindId;
+import com.jen.easy.EasyBindClick;
 import com.jen.easy.exception.ExceptionType;
 import com.jen.easy.exception.Throw;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,14 +17,18 @@ import java.util.Map;
  * 时间：2017/8/14.
  */
 abstract class BindReflectManager {
-    /**
-     * 全部列明和属性类型
-     */
-    static final String ID_TYPE = "id_type";
-    /**
-     * 全部列明和属性名称
-     */
-    static final String ID_FIELD = "id_field";
+
+    static class FieldInfo {
+        List<Integer> ids;
+//        List<String> types;
+        List<Field> fields;
+
+        FieldInfo() {
+            ids = new ArrayList<>();
+//            types = new ArrayList<>();
+            fields = new ArrayList<>();
+        }
+    }
 
     /**
      * 获取字段
@@ -30,39 +36,35 @@ abstract class BindReflectManager {
      * @param clazz 类
      * @return 值
      */
-    static Map<String, Object> getFields(Class clazz) {
-        Map<String, Object> objectMap = new HashMap<>();
-        Map<Integer, String> id_type = new HashMap<>();
-        Map<Integer, Field> id_field = new HashMap<>();
-        objectMap.put(ID_TYPE, id_type);
-        objectMap.put(ID_FIELD, id_field);
+    static FieldInfo getFields(Class clazz) {
+        FieldInfo fieldInfo = new FieldInfo();
         if (clazz == null) {
             Throw.exception(ExceptionType.NullPointerException, "参数不能为空");
-            return objectMap;
+            return fieldInfo;
         }
 
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
-            boolean isAnno = field.isAnnotationPresent(EasyViewID.class);
-            if (!isAnno)
+            boolean isAnnotation = field.isAnnotationPresent(EasyBindId.class);
+            if (!isAnnotation)
                 continue;
-            EasyViewID easyID = field.getAnnotation(EasyViewID.class);
+            EasyBindId easyID = field.getAnnotation(EasyBindId.class);
             int id = easyID.value();
             if (id == -1)
                 continue;
-            String type = field.getGenericType().toString();
-
-            id_type.put(id, type);
-            id_field.put(id, field);
+//            String type = field.getGenericType().toString();
+            fieldInfo.ids.add(id);
+//            fieldInfo.types.add(type);
+            fieldInfo.fields.add(field);
         }
-        return objectMap;
+        return fieldInfo;
     }
 
     /**
      * 获取方法
      *
-     * @param clazz
-     * @return
+     * @param clazz .
+     * @return .
      */
     static Map<Method, int[]> getMethods(Class clazz) {
         Map<Method, int[]> method_ids = new HashMap<>();
@@ -72,10 +74,10 @@ abstract class BindReflectManager {
         }
         Method[] methods = clazz.getDeclaredMethods();
         for (Method method : methods) {
-            boolean isAnno = method.isAnnotationPresent(EasyViewMethod.class);
-            if (!isAnno)
+            boolean isAnnotation = method.isAnnotationPresent(EasyBindClick.class);
+            if (!isAnnotation)
                 continue;
-            EasyViewMethod easyID = method.getAnnotation(EasyViewMethod.class);
+            EasyBindClick easyID = method.getAnnotation(EasyBindClick.class);
             int[] ids = easyID.value();
             method_ids.put(method, ids);
         }
