@@ -8,9 +8,9 @@ import com.jen.easy.EasyRequestType;
  * 时间：2017/8/12.
  * 说明：基本数据请求参数
  */
-public abstract class HttpBasicRequest extends HttpRequest {
+public abstract class HttpBaseRequest extends HttpRequest {
 
     @EasyRequest(value = "Content-Type", type = EasyRequestType.Head)
-    protected String head_content_type = "application/json";
+    protected String headParamContentType = "application/json";
 
 }

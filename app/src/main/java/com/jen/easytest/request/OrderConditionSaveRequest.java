@@ -2,8 +2,7 @@ package com.jen.easytest.request;
 
 import com.jen.easy.EasyHttpPost;
 import com.jen.easy.EasyRequest;
-import com.jen.easy.http.HttpBasicRequest;
-import com.jen.easy.http.HttpRequest;
+import com.jen.easy.http.HttpBaseRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.List;
  * @author Created by zs on 2018/10/22.
  */
 @EasyHttpPost(UrlAppend = "http://www.baald", Response = OrderConditionSaveResponse.class)
-public class OrderConditionSaveRequest extends HttpBasicRequest {
+public class OrderConditionSaveRequest extends HttpBaseRequest {
     private String requestSrc = "Android";
     private String sessionId;
     protected String id;

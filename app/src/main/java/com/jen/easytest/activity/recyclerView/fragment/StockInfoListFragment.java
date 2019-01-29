@@ -7,7 +7,7 @@ import android.widget.ImageView;
 
 import com.jen.easy.EasyBindClick;
 import com.jen.easy.EasyBindId;
-import com.jen.easy.http.HttpBasicRequest;
+import com.jen.easy.http.HttpBaseRequest;
 import com.jen.easytest.R;
 import com.jen.easytest.activity.recyclerView.adapter.SortStockTextView;
 import com.jen.easytest.activity.recyclerView.adapter.StockInfo;
@@ -74,7 +74,7 @@ public class StockInfoListFragment extends EasyFragment {
     private LoadListener mLoadListener;
 
     protected boolean mStartRequest;
-    protected HttpBasicRequest mRequest;
+    protected HttpBaseRequest mRequest;
     final int H_FLAG_RESULT_REFRESH = 100;
     final int H_FLAG_RESULT_LOAD_MORE = 101;
 
@@ -138,7 +138,7 @@ public class StockInfoListFragment extends EasyFragment {
     }
 
     public static StockInfoListFragment attach(FragmentTransaction transaction, int layoutId, List<StockInfo> data,
-                                               HttpBasicRequest request, boolean startRequest, Type type) {
+                                               HttpBaseRequest request, boolean startRequest, Type type) {
         if (request == null) {
             return null;
         }

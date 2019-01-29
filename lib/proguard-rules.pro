@@ -116,7 +116,7 @@
 -keep class com.jen.easy.http.HttpRequest* {
     *;
 }
--keep class com.jen.easy.http.HttpBasicRequest* {
+-keep class com.jen.easy.http.HttpBaseRequest* {
      *;
 }
 -keep class com.jen.easy.http.HttpDownloadRequest* {
@@ -131,7 +131,7 @@
 -keep class com.jen.easy.http.HttpHeadResponse* {
     *;
 }
--keep class com.jen.easy.http.imp.HttpBasicListener {
+-keep class com.jen.easy.http.imp.HttpBaseListener {
     *;
 }
 -keep class com.jen.easy.http.imp.HttpDownloadListener {

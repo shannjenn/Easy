@@ -2,12 +2,12 @@ package com.jen.easyui.base;
 
 import com.jen.easy.http.Http;
 import com.jen.easy.http.HttpRequest;
-import com.jen.easy.http.imp.HttpBasicListener;
+import com.jen.easy.http.imp.HttpBaseListener;
 
 /**
  * @author Created by zs on 2018/10/22.
  */
-public class HttpManager extends Http implements HttpBasicListener {
+public class HttpManager extends Http implements HttpBaseListener {
     private EasyActivity mActivity;
     /*网络请求同时最大请求数量*/
     private static final int MAX_THREAD = 5;
@@ -32,7 +32,7 @@ public class HttpManager extends Http implements HttpBasicListener {
 
     /*public static HttpManager getClone() {
         HttpManager manager = new HttpManager(MAX_THREAD);
-        manager.setHttpBaseListener(this);
+        manager.setDefaultBaseListener(this);
         return manager;
     }*/
 

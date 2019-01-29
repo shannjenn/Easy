@@ -3,7 +3,7 @@ package com.jen.easy.http;
 import com.jen.easy.constant.TAG;
 import com.jen.easy.exception.ExceptionType;
 import com.jen.easy.exception.Throw;
-import com.jen.easy.http.imp.HttpBasicListener;
+import com.jen.easy.http.imp.HttpBaseListener;
 import com.jen.easy.http.imp.HttpDownloadListener;
 import com.jen.easy.http.imp.HttpUploadListener;
 import com.jen.easy.log.EasyLog;
@@ -21,11 +21,23 @@ abstract class HttpManager {
     private ExecutorService pool;
     private int maxThreadSize;
     private boolean isShutdown;
-    private HttpBasicListener httpBaseListener;
+    private HttpBaseListener httpBaseListener;
     private HttpDownloadListener httpDownloadListener;
     private HttpUploadListener httpUploadListener;
 
-    public HttpManager(int maxThreadSize) {
+    HttpManager() {
+        maxThreadSize = 9;
+        init(maxThreadSize);
+    }
+
+    HttpManager(int maxThreadSize) {
+        init(maxThreadSize);
+    }
+
+    /**
+     * @param maxThreadSize 最大同时请求数量
+     */
+    private void init(int maxThreadSize) {
         this.maxThreadSize = maxThreadSize;
         pool = Executors.newFixedThreadPool(maxThreadSize);
     }
@@ -59,8 +71,8 @@ abstract class HttpManager {
             return;
         }
         request.requestStatus = RequestStatus.running;
-        if (request instanceof HttpBasicRequest) {
-            HttpURLConnectionBasicRunnable base = new HttpURLConnectionBasicRunnable((HttpBasicRequest) request, httpBaseListener, flagCode, flagStr);
+        if (request instanceof HttpBaseRequest) {
+            HttpURLConnectionBaseRunnable base = new HttpURLConnectionBaseRunnable((HttpBaseRequest) request, httpBaseListener, flagCode, flagStr);
             pool.execute(base);
         } else if (request instanceof HttpDownloadRequest) {
             HttpURLConnectionDownloadRunnable download = new HttpURLConnectionDownloadRunnable((HttpDownloadRequest) request, httpDownloadListener, flagCode, flagStr);
@@ -104,20 +116,12 @@ abstract class HttpManager {
         return maxThreadSize;
     }
 
-    public HttpBasicListener getHttpBaseListener() {
-        return httpBaseListener;
-    }
-
-    public void setHttpBaseListener(HttpBasicListener httpBaseListener) {
+    public void setHttpBaseListener(HttpBaseListener httpBaseListener) {
         if (isShutdown) {
             EasyLog.i("线程池已经关闭，不可以再操作 setHttpBaseListener");
             return;
         }
         this.httpBaseListener = httpBaseListener;
-    }
-
-    public HttpDownloadListener getHttpDownloadListener() {
-        return httpDownloadListener;
     }
 
     public void setHttpDownloadListener(HttpDownloadListener httpDownloadListener) {
@@ -126,10 +130,6 @@ abstract class HttpManager {
             return;
         }
         this.httpDownloadListener = httpDownloadListener;
-    }
-
-    public HttpUploadListener getHttpUploadListener() {
-        return httpUploadListener;
     }
 
     public void setHttpUploadListener(HttpUploadListener httpUploadListener) {

@@ -2,7 +2,7 @@ package com.jen.easytest.http.request;
 
 import com.jen.easy.EasyRequest;
 import com.jen.easy.EasyRequestType;
-import com.jen.easy.http.HttpBasicRequest;
+import com.jen.easy.http.HttpBaseRequest;
 import com.jen.easy.invalid.EasyInvalid;
 import com.jen.easy.invalid.EasyInvalidType;
 
@@ -11,7 +11,7 @@ import java.util.List;
 
 //@EasyRequestInvalid
 @EasyInvalid
-public class ExampleBaseRequest extends HttpBasicRequest {
+public class ExampleBaseRequest extends HttpBaseRequest {
 
     @EasyRequest("_id")//请求参数为_id,值为当前id变量值
     private int id;

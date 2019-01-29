@@ -3,7 +3,7 @@ package com.jen.easy.http;
 import com.jen.easy.constant.FieldType;
 import com.jen.easy.constant.TAG;
 import com.jen.easy.constant.Unicode;
-import com.jen.easy.http.imp.HttpBasicListener;
+import com.jen.easy.http.imp.HttpBaseListener;
 import com.jen.easy.log.EasyLog;
 
 import java.io.BufferedReader;
@@ -15,10 +15,10 @@ import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.Map;
 
-class HttpURLConnectionBasicRunnable extends HttpURLConnectionRunnable {
-    private HttpBasicListener baseListener;
+class HttpURLConnectionBaseRunnable extends HttpURLConnectionRunnable {
+    private HttpBaseListener baseListener;
 
-    HttpURLConnectionBasicRunnable(HttpBasicRequest request, HttpBasicListener baseListener, int flagCode, String flagStr) {
+    HttpURLConnectionBaseRunnable(HttpBaseRequest request, HttpBaseListener baseListener, int flagCode, String flagStr) {
         super(request, flagCode, flagStr);
         this.baseListener = baseListener;
     }

@@ -13,11 +13,11 @@ import org.json.JSONObject;
 public class HttpTool {
 
     /**
-     * 转Json
+     * 请求参数转JSONObject
      *
      * @param object 对象数据
      */
-    public static JSONObject parseRequstToJSONObject(Object object) {
+    public static JSONObject parseRequst(Object object) {
         JSONObject jsonParam = new JSONObject();
         if (object == null) {
             Throw.exception(ExceptionType.NullPointerException, "参数不能为空");

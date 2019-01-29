@@ -10,6 +10,9 @@ import android.util.Log;
 public class EasyLog {
     private static final String TAG = "EasyLog";
     private static final int maxLength = 2000;
+
+
+
     /**
      * 日志是否打印
      */

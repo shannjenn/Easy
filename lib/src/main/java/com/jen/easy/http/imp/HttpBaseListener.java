@@ -5,7 +5,7 @@ package com.jen.easy.http.imp;
  * 时间：2017/9/4:21:44
  * 说明：基本数据网络请求监听
  */
-public interface HttpBasicListener {
+public interface HttpBaseListener {
 
     /**
      * 成功

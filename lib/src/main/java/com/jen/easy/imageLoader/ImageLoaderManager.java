@@ -101,7 +101,7 @@ abstract class ImageLoaderManager {
         }
     }
 
-    protected ImageLoaderManager() {
+    ImageLoaderManager() {
     }
 
     protected void init(ImageLoaderConfig builder) {
@@ -172,10 +172,11 @@ abstract class ImageLoaderManager {
 
     /**
      * 从SD卡获取
-     *
-     * @param imageUrl
-     * @return
-     * @smallRate 压缩比例
+     * @param picWidth 宽
+     * @param picHeight 高
+     * @param imageUrl url
+     * @param imageView 。
+     * @return 。
      */
     private boolean getFromSDCard(int picWidth, int picHeight, String imageUrl, ImageView imageView) {
         EasyLog.d(TAG.EasyImageLoader, "getFromSDCard-----");
@@ -238,12 +239,12 @@ abstract class ImageLoaderManager {
      * 图片地址转保存到SD卡的名称（包括后缀）
      *
      * @param imageUrl 图片地址
-     * @return
+     * @return .
      */
     private String urlChangeToName(String imageUrl) {
         String name = imageUrl;
         if (name.length() > config.getNameMaxLen()) {
-            name = name.substring(name.length() - config.getNameMaxLen(), name.length());
+            name = name.substring(name.length() - config.getNameMaxLen());
         }
         name = name.replace(":", "_");
         name = name.replace("/", "_");

@@ -1,11 +1,23 @@
 package com.jen.easy.http;
 
+import com.jen.easy.http.imp.HttpBaseListener;
+import com.jen.easy.http.imp.HttpDownloadListener;
+import com.jen.easy.http.imp.HttpUploadListener;
+
 /**
  * 作者：ShannJenn
  * 时间：2017/8/12.
  * 说明：网络请求
  */
 public class Http extends HttpManager {
+
+    /**
+     * 新建实例
+     * 默认线程池数量
+     */
+    public Http() {
+        super();
+    }
 
     /**
      * 新建实例
@@ -63,6 +75,21 @@ public class Http extends HttpManager {
      */
     public int getMaxThreadSize() {
         return super.getMaxThreadSize();
+    }
+
+    @Override
+    public void setHttpBaseListener(HttpBaseListener httpBaseListener) {
+        super.setHttpBaseListener(httpBaseListener);
+    }
+
+    @Override
+    public void setHttpDownloadListener(HttpDownloadListener httpDownloadListener) {
+        super.setHttpDownloadListener(httpDownloadListener);
+    }
+
+    @Override
+    public void setHttpUploadListener(HttpUploadListener httpUploadListener) {
+        super.setHttpUploadListener(httpUploadListener);
     }
 
 }

@@ -14,14 +14,14 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.jen.easy.bind.BindView;
-import com.jen.easy.http.imp.HttpBasicListener;
+import com.jen.easy.http.imp.HttpBaseListener;
 import com.jen.easyui.dialog.EasyLoading;
 
 /**
  * 作者：ShannJenn
  * 时间：2017/10/26.
  */
-public abstract class EasyActivity<T> extends AppCompatActivity implements HttpBasicListener {
+public abstract class EasyActivity<T> extends AppCompatActivity implements HttpBaseListener {
     private final String TAG =AppCompatActivity.class.getSimpleName();
     protected Context mContext;
     protected Handler mHandler = new Handler(Looper.getMainLooper());

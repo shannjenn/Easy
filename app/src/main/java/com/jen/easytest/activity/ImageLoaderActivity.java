@@ -61,7 +61,7 @@ public class ImageLoaderActivity<T extends ImageLoaderResponse> extends EasyActi
     protected void loadDataAfterView() {
         if (mData.size() == 0) {
             ImageLoaderRequest request = new ImageLoaderRequest();
-//            EasyMain.mHttp.setHttpBaseListener(this);
+//            EasyMain.mHttp.setDefaultBaseListener(this);
 //            EasyMain.mHttp.start(request);
         }
     }

@@ -5,9 +5,9 @@ import android.view.View;
 
 import com.jen.easy.EasyBindClick;
 import com.jen.easy.http.Http;
-import com.jen.easy.http.HttpTestUtil;
+import com.jen.easy.http.TestHttp;
 import com.jen.easy.http.HttpTool;
-import com.jen.easy.http.imp.HttpBasicListener;
+import com.jen.easy.http.imp.HttpBaseListener;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
 import com.jen.easytest.http.MD5Util;
@@ -35,7 +35,7 @@ public class HttpActivity extends EasyActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_http);
-//        EasyMain.mHttp.setHttpBaseListener(httpListener);
+//        EasyMain.mHttp.setDefaultBaseListener(httpListener);
     }
 
     @Override
@@ -89,7 +89,7 @@ public class HttpActivity extends EasyActivity {
                 break;
             case R.id.HttpReflectManager_getRequestParams: {
                 AirRequest airRequest = new AirRequest();
-                HttpTestUtil.HttpReflectManager_getRequestParams(airRequest);
+                TestHttp.HttpReflectManager_getRequestParams(airRequest);
                 break;
             }
 
@@ -107,7 +107,7 @@ public class HttpActivity extends EasyActivity {
         taskProgressListRequest.setTaskId(353631);
         taskProgressListRequest.setLimit(3);
         taskProgressListRequest.setPage(0);
-        http.setHttpBaseListener(httpListener);
+        http.setDefaultBaseListener(httpListener);
         http.start(taskProgressListRequest);*/
 
         QNRequest qnRequest = new QNRequest();
@@ -192,7 +192,7 @@ public class HttpActivity extends EasyActivity {
     /**
      * 宝库数据返回
      */
-    HttpBasicListener httpListener = new HttpBasicListener() {
+    HttpBaseListener httpListener = new HttpBaseListener() {
         @Override
         public void success(int flagCode, String flag, Object response) {
 

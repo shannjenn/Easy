@@ -58,7 +58,7 @@ abstract class HttpURLConnectionRunnable implements Runnable {
             return;
         }
 
-        if (mRequest instanceof HttpBasicRequest) {//===============基本数据处理
+        if (mRequest instanceof HttpBaseRequest) {//===============基本数据处理
             mResponse = response;
         } else if (mRequest instanceof HttpUploadRequest) {//===============上传请求处理
             mResponse = response;
