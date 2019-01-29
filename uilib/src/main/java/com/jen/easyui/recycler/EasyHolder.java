@@ -15,10 +15,10 @@ import android.widget.TextView;
 
 public abstract class EasyHolder extends RecyclerView.ViewHolder {
     private final String TAG = EasyHolder.class.getSimpleName();
-    protected EasyRecyclerBaseAdapter mAdapter;
+    protected EasyRecyclerAdapter mAdapter;
     private View mView;
 
-    public EasyHolder(EasyRecyclerBaseAdapter adapter, View itemView) {
+    public EasyHolder(EasyRecyclerAdapter adapter, View itemView) {
         super(itemView);
         this.mAdapter = adapter;
         this.mView = itemView;
@@ -26,8 +26,6 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
 
     /**
      * 绑定item数据
-     *
-     * @return
      */
     protected abstract void onBindData(View view, int viewType, int position);
 
@@ -39,21 +37,21 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
      * @param id       ID
      * @param position 位置
      */
-    public void addOnClickEvent(View parent, int id, final int position) {
+    public EasyHolder addOnClickEvent(View parent, int id, final int position) {
         if (mAdapter == null) {
             Log.e(TAG, "mAdapter 为空，点击事件不能生效" + EasyHolder.class.getSimpleName());
-            return;
+            return this;
         }
         if (mAdapter.easyItemClickListener == null) {
-            return;
+            return this;
         }
         if (parent == null) {
-            return;
+            return this;
         }
         View view = parent.findViewById(id);
         if (view == null) {
             Log.w(TAG, "点击设置事件失败，请检查view是否不为空");
-            return;
+            return this;
         }
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,10 +59,12 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
                 mAdapter.easyItemClickListener.onViewClick(v, position);
             }
         });
+        return this;
     }
 
-    public void addOnClickEvent(int id, final int position) {
+    public EasyHolder addOnClickEvent(int id, final int position) {
         addOnClickEvent(mView, id, position);
+        return this;
     }
 
     /**
@@ -74,21 +74,21 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
      * @param id       ID
      * @param position 位置
      */
-    public void addOnLongClickEvent(View parent, int id, final int position) {
+    public EasyHolder addOnLongClickEvent(View parent, int id, final int position) {
         if (mAdapter == null) {
             Log.e(TAG, "mAdapter 为空，点击事件不能生效" + EasyHolder.class.getSimpleName());
-            return;
+            return this;
         }
         if (mAdapter.easyItemClickListener == null) {
-            return;
+            return this;
         }
         if (mView == null) {
-            return;
+            return this;
         }
         View view = mView.findViewById(id);
         if (view == null) {
             Log.w(TAG, "点击设置事件失败，请检查view是否不为空");
-            return;
+            return this;
         }
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -96,10 +96,12 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
                 return mAdapter.easyItemClickListener.onViewLongClick(v, position);
             }
         });
+        return this;
     }
 
-    public void addOnLongClickEvent(int id, final int position) {
+    public EasyHolder addOnLongClickEvent(int id, final int position) {
         addOnLongClickEvent(mView, id, position);
+        return this;
     }
 
 
@@ -110,18 +112,20 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
      * @param id      ID
      * @param visible 显示或者隐藏
      */
-    public void setVisible(View parent, int id, int visible) {
+    public EasyHolder setVisible(View parent, int id, int visible) {
         if (parent == null) {
-            return;
+            return this;
         }
         View view = parent.findViewById(id);
         if (view != null) {
             view.setVisibility(visible);
         }
+        return this;
     }
 
-    public void setVisible(int id, int visible) {
+    public EasyHolder setVisible(int id, int visible) {
         setVisible(mView, id, visible);
+        return this;
     }
 
     /**
@@ -131,26 +135,30 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
      * @param id     ID
      * @param text   字符串
      */
-    public void setTextView(View parent, int id, String text) {
+    public EasyHolder setTextView(View parent, int id, String text) {
         if (parent == null) {
-            return;
+            return this;
         }
         View view = parent.findViewById(id);
         if (view instanceof TextView) {
             ((TextView) view).setText(text);
         }
+        return this;
     }
 
-    public void setTextView(int id, String text) {
+    public EasyHolder setTextView(int id, String text) {
         setTextView(mView, id, text);
+        return this;
     }
 
-    public void setTextView(int id, int strId) {
+    public EasyHolder setTextView(int id, int strId) {
         setTextView(mView, id, strId);
+        return this;
     }
 
-    public void setTextView(View parent, int id, int strId) {
+    public EasyHolder setTextView(View parent, int id, int strId) {
         setTextView(parent, id, mAdapter.mContext.getString(strId));
+        return this;
     }
 
     /**
@@ -160,18 +168,43 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
      * @param id     ID
      * @param color  颜色
      */
-    public void setTextColor(View parent, int id, int color) {
+    public EasyHolder setTextColor(View parent, int id, int color) {
         if (parent == null) {
-            return;
+            return this;
         }
         View view = parent.findViewById(id);
         if (view instanceof TextView) {
             ((TextView) view).setTextColor(color);
         }
+        return this;
     }
 
-    public void setTextColor(int id, int color) {
+    public EasyHolder setTextColor(int id, int color) {
         setTextColor(mView, id, color);
+        return this;
+    }
+
+    /**
+     * 设置背景颜色
+     *
+     * @param parent 父级ID
+     * @param id     ID
+     * @param color  颜色
+     */
+    public EasyHolder setBackgroundColor(View parent, int id, int color) {
+        if (parent == null) {
+            return this;
+        }
+        View view = parent.findViewById(id);
+        if (view != null) {
+            view.setBackgroundColor(color);
+        }
+        return this;
+    }
+
+    public EasyHolder setBackgroundColor(int id, int color) {
+        setBackgroundColor(mView, id, color);
+        return this;
     }
 
     /**
@@ -181,18 +214,20 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
      * @param id       ID
      * @param sourceid 图片ID
      */
-    public void setImageView(View parent, int id, int sourceid) {
+    public EasyHolder setImageView(View parent, int id, int sourceid) {
         if (parent == null) {
-            return;
+            return this;
         }
         View view = parent.findViewById(id);
         if (view instanceof ImageView) {
             ((ImageView) view).setImageResource(sourceid);
         }
+        return this;
     }
 
-    public void setImageView(int id, int sourceid) {
+    public EasyHolder setImageView(int id, int sourceid) {
         setImageView(mView, id, sourceid);
+        return this;
     }
 
     /**
@@ -202,17 +237,19 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
      * @param id       ID
      * @param drawable 图片
      */
-    public void setImageView(View parent, int id, Drawable drawable) {
+    public EasyHolder setImageView(View parent, int id, Drawable drawable) {
         if (parent == null) {
-            return;
+            return this;
         }
         View view = parent.findViewById(id);
         if (view instanceof ImageView) {
             ((ImageView) view).setImageDrawable(drawable);
         }
+        return this;
     }
 
-    public void setImageView(int id, Drawable drawable) {
+    public EasyHolder setImageView(int id, Drawable drawable) {
         setImageView(mView, id, drawable);
+        return this;
     }
 }

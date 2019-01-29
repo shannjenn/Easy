@@ -3,6 +3,8 @@ package com.jen.easyui.baseview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -39,6 +41,7 @@ public class EasyItemLayout extends RelativeLayout {
     EditText et_item_layout_content;
     TextView tv_item_layout_count;
     ImageView iv_item_layout_arrow;
+    ImageView iv_item_layout_clear;
     View v_item_layout_bottomLine;
 
     private int editTextMarginTop;
@@ -67,6 +70,7 @@ public class EasyItemLayout extends RelativeLayout {
     int countMarginRight;
 
     boolean arrowVisible;
+    boolean clearVisible;
 
     boolean bottomLineVisible;
     int bottomLineMarginLeft;
@@ -116,6 +120,7 @@ public class EasyItemLayout extends RelativeLayout {
         countMarginRight = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemCountMarginRight, 0);
 
         arrowVisible = a.getBoolean(R.styleable.EasyItemLayout_itemArrowVisible, false);
+        clearVisible = a.getBoolean(R.styleable.EasyItemLayout_itemClearVisible, false);
 
         bottomLineVisible = a.getBoolean(R.styleable.EasyItemLayout_itemBottomLineVisible, false);
         bottomLineMarginLeft = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemBottomLineMarginLeft, 0);
@@ -134,6 +139,7 @@ public class EasyItemLayout extends RelativeLayout {
         et_item_layout_content = findViewById(R.id.et_item_layout_content);
         tv_item_layout_count = findViewById(R.id.tv_item_layout_count);
         iv_item_layout_arrow = findViewById(R.id.iv_item_layout_arrow);
+        iv_item_layout_clear = findViewById(R.id.iv_item_layout_clear);
         v_item_layout_bottomLine = findViewById(R.id.v_item_layout_bottomLine);
 
         tv_item_layout_content.setVisibility(itemIsEdit ? GONE : VISIBLE);
@@ -142,14 +148,14 @@ public class EasyItemLayout extends RelativeLayout {
 
         v_item_layout_bottomLine.setVisibility(bottomLineVisible ? VISIBLE : GONE);
         if (bottomLineMarginLeft > 0) {
-            RelativeLayout.LayoutParams line_params = (RelativeLayout.LayoutParams) v_item_layout_bottomLine.getLayoutParams();
+            LayoutParams line_params = (LayoutParams) v_item_layout_bottomLine.getLayoutParams();
             line_params.leftMargin = bottomLineMarginLeft;
         }
 
         tv_item_layout_title.setText(titleText);
         tv_item_layout_title.setTextSize(TypedValue.COMPLEX_UNIT_PX, titleTextSize);
         tv_item_layout_title.setTextColor(titleTextColor);
-        RelativeLayout.LayoutParams title_params = (RelativeLayout.LayoutParams) tv_item_layout_title.getLayoutParams();
+        LayoutParams title_params = (LayoutParams) tv_item_layout_title.getLayoutParams();
         if (titleWidth > 0) {
             title_params.width = titleWidth;
         }
@@ -178,6 +184,8 @@ public class EasyItemLayout extends RelativeLayout {
             et_item_layout_content.setMaxLines(editLines);
 //            et_item_layout_content.setHorizontallyScrolling(false);
         }
+        iv_item_layout_clear.setOnClickListener(clickListener);
+        et_item_layout_content.addTextChangedListener(textWatcher);
 
         tv_item_layout_count.setText(countText);
         tv_item_layout_count.setTextSize(TypedValue.COMPLEX_UNIT_PX, countTextSize);
@@ -185,6 +193,33 @@ public class EasyItemLayout extends RelativeLayout {
         LinearLayout.LayoutParams tv_count_params = (LinearLayout.LayoutParams) tv_item_layout_count.getLayoutParams();
         tv_count_params.rightMargin = countMarginRight;
     }
+
+    private View.OnClickListener clickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            int i = v.getId();
+            if (i == R.id.iv_item_layout_clear) {
+                et_item_layout_content.setText("");
+            }
+        }
+    };
+
+    private TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            iv_item_layout_clear.setVisibility(clearVisible && s.length() > 0 ? VISIBLE : GONE);
+        }
+    };
 
     public void setTitle(String text) {
         tv_item_layout_title.setText(text);
@@ -229,5 +264,13 @@ public class EasyItemLayout extends RelativeLayout {
 
     public TextView getcountView() {
         return tv_item_layout_count;
+    }
+
+    public String getContentEt() {
+        return et_item_layout_content.getText().toString();
+    }
+
+    public String getContentTv() {
+        return tv_item_layout_content.getText().toString();
     }
 }

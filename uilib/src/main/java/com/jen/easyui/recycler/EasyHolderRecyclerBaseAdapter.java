@@ -9,18 +9,18 @@ import android.view.ViewGroup;
 import java.util.List;
 
 /**
- * list或者grid模式
+ * list或者grid模式 带holder
  * 作者：ShannJenn
  * 时间：2017/8/12.
  */
 
-public abstract class EasyRecyclerBaseAdapter<T> extends EasyRecyclerAdapter<T> {
-    private final String TAG = EasyRecyclerBaseAdapter.class.getSimpleName();
+public abstract class EasyHolderRecyclerBaseAdapter<T> extends EasyRecyclerAdapter<T> {
+    private final String TAG = EasyHolderRecyclerBaseAdapter.class.getSimpleName();
 
     /**
      * @param data 数据
      */
-    protected EasyRecyclerBaseAdapter(Context context, List<T> data) {
+    protected EasyHolderRecyclerBaseAdapter(Context context, List<T> data) {
         super(context, data);
     }
 
@@ -44,6 +44,25 @@ public abstract class EasyRecyclerBaseAdapter<T> extends EasyRecyclerAdapter<T> 
         return 0;
     }
 
+    @Override
+    protected EasyHolder bindHolder(View view) {
+        return new MyHolder(this, view);
+    }
+
+    class MyHolder extends EasyHolder {
+        public MyHolder(EasyRecyclerAdapter adapter, View itemView) {
+            super(adapter, itemView);
+        }
+
+        @Override
+        protected void onBindData(View view, int viewType, int position) {
+            onBindHolderData(this, view, viewType, position);
+        }
+    }
+
     protected abstract int onBindLayout();
+
+    protected abstract void onBindHolderData(EasyHolder easyHolder, View view, int viewType, int position);
+
 
 }

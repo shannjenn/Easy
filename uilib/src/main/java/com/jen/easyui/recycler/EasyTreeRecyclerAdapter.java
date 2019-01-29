@@ -19,7 +19,7 @@ import java.util.Map;
  * 时间：2017/8/12.
  */
 
-public abstract class EasyTreeRecyclerAdapter<T extends EasyTreeItem> extends EasyRecyclerBaseAdapter<T> {
+public abstract class EasyTreeRecyclerAdapter<T extends EasyTreeItem> extends EasyRecyclerAdapter<T> {
     private final String TAG = EasyTreeRecyclerAdapter.class.getSimpleName();
     private int spaceSize;
     private Map<Integer, int[]> mLayoutParam = new HashMap<>();

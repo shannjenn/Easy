@@ -7,6 +7,7 @@ import com.jen.easytest.R;
 import com.jen.easytest.model.RecyclerViewModel;
 import com.jen.easyui.recycler.EasyHScrollRecyclerViewAdapter;
 import com.jen.easyui.recycler.EasyHolder;
+import com.jen.easyui.recycler.EasyRecyclerAdapter;
 import com.jen.easyui.recycler.EasyRecyclerBaseAdapter;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public class RecyclerViewHScrollAdapter<T extends RecyclerViewModel> extends Eas
 
     private class myEasyHolder extends EasyHolder {
 
-        public myEasyHolder(EasyRecyclerBaseAdapter adapter, View itemView) {
+        public myEasyHolder(EasyRecyclerAdapter adapter, View itemView) {
             super(adapter, itemView);
         }
 

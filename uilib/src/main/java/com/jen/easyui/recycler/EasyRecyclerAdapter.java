@@ -1,49 +1,163 @@
 package com.jen.easyui.recycler;
 
 import android.content.Context;
-import android.util.Log;
-import android.view.LayoutInflater;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
- * list或者grid模式
+ * baseAdapter
  * 作者：ShannJenn
  * 时间：2017/8/12.
  */
 
-public abstract class EasyRecyclerAdapter<T> extends EasyRecyclerBaseAdapter<T> {
-    private final String TAG = EasyRecyclerAdapter.class.getSimpleName();
+public abstract class EasyRecyclerAdapter<T> extends RecyclerView.Adapter<EasyHolder> {
+    protected Context mContext;
+    protected List<T> mData;
+    protected EasyAdapterListener easyItemClickListener;
 
     /**
      * @param data 数据
      */
-    protected EasyRecyclerAdapter(Context context, List<T> data) {
-        super(context, data);
+    EasyRecyclerAdapter(Context context, List<T> data) {
+        this.mContext = context;
+        mData = data;
+    }
+
+    @Override
+    public int getItemCount() {
+        if (mData == null || mData.size() == 0) {
+            return 0;
+        }
+        return mData.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
     }
 
     @Override
     public EasyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        int layout = onBindLayout();
-        if (layout == 0) {
-            Log.w(TAG, "找不到该值对应item布局R.layout.id：" + layout);
-            return null;
+        return null;
+    }
+
+    /**
+     * Holder
+     *
+     */
+    @Override
+    public void onBindViewHolder(final EasyHolder holder, final int position) {
+        if (holder == null) {
+            return;
         }
-        View view = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
-        if (view == null) {
-            Log.w(TAG, "找不到该值对应item布局R.layout.id：" + layout);
-            return null;
+        if (easyItemClickListener != null) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    easyItemClickListener.onItemClick(holder.itemView, position);
+                }
+            });
         }
-        return bindHolder(view);
+        holder.onBindData(holder.itemView, holder.getItemViewType(), position);
     }
 
     @Override
-    protected int setGridLayoutItemRows(int position) {
-        return 0;
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        boolean isSet = setGridLayoutItemRows(0) <= 0;//如果没设置直接返回
+        if (isSet) {
+            return;
+        }
+
+        //为GridLayoutManager 合并头布局的跨度
+        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+        if (layoutManager instanceof GridLayoutManager) {
+            final GridLayoutManager gridLayoutManager = (GridLayoutManager) layoutManager;
+            gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    int total = gridLayoutManager.getSpanCount();
+                    int rows = setGridLayoutItemRows(position);
+                    if (rows > total || rows <= 0) {
+                        return total;
+                    } else {
+                        return rows;
+                    }
+                }
+            });
+        }
     }
 
-    protected abstract int onBindLayout();
+    /**
+     * 设置拖拽排序
+     *
+     * @param recyclerView
+     */
+    public void setItemTouchSortEvent(RecyclerView recyclerView) {
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+    }
 
+    /**
+     * 拖拽排序
+     */
+    private ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.Callback() {
+        @Override
+        public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+            if (recyclerView.getLayoutManager() instanceof GridLayoutManager) {
+                final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
+                final int swipeFlags = 0;
+                return makeMovementFlags(dragFlags, swipeFlags);
+            } else {
+                final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
+                final int swipeFlags = 0;
+                return makeMovementFlags(dragFlags, swipeFlags);
+            }
+        }
+
+        @Override
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            int fromPosition = viewHolder.getAdapterPosition();
+            int toPosition = target.getAdapterPosition();
+            if (fromPosition < toPosition) {
+                for (int i = fromPosition; i < toPosition; i++) {
+                    Collections.swap(mData, i, i + 1);
+                }
+            } else {
+                for (int i = fromPosition; i > toPosition; i--) {
+                    Collections.swap(mData, i, i - 1);
+                }
+            }
+            notifyItemMoved(fromPosition, toPosition);
+            return true;
+        }
+
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+
+        }
+    });
+
+    public EasyAdapterListener getEasyItemClickListener() {
+        return easyItemClickListener;
+    }
+
+    public void setEasyItemClickListener(EasyAdapterListener easyItemClickListener) {
+        this.easyItemClickListener = easyItemClickListener;
+    }
+
+    /**
+     * 设置合并头布局的跨度，只对GridLayoutManager有效
+     *
+     * @param position 下标
+     * @return 跨行
+     */
+    protected abstract int setGridLayoutItemRows(int position);
+
+    protected abstract EasyHolder bindHolder(View view);
 }

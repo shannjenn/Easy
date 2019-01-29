@@ -31,6 +31,7 @@
         <attr name="itemCountMarginRight" format="dimension" />
 
         <attr name="itemArrowVisible" format="boolean" />
+        <attr name="itemClearVisible" format="boolean" />
 
         <attr name="itemBottomLineVisible" format="boolean" />
         <attr name="itemBottomLineMarginLeft" format="dimension" />

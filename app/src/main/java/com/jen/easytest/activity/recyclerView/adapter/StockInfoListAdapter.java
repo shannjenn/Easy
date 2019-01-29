@@ -16,6 +16,7 @@ import com.jen.easyui.baseview.EasyShapeTextView;
 import com.jen.easyui.recycler.EasyHScrollRecyclerView;
 import com.jen.easyui.recycler.EasyHScrollRecyclerViewAdapter;
 import com.jen.easyui.recycler.EasyHolder;
+import com.jen.easyui.recycler.EasyRecyclerAdapter;
 import com.jen.easyui.recycler.EasyRecyclerBaseAdapter;
 
 import java.util.ArrayList;
@@ -68,7 +69,7 @@ public class StockInfoListAdapter<T extends StockInfo> extends EasyHScrollRecycl
     private class mEasyHolder extends EasyHolder {
 
 
-        public mEasyHolder(EasyRecyclerBaseAdapter adapter, View itemView) {
+        public mEasyHolder(EasyRecyclerAdapter adapter, View itemView) {
             super(adapter, itemView);
         }
 

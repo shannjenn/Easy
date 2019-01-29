@@ -19,7 +19,7 @@ import java.util.Set;
  * 时间：2018/10/30.
  */
 
-public abstract class EasyHScrollRecyclerViewAdapter<T> extends EasyRecyclerBaseAdapter<T> {
+public abstract class EasyHScrollRecyclerViewAdapter<T> extends EasyRecyclerAdapter<T> {
     private final String TAG = EasyHScrollRecyclerViewAdapter.class.getSimpleName();
     protected final Map<Integer, EasyHScrollView> mHScrollViews = new HashMap<>();
     protected int mScrollX;

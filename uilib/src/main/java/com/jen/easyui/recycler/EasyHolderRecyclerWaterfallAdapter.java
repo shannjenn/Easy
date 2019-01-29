@@ -9,17 +9,18 @@ import android.view.ViewGroup;
 import java.util.List;
 
 /**
- * 瀑布布局（多种Item）
+ * 瀑布布局（多种Item） 带holder
  * 作者：ShannJenn
  * 时间：2017/8/12.
  */
 
-public abstract class EasyRecyclerWaterfallAdapter<T> extends EasyRecyclerAdapter<T> {
-    private final String TAG = EasyRecyclerWaterfallAdapter.class.getSimpleName();
+public abstract class EasyHolderRecyclerWaterfallAdapter<T> extends EasyRecyclerAdapter<T> {
+    private final String TAG = EasyHolderRecyclerWaterfallAdapter.class.getSimpleName();
+
     /**
      * @param data 数据
      */
-    public EasyRecyclerWaterfallAdapter(Context context, List<T> data) {
+    public EasyHolderRecyclerWaterfallAdapter(Context context, List<T> data) {
         super(context, data);
     }
 
@@ -33,19 +34,35 @@ public abstract class EasyRecyclerWaterfallAdapter<T> extends EasyRecyclerAdapte
     public EasyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         int[] layouts = onBindLayout();
         if (layouts == null) {
-            Log.w(TAG,"布局为空");
+            Log.w(TAG, "布局为空");
             return null;
         }
         if (viewType < 0 || layouts.length < viewType) {
-            Log.w(TAG,"viewType：" + viewType + "错误");
+            Log.w(TAG, "viewType：" + viewType + "错误");
             return null;
         }
         View view = LayoutInflater.from(parent.getContext()).inflate(layouts[viewType], parent, false);
         if (view == null) {
-            Log.w(TAG,"找不到该值对应item布局R.layout.id：" + layouts[viewType]);
+            Log.w(TAG, "找不到该值对应item布局R.layout.id：" + layouts[viewType]);
             return null;
         }
         return bindHolder(view);
+    }
+
+    @Override
+    protected EasyHolder bindHolder(View view) {
+        return new MyHolder(this, view);
+    }
+
+    class MyHolder extends EasyHolder {
+        public MyHolder(EasyRecyclerAdapter adapter, View itemView) {
+            super(adapter, itemView);
+        }
+
+        @Override
+        protected void onBindData(View view, int viewType, int position) {
+            onBindHolderData(this, view, viewType, position);
+        }
     }
 
     /**
@@ -62,5 +79,16 @@ public abstract class EasyRecyclerWaterfallAdapter<T> extends EasyRecyclerAdapte
      * @return 设置值大于0，以此做区分EasyItemType小于0的值
      */
     protected abstract int getViewType(int position);
+
+
+    /**
+     * 绑定数据
+     *
+     * @param easyHolder 。
+     * @param view       。
+     * @param viewType   。
+     * @param position   。
+     */
+    protected abstract void onBindHolderData(EasyHolder easyHolder, View view, int viewType, int position);
 }
 
