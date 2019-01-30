@@ -23,7 +23,8 @@ import java.lang.annotation.RetentionPolicy;
  * * 10、UnsupportedOperationException - 不支持的操作异常
  */
 @IntDef({ExceptionType.NullPointerException, ExceptionType.ClassCastException, ExceptionType.NumberFormatException,
-        ExceptionType.IllegalArgumentException, ExceptionType.RuntimeException})
+        ExceptionType.IllegalArgumentException, ExceptionType.RuntimeException, ExceptionType.InstantiationException,
+        ExceptionType.IllegalAccessException})
 @Retention(RetentionPolicy.SOURCE)
 public @interface ExceptionType {
     int NullPointerException = 0;
@@ -31,4 +32,6 @@ public @interface ExceptionType {
     int NumberFormatException = 2;
     int IllegalArgumentException = 3;
     int RuntimeException = 4;
+    int InstantiationException = 5;
+    int IllegalAccessException = 6;
 }

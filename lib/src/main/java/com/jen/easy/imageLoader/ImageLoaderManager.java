@@ -9,11 +9,11 @@ import android.text.TextUtils;
 import android.util.LruCache;
 import android.widget.ImageView;
 
-import com.jen.easy.constant.TAG;
+import com.jen.easy.exception.ExceptionType;
+import com.jen.easy.exception.ImageLoaderLog;
 import com.jen.easy.http.Http;
 import com.jen.easy.http.HttpDownloadRequest;
 import com.jen.easy.http.imp.HttpDownloadListener;
-import com.jen.easy.log.EasyLog;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -68,12 +68,12 @@ abstract class ImageLoaderManager {
                     ImageView imageView = (ImageView) msg.obj;
                     if (imageView == null) {
                         mImageViewCache.remove(null);
-                        EasyLog.w(TAG.EasyImageLoader, "Handler imageView 为空---");
+                        ImageLoaderLog.exception(ExceptionType.NullPointerException, "Handler imageView 为空---");
                         return;
                     }
                     String imageUrl = mImageViewCache.remove(imageView);
                     if (imageUrl == null) {
-                        EasyLog.w(TAG.EasyImageLoader, "Handler imageUrl 为空---");
+                        ImageLoaderLog.exception(ExceptionType.NullPointerException, "Handler imageUrl 为空---");
                         return;
                     }
                     Bitmap bitmap = mImageCache.get(imageUrl);
@@ -87,7 +87,7 @@ abstract class ImageLoaderManager {
                 case H_IMAGE_EMPTY: {
                     ImageView imageView = (ImageView) msg.obj;
                     if (imageView == null) {
-                        EasyLog.w(TAG.EasyImageLoader, "imageView 为空---");
+                        ImageLoaderLog.exception(ExceptionType.NullPointerException, "imageView 为空---");
                         return;
                     }
                     imageView.setImageDrawable(config.getDefaultImage());
@@ -123,7 +123,7 @@ abstract class ImageLoaderManager {
         mExecutorService.submit(new Runnable() {
             public void run() {
                 if (imageView == null) {
-                    EasyLog.w(TAG.EasyImageLoader, "setImage ImageView is null");
+                    ImageLoaderLog.exception(ExceptionType.NullPointerException, "setImage ImageView is null");
                     return;
                 }
                 if (TextUtils.isEmpty(imageUrl)) {
@@ -140,7 +140,6 @@ abstract class ImageLoaderManager {
                 mImageViewCache.put(imageView, imageUrl);
 
                 boolean cacheResult = getFromCache(imageUrl, imageView);
-                EasyLog.w(TAG.EasyImageLoader, "setImage cacheResult = " + cacheResult);
                 if (cacheResult)
                     return;
 
@@ -159,7 +158,6 @@ abstract class ImageLoaderManager {
     }
 
     private boolean getFromCache(String imageUrl, ImageView imageView) {
-        EasyLog.d(TAG.EasyImageLoader, "getFromCache-----");
         Bitmap bitmap = mImageCache.get(imageUrl);
         if (bitmap == null) {
             return false;
@@ -172,14 +170,15 @@ abstract class ImageLoaderManager {
 
     /**
      * 从SD卡获取
-     * @param picWidth 宽
+     *
+     * @param picWidth  宽
      * @param picHeight 高
-     * @param imageUrl url
+     * @param imageUrl  url
      * @param imageView 。
      * @return 。
      */
     private boolean getFromSDCard(int picWidth, int picHeight, String imageUrl, ImageView imageView) {
-        EasyLog.d(TAG.EasyImageLoader, "getFromSDCard-----");
+        ImageLoaderLog.d("getFromSDCard-----");
         String name = urlChangeToName(imageUrl);
         final String filePath = config.getLocalPath() + File.separator + name;
         File file = new File(filePath);
@@ -224,7 +223,7 @@ abstract class ImageLoaderManager {
      * @param imageUrl 图片地址
      */
     private void getFromHttp(String imageUrl) {
-        EasyLog.d(TAG.EasyImageLoader, "getFromHttp-----");
+        ImageLoaderLog.d("getFromHttp-----");
         mDownloadingUrl.add(imageUrl);
         String name = urlChangeToName(imageUrl);
         String filePath = config.getLocalPath() + File.separator + name;
@@ -254,7 +253,7 @@ abstract class ImageLoaderManager {
     private HttpDownloadListener mHttpListener = new HttpDownloadListener() {
         @Override
         public void success(int flagCode, final String imageUrl, String filePath) {
-            EasyLog.d(TAG.EasyImageLoader, "图片下载成功-----");
+            ImageLoaderLog.d("图片下载成功-----");
             mImageViewCache.remove(null);
             Set<ImageView> set = mImageViewCache.keySet();
             for (ImageView imageView : set) {
@@ -270,13 +269,13 @@ abstract class ImageLoaderManager {
 
         @Override
         public void fail(int flagCode, String imageUrl, String msg) {
-            EasyLog.d(TAG.EasyImageLoader, "图片下载失败-----");
+            ImageLoaderLog.d("图片下载失败-----");
             mDownloadingUrl.remove(imageUrl);
         }
 
         @Override
         public void progress(int flagCode, String flag, long currentPoint, long endPoint) {
-            EasyLog.d(TAG.EasyImageLoader, "flag = " + flag + " currentPoint = " + currentPoint + " endPoint=" + endPoint);
+            ImageLoaderLog.d("flag = " + flag + " currentPoint = " + currentPoint + " endPoint=" + endPoint);
         }
     };
 

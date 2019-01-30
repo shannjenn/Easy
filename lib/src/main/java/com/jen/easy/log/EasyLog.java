@@ -11,15 +11,13 @@ public class EasyLog {
     private static final String TAG = "EasyLog";
     private static final int maxLength = 2000;
 
-
-
     /**
      * 日志是否打印
      */
-    public static boolean LOGCAT_OPEN = true;
+    public static boolean open = true;
 
     public static void d(String msg) {
-        if (LOGCAT_OPEN) {
+        if (open) {
             if (msg != null && msg.length() > maxLength) {
                 Log.d(TAG, "超长Log打印：开始 ------------------------------ ");
                 int length = msg.length();
@@ -38,7 +36,7 @@ public class EasyLog {
     }
 
     public static void i(String msg) {
-        if (LOGCAT_OPEN) {
+        if (open) {
             if (msg != null && msg.length() > maxLength) {
                 Log.i(TAG, "超长Log打印：开始 ------------------------------ ");
                 int length = msg.length();
@@ -57,7 +55,7 @@ public class EasyLog {
     }
 
     public static void w(String msg) {
-        if (LOGCAT_OPEN) {
+        if (open) {
             if (msg != null && msg.length() > maxLength) {
                 Log.w(TAG, "超长Log打印：开始 ------------------------------ ");
                 int length = msg.length();
@@ -76,7 +74,7 @@ public class EasyLog {
     }
 
     public static void e(String msg) {
-        if (LOGCAT_OPEN) {
+        if (open) {
             if (msg != null && msg.length() > maxLength) {
                 Log.e(TAG, "超长Log打印：开始 ------------------------------ ");
                 int length = msg.length();
@@ -95,7 +93,7 @@ public class EasyLog {
     }
 
     public static void d(String tag, String msg) {
-        if (LOGCAT_OPEN) {
+        if (open) {
             if (msg != null && msg.length() > maxLength) {
                 Log.d(tag, "超长Log打印：开始 ------------------------------ ");
                 int length = msg.length();
@@ -114,7 +112,7 @@ public class EasyLog {
     }
 
     public static void i(String tag, String msg) {
-        if (LOGCAT_OPEN) {
+        if (open) {
             if (msg != null && msg.length() > maxLength) {
                 Log.i(tag, "超长Log打印：开始 ------------------------------ ");
                 int length = msg.length();
@@ -133,7 +131,7 @@ public class EasyLog {
     }
 
     public static void w(String tag, String msg) {
-        if (LOGCAT_OPEN) {
+        if (open) {
             if (msg != null && msg.length() > maxLength) {
                 Log.w(tag, "超长Log打印：开始 ------------------------------ ");
                 int length = msg.length();
@@ -152,7 +150,7 @@ public class EasyLog {
     }
 
     public static void e(String tag, String msg) {
-        if (LOGCAT_OPEN) {
+        if (open) {
             if (msg != null && msg.length() > maxLength) {
                 Log.e(tag, "超长Log打印：开始 ------------------------------ ");
                 int length = msg.length();

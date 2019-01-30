@@ -1,7 +1,7 @@
 package com.jen.easy.http;
 
 import com.jen.easy.exception.ExceptionType;
-import com.jen.easy.exception.Throw;
+import com.jen.easy.exception.HttpLog;
 
 import org.json.JSONObject;
 
@@ -20,7 +20,7 @@ public class HttpTool {
     public static JSONObject parseRequst(Object object) {
         JSONObject jsonParam = new JSONObject();
         if (object == null) {
-            Throw.exception(ExceptionType.NullPointerException, "参数不能为空");
+            HttpLog.exception(ExceptionType.NullPointerException, "参数不能为空");
             return jsonParam;
         }
         HttpReflectManager.RequestObject requestObject = HttpReflectManager.getRequestHeadAndBody(object);

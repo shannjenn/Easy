@@ -1,9 +1,9 @@
 package com.jen.easy.bind;
 
-import com.jen.easy.EasyBindId;
 import com.jen.easy.EasyBindClick;
+import com.jen.easy.EasyBindId;
+import com.jen.easy.exception.BindLog;
 import com.jen.easy.exception.ExceptionType;
-import com.jen.easy.exception.Throw;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -20,7 +20,7 @@ abstract class BindReflectManager {
 
     static class FieldInfo {
         List<Integer> ids;
-//        List<String> types;
+        //        List<String> types;
         List<Field> fields;
 
         FieldInfo() {
@@ -39,7 +39,7 @@ abstract class BindReflectManager {
     static FieldInfo getFields(Class clazz) {
         FieldInfo fieldInfo = new FieldInfo();
         if (clazz == null) {
-            Throw.exception(ExceptionType.NullPointerException, "参数不能为空");
+            BindLog.exception(ExceptionType.NullPointerException,"参数不能为空");
             return fieldInfo;
         }
 
@@ -69,7 +69,7 @@ abstract class BindReflectManager {
     static Map<Method, int[]> getMethods(Class clazz) {
         Map<Method, int[]> method_ids = new HashMap<>();
         if (clazz == null) {
-            Throw.exception(ExceptionType.NullPointerException, "参数不能为空");
+            BindLog.exception(ExceptionType.NullPointerException, "参数不能为空");
             return method_ids;
         }
         Method[] methods = clazz.getDeclaredMethods();

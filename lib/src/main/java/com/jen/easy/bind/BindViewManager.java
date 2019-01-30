@@ -3,10 +3,8 @@ package com.jen.easy.bind;
 import android.app.Activity;
 import android.view.View;
 
-import com.jen.easy.constant.TAG;
+import com.jen.easy.exception.BindLog;
 import com.jen.easy.exception.ExceptionType;
-import com.jen.easy.exception.Throw;
-import com.jen.easy.log.EasyLog;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -28,7 +26,7 @@ abstract class BindViewManager {
      */
     protected void bind(final Activity activity) {
         if (activity == null) {
-            Throw.exception(ExceptionType.NullPointerException, "参数不能为空");
+            BindLog.exception(ExceptionType.NullPointerException, "参数不能为空");
             return;
         }
         String name = activity.getClass().getName();
@@ -43,7 +41,7 @@ abstract class BindViewManager {
             try {
                 field.set(activity, view);
             } catch (IllegalAccessException e) {
-                EasyLog.e(TAG.EasyBind, "EasyBindId IllegalAccessException：" + activity.getClass());
+                BindLog.e(activity.getClass().toString());
                 e.printStackTrace();
             }
         }
@@ -63,10 +61,10 @@ abstract class BindViewManager {
                         try {
                             method.invoke(activity, view);
                         } catch (IllegalAccessException e) {
-                            EasyLog.e(TAG.EasyBind, "EasyBindClick IllegalAccessException：" + activity.getClass());
+                            BindLog.e(activity.getClass().toString());
                             e.printStackTrace();
                         } catch (InvocationTargetException e) {
-                            EasyLog.e(TAG.EasyBind, "EasyBindClick InvocationTargetException：" + activity.getClass());
+                            BindLog.e(activity.getClass().toString());
                             e.printStackTrace();
                         }
                     }
@@ -80,7 +78,7 @@ abstract class BindViewManager {
      */
     protected void inject(final Object obj, final View parent) {
         if (obj == null || parent == null) {
-            Throw.exception(ExceptionType.NullPointerException, "参数不能为空");
+            BindLog.exception(ExceptionType.NullPointerException, "参数不能为空");
             return;
         }
         BindReflectManager.FieldInfo fieldInfo = BindReflectManager.getFields(obj.getClass());
@@ -91,7 +89,7 @@ abstract class BindViewManager {
             try {
                 field.set(obj, view);
             } catch (IllegalAccessException e) {
-                EasyLog.e(TAG.EasyBind, "EasyBindId IllegalAccessException：" + obj.getClass());
+                BindLog.e(obj.getClass().toString());
                 e.printStackTrace();
             }
         }
@@ -109,10 +107,10 @@ abstract class BindViewManager {
                         try {
                             method.invoke(obj, view);
                         } catch (IllegalAccessException e) {
-                            EasyLog.e(TAG.EasyBind, "EasyBindClick IllegalAccessException：" + obj.getClass());
+                            BindLog.e(obj.getClass().toString());
                             e.printStackTrace();
                         } catch (InvocationTargetException e) {
-                            EasyLog.e(TAG.EasyBind, "EasyBindClick InvocationTargetException：" + obj.getClass());
+                            BindLog.e(obj.getClass().toString());
                             e.printStackTrace();
                         }
                     }
@@ -133,5 +131,4 @@ abstract class BindViewManager {
         String name = activity.getClass().getName();
         mapAct.remove(name);
     }
-
 }

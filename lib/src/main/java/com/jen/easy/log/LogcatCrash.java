@@ -1,6 +1,6 @@
 package com.jen.easy.log;
 
-import com.jen.easy.constant.TAG;
+import com.jen.easy.exception.LogcatLog;
 import com.jen.easy.log.imp.LogcatCrashListener;
 
 import java.io.File;
@@ -79,7 +79,7 @@ class LogcatCrash implements UncaughtExceptionHandler {
             // 如果用户没有处理则让系统默认的异常处理器来处理
             exceptionHandler.uncaughtException(thread, ex);
         } else {
-            EasyLog.w(TAG.EasyLogcat, "用户来处理异常");
+            LogcatLog.w("用户来处理异常");
             /*try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {

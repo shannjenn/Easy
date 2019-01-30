@@ -35,7 +35,9 @@ public class MainActivity extends EasyActivity {
 
     @Override
     protected void initViews() {
-
+//        Throw.exception(ExceptionType.ClassCastException,"ClassCastException-*---------*-------");
+//        Throw.exception(ExceptionType.NullPointerException,"NullPointerException-*---------*-------");
+//        Throw.exception(ExceptionType.RuntimeException,"RuntimeException-*---------*-------");
     }
 
     @Override

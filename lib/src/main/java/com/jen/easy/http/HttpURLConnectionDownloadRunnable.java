@@ -1,9 +1,8 @@
 package com.jen.easy.http;
 
-import com.jen.easy.constant.TAG;
 import com.jen.easy.constant.Unicode;
+import com.jen.easy.exception.HttpLog;
 import com.jen.easy.http.imp.HttpDownloadListener;
-import com.jen.easy.log.EasyLog;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -43,7 +42,7 @@ class HttpURLConnectionDownloadRunnable extends HttpURLConnectionRunnable {
         }
 
         mResponseCode = connection.getResponseCode();
-        EasyLog.d(TAG.EasyHttp, mUrlStr + "  Http请求返回码：" + mResponseCode);
+        HttpLog.d(mUrlStr + "  Http请求返回码：" + mResponseCode);
         if (mResponseCode == 200) {
             long curBytes = request.startPoint;
             request.endPoint = connection.getContentLength();
@@ -62,7 +61,7 @@ class HttpURLConnectionDownloadRunnable extends HttpURLConnectionRunnable {
                 }
             }
             if (mRequest.requestStatus == RequestStatus.stop) {
-                EasyLog.d(TAG.EasyHttp, mUrlStr + " 网络请求停止!\n   ");
+                HttpLog.d(mUrlStr + " 网络请求停止!\n   ");
                 return;
             }
             request.requestStatus = RequestStatus.finish;
@@ -73,7 +72,7 @@ class HttpURLConnectionDownloadRunnable extends HttpURLConnectionRunnable {
             }
         } else {
             if (mRequest.requestStatus == RequestStatus.stop) {
-                EasyLog.d(TAG.EasyHttp, mUrlStr + " 网络请求停止!\n   ");
+                HttpLog.d(mUrlStr + " 网络请求停止!\n   ");
                 return;
             }
             request.requestStatus = RequestStatus.finish;
@@ -83,7 +82,7 @@ class HttpURLConnectionDownloadRunnable extends HttpURLConnectionRunnable {
 
     @Override
     protected void success(String result, Map<String, List<String>> headMap) {
-        EasyLog.d(TAG.EasyHttp, mUrlStr + " 下载成功！");
+        HttpLog.d(mUrlStr + " 下载成功！");
         if (downloadListener != null) {
             HttpDownloadRequest request = (HttpDownloadRequest) mRequest;
             downloadListener.success(flagCode, flagStr, request.filePath);
@@ -92,7 +91,7 @@ class HttpURLConnectionDownloadRunnable extends HttpURLConnectionRunnable {
 
     @Override
     protected void fail(String msg) {
-        EasyLog.w(TAG.EasyHttp, mUrlStr + " " + msg);
+        HttpLog.w(mUrlStr + " " + msg);
         if (downloadListener != null) {
             downloadListener.fail(flagCode, flagStr, msg);
         }

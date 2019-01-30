@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.jen.easy.constant.TAG;
 import com.jen.easy.log.EasyLog;
 
 import org.junit.Test;
@@ -485,7 +484,7 @@ public class HttpParseManagerTest {
      * @param error 错误信息
      */
     private void showWarn(String error) {
-        EasyLog.w(TAG.EasyHttp, error);
+        EasyLog.w(error);
         /*if (!mErrors.contains(error)) {
             mErrors.add(error);
         }*/

@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import com.jen.easy.imageLoader.ImageLoader;
 import com.jen.easy.imageLoader.ImageLoaderConfig;
 import com.jen.easy.log.EasyLog;
+import com.jen.easy.log.LogcatHelper;
 import com.jen.easy.log.imp.LogcatCrashListener;
 import com.jen.easy.sqlite.imp.DatabaseListener;
 import com.jen.easyui.base.LogCrashActivity;
@@ -43,6 +44,9 @@ public class MyApplication extends Application {
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .build();
         ImageLoader.getInstance().init(config);
+
+        LogcatHelper logcatHelper = new LogcatHelper();
+        logcatHelper.start();
     }
 
 

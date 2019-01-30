@@ -1,12 +1,9 @@
 package com.jen.easy.http;
 
-import com.jen.easy.constant.TAG;
-import com.jen.easy.exception.ExceptionType;
-import com.jen.easy.exception.Throw;
+import com.jen.easy.exception.HttpLog;
 import com.jen.easy.http.imp.HttpBaseListener;
 import com.jen.easy.http.imp.HttpDownloadListener;
 import com.jen.easy.http.imp.HttpUploadListener;
-import com.jen.easy.log.EasyLog;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -63,11 +60,11 @@ abstract class HttpManager {
      */
     public void start(HttpRequest request, int flagCode, String flagStr) {
         if (isShutdown) {
-            EasyLog.i("线程池已经关闭，不可以再操作 start");
+            HttpLog.w("线程池已经关闭，不可以再操作 start");
             return;
         }
         if (request == null) {
-            Throw.exception(ExceptionType.NullPointerException, "参数不能为空");
+            HttpLog.w("参数不能为空");
             return;
         }
         request.requestStatus = RequestStatus.running;
@@ -81,8 +78,7 @@ abstract class HttpManager {
             HttpURLConnectionUploadRunnable upload = new HttpURLConnectionUploadRunnable((HttpUploadRequest) request, httpUploadListener, flagCode, flagStr);
             pool.execute(upload);
         } else {
-            EasyLog.w(TAG.EasyHttp, "HttpRequest 错误");
-            Throw.exception(ExceptionType.IllegalArgumentException, "请求参数类型错误，请继承正确:" + request.getClass().getName());
+            HttpLog.e("请求参数类型错误，请继承正确:" + request.getClass().getName());
         }
     }
 
@@ -118,7 +114,7 @@ abstract class HttpManager {
 
     public void setHttpBaseListener(HttpBaseListener httpBaseListener) {
         if (isShutdown) {
-            EasyLog.i("线程池已经关闭，不可以再操作 setHttpBaseListener");
+            HttpLog.w("线程池已经关闭，不可以再操作 setHttpBaseListener");
             return;
         }
         this.httpBaseListener = httpBaseListener;
@@ -126,7 +122,7 @@ abstract class HttpManager {
 
     public void setHttpDownloadListener(HttpDownloadListener httpDownloadListener) {
         if (isShutdown) {
-            EasyLog.i("线程池已经关闭，不可以再操作 setHttpDownloadListener");
+            HttpLog.w("线程池已经关闭，不可以再操作 setHttpDownloadListener");
             return;
         }
         this.httpDownloadListener = httpDownloadListener;
@@ -134,9 +130,10 @@ abstract class HttpManager {
 
     public void setHttpUploadListener(HttpUploadListener httpUploadListener) {
         if (isShutdown) {
-            EasyLog.i("线程池已经关闭，不可以再操作 setHttpUploadListener");
+            HttpLog.w("线程池已经关闭，不可以再操作 setHttpUploadListener");
             return;
         }
         this.httpUploadListener = httpUploadListener;
     }
+
 }

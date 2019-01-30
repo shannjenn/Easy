@@ -1,11 +1,12 @@
 package com.jen.easy.log;
 
-import com.jen.easy.constant.TAG;
+import com.jen.easy.exception.ExceptionType;
+import com.jen.easy.exception.LogcatLog;
 import com.jen.easy.log.imp.LogcatCrashListener;
 
 /**
  * ClassName:LogcatHelperManager Function: log日志统计保存
- *
+ * <p>
  * 作者：ShannJenn
  * 时间：2017/8/12.
  * 说明：日志抓取
@@ -38,10 +39,10 @@ abstract class LogcatHelperManager {
      */
     protected void start() {
         if (LogcatPath.getInstance().getPath() == null) {
-            EasyLog.w(TAG.EasyLogcat, "日志路径为空，LogcatHelper日志未能启动--------------------");
+            LogcatLog.exception(ExceptionType.NullPointerException, "日志路径为空，LogcatHelper日志未能启动--------------------");
             return;
         }
-        EasyLog.w(TAG.EasyLogcat, "日志路径为:" + LogcatPath.getInstance().getPath());
+        LogcatLog.i("日志路径为:" + LogcatPath.getInstance().getPath());
         LogDumper.getInstance().startLogs();
         LogcatCrash.getInstance().start();
     }

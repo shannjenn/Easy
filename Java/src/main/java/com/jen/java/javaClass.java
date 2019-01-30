@@ -6,14 +6,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class javaClass {
+
     public static void main(String[] args) {
 
-        double aa = 2751545454645646546.235;
+//        double aa = 2751545454645646546.235;
+//
+//        String value = formatDecimal(-5.12, 1);
+////        System.out.println(value);
+//
+//        System.out.println((2));
 
-        String value = formatDecimal(-5.12, 1);
-//        System.out.println(value);
-
-        System.out.println((2));
+        Student.print();
     }
 
 
@@ -98,19 +101,6 @@ public class javaClass {
         }
 
         return a;
-    }
-
-    public static class Student {
-        //        private String aa;
-        private int bb;
-        private Integer b;
-        private float cc;
-        private Float c;
-        private List<Student> dd;
-        private ArrayList<Student> d;
-//        private List<String> ee;
-//        private Student e;
-//        private Object eee;
     }
 
     public static class School {

@@ -2,10 +2,8 @@ package com.jen.easy.http;
 
 import android.text.TextUtils;
 
-import com.jen.easy.constant.TAG;
 import com.jen.easy.exception.ExceptionType;
-import com.jen.easy.exception.Throw;
-import com.jen.easy.log.EasyLog;
+import com.jen.easy.exception.HttpLog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,7 +41,7 @@ abstract class HttpURLConnectionRunnable implements Runnable {
     public void run() {
         HttpReflectManager.RequestType requestType = HttpReflectManager.getRequestType(mRequest);
         if (requestType == null) {
-            Throw.exception(ExceptionType.RuntimeException, "请求参数未加注释");
+            HttpLog.exception(ExceptionType.RuntimeException, "请求参数未加注释");
             fail("请求参数未加注释");
             return;
         }
@@ -53,7 +51,7 @@ abstract class HttpURLConnectionRunnable implements Runnable {
         mUrlStr = requestType.url;
         if (TextUtils.isEmpty(mUrlStr)) {
             mUrlStr = "";
-            Throw.exception(ExceptionType.NullPointerException, "URL请求地址空");
+            HttpLog.exception(ExceptionType.NullPointerException, "URL请求地址空");
             fail("URL地址为空");
             return;
         }
@@ -64,13 +62,13 @@ abstract class HttpURLConnectionRunnable implements Runnable {
             mResponse = response;
             HttpUploadRequest uploadRequest = (HttpUploadRequest) mRequest;
             if (TextUtils.isEmpty(uploadRequest.filePath)) {
-                Throw.exception(ExceptionType.NullPointerException, "文件地址不能为空");
+                HttpLog.exception(ExceptionType.NullPointerException, "文件地址不能为空");
                 fail("文件地址不能为空");
                 return;
             }
             File file = new File(uploadRequest.filePath);
             if (!file.isFile()) {
-                Throw.exception(ExceptionType.IllegalArgumentException, "文件地址参数错误");
+                HttpLog.exception(ExceptionType.IllegalArgumentException, "文件地址参数错误");
                 fail("文件地址参数错误");
                 return;
             }
@@ -81,7 +79,7 @@ abstract class HttpURLConnectionRunnable implements Runnable {
                 if (file.exists()) {
                     boolean ret = file.delete();
                     if (!ret) {
-                        Throw.exception(ExceptionType.IllegalArgumentException, "删除旧文件失败，请检查文件路径是否正确");
+                        HttpLog.exception(ExceptionType.IllegalArgumentException, "删除旧文件失败，请检查文件路径是否正确");
                         fail("删除旧文件失败，请检查文件路径是否正确");
                         return;
                     }
@@ -89,7 +87,7 @@ abstract class HttpURLConnectionRunnable implements Runnable {
             }
 
             if (TextUtils.isEmpty(downloadRequest.filePath)) {
-                Throw.exception(ExceptionType.NullPointerException, "文件地址不能为空");
+                HttpLog.exception(ExceptionType.NullPointerException, "文件地址不能为空");
                 fail("文件地址不能为空");
                 return;
             }
@@ -98,7 +96,7 @@ abstract class HttpURLConnectionRunnable implements Runnable {
             if (!fileFolder.exists()) {
                 boolean ret = fileFolder.mkdirs();
                 if (!ret) {
-                    Throw.exception(ExceptionType.IllegalArgumentException, "保存文件失败，请检查文件路径是否正确");
+                    HttpLog.exception(ExceptionType.IllegalArgumentException, "保存文件失败，请检查文件路径是否正确");
                     fail("保存文件失败，请检查文件路径是否正确");
                     return;
                 }
@@ -163,7 +161,7 @@ abstract class HttpURLConnectionRunnable implements Runnable {
             if (mRequest.requestStatus == RequestStatus.stop) {
                 return;
             }
-            EasyLog.d(TAG.EasyHttp, "网络请求：" + method + " " + mUrlStr + " 请求头部：" + headBuilder.toString() + " 请求参数：" + mBody.toString());
+            HttpLog.i("网络请求：" + method + " " + mUrlStr + " 请求头部：" + headBuilder.toString() + " 请求参数：" + mBody.toString());
             childRun(connection);
             connection.disconnect();
         } catch (IOException e) {

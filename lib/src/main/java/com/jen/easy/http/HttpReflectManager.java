@@ -8,12 +8,10 @@ import com.jen.easy.EasyRequestType;
 import com.jen.easy.EasyResponse;
 import com.jen.easy.EasyResponseType;
 import com.jen.easy.constant.FieldType;
-import com.jen.easy.constant.TAG;
 import com.jen.easy.exception.ExceptionType;
-import com.jen.easy.exception.Throw;
+import com.jen.easy.exception.HttpLog;
 import com.jen.easy.invalid.EasyInvalidType;
 import com.jen.easy.invalid.Invalid;
-import com.jen.easy.log.EasyLog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -130,7 +128,7 @@ class HttpReflectManager {
         if (loopMap.containsKey(clazzName)) {
             int value = loopMap.get(clazzName);
             if (value == 100) {//超过100默认死循环
-                Throw.exception(ExceptionType.RuntimeException, "无限死循环引用错误：" + clazzName);
+                HttpLog.exception(ExceptionType.RuntimeException, "无限死循环引用错误：" + clazzName);
                 return;
             } else {
                 loopMap.put(clazzName, value + 1);
@@ -251,12 +249,13 @@ class HttpReflectManager {
                         body.put(key, item);
                     }
                 } else {
-                    Throw.exception(ExceptionType.IllegalArgumentException, "不支持该类型参数：" + field.getName());
+                    HttpLog.exception(ExceptionType.IllegalArgumentException, "不支持该类型参数：" + field.getName());
                 }
             } catch (IllegalAccessException e) {
+                HttpLog.e("parseRequest IllegalAccessException");
                 e.printStackTrace();
-                EasyLog.w(TAG.EasyHttp, "parseRequest IllegalAccessException");
             } catch (JSONException e) {
+                HttpLog.e("parseRequest JSONException");
                 e.printStackTrace();
             }
         }
@@ -340,7 +339,7 @@ class HttpReflectManager {
                 }
                 case Head: {
                     if (!FieldType.isString(fieldClass)) {
-                        Throw.exception(ExceptionType.ClassCastException, "请求头返回变量必须为String类型:" + paramName);
+                        HttpLog.exception(ExceptionType.ClassCastException, "请求头返回变量必须为String类型:" + paramName);
                         continue;
                     }
                     head_field.put(paramName, field);

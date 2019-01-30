@@ -1,9 +1,8 @@
 package com.jen.easy.http;
 
 import com.jen.easy.constant.FieldType;
-import com.jen.easy.constant.TAG;
+import com.jen.easy.exception.HttpLog;
 import com.jen.easy.http.imp.HttpUploadListener;
-import com.jen.easy.log.EasyLog;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -58,14 +57,14 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
         }
         reader.close();
         if (mRequest.requestStatus == RequestStatus.stop) {//拦截数据解析
-            EasyLog.d(TAG.EasyHttp, mUrlStr + " 网络请求停止!\n   ");
+            HttpLog.d(mUrlStr + " 网络请求停止!\n   ");
             return;
         }
         String result = buffer.toString();
-        EasyLog.d(TAG.EasyHttp, mUrlStr + " 完成，返回数据：" + result);
+        HttpLog.i(mUrlStr + " 完成，返回数据：" + result);
         if (mRequest.replaceHttpResultMap != null) {
             result = replaceStringBeforeParseResponse(result);
-            EasyLog.d(TAG.EasyHttp, mUrlStr + " 格式化后数据：" + result);
+            HttpLog.i(mUrlStr + " 格式化后数据：" + result);
         }
         mRequest.requestStatus = RequestStatus.finish;
         success(result, null);
@@ -73,7 +72,7 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
 
     @Override
     protected void success(String result, Map<String, List<String>> headMap) {
-        EasyLog.d(TAG.EasyHttp, mUrlStr + " 上传成功！");
+        HttpLog.d(mUrlStr + " 上传成功！");
         if (uploadListener != null) {
             if (FieldType.isObject(mResponse) || FieldType.isString(mResponse)) {//Object和String类型不做数据解析
                 uploadListener.success(flagCode, flagStr, result);
@@ -91,7 +90,7 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
 
     @Override
     protected void fail(String msg) {
-        EasyLog.w(TAG.EasyHttp, mUrlStr + " " + msg);
+        HttpLog.w(mUrlStr + " " + msg);
         if (uploadListener != null) {
             uploadListener.fail(flagCode, flagStr, msg);
         }
