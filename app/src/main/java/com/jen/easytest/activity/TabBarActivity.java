@@ -12,8 +12,8 @@ import com.jen.easytest.R;
 import com.jen.easytest.fragment.EmptyFragmentBlue;
 import com.jen.easytest.fragment.EmptyFragmentRed;
 import com.jen.easyui.base.EasyActivity;
-import com.jen.easyui.baseview.EasyTabBarBottom;
 import com.jen.easyui.baseview.EasyTabBar;
+import com.jen.easyui.baseview.EasyTabBarPager;
 import com.jen.easyui.viewpager.EasyFragmentPagerAdapter;
 
 import java.util.ArrayList;
@@ -26,11 +26,13 @@ import java.util.List;
 
 public class TabBarActivity extends EasyActivity {
 
-    @EasyBindId(R.id.easy_tabbar_txtimg)
-    EasyTabBarBottom easy_tabbar_txtimg;
-
     @EasyBindId(R.id.easy_tabar_scroll)
-    EasyTabBar easy_tabar_scroll;
+    EasyTabBarPager easy_tabar_scroll;
+
+    @EasyBindId(R.id.easy_tabar_scroll2)
+    EasyTabBar easy_tabar_scroll2;
+    @EasyBindId(R.id.easy_tabar_scroll3)
+    EasyTabBar easy_tabar_scroll3;
 
     @EasyBindId(R.id.viewpager_scroll)
     ViewPager viewpager_scroll;
@@ -65,15 +67,15 @@ public class TabBarActivity extends EasyActivity {
 
     }
 
-    private void initScroll(){
+    private void initScroll() {
         List<String> titles = new ArrayList<>();
         List<Fragment> fragments = new ArrayList<>();
 
         titles.add("标题1");
-        titles.add("标题2222");
+        titles.add("标题");
         titles.add("标题3");
         titles.add("标题4");
-        titles.add("标题5");
+        titles.add("标题555555");
         titles.add("标题6");
         titles.add("标题7");
         titles.add("标题8");
@@ -105,9 +107,15 @@ public class TabBarActivity extends EasyActivity {
         fragments.add(fragment10);
         fragments.add(fragment11);
 
-        scrollFragmentPagerAdapter = new ScrollFragmentPagerAdapter(getSupportFragmentManager(),titles,fragments);
+        scrollFragmentPagerAdapter = new ScrollFragmentPagerAdapter(getSupportFragmentManager(), titles, fragments);
         viewpager_scroll.setAdapter(scrollFragmentPagerAdapter);
-        easy_tabar_scroll.setViewPager(viewpager_scroll,titles);
+        easy_tabar_scroll.setViewPager(viewpager_scroll, titles);
+
+        easy_tabar_scroll2.setTitle(new String[]{"111", "222", "333", "444444", "555555", "666", "777", "88888", "9999"});
+        easy_tabar_scroll2.changePosition(5);
+
+        easy_tabar_scroll3.setTitle(new String[]{"111", "222", "333", "444444", "555555", "666", "777", "88888", "9999"});
+        easy_tabar_scroll3.setInitPosition(5);
     }
 
 

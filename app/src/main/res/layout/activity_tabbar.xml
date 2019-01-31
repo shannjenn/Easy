@@ -11,21 +11,77 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <com.jen.easyui.baseview.EasyTabBar
+        <com.jen.easyui.baseview.EasyTabBarPager
             android:id="@+id/easy_tabar_scroll"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             app:tabBarIndicatorColor="#0000ff"
-            app:tabBarIndicatorFit="tabText"
+            app:tabBarIndicatorFit="fitText"
             app:tabBarIndicatorPaddingLeft="10dp"
             app:tabBarIndicatorPaddingRight="10dp"
             app:tabBarIndicatorType="block"
+            app:tabBarTabAverage="true"
             app:tabBarTabPaddingBottom="5dp"
             app:tabBarTabPaddingLeft="15dp"
             app:tabBarTabPaddingRight="15dp"
             app:tabBarTabPaddingTop="5dp"
             app:tabBarTextSize="18sp"
-            app:tabBarTabWeight="true"
+            app:tabBarUnderlineColor="#ff0000"
+            app:tabBarUnderlineHeight="1dp" />
+
+        <com.jen.easyui.baseview.EasyTabBar
+            android:id="@+id/easy_tabar_scroll2"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            app:tabBarIndicatorColor="#0000ff"
+            app:tabBarIndicatorFit="fitText"
+            app:tabBarIndicatorHeight="5dp"
+            app:tabBarIndicatorPaddingLeft="10dp"
+            app:tabBarIndicatorPaddingRight="10dp"
+            app:tabBarIndicatorType="line"
+            app:tabBarIndicatorWidth="60dp"
+            app:tabBarTabAverage="true"
+            app:tabBarTabPaddingBottom="5dp"
+            app:tabBarTabPaddingLeft="15dp"
+            app:tabBarTabPaddingRight="15dp"
+            app:tabBarTabPaddingTop="5dp"
+            app:tabBarTextSize="18sp"
+            app:tabBarUnderlineColor="#ff0000"
+            app:tabBarUnderlineHeight="1dp" />
+
+        <com.jen.easyui.baseview.EasyTabBar
+            android:id="@+id/easy_tabar_scroll3"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            app:tabBarIndicatorColor="#0000ff"
+            app:tabBarIndicatorFit="fitText"
+            app:tabBarIndicatorPaddingLeft="10dp"
+            app:tabBarIndicatorPaddingRight="10dp"
+            app:tabBarIndicatorType="block"
+            app:tabBarTabAverage="true"
+            app:tabBarTabPaddingBottom="5dp"
+            app:tabBarTabPaddingLeft="15dp"
+            app:tabBarTabPaddingRight="15dp"
+            app:tabBarTabPaddingTop="5dp"
+            app:tabBarTextSize="18sp"
+            app:tabBarUnderlineColor="#ff0000"
+            app:tabBarUnderlineHeight="1dp" />
+
+        <com.jen.easyui.baseview.EasyTabBar
+            android:id="@+id/easy_tabar_scroll4"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            app:tabBarIndicatorColor="#0000ff"
+            app:tabBarIndicatorFit="fitWidth"
+            app:tabBarIndicatorPaddingLeft="10dp"
+            app:tabBarIndicatorPaddingRight="10dp"
+            app:tabBarIndicatorType="block"
+            app:tabBarTabAverage="true"
+            app:tabBarTabPaddingBottom="5dp"
+            app:tabBarTabPaddingLeft="15dp"
+            app:tabBarTabPaddingRight="15dp"
+            app:tabBarTabPaddingTop="5dp"
+            app:tabBarTextSize="18sp"
             app:tabBarUnderlineColor="#ff0000"
             app:tabBarUnderlineHeight="1dp" />
 
@@ -34,24 +90,5 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-        <com.jen.easyui.baseview.EasyTabBarBottom
-            android:id="@+id/easy_tabbar_txtimg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#ff0000"
-            app:itemSize="five"
-            app:text0="标题1"
-            app:text1="标题2"
-            app:text2="标题3"
-            app:text3="标题4"
-            app:text4="标题5" />
     </LinearLayout>
 </LinearLayout>
