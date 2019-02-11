@@ -43,7 +43,7 @@
 
 
     <!--导航布局:可以滚动-->
-    <declare-styleable name="EasyTabBarPager">
+    <declare-styleable name="EasyPagerTabBar">
         <!-- 游标indicator -->
         <attr name="tabBarIndicatorColor" />
         <attr name="tabBarIndicatorHeight" />

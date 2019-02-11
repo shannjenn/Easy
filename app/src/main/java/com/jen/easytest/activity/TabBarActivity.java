@@ -12,8 +12,8 @@ import com.jen.easytest.R;
 import com.jen.easytest.fragment.EmptyFragmentBlue;
 import com.jen.easytest.fragment.EmptyFragmentRed;
 import com.jen.easyui.base.EasyActivity;
-import com.jen.easyui.baseview.EasyTabBar;
-import com.jen.easyui.baseview.EasyTabBarPager;
+import com.jen.easyui.tabbarview.EasyTabBar;
+import com.jen.easyui.tabbarview.EasyPagerTabBar;
 import com.jen.easyui.viewpager.EasyFragmentPagerAdapter;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ import java.util.List;
 public class TabBarActivity extends EasyActivity {
 
     @EasyBindId(R.id.easy_tabar_scroll)
-    EasyTabBarPager easy_tabar_scroll;
+    EasyPagerTabBar easy_tabar_scroll;
 
     @EasyBindId(R.id.easy_tabar_scroll2)
     EasyTabBar easy_tabar_scroll2;

@@ -1,4 +1,4 @@
-package com.jen.easyui.baseview;
+package com.jen.easyui.tagview;
 
 import android.text.Spannable;
 import android.text.SpannableString;

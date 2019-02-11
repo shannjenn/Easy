@@ -1,4 +1,4 @@
-package com.jen.easyui.baseview;
+package com.jen.easyui.shapeview;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;

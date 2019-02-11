@@ -67,7 +67,7 @@
         <!--android:textColor="#ff00ff"-->
         <!--android:textSize="14sp"/>-->
 
-        <!--<com.jen.easyui.baseview.EasyShapeTextView-->
+        <!--<com.jen.easyui.shapeview.EasyShapeTextView-->
         <!--android:id="@+id/easy_tv_shape"-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="match_parent"-->
@@ -81,7 +81,7 @@
         <!--app:strokeColor="#0000ff"-->
         <!--app:strokeWidth="5dp"/>-->
 
-        <!--<com.jen.easyui.baseview.EasyShapeTextView-->
+        <!--<com.jen.easyui.shapeview.EasyShapeTextView-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="match_parent"-->
         <!--android:layout_marginStart="3dp"-->
@@ -92,7 +92,7 @@
         <!--app:solidClickColor="#ff00ff"-->
         <!--app:solidColor="#ff0000"/>-->
 
-        <!--&lt;!&ndash;<com.jen.easyui.baseview.EasyShapeTextView-->
+        <!--&lt;!&ndash;<com.jen.easyui.shapeview.EasyShapeTextView-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="match_parent"-->
         <!--android:layout_marginLeft="10dp"-->
@@ -133,7 +133,7 @@
         <!--android:textColor="#ff00ff"-->
         <!--android:textSize="14sp"/>-->
 
-        <!--<com.jen.easyui.baseview.EasyShapeLinearLayout-->
+        <!--<com.jen.easyui.shapeview.EasyShapeLinearLayout-->
         <!--android:layout_width="46dp"-->
         <!--android:layout_height="match_parent"-->
         <!--android:gravity="center_vertical"-->
@@ -197,7 +197,7 @@
         <!--android:textColor="#ff00ff"-->
         <!--android:textSize="14sp"/>-->
 
-        <!--<com.jen.easyui.baseview.EasyShapeEditTextView-->
+        <!--<com.jen.easyui.shapeview.EasyShapeEditTextView-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="match_parent"-->
         <!--android:enabled="false"-->

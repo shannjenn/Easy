@@ -1,4 +1,4 @@
-package com.jen.easyui.baseview;
+package com.jen.easyui.tagview;
 
 import android.content.Context;
 import android.content.res.TypedArray;

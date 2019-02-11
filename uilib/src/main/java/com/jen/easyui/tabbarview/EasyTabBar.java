@@ -1,4 +1,4 @@
-package com.jen.easyui.baseview;
+package com.jen.easyui.tabbarview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -188,7 +188,6 @@ public class EasyTabBar extends HorizontalScrollView {
         mTabsContainer.setOrientation(LinearLayout.HORIZONTAL);
         LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
         addView(mTabsContainer, layoutParams);
-
         initTabViews();
     }
 

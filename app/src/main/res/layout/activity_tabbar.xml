@@ -11,15 +11,16 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <com.jen.easyui.baseview.EasyTabBarPager
+        <com.jen.easyui.tabbarview.EasyPagerTabBar
             android:id="@+id/easy_tabar_scroll"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             app:tabBarIndicatorColor="#0000ff"
             app:tabBarIndicatorFit="fitText"
+            app:tabBarIndicatorHeight="3dp"
             app:tabBarIndicatorPaddingLeft="10dp"
             app:tabBarIndicatorPaddingRight="10dp"
-            app:tabBarIndicatorType="block"
+            app:tabBarIndicatorType="line"
             app:tabBarTabAverage="true"
             app:tabBarTabPaddingBottom="5dp"
             app:tabBarTabPaddingLeft="15dp"
@@ -29,7 +30,7 @@
             app:tabBarUnderlineColor="#ff0000"
             app:tabBarUnderlineHeight="1dp" />
 
-        <com.jen.easyui.baseview.EasyTabBar
+        <com.jen.easyui.tabbarview.EasyTabBar
             android:id="@+id/easy_tabar_scroll2"
             android:layout_width="match_parent"
             android:layout_height="46dp"
@@ -49,7 +50,7 @@
             app:tabBarUnderlineColor="#ff0000"
             app:tabBarUnderlineHeight="1dp" />
 
-        <com.jen.easyui.baseview.EasyTabBar
+        <com.jen.easyui.tabbarview.EasyTabBar
             android:id="@+id/easy_tabar_scroll3"
             android:layout_width="match_parent"
             android:layout_height="46dp"
@@ -67,7 +68,7 @@
             app:tabBarUnderlineColor="#ff0000"
             app:tabBarUnderlineHeight="1dp" />
 
-        <com.jen.easyui.baseview.EasyTabBar
+        <com.jen.easyui.tabbarview.EasyTabBar
             android:id="@+id/easy_tabar_scroll4"
             android:layout_width="match_parent"
             android:layout_height="46dp"
