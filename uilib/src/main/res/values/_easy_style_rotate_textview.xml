@@ -1,19 +1,29 @@
 <resources>
-    <declare-styleable name="EasyRotateView">
-        <attr name="rotateDegree" format="integer"/>
-        <attr name="rotateText" format="string"/>
-        <attr name="rotateTextSize" format="dimension"/>
-        <attr name="rotateTextColor" format="color"/>
-        <attr name="rotateSpanTextColor" format="color"/>
-        <attr name="rotateSpanIndexStart" format="integer"/>
-        <attr name="rotateSpanIndexEnd" format="integer"/>
+    <declare-styleable name="EasyRotateSpanTextView">
+        <attr name="rotateDegree" format="integer" />
+        <attr name="rotateText" format="string" />
+        <attr name="rotateTextSize" format="dimension" />
+        <attr name="rotateTextColorDefault" format="color" />
 
-        <attr name="android:layout_width"/>
-        <attr name="android:layout_height"/>
-        <attr name="android:paddingLeft"/>
-        <attr name="android:paddingRight"/>
-        <attr name="android:paddingTop"/>
-        <attr name="android:paddingBottom"/>
-        <attr name="android:padding"/>
+        <attr name="rotateSpanTextColor1" format="color" />
+        <attr name="rotateSpanIndexStart1" format="integer" />
+        <attr name="rotateSpanIndexEnd1" format="integer" />
+        <attr name="rotateSpanTextColor2" format="color" />
+        <attr name="rotateSpanIndexStart2" format="integer" />
+        <attr name="rotateSpanIndexEnd2" format="integer" />
+        <attr name="rotateSpanTextColor3" format="color" />
+        <attr name="rotateSpanIndexStart3" format="integer" />
+        <attr name="rotateSpanIndexEnd3" format="integer" />
+        <attr name="rotateSpanTextColor4" format="color" />
+        <attr name="rotateSpanIndexStart4" format="integer" />
+        <attr name="rotateSpanIndexEnd4" format="integer" />
+
+        <attr name="android:layout_width" />
+        <attr name="android:layout_height" />
+        <attr name="android:paddingLeft" />
+        <attr name="android:paddingRight" />
+        <attr name="android:paddingTop" />
+        <attr name="android:paddingBottom" />
+        <attr name="android:padding" />
     </declare-styleable>
 </resources>

@@ -209,17 +209,27 @@
 
         <!--</LinearLayout>-->
 
-        <!--<com.jen.easyui.baseview.EasyRotateView-->
-        <!--android:id="@+id/rote_view2"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--app:rotateDegree="0"-->
-        <!--app:rotateSpanIndexEnd="20"-->
-        <!--app:rotateSpanIndexStart="18"-->
-        <!--app:rotateSpanTextColor="#ff0000"-->
-        <!--app:rotateText="abcdefg萨德镂空设计欧收款的尼水电蓝色短裤12gg"-->
-        <!--app:rotateTextColor="#000"-->
-        <!--app:rotateTextSize="24dp"/>-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.jen.easyui.baseview.EasyRotateSpanTextView
+                android:id="@+id/rote_view2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:rotateDegree="0"
+                app:rotateSpanIndexEnd1="5"
+                app:rotateSpanIndexStart1="3"
+                app:rotateSpanTextColor1="#ff0000"
+                app:rotateText="萨德镂空设计欧收款的尼水电蓝1234567890123456790"
+                app:rotateTextColorDefault="#000" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="11111" />
+        </LinearLayout>
 
         <!--<com.jen.easyui.baseview.EasyRotateView
             android:id="@+id/rote_view"
