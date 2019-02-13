@@ -111,7 +111,7 @@ public class HttpActivity extends EasyActivity {
         http.start(taskProgressListRequest);*/
 
         QNRequest qnRequest = new QNRequest();
-//        EasyMain.mHttp.start(qnRequest);
+        http.start(qnRequest);
     }
 
     private void post() {
@@ -174,7 +174,7 @@ public class HttpActivity extends EasyActivity {
         request.params.add(model2);
         request.params.add(model3);
         request.params.add(model4);
-//        EasyMain.mHttp.start(request);
+        http.start(request);
     }
 
     private void put() {
@@ -182,7 +182,7 @@ public class HttpActivity extends EasyActivity {
         putRequest.setToken("16643-bdf0737cafb1c1a32451a0d93692edba");
 
         putRequest.setId("16643");
-//        EasyMain.mHttp.start(putRequest);
+        http.start(putRequest);
     }
 
     private void download() {

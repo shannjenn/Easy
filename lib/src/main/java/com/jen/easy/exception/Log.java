@@ -8,21 +8,20 @@ import com.jen.easy.log.EasyLog;
  * 说明：网络请求运行状态
  */
 abstract class Log {
-    protected static String tag;
 
-    public static void d(String msg) {
+    protected static void d(String tag, String msg) {
         EasyLog.d(tag, msg);
     }
 
-    public static void i(String msg) {
+    protected static void i(String tag, String msg) {
         EasyLog.i(tag, msg);
     }
 
-    public static void w(String msg) {
+    protected static void w(String tag, String msg) {
         EasyLog.w(tag, msg);
     }
 
-    public static void e(String msg) {
+    protected static void e(String tag, String msg) {
         EasyLog.e(tag, msg);
     }
 
