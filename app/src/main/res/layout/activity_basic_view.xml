@@ -52,163 +52,6 @@
             android:singleLine="true"
             android:text="Always believe that something wonderful is about to happen 6666666666666666666666666666666666666" />
 
-
-        <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="46dp"-->
-        <!--android:layout_marginBottom="5dp"-->
-        <!--android:gravity="center_vertical"-->
-        <!--android:orientation="horizontal">-->
-
-        <!--<TextView-->
-        <!--android:layout_width="120dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="EasyShapeText："-->
-        <!--android:textColor="#ff00ff"-->
-        <!--android:textSize="14sp"/>-->
-
-        <!--<com.jen.easyui.shapeview.EasyShapeTextView-->
-        <!--android:id="@+id/easy_tv_shape"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:gravity="center_vertical"-->
-        <!--android:text="213313133331"-->
-        <!--app:clickType="check"-->
-        <!--app:corners="3dp"-->
-        <!--app:solidClickColor="#ff00ff"-->
-        <!--app:solidColor="#ff0000"-->
-        <!--app:strokeClickColor="#00ffff"-->
-        <!--app:strokeColor="#0000ff"-->
-        <!--app:strokeWidth="5dp"/>-->
-
-        <!--<com.jen.easyui.shapeview.EasyShapeTextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_marginStart="3dp"-->
-        <!--android:gravity="center_vertical"-->
-        <!--android:text="213313133331"-->
-        <!--app:clickType="check"-->
-        <!--app:corners="3dp"-->
-        <!--app:solidClickColor="#ff00ff"-->
-        <!--app:solidColor="#ff0000"/>-->
-
-        <!--&lt;!&ndash;<com.jen.easyui.shapeview.EasyShapeTextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_marginLeft="10dp"-->
-        <!--android:gravity="center_vertical"-->
-        <!--android:padding="5dp"-->
-        <!--android:text="2222222"-->
-        <!--app:lineBottomColor="#ff0000"-->
-        <!--app:lineBottomMarginBottom="5dp"-->
-        <!--app:lineBottomMarginLeft="5dp"-->
-        <!--app:lineBottomMarginRight="5dp"-->
-        <!--app:lineLeftColor="#ff0000"-->
-        <!--app:lineLeftMarginBottom="5dp"-->
-        <!--app:lineLeftMarginLeft="5dp"-->
-        <!--app:lineLeftMarginTop="5dp"-->
-        <!--app:lineRightColor="#ff0000"-->
-        <!--app:lineRightMarginBottom="5dp"-->
-        <!--app:lineRightMarginRight="5dp"-->
-        <!--app:lineRightMarginTop="5dp"-->
-        <!--app:lineTopColor="#ff0000"-->
-        <!--app:lineTopMarginLeft="5dp"-->
-        <!--app:lineTopMarginRight="5dp"-->
-        <!--app:lineTopMarginTop="5dp"-->
-        <!--app:lineWidth="5dp"/>&ndash;&gt;-->
-
-        <!--</LinearLayout>-->
-
-        <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="46dp"-->
-        <!--android:layout_marginBottom="5dp"-->
-        <!--android:gravity="center_vertical"-->
-        <!--android:orientation="horizontal">-->
-
-        <!--<TextView-->
-        <!--android:layout_width="120dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="EasyShapeLinearLayout："-->
-        <!--android:textColor="#ff00ff"-->
-        <!--android:textSize="14sp"/>-->
-
-        <!--<com.jen.easyui.shapeview.EasyShapeLinearLayout-->
-        <!--android:layout_width="46dp"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:gravity="center_vertical"-->
-        <!--app:clickType="check"-->
-        <!--app:lineBottomColor="#ff0000"-->
-        <!--app:lineTopColor="#ff0000"-->
-        <!--app:lineWidth="1px"/>-->
-
-        <!--</LinearLayout>-->
-
-        <!--<com.jen.easyui.baseview.EasyItemLayout-->
-        <!--android:id="@+id/easy_item_layout"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="45dp"-->
-        <!--android:gravity="center_vertical"-->
-        <!--app:itemArrowVisible="true"-->
-        <!--app:itemCountMarginRight="20dp"-->
-        <!--app:itemCountText="12"-->
-        <!--app:itemIsEdit="false"-->
-        <!--app:itemTitleText="EasyItemLayout"-->
-        <!--app:itemTxtText="121"/>-->
-
-        <!--<com.jen.easyui.baseview.EasyItemLayout-->
-        <!--android:id="@+id/easy_item_layout2"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="45dp"-->
-        <!--android:gravity="center_vertical"-->
-        <!--app:itemArrowVisible="true"-->
-        <!--app:itemCountMarginRight="20dp"-->
-        <!--app:itemCountText="12"-->
-        <!--app:itemEditLines="5"-->
-        <!--app:itemEditTextHint="121"-->
-        <!--app:itemEditTextMarginBottom="0dp"-->
-        <!--app:itemIsEdit="false"-->
-        <!--app:itemTitleText="ItemLayout"-->
-        <!--app:itemTxtText="121"/>-->
-
-        <!--<com.jen.easyui.baseview.EasyRadioGroup-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
-
-        <!--<com.jen.easyui.baseview.EasyRadioButton-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="46dp"-->
-        <!--app:radioSrc="@mipmap/ic_launcher"-->
-        <!--app:radioText="111"-->
-        <!--app:radioTextColor="#ff0000"/>-->
-        <!--</com.jen.easyui.baseview.EasyRadioGroup>-->
-
-        <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="46dp"-->
-        <!--android:layout_marginBottom="5dp"-->
-        <!--android:gravity="center_vertical"-->
-        <!--android:orientation="horizontal">-->
-
-        <!--<TextView-->
-        <!--android:layout_width="120dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="EasyShapeEditTextView："-->
-        <!--android:textColor="#ff00ff"-->
-        <!--android:textSize="14sp"/>-->
-
-        <!--<com.jen.easyui.shapeview.EasyShapeEditTextView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:enabled="false"-->
-        <!--android:focusable="false"-->
-        <!--android:hint="54654"-->
-        <!--app:lineBottomColor="#ff0000"-->
-        <!--app:lineBottomMarginBottom="6dp"-->
-        <!--app:lineWidth="1dp"/>-->
-
-        <!--</LinearLayout>-->
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -231,21 +74,36 @@
                 android:text="11111" />
         </LinearLayout>
 
-        <!--<com.jen.easyui.baseview.EasyRotateView
-            android:id="@+id/rote_view"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:rotateDegree="90"
-            app:rotateSpanIndexEnd="20"
-            app:rotateSpanIndexStart="10"
-            app:rotateSpanTextColor="#ff0000"
-            app:rotateText="abcdefghkad阿萨德镂空设计欧尼水电蓝色短裤12"
-            app:rotateTextColor="#000"
-            app:rotateTextSize="24dp"/>-->
+            android:orientation="horizontal">
 
-        <!--<View-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="20dp"-->
-        <!--android:background="#ff0000"/>-->
+            <com.jen.easyui.baseview.UpDownChooseTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#ff0000"
+                android:paddingTop="100dp"
+                android:paddingBottom="0dp"
+                app:upDownChoose="true"
+                app:upDownTextDown="请选择"
+                app:upDownTextGravity="left"
+                app:upDownTextUp="总市值"
+                app:upDownTextUpDownSpace="0dp" />
+
+            <com.jen.easyui.baseview.UpDownChooseTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#ff0000"
+                android:paddingTop="100dp"
+                android:paddingBottom="0dp"
+                app:upDownChoose="true"
+                app:upDownTextDown="请选择"
+                app:upDownTextGravity="left"
+                app:upDownTextUp="总市值"
+                app:upDownTextUpDownSpace="0dp" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

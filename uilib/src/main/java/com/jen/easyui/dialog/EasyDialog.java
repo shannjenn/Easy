@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.jen.easyui.R;
 
+
 /**
  * 用Build创建
  * 只有一个按钮时，用左边按钮
@@ -28,12 +29,8 @@ import com.jen.easyui.R;
  */
 public class EasyDialog extends Dialog implements View.OnClickListener {
     private Context context;
-
-//    private float mWidth;//宽度（db）
+    //    private float mWidth;//宽度（db）
 //    private float mHeight;//高度（db）
-
-    private Drawable icon;
-    private String txtTile;
     private TitleGravity titleGravity = TitleGravity.Left;
 
     public enum TitleGravity {
@@ -54,7 +51,11 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
     private String txtMiddle;
 
     protected ImageView iv_icon;
+    private Drawable icon;
+    protected ImageView iv_close;
+    protected boolean showCloseImg;
     protected TextView tv_title;
+    private String txtTile;
     protected TextView tv_content;
     protected Button btn_left;
     protected Button btn_middle;
@@ -84,6 +85,7 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
         View layout = LayoutInflater.from(context).inflate(R.layout._easy_dialog, null);
 
         iv_icon = layout.findViewById(R.id.iv_icon);
+        iv_close = layout.findViewById(R.id.iv_close);
         tv_title = layout.findViewById(R.id.tv_title);
 
         tv_content = layout.findViewById(R.id.tv_content);
@@ -97,12 +99,16 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
         btn_left.setOnClickListener(this);
         btn_middle.setOnClickListener(this);
         btn_right.setOnClickListener(this);
+        iv_close.setOnClickListener(this);
 
         if (icon != null) {
             iv_icon.setImageDrawable(icon);
         } else {
             iv_icon.setVisibility(View.GONE);
         }
+
+        iv_close.setVisibility(showCloseImg ? View.VISIBLE : View.GONE);
+
         if (txtTile != null) {
             tv_title.setText(txtTile);
             switch (titleGravity) {
@@ -212,6 +218,10 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
         this.icon = icon;
     }
 
+    public void setShowCloseImg(boolean showCloseImg) {
+        this.showCloseImg = showCloseImg;
+    }
+
     public String getTxtTile() {
         return txtTile;
     }
@@ -295,13 +305,12 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
      * 时间：2018/1/15.
      */
     public static class Build {
-
         private Context context;
-
         private float width;//宽度(db)
         private float height;//高度(db)
 
         private Drawable icon;
+        private boolean showCloseImg;
         private String txtTitle;
         private TitleGravity titleGravity = TitleGravity.Left;
         private CharSequence txtContent;
@@ -322,6 +331,7 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
         public EasyDialog create() {
             EasyDialog dialog = new EasyDialog(context, R.style._easy_dialog);
             dialog.setIcon(icon);
+            dialog.setShowCloseImg(showCloseImg);
             dialog.setTxtTile(txtTitle);
             dialog.setTxtContent(txtContent);
             dialog.setTxtLeft(txtLeft);
@@ -341,6 +351,11 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
 
         public Build setIcon(Drawable icon) {
             this.icon = icon;
+            return this;
+        }
+
+        public Build setShowCloseImg(boolean showCloseImg) {
+            this.showCloseImg = showCloseImg;
             return this;
         }
 
