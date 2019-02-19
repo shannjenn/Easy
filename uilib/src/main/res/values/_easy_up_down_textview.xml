@@ -12,6 +12,7 @@
         <attr name="upDownTextDownHint" format="string" />
         <attr name="upDownTextUpDownSpace" format="dimension" />
         <attr name="upDownChoose" format="boolean" />
+        <attr name="upDownAutoScaleUpText" format="boolean" />
         <attr name="upDownAutoScaleDownText" format="boolean" />
         <attr name="upDownTextGravity">
             <enum name="left" value="0" />

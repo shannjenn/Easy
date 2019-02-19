@@ -80,6 +80,19 @@
             android:orientation="horizontal">
 
             <com.jen.easyui.baseview.UpDownChooseTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="0dp"
+                app:upDownAutoScaleDownText="true"
+                app:upDownChoose="false"
+                android:paddingRight="15dp"
+                app:upDownTextSizeUp="16sp"
+                app:upDownTextDown="请选择请"
+                app:upDownTextGravity="left"
+                app:upDownTextUp="154,4545,450,02"
+                app:upDownTextUpDownSpace="0dp" />
+
+            <com.jen.easyui.baseview.UpDownChooseTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

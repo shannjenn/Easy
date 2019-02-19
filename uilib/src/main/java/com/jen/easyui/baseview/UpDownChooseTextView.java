@@ -38,6 +38,7 @@ public class UpDownChooseTextView extends View {
     private String textDown;
     private String textDownHint;
     private boolean choose;
+    private boolean upDownAutoScaleUpText;
     private boolean upDownAutoScaleDownText;
     @TextGravity
     private int upDownTextGravity = TextGravity.center;
@@ -101,6 +102,7 @@ public class UpDownChooseTextView extends View {
         textColorDownChoose = a.getColor(R.styleable.UpDownChooseTextView_upDownTextColorDownChoose, DEFAULT_TEXT_DOWN_CHOOSE_COLOR);
         chooseTextUpDownSpace = a.getDimensionPixelOffset(R.styleable.UpDownChooseTextView_upDownTextUpDownSpace, 0);
         choose = a.getBoolean(R.styleable.UpDownChooseTextView_upDownChoose, false);
+        upDownAutoScaleUpText = a.getBoolean(R.styleable.UpDownChooseTextView_upDownAutoScaleUpText, true);
         upDownAutoScaleDownText = a.getBoolean(R.styleable.UpDownChooseTextView_upDownAutoScaleDownText, true);
         upDownTextGravity = a.getInt(R.styleable.UpDownChooseTextView_upDownTextGravity, TextGravity.center);
 
@@ -111,16 +113,24 @@ public class UpDownChooseTextView extends View {
         paddingTop = a.getLayoutDimension(R.styleable.UpDownChooseTextView_android_paddingTop, 0);
         paddingBottom = a.getLayoutDimension(R.styleable.UpDownChooseTextView_android_paddingBottom, 0);
         a.recycle();
+
+        if (textUp == null)
+            textUp = "";
+        if (textDown == null)
+            textDown = "";
+        if (textDownHint == null)
+            textDownHint = "";
+
+        paintUp = new Paint();
+        paintDown = new Paint();
     }
 
     private void initView() {
-        paintUp = new Paint();
         paintUp.setColor(textColorUp);
         paintUp.setAntiAlias(true);
         paintUp.setTypeface(Typeface.MONOSPACE);
         paintUp.setTextSize(textSizeUp);
 
-        paintDown = new Paint();
         paintDown.setColor(textColorDown);
         paintDown.setAntiAlias(true);
         paintDown.setTypeface(Typeface.MONOSPACE);
@@ -139,24 +149,23 @@ public class UpDownChooseTextView extends View {
         textWithDown = rectDown.left + rectDown.right;
         textHeightDown = downFont.bottom - downFont.top;
         baseLineHeightDown = Math.abs(downFont.ascent);
+    }
 
-        if (textUp == null)
-            textUp = "";
-        if (textDown == null)
-            textDown = "";
-        if (textDownHint == null)
-            textDownHint = "";
+    private void update() {
+        initView();
+        requestLayout();
+        invalidate();
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 //        int specMode = MeasureSpec.getMode(widthMeasureSpec);//得到模式
 //        int specSize = MeasureSpec.getSize(widthMeasureSpec);//得到大小
-        if (layoutHeight <= ViewGroup.LayoutParams.WRAP_CONTENT) {
+        if (layoutHeight == ViewGroup.LayoutParams.WRAP_CONTENT) {
             int HeightSpec = textHeightUp + textHeightDown + chooseTextUpDownSpace + paddingTop + paddingBottom;
             heightMeasureSpec = MeasureSpec.makeMeasureSpec(HeightSpec, MeasureSpec.EXACTLY);
         }
-        if (layoutWidth <= ViewGroup.LayoutParams.WRAP_CONTENT) {
+        if (layoutWidth == ViewGroup.LayoutParams.WRAP_CONTENT) {
             int widthSpec = textWithUp > textWithDown ? textWithUp : textWithDown + paddingLeft + paddingRight + 20;
             widthMeasureSpec = MeasureSpec.makeMeasureSpec(widthSpec, MeasureSpec.EXACTLY);
         }
@@ -167,37 +176,48 @@ public class UpDownChooseTextView extends View {
     }
 
     private void initData() {
-        boolean isFit = true;//字体是否合适
+        if (upDownAutoScaleUpText) {
+            autoScaleTextSize(paintUp, textUp, textSizeUp);
+        }
         if (upDownAutoScaleDownText) {
-            if (measuredWidth > 0) {
-                for (int i = 0; i < 1000; i++) {//缩小字体，不能缩小太多，可以用..代替
-                    if (textWithDown >= measuredWidth - 15) {
-                        int onePx = (int) EasyDensityUtil.sp2px(1);
-                        int textSize = textSizeDown - (int) EasyDensityUtil.sp2px(i);
-                        paintDown.setTextSize(textSize);
-                        if (textSize <= onePx) {
-                            isFit = false;
-                            break;
-                        }
-                    } else {
+            autoScaleTextSize(paintDown, textDown, textSizeDown);
+        }
+    }
+
+    private void autoScaleTextSize(Paint paint, String text, int textSize) {
+        boolean isFit = true;//字体是否合适
+        if (measuredWidth > 0) {
+            Rect rect = new Rect();
+            int onePx = (int) EasyDensityUtil.sp2px(1);
+            for (int i = 1; i < 100; i++) {//缩小字体，不能缩小太多，可以用省略号..代替
+                paint.getTextBounds(text, 0, text.length(), rect);
+                int withDown = rect.left + rect.right;
+                if (withDown >= measuredWidth - paddingLeft - paddingRight) {
+                    int size = textSize - i;
+                    paint.setTextSize(size);
+                    if (size <= onePx) {
+                        isFit = false;
                         break;
                     }
-                }
-            }
-            if (!isFit) {//减少字样
-                textDown = textDown + "..";
-                for (int i = 0; i < textDown.length() - 1; i++) {
-                    if (textWithDown >= measuredWidth - 15) {
-                        textDown = textDown.replace(".", "");
-                        textDown = textDown.substring(0, textDown.length() - 1) + "..";
-                    } else {
-                        break;
-                    }
+                } else {
+                    break;
                 }
             }
         }
-        Rect rect3 = new Rect();
-        paintDown.getTextBounds(textDownHint, 0, textDownHint.length(), rect3);
+        if (!isFit) {//减少字样
+            text = text + "..";
+            for (int i = 0; i < text.length() - 1; i++) {
+                Rect rectDown = new Rect();
+                paint.getTextBounds(text, 0, text.length(), rectDown);
+                int withDown = rectDown.left + rectDown.right;
+                if (withDown >= measuredWidth - paddingLeft - paddingRight) {
+                    text = text.replace(".", "");
+                    text = text.substring(0, text.length() - 1) + "..";
+                } else {
+                    break;
+                }
+            }
+        }
     }
 
     @Override
@@ -252,16 +272,14 @@ public class UpDownChooseTextView extends View {
         if (textUp == null)
             return;
         this.textUp = textUp;
-        invalidate();
+        update();
     }
 
     public void setTextDown(String textDown) {
         if (textDown == null)
             return;
         this.textDown = textDown;
-        choose = textDown.trim().length() > 0;
-        requestLayout();
-        invalidate();
+        update();
     }
 
     public String getTextUp() {
@@ -274,15 +292,11 @@ public class UpDownChooseTextView extends View {
 
     public void setTextColorUp(int textColorUp) {
         this.textColorUp = textColorUp;
-        paintUp.setColor(textColorUp);
-//        requestLayout();
-        invalidate();
+        update();
     }
 
     public void setTextColorDown(int textColorDown) {
         this.textColorDown = textColorDown;
-        paintDown.setColor(textColorDown);
-//        requestLayout();
-        invalidate();
+        update();
     }
 }
