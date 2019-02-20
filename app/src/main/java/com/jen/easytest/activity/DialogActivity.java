@@ -35,7 +35,7 @@ public class DialogActivity extends EasyActivity {
     @Override
     protected void initViews() {
         loading = new EasyLoading(this);
-        dialog = new EasyDialog.Build(this)
+        dialog = EasyDialog.build(this)
                 .setIcon(getResources().getDrawable(R.mipmap.ic_launcher))
                 .setTitle("提示哟哟")
                 .setContent("这是一个Dialog测试")

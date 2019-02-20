@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -29,46 +28,23 @@ import com.jen.easyui.R;
  */
 public class EasyDialog extends Dialog implements View.OnClickListener {
     private Context context;
-    //    private float mWidth;//宽度（db）
-//    private float mHeight;//高度（db）
-    private TitleGravity titleGravity = TitleGravity.Left;
-
-    public enum TitleGravity {
-        Left,
-        Center
-    }
-
+    private GravityTitle titleGravity = GravityTitle.Left;
     private CharSequence txtContent;
-    private ContentGravity contentGravity = ContentGravity.Center;
-
-    public enum ContentGravity {
-        Left,
-        Center
-    }
+    private GravityContent contentGravity = GravityContent.Center;
 
     private String txtLeft;
     private String txtRight;
     private String txtMiddle;
 
-    protected ImageView iv_icon;
     private Drawable icon;
-    protected ImageView iv_close;
-    protected boolean showCloseImg;
-    protected TextView tv_title;
+    private boolean showCloseImg;
     private String txtTile;
-    protected TextView tv_content;
-    protected Button btn_left;
-    protected Button btn_middle;
-    protected View v_middle_button_line;
-    protected Button btn_right;
-    protected View v_right_button_line;
 
     private EasyDialogListener easyDialogListener;
     protected int flagCode;
 
-    EasyDialog(@NonNull Context context) {
-        super(context);
-        this.context = context;
+    public static Build build(Context context) {
+        return new Build(context);
     }
 
     EasyDialog(@NonNull Context context, @StyleRes int themeResId) {
@@ -76,25 +52,20 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
         this.context = context;
     }
 
-    EasyDialog(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener) {
-        super(context, cancelable, cancelListener);
-        this.context = context;
-    }
-
     void initViews() {
         View layout = LayoutInflater.from(context).inflate(R.layout._easy_dialog, null);
 
-        iv_icon = layout.findViewById(R.id.iv_icon);
-        iv_close = layout.findViewById(R.id.iv_close);
-        tv_title = layout.findViewById(R.id.tv_title);
+        ImageView iv_icon = layout.findViewById(R.id.iv_icon);
+        ImageView iv_close = layout.findViewById(R.id.iv_close);
+        TextView tv_title = layout.findViewById(R.id.tv_title);
 
-        tv_content = layout.findViewById(R.id.tv_content);
+        TextView tv_content = layout.findViewById(R.id.tv_content);
 
-        btn_left = layout.findViewById(R.id.btn_left);
-        btn_middle = layout.findViewById(R.id.btn_middle);
-        v_middle_button_line = layout.findViewById(R.id.v_middle_button_line);
-        v_right_button_line = layout.findViewById(R.id.v_right_button_line);
-        btn_right = layout.findViewById(R.id.btn_right);
+        Button btn_left = layout.findViewById(R.id.btn_left);
+        Button btn_middle = layout.findViewById(R.id.btn_middle);
+        View v_middle_button_line = layout.findViewById(R.id.v_middle_button_line);
+        View v_right_button_line = layout.findViewById(R.id.v_right_button_line);
+        Button btn_right = layout.findViewById(R.id.btn_right);
 
         btn_left.setOnClickListener(this);
         btn_middle.setOnClickListener(this);
@@ -203,7 +174,7 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
         }
     }
 
-    public EasyDialog setEasyDialogListener(EasyDialogListener easyDialogListener) {
+    EasyDialog setEasyDialogListener(EasyDialogListener easyDialogListener) {
         this.easyDialogListener = easyDialogListener;
         return this;
     }
@@ -230,7 +201,7 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
         this.txtTile = txtTile;
     }
 
-    public void setTitleGravity(TitleGravity titleGravity) {
+    public void setTitleGravity(GravityTitle titleGravity) {
         this.titleGravity = titleGravity;
     }
 
@@ -238,7 +209,7 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
         return txtContent;
     }
 
-    public void setContentGravity(ContentGravity contentGravity) {
+    public void setContentGravity(GravityContent contentGravity) {
         this.contentGravity = contentGravity;
     }
 
@@ -278,140 +249,4 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
         this.flagCode = flagCode;
     }
 
-    /*public float getWidth() {
-        return mWidth;
-    }
-
-    public void setWidth(float width) {
-        if (width <= 0)
-            return;
-        this.mWidth = width;
-    }
-
-    public float getHeight() {
-        return mHeight;
-    }
-
-    public void setHeight(float height) {
-        if (height <= 0)
-            return;
-        this.mHeight = height;
-    }*/
-
-
-    /**
-     * 用与创建EasyDialog
-     * 作者：ShannJenn
-     * 时间：2018/1/15.
-     */
-    public static class Build {
-        private Context context;
-        private float width;//宽度(db)
-        private float height;//高度(db)
-
-        private Drawable icon;
-        private boolean showCloseImg;
-        private String txtTitle;
-        private TitleGravity titleGravity = TitleGravity.Left;
-        private CharSequence txtContent;
-        private ContentGravity contentGravity = ContentGravity.Center;
-        private String txtLeft;
-        private String txtMiddle;
-        private String txtRight;
-
-        private int flagCode;
-
-        private EasyDialogListener easyDialogListener;
-
-        public Build(Context context) {
-            this.context = context;
-        }
-
-
-        public EasyDialog create() {
-            EasyDialog dialog = new EasyDialog(context, R.style._easy_dialog);
-            dialog.setIcon(icon);
-            dialog.setShowCloseImg(showCloseImg);
-            dialog.setTxtTile(txtTitle);
-            dialog.setTxtContent(txtContent);
-            dialog.setTxtLeft(txtLeft);
-            dialog.setTxtMiddle(txtMiddle);
-            dialog.setTxtRight(txtRight);
-            dialog.setEasyDialogListener(easyDialogListener);
-            dialog.setFlagCode(flagCode);
-            dialog.setTitleGravity(titleGravity);
-            dialog.setContentGravity(contentGravity);
-
-//            dialog.setWidth(width);
-//            dialog.setHeight(height);
-
-            dialog.initViews();
-            return dialog;
-        }
-
-        public Build setIcon(Drawable icon) {
-            this.icon = icon;
-            return this;
-        }
-
-        public Build setShowCloseImg(boolean showCloseImg) {
-            this.showCloseImg = showCloseImg;
-            return this;
-        }
-
-        public Build setTitle(String txt) {
-            txtTitle = txt;
-            return this;
-        }
-
-        public Build setTitleGravity(TitleGravity titleGravity) {
-            this.titleGravity = titleGravity;
-            return this;
-        }
-
-        public Build setContent(CharSequence txt) {
-            txtContent = txt;
-            return this;
-        }
-
-        public Build setContentGravity(ContentGravity contentGravity) {
-            this.contentGravity = contentGravity;
-            return this;
-        }
-
-        public Build setLeftButton(String txt) {
-            txtLeft = txt;
-            return this;
-        }
-
-        public Build setMiddleButton(String txt) {
-            txtMiddle = txt;
-            return this;
-        }
-
-        public Build setRightButton(String txt) {
-            txtRight = txt;
-            return this;
-        }
-
-        public Build setEasyDialogListener(EasyDialogListener easyDialogListener) {
-            this.easyDialogListener = easyDialogListener;
-            return this;
-        }
-
-        public Build setWidth(float width) {
-            this.width = width;
-            return this;
-        }
-
-        public Build setHeight(float height) {
-            this.height = height;
-            return this;
-        }
-
-        public Build setFlagCode(int flagCode) {
-            this.flagCode = flagCode;
-            return this;
-        }
-    }
 }

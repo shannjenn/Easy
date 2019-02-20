@@ -16,12 +16,10 @@ import android.widget.TextView;
 public abstract class EasyHolder extends RecyclerView.ViewHolder {
     private final String TAG = EasyHolder.class.getSimpleName();
     protected EasyRecyclerAdapter mAdapter;
-    private View mView;
 
     public EasyHolder(EasyRecyclerAdapter adapter, View itemView) {
         super(itemView);
         this.mAdapter = adapter;
-        this.mView = itemView;
     }
 
     /**
@@ -63,7 +61,7 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
     }
 
     public EasyHolder addOnClickEvent(int id, final int position) {
-        addOnClickEvent(mView, id, position);
+        addOnClickEvent(itemView, id, position);
         return this;
     }
 
@@ -82,10 +80,7 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
         if (mAdapter.easyItemClickListener == null) {
             return this;
         }
-        if (mView == null) {
-            return this;
-        }
-        View view = mView.findViewById(id);
+        View view = itemView.findViewById(id);
         if (view == null) {
             Log.w(TAG, "点击设置事件失败，请检查view是否不为空");
             return this;
@@ -100,7 +95,7 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
     }
 
     public EasyHolder addOnLongClickEvent(int id, final int position) {
-        addOnLongClickEvent(mView, id, position);
+        addOnLongClickEvent(itemView, id, position);
         return this;
     }
 
@@ -124,7 +119,7 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
     }
 
     public EasyHolder setVisible(int id, int visible) {
-        setVisible(mView, id, visible);
+        setVisible(itemView, id, visible);
         return this;
     }
 
@@ -147,12 +142,12 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
     }
 
     public EasyHolder setTextView(int id, String text) {
-        setTextView(mView, id, text);
+        setTextView(itemView, id, text);
         return this;
     }
 
     public EasyHolder setTextView(int id, int strId) {
-        setTextView(mView, id, strId);
+        setTextView(itemView, id, strId);
         return this;
     }
 
@@ -180,7 +175,7 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
     }
 
     public EasyHolder setTextColor(int id, int color) {
-        setTextColor(mView, id, color);
+        setTextColor(itemView, id, color);
         return this;
     }
 
@@ -203,7 +198,7 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
     }
 
     public EasyHolder setBackgroundColor(int id, int color) {
-        setBackgroundColor(mView, id, color);
+        setBackgroundColor(itemView, id, color);
         return this;
     }
 
@@ -226,7 +221,7 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
     }
 
     public EasyHolder setImageView(int id, int sourceid) {
-        setImageView(mView, id, sourceid);
+        setImageView(itemView, id, sourceid);
         return this;
     }
 
@@ -249,7 +244,7 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
     }
 
     public EasyHolder setImageView(int id, Drawable drawable) {
-        setImageView(mView, id, drawable);
+        setImageView(itemView, id, drawable);
         return this;
     }
 }
