@@ -140,7 +140,7 @@ public class EasyTabBar extends HorizontalScrollView {
 
         mIndicatorSpeed = ta.getInt(R.styleable.EasyTabBar_tabBarIndicatorSpeed, 20);
         /*指示器默认颜色*/
-        int INDICATOR_COLOR_DEFAULT = 0xff00abff;
+        int INDICATOR_COLOR_DEFAULT = 0xff0000ff;
         mIndicatorColor = ta.getColor(R.styleable.EasyTabBar_tabBarIndicatorColor, INDICATOR_COLOR_DEFAULT);
         mIndicatorHeight = ta.getDimensionPixelOffset(R.styleable.EasyTabBar_tabBarIndicatorHeight, 0);
         mIndicatorWidth = ta.getDimensionPixelOffset(R.styleable.EasyTabBar_tabBarIndicatorWidth, 0);
@@ -154,13 +154,14 @@ public class EasyTabBar extends HorizontalScrollView {
         mIndicatorPaddingLeft = ta.getDimensionPixelOffset(R.styleable.EasyTabBar_tabBarIndicatorPaddingLeft, 0);
         mIndicatorPaddingRight = ta.getDimensionPixelOffset(R.styleable.EasyTabBar_tabBarIndicatorPaddingRight, 0);
 
-        /*默认颜色*/
+        /*底部线条默认颜色*/
         int COLOR_DEFAULT = 0xff000000;
         mUnderlineColor = ta.getColor(R.styleable.EasyTabBar_tabBarUnderlineColor, COLOR_DEFAULT);
         mUnderlineHeight = ta.getDimensionPixelOffset(R.styleable.EasyTabBar_tabBarUnderlineHeight, 0);
 
         /*默认字体大小sp*/
         int TEXT_SIZE_DEFAULT = 16;
+        String tabBarTextList = ta.getString(R.styleable.EasyTabBar_tabBarTextList);
         mTabTextSize = ta.getDimensionPixelOffset(R.styleable.EasyTabBar_tabBarTextSize, (int) EasyDensityUtil.sp2px(TEXT_SIZE_DEFAULT));
         mTabWidth = ta.getDimensionPixelOffset(R.styleable.EasyTabBar_tabBarTabWidth, -2);//-2为WRAP_CONTENT属性
         mTabHeight = ta.getDimensionPixelOffset(R.styleable.EasyTabBar_tabBarTabHeight, -2);
@@ -169,10 +170,10 @@ public class EasyTabBar extends HorizontalScrollView {
         mTabPaddingTop = ta.getDimensionPixelOffset(R.styleable.EasyTabBar_tabBarTabPaddingTop, 0);
         mTabPaddingBottom = ta.getDimensionPixelOffset(R.styleable.EasyTabBar_tabBarTabPaddingBottom, 0);
         /*字体选中默认颜色*/
-        int TEXT_COLOR_SELECT_DEFAULT = 0xffffffff;
+        int TEXT_COLOR_SELECT_DEFAULT = 0xff000000;
         mTabSelectTextColor = ta.getColor(R.styleable.EasyTabBar_tabBarTextSelectColor, TEXT_COLOR_SELECT_DEFAULT);
         /*字体没选中默认颜色*/
-        int TEXT_COLOR_UNSELECT_DEFAULT = 0xff6b6b6b;
+        int TEXT_COLOR_UNSELECT_DEFAULT = 0xff666666;
         mTabUnSelectTextColor = ta.getColor(R.styleable.EasyTabBar_tabBarTextUnSelectColor, TEXT_COLOR_UNSELECT_DEFAULT);
         mTabTextBold = ta.getBoolean(R.styleable.EasyTabBar_tabBarTextBold, false);
         mTabTextItalic = ta.getBoolean(R.styleable.EasyTabBar_tabBarTextItalic, false);
@@ -180,7 +181,14 @@ public class EasyTabBar extends HorizontalScrollView {
 
         ta.recycle();
 
-        String[] titles = {"标题1", "标题2", "标题标题3", "标题4", "标题5", "标题6", "标题7", "标题8", "标题9", "标题10"};
+        String[] titles;
+        if (tabBarTextList != null && tabBarTextList.contains(",")) {
+            titles = tabBarTextList.split(",");
+        } else {
+            titles = new String[]{"标题1", "标题2", "标题3", "标题4", "标题5"};
+        }
+        mTitles.clear();
+        mTitles.addAll(Arrays.asList(titles));
         mTitles.clear();
         mTitles.addAll(Arrays.asList(titles));
         removeAllViews();
@@ -408,5 +416,9 @@ public class EasyTabBar extends HorizontalScrollView {
         mTitles.clear();
         mTitles.addAll(titles);
         initTabViews();
+    }
+
+    public List<String> getTitle() {
+        return mTitles;
     }
 }

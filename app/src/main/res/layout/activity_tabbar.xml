@@ -26,6 +26,8 @@
             app:tabBarTabPaddingLeft="15dp"
             app:tabBarTabPaddingRight="15dp"
             app:tabBarTabPaddingTop="5dp"
+            app:tabBarTextList="标题1,标题2,标题1,标题2,标题1,标题2,标题1,标题2"
+            app:tabBarTextSelectColor="#000"
             app:tabBarTextSize="18sp"
             app:tabBarUnderlineColor="#ff0000"
             app:tabBarUnderlineHeight="1dp" />
@@ -46,8 +48,9 @@
             app:tabBarTabPaddingLeft="15dp"
             app:tabBarTabPaddingRight="15dp"
             app:tabBarTabPaddingTop="5dp"
+            app:tabBarTextList="标题1,标题2,标题1,标题2"
+            app:tabBarTextSelectColor="#ff0000"
             app:tabBarTextSize="18sp"
-            app:tabBarUnderlineColor="#ff0000"
             app:tabBarUnderlineHeight="1dp" />
 
         <com.jen.easyui.tabbarview.EasyTabBar

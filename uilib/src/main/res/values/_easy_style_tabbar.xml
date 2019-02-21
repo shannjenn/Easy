@@ -23,6 +23,7 @@
         <attr name="tabBarUnderlineHeight" format="dimension" />
 
         <!-- 标题title -->
+        <attr name="tabBarTextList" format="string" /><!--用英文逗号隔开-->
         <attr name="tabBarTextSize" format="dimension" />
         <attr name="tabBarTextSelectColor" format="color" />
         <attr name="tabBarTextUnSelectColor" format="color" />
@@ -65,6 +66,7 @@
         <attr name="tabBarUnderlineHeight" />
 
         <!-- 标题title -->
+        <attr name="tabBarTextList" />
         <attr name="tabBarTextSize" />
         <attr name="tabBarTextSelectColor" />
         <attr name="tabBarTextUnSelectColor" />
