@@ -43,8 +43,7 @@ class Database {
             db.close();
             return true;
         } catch (SQLiteException e) {
-            SQLLog.e("数据库创建失败");
-            e.printStackTrace();
+            SQLLog.exception(ExceptionType.SQLiteException, "数据库创建失败");
         }
         return false;
     }
@@ -59,8 +58,7 @@ class Database {
         try {
             db = getWritableDatabase();
         } catch (SQLiteCantOpenDatabaseException e) {
-            SQLLog.e("SQLiteCantOpenDatabaseException");
-            e.printStackTrace();
+            SQLLog.exception(ExceptionType.SQLiteCantOpenDatabaseException, "SQLiteCantOpenDatabaseException");
             return;
         }
         try {
@@ -73,12 +71,11 @@ class Database {
             }
             db.setVersion(version);
             if (listener != null) {
-                listener.onUpgrade(db, oldVersion, oldVersion);
+                listener.onUpgrade(db, oldVersion, version);
             }
 
         } catch (SQLiteException e) {
-            SQLLog.e("SQLiteException");
-            e.printStackTrace();
+            SQLLog.exception(ExceptionType.SQLiteException, "SQLiteException");
         } finally {
             db.close();
         }
@@ -88,8 +85,7 @@ class Database {
         try {
             return getReadableDatabase().getVersion();
         } catch (SQLiteCantOpenDatabaseException e) {
-            SQLLog.e("SQLiteCantOpenDatabaseException");
-            e.printStackTrace();
+            SQLLog.exception(ExceptionType.SQLiteCantOpenDatabaseException, "SQLiteCantOpenDatabaseException");
             return -1;
         }
     }
@@ -123,7 +119,7 @@ class Database {
                 return false;
             }
         } catch (SQLiteException e) {
-//            e.printStackTrace();
+            SQLLog.exception(ExceptionType.SQLiteException, "checkTableExist 表不存在");
             return false;
         }
     }
@@ -144,7 +140,7 @@ class Database {
                 cursor.close();
             return exist;
         } catch (SQLiteException e) {
-//            e.printStackTrace();
+//            SQLLog.exception(ExceptionType.SQLiteException, "checkColumnExist 列不存在");
         }
         return exist;
     }

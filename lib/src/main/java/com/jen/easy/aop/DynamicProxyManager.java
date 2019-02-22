@@ -32,8 +32,7 @@ abstract class DynamicProxyManager implements InvocationHandler {
         try {
             return Proxy.newProxyInstance(target.getClass().getClassLoader(), target.getClass().getInterfaces(), this);
         } catch (IllegalArgumentException e) {
-            AopLog.e("切入对象为空");
-            e.printStackTrace();
+            AopLog.exception(ExceptionType.IllegalArgumentException, "切入对象为空");
         }
         return null;
     }
@@ -54,11 +53,9 @@ abstract class DynamicProxyManager implements InvocationHandler {
                 }
             }
         } catch (InstantiationException e) {
-            AopLog.e("setBeforeMethod方法错");
-            e.printStackTrace();
+            AopLog.exception(ExceptionType.InstantiationException, "setBeforeMethod方法错");
         } catch (IllegalAccessException e) {
-            AopLog.e("setBeforeMethod方法错");
-            e.printStackTrace();
+            AopLog.exception(ExceptionType.IllegalAccessException, "setBeforeMethod方法错");
         }
     }
 
@@ -78,11 +75,9 @@ abstract class DynamicProxyManager implements InvocationHandler {
                 }
             }
         } catch (InstantiationException e) {
-            AopLog.e("setAfterMethod方法错");
-            e.printStackTrace();
+            AopLog.exception(ExceptionType.InstantiationException, "setAfterMethod方法错");
         } catch (IllegalAccessException e) {
-            AopLog.e("setAfterMethod方法错");
-            e.printStackTrace();
+            AopLog.exception(ExceptionType.IllegalAccessException, "setAfterMethod方法错");
         }
     }
 
@@ -165,14 +160,11 @@ abstract class DynamicProxyManager implements InvocationHandler {
                 }
             }
         } catch (IllegalAccessException e) {
-            AopLog.e("invoke 方法错误");
-            e.printStackTrace();
+            AopLog.exception(ExceptionType.IllegalAccessException, "invoke 方法错误");
         } catch (IllegalArgumentException e) {
-            AopLog.e("invoke 方法错误");
-            e.printStackTrace();
+            AopLog.exception(ExceptionType.IllegalArgumentException, "invoke 方法错误");
         } catch (InvocationTargetException e) {
-            AopLog.e("InvocationTargetException invoke 方法错误");
-            e.printStackTrace();
+            AopLog.exception(ExceptionType.InvocationTargetException, "InvocationTargetException invoke 方法错误");
         }
         return result;
     }

@@ -165,10 +165,10 @@ abstract class HttpURLConnectionRunnable implements Runnable {
             childRun(connection);
             connection.disconnect();
         } catch (IOException e) {
-            e.printStackTrace();
+            HttpLog.exception(ExceptionType.IOException, "IOException 网络请求异常");
             fail("IOException 网络请求异常：" + mResponseCode);
         } catch (JSONException e) {
-            e.printStackTrace();
+            HttpLog.exception(ExceptionType.JSONException, "IOException 网络请求异常");
             fail("JSONException 网络请求异常：" + mResponseCode);
         }
     }

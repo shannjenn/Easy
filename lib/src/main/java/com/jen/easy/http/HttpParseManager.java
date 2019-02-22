@@ -43,8 +43,7 @@ class HttpParseManager {
         try {
             object = new JSONObject(obj);
         } catch (JSONException e) {
-            showErrorLog("parseJson方法解析错误JSONException");
-            e.printStackTrace();
+            showErrorLog("JSONException 解析错误，不属于JSONObject数据");
             return null;
         }
         t = parseJSONObject(tClass, object);
@@ -72,12 +71,10 @@ class HttpParseManager {
         try {
             tObj = tClass.newInstance();
         } catch (InstantiationException e) {
-            e.printStackTrace();
             showErrorLog("InstantiationException 创建对象出错：" + tClass.getName());
             return null;
         } catch (IllegalAccessException e) {
             showErrorLog("IllegalAccessException 创建对象出错" + tClass.getName());
-            e.printStackTrace();
             return null;
         }
 
@@ -97,7 +94,6 @@ class HttpParseManager {
                 field.set(tObj, value);
             } catch (IllegalAccessException e) {
                 showErrorLog("IllegalAccessException：header 参数：" + headKey);
-                e.printStackTrace();
             }
         }
 
@@ -124,13 +120,10 @@ class HttpParseManager {
                 }
                 field.set(tObj, value);
             } catch (JSONException e) {
-                e.printStackTrace();
                 showErrorLog("JSONException：类型：" + fieldClass + " 参数：" + param);
             } catch (IllegalAccessException e) {
-                e.printStackTrace();
                 showErrorLog("IllegalAccessException：类型：" + fieldClass + " 参数：" + param);
             } catch (IllegalArgumentException e) {
-                e.printStackTrace();
                 showErrorLog("IllegalArgumentException：类型：" + fieldClass + " 参数：" + param);
             }
         }
@@ -222,7 +215,6 @@ class HttpParseManager {
                 jsonObj = jsonArray.get(i);
             } catch (JSONException e) {
                 showErrorLog("JSONArray数据解析错误 JSONException");
-                e.printStackTrace();
                 continue;
             }
             Type type1 = null;
@@ -247,7 +239,6 @@ class HttpParseManager {
                     }
                 } catch (ClassNotFoundException e) {
                     showErrorLog("ClassNotFoundException：JSONArray数据解析错误，集合：" + type.toString() + " 集合对象：" + type1.toString());
-                    e.printStackTrace();
                 }
             } else if (jsonObj instanceof JSONArray) {
                 if (FieldType.isList(type1)) {
@@ -271,7 +262,6 @@ class HttpParseManager {
                     }
                 } catch (ClassNotFoundException e) {
                     showErrorLog("ClassNotFoundException：JSONArray数据解析错误，集合：" + type.toString() + " 集合对象：" + type1.toString());
-                    e.printStackTrace();
                 }
             }
         }
@@ -352,8 +342,7 @@ class HttpParseManager {
                 throwException(ExceptionType.ClassCastException, obj + " 不支持 int 类型转换");
             }
         } catch (NumberFormatException e) {
-            showErrorLog("NumberFormatException ：" + obj);
-            e.printStackTrace();
+            showErrorLog("NumberFormatException ：" + obj.getClass().getName());
         }
         return res;
     }
@@ -429,8 +418,7 @@ class HttpParseManager {
                 throwException(ExceptionType.ClassCastException, obj + " 不支持 float 类型转换");
             }
         } catch (NumberFormatException e) {
-            showErrorLog("NumberFormatException：" + obj);
-            e.printStackTrace();
+            showErrorLog("NumberFormatException：" + obj.getClass().getName());
         }
         return res;
     }
@@ -473,8 +461,7 @@ class HttpParseManager {
                 throwException(ExceptionType.ClassCastException, obj + " 不支持 Long 类型转换");
             }
         } catch (NumberFormatException e) {
-            showErrorLog("NumberFormatException：" + obj);
-            e.printStackTrace();
+            showErrorLog("NumberFormatException：" + obj.getClass().getName());
         }
         return res;
     }
@@ -517,8 +504,7 @@ class HttpParseManager {
                 throwException(ExceptionType.ClassCastException, obj + " 不支持 double 类型转换");
             }
         } catch (NumberFormatException e) {
-            showErrorLog("NumberFormatException：" + obj);
-            e.printStackTrace();
+            showErrorLog("NumberFormatException：" + obj.getClass().getName());
         }
         return res;
     }
@@ -563,8 +549,7 @@ class HttpParseManager {
                 throwException(ExceptionType.ClassCastException, obj + " 不支持 Short 类型转换");
             }
         } catch (NumberFormatException e) {
-            showErrorLog("NumberFormatException：" + obj);
-            e.printStackTrace();
+            showErrorLog("NumberFormatException：" + obj.getClass().getName());
         }
         return res;
     }

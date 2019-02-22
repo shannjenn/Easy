@@ -252,11 +252,9 @@ class HttpReflectManager {
                     HttpLog.exception(ExceptionType.IllegalArgumentException, "不支持该类型参数：" + field.getName());
                 }
             } catch (IllegalAccessException e) {
-                HttpLog.e("parseRequest IllegalAccessException");
-                e.printStackTrace();
+                HttpLog.exception(ExceptionType.IllegalAccessException, "parseRequest IllegalAccessException");
             } catch (JSONException e) {
-                HttpLog.e("parseRequest JSONException");
-                e.printStackTrace();
+                HttpLog.exception(ExceptionType.JSONException, "parseRequest JSONException");
             }
         }
     }

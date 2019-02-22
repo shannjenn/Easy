@@ -88,8 +88,7 @@ public abstract class HttpRequest {
         replaceHttpResultMap.put(oldChar, newChar);
     }
 
-    @RequestStatus
-    public int getRequestStatus() {
+    public @RequestStatus int getRequestStatus() {
         return requestStatus;
     }
 

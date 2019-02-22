@@ -41,8 +41,7 @@ abstract class BindViewManager {
             try {
                 field.set(activity, view);
             } catch (IllegalAccessException e) {
-                BindLog.e(activity.getClass().toString());
-                e.printStackTrace();
+                BindLog.exception(ExceptionType.IllegalAccessException, activity.getClass().toString());
             }
         }
 
@@ -61,11 +60,9 @@ abstract class BindViewManager {
                         try {
                             method.invoke(activity, view);
                         } catch (IllegalAccessException e) {
-                            BindLog.e(activity.getClass().toString());
-                            e.printStackTrace();
+                            BindLog.exception(ExceptionType.IllegalAccessException, activity.getClass().toString());
                         } catch (InvocationTargetException e) {
-                            BindLog.e(activity.getClass().toString());
-                            e.printStackTrace();
+                            BindLog.exception(ExceptionType.InvocationTargetException, "InvocationTargetException " + activity.getClass().toString());
                         }
                     }
                 });
@@ -89,8 +86,7 @@ abstract class BindViewManager {
             try {
                 field.set(obj, view);
             } catch (IllegalAccessException e) {
-                BindLog.e(obj.getClass().toString());
-                e.printStackTrace();
+                BindLog.exception(ExceptionType.IllegalAccessException, obj.getClass().toString());
             }
         }
 
@@ -107,11 +103,9 @@ abstract class BindViewManager {
                         try {
                             method.invoke(obj, view);
                         } catch (IllegalAccessException e) {
-                            BindLog.e(obj.getClass().toString());
-                            e.printStackTrace();
+                            BindLog.exception(ExceptionType.IllegalAccessException, obj.getClass().toString());
                         } catch (InvocationTargetException e) {
-                            BindLog.e(obj.getClass().toString());
-                            e.printStackTrace();
+                            BindLog.exception(ExceptionType.InvocationTargetException, "InvocationTargetException " + obj.getClass().toString());
                         }
                     }
                 });

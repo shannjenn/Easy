@@ -1,6 +1,14 @@
 package com.jen.easy.exception;
 
+import android.database.sqlite.SQLiteCantOpenDatabaseException;
+import android.database.sqlite.SQLiteException;
+
 import com.jen.easy.log.EasyLog;
+
+import org.json.JSONException;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * 作者：ShannJenn
@@ -48,6 +56,20 @@ abstract class Log {
                     throw new InstantiationException(msg);
                 case ExceptionType.IllegalAccessException:
                     throw new IllegalAccessException(msg);
+                case ExceptionType.IllegalStateException:
+                    throw new IllegalStateException(msg);
+                case ExceptionType.SQLiteCantOpenDatabaseException:
+                    throw new SQLiteCantOpenDatabaseException(msg);
+                case ExceptionType.SQLiteException:
+                    throw new SQLiteException(msg);
+                case ExceptionType.JSONException:
+                    throw new JSONException(msg);
+                case ExceptionType.InvocationTargetException:
+                    throw new RuntimeException(msg);
+                case ExceptionType.IOException:
+                    throw new IOException(msg);
+                case ExceptionType.FileNotFoundException:
+                    throw new FileNotFoundException(msg);
             }
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -62,6 +84,12 @@ abstract class Log {
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

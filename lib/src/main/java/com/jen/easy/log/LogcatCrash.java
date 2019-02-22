@@ -1,5 +1,6 @@
 package com.jen.easy.log;
 
+import com.jen.easy.exception.ExceptionType;
 import com.jen.easy.exception.LogcatLog;
 import com.jen.easy.log.imp.LogcatCrashListener;
 
@@ -70,7 +71,7 @@ class LogcatCrash implements UncaughtExceptionHandler {
                 ex.printStackTrace(p);
                 p.flush();
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                LogcatLog.exception(ExceptionType.FileNotFoundException, "文件不存在");
             }
 
             userCatch = mListener.onBeforeHandleException(ex);
@@ -80,12 +81,6 @@ class LogcatCrash implements UncaughtExceptionHandler {
             exceptionHandler.uncaughtException(thread, ex);
         } else {
             LogcatLog.w("用户来处理异常");
-            /*try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                EasyLog.w("LogcatCrash InterruptedException");
-            }*/
             // 退出程序
             android.os.Process.killProcess(android.os.Process.myPid());
 //            System.exit(1);

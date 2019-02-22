@@ -1,6 +1,7 @@
 package com.jen.easy.log;
 
 import com.jen.easy.constant.Unicode;
+import com.jen.easy.exception.ExceptionType;
 import com.jen.easy.exception.LogcatLog;
 
 import java.io.BufferedReader;
@@ -94,14 +95,13 @@ class LogDumper extends Thread {
                         out.flush();
                         out.close();
                     } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+                        LogcatLog.exception(ExceptionType.FileNotFoundException, "FileNotFoundException");
                     }
                 }
             }
 
         } catch (IOException e) {
-            LogcatLog.e("IOException");
-            e.printStackTrace();
+            LogcatLog.exception(ExceptionType.IOException, "IOException");
         } finally {
             if (logcatProc != null) {
                 logcatProc.destroy();
@@ -112,7 +112,7 @@ class LogDumper extends Thread {
                     reader.close();
                     reader = null;
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LogcatLog.exception(ExceptionType.IOException, "IOException");
                 }
             }
         }

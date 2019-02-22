@@ -2,6 +2,7 @@ package com.jen.easyui.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.util.Base64;
 import android.util.Log;
 
@@ -37,7 +38,7 @@ public class EasySharedUtil {
      * @param defaultValue 默认值
      * @return 值
      */
-    public String getString(String name, String defaultValue) {
+    public String getString(String name, @NonNull String defaultValue) {
         return config.getString(name, defaultValue);
     }
 
@@ -47,7 +48,7 @@ public class EasySharedUtil {
      * @param name  参数
      * @param value 值
      */
-    public void setString(String name, String value) {
+    public void setString(String name, @NonNull String value) {
         editor = config.edit();
         editor.putString(name, value);
         editor.apply();
@@ -79,12 +80,12 @@ public class EasySharedUtil {
     /**
      * 获取int
      *
-     * @param name   参数
-     * @param defaut 默认值
+     * @param name         参数
+     * @param defaultValue 默认值
      * @return 值
      */
-    public int getInt(String name, int defaut) {
-        return config.getInt(name, defaut);
+    public int getInt(String name, int defaultValue) {
+        return config.getInt(name, defaultValue);
     }
 
     /**
@@ -121,15 +122,15 @@ public class EasySharedUtil {
      * @param name 参数
      * @return 值
      */
-    public <T> List<T> getList(String name) {
-        List<T> valueLlist = new ArrayList<>();
-        String value = getString(name, null);
-        if (null == value) {
-            return valueLlist;
+    public <T> List<T> getList(@NonNull String name) {
+        List<T> valueList = new ArrayList<>();
+        String value = getString(name, "");
+        if (value.length() == 0) {
+            return valueList;
         }
         List<T> list = string2List(value);
-        valueLlist.addAll(list);
-        return valueLlist;
+        valueList.addAll(list);
+        return valueList;
     }
 
     /**
@@ -139,8 +140,8 @@ public class EasySharedUtil {
      * @return 值
      */
     public Object getObject(String name) {
-        String value = getString(name, null);
-        if (null == value) {
+        String value = getString(name, "");
+        if (value.length() == 0) {
             return null;
         }
         return string2Object(value);
@@ -153,7 +154,7 @@ public class EasySharedUtil {
      * @param obj  值
      * @return 是否成功
      */
-    public boolean setObject(String name, Object obj) {
+    public boolean setObject(String name, @NonNull Object obj) {
         String value = object2String(obj);
         if (null == value) {
             return false;

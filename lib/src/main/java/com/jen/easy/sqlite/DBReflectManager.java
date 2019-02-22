@@ -159,7 +159,7 @@ class DBReflectManager {
                 String value = field.get(obj) + "";
                 primaryKeys_values.put(name, value);
             } catch (IllegalAccessException e) {
-                e.printStackTrace();
+                SQLLog.exception(ExceptionType.IllegalAccessException, "获取主键失败");
             }
         }
         return primaryKeys_values;

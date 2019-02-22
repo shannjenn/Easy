@@ -24,7 +24,9 @@ import java.lang.annotation.RetentionPolicy;
  */
 @IntDef({ExceptionType.NullPointerException, ExceptionType.ClassCastException, ExceptionType.NumberFormatException,
         ExceptionType.IllegalArgumentException, ExceptionType.RuntimeException, ExceptionType.InstantiationException,
-        ExceptionType.IllegalAccessException})
+        ExceptionType.IllegalAccessException, ExceptionType.IllegalStateException, ExceptionType.SQLiteCantOpenDatabaseException,
+        ExceptionType.SQLiteException, ExceptionType.JSONException, ExceptionType.InvocationTargetException, ExceptionType.IOException,
+        ExceptionType.FileNotFoundException})
 @Retention(RetentionPolicy.SOURCE)
 public @interface ExceptionType {
     int NullPointerException = 0;
@@ -34,4 +36,11 @@ public @interface ExceptionType {
     int RuntimeException = 4;
     int InstantiationException = 5;
     int IllegalAccessException = 6;
+    int IllegalStateException = 7;
+    int SQLiteCantOpenDatabaseException = 8;
+    int SQLiteException = 9;
+    int JSONException = 10;
+    int InvocationTargetException = 11;
+    int IOException = 12;
+    int FileNotFoundException = 13;
 }

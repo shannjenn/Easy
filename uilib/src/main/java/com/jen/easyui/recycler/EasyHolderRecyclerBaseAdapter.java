@@ -20,7 +20,7 @@ public abstract class EasyHolderRecyclerBaseAdapter<T> extends EasyRecyclerAdapt
     /**
      * @param data 数据
      */
-    protected EasyHolderRecyclerBaseAdapter(Context context, List<T> data) {
+    public EasyHolderRecyclerBaseAdapter(Context context, List<T> data) {
         super(context, data);
     }
 

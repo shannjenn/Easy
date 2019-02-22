@@ -3,8 +3,6 @@ package com.jen.easyui.util;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.jen.easy.sqlite.DBDao;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
