@@ -44,18 +44,18 @@ class LogDumper extends Thread {
         this.PID = String.valueOf(PID);
     }
 
-    void setLogLevel(@LogcatLevel int level) {
+    void setLogLevel(LogcatLevel level) {
         switch (level) {
-            case LogcatLevel.E:
+            case E:
                 cmds = "logcat *:e | grep \"(" + PID + ")\"";// e级别
                 break;
-            case LogcatLevel.W:
+            case W:
                 cmds = "logcat *:e *:w | grep \"(" + PID + ")\"";// w到e级别
                 break;
-            case LogcatLevel.I:
+            case I:
                 cmds = "logcat *:e *:i | grep \"(" + PID + ")\"";// i到e级别
                 break;
-            case LogcatLevel.D:
+            case D:
                 cmds = "logcat *:e *:d | grep \"(" + PID + ")\"";// d到e级别
                 break;
         }

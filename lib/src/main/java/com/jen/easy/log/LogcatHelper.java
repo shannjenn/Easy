@@ -32,7 +32,7 @@ public class LogcatHelper extends LogcatHelperManager {
      * @param level :'d','i','w','e'
      */
     @Override
-    public void setLevel(@LogcatLevel int level) {
+    public void setLevel(LogcatLevel level) {
         super.setLevel(level);
     }
 

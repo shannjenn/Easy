@@ -30,7 +30,7 @@ abstract class LogcatHelperManager {
      *
      * @param level :'d','i','w','e'
      */
-    protected void setLevel(@LogcatLevel int level) {
+    protected void setLevel(LogcatLevel level) {
         LogDumper.getInstance().setLogLevel(level);
     }
 

@@ -38,7 +38,7 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
         byte[] bufferOut = new byte[1024];
         while ((len = in.read(bufferOut)) != -1) {
             out.write(bufferOut, 0, len);
-            if (request.requestStatus == RequestStatus.stop) {
+            if (request.requestStatus == RequestStatus.interrupt) {
                 break;
             } else {
                 progress(curBytes, request.endPoint);
@@ -56,7 +56,7 @@ class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
             buffer.append(line);
         }
         reader.close();
-        if (mRequest.requestStatus == RequestStatus.stop) {//拦截数据解析
+        if (mRequest.requestStatus == RequestStatus.interrupt) {//拦截数据解析
             HttpLog.d(mUrlStr + " 网络请求停止!\n   ");
             return;
         }

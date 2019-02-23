@@ -10,11 +10,9 @@ import java.lang.annotation.RetentionPolicy;
  * 时间：2019/01/08.
  * 说明：日志级别
  */
-@IntDef({LogcatLevel.E, LogcatLevel.W, LogcatLevel.I, LogcatLevel.D})
-@Retention(RetentionPolicy.SOURCE)
-public @interface LogcatLevel {
-    int E = 0;//错误级别
-    int W = 1;//告警级别
-    int I = 2;//
-    int D = 3;//
+public enum LogcatLevel {
+    E,//错误级别
+    W,//告警级别
+    I,//信息级别
+    D//调试级别
 }

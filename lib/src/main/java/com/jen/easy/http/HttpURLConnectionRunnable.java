@@ -158,7 +158,7 @@ abstract class HttpURLConnectionRunnable implements Runnable {
                 headBuilder.append(value);
                 headBuilder.append(" ");
             }
-            if (mRequest.requestStatus == RequestStatus.stop) {
+            if (mRequest.requestStatus == RequestStatus.interrupt) {
                 return;
             }
             HttpLog.i("网络请求：" + method + " " + mUrlStr + " 请求头部：" + headBuilder.toString() + " 请求参数：" + mBody.toString());

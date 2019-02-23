@@ -54,13 +54,13 @@ class HttpURLConnectionDownloadRunnable extends HttpURLConnectionRunnable {
             while ((len = inStream.read(buffer)) != -1) {
                 randFile.write(buffer, 0, len);
                 curBytes += len;
-                if (mRequest.requestStatus == RequestStatus.stop) {
+                if (mRequest.requestStatus == RequestStatus.interrupt) {
                     break;
                 } else {
                     progress(curBytes, request.endPoint);
                 }
             }
-            if (mRequest.requestStatus == RequestStatus.stop) {
+            if (mRequest.requestStatus == RequestStatus.interrupt) {
                 HttpLog.d(mUrlStr + " 网络请求停止!\n   ");
                 return;
             }
@@ -71,7 +71,7 @@ class HttpURLConnectionDownloadRunnable extends HttpURLConnectionRunnable {
                 fail("下载失败：" + mResponseCode + " curBytes = " + curBytes + " endPoint = " + request.endPoint);
             }
         } else {
-            if (mRequest.requestStatus == RequestStatus.stop) {
+            if (mRequest.requestStatus == RequestStatus.interrupt) {
                 HttpLog.d(mUrlStr + " 网络请求停止!\n   ");
                 return;
             }

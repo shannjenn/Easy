@@ -10,10 +10,9 @@ import java.lang.annotation.RetentionPolicy;
  * 时间：2017/8/12.
  * 说明：网络请求运行状态
  */
-@IntDef({RequestStatus.running, RequestStatus.stop, RequestStatus.finish})
-@Retention(RetentionPolicy.SOURCE)
-public @interface RequestStatus {
-    int running = 0;//正在运行
-    int stop = 1;//被停止
-    int finish = 2;//完成
+public enum RequestStatus {
+    ready,//准备状态,未执行
+    running,//正在运行
+    finish,//完成
+    interrupt//被中断/停止
 }

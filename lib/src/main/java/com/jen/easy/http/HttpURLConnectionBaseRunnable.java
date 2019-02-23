@@ -46,7 +46,7 @@ class HttpURLConnectionBaseRunnable extends HttpURLConnectionRunnable {
             reader.close();
             inStream.close();
             connection.disconnect();
-            if (mRequest.getRequestStatus() == RequestStatus.stop) {//拦截数据解析
+            if (mRequest.getRequestStatus() == RequestStatus.interrupt) {//拦截数据解析
                 HttpLog.d(mUrlStr + " 网络请求停止!\n   ");
                 return;
             }
@@ -59,7 +59,7 @@ class HttpURLConnectionBaseRunnable extends HttpURLConnectionRunnable {
             mRequest.requestStatus = RequestStatus.finish;
             success(result, headMap);
         } else {
-            if (mRequest.getRequestStatus() == RequestStatus.stop) {//拦截数据解析
+            if (mRequest.getRequestStatus() == RequestStatus.interrupt) {//拦截数据解析
                 HttpLog.d(mUrlStr + " 网络请求停止!\n   ");
                 return;
             }
