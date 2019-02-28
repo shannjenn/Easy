@@ -9,18 +9,19 @@ import com.jen.easyui.R;
 public class Build {
     private Context context;
 
-    private Drawable icon;
-    private boolean showCloseImg;
+    private Drawable iconLeft;
+    private Drawable iconRight;
     private String txtTitle;
     private GravityTitle titleGravity = GravityTitle.Left;
     private CharSequence txtContent;
+    private String txtCheckBox;
     private GravityContent contentGravity = GravityContent.Center;
     private String txtLeft;
     private String txtMiddle;
     private String txtRight;
 
     private int flagCode;
-    private EasyDialogListener easyDialogListener;
+    private DialogListener listener;
 
     Build(Context context) {
         this.context = context;
@@ -28,14 +29,15 @@ public class Build {
 
     public EasyDialog create() {
         EasyDialog dialog = new EasyDialog(context, R.style._easy_dialog);
-        dialog.setIcon(icon);
-        dialog.setShowCloseImg(showCloseImg);
+        dialog.setIconLeft(iconLeft);
+        dialog.setIconRight(iconRight);
         dialog.setTxtTile(txtTitle);
         dialog.setTxtContent(txtContent);
+        dialog.setTxtCheckBox(txtCheckBox);
         dialog.setTxtLeft(txtLeft);
         dialog.setTxtMiddle(txtMiddle);
         dialog.setTxtRight(txtRight);
-        dialog.setEasyDialogListener(easyDialogListener);
+        dialog.setListener(listener);
         dialog.setFlagCode(flagCode);
         dialog.setTitleGravity(titleGravity);
         dialog.setContentGravity(contentGravity);
@@ -44,13 +46,13 @@ public class Build {
         return dialog;
     }
 
-    public Build setIcon(Drawable icon) {
-        this.icon = icon;
+    public Build setIconLeft(Drawable iconLeft) {
+        this.iconLeft = iconLeft;
         return this;
     }
 
-    public Build setShowCloseImg(boolean showCloseImg) {
-        this.showCloseImg = showCloseImg;
+    public Build setIconRight(Drawable iconRight) {
+        this.iconRight = iconRight;
         return this;
     }
 
@@ -66,6 +68,11 @@ public class Build {
 
     public Build setContent(CharSequence txt) {
         txtContent = txt;
+        return this;
+    }
+
+    public Build setTxtCheckBox(String txtCheckBox) {
+        this.txtCheckBox = txtCheckBox;
         return this;
     }
 
@@ -89,8 +96,8 @@ public class Build {
         return this;
     }
 
-    public Build setEasyDialogListener(EasyDialogListener easyDialogListener) {
-        this.easyDialogListener = easyDialogListener;
+    public Build setListener(DialogListener listener) {
+        this.listener = listener;
         return this;
     }
 

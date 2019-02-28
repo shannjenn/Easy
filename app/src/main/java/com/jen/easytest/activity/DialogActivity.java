@@ -8,7 +8,6 @@ import com.jen.easytest.R;
 import com.jen.easyui.base.EasyActivity;
 import com.jen.easyui.dialog.EasyDialog;
 import com.jen.easyui.dialog.EasyLoading;
-import com.jen.easyui.dialog.EasyDialogListener;
 
 /**
  * 作者：ShannJenn
@@ -36,32 +35,11 @@ public class DialogActivity extends EasyActivity {
     protected void initViews() {
         loading = new EasyLoading(this);
         dialog = EasyDialog.build(this)
-                .setIcon(getResources().getDrawable(R.mipmap.ic_launcher))
+                .setIconLeft(getResources().getDrawable(R.mipmap.ic_launcher))
                 .setTitle("提示哟哟")
                 .setContent("这是一个Dialog测试")
                 .setLeftButton("左边")
                 .setRightButton("右边")
-                .setEasyDialogListener(new EasyDialogListener() {
-                    @Override
-                    public void leftButton(int flagCode) {
-
-                    }
-
-                    @Override
-                    public void middleButton(int flagCode) {
-
-                    }
-
-                    @Override
-                    public void rightButton(int flagCode) {
-
-                    }
-
-                    @Override
-                    public void dismiss(int flagCode) {
-
-                    }
-                })
                 .create();
     }
 

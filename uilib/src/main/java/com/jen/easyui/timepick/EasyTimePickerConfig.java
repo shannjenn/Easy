@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.jen.easyui.R;
 
+
 /**
  * 作者：ShannJenn
  * 时间：2018/07/31.
@@ -61,7 +62,7 @@ public class EasyTimePickerConfig {
     /**
      * 最小年限
      */
-    public EasyTimePickerConfig minYearLimit(int limit) {
+    public EasyTimePickerConfig setMinYearLimit(int limit) {
         calendarGenerator.setMinYearLimit(limit);
         return this;
     }
@@ -69,7 +70,7 @@ public class EasyTimePickerConfig {
     /**
      * 最大年限
      */
-    public EasyTimePickerConfig maxYearLimit(int limit) {
+    public EasyTimePickerConfig setMaxYearLimit(int limit) {
         calendarGenerator.setMaxYearLimit(limit);
         return this;
     }

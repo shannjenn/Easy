@@ -153,6 +153,9 @@
 -keep class com.jen.easy.log.EasyLog {
     *;
 }
+-keep class com.jen.easy.log.LogLevel {
+    *;
+}
 -keep class com.jen.easy.log.EasyUILog {
     *;
 }

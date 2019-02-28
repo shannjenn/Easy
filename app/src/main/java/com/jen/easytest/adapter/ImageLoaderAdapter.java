@@ -52,7 +52,7 @@ public class ImageLoaderAdapter<T extends ImageLoaderModel> extends EasyRecycler
         protected void onBindData(View view, int viewType, int position) {
             ImageLoaderModel model = mData.get(position);
 
-            ImageView icon = view.findViewById(R.id.iv_icon);
+            ImageView icon = view.findViewById(R.id.iv_icon_left);
             TextView tv_name = view.findViewById(R.id.tv_name);
 
             tv_name.setText(model.getTitle());

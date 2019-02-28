@@ -2,7 +2,6 @@ package com.jen.easyui.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
 import android.util.Base64;
 import android.util.Log;
 
@@ -25,6 +24,18 @@ public class EasySharedUtil {
     private final String Unicode = "UTF-8";
     private SharedPreferences config;
     private SharedPreferences.Editor editor;
+    private static EasySharedUtil me;
+
+    public static EasySharedUtil getIns() {
+        if (me == null) {
+            synchronized (EasySharedUtil.class) {
+                if (me == null) {
+//                    me = new EasySharedUtil(XGApplication.getApplication());
+                }
+            }
+        }
+        return me;
+    }
 
 
     public EasySharedUtil(Context context) {
@@ -38,7 +49,7 @@ public class EasySharedUtil {
      * @param defaultValue 默认值
      * @return 值
      */
-    public String getString(String name, @NonNull String defaultValue) {
+    public String getString(String name, String defaultValue) {
         return config.getString(name, defaultValue);
     }
 
@@ -48,7 +59,7 @@ public class EasySharedUtil {
      * @param name  参数
      * @param value 值
      */
-    public void setString(String name, @NonNull String value) {
+    public void setString(String name, String value) {
         editor = config.edit();
         editor.putString(name, value);
         editor.apply();
@@ -61,8 +72,8 @@ public class EasySharedUtil {
      * @param name 参数
      * @return 值
      */
-    public boolean getBoolean(String name) {
-        return config.getBoolean(name, false);
+    public boolean getBoolean(String name, boolean defaultValue) {
+        return config.getBoolean(name, defaultValue);
     }
 
     /**
@@ -122,7 +133,7 @@ public class EasySharedUtil {
      * @param name 参数
      * @return 值
      */
-    public <T> List<T> getList(@NonNull String name) {
+    public <T> List<T> getList(String name) {
         List<T> valueList = new ArrayList<>();
         String value = getString(name, "");
         if (value.length() == 0) {
@@ -154,7 +165,7 @@ public class EasySharedUtil {
      * @param obj  值
      * @return 是否成功
      */
-    public boolean setObject(String name, @NonNull Object obj) {
+    public boolean setObject(String name, Object obj) {
         String value = object2String(obj);
         if (null == value) {
             return false;
