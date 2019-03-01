@@ -15,10 +15,10 @@ import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.Map;
 
-class HttpURLConnectionUploadRunnable extends HttpURLConnectionRunnable {
+class URLConnectionUploadRunnable extends URLConnectionRunnable {
     private HttpUploadListener uploadListener;
 
-    HttpURLConnectionUploadRunnable(HttpUploadRequest request, HttpUploadListener uploadListener, int flagCode, String flagStr) {
+    URLConnectionUploadRunnable(HttpUploadRequest request, HttpUploadListener uploadListener, int flagCode, String flagStr) {
         super(request, flagCode, flagStr);
         this.uploadListener = uploadListener;
     }

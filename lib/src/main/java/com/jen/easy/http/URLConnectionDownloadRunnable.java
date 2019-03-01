@@ -12,10 +12,10 @@ import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.Map;
 
-class HttpURLConnectionDownloadRunnable extends HttpURLConnectionRunnable {
+class URLConnectionDownloadRunnable extends URLConnectionRunnable {
     private HttpDownloadListener downloadListener;
 
-    HttpURLConnectionDownloadRunnable(HttpDownloadRequest request, HttpDownloadListener downloadListener, int flagCode, String flagStr) {
+    URLConnectionDownloadRunnable(HttpDownloadRequest request, HttpDownloadListener downloadListener, int flagCode, String flagStr) {
         super(request, flagCode, flagStr);
         this.downloadListener = downloadListener;
     }

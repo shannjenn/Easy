@@ -69,13 +69,13 @@ abstract class HttpManager {
         }
         request.requestStatus = RequestStatus.running;
         if (request instanceof HttpBaseRequest) {
-            HttpURLConnectionBaseRunnable base = new HttpURLConnectionBaseRunnable((HttpBaseRequest) request, httpBaseListener, flagCode, flagStr);
+            URLConnectionBaseRunnable base = new URLConnectionBaseRunnable((HttpBaseRequest) request, httpBaseListener, flagCode, flagStr);
             pool.execute(base);
         } else if (request instanceof HttpDownloadRequest) {
-            HttpURLConnectionDownloadRunnable download = new HttpURLConnectionDownloadRunnable((HttpDownloadRequest) request, httpDownloadListener, flagCode, flagStr);
+            URLConnectionDownloadRunnable download = new URLConnectionDownloadRunnable((HttpDownloadRequest) request, httpDownloadListener, flagCode, flagStr);
             pool.execute(download);
         } else if (request instanceof HttpUploadRequest) {
-            HttpURLConnectionUploadRunnable upload = new HttpURLConnectionUploadRunnable((HttpUploadRequest) request, httpUploadListener, flagCode, flagStr);
+            URLConnectionUploadRunnable upload = new URLConnectionUploadRunnable((HttpUploadRequest) request, httpUploadListener, flagCode, flagStr);
             pool.execute(upload);
         } else {
             HttpLog.e("请求参数类型错误，请继承正确:" + request.getClass().getName());

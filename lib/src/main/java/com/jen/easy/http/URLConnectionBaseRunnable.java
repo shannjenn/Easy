@@ -14,10 +14,10 @@ import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.Map;
 
-class HttpURLConnectionBaseRunnable extends HttpURLConnectionRunnable {
+class URLConnectionBaseRunnable extends URLConnectionRunnable {
     private HttpBaseListener baseListener;
 
-    HttpURLConnectionBaseRunnable(HttpBaseRequest request, HttpBaseListener baseListener, int flagCode, String flagStr) {
+    URLConnectionBaseRunnable(HttpBaseRequest request, HttpBaseListener baseListener, int flagCode, String flagStr) {
         super(request, flagCode, flagStr);
         this.baseListener = baseListener;
     }
