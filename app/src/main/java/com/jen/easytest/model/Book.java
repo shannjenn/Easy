@@ -13,13 +13,17 @@ import com.jen.easy.EasyResponse;
 
 public class Book implements Parcelable {
 
+    public Book(){
+
+    }
+
     @EasyResponse(value = "_id")//返回参数名为_id
-    private int id;
+    private int id = 11;
 
     @EasyRequest(type = EasyRequestType.Param)
-    private String name;//不注释默认作为参数返回,参数名与变量名一致，name
+    private String name = "22";//不注释默认作为参数返回,参数名与变量名一致，name
 
-    private long date;
+    private long date = 333;
 
     private String des;
 

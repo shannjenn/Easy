@@ -53,7 +53,7 @@ public class HttpActivity extends EasyActivity {
 
     }
 
-    @EasyBindClick({R.id.get, R.id.post, R.id.put, R.id.upload, R.id.download, R.id.parse})
+    @EasyBindClick({R.id.get, R.id.post, R.id.put, R.id.upload, R.id.download, R.id.parse, R.id.HttpReflectManager_getRequestParams})
     protected void onBindClick(View view) {
         switch (view.getId()) {
             case R.id.parse:

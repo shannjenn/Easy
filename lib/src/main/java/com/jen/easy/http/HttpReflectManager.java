@@ -217,7 +217,21 @@ class HttpReflectManager {
                     Object item0 = listObj.get(0);
                     boolean isBasic = item0 instanceof String || item0 instanceof Integer || item0 instanceof Float
                             || item0 instanceof Long || item0 instanceof Double || item0 instanceof Boolean;
-                    JSONArray jsonArray = new JSONArray();
+                    JSONArray jsonArray = null;
+                    boolean haveArray = false;
+                    /*
+                     * 重复对象叠加字段 重要标记
+                     */
+                    if (body.has(key)) {
+                        Object object = body.get(key);
+                        if (object instanceof JSONArray) {
+                            jsonArray = (JSONArray) object;
+                            haveArray = true;
+                        }
+                    }
+                    if (jsonArray == null) {
+                        jsonArray = new JSONArray();
+                    }
                     if (isBasic) {
                         for (int i = 0; i < listObj.size(); i++) {
                             Object itemObj = listObj.get(i);
@@ -239,13 +253,27 @@ class HttpReflectManager {
                             }
                         }
                     }
-                    if (jsonArray.length() > 0) {
+                    if (!haveArray && jsonArray.length() > 0) {
                         body.put(key, jsonArray);
                     }
                 } else if (FieldType.isEntityClass(field.getType())) {
-                    JSONObject item = new JSONObject();
+                    JSONObject item = null;
+                    boolean haveObject = false;
+                    /*
+                     * 重复对象叠加字段 重要标记
+                     */
+                    if (body.has(key)) {
+                        Object object = body.get(key);
+                        if (object instanceof JSONObject) {
+                            item = (JSONObject) object;
+                            haveObject = true;
+                        }
+                    }
+                    if (item == null) {
+                        item = new JSONObject();
+                    }
                     parseRequest(loopMap, value, urls, item, heads);
-                    if (item.length() != 0) {//有值才加入
+                    if (!haveObject && item.length() != 0) {//有值才加入
                         body.put(key, item);
                     }
                 } else {

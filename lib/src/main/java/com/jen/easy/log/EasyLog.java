@@ -17,46 +17,7 @@ public class EasyLog {
     public static LogLevel level = LogLevel.D;
 
     private static boolean isPrint(LogLevel myLevel) {
-        boolean print = true;
-        switch (level) {
-            case CLOSE: {
-                break;
-            }
-            case D: {
-                break;
-            }
-            case I: {
-                switch (myLevel) {
-                    case D: {
-                        print = false;
-                        break;
-                    }
-                }
-                break;
-            }
-            case W: {
-                switch (myLevel) {
-                    case D:
-                    case I: {
-                        print = false;
-                        break;
-                    }
-                }
-                break;
-            }
-            case E: {
-                switch (myLevel) {
-                    case D:
-                    case I:
-                    case W: {
-                        print = false;
-                        break;
-                    }
-                }
-                break;
-            }
-        }
-        return print;
+        return myLevel.ordinal() >= level.ordinal();
     }
 
     public static void d(String msg) {
