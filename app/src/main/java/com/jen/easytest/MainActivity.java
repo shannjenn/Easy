@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.jen.easy.EasyBindClick;
+import com.jen.easy.log.EasyLog;
 import com.jen.easytest.activity.BasicViewActivity;
 import com.jen.easytest.activity.DialogActivity;
 import com.jen.easytest.activity.HttpActivity;
@@ -30,7 +31,10 @@ public class MainActivity extends EasyActivity {
 
     @Override
     protected void intDataBeforeView() {
-
+        EasyLog.d("1111111111");
+        EasyLog.i("2222222222");
+        EasyLog.w("33333333333");
+        EasyLog.e("44444444444");
     }
 
     @Override

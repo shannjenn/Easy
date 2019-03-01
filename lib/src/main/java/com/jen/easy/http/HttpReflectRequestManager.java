@@ -5,8 +5,6 @@ import com.jen.easy.EasyHttpPost;
 import com.jen.easy.EasyHttpPut;
 import com.jen.easy.EasyRequest;
 import com.jen.easy.EasyRequestType;
-import com.jen.easy.EasyResponse;
-import com.jen.easy.EasyResponseType;
 import com.jen.easy.constant.FieldType;
 import com.jen.easy.exception.ExceptionType;
 import com.jen.easy.exception.HttpLog;
@@ -27,7 +25,7 @@ import java.util.Map;
  * Created by Jen on 2017/7/19.
  */
 
-class HttpReflectManager {
+class HttpReflectRequestManager {
 
     /**
      * 请求实体
@@ -42,14 +40,6 @@ class HttpReflectManager {
         String method;
         String url;
         Class response;
-    }
-
-    /**
-     * 返回实体
-     */
-    static class ResponseObject {
-        final Map<String, Field> body = new HashMap<>();
-        final Map<String, Field> heads = new HashMap<>();
     }
 
     /**
@@ -220,7 +210,7 @@ class HttpReflectManager {
                     JSONArray jsonArray = null;
                     boolean haveArray = false;
                     /*
-                     * 重复对象叠加字段 重要标记
+                     * 重复key对象叠加字段 重要标记
                      */
                     if (body.has(key)) {
                         Object object = body.get(key);
@@ -260,7 +250,7 @@ class HttpReflectManager {
                     JSONObject item = null;
                     boolean haveObject = false;
                     /*
-                     * 重复对象叠加字段 重要标记
+                     * 重复key对象叠加字段 重要标记
                      */
                     if (body.has(key)) {
                         Object object = body.get(key);
@@ -283,94 +273,6 @@ class HttpReflectManager {
                 HttpLog.exception(ExceptionType.IllegalAccessException, "parseRequest IllegalAccessException");
             } catch (JSONException e) {
                 HttpLog.exception(ExceptionType.JSONException, "parseRequest JSONException");
-            }
-        }
-    }
-
-    /**
-     * 解析返回实体类参数
-     *
-     * @param clazz HttpResponse
-     * @return ResponseObject
-     */
-    static ResponseObject getResponseHeadAndBody(Class clazz) {
-        ResponseObject responseObject = new ResponseObject();
-        parseResponse(clazz, responseObject.body, responseObject.heads);
-        return responseObject;
-    }
-
-    /**
-     * 获取返回参数
-     *
-     * @param clazz       类
-     * @param param_field 名称_变量
-     * @param head_field  头名称_变量
-     */
-    private static void parseResponse(Class clazz, Map<String, Field> param_field, Map<String, Field> head_field) {
-        /*if (clazz == null) {
-            Throw.exception(ExceptionType.NullPointerException, "parseResponse clazz 空指针异常");
-            return;
-        }*/
-
-        Class myClass = clazz;
-        String clazzName = myClass.getName();
-        String respName = HttpHeadResponse.class.getName();
-        String objName = Object.class.getName();
-        while (!clazzName.equals(respName) && !clazzName.equals(objName)) {
-            boolean isInvalid = Invalid.isEasyInvalid(myClass, EasyInvalidType.Response);
-            if (!isInvalid) {
-                parseResponseEntity(myClass, param_field, head_field);
-            }
-            myClass = myClass.getSuperclass();
-            clazzName = myClass.getName();
-        }
-    }
-
-    /**
-     * 获取单个返回参数
-     *
-     * @param clazz       类
-     * @param param_field 名称_变量
-     * @param head_field  头名称_变量
-     */
-    private static void parseResponseEntity(Class clazz, Map<String, Field> param_field, Map<String, Field> head_field) {
-        Field[] fieldsSuper = clazz.getDeclaredFields();
-        for (Field field : fieldsSuper) {
-            boolean isInvalid = Invalid.isEasyInvalid(field, EasyInvalidType.Response);
-            if (isInvalid) {
-                continue;
-            }
-            boolean isAnnotation = field.isAnnotationPresent(EasyResponse.class);
-            String paramName = "";
-            EasyResponseType paramType = EasyResponseType.Param;
-            if (isAnnotation) {
-                EasyResponse param = field.getAnnotation(EasyResponse.class);
-                paramType = param.type();
-                paramName = param.value().trim();
-            }
-            if (paramName.length() == 0) {
-                paramName = field.getName();
-            }
-            if (FieldType.isOtherField(paramName)) {
-                continue;
-            }
-            Class fieldClass = field.getType();
-            switch (paramType) {
-                case Param: {
-                    if (param_field.containsKey(paramName)) {//子类已经有不再重复增加
-                        continue;
-                    }
-                    param_field.put(paramName, field);
-                    break;
-                }
-                case Head: {
-                    if (!FieldType.isString(fieldClass)) {
-                        HttpLog.exception(ExceptionType.ClassCastException, "请求头返回变量必须为String类型:" + paramName);
-                        continue;
-                    }
-                    head_field.put(paramName, field);
-                    break;
-                }
             }
         }
     }

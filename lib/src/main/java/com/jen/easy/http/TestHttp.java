@@ -10,7 +10,7 @@ import com.jen.easy.log.EasyLog;
 public class TestHttp {
 
     public static void HttpReflectManager_getRequestParams(Object request) {
-        HttpReflectManager.RequestObject requestObject = HttpReflectManager.getRequestHeadAndBody(request);
+        HttpReflectRequestManager.RequestObject requestObject = HttpReflectRequestManager.getRequestHeadAndBody(request);
         EasyLog.d(requestObject.body.toString());
     }
 }

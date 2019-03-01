@@ -39,7 +39,7 @@ abstract class URLConnectionRunnable implements Runnable {
 
     @Override
     public void run() {
-        HttpReflectManager.RequestType requestType = HttpReflectManager.getRequestType(mRequest);
+        HttpReflectRequestManager.RequestType requestType = HttpReflectRequestManager.getRequestType(mRequest);
         if (requestType == null) {
             HttpLog.exception(ExceptionType.RuntimeException, "请求参数未加注释");
             fail("请求参数未加注释");
@@ -108,7 +108,7 @@ abstract class URLConnectionRunnable implements Runnable {
         mCharset = mRequest.charset;//编码
         mIsGet = method.toUpperCase().equals("GET");
         try {
-            HttpReflectManager.RequestObject requestObject = HttpReflectManager.getRequestHeadAndBody(mRequest);
+            HttpReflectRequestManager.RequestObject requestObject = HttpReflectRequestManager.getRequestHeadAndBody(mRequest);
             Map<String, String> urls = requestObject.urls;
             Map<String, String> heads = requestObject.heads;
             mBody = requestObject.body;

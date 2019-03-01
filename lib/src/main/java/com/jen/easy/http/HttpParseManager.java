@@ -78,8 +78,8 @@ class HttpParseManager {
             return null;
         }
 
-        HttpReflectManager.ResponseObject responseObject = HttpReflectManager.getResponseHeadAndBody(tObj.getClass());
-        Map<String, Field> body = responseObject.body;
+        HttpReflectResponseManager.ResponseObject responseObject = HttpReflectResponseManager.getResponseHeadAndBody(tObj.getClass());
+        Map<String, List<Field>> body = responseObject.body;
         Map<String, Field> heads = responseObject.heads;
 
         Set<String> headKeys = heads.keySet();
@@ -103,28 +103,30 @@ class HttpParseManager {
             if (!body.containsKey(param)) {
                 continue;
             }
-            Field field = body.get(param);
-            field.setAccessible(true);
-            Class fieldClass = field.getType();
-
-            try {
-                Object object = jsonObject.get(param);
-                if (object == null || object.toString().trim().length() == 0
-                        || (!(object instanceof String) && object.toString().equals("null"))) {
-                    continue;
+            List<Field> fields = body.get(param);
+            for (int i = 0; i < fields.size(); i++) {
+                Field field = fields.get(i);
+                field.setAccessible(true);
+                Class fieldClass = field.getType();
+                try {
+                    Object object = jsonObject.get(param);
+                    if (object == null || object.toString().trim().length() == 0
+                            || (!(object instanceof String) && object.toString().equals("null"))) {
+                        continue;
+                    }
+                    Type type = field.getGenericType();
+                    Object value = parseField(object, fieldClass, type);//解析返回数据实体
+                    if (value == null) {
+                        continue;
+                    }
+                    field.set(tObj, value);
+                } catch (JSONException e) {
+                    showErrorLog("JSONException：类型：" + fieldClass + " 参数：" + param);
+                } catch (IllegalAccessException e) {
+                    showErrorLog("IllegalAccessException：类型：" + fieldClass + " 参数：" + param);
+                } catch (IllegalArgumentException e) {
+                    showErrorLog("IllegalArgumentException：类型：" + fieldClass + " 参数：" + param);
                 }
-                Type type = field.getGenericType();
-                Object value = parseField(object, fieldClass, type);//解析返回数据实体
-                if (value == null) {
-                    continue;
-                }
-                field.set(tObj, value);
-            } catch (JSONException e) {
-                showErrorLog("JSONException：类型：" + fieldClass + " 参数：" + param);
-            } catch (IllegalAccessException e) {
-                showErrorLog("IllegalAccessException：类型：" + fieldClass + " 参数：" + param);
-            } catch (IllegalArgumentException e) {
-                showErrorLog("IllegalArgumentException：类型：" + fieldClass + " 参数：" + param);
             }
         }
         return tObj;

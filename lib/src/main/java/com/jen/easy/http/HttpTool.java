@@ -23,7 +23,7 @@ public class HttpTool {
             HttpLog.exception(ExceptionType.NullPointerException, "参数不能为空");
             return jsonParam;
         }
-        HttpReflectManager.RequestObject requestObject = HttpReflectManager.getRequestHeadAndBody(object);
+        HttpReflectRequestManager.RequestObject requestObject = HttpReflectRequestManager.getRequestHeadAndBody(object);
         jsonParam = requestObject.body;
         return jsonParam;
     }
