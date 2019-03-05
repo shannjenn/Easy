@@ -254,23 +254,23 @@ public class EasyItemLayout extends RelativeLayout {
         return tv_item_layout_title;
     }
 
-    public TextView getcontentViewTv() {
+    public TextView getTextView() {
         return tv_item_layout_content;
     }
 
-    public EditText getcontentViewEt() {
+    public EditText getEdiText() {
         return et_item_layout_content;
     }
 
-    public TextView getcountView() {
+    public TextView getCountView() {
         return tv_item_layout_count;
     }
 
-    public String getContentEt() {
+    public String getTextEt() {
         return et_item_layout_content.getText().toString();
     }
 
-    public String getContentTv() {
+    public String getTextTv() {
         return tv_item_layout_content.getText().toString();
     }
 }

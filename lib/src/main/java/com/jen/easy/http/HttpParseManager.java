@@ -230,14 +230,21 @@ class HttpParseManager {
                 try {
                     Class clazz = Class.forName(type1.toString().replace("class ", ""));
                     if (FieldType.isEntityClass(clazz)) {
-                        Object object = parseJSONObject(clazz, (JSONObject) jsonObj);
-                        if (object != null) {
-                            list.add(object);
+                        Object value = parseJSONObject(clazz, (JSONObject) jsonObj);
+                        if (value != null) {
+                            list.add(value);
                         } else {
-                            throwException(ExceptionType.ClassCastException, "JSONArray数据解析错误：" + type.toString());
+                            throwException(ExceptionType.ClassCastException, "JSONArray数据解析错误1：" + type.toString());
+                        }
+                    } else if (FieldType.isObject(clazz)) {//Object类型
+                        Object value = parseField(jsonObj, clazz, null);
+                        if (value != null) {
+                            list.add(value);
+                        } else {
+                            throwException(ExceptionType.ClassCastException, "JSONArray数据解析错误2：" + type.toString());
                         }
                     } else {
-                        throwException(ExceptionType.ClassCastException, "JSONArray数据解析错误：" + type.toString());
+                        throwException(ExceptionType.ClassCastException, "JSONArray数据解析错误3：" + type.toString());
                     }
                 } catch (ClassNotFoundException e) {
                     showErrorLog("ClassNotFoundException：JSONArray数据解析错误，集合：" + type.toString() + " 集合对象：" + type1.toString());
@@ -248,10 +255,10 @@ class HttpParseManager {
                     if (childList != null) {
                         list.add(childList);
                     } else {
-                        throwException(ExceptionType.ClassCastException, "JSONArray数据解析错误：" + type.toString());
+                        throwException(ExceptionType.ClassCastException, "JSONArray数据解析错误4：" + type.toString());
                     }
                 } else {
-                    throwException(ExceptionType.ClassCastException, "JSONArray数据解析错误：" + type.toString());
+                    throwException(ExceptionType.ClassCastException, "JSONArray数据解析错误5：" + type.toString());
                 }
             } else {//数据为基本类型/Object
                 try {
@@ -260,7 +267,7 @@ class HttpParseManager {
                     if (value != null) {
                         list.add(value);
                     } else {
-                        throwException(ExceptionType.ClassCastException, "JSONArray数据解析错误：" + type.toString());
+                        throwException(ExceptionType.ClassCastException, "JSONArray数据解析错误6：" + type.toString());
                     }
                 } catch (ClassNotFoundException e) {
                     showErrorLog("ClassNotFoundException：JSONArray数据解析错误，集合：" + type.toString() + " 集合对象：" + type1.toString());
