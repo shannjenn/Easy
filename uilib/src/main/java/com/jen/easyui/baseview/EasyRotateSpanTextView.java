@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
@@ -200,18 +199,15 @@ public class EasyRotateSpanTextView extends View {
 
         Paint.FontMetricsInt fontMetrics = textPaint.getFontMetricsInt();
         baseline = ((fontMetrics.bottom - fontMetrics.top) >> 1) - fontMetrics.bottom;
-        Rect rect = new Rect();
-        textPaint.getTextBounds(text, 0, text.length(), rect);
+        int myTextWidth = (int) getTextWidth(textPaint, text);
 
-//        if (textWidth == 0 || textHeight == 0) {
         if (degree == 0) {//0度
             textHeight = fontMetrics.bottom - fontMetrics.top;
-            textWidth = rect.left + rect.right + 2;
+            textWidth = myTextWidth + 1;
         } else if (degree % 90 == 0) {//90度
             textWidth = fontMetrics.bottom - fontMetrics.top;
-            textHeight = rect.left + rect.right + 2;
+            textHeight = myTextWidth + 1;
         }
-//        }
     }
 
     private void addSpan(String text, int color) {
@@ -316,9 +312,9 @@ public class EasyRotateSpanTextView extends View {
             Span span2 = new Span();
             span2.color = span.color;
             for (int i = 0; i < span.text.length(); i++) {
-                Rect rect2 = new Rect();
-                textPaint.getTextBounds(span.text, 0, i + 1, rect2);
-                if (rect2.right + drawXY.l > getWidth()) {
+                String myText = span.text.substring(0, i + 1);
+                float myTextWidth = getTextWidth(textPaint, myText);
+                if (myTextWidth + drawXY.l > getWidth()) {
                     if (i > 0) {
                         String str = span.text.substring(0, i);
                         float left = drawXY.l;
