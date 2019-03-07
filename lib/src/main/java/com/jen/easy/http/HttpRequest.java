@@ -76,7 +76,7 @@ public abstract class HttpRequest {
      * @param oldChar 替换前
      * @param newChar 替换后
      */
-    public void addReplaceBeforeCallBack(String oldChar, String newChar) {
+    public void addResponseReplaceString(String oldChar, String newChar) {
         if (oldChar == null || newChar == null) {
             HttpLog.exception(ExceptionType.NullPointerException, "格式化前后字符串不能为空");
             return;
@@ -85,6 +85,16 @@ public abstract class HttpRequest {
             replaceHttpResultMap = new LinkedHashMap<>();
         }
         replaceHttpResultMap.put(oldChar, newChar);
+    }
+
+    /**
+     * 清空返回替换
+     */
+    public void clearResponseReplaceString() {
+        if (replaceHttpResultMap != null) {
+            replaceHttpResultMap.clear();
+            replaceHttpResultMap = null;
+        }
     }
 
     public RequestStatus getRequestStatus() {

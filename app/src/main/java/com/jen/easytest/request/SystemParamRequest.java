@@ -96,15 +96,15 @@ public class SystemParamRequest extends BaseRequestWeb {
         param = new Param();
         param.sessionId = sessionId;
 
-        addReplaceBeforeCallBack(" ", "");
-        addReplaceBeforeCallBack("\\t", "");
-        addReplaceBeforeCallBack("\\n", "");
-        addReplaceBeforeCallBack("\\r", "");
-        addReplaceBeforeCallBack("\\", "");
-        addReplaceBeforeCallBack("\"{", "{");
-        addReplaceBeforeCallBack("\"[", "[");
-        addReplaceBeforeCallBack("]\"", "]");
-        addReplaceBeforeCallBack("}\"", "}");
+        addResponseReplaceString(" ", "");
+        addResponseReplaceString("\\t", "");
+        addResponseReplaceString("\\n", "");
+        addResponseReplaceString("\\r", "");
+        addResponseReplaceString("\\", "");
+        addResponseReplaceString("\"{", "{");
+        addResponseReplaceString("\"[", "[");
+        addResponseReplaceString("]\"", "]");
+        addResponseReplaceString("}\"", "}");
 
     }
 
