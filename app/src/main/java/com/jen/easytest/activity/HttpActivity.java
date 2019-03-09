@@ -10,19 +10,15 @@ import com.jen.easy.http.HttpTool;
 import com.jen.easy.http.imp.HttpBaseListener;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
-import com.jen.easytest.http.MD5Util;
 import com.jen.easytest.http.request.AirRequest;
+import com.jen.easytest.http.request.AirRequest2;
 import com.jen.easytest.http.request.PutRequest;
 import com.jen.easytest.http.request.QNRequest;
-import com.jen.easytest.http.request.StockChooseConditionResultRequest;
 import com.jen.easytest.http.response.StockQuotationResponse;
-import com.jen.easytest.request.OrderConditionSaveRequest;
-import com.jen.easytest.request.OrderRuleModel;
 import com.jen.easytest.request.SystemParamRequest;
 import com.jen.easyui.base.EasyActivity;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import org.json.JSONObject;
 
 /**
  * 作者：ShannJenn
@@ -53,7 +49,7 @@ public class HttpActivity extends EasyActivity {
 
     }
 
-    @EasyBindClick({R.id.get, R.id.post, R.id.put, R.id.upload, R.id.download, R.id.parse, R.id.HttpReflectManager_getRequestParams})
+    @EasyBindClick({R.id.get, R.id.post, R.id.put, R.id.upload, R.id.download, R.id.parse, R.id.request_parse, R.id.response_parse})
     protected void onBindClick(View view) {
         switch (view.getId()) {
             case R.id.parse:
@@ -88,9 +84,16 @@ public class HttpActivity extends EasyActivity {
             case R.id.download:
                 download();
                 break;
-            case R.id.HttpReflectManager_getRequestParams: {
+            case R.id.request_parse: {
                 AirRequest airRequest = new AirRequest();
-                TestHttp.HttpReflectManager_getRequestParams(airRequest);
+                TestHttp.httpReflectManager_test(airRequest);
+                break;
+            }
+            case R.id.response_parse: {
+                AirRequest airRequest = new AirRequest();
+                JSONObject jsonObject = TestHttp.httpReflectManager_test(airRequest);
+                AirRequest2 airRequest2 = TestHttp.httpParseManager_test(AirRequest2.class, jsonObject.toString(), null);
+                EasyLog.d("----------");
                 break;
             }
 

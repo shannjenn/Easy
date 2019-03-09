@@ -1,5 +1,8 @@
 package com.jen.easy.constant;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -76,6 +79,14 @@ public final class FieldType {
 
     public static boolean isObject(Class clazz) {
         return Object.class.equals(clazz);
+    }
+
+    public static boolean isJSONObject(Class clazz) {
+        return JSONObject.class.equals(clazz);
+    }
+
+    public static boolean isJSONArray(Class clazz) {
+        return JSONArray.class.equals(clazz);
     }
 
     public static boolean isEntityClass(Class clazz) {//做最后判断

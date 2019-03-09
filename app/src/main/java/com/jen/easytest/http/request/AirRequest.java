@@ -29,13 +29,13 @@ public class AirRequest extends ExampleBaseRequest {
     @EasyRequest("book")
     Book book = new Book();
 
-    @EasyRequest("book")
+    @EasyRequest("taskUserInfo")
     TaskUserInfo taskUserInfo = new TaskUserInfo();
 
 
-    @EasyRequest("list")
+    @EasyRequest("books")
     List<Book> books = new ArrayList<>();
 
-    @EasyRequest("list")
+    @EasyRequest("userInfos")
     List<TaskUserInfo> userInfos = new ArrayList<>();
 }

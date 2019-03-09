@@ -181,6 +181,18 @@ class HttpParseManager {
             return parseByte(object);
         } else if (FieldType.isObject(fieldClass)) {//解析Object通用类型
             return object;
+        } else if (FieldType.isJSONObject(fieldClass)) {//解析JsonObject
+            if (object instanceof JSONObject) {
+                return object;
+            } else {
+                throwException(ExceptionType.ClassCastException, "数据类型错误" + fieldClass + ",该数据不是JSONObject类型");
+            }
+        } else if (FieldType.isJSONArray(fieldClass)) {//解析JSONArray
+            if (object instanceof JSONArray) {
+                return object;
+            } else {
+                throwException(ExceptionType.ClassCastException, "数据类型错误" + fieldClass + ",该数据不是JSONArray类型");
+            }
         } else if (FieldType.isList(fieldClass)) {//解析list
             if (object instanceof JSONArray) {
                 return parseJSONArray(type, (JSONArray) object);
@@ -229,19 +241,21 @@ class HttpParseManager {
             if (jsonObj instanceof JSONObject) {//实体解析
                 try {
                     Class clazz = Class.forName(type1.toString().replace("class ", ""));
-                    if (FieldType.isEntityClass(clazz)) {
-                        Object value = parseJSONObject(clazz, (JSONObject) jsonObj);
-                        if (value != null) {
-                            list.add(value);
-                        } else {
-                            throwException(ExceptionType.ClassCastException, "JSONArray数据解析错误1：" + type.toString());
-                        }
-                    } else if (FieldType.isObject(clazz)) {//Object类型
+                    if (FieldType.isObject(clazz) //Object类型
+                            || FieldType.isJSONObject(clazz)//JSONObject类型
+                            || FieldType.isJSONArray(clazz)) {//JSONArray类型
                         Object value = parseField(jsonObj, clazz, null);
                         if (value != null) {
                             list.add(value);
                         } else {
                             throwException(ExceptionType.ClassCastException, "JSONArray数据解析错误2：" + type.toString());
+                        }
+                    } else if (FieldType.isEntityClass(clazz)) {
+                        Object value = parseJSONObject(clazz, (JSONObject) jsonObj);
+                        if (value != null) {
+                            list.add(value);
+                        } else {
+                            throwException(ExceptionType.ClassCastException, "JSONArray数据解析错误1：" + type.toString());
                         }
                     } else {
                         throwException(ExceptionType.ClassCastException, "JSONArray数据解析错误3：" + type.toString());

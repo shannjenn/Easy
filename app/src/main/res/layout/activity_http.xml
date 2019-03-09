@@ -46,24 +46,17 @@
         android:text="上传请求"
         android:textAllCaps="false"/>
 
-    <LinearLayout
+    <Button
+        android:id="@+id/request_parse"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="64dp"
+        android:text="请求参数解析"
+        android:textAllCaps="false"/>
+    <Button
+        android:id="@+id/response_parse"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:text="返回参数解析"
+        android:textAllCaps="false"/>
 
-        <Button
-            android:id="@+id/HttpReflectManager"
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:text="解析参数测试(HttpReflectManager)"/>
-
-        <Button
-            android:id="@+id/HttpReflectManager_getRequestParams"
-            android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:layout_marginStart="20dp"
-            android:text="getRequestParams"
-            android:textAllCaps="false"/>
-
-    </LinearLayout>
 </LinearLayout>
