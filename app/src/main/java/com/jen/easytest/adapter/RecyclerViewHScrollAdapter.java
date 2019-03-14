@@ -5,10 +5,9 @@ import android.view.View;
 
 import com.jen.easytest.R;
 import com.jen.easytest.model.RecyclerViewModel;
-import com.jen.easyui.recycler.EasyHScrollRecyclerViewAdapter;
+import com.jen.easyui.recycler.HScroll.EasyHScrollRecyclerViewAdapter;
 import com.jen.easyui.recycler.EasyHolder;
 import com.jen.easyui.recycler.EasyRecyclerAdapter;
-import com.jen.easyui.recycler.EasyRecyclerBaseAdapter;
 
 import java.util.List;
 

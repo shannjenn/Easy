@@ -11,7 +11,7 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <com.jen.easyui.tabbarview.EasyPagerTabBar
+        <com.jen.easyui.view.tabbarview.EasyPagerTabBar
             android:id="@+id/easy_tabar_scroll"
             android:layout_width="match_parent"
             android:layout_height="46dp"
@@ -32,7 +32,7 @@
             app:tabBarUnderlineColor="#ff0000"
             app:tabBarUnderlineHeight="1dp" />
 
-        <com.jen.easyui.tabbarview.EasyTabBar
+        <com.jen.easyui.view.tabbarview.EasyTabBar
             android:id="@+id/easy_tabar_scroll2"
             android:layout_width="match_parent"
             android:layout_height="46dp"
@@ -53,7 +53,7 @@
             app:tabBarTextSize="18sp"
             app:tabBarUnderlineHeight="1dp" />
 
-        <com.jen.easyui.tabbarview.EasyTabBar
+        <com.jen.easyui.view.tabbarview.EasyTabBar
             android:id="@+id/easy_tabar_scroll3"
             android:layout_width="match_parent"
             android:layout_height="46dp"
@@ -71,7 +71,7 @@
             app:tabBarUnderlineColor="#ff0000"
             app:tabBarUnderlineHeight="1dp" />
 
-        <com.jen.easyui.tabbarview.EasyTabBar
+        <com.jen.easyui.view.tabbarview.EasyTabBar
             android:id="@+id/easy_tabar_scroll4"
             android:layout_width="match_parent"
             android:layout_height="46dp"

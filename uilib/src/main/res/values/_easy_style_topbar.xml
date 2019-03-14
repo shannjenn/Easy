@@ -11,9 +11,9 @@
 
         <attr name="topBarLeftImage" format="reference" />
         <attr name="topBarLeftImageBackground" format="reference" />
-        <!--<attr name="showLeftImage" format="boolean" />-->
 
         <attr name="topBarCloseShow" format="boolean" />
+        <attr name="showLeftImage" format="boolean" />
 
         <attr name="topBarRightText" format="string" />
         <attr name="topBarRightTextColor" format="color" />
@@ -26,5 +26,6 @@
         <!--<attr name="showLeftFaceImage" format="boolean" />-->
 
         <attr name="topBarShowBottomLine" format="boolean" />
+        <attr name="topBarBottomLineColor" format="color" />
     </declare-styleable>
 </resources>

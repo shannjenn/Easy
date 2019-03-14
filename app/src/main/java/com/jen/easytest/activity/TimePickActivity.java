@@ -7,9 +7,9 @@ import com.jen.easy.EasyBindClick;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
 import com.jen.easyui.base.EasyActivity;
-import com.jen.easyui.timepick.EasyTimePickListener;
-import com.jen.easyui.timepick.EasyTimePickerConfig;
-import com.jen.easyui.timepick.EasyTimePickerPopWin;
+import com.jen.easyui.popupwindow.timepick.EasyTimePickListener;
+import com.jen.easyui.popupwindow.timepick.EasyTimePickerConfig;
+import com.jen.easyui.popupwindow.timepick.EasyTimePickerPopWin;
 
 import java.util.Calendar;
 

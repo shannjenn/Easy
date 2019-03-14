@@ -41,7 +41,7 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/ll_type" />
 
-    <com.jen.easyui.recycler.EasyLetterView
+    <com.jen.easyui.recycler.letter.EasyLetterView
         android:id="@+id/lt_letter"
         android:layout_width="50dp"
         android:layout_height="match_parent"

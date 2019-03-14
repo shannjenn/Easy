@@ -6,7 +6,7 @@ import android.view.View;
 import com.jen.easy.EasyBindId;
 import com.jen.easytest.R;
 import com.jen.easyui.base.EasyActivity;
-import com.jen.easyui.loopview.EasyLoopView;
+import com.jen.easyui.view.loopview.EasyLoopView;
 
 import java.util.ArrayList;
 import java.util.List;

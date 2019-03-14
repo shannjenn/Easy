@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jen.easyui.recycler.listener.EasyAdapterListenerA;
+import com.jen.easyui.recycler.listener.EasyAdapterListenerB;
+
 /**
  * baseAdapter
  * 作者：ShannJenn
@@ -40,23 +43,37 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
             Log.e(TAG, "mAdapter 为空，点击事件不能生效" + EasyHolder.class.getSimpleName());
             return this;
         }
-        if (mAdapter.easyItemClickListener == null) {
+        if (mAdapter.listener == null) {
             return this;
         }
         if (parent == null) {
             return this;
         }
         View view = parent.findViewById(id);
+        addOnClickEvent(view, position);
+        return this;
+    }
+
+    /**
+     * 增加点击事件
+     *
+     * @param view     view
+     * @param position 位置
+     */
+    public EasyHolder addOnClickEvent(View view, final int position) {
         if (view == null) {
             Log.w(TAG, "点击设置事件失败，请检查view是否不为空");
             return this;
         }
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAdapter.easyItemClickListener.onViewClick(v, position);
-            }
-        });
+        if (mAdapter.listener instanceof EasyAdapterListenerA) {
+            final EasyAdapterListenerA listenerA = (EasyAdapterListenerA) mAdapter.listener;
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listenerA.onViewClick(v, position);
+                }
+            });
+        }
         return this;
     }
 
@@ -77,7 +94,7 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
             Log.e(TAG, "mAdapter 为空，点击事件不能生效" + EasyHolder.class.getSimpleName());
             return this;
         }
-        if (mAdapter.easyItemClickListener == null) {
+        if (mAdapter.listener == null) {
             return this;
         }
         View view = itemView.findViewById(id);
@@ -85,12 +102,15 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
             Log.w(TAG, "点击设置事件失败，请检查view是否不为空");
             return this;
         }
-        view.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                return mAdapter.easyItemClickListener.onViewLongClick(v, position);
-            }
-        });
+        if (mAdapter.listener instanceof EasyAdapterListenerA) {
+            final EasyAdapterListenerB listenerB = (EasyAdapterListenerB) mAdapter.listener;
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return listenerB.onViewLongClick(v, position);
+                }
+            });
+        }
         return this;
     }
 
@@ -126,17 +146,23 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
     /**
      * 设置文本
      *
-     * @param parent 父级ID
-     * @param id     ID
-     * @param text   字符串
+     * @param textView view
+     * @param text     字符串
      */
+    public EasyHolder setTextView(TextView textView, String text) {
+        if (textView != null) {
+            textView.setText(text);
+        }
+        return this;
+    }
+
     public EasyHolder setTextView(View parent, int id, String text) {
         if (parent == null) {
             return this;
         }
         View view = parent.findViewById(id);
         if (view instanceof TextView) {
-            ((TextView) view).setText(text);
+            setTextView((TextView) view, text);
         }
         return this;
     }

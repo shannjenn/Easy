@@ -56,35 +56,35 @@
             android:layout_marginTop="10dp"
             android:gravity="center_horizontal">
 
-            <com.jen.easyui.loopview.EasyLoopView
+            <com.jen.easyui.view.loopview.EasyLoopView
                 android:id="@+id/picker_year"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 app:loopViewTextSize="20sp" />
 
-            <com.jen.easyui.loopview.EasyLoopView
+            <com.jen.easyui.view.loopview.EasyLoopView
                 android:id="@+id/picker_month"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 app:loopViewTextSize="20sp" />
 
-            <com.jen.easyui.loopview.EasyLoopView
+            <com.jen.easyui.view.loopview.EasyLoopView
                 android:id="@+id/picker_day"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 app:loopViewTextSize="20sp" />
 
-            <com.jen.easyui.loopview.EasyLoopView
+            <com.jen.easyui.view.loopview.EasyLoopView
                 android:id="@+id/picker_clock"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 app:loopViewTextSize="20sp" />
 
-            <com.jen.easyui.loopview.EasyLoopView
+            <com.jen.easyui.view.loopview.EasyLoopView
                 android:id="@+id/picker_minute"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"

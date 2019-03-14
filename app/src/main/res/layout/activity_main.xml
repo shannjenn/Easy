@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.jen.easyui.baseview.EasyTopBar
+        <com.jen.easyui.view.baseview.EasyTopBar
             android:layout_width="match_parent"
             android:layout_height="46dp"
             app:topBarTitleText="TopBar"

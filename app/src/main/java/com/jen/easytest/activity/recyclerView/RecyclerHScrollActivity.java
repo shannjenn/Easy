@@ -12,7 +12,7 @@ import com.jen.easytest.R;
 import com.jen.easytest.adapter.RecyclerViewHScrollAdapter;
 import com.jen.easytest.model.RecyclerViewModel;
 import com.jen.easyui.base.EasyActivity;
-import com.jen.easyui.recycler.EasyHScrollRecyclerView;
+import com.jen.easyui.recycler.HScroll.EasyHScrollRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;

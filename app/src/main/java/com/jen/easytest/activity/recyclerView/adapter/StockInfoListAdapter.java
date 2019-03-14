@@ -12,9 +12,9 @@ import com.jen.easy.bind.BindView;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
 import com.jen.easytest.activity.recyclerView.fragment.StockInfoListFragment;
-import com.jen.easyui.shapeview.EasyShapeTextView;
-import com.jen.easyui.recycler.EasyHScrollRecyclerView;
-import com.jen.easyui.recycler.EasyHScrollRecyclerViewAdapter;
+import com.jen.easyui.view.shapeview.EasyShapeTextView;
+import com.jen.easyui.recycler.HScroll.EasyHScrollRecyclerView;
+import com.jen.easyui.recycler.HScroll.EasyHScrollRecyclerViewAdapter;
 import com.jen.easyui.recycler.EasyHolder;
 import com.jen.easyui.recycler.EasyRecyclerAdapter;
 

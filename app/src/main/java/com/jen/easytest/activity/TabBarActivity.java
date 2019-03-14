@@ -12,9 +12,9 @@ import com.jen.easytest.R;
 import com.jen.easytest.fragment.EmptyFragmentBlue;
 import com.jen.easytest.fragment.EmptyFragmentRed;
 import com.jen.easyui.base.EasyActivity;
-import com.jen.easyui.tabbarview.EasyTabBar;
-import com.jen.easyui.tabbarview.EasyPagerTabBar;
-import com.jen.easyui.viewpager.EasyFragmentPagerAdapter;
+import com.jen.easyui.view.tabbarview.EasyTabBar;
+import com.jen.easyui.view.tabbarview.EasyPagerTabBar;
+import com.jen.easyui.recycler.viewpager.EasyFragmentPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

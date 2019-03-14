@@ -7,7 +7,7 @@ import com.jen.easy.EasyBindId;
 import com.jen.easytest.R;
 import com.jen.easytest.adapter.ImageViewPagerAdapter;
 import com.jen.easyui.base.EasyActivity;
-import com.jen.easyui.viewpager.EasyViewPagerPoint;
+import com.jen.easyui.recycler.viewpager.EasyViewPagerPoint;
 
 import java.util.ArrayList;
 import java.util.List;

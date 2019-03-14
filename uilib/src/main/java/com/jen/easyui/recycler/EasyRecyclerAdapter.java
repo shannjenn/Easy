@@ -7,6 +7,8 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jen.easyui.recycler.listener.EasyAdapterListener;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -19,12 +21,12 @@ import java.util.List;
 public abstract class EasyRecyclerAdapter<T> extends RecyclerView.Adapter<EasyHolder> {
     protected Context mContext;
     protected List<T> mData;
-    protected EasyAdapterListener easyItemClickListener;
+    EasyAdapterListener listener;
 
     /**
      * @param data 数据
      */
-    EasyRecyclerAdapter(Context context, List<T> data) {
+    public EasyRecyclerAdapter(Context context, List<T> data) {
         this.mContext = context;
         mData = data;
     }
@@ -49,18 +51,17 @@ public abstract class EasyRecyclerAdapter<T> extends RecyclerView.Adapter<EasyHo
 
     /**
      * Holder
-     *
      */
     @Override
     public void onBindViewHolder(final EasyHolder holder, final int position) {
         if (holder == null) {
             return;
         }
-        if (easyItemClickListener != null) {
+        if (listener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    easyItemClickListener.onItemClick(holder.itemView, position);
+                    listener.onItemClick(holder.itemView, position);
                 }
             });
         }
@@ -143,12 +144,8 @@ public abstract class EasyRecyclerAdapter<T> extends RecyclerView.Adapter<EasyHo
         }
     });
 
-    public EasyAdapterListener getEasyItemClickListener() {
-        return easyItemClickListener;
-    }
-
-    public void setEasyItemClickListener(EasyAdapterListener easyItemClickListener) {
-        this.easyItemClickListener = easyItemClickListener;
+    public void setListener(EasyAdapterListener listener) {
+        this.listener = listener;
     }
 
     /**

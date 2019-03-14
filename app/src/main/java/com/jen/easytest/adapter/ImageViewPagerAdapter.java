@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.View;
 
 import com.jen.easytest.R;
-import com.jen.easyui.viewpager.EasyViewPagerAdapter;
+import com.jen.easyui.recycler.viewpager.EasyViewPagerAdapter;
 
 import java.util.List;
 

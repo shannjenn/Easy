@@ -6,7 +6,7 @@ import android.view.View;
 import com.jen.easy.EasyBindId;
 import com.jen.easytest.R;
 import com.jen.easyui.base.EasyActivity;
-import com.jen.easyui.baseview.EasyTopBar;
+import com.jen.easyui.view.baseview.EasyTopBar;
 
 import java.util.ArrayList;
 import java.util.List;
