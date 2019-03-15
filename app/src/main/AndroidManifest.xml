@@ -38,6 +38,7 @@
         <activity android:name=".activity.recyclerView.RecyclerViewMainActivity" />
         <activity android:name=".activity.recyclerView.RecyclerHScrollActivity" />
         <activity android:name=".activity.recyclerView.RecyclerViewLetterActivity" />
+        <activity android:name=".activity.recyclerView.RecyclerSlideDeleteActivity" />
 
     </application>
 

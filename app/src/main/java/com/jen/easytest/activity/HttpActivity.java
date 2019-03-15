@@ -5,9 +5,8 @@ import android.view.View;
 
 import com.jen.easy.EasyBindClick;
 import com.jen.easy.http.Http;
-import com.jen.easy.http.TestHttp;
 import com.jen.easy.http.HttpTool;
-import com.jen.easy.http.imp.HttpBaseListener;
+import com.jen.easy.http.TestHttp;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
 import com.jen.easytest.http.request.AirRequest;
@@ -37,7 +36,6 @@ public class HttpActivity extends EasyActivity {
 
     @Override
     protected void intDataBeforeView() {
-        http.setHttpBaseListener(httpListener);
     }
 
     @Override
@@ -141,39 +139,4 @@ public class HttpActivity extends EasyActivity {
     private void download() {
 
     }
-
-    /**
-     * 宝库数据返回
-     */
-    HttpBaseListener httpListener = new HttpBaseListener() {
-        @Override
-        public void success(int flagCode, String flag, Object response) {
-
-        }
-
-        @Override
-        public void fail(int flagCode, String flag, String msg) {
-
-        }
-
-        /*@Override
-        public void fail(int flagCode; String flag; String msg) {
-            EasyLog.d("exampleRequest fail:" + msg);
-        }
-
-        @Override
-        public void success(int flagCode; String flag; Object airResponse) {
-            EasyLog.d("exampleRequest success");
-        }*/
-    };
-
-    /*@Override
-    public void success(int flagCode; String flag; Object response) {
-
-    }
-
-    @Override
-    public void fail(int flagCode; String flag; String msg) {
-
-    }*/
 }

@@ -37,7 +37,7 @@ public class RecyclerViewMainActivity extends EasyActivity {
     }
 
 
-    @EasyBindClick({R.id.recycleHScroll, R.id.recycleViewLetter})
+    @EasyBindClick({R.id.recycleHScroll, R.id.recycleViewLetter, R.id.SlideDelete})
     @Override
     protected void onBindClick(View view) {
         Class clazz = null;
@@ -48,6 +48,10 @@ public class RecyclerViewMainActivity extends EasyActivity {
             }
             case R.id.recycleViewLetter: {
                 clazz = RecyclerViewLetterActivity.class;
+                break;
+            }
+            case R.id.SlideDelete: {
+                clazz = RecyclerSlideDeleteActivity.class;
                 break;
             }
             default: {
