@@ -7,7 +7,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jen.easyui.recycler.listener.EasyAdapterListener;
+import com.jen.easyui.recycler.listener.EasyItemListener;
 
 import java.util.Collections;
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.List;
 public abstract class EasyRecyclerAdapter<T> extends RecyclerView.Adapter<EasyHolder> {
     protected Context mContext;
     protected List<T> mData;
-    EasyAdapterListener listener;
+    EasyItemListener listener;
 
     /**
      * @param data 数据
@@ -144,7 +144,7 @@ public abstract class EasyRecyclerAdapter<T> extends RecyclerView.Adapter<EasyHo
         }
     });
 
-    public void setListener(EasyAdapterListener listener) {
+    public void setItemListener(EasyItemListener listener) {
         this.listener = listener;
     }
 

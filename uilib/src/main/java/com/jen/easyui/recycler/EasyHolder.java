@@ -4,11 +4,12 @@ import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.jen.easyui.recycler.listener.EasyAdapterListenerA;
-import com.jen.easyui.recycler.listener.EasyAdapterListenerB;
+import com.jen.easyui.recycler.listener.EasyItemListenerA;
+import com.jen.easyui.recycler.listener.EasyItemListenerB;
 
 /**
  * baseAdapter
@@ -65,8 +66,8 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
             Log.w(TAG, "点击设置事件失败，请检查view是否不为空");
             return this;
         }
-        if (mAdapter.listener instanceof EasyAdapterListenerA) {
-            final EasyAdapterListenerA listenerA = (EasyAdapterListenerA) mAdapter.listener;
+        if (mAdapter.listener instanceof EasyItemListenerA) {
+            final EasyItemListenerA listenerA = (EasyItemListenerA) mAdapter.listener;
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -78,8 +79,7 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
     }
 
     public EasyHolder addOnClickEvent(int id, final int position) {
-        addOnClickEvent(itemView, id, position);
-        return this;
+        return addOnClickEvent(itemView, id, position);
     }
 
     /**
@@ -102,8 +102,8 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
             Log.w(TAG, "点击设置事件失败，请检查view是否不为空");
             return this;
         }
-        if (mAdapter.listener instanceof EasyAdapterListenerA) {
-            final EasyAdapterListenerB listenerB = (EasyAdapterListenerB) mAdapter.listener;
+        if (mAdapter.listener instanceof EasyItemListenerA) {
+            final EasyItemListenerB listenerB = (EasyItemListenerB) mAdapter.listener;
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -115,8 +115,7 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
     }
 
     public EasyHolder addOnLongClickEvent(int id, final int position) {
-        addOnLongClickEvent(itemView, id, position);
-        return this;
+        return addOnLongClickEvent(itemView, id, position);
     }
 
 
@@ -139,8 +138,7 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
     }
 
     public EasyHolder setVisible(int id, int visible) {
-        setVisible(itemView, id, visible);
-        return this;
+        return setVisible(itemView, id, visible);
     }
 
     /**
@@ -168,18 +166,15 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
     }
 
     public EasyHolder setTextView(int id, String text) {
-        setTextView(itemView, id, text);
-        return this;
+        return setTextView(itemView, id, text);
     }
 
     public EasyHolder setTextView(int id, int strId) {
-        setTextView(itemView, id, strId);
-        return this;
+        return setTextView(itemView, id, strId);
     }
 
     public EasyHolder setTextView(View parent, int id, int strId) {
-        setTextView(parent, id, mAdapter.mContext.getString(strId));
-        return this;
+        return setTextView(parent, id, mAdapter.mContext.getString(strId));
     }
 
     /**
@@ -201,8 +196,7 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
     }
 
     public EasyHolder setTextColor(int id, int color) {
-        setTextColor(itemView, id, color);
-        return this;
+        return setTextColor(itemView, id, color);
     }
 
     /**
@@ -224,8 +218,7 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
     }
 
     public EasyHolder setBackgroundColor(int id, int color) {
-        setBackgroundColor(itemView, id, color);
-        return this;
+        return setBackgroundColor(itemView, id, color);
     }
 
     /**
@@ -247,8 +240,7 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
     }
 
     public EasyHolder setImageView(int id, int sourceid) {
-        setImageView(itemView, id, sourceid);
-        return this;
+        return setImageView(itemView, id, sourceid);
     }
 
     /**
@@ -270,7 +262,28 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
     }
 
     public EasyHolder setImageView(int id, Drawable drawable) {
-        setImageView(itemView, id, drawable);
+        return setImageView(itemView, id, drawable);
+    }
+
+    /**
+     * 设置选中状态
+     *
+     * @param parent 父级ID
+     * @param id     ID
+     * @param check  选中状态
+     */
+    public EasyHolder setCheck(View parent, int id, boolean check) {
+        if (parent == null) {
+            return this;
+        }
+        View view = parent.findViewById(id);
+        if (view instanceof CompoundButton) {
+            ((CompoundButton) view).setChecked(check);
+        }
         return this;
+    }
+
+    public EasyHolder setCheck(int id, boolean check) {
+        return setCheck(itemView, id, check);
     }
 }

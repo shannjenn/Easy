@@ -24,7 +24,7 @@ public class EasyApplication extends Application {
         mApp = this;
 //        EasyMain.init(this);
 //        EasyMain.mLog.start();
-//        EasyMain.mLog.setListener(logcatCrashListener);
+//        EasyMain.mLog.setItemListener(logcatCrashListener);
 //
 //        EasyMain.mDBHelper.init();
 //        EasyMain.mDBHelper.setVersion(DB_VERSION);

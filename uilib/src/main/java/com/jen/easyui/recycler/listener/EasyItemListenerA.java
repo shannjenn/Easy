@@ -7,12 +7,10 @@ import android.view.View;
  * 作者：ShannJenn
  * 时间：2017/8/12.
  */
-public interface EasyAdapterListenerB  extends EasyAdapterListenerA {
+public interface EasyItemListenerA extends EasyItemListener {
 
 //    void onItemClick(View view, int position);
 
-//    void onViewClick(View view, int position);
-
-    boolean onViewLongClick(View view, int position);
+    void onViewClick(View view, int position);
 
 }

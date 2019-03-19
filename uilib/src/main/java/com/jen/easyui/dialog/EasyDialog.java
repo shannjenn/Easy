@@ -28,6 +28,7 @@ import com.jen.easyui.R;
  */
 public class EasyDialog extends Dialog implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     private Context context;
+    private TextView tv_content;
     private GravityTitle titleGravity = GravityTitle.Left;
     private CharSequence txtContent;
     private GravityContent contentGravity = GravityContent.Center;
@@ -60,7 +61,7 @@ public class EasyDialog extends Dialog implements View.OnClickListener, Compound
         ImageView iv_icon_right = layout.findViewById(R.id.iv_icon_right);
         TextView tv_title = layout.findViewById(R.id.tv_title);
 
-        TextView tv_content = layout.findViewById(R.id.tv_content);
+        tv_content = layout.findViewById(R.id.tv_content);
         CheckBox cb_check = layout.findViewById(R.id.cb_check);
 
         Button btn_left = layout.findViewById(R.id.btn_left);
@@ -262,5 +263,15 @@ public class EasyDialog extends Dialog implements View.OnClickListener, Compound
 
     void setFlagCode(int flagCode) {
         this.flagCode = flagCode;
+    }
+
+    /**
+     * 用于方便设置部分文字点击事件 ClickableSpan
+     * dialog.getContentView().setMovementMethod(LinkMovementMethod.getInstance());
+     *
+     * @return .
+     */
+    public TextView getContentView() {
+        return tv_content;
     }
 }

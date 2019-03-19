@@ -14,7 +14,7 @@ import com.jen.easytest.R;
 import com.jen.easytest.model.RecyclerViewModel;
 import com.jen.easyui.base.EasyActivity;
 import com.jen.easyui.recycler.EasyHolder;
-import com.jen.easyui.recycler.listener.EasyAdapterListenerB;
+import com.jen.easyui.recycler.listener.EasyItemListenerB;
 import com.jen.easyui.recycler.letter.EasyLetterDecoration;
 import com.jen.easyui.recycler.letter.EasyLetterView;
 import com.jen.easyui.recycler.EasyRecyclerBaseAdapter;
@@ -120,7 +120,7 @@ public class RecyclerViewLetterActivity extends EasyActivity {
                 }
             }
         });
-        easyAdapter1.setListener(new EasyAdapterListenerB() {
+        easyAdapter1.setItemListener(new EasyItemListenerB() {
             @Override
             public void onItemClick(View view, int position) {
                 Toast.makeText(mContext, position + "", Toast.LENGTH_LONG).show();

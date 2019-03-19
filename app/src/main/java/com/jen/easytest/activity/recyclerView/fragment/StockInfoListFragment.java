@@ -16,7 +16,7 @@ import com.jen.easytest.http.request.StockChooseConditionResultRequest;
 import com.jen.easyui.base.EasyFragment;
 import com.jen.easyui.recycler.HScroll.EasyHScrollRecyclerView;
 import com.jen.easyui.recycler.HScroll.EasyHScrollView;
-import com.jen.easyui.recycler.listener.EasyAdapterListenerB;
+import com.jen.easyui.recycler.listener.EasyItemListenerB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,7 +95,7 @@ public class StockInfoListFragment extends EasyFragment {
         mAdapter = new StockInfoListAdapter<>(getContext(), null);
         mAdapter.setType(mType);
         mAdapter.addEasyHScrollView(easy_scroll_view);
-        mAdapter.setListener(mEasyAdapterOnClickListener);
+        mAdapter.setItemListener(mEasyAdapterOnClickListener);
         mAdapter.setScrollListener(mScrollListener);
         easyRecycler.setLinearLayoutManager(LinearLayoutManager.VERTICAL);
         easyRecycler.setAdapter(mAdapter);
@@ -226,7 +226,7 @@ public class StockInfoListFragment extends EasyFragment {
     /**
      * item点击事件
      */
-    private EasyAdapterListenerB mEasyAdapterOnClickListener = new EasyAdapterListenerB() {
+    private EasyItemListenerB mEasyAdapterOnClickListener = new EasyItemListenerB() {
         @Override
         public void onItemClick(View view, int position) {
             StockInfo data = mData.get(position);
