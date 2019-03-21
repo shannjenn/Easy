@@ -1,7 +1,7 @@
 package com.jen.easytest.http.request;
 
 import com.jen.easy.EasyHttpPost;
-import com.jen.easy.http.HttpBaseRequest;
+import com.jen.easy.http.request.EasyHttpDataRequest;
 
 /**
  * 选股器筛选结果 请求
@@ -9,7 +9,7 @@ import com.jen.easy.http.HttpBaseRequest;
  * @author Created by zs on 2018/10/22.
  */
 @EasyHttpPost(UrlAppend = "http://192.168.10.250:9001/mktinfo_api/get_assentList")
-public class StockChooseConditionResultRequest extends HttpBaseRequest {
+public class StockChooseConditionResultRequest extends EasyHttpDataRequest {
     protected String HEAD_CONTENT_TYPE = "application/json";
 
     private Params params;

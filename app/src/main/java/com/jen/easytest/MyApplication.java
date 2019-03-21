@@ -35,7 +35,7 @@ public class MyApplication extends Application {
 //        EasyMain.mDBHelper.setDatabaseListener(databaseListener);
 //        createTB();
 //
-//        EasyMain.mHttp = new Http(5);
+//        EasyMain.mHttp = new EasyHttp(5);
 
         ImageLoaderConfig config = new ImageLoaderConfig(this)
                 .imgHeight(1024)

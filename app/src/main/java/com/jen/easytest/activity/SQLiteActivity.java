@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.jen.easy.EasyBindClick;
-import com.jen.easy.sqlite.DBDao;
+import com.jen.easy.sqlite.EasyTBDao;
 import com.jen.easytest.R;
 import com.jen.easytest.sqlite.Student;
 import com.jen.easyui.base.EasyActivity;
@@ -18,7 +18,7 @@ import java.util.List;
  */
 
 public class SQLiteActivity extends EasyActivity {
-    private DBDao dbDao;
+    private EasyTBDao dbDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ public class SQLiteActivity extends EasyActivity {
     protected void onBindClick(View view) {
         switch (view.getId()) {
             case R.id.replace: {
-                dbDao = new DBDao(SQLiteActivity.this);
+                dbDao = new EasyTBDao(SQLiteActivity.this);
                 Student student = new Student();
                 student.setId(1);
                 student.setName("张三");

@@ -1,15 +1,15 @@
 package com.jen.easyui.base;
 
-import com.jen.easy.sqlite.DBDao;
+import com.jen.easy.sqlite.EasyTBDao;
 
 public class TableManager {
     private static final String TAG = TableManager.class.getSimpleName();
 
     private static TableManager manager;
-    private DBDao dbDao;
+    private EasyTBDao dbDao;
 
     private TableManager() {
-        dbDao = new DBDao(EasyApplication.getAppContext());
+        dbDao = new EasyTBDao(EasyApplication.getAppContext());
     }
 
     public static TableManager getIns() {
@@ -29,7 +29,7 @@ public class TableManager {
      * @return .
      *//*
     public UserTemp searchMyUserTemp() {
-        DBDao dbDao = new DBDao(XGApplication.getApplication());
+        EasyTBDao dbDao = new EasyTBDao(XGApplication.getApplication());
         UserTemp model = dbDao.searchById(UserTemp.class, XGApplication.getApplication().getMyInfo().getUserId() + "");
         return model;
     }
@@ -44,13 +44,13 @@ public class TableManager {
     }
 
     public FundAccountInfo searchMyFundAccountInfo() {
-        DBDao dbDao = new DBDao(XGApplication.getApplication());
+        EasyTBDao dbDao = new EasyTBDao(XGApplication.getApplication());
         FundAccountInfo model = dbDao.searchById(FundAccountInfo.class, XGApplication.getApplication().getMyInfo().getUserId() + "");
         return model;
     }
 
     public ClientCashSumInfo searchMyClientCashSumInfo() {
-        DBDao dbDao = new DBDao(XGApplication.getApplication());
+        EasyTBDao dbDao = new EasyTBDao(XGApplication.getApplication());
         ClientCashSumInfo model = dbDao.searchById(ClientCashSumInfo.class, XGApplication.getApplication().getMyInfo().getUserId() + "");
         return model;
     }*/

@@ -1,9 +1,7 @@
 package com.jen.easytest.http.response;
 
 
-import com.jen.easy.http.HttpHeadResponse;
-
-public class PutResponse extends HttpHeadResponse {
+public class PutResponse {
 
     private String time;
     private int status;

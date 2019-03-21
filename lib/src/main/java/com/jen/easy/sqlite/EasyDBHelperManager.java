@@ -14,12 +14,12 @@ import com.jen.easy.sqlite.imp.DatabaseListener;
 import java.lang.reflect.Field;
 import java.util.List;
 
-abstract class DBHelperManager {
-    private Database database;
+abstract class EasyDBHelperManager {
+    private EasyDatabase database;
 
-    DBHelperManager(Context context) {
+    EasyDBHelperManager(Context context) {
         if (database == null) {
-            database = new Database(context);
+            database = new EasyDatabase(context);
         }
     }
 

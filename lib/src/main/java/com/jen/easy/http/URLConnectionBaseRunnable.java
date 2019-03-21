@@ -3,7 +3,9 @@ package com.jen.easy.http;
 import com.jen.easy.constant.FieldType;
 import com.jen.easy.constant.Unicode;
 import com.jen.easy.exception.HttpLog;
-import com.jen.easy.http.imp.HttpBaseListener;
+import com.jen.easy.http.imp.EasyHttpDataListener;
+import com.jen.easy.http.request.EasyHttpDataRequest;
+import com.jen.easy.http.request.EasyRequestStatus;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -14,10 +16,10 @@ import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.Map;
 
-class URLConnectionBaseRunnable extends URLConnectionRunnable {
-    private HttpBaseListener baseListener;
+class URLConnectionBaseRunnable extends URLConnectionFactoryRunnable {
+    private EasyHttpDataListener baseListener;
 
-    URLConnectionBaseRunnable(HttpBaseRequest request, HttpBaseListener baseListener, int flagCode, String flagStr) {
+    URLConnectionBaseRunnable(EasyHttpDataRequest request, EasyHttpDataListener baseListener, int flagCode, String flagStr) {
         super(request, flagCode, flagStr);
         this.baseListener = baseListener;
     }
@@ -46,24 +48,21 @@ class URLConnectionBaseRunnable extends URLConnectionRunnable {
             reader.close();
             inStream.close();
             connection.disconnect();
-            if (mRequest.getRequestStatus() == RequestStatus.interrupt) {//拦截数据解析
+            if (mRequest.getRequestStatus() == EasyRequestStatus.interrupt) {//拦截数据解析
                 HttpLog.d(mUrlStr + " 网络请求停止!\n   ");
                 return;
             }
             String result = resultBuffer.toString();
             HttpLog.i(mUrlStr + " 返回原始数据：" + result);
-            if (mRequest.replaceHttpResultMap != null && mRequest.replaceHttpResultMap.size() > 0) {
-                result = replaceStringBeforeParseResponse(result);
-                HttpLog.i(mUrlStr + " 格式化后数据：" + result);
-            }
-            mRequest.requestStatus = RequestStatus.finish;
+            result = replaceResult(result);
+            mRequest.setRequestStatus(EasyRequestStatus.finish);
             success(result, headMap);
         } else {
-            if (mRequest.getRequestStatus() == RequestStatus.interrupt) {//拦截数据解析
+            if (mRequest.getRequestStatus() == EasyRequestStatus.interrupt) {//拦截数据解析
                 HttpLog.d(mUrlStr + " 网络请求停止!\n   ");
                 return;
             }
-            mRequest.requestStatus = RequestStatus.finish;
+            mRequest.setRequestStatus(EasyRequestStatus.finish);
             fail(" 网络请求异常：" + mResponseCode);
         }
     }
@@ -73,15 +72,15 @@ class URLConnectionBaseRunnable extends URLConnectionRunnable {
         if (baseListener != null) {
             if (FieldType.isObject(mResponse) || FieldType.isString(mResponse)) {//Object和String类型不做数据解析
                 HttpLog.d(mUrlStr + " 成功!\n   ");
-                baseListener.success(flagCode, flagStr, result);
+                baseListener.success(flagCode, flagStr, result, headMap);
             } else {
                 HttpParseManager parseManager = new HttpParseManager();
-                Object parseObject = parseManager.parseResponseFromJSONString(mResponse, result, headMap);
+                Object parseObject = parseManager.parseResponseBody(mResponse, result);
                 if (parseObject == null) {
                     fail("解析数据解析出错\n   ");
                 } else {
                     HttpLog.d(mUrlStr + " 成功!\n   ");
-                    baseListener.success(flagCode, flagStr, parseObject);
+                    baseListener.success(flagCode, flagStr, parseObject, headMap);
                 }
             }
         }

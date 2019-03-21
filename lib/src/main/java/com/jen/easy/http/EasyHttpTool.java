@@ -10,7 +10,7 @@ import org.json.JSONObject;
  * 时间：2018/10/25.
  * 说明：网络请求工具类
  */
-public class HttpTool {
+public class EasyHttpTool {
 
     /**
      * 请求参数转JSONObject
@@ -38,6 +38,6 @@ public class HttpTool {
      */
     public static <T> T parseResponse(Class<T> tClass, String obj) {
         HttpParseManager parseManager = new HttpParseManager();
-        return parseManager.parseResponseFromJSONString(tClass, obj, null);
+        return parseManager.parseResponseBody(tClass, obj);
     }
 }

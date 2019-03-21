@@ -13,27 +13,26 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.jen.easy.bind.BindView;
-import com.jen.easy.http.imp.HttpBaseListener;
+import com.jen.easy.bind.EasyBind;
 import com.jen.easyui.dialog.EasyLoading;
 
 /**
  * 作者：ShannJenn
  * 时间：2017/10/26.
  */
-public abstract class EasyActivity<T> extends AppCompatActivity implements HttpBaseListener {
-    private final String TAG =AppCompatActivity.class.getSimpleName();
+public abstract class EasyActivity<T> extends AppCompatActivity {
+    private final String TAG = AppCompatActivity.class.getSimpleName();
     protected Context mContext;
     protected Handler mHandler = new Handler(Looper.getMainLooper());
     protected EasyLoading mLoading;
-    protected BindView mBindView;
+    protected EasyBind mBindView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
-        mBindView = new BindView();
+        mBindView = new EasyBind();
         mLoading = new EasyLoading(this);
         mLoading.setCancelable(false);
 //        setContentView(setLayout());
@@ -71,16 +70,6 @@ public abstract class EasyActivity<T> extends AppCompatActivity implements HttpB
 
     protected abstract void onBindClick(View view);
 
-    @Override
-    public void success(int flagCode, String flag, Object response) {
-
-    }
-
-    @Override
-    public void fail(int flagCode, String flag, String msg) {
-
-    }
-
     /**
      * 6.0以上获取读写文件权限
      */
@@ -95,7 +84,7 @@ public abstract class EasyActivity<T> extends AppCompatActivity implements HttpB
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         } else {
 //            Toast.makeText(this, "授权成功！", Toast.LENGTH_SHORT).show();
-            Log.d(TAG,"checkFilePermission: 已经授权！");
+            Log.d(TAG, "checkFilePermission: 已经授权！");
         }
     }
 }

@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * 作者：ShannJenn
@@ -23,8 +22,6 @@ import java.util.Set;
  * 说明：Json数据解析
  */
 class HttpParseManager {
-    /*返回头部信息*/
-    private Map<String, List<String>> mHeadMap;
     /*错误提示*/
     private List<String> mErrors = new ArrayList<>();
 
@@ -35,9 +32,8 @@ class HttpParseManager {
      * @param obj    数据
      * @return 值
      */
-    <T> T parseResponseFromJSONString(Class<T> tClass, String obj, Map<String, List<String>> headMap) {
+    <T> T parseResponseBody(Class<T> tClass, String obj) {
         HttpLog.d("解析：" + tClass.getName() + "----开始");
-        this.mHeadMap = headMap;
         T t;
         JSONObject object;
         try {
@@ -47,9 +43,6 @@ class HttpParseManager {
             return null;
         }
         t = parseJSONObject(tClass, object);
-        if (t instanceof HttpHeadResponse) {
-            ((HttpHeadResponse) t).setHeads(headMap);
-        }
         mErrors.clear();
         HttpLog.d("解析：" + tClass.getName() + "----完成");
         return t;
@@ -63,10 +56,6 @@ class HttpParseManager {
      * @return 值
      */
     private <T> T parseJSONObject(Class<T> tClass, JSONObject jsonObject) {
-        /*if (tClass == null || jsonObject == null) {
-            throwException(ExceptionType.NullPointerException, "参数不能为空");
-            return null;
-        }*/
         T tObj;
         try {
             tObj = tClass.newInstance();
@@ -78,32 +67,14 @@ class HttpParseManager {
             return null;
         }
 
-        HttpReflectResponseManager.ResponseObject responseObject = HttpReflectResponseManager.getResponseHeadAndBody(tObj.getClass());
-        Map<String, List<Field>> body = responseObject.body;
-        Map<String, Field> heads = responseObject.heads;
-
-        Set<String> headKeys = heads.keySet();
-        for (String headKey : headKeys) {//设置head值
-            if (!mHeadMap.containsKey(headKey)) {
-                continue;
-            }
-            String value = parseHeader(headKey);//解析头部
-            Field field = heads.get(headKey);
-            field.setAccessible(true);
-            try {
-                field.set(tObj, value);
-            } catch (IllegalAccessException e) {
-                showErrorLog("IllegalAccessException：header 参数：" + headKey);
-            }
-        }
-
+        Map<String, List<Field>> bodyFieldMap = HttpReflectResponseManager.parseBodyResponse(tObj.getClass());
         Iterator<String> keys = jsonObject.keys();
         while (keys.hasNext()) {
             String param = keys.next();
-            if (!body.containsKey(param)) {
+            if (!bodyFieldMap.containsKey(param)) {
                 continue;
             }
-            List<Field> fields = body.get(param);
+            List<Field> fields = bodyFieldMap.get(param);
             for (int i = 0; i < fields.size(); i++) {
                 Field field = fields.get(i);
                 field.setAccessible(true);
@@ -130,25 +101,6 @@ class HttpParseManager {
             }
         }
         return tObj;
-    }
-
-    /**
-     * 解析头部
-     *
-     * @param headKey key
-     */
-    private String parseHeader(String headKey) {
-        StringBuilder buffer = new StringBuilder();
-        List<String> values = mHeadMap.get(headKey);
-        for (int i = 0; i < values.size(); i++) {
-            if (i == 0) {
-                buffer.append(values.get(i));
-            } else {
-                buffer.append("&");
-                buffer.append(values.get(i));
-            }
-        }
-        return buffer.toString();
     }
 
     /**

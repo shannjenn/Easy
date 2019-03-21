@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jen.easy.EasyBindId;
-import com.jen.easy.bind.BindView;
+import com.jen.easy.bind.EasyBind;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
 import com.jen.easytest.activity.recyclerView.fragment.StockInfoListFragment;
@@ -121,7 +121,7 @@ public class StockInfoListAdapter<T extends StockInfo> extends EasyHScrollRecycl
 //        private EasyHScrollView easy_scroll_view;
 
         Temp(View view) {
-            BindView bindView = new BindView();
+            EasyBind bindView = new EasyBind();
             bindView.inject(this, view);
         }
 

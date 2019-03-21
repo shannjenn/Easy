@@ -1,13 +1,16 @@
 package com.jen.easyui.base;
 
-import com.jen.easy.http.Http;
-import com.jen.easy.http.HttpRequest;
-import com.jen.easy.http.imp.HttpBaseListener;
+import com.jen.easy.http.EasyHttp;
+import com.jen.easy.http.request.EasyHttpRequest;
+import com.jen.easy.http.imp.EasyHttpDataListener;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Created by zs on 2018/10/22.
  */
-public class HttpManager extends Http implements HttpBaseListener {
+public class HttpManager extends EasyHttp implements EasyHttpDataListener {
     private EasyActivity mActivity;
     /*网络请求同时最大请求数量*/
     private static final int MAX_THREAD = 5;
@@ -23,7 +26,7 @@ public class HttpManager extends Http implements HttpBaseListener {
     public HttpManager(EasyActivity activity) {
         super(MAX_THREAD);
         this.mActivity = activity;
-        setHttpBaseListener(this);
+        setDataListener(this);
     }
 
     private HttpManager(int i) {
@@ -37,7 +40,7 @@ public class HttpManager extends Http implements HttpBaseListener {
     }*/
 
     @Override
-    public void start(HttpRequest httpRequest) {
+    public void start(EasyHttpRequest httpRequest) {
         /*if (!EasyApplication.getAppContext().isNetworkOnline()) {//未连网
             toast(R.string.network_offline);
         } else {
@@ -48,10 +51,10 @@ public class HttpManager extends Http implements HttpBaseListener {
     }
 
     @Override
-    public void success(int flagCode, String flagStr, Object responseObj) {
+    public void success(int flagCode, String flagStr, Object responseBody, Map<String, List<String>> headMap) {
         requestSizes--;
-        if (responseObj instanceof BaseResponse) {
-            BaseResponse response = (BaseResponse) responseObj;
+        if (responseBody instanceof BaseResponse) {
+            BaseResponse response = (BaseResponse) responseBody;
             int code = response.getCode();
             if (httpListener == null) {
 

@@ -3,7 +3,7 @@ package com.jen.easyui.base;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.jen.easy.log.EasyLog;
-import com.jen.easy.sqlite.DBHelper;
+import com.jen.easy.sqlite.EasyDBHelper;
 import com.jen.easy.sqlite.imp.DatabaseListener;
 
 public class DBManager {
@@ -11,7 +11,7 @@ public class DBManager {
     private final int DB_VERSION = 1;//数据库版本号
 
     private static DBManager manager;
-    private DBHelper dbHelper;
+    private EasyDBHelper dbHelper;
 
     public static DBManager getIns() {
         if (manager == null) {
@@ -25,7 +25,7 @@ public class DBManager {
     }
 
     private DBManager() {
-        dbHelper = new DBHelper(EasyApplication.getAppContext());
+        dbHelper = new EasyDBHelper(EasyApplication.getAppContext());
     }
 
     /**

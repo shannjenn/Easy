@@ -2,7 +2,9 @@ package com.jen.easy.http;
 
 import com.jen.easy.constant.Unicode;
 import com.jen.easy.exception.HttpLog;
-import com.jen.easy.http.imp.HttpDownloadListener;
+import com.jen.easy.http.imp.EasyHttpDownloadListener;
+import com.jen.easy.http.request.EasyHttpDownloadRequest;
+import com.jen.easy.http.request.EasyRequestStatus;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -12,17 +14,17 @@ import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.Map;
 
-class URLConnectionDownloadRunnable extends URLConnectionRunnable {
-    private HttpDownloadListener downloadListener;
+class URLConnectionDownloadRunnable extends URLConnectionFactoryRunnable {
+    private EasyHttpDownloadListener downloadListener;
 
-    URLConnectionDownloadRunnable(HttpDownloadRequest request, HttpDownloadListener downloadListener, int flagCode, String flagStr) {
+    URLConnectionDownloadRunnable(EasyHttpDownloadRequest request, EasyHttpDownloadListener downloadListener, int flagCode, String flagStr) {
         super(request, flagCode, flagStr);
         this.downloadListener = downloadListener;
     }
 
     @Override
     protected void childRun(HttpURLConnection connection) throws IOException {
-        HttpDownloadRequest request = (HttpDownloadRequest) mRequest;
+        EasyHttpDownloadRequest request = (EasyHttpDownloadRequest) mRequest;
         if (request.startPoint <= 1024 * 2) {
             request.startPoint = 0;
         } else {
@@ -45,6 +47,7 @@ class URLConnectionDownloadRunnable extends URLConnectionRunnable {
         HttpLog.d(mUrlStr + "  Http请求返回码：" + mResponseCode);
         if (mResponseCode == 200) {
             long curBytes = request.startPoint;
+            Map<String, List<String>> headMap = connection.getHeaderFields();//获取head数据
             request.endPoint = connection.getContentLength();
             InputStream inStream = connection.getInputStream();
             byte[] buffer = new byte[1024];
@@ -54,28 +57,28 @@ class URLConnectionDownloadRunnable extends URLConnectionRunnable {
             while ((len = inStream.read(buffer)) != -1) {
                 randFile.write(buffer, 0, len);
                 curBytes += len;
-                if (mRequest.requestStatus == RequestStatus.interrupt) {
+                if (mRequest.getRequestStatus() == EasyRequestStatus.interrupt) {
                     break;
                 } else {
                     progress(curBytes, request.endPoint);
                 }
             }
-            if (mRequest.requestStatus == RequestStatus.interrupt) {
+            if (mRequest.getRequestStatus() == EasyRequestStatus.interrupt) {
                 HttpLog.d(mUrlStr + " 网络请求停止!\n   ");
                 return;
             }
-            request.requestStatus = RequestStatus.finish;
+            request.setRequestStatus(EasyRequestStatus.finish);
             if (curBytes == request.endPoint) {
-                success(null, null);
+                success(request.filePath, headMap);
             } else {
                 fail("下载失败：" + mResponseCode + " curBytes = " + curBytes + " endPoint = " + request.endPoint);
             }
         } else {
-            if (mRequest.requestStatus == RequestStatus.interrupt) {
+            if (mRequest.getRequestStatus() == EasyRequestStatus.interrupt) {
                 HttpLog.d(mUrlStr + " 网络请求停止!\n   ");
                 return;
             }
-            request.requestStatus = RequestStatus.finish;
+            request.setRequestStatus(EasyRequestStatus.finish);
             fail("下载失败：" + mResponseCode);
         }
     }
@@ -84,8 +87,7 @@ class URLConnectionDownloadRunnable extends URLConnectionRunnable {
     protected void success(String result, Map<String, List<String>> headMap) {
         HttpLog.d(mUrlStr + " 下载成功！");
         if (downloadListener != null) {
-            HttpDownloadRequest request = (HttpDownloadRequest) mRequest;
-            downloadListener.success(flagCode, flagStr, request.filePath);
+            downloadListener.success(flagCode, flagStr, result, headMap);
         }
     }
 

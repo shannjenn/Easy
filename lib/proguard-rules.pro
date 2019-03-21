@@ -81,9 +81,6 @@
 -keep class com.jen.easy.EasyResponse {
     *;
 }
--keep class com.jen.easy.EasyResponseType {
-    *;
-}
 -keep class com.jen.easy.invalid.EasyInvalid {
     *;
 }
@@ -103,47 +100,44 @@
 ##############################################################
 ###控件绑定模块
 ##############################################################
--keep class com.jen.easy.bind.BindView {
+-keep class com.jen.easy.bind.EasyBind {
     *;
 }
 
 ##############################################################
 ###网络模块
 ##############################################################
--keep class com.jen.easy.http.Http {
+-keep class com.jen.easy.http.EasyHttp {
     *;
 }
--keep class com.jen.easy.http.HttpRequest* {
+-keep class com.jen.easy.http.request.EasyHttpRequest* {
     *;
 }
--keep class com.jen.easy.http.HttpBaseRequest* {
+-keep class com.jen.easy.http.request.EasyHttpDataRequest* {
      *;
 }
--keep class com.jen.easy.http.HttpDownloadRequest* {
+-keep class com.jen.easy.http.request.EasyHttpDownloadRequest* {
     *;
 }
--keep class com.jen.easy.http.HttpUploadRequest* {
+-keep class com.jen.easy.http.request.EasyHttpUploadRequest* {
     *;
 }
--keep class com.jen.easy.http.HttpResponse* {
+-keep class com.jen.easy.http.response.EasyHttpResponse* {
     *;
 }
--keep class com.jen.easy.http.HttpHeadResponse* {
+-keep class com.jen.easy.http.imp.EasyHttpDataListener {
     *;
 }
--keep class com.jen.easy.http.imp.HttpBaseListener {
+-keep class com.jen.easy.http.imp.EasyHttpDownloadListener {
     *;
 }
--keep class com.jen.easy.http.imp.HttpDownloadListener {
+-keep class com.jen.easy.http.imp.EasyHttpUploadListener {
     *;
 }
--keep class com.jen.easy.http.imp.HttpUploadListener {
+-keep class com.jen.easy.http.EasyHttpTool {
     *;
 }
--keep class com.jen.easy.http.HttpTool {
-    *;
-}
--keep class com.jen.easy.http.RequestStatus {
+-keep class com.jen.easy.http.request.EasyRequestStatus {
     *;
 }
 
@@ -172,10 +166,10 @@
 ##############################################################
 ###数据库模块
 ##############################################################
--keep class com.jen.easy.sqlite.DBHelper {
+-keep class com.jen.easy.sqlite.EasyDBHelper {
     *;
 }
--keep class com.jen.easy.sqlite.DBDao {
+-keep class com.jen.easy.sqlite.EasyTBDao {
     *;
 }
 -keep class com.jen.easy.sqlite.imp.DatabaseListener {

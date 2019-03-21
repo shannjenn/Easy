@@ -16,7 +16,6 @@ public class javaClass {
 //
 //        System.out.println((2));
 
-        Student.print();
     }
 
 

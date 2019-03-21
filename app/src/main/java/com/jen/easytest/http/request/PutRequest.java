@@ -3,11 +3,11 @@ package com.jen.easytest.http.request;
 import com.jen.easy.EasyHttpPut;
 import com.jen.easy.EasyRequest;
 import com.jen.easy.EasyRequestType;
-import com.jen.easy.http.HttpBaseRequest;
+import com.jen.easy.http.request.EasyHttpDataRequest;
 import com.jen.easytest.http.response.PutResponse;
 
 @EasyHttpPut(UrlBase = "http://47.92.134.67:92/portal/followExperts/{id}", Response = PutResponse.class)
-public class PutRequest extends HttpBaseRequest {
+public class PutRequest extends EasyHttpDataRequest {
 
     @EasyRequest(value = "id", type = EasyRequestType.Url)
     private String id;

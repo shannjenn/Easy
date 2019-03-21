@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.jen.easy.EasyBindClick;
-import com.jen.easy.http.Http;
-import com.jen.easy.http.HttpTool;
+import com.jen.easy.http.EasyHttp;
+import com.jen.easy.http.EasyHttpTool;
 import com.jen.easy.http.TestHttp;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
@@ -25,7 +25,7 @@ import org.json.JSONObject;
  */
 
 public class HttpActivity extends EasyActivity {
-    Http http = new Http(5);//设置请求最大线程数量值5
+    EasyHttp http = new EasyHttp(5);//设置请求最大线程数量值5
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +90,7 @@ public class HttpActivity extends EasyActivity {
             case R.id.response_parse: {
                 AirRequest airRequest = new AirRequest();
                 JSONObject jsonObject = TestHttp.httpReflectManager_test(airRequest);
-                AirRequest2 airRequest2 = TestHttp.httpParseManager_test(AirRequest2.class, jsonObject.toString(), null);
+                AirRequest2 airRequest2 = TestHttp.httpParseManager_test(AirRequest2.class, jsonObject.toString());
                 EasyLog.d("----------");
                 break;
             }
@@ -101,7 +101,7 @@ public class HttpActivity extends EasyActivity {
     private void testParse() {
 //        String data = "{\"code\":0,\"result\":{\"data\":[[\"310.6\",\"5.600\",\"0.01836065573770499\",\"60\",\"HKD\",\"100\"]]}}";
         String data = "{\"code\":0,\"result\":{\"data\":[[\"310.6\",\"5.600\"]],\"data1\":[[31,5]],\"data2\":[[310.6,5.600]],\"data3\":[{\"id\": 111,\"name\": \"名字\"}]}}";
-        HttpTool.parseResponse(StockQuotationResponse.class, data);
+        EasyHttpTool.parseResponse(StockQuotationResponse.class, data);
     }
 
     private void get() {

@@ -1,14 +1,14 @@
-package com.jen.easy.http;
+package com.jen.easy.http.request;
 
 import com.jen.easy.invalid.EasyInvalid;
 
 /**
+ * 上传文件请求参数
  * 作者：ShannJenn
  * 时间：2017/8/12.
- * 说明：下载文件请求参数
  */
 @EasyInvalid
-public class HttpDownloadRequest extends HttpRequest {
+public class EasyHttpUploadRequest extends EasyHttpRequest {
     /**
      * 上传/下载文件位置
      */
@@ -25,9 +25,5 @@ public class HttpDownloadRequest extends HttpRequest {
      * 是否断点下载
      */
     public boolean isBreak;
-    /**
-     * 是否在下载删除旧文件，默认删除
-     */
-    public boolean deleteOldFile = true;
 
 }

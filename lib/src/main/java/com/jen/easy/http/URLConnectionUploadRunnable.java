@@ -2,7 +2,9 @@ package com.jen.easy.http;
 
 import com.jen.easy.constant.FieldType;
 import com.jen.easy.exception.HttpLog;
-import com.jen.easy.http.imp.HttpUploadListener;
+import com.jen.easy.http.imp.EasyHttpUploadListener;
+import com.jen.easy.http.request.EasyHttpUploadRequest;
+import com.jen.easy.http.request.EasyRequestStatus;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -15,17 +17,17 @@ import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.Map;
 
-class URLConnectionUploadRunnable extends URLConnectionRunnable {
-    private HttpUploadListener uploadListener;
+class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
+    private EasyHttpUploadListener uploadListener;
 
-    URLConnectionUploadRunnable(HttpUploadRequest request, HttpUploadListener uploadListener, int flagCode, String flagStr) {
+    URLConnectionUploadRunnable(EasyHttpUploadRequest request, EasyHttpUploadListener uploadListener, int flagCode, String flagStr) {
         super(request, flagCode, flagStr);
         this.uploadListener = uploadListener;
     }
 
     @Override
     protected void childRun(HttpURLConnection connection) throws IOException {
-        HttpUploadRequest request = (HttpUploadRequest) mRequest;
+        EasyHttpUploadRequest request = (EasyHttpUploadRequest) mRequest;
         if (request.isBreak && request.endPoint > request.startPoint + 100) {
             connection.setRequestProperty("Range", "bytes=" + request.startPoint + "-" + request.endPoint);
         }
@@ -38,7 +40,7 @@ class URLConnectionUploadRunnable extends URLConnectionRunnable {
         byte[] bufferOut = new byte[1024];
         while ((len = in.read(bufferOut)) != -1) {
             out.write(bufferOut, 0, len);
-            if (request.requestStatus == RequestStatus.interrupt) {
+            if (request.getRequestStatus() == EasyRequestStatus.interrupt) {
                 break;
             } else {
                 progress(curBytes, request.endPoint);
@@ -56,17 +58,14 @@ class URLConnectionUploadRunnable extends URLConnectionRunnable {
             buffer.append(line);
         }
         reader.close();
-        if (mRequest.requestStatus == RequestStatus.interrupt) {//拦截数据解析
+        if (mRequest.getRequestStatus() == EasyRequestStatus.interrupt) {//拦截数据解析
             HttpLog.d(mUrlStr + " 网络请求停止!\n   ");
             return;
         }
         String result = buffer.toString();
         HttpLog.i(mUrlStr + " 完成，返回数据：" + result);
-        if (mRequest.replaceHttpResultMap != null) {
-            result = replaceStringBeforeParseResponse(result);
-            HttpLog.i(mUrlStr + " 格式化后数据：" + result);
-        }
-        mRequest.requestStatus = RequestStatus.finish;
+        result = replaceResult(result);
+        mRequest.setRequestStatus(EasyRequestStatus.finish);
         success(result, null);
     }
 
@@ -75,14 +74,14 @@ class URLConnectionUploadRunnable extends URLConnectionRunnable {
         HttpLog.d(mUrlStr + " 上传成功！");
         if (uploadListener != null) {
             if (FieldType.isObject(mResponse) || FieldType.isString(mResponse)) {//Object和String类型不做数据解析
-                uploadListener.success(flagCode, flagStr, result);
+                uploadListener.success(flagCode, flagStr, result, headMap);
             } else {
                 HttpParseManager parseManager = new HttpParseManager();
-                Object parseObject = parseManager.parseResponseFromJSONString(mResponse, result, headMap);
+                Object parseObject = parseManager.parseResponseBody(mResponse, result);
                 if (parseObject == null) {
                     fail("返回数据解析异常");
                 } else {
-                    uploadListener.success(flagCode, flagStr, parseObject);
+                    uploadListener.success(flagCode, flagStr, parseObject, headMap);
                 }
             }
         }

@@ -8,6 +8,7 @@ import com.jen.easy.EasyRequestType;
 import com.jen.easy.constant.FieldType;
 import com.jen.easy.exception.ExceptionType;
 import com.jen.easy.exception.HttpLog;
+import com.jen.easy.http.request.EasyHttpRequest;
 import com.jen.easy.invalid.EasyInvalidType;
 import com.jen.easy.invalid.Invalid;
 
@@ -47,7 +48,7 @@ class HttpReflectRequestManager {
      *
      * @return 请求信息
      */
-    static RequestType getRequestType(HttpRequest request) {
+    static RequestType getRequestType(EasyHttpRequest request) {
 //        Object[] values = new Object[3];
         /*if (request == null) {
             Throw.exception(ExceptionType.NullPointerException, "getUrl 请求地址不能为空");

@@ -12,12 +12,12 @@ import com.jen.easy.sqlite.imp.DatabaseListener;
 
 import java.io.File;
 
-class Database {
+class EasyDatabase {
     private static final String name = "easy.db";
     private String path;
     private DatabaseListener listener;
 
-    Database(Context context) {
+    EasyDatabase(Context context) {
         path = context.getDatabasePath(name).getPath();
         File parent = new File(path).getParentFile();
         if (!parent.exists()) {

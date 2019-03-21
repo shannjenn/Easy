@@ -25,13 +25,4 @@ public class EmptyFragmentRed extends EasyFragment {
 
     }
 
-    @Override
-    public void success(int flagCode, String flag, Object response) {
-
-    }
-
-    @Override
-    public void fail(int flagCode, String flag, String msg) {
-
-    }
 }

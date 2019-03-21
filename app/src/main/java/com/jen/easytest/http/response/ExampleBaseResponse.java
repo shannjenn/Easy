@@ -1,7 +1,6 @@
 package com.jen.easytest.http.response;
 
 import com.jen.easy.EasyResponse;
-import com.jen.easy.http.HttpHeadResponse;
 
 /**
  * 作者：ShannJenn
@@ -9,7 +8,7 @@ import com.jen.easy.http.HttpHeadResponse;
  * 说明：
  */
 
-public class ExampleBaseResponse extends HttpHeadResponse {
+public class ExampleBaseResponse   {
 
     @EasyResponse("code")
     protected String code;

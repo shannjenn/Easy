@@ -1,13 +1,13 @@
 package com.jen.easytest.request;
 
-import com.jen.easy.http.HttpBaseRequest;
+import com.jen.easy.http.request.EasyHttpDataRequest;
 
 /**
  * 所有请求继承该类
  *
  * @author Created by zs on 2018/10/22.
  */
-class BaseRequest extends HttpBaseRequest {
+class BaseRequest extends EasyHttpDataRequest {
     /*基础参数*/
     protected String id;
     protected String requestSrc;
@@ -24,7 +24,7 @@ class BaseRequest extends HttpBaseRequest {
 //    }
 
 //    public void setSign() {
-//        JSONObject obj = HttpTool.parseRequst(this);
+//        JSONObject obj = EasyHttpTool.parseRequst(this);
 //        sign = HttpSecurity.getInstance().sign(obj);
 //    }
 //

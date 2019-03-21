@@ -18,8 +18,8 @@ public @interface EasyResponse {
      */
     String value() default "";
 
-    /**
-     * 请求参数类型
-     */
-    EasyResponseType type() default EasyResponseType.Param;
+//    /**
+//     * 请求参数类型
+//     */
+//    EasyResponseType type() default EasyResponseType.Param;
 }

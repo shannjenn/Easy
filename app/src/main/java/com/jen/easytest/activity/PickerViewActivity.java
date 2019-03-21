@@ -56,13 +56,5 @@ public class PickerViewActivity extends EasyActivity {
 
     }
 
-    @Override
-    public void success(int flagCode, String flag, Object response) {
 
-    }
-
-    @Override
-    public void fail(int flagCode, String flag, String msg) {
-
-    }
 }

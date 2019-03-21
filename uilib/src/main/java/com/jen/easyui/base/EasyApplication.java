@@ -32,7 +32,7 @@ public class EasyApplication extends Application {
 
         createTB();
 
-//        EasyMain.mHttp = new Http(5);
+//        EasyMain.mHttp = new EasyHttp(5);
     }
 
 

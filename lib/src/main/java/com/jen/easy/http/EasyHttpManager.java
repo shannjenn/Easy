@@ -1,9 +1,14 @@
 package com.jen.easy.http;
 
 import com.jen.easy.exception.HttpLog;
-import com.jen.easy.http.imp.HttpBaseListener;
-import com.jen.easy.http.imp.HttpDownloadListener;
-import com.jen.easy.http.imp.HttpUploadListener;
+import com.jen.easy.http.imp.EasyHttpDataListener;
+import com.jen.easy.http.imp.EasyHttpDownloadListener;
+import com.jen.easy.http.imp.EasyHttpUploadListener;
+import com.jen.easy.http.request.EasyHttpDataRequest;
+import com.jen.easy.http.request.EasyHttpDownloadRequest;
+import com.jen.easy.http.request.EasyHttpRequest;
+import com.jen.easy.http.request.EasyHttpUploadRequest;
+import com.jen.easy.http.request.EasyRequestStatus;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -14,20 +19,20 @@ import java.util.concurrent.TimeUnit;
  * 时间：2017/8/12.
  * 说明：网络请求
  */
-abstract class HttpManager {
+abstract class EasyHttpManager {
     private ExecutorService pool;
     private int maxThreadSize;
     private boolean isShutdown;
-    private HttpBaseListener httpBaseListener;
-    private HttpDownloadListener httpDownloadListener;
-    private HttpUploadListener httpUploadListener;
+    private EasyHttpDataListener httpBaseListener;
+    private EasyHttpDownloadListener httpDownloadListener;
+    private EasyHttpUploadListener httpUploadListener;
 
-    HttpManager() {
+    EasyHttpManager() {
         maxThreadSize = 9;
         init(maxThreadSize);
     }
 
-    HttpManager(int maxThreadSize) {
+    EasyHttpManager(int maxThreadSize) {
         init(maxThreadSize);
     }
 
@@ -39,15 +44,15 @@ abstract class HttpManager {
         pool = Executors.newFixedThreadPool(maxThreadSize);
     }
 
-    public void start(HttpRequest request) {
+    public void start(EasyHttpRequest request) {
         start(request, 0, null);
     }
 
-    public void start(HttpRequest request, int flagCode) {
+    public void start(EasyHttpRequest request, int flagCode) {
         start(request, flagCode, null);
     }
 
-    public void start(HttpRequest request, String flagStr) {
+    public void start(EasyHttpRequest request, String flagStr) {
         start(request, 0, flagStr);
     }
 
@@ -58,7 +63,7 @@ abstract class HttpManager {
      * @param flagCode 请求标识
      * @param flagStr  请求标识
      */
-    public void start(HttpRequest request, int flagCode, String flagStr) {
+    public void start(EasyHttpRequest request, int flagCode, String flagStr) {
         if (isShutdown) {
             HttpLog.w("线程池已经关闭，不可以再操作 start");
             return;
@@ -67,15 +72,15 @@ abstract class HttpManager {
             HttpLog.w("参数不能为空");
             return;
         }
-        request.requestStatus = RequestStatus.running;
-        if (request instanceof HttpBaseRequest) {
-            URLConnectionBaseRunnable base = new URLConnectionBaseRunnable((HttpBaseRequest) request, httpBaseListener, flagCode, flagStr);
+        request.setRequestStatus(EasyRequestStatus.running);
+        if (request instanceof EasyHttpDataRequest) {
+            URLConnectionBaseRunnable base = new URLConnectionBaseRunnable((EasyHttpDataRequest) request, httpBaseListener, flagCode, flagStr);
             pool.execute(base);
-        } else if (request instanceof HttpDownloadRequest) {
-            URLConnectionDownloadRunnable download = new URLConnectionDownloadRunnable((HttpDownloadRequest) request, httpDownloadListener, flagCode, flagStr);
+        } else if (request instanceof EasyHttpDownloadRequest) {
+            URLConnectionDownloadRunnable download = new URLConnectionDownloadRunnable((EasyHttpDownloadRequest) request, httpDownloadListener, flagCode, flagStr);
             pool.execute(download);
-        } else if (request instanceof HttpUploadRequest) {
-            URLConnectionUploadRunnable upload = new URLConnectionUploadRunnable((HttpUploadRequest) request, httpUploadListener, flagCode, flagStr);
+        } else if (request instanceof EasyHttpUploadRequest) {
+            URLConnectionUploadRunnable upload = new URLConnectionUploadRunnable((EasyHttpUploadRequest) request, httpUploadListener, flagCode, flagStr);
             pool.execute(upload);
         } else {
             HttpLog.e("请求参数类型错误，请继承正确:" + request.getClass().getName());
@@ -112,25 +117,25 @@ abstract class HttpManager {
         return maxThreadSize;
     }
 
-    public void setHttpBaseListener(HttpBaseListener httpBaseListener) {
+    public void setDataListener(EasyHttpDataListener httpBaseListener) {
         if (isShutdown) {
-            HttpLog.w("线程池已经关闭，不可以再操作 setHttpBaseListener");
+            HttpLog.w("线程池已经关闭，不可以再操作 setDataListener");
             return;
         }
         this.httpBaseListener = httpBaseListener;
     }
 
-    public void setHttpDownloadListener(HttpDownloadListener httpDownloadListener) {
+    public void setDownloadListener(EasyHttpDownloadListener httpDownloadListener) {
         if (isShutdown) {
-            HttpLog.w("线程池已经关闭，不可以再操作 setHttpDownloadListener");
+            HttpLog.w("线程池已经关闭，不可以再操作 setDownloadListener");
             return;
         }
         this.httpDownloadListener = httpDownloadListener;
     }
 
-    public void setHttpUploadListener(HttpUploadListener httpUploadListener) {
+    public void setUploadListener(EasyHttpUploadListener httpUploadListener) {
         if (isShutdown) {
-            HttpLog.w("线程池已经关闭，不可以再操作 setHttpUploadListener");
+            HttpLog.w("线程池已经关闭，不可以再操作 setUploadListener");
             return;
         }
         this.httpUploadListener = httpUploadListener;

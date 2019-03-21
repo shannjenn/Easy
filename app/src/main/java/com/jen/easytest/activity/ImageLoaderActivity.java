@@ -71,18 +71,4 @@ public class ImageLoaderActivity<T extends ImageLoaderResponse> extends EasyActi
 
     }
 
-    @Override
-    public void success(int flagCode, String flag, Object object) {
-        super.success(flagCode, flag, object);
-
-//        mData.clear();
-//        mData.addAll(response.getData().getData2());
-//        EasyMain.mDao.replace(mData);
-//        adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void fail(int flagCode, String flag, String msg) {
-        super.fail(flagCode, flag, msg);
-    }
 }

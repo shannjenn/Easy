@@ -9,9 +9,9 @@ import java.util.List;
  * 时间：2017/8/12.
  * 说明：数据库表操作类（结合注释@Easy.DB使用）
  */
-public class DBDao extends DBDaoManager {
+public class EasyTBDao extends EasyTBDaoManager {
 
-    public DBDao(Context context) {
+    public EasyTBDao(Context context) {
         super(context);
     }
 

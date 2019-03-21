@@ -23,13 +23,13 @@ import java.util.Set;
  * Created by Jen on 2017/7/20.
  */
 
-abstract class DBDaoManager {
+abstract class EasyTBDaoManager {
     /*错误提示*/
     private List<String> mErrors = new ArrayList<>();
-    private Database database;
+    private EasyDatabase database;
 
-    DBDaoManager(Context context) {
-        database = new Database(context);
+    EasyTBDaoManager(Context context) {
+        database = new EasyDatabase(context);
     }
 
 

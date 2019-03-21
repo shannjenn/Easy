@@ -4,6 +4,11 @@ import android.text.TextUtils;
 
 import com.jen.easy.exception.ExceptionType;
 import com.jen.easy.exception.HttpLog;
+import com.jen.easy.http.request.EasyHttpDataRequest;
+import com.jen.easy.http.request.EasyHttpDownloadRequest;
+import com.jen.easy.http.request.EasyHttpUploadRequest;
+import com.jen.easy.http.request.EasyHttpRequest;
+import com.jen.easy.http.request.EasyRequestStatus;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,10 +23,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-abstract class URLConnectionRunnable implements Runnable {
+abstract class URLConnectionFactoryRunnable implements Runnable {
     int flagCode;//请求标识
     String flagStr;//请求标识
-    HttpRequest mRequest;
+    EasyHttpRequest mRequest;
     Class mResponse;
 
     String mUrlStr;
@@ -30,7 +35,7 @@ abstract class URLConnectionRunnable implements Runnable {
     boolean mIsGet = true;
     JSONObject mBody;
 
-    URLConnectionRunnable(HttpRequest param, int flagCode, String flagStr) {
+    URLConnectionFactoryRunnable(EasyHttpRequest param, int flagCode, String flagStr) {
         super();
         this.mRequest = param;
         this.flagCode = flagCode;
@@ -56,11 +61,11 @@ abstract class URLConnectionRunnable implements Runnable {
             return;
         }
 
-        if (mRequest instanceof HttpBaseRequest) {//===============基本数据处理
+        if (mRequest instanceof EasyHttpDataRequest) {//===============基本数据处理
             mResponse = response;
-        } else if (mRequest instanceof HttpUploadRequest) {//===============上传请求处理
+        } else if (mRequest instanceof EasyHttpUploadRequest) {//===============上传请求处理
             mResponse = response;
-            HttpUploadRequest uploadRequest = (HttpUploadRequest) mRequest;
+            EasyHttpUploadRequest uploadRequest = (EasyHttpUploadRequest) mRequest;
             if (TextUtils.isEmpty(uploadRequest.filePath)) {
                 HttpLog.exception(ExceptionType.NullPointerException, "文件地址不能为空");
                 fail("文件地址不能为空");
@@ -72,8 +77,8 @@ abstract class URLConnectionRunnable implements Runnable {
                 fail("文件地址参数错误");
                 return;
             }
-        } else if (mRequest instanceof HttpDownloadRequest) {//===============下载请求处理
-            HttpDownloadRequest downloadRequest = (HttpDownloadRequest) mRequest;
+        } else if (mRequest instanceof EasyHttpDownloadRequest) {//===============下载请求处理
+            EasyHttpDownloadRequest downloadRequest = (EasyHttpDownloadRequest) mRequest;
             if (downloadRequest.deleteOldFile) {
                 File file = new File(downloadRequest.filePath);
                 if (file.exists()) {
@@ -158,7 +163,7 @@ abstract class URLConnectionRunnable implements Runnable {
                 headBuilder.append(value);
                 headBuilder.append(" ");
             }
-            if (mRequest.requestStatus == RequestStatus.interrupt) {
+            if (mRequest.getRequestStatus() == EasyRequestStatus.interrupt) {
                 return;
             }
             HttpLog.i("网络请求：" + method + " " + mUrlStr + " 请求头部：" + headBuilder.toString() + " 请求参数：" + mBody.toString());
@@ -179,11 +184,14 @@ abstract class URLConnectionRunnable implements Runnable {
      * @param response not null
      * @return String
      */
-    String replaceStringBeforeParseResponse(String response) {
-        Set<String> oldChars = mRequest.replaceHttpResultMap.keySet();
-        for (String oldChar : oldChars) {
-            String replacement = mRequest.replaceHttpResultMap.get(oldChar);
-            response = response.replace(oldChar, replacement);
+    String replaceResult(String response) {
+        if (mRequest.getReplaceResult().size() > 0) {
+            Set<String> oldChars = mRequest.getReplaceResult().keySet();
+            for (String oldChar : oldChars) {
+                String replacement = mRequest.getReplaceResult().get(oldChar);
+                response = response.replace(oldChar, replacement);
+            }
+            HttpLog.i(mUrlStr + " 格式化后数据：" + response);
         }
         return response;
     }

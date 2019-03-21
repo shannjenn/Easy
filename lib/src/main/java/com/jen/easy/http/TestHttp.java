@@ -4,13 +4,10 @@ import com.jen.easy.log.EasyLog;
 
 import org.json.JSONObject;
 
-import java.util.List;
-import java.util.Map;
-
 /**
  * 作者：ShannJenn
  * 时间：2018/11/28.
- * 说明：
+ * 说明：测试类
  */
 public class TestHttp {
 
@@ -20,9 +17,9 @@ public class TestHttp {
         return requestObject.body;
     }
 
-    public static <T> T httpParseManager_test(Class<T> tClass, String obj, Map<String, List<String>> headMap) {
+    public static <T> T httpParseManager_test(Class<T> tClass, String obj) {
         HttpParseManager parseManager = new HttpParseManager();
-        T t = parseManager.parseResponseFromJSONString(tClass, obj, headMap);
+        T t = parseManager.parseResponseBody(tClass, obj);
         return t;
     }
 }

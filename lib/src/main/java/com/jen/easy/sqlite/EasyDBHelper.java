@@ -10,12 +10,12 @@ import com.jen.easy.sqlite.imp.DatabaseListener;
  * 时间：2017/9/4:21:18
  * 说明：数据库助手（结合注释@Easy.HTTP使用）
  */
-public class DBHelper extends DBHelperManager {
+public class EasyDBHelper extends EasyDBHelperManager {
 
     /**
      * 新建实例
      */
-    public DBHelper(Context context) {
+    public EasyDBHelper(Context context) {
         super(context);
     }
 
