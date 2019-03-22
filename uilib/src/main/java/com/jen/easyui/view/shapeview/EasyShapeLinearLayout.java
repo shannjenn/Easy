@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 
 import com.jen.easyui.R;
 
+
 /**
  * LinearLayout(如果要点击效果，设置android:clickable="true")
  * 作者：ShannJenn
@@ -94,6 +95,11 @@ public class EasyShapeLinearLayout extends LinearLayout {
         mShape.init();
     }
 
+    public void update() {
+        mShape.init();
+        invalidate();
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -115,6 +121,10 @@ public class EasyShapeLinearLayout extends LinearLayout {
     public boolean onTouchEvent(MotionEvent event) {
         mShape.onFocusEvent(event);
         return super.onTouchEvent(event);
+    }
+
+    public EasyShapeBase getShape(){
+        return mShape;
     }
 
 }

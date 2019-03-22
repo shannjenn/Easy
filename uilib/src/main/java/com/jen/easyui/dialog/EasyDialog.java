@@ -14,9 +14,11 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jen.easyui.R;
+import com.jen.easyui.view.shapeview.EasyShapeTextView;
 
 
 /**
@@ -29,9 +31,11 @@ import com.jen.easyui.R;
 public class EasyDialog extends Dialog implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     private Context context;
     private TextView tv_content;
-    private GravityTitle titleGravity = GravityTitle.Left;
     private CharSequence txtContent;
+
+    private GravityTitle titleGravity = GravityTitle.Left;
     private GravityContent contentGravity = GravityContent.Center;
+    private StyleButtons styleButtons = StyleButtons.Fill;
 
     private String txtLeft;
     private String txtRight;
@@ -64,11 +68,10 @@ public class EasyDialog extends Dialog implements View.OnClickListener, Compound
         tv_content = layout.findViewById(R.id.tv_content);
         CheckBox cb_check = layout.findViewById(R.id.cb_check);
 
-        Button btn_left = layout.findViewById(R.id.btn_left);
+        LinearLayout ll_buttons = layout.findViewById(R.id.ll_buttons);
+        EasyShapeTextView btn_left = layout.findViewById(R.id.btn_left);
         Button btn_middle = layout.findViewById(R.id.btn_middle);
-//        View v_middle_button_line = layout.findViewById(R.id.v_middle_button_line);
-//        View v_right_button_line = layout.findViewById(R.id.v_right_button_line);
-        Button btn_right = layout.findViewById(R.id.btn_right);
+        EasyShapeTextView btn_right = layout.findViewById(R.id.btn_right);
 
         btn_left.setOnClickListener(this);
         btn_middle.setOnClickListener(this);
@@ -135,28 +138,42 @@ public class EasyDialog extends Dialog implements View.OnClickListener, Compound
             cb_check.setVisibility(View.GONE);
         }
 
+        switch (styleButtons) {
+            case Fill:
+                break;
+            case Margin:
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) ll_buttons.getLayoutParams();
+                params.leftMargin = Build.dp2px(StyleButtons.marginLeft());
+                params.rightMargin = Build.dp2px(StyleButtons.marginRight());
+                params.bottomMargin = Build.dp2px(StyleButtons.marginBottom());
+                btn_right.getShape().setCorners(4);
+                break;
+        }
+
         if (txtLeft != null) {
             btn_left.setVisibility(View.VISIBLE);
             btn_left.setText(txtLeft);
+            if (btn_right.getVisibility() == View.GONE) {
+                btn_left.getShape().setCornerRightBottom(4);
+            }
         } else {
             btn_left.setVisibility(View.GONE);
         }
 
         if (txtMiddle != null) {
             btn_middle.setVisibility(View.VISIBLE);
-//            v_middle_button_line.setVisibility(View.VISIBLE);
             btn_middle.setText(txtMiddle);
         } else {
             btn_middle.setVisibility(View.GONE);
-//            v_middle_button_line.setVisibility(View.GONE);
         }
         if (txtRight != null) {
             btn_right.setVisibility(View.VISIBLE);
-//            v_right_button_line.setVisibility(View.VISIBLE);
             btn_right.setText(txtRight);
+            if (btn_left.getVisibility() == View.GONE) {
+                btn_right.getShape().setCornerLeftBottom(4);
+            }
         } else {
             btn_right.setVisibility(View.GONE);
-//            v_right_button_line.setVisibility(View.GONE);
         }
         setContentView(layout);
     }
@@ -241,7 +258,7 @@ public class EasyDialog extends Dialog implements View.OnClickListener, Compound
         this.contentGravity = contentGravity;
     }
 
-    public void setTxtCheckBox(String txtCheckBox) {
+    void setTxtCheckBox(String txtCheckBox) {
         this.txtCheckBox = txtCheckBox;
     }
 
@@ -263,6 +280,10 @@ public class EasyDialog extends Dialog implements View.OnClickListener, Compound
 
     void setFlagCode(int flagCode) {
         this.flagCode = flagCode;
+    }
+
+    public void setStyleButtons(StyleButtons styleButtons) {
+        this.styleButtons = styleButtons;
     }
 
     /**

@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 
 import com.jen.easyui.R;
 
+
 /**
  * EditText
  * 作者：ShannJenn
@@ -54,7 +55,7 @@ public class EasyShapeEditTextView extends android.support.v7.widget.AppCompatEd
         mShape.mSolidClickColor = ta.getColor(R.styleable.EasyShapeEditTextView_solidClickColor, 0);
 
         mShape.mTextColor = ta.getColor(R.styleable.EasyShapeEditTextView_android_textColor, 0xFF000000);
-        mShape.mTextClickColor = ta.getColor(R.styleable.EasyShapeEditTextView_textClickColor, 0xFF000000);
+        mShape.mTextClickColor = ta.getColor(R.styleable.EasyShapeEditTextView_textClickColor, -1);
 
         mShape.mLineWidth = ta.getDimensionPixelSize(R.styleable.EasyShapeEditTextView_lineWidth, 0);
         mShape.mLineLeftColor = ta.getColor(R.styleable.EasyShapeEditTextView_lineLeftColor, 0);
@@ -77,6 +78,10 @@ public class EasyShapeEditTextView extends android.support.v7.widget.AppCompatEd
         mShape.mLineBottomMarginBottom = ta.getDimensionPixelSize(R.styleable.EasyShapeEditTextView_lineBottomMarginBottom, 0);
         mShape.mLineBottomMarginLeft = ta.getDimensionPixelSize(R.styleable.EasyShapeEditTextView_lineBottomMarginLeft, 0);
         mShape.mLineBottomMarginRight = ta.getDimensionPixelSize(R.styleable.EasyShapeEditTextView_lineBottomMarginRight, 0);
+
+        if (mShape.mTextClickColor == -1) {
+            mShape.mTextClickColor = mShape.mTextColor;
+        }
 
         int clickType = ta.getInt(R.styleable.EasyShapeEditTextView_clickType, -1);
         switch (clickType) {
@@ -107,6 +112,11 @@ public class EasyShapeEditTextView extends android.support.v7.widget.AppCompatEd
         }*/
         ta.recycle();
         mShape.init();
+    }
+
+    public void update() {
+        mShape.init();
+        invalidate();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.jen.easyui.view.shapeview;
 
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.GradientDrawable;
@@ -267,6 +268,18 @@ public class EasyShapeBase {
         mDrawable.setColor(mSolidColor);
     }
 
+    public void setCorners(int db) {
+        mCorners = dp2px(db);
+    }
+
+    public void setCornerLeftBottom(int db) {
+        mCornerLeftBottom = dp2px(db);
+    }
+
+    public void setCornerRightBottom(int db) {
+        mCornerRightBottom = dp2px(db);
+    }
+
     public ClickType getClickType() {
         return mClickType;
     }
@@ -297,5 +310,13 @@ public class EasyShapeBase {
                 ((TextView) mView).setTextColor(mTextColor);
             }
         }
+    }
+
+    /**
+     * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
+     */
+    static int dp2px(float dpValue) {
+        final float scale = Resources.getSystem().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
     }
 }

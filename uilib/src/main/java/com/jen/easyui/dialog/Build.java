@@ -1,6 +1,7 @@
 package com.jen.easyui.dialog;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 
 import com.jen.easyui.R;
@@ -12,13 +13,15 @@ public class Build {
     private Drawable iconLeft;
     private Drawable iconRight;
     private String txtTitle;
-    private GravityTitle titleGravity = GravityTitle.Left;
     private CharSequence txtContent;
     private String txtCheckBox;
-    private GravityContent contentGravity = GravityContent.Center;
     private String txtLeft;
     private String txtMiddle;
     private String txtRight;
+
+    private GravityTitle titleGravity = GravityTitle.Left;
+    private GravityContent contentGravity = GravityContent.Center;
+    private StyleButtons styleButtons = StyleButtons.Fill;
 
     private int flagCode;
     private DialogListener listener;
@@ -37,13 +40,22 @@ public class Build {
         dialog.setTxtLeft(txtLeft);
         dialog.setTxtMiddle(txtMiddle);
         dialog.setTxtRight(txtRight);
-        dialog.setListener(listener);
         dialog.setFlagCode(flagCode);
         dialog.setTitleGravity(titleGravity);
         dialog.setContentGravity(contentGravity);
+        dialog.setListener(listener);
+        dialog.setStyleButtons(styleButtons);
 
         dialog.initViews();
         return dialog;
+    }
+
+    /**
+     * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
+     */
+    static int dp2px(float dpValue) {
+        final float scale = Resources.getSystem().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
     }
 
     public Build setIconLeft(Drawable iconLeft) {
@@ -78,6 +90,11 @@ public class Build {
 
     public Build setContentGravity(GravityContent contentGravity) {
         this.contentGravity = contentGravity;
+        return this;
+    }
+
+    public Build setStyleButtons(StyleButtons styleButtons) {
+        this.styleButtons = styleButtons;
         return this;
     }
 

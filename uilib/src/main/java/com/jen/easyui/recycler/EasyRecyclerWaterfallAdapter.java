@@ -30,6 +30,11 @@ public abstract class EasyRecyclerWaterfallAdapter<T> extends EasyRecyclerAdapte
     }
 
     @Override
+    protected int setGridLayoutItemRows(int position) {
+        return 0;
+    }
+
+    @Override
     public EasyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         int[] layouts = onBindLayout();
         if (layouts == null) {

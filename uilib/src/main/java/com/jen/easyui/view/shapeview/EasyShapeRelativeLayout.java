@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.jen.easyui.R;
 
+
 /**
  * RelativeLayout(如果要点击效果，设置android:clickable="true")
  * 作者：ShannJenn
@@ -38,17 +39,17 @@ public class EasyShapeRelativeLayout extends RelativeLayout {
 
     private void initAttrs(Context context, AttributeSet attrs) {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.EasyShapeRelativeLayout);
-        mShape.mStrokeWidth =  ta.getDimensionPixelSize(R.styleable.EasyShapeRelativeLayout_strokeWidth, 0);
+        mShape.mStrokeWidth = ta.getDimensionPixelSize(R.styleable.EasyShapeRelativeLayout_strokeWidth, 0);
         mShape.mStrokeDashGapWidth = ta.getDimensionPixelSize(R.styleable.EasyShapeRelativeLayout_strokeDashGapWidth, 0);
         mShape.mStrokeDashGap = ta.getDimensionPixelSize(R.styleable.EasyShapeRelativeLayout_strokeDashGap, 0);
         mShape.mStrokeColor = ta.getColor(R.styleable.EasyShapeRelativeLayout_strokeColor, 0);
         mShape.mStrokeClickColor = ta.getColor(R.styleable.EasyShapeRelativeLayout_strokeClickColor, 0);
 
-        mShape.mCorners =  ta.getDimensionPixelOffset(R.styleable.EasyShapeRelativeLayout_corners, 0);
-        mShape.mCornerLeftTop =  ta.getDimensionPixelOffset(R.styleable.EasyShapeRelativeLayout_cornerLeftTop, 0);
-        mShape.mCornerLeftBottom =  ta.getDimensionPixelOffset(R.styleable.EasyShapeRelativeLayout_cornerLeftBottom, 0);
-        mShape.mCornerRightTop =  ta.getDimensionPixelOffset(R.styleable.EasyShapeRelativeLayout_cornerRightTop, 0);
-        mShape.mCornerRightBottom =  ta.getDimensionPixelOffset(R.styleable.EasyShapeRelativeLayout_cornerRightBottom, 0);
+        mShape.mCorners = ta.getDimensionPixelOffset(R.styleable.EasyShapeRelativeLayout_corners, 0);
+        mShape.mCornerLeftTop = ta.getDimensionPixelOffset(R.styleable.EasyShapeRelativeLayout_cornerLeftTop, 0);
+        mShape.mCornerLeftBottom = ta.getDimensionPixelOffset(R.styleable.EasyShapeRelativeLayout_cornerLeftBottom, 0);
+        mShape.mCornerRightTop = ta.getDimensionPixelOffset(R.styleable.EasyShapeRelativeLayout_cornerRightTop, 0);
+        mShape.mCornerRightBottom = ta.getDimensionPixelOffset(R.styleable.EasyShapeRelativeLayout_cornerRightBottom, 0);
 
         mShape.mSolidColor = ta.getColor(R.styleable.EasyShapeRelativeLayout_solidColor, 0);
         mShape.mSolidClickColor = ta.getColor(R.styleable.EasyShapeRelativeLayout_solidClickColor, 0);
@@ -94,6 +95,11 @@ public class EasyShapeRelativeLayout extends RelativeLayout {
         mShape.init();
     }
 
+    public void update() {
+        mShape.init();
+        invalidate();
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -116,4 +122,9 @@ public class EasyShapeRelativeLayout extends RelativeLayout {
         mShape.onFocusEvent(event);
         return super.onTouchEvent(event);
     }
+
+    public EasyShapeBase getShape(){
+        return mShape;
+    }
+
 }

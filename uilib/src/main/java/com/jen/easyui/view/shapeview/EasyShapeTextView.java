@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 
 import com.jen.easyui.R;
 
+
 /**
  * TextView(如果要点击效果，设置android:clickable="true")
  * 作者：ShannJenn
@@ -54,7 +55,7 @@ public class EasyShapeTextView extends android.support.v7.widget.AppCompatTextVi
         mShape.mSolidClickColor = ta.getColor(R.styleable.EasyShapeTextView_solidClickColor, 0);
 
         mShape.mTextColor = ta.getColor(R.styleable.EasyShapeTextView_android_textColor, 0xFF000000);
-        mShape.mTextClickColor = ta.getColor(R.styleable.EasyShapeTextView_textClickColor, 0xFF000000);
+        mShape.mTextClickColor = ta.getColor(R.styleable.EasyShapeTextView_textClickColor, -1);
 
         mShape.mLineWidth = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_lineWidth, 0);
         mShape.mLineLeftColor = ta.getColor(R.styleable.EasyShapeTextView_lineLeftColor, 0);
@@ -77,6 +78,10 @@ public class EasyShapeTextView extends android.support.v7.widget.AppCompatTextVi
         mShape.mLineBottomMarginBottom = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_lineBottomMarginBottom, 0);
         mShape.mLineBottomMarginLeft = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_lineBottomMarginLeft, 0);
         mShape.mLineBottomMarginRight = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_lineBottomMarginRight, 0);
+
+        if (mShape.mTextClickColor == -1) {
+            mShape.mTextClickColor = mShape.mTextColor;
+        }
 
         int clickType = ta.getInt(R.styleable.EasyShapeTextView_clickType, -1);
         switch (clickType) {
@@ -109,6 +114,11 @@ public class EasyShapeTextView extends android.support.v7.widget.AppCompatTextVi
         mShape.init();
     }
 
+    public void update() {
+        mShape.init();
+        invalidate();
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -132,7 +142,8 @@ public class EasyShapeTextView extends android.support.v7.widget.AppCompatTextVi
         return super.onTouchEvent(event);
     }
 
-    public EasyShapeBase getShape(){
+    public EasyShapeBase getShape() {
         return mShape;
     }
+
 }
