@@ -72,18 +72,19 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
     @Override
     protected void success(String result, Map<String, List<String>> headMap) {
         HttpLog.d(mUrlStr + " 上传成功！");
-        if (uploadListener != null) {
-            if (FieldType.isObject(mResponse) || FieldType.isString(mResponse)) {//Object和String类型不做数据解析
-                uploadListener.success(flagCode, flagStr, result, headMap);
-            } else {
-                HttpParseManager parseManager = new HttpParseManager();
-                Object parseObject = parseManager.parseResponseBody(mResponse, result);
-                if (parseObject == null) {
-                    fail("返回数据解析异常");
-                } else {
-                    uploadListener.success(flagCode, flagStr, parseObject, headMap);
-                }
-            }
+        if (uploadListener == null) {
+            return;
+        }
+        Object parseObject;
+        if (FieldType.isObject(mResponse) || FieldType.isString(mResponse)) {//Object和String类型不做数据解析
+            parseObject = result;
+        } else {
+            parseObject = new HttpParseManager().parseResponseBody(mResponse, result);
+        }
+        if (parseObject == null) {
+            fail("返回数据解析异常");
+        } else {
+            uploadListener.success(flagCode, flagStr, parseObject, headMap);
         }
     }
 

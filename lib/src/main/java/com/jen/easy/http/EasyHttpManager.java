@@ -74,7 +74,7 @@ abstract class EasyHttpManager {
         }
         request.setRequestStatus(EasyRequestStatus.running);
         if (request instanceof EasyHttpDataRequest) {
-            URLConnectionBaseRunnable base = new URLConnectionBaseRunnable((EasyHttpDataRequest) request, httpBaseListener, flagCode, flagStr);
+            URLConnectionDataRunnable base = new URLConnectionDataRunnable((EasyHttpDataRequest) request, httpBaseListener, flagCode, flagStr);
             pool.execute(base);
         } else if (request instanceof EasyHttpDownloadRequest) {
             URLConnectionDownloadRunnable download = new URLConnectionDownloadRunnable((EasyHttpDownloadRequest) request, httpDownloadListener, flagCode, flagStr);

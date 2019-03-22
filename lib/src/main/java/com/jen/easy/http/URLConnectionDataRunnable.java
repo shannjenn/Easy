@@ -16,10 +16,10 @@ import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.Map;
 
-class URLConnectionBaseRunnable extends URLConnectionFactoryRunnable {
+class URLConnectionDataRunnable extends URLConnectionFactoryRunnable {
     private EasyHttpDataListener baseListener;
 
-    URLConnectionBaseRunnable(EasyHttpDataRequest request, EasyHttpDataListener baseListener, int flagCode, String flagStr) {
+    URLConnectionDataRunnable(EasyHttpDataRequest request, EasyHttpDataListener baseListener, int flagCode, String flagStr) {
         super(request, flagCode, flagStr);
         this.baseListener = baseListener;
     }
@@ -69,20 +69,20 @@ class URLConnectionBaseRunnable extends URLConnectionFactoryRunnable {
 
     @Override
     protected void success(String result, Map<String, List<String>> headMap) {
-        if (baseListener != null) {
-            if (FieldType.isObject(mResponse) || FieldType.isString(mResponse)) {//Object和String类型不做数据解析
-                HttpLog.d(mUrlStr + " 成功!\n   ");
-                baseListener.success(flagCode, flagStr, result, headMap);
-            } else {
-                HttpParseManager parseManager = new HttpParseManager();
-                Object parseObject = parseManager.parseResponseBody(mResponse, result);
-                if (parseObject == null) {
-                    fail("解析数据解析出错\n   ");
-                } else {
-                    HttpLog.d(mUrlStr + " 成功!\n   ");
-                    baseListener.success(flagCode, flagStr, parseObject, headMap);
-                }
-            }
+        if (baseListener == null) {
+            return;
+        }
+        Object parseObject;
+        if (FieldType.isObject(mResponse) || FieldType.isString(mResponse)) {//Object和String类型不做数据解析
+            parseObject = result;
+        } else {
+            parseObject = new HttpParseManager().parseResponseBody(mResponse, result);
+        }
+        if (parseObject == null) {
+            fail("解析数据解析出错\n   ");
+        } else {
+            HttpLog.d(mUrlStr + " 成功!\n   ");
+            baseListener.success(flagCode, flagStr, parseObject, headMap);
         }
     }
 
