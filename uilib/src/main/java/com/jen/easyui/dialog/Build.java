@@ -8,46 +8,30 @@ import com.jen.easyui.R;
 
 
 public class Build {
-    private Context context;
+    Context context;
 
-    private Drawable iconLeft;
-    private Drawable iconRight;
-    private String txtTitle;
-    private CharSequence txtContent;
-    private String txtCheckBox;
-    private String txtLeft;
-    private String txtMiddle;
-    private String txtRight;
+    Drawable iconLeft;
+    Drawable iconRight;
+    String txtTitle;
+    CharSequence txtContent;
+    String txtCheckBox;
+    String txtLeft;
+    String txtMiddle;
+    String txtRight;
 
-    private GravityTitle titleGravity = GravityTitle.Left;
-    private GravityContent contentGravity = GravityContent.Center;
-    private StyleButtons styleButtons = StyleButtons.Fill;
+    StyleTitle styleTitle = StyleTitle.Left;
+    StyleContent styleContent = StyleContent.Center;
+    StyleButtons styleButtons = StyleButtons.Fill;
 
-    private int flagCode;
-    private DialogListener listener;
+    int flagCode;
+    DialogListener listener;
 
     Build(Context context) {
         this.context = context;
     }
 
     public EasyDialog create() {
-        EasyDialog dialog = new EasyDialog(context, R.style._easy_dialog);
-        dialog.setIconLeft(iconLeft);
-        dialog.setIconRight(iconRight);
-        dialog.setTxtTile(txtTitle);
-        dialog.setTxtContent(txtContent);
-        dialog.setTxtCheckBox(txtCheckBox);
-        dialog.setTxtLeft(txtLeft);
-        dialog.setTxtMiddle(txtMiddle);
-        dialog.setTxtRight(txtRight);
-        dialog.setFlagCode(flagCode);
-        dialog.setTitleGravity(titleGravity);
-        dialog.setContentGravity(contentGravity);
-        dialog.setListener(listener);
-        dialog.setStyleButtons(styleButtons);
-
-        dialog.initViews();
-        return dialog;
+        return new EasyDialog(context, this, R.style._easy_dialog);
     }
 
     /**
@@ -73,11 +57,6 @@ public class Build {
         return this;
     }
 
-    public Build setTitleGravity(GravityTitle titleGravity) {
-        this.titleGravity = titleGravity;
-        return this;
-    }
-
     public Build setContent(CharSequence txt) {
         txtContent = txt;
         return this;
@@ -85,16 +64,6 @@ public class Build {
 
     public Build setTxtCheckBox(String txtCheckBox) {
         this.txtCheckBox = txtCheckBox;
-        return this;
-    }
-
-    public Build setContentGravity(GravityContent contentGravity) {
-        this.contentGravity = contentGravity;
-        return this;
-    }
-
-    public Build setStyleButtons(StyleButtons styleButtons) {
-        this.styleButtons = styleButtons;
         return this;
     }
 
@@ -117,6 +86,23 @@ public class Build {
         this.listener = listener;
         return this;
     }
+
+
+    public Build setStyleTitle(StyleTitle styleTitle) {
+        this.styleTitle = styleTitle;
+        return this;
+    }
+
+    public Build setStyleContent(StyleContent styleContent) {
+        this.styleContent = styleContent;
+        return this;
+    }
+
+    public Build setStyleButtons(StyleButtons styleButtons) {
+        this.styleButtons = styleButtons;
+        return this;
+    }
+
 
     public Build setFlagCode(int flagCode) {
         this.flagCode = flagCode;

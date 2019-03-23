@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,37 +28,22 @@ import com.jen.easyui.view.shapeview.EasyShapeTextView;
  * 时间：2018/1/15.
  */
 public class EasyDialog extends Dialog implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
-    private Context context;
+    private Build build;
+
     private TextView tv_content;
-    private CharSequence txtContent;
-
-    private GravityTitle titleGravity = GravityTitle.Left;
-    private GravityContent contentGravity = GravityContent.Center;
-    private StyleButtons styleButtons = StyleButtons.Fill;
-
-    private String txtLeft;
-    private String txtRight;
-    private String txtMiddle;
-
-    private Drawable iconLeft;
-    private Drawable iconRight;
-    private String txtTile;
-    private String txtCheckBox;
-
-    private DialogListener listener;
-    protected int flagCode;
 
     public static Build build(Context context) {
         return new Build(context);
     }
 
-    EasyDialog(Context context, int themeResId) {
+    EasyDialog(Context context, Build build, int themeResId) {
         super(context, themeResId);
-        this.context = context;
+        this.build = build;
+        initViews();
     }
 
-    void initViews() {
-        View layout = LayoutInflater.from(context).inflate(R.layout._easy_dialog, null);
+    private void initViews() {
+        View layout = LayoutInflater.from(build.context).inflate(R.layout._easy_dialog, null);
 
         ImageView iv_icon_left = layout.findViewById(R.id.iv_icon_left);
         ImageView iv_icon_right = layout.findViewById(R.id.iv_icon_right);
@@ -80,23 +64,23 @@ public class EasyDialog extends Dialog implements View.OnClickListener, Compound
 
         cb_check.setOnCheckedChangeListener(this);
 
-        if (iconLeft != null) {
-            iv_icon_left.setImageDrawable(iconLeft);
+        if (build.iconLeft != null) {
+            iv_icon_left.setImageDrawable(build.iconLeft);
             iv_icon_left.setVisibility(View.VISIBLE);
         } else {
             iv_icon_left.setVisibility(View.GONE);
         }
-        if (iconRight != null) {
-            iv_icon_right.setImageDrawable(iconRight);
+        if (build.iconRight != null) {
+            iv_icon_right.setImageDrawable(build.iconRight);
             iv_icon_right.setVisibility(View.VISIBLE);
         } else {
             iv_icon_right.setVisibility(View.GONE);
         }
 
-        if (txtTile != null) {
+        if (build.txtTitle != null) {
             tv_title.setVisibility(View.VISIBLE);
-            tv_title.setText(txtTile);
-            switch (titleGravity) {
+            tv_title.setText(build.txtTitle);
+            switch (build.styleTitle) {
                 case Left: {
                     tv_title.setGravity(Gravity.CENTER_VERTICAL);
                     break;
@@ -112,10 +96,10 @@ public class EasyDialog extends Dialog implements View.OnClickListener, Compound
             tv_title.setVisibility(View.GONE);
         }
 
-        if (txtContent != null) {
+        if (build.txtContent != null) {
             tv_content.setVisibility(View.VISIBLE);
-            tv_content.setText(txtContent);
-            switch (contentGravity) {
+            tv_content.setText(build.txtContent);
+            switch (build.styleContent) {
                 case Left: {
                     tv_content.setGravity(Gravity.CENTER_VERTICAL);
                     break;
@@ -131,14 +115,14 @@ public class EasyDialog extends Dialog implements View.OnClickListener, Compound
             tv_content.setVisibility(View.GONE);
         }
 
-        if (txtCheckBox != null) {
+        if (build.txtCheckBox != null) {
             cb_check.setVisibility(View.VISIBLE);
-            cb_check.setText(txtCheckBox);
+            cb_check.setText(build.txtCheckBox);
         } else {
             cb_check.setVisibility(View.GONE);
         }
 
-        switch (styleButtons) {
+        switch (build.styleButtons) {
             case Fill:
                 break;
             case Margin:
@@ -150,9 +134,9 @@ public class EasyDialog extends Dialog implements View.OnClickListener, Compound
                 break;
         }
 
-        if (txtLeft != null) {
+        if (build.txtLeft != null) {
             btn_left.setVisibility(View.VISIBLE);
-            btn_left.setText(txtLeft);
+            btn_left.setText(build.txtLeft);
             if (btn_right.getVisibility() == View.GONE) {
                 btn_left.getShape().setCornerRightBottom(4);
             }
@@ -160,15 +144,15 @@ public class EasyDialog extends Dialog implements View.OnClickListener, Compound
             btn_left.setVisibility(View.GONE);
         }
 
-        if (txtMiddle != null) {
+        if (build.txtMiddle != null) {
             btn_middle.setVisibility(View.VISIBLE);
-            btn_middle.setText(txtMiddle);
+            btn_middle.setText(build.txtMiddle);
         } else {
             btn_middle.setVisibility(View.GONE);
         }
-        if (txtRight != null) {
+        if (build.txtRight != null) {
             btn_right.setVisibility(View.VISIBLE);
-            btn_right.setText(txtRight);
+            btn_right.setText(build.txtRight);
             if (btn_left.getVisibility() == View.GONE) {
                 btn_right.getShape().setCornerLeftBottom(4);
             }
@@ -191,10 +175,10 @@ public class EasyDialog extends Dialog implements View.OnClickListener, Compound
     @Override
     public void dismiss() {
         super.dismiss();
-        if (listener != null) {
-            if (listener instanceof DialogListenerB) {
-                DialogListenerB dialogListener = (DialogListenerB) listener;
-                dialogListener.dismiss(flagCode);
+        if (build.listener != null) {
+            if (build.listener instanceof DialogListenerB) {
+                DialogListenerB dialogListener = (DialogListenerB) build.listener;
+                dialogListener.dismiss(build.flagCode);
             }
         }
     }
@@ -207,83 +191,31 @@ public class EasyDialog extends Dialog implements View.OnClickListener, Compound
     @Override
     public void onClick(View v) {
         dismiss();
-        if (listener == null) {
+        if (build.listener == null) {
             return;
         }
         int id = v.getId();
         if (id == R.id.btn_left) {
-            if (listener instanceof DialogListenerA) {
-                DialogListenerA dialogListener = (DialogListenerA) listener;
-                dialogListener.leftButton(flagCode);
+            if (build.listener instanceof DialogListenerA) {
+                DialogListenerA dialogListener = (DialogListenerA) build.listener;
+                dialogListener.leftButton(build.flagCode);
             }
         } else if (id == R.id.btn_middle) {
-            if (listener instanceof DialogListenerB) {
-                DialogListenerB dialogListener = (DialogListenerB) listener;
-                dialogListener.middleButton(flagCode);
+            if (build.listener instanceof DialogListenerB) {
+                DialogListenerB dialogListener = (DialogListenerB) build.listener;
+                dialogListener.middleButton(build.flagCode);
             }
         } else if (id == R.id.btn_right) {
-            listener.rightButton(flagCode);
+            build.listener.rightButton(build.flagCode);
         }
     }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (listener instanceof DialogListenerC) {
-            DialogListenerC dialogListener = (DialogListenerC) listener;
-            dialogListener.check(flagCode, buttonView, isChecked);
+        if (build.listener instanceof DialogListenerC) {
+            DialogListenerC dialogListener = (DialogListenerC) build.listener;
+            dialogListener.check(build.flagCode, buttonView, isChecked);
         }
-    }
-
-    void setListener(DialogListener listener) {
-        this.listener = listener;
-    }
-
-    void setIconLeft(Drawable iconLeft) {
-        this.iconLeft = iconLeft;
-    }
-
-    void setIconRight(Drawable iconRight) {
-        this.iconRight = iconRight;
-    }
-
-    void setTxtTile(String txtTile) {
-        this.txtTile = txtTile;
-    }
-
-    void setTitleGravity(GravityTitle titleGravity) {
-        this.titleGravity = titleGravity;
-    }
-
-    void setContentGravity(GravityContent contentGravity) {
-        this.contentGravity = contentGravity;
-    }
-
-    void setTxtCheckBox(String txtCheckBox) {
-        this.txtCheckBox = txtCheckBox;
-    }
-
-    void setTxtContent(CharSequence txtContent) {
-        this.txtContent = txtContent;
-    }
-
-    void setTxtLeft(String txtLeft) {
-        this.txtLeft = txtLeft;
-    }
-
-    void setTxtRight(String txtRight) {
-        this.txtRight = txtRight;
-    }
-
-    void setTxtMiddle(String txtMiddle) {
-        this.txtMiddle = txtMiddle;
-    }
-
-    void setFlagCode(int flagCode) {
-        this.flagCode = flagCode;
-    }
-
-    public void setStyleButtons(StyleButtons styleButtons) {
-        this.styleButtons = styleButtons;
     }
 
     /**

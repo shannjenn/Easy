@@ -13,24 +13,45 @@ import java.math.BigDecimal;
 public class MathUtil {
     private static final String TAG = MathUtil.class.getSimpleName();
 
-//    BigDecimal.setScale()方法用于格式化小数点
-//    setScale(2);//表示保留2位小数，默认用四舍五入方式 
-//    setScale(2,BigDecimal.ROUND_DOWN);//直接删除多余的小数位  11.116约=11.11
-//    setScale(2,BigDecimal.ROUND_UP);//临近位非零，则直接进位；临近位为零，不进位。11.114约=11.12
-//    setScale(2,BigDecimal.ROUND_HALF_UP);//四舍五入 2.335约=2.33，2.3351约=2.34
-//    setScaler(2,BigDecimal.ROUND_HALF_DOWN);//四舍五入；2.335约=2.33，2.3351约=2.34，11.117约11.12
+    /**
+     * 股票数据统一转换
+     *
+     * @param num   值
+     * @param point 保留小数位数
+     * @param round 是否四舍五入
+     * @return 。
+     */
+    public static String turnBillionThousand(double num, int point, boolean round) {
+//        String billion = XGApplication.getApplication().getString(R.string.billion);
+//        String ten_thousand = XGApplication.getApplication().getString(R.string.ten_thousand);
+        String billion = "亿";
+        String ten_thousand = "万";
+        String unit = "";
+        if (num > 100000000.0) {
+            num = num / 100000000.0;
+            unit = billion;
+            if (num > 10000.0) {
+                num = num / 10000.0;
+                unit = ten_thousand + billion;
+            }
+        } else if (num > 10000.0) {
+            num = num / 10000.0;
+            unit = ten_thousand;
+        }
+        return turnToStr(num, point, round) + unit;
+    }
 
     /**
      * double保留小数位
      *
      * @param value 。
-     * @param scale 小数位，不足位数用0补位
+     * @param point 小数位，不足位数用0补位
      * @param round 是否四舍五入
      * @return 。
      */
-    public static String roundToStr(Object value, int scale, boolean round) {
+    public static String turnToStr(Object value, int point, boolean round) {
         if (value == null) {
-            EasyLog.e(TAG, "roundToStr error -------- ");
+            EasyLog.e(TAG, "turnToStr error -------- ");
             return "";
         }
         Double result = null;
@@ -44,13 +65,13 @@ public class MathUtil {
             }
         }
         if (result == null) {
-            EasyLog.e(TAG, "roundToStr NumberFormatException error -------- ");
+            EasyLog.e(TAG, "turnToStr NumberFormatException error -------- ");
             return "";
         }
         if (round) {
-            result = roundUp(result, scale);
+            result = roundUp(result, point);
         }
-        String unit = "%." + scale + "f";
+        String unit = "%." + point + "f";
         return String.format(unit, result);
     }
 
@@ -58,48 +79,13 @@ public class MathUtil {
      * double保留小数位(舍去)
      *
      * @param value 。
-     * @param scale 小数位，不足位数用0补位
+     * @param point 小数位
      * @param round 是否四舍五入
      * @return 。
      */
-    public static Double roundToDouble(Object value, int scale, boolean round) {
+    public static double turnToDouble(Object value, int point, boolean round) {
         if (value == null) {
-            EasyLog.e(TAG, "roundToStr error -------- ");
-            return null;
-        }
-        Double result = null;
-        if (value instanceof Double) {
-            result = (Double) value;
-        } else {
-            try {
-                result = Double.parseDouble(String.valueOf(value));
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-            }
-        }
-        if (result == null) {
-            EasyLog.e(TAG, "roundToStr NumberFormatException error -------- ");
-            return null;
-        }
-        if (round) {
-            result = roundUp(result, scale);
-        } else {
-            result = roundDown(result, scale);
-        }
-        return result;
-    }
-
-    /**
-     * double保留小数位(舍去)
-     *
-     * @param value 。
-     * @param scale 小数位
-     * @param round 是否四舍五入
-     * @return 。
-     */
-    public static double round(Object value, int scale, boolean round) {
-        if (value == null) {
-            EasyLog.e(TAG, "roundToStr error -------- ");
+            EasyLog.e(TAG, "turnToStr error -------- ");
             return 0;
         }
         double result = 0;
@@ -113,13 +99,13 @@ public class MathUtil {
             }
         }
         if (result == 0) {
-            EasyLog.e(TAG, "roundToStr NumberFormatException error -------- ");
+            EasyLog.e(TAG, "turnToStr NumberFormatException error -------- ");
             return 0;
         }
         if (round) {
-            result = roundUp(result, scale);
+            result = roundUp(result, point);
         } else {
-            result = roundDown(result, scale);
+            result = roundDown(result, point);
         }
         return result;
     }
@@ -132,9 +118,18 @@ public class MathUtil {
      * @return .
      */
     private static double roundUp(Double value, int scale) {
-        BigDecimal b = new BigDecimal(Double.toString(value));
-        BigDecimal one = new BigDecimal("1");
-        return b.divide(one, scale, BigDecimal.ROUND_HALF_UP).doubleValue();
+        if (value == null) {
+            return 0;
+        }
+        double res = 0;
+        try {
+            BigDecimal b = new BigDecimal(Double.toString(value));
+            BigDecimal one = new BigDecimal("1");
+            res = b.divide(one, scale, BigDecimal.ROUND_HALF_UP).doubleValue();
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return res;
     }
 
     /**
@@ -145,8 +140,89 @@ public class MathUtil {
      * @return .
      */
     private static double roundDown(Double value, int scale) {
-        BigDecimal b = new BigDecimal(Double.toString(value));
-        BigDecimal one = new BigDecimal("1");
-        return b.divide(one, scale, BigDecimal.ROUND_HALF_DOWN).doubleValue();
+        if (value == null) {
+            return 0.0d;
+        }
+        double res = 0;
+        try {
+            BigDecimal b = new BigDecimal(Double.toString(value));
+            BigDecimal one = new BigDecimal("1");
+            res = b.divide(one, scale, BigDecimal.ROUND_HALF_DOWN).doubleValue();
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
+    /**
+     * 转int
+     *
+     * @param value .
+     * @return .
+     */
+    public static int changeToInt(String value) {
+        int ret = 0;
+        if (value != null && value.trim().length() > 0) {
+            try {
+                ret = Integer.parseInt(value);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * 转int
+     *
+     * @param value .
+     * @return .
+     */
+    public static long changeToLong(String value) {
+        long ret = 0;
+        if (value != null && value.trim().length() > 0) {
+            try {
+                ret = Long.parseLong(value);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * 转float
+     *
+     * @param value .
+     * @return .
+     */
+    public static float changeToFloat(String value) {
+        float ret = 0.0f;
+        if (value != null && value.trim().length() > 0) {
+            try {
+                ret = Float.parseFloat(value);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * double
+     *
+     * @param value .
+     * @return .
+     */
+    public static double changeToDouble(String value) {
+        double ret = 0.0d;
+        if (value != null && value.trim().length() > 0) {
+            try {
+                ret = Double.parseDouble(value);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+        return ret;
     }
 }
