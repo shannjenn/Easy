@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import com.jen.easy.exception.ExceptionType;
 import com.jen.easy.exception.ImageLoaderLog;
 import com.jen.easy.http.EasyHttp;
+import com.jen.easy.http.imp.EasyHttpFullListener;
 import com.jen.easy.http.request.EasyHttpDownloadRequest;
 
 import java.io.File;
@@ -106,7 +107,7 @@ abstract class ImageLoaderManager {
     protected void init(ImageLoaderConfig builder) {
         config = builder;
         mHttp = new EasyHttp(builder.getHttpMaxThread());
-        mHttp.setDownloadListener(mHttpListener);
+        mHttp.setListener(mHttpListener);
         mExecutorService = Executors.newFixedThreadPool(builder.getHttpMaxThread());
         int maxMemory = (int) Runtime.getRuntime().maxMemory();
         int cacheSize = maxMemory / 8;
@@ -249,18 +250,18 @@ abstract class ImageLoaderManager {
         return name;
     }
 
-    private EasyHttpDownloadListener mHttpListener = new EasyHttpDownloadListener() {
+    private EasyHttpFullListener mHttpListener = new EasyHttpFullListener() {
 
         @Override
-        public void success(int flagCode, String flag, String filePath, Map<String, List<String>> headMap) {
+        public void success(int flagCode, String flag, Object filePath, Map<String, List<String>> headMap) {
             ImageLoaderLog.d("图片下载成功-----");
             mImageViewCache.remove(null);
             Set<ImageView> set = mImageViewCache.keySet();
             for (ImageView imageView : set) {
                 String value = mImageViewCache.get(imageView);
                 if (filePath.equals(value)) {
-                    if (imageView != null) {
-                        getFromSDCard(config.getImgWidth(), config.getImgHeight(), filePath, imageView);
+                    if (filePath instanceof String && imageView != null) {
+                        getFromSDCard(config.getImgWidth(), config.getImgHeight(), (String) filePath, imageView);
                     }
                     break;
                 }

@@ -120,9 +120,9 @@ abstract class EasyHttpManager {
         return maxThreadSize;
     }
 
-    public void setDataListener(EasyHttpListener httpBaseListener) {
+    public void setListener(EasyHttpListener httpBaseListener) {
         if (isShutdown) {
-            HttpLog.w("线程池已经关闭，不可以再操作 setDataListener");
+            HttpLog.w("线程池已经关闭，不可以再操作 setListener");
             return;
         }
         this.httpBaseListener = httpBaseListener;

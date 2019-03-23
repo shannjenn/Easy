@@ -77,8 +77,8 @@ public class EasyHttp extends EasyHttpManager {
     }
 
     @Override
-    public void setDataListener(EasyHttpListener httpBaseListener) {
-        super.setDataListener(httpBaseListener);
+    public void setListener(EasyHttpListener httpBaseListener) {
+        super.setListener(httpBaseListener);
     }
 
 }
