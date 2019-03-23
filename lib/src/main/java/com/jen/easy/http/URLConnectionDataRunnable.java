@@ -3,7 +3,7 @@ package com.jen.easy.http;
 import com.jen.easy.constant.FieldType;
 import com.jen.easy.constant.Unicode;
 import com.jen.easy.exception.HttpLog;
-import com.jen.easy.http.imp.EasyHttpDataListener;
+import com.jen.easy.http.imp.EasyHttpListener;
 import com.jen.easy.http.request.EasyHttpDataRequest;
 import com.jen.easy.http.request.EasyRequestStatus;
 
@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.Map;
 
 class URLConnectionDataRunnable extends URLConnectionFactoryRunnable {
-    private EasyHttpDataListener baseListener;
+    private EasyHttpListener baseListener;
 
-    URLConnectionDataRunnable(EasyHttpDataRequest request, EasyHttpDataListener baseListener, int flagCode, String flagStr) {
+    URLConnectionDataRunnable(EasyHttpDataRequest request, EasyHttpListener baseListener, int flagCode, String flagStr) {
         super(request, flagCode, flagStr);
         this.baseListener = baseListener;
     }
@@ -79,7 +79,7 @@ class URLConnectionDataRunnable extends URLConnectionFactoryRunnable {
             parseObject = new HttpParseManager().parseResponseBody(mResponse, result);
         }
         if (parseObject == null) {
-            fail("解析数据解析出错\n   ");
+            fail("");
         } else {
             HttpLog.d(mUrlStr + " 成功!\n   ");
             baseListener.success(flagCode, flagStr, parseObject, headMap);
@@ -88,7 +88,7 @@ class URLConnectionDataRunnable extends URLConnectionFactoryRunnable {
 
     @Override
     protected void fail(String result) {
-        HttpLog.w(mUrlStr + " " + result + "\n   ");
+        HttpLog.w(mUrlStr + " 失败!\n   ");
         if (baseListener != null)
             baseListener.fail(flagCode, flagStr, result);
     }

@@ -13,7 +13,6 @@ import com.jen.easy.exception.ExceptionType;
 import com.jen.easy.exception.ImageLoaderLog;
 import com.jen.easy.http.EasyHttp;
 import com.jen.easy.http.request.EasyHttpDownloadRequest;
-import com.jen.easy.http.imp.EasyHttpDownloadListener;
 
 import java.io.File;
 import java.util.ArrayList;

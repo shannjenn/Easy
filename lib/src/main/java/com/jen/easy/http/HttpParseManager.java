@@ -44,7 +44,11 @@ class HttpParseManager {
         }
         t = parseJSONObject(tClass, object);
         mErrors.clear();
-        HttpLog.d("解析：" + tClass.getName() + "----完成");
+        if (t == null) {
+            HttpLog.w("解析：" + tClass.getName() + "----失败");
+        } else {
+            HttpLog.d("解析：" + tClass.getName() + "----成功");
+        }
         return t;
     }
 

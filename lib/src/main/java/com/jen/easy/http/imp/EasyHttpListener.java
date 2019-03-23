@@ -6,9 +6,9 @@ import java.util.Map;
 /**
  * 作者：ShannJenn
  * 时间：2017/9/4:21:44
- * 说明：上传监听
+ * 说明：基本数据网络请求监听
  */
-public interface EasyHttpUploadListener {
+public interface EasyHttpListener {
 
     /**
      * 成功
@@ -28,14 +28,4 @@ public interface EasyHttpUploadListener {
      * @param msg      错误码
      */
     void fail(int flagCode, String flagStr, String msg);
-
-    /**
-     * 进度
-     *
-     * @param flagCode     标记
-     * @param flagStr      标记
-     * @param currentPoint 当前下载大小
-     * @param endPoint     最大大小
-     */
-    void progress(int flagCode, String flagStr, long currentPoint, long endPoint);
 }

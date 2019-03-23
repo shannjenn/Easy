@@ -125,13 +125,10 @@
 -keep class com.jen.easy.http.response.EasyHttpResponse* {
     *;
 }
--keep class com.jen.easy.http.imp.EasyHttpDataListener {
+-keep class com.jen.easy.http.imp.EasyHttpListener {
     *;
 }
--keep class com.jen.easy.http.imp.EasyHttpDownloadListener {
-    *;
-}
--keep class com.jen.easy.http.imp.EasyHttpUploadListener {
+-keep class com.jen.easy.http.imp.EasyHttpFullListener {
     *;
 }
 -keep class com.jen.easy.http.EasyHttpTool {

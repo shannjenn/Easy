@@ -2,7 +2,7 @@ package com.jen.easy.http;
 
 import com.jen.easy.constant.Unicode;
 import com.jen.easy.exception.HttpLog;
-import com.jen.easy.http.imp.EasyHttpDownloadListener;
+import com.jen.easy.http.imp.EasyHttpFullListener;
 import com.jen.easy.http.request.EasyHttpDownloadRequest;
 import com.jen.easy.http.request.EasyRequestStatus;
 
@@ -15,11 +15,11 @@ import java.util.List;
 import java.util.Map;
 
 class URLConnectionDownloadRunnable extends URLConnectionFactoryRunnable {
-    private EasyHttpDownloadListener downloadListener;
+    private EasyHttpFullListener fullListener;
 
-    URLConnectionDownloadRunnable(EasyHttpDownloadRequest request, EasyHttpDownloadListener downloadListener, int flagCode, String flagStr) {
+    URLConnectionDownloadRunnable(EasyHttpDownloadRequest request, EasyHttpFullListener fullListener, int flagCode, String flagStr) {
         super(request, flagCode, flagStr);
-        this.downloadListener = downloadListener;
+        this.fullListener = fullListener;
     }
 
     @Override
@@ -86,22 +86,22 @@ class URLConnectionDownloadRunnable extends URLConnectionFactoryRunnable {
     @Override
     protected void success(String result, Map<String, List<String>> headMap) {
         HttpLog.d(mUrlStr + " 下载成功！");
-        if (downloadListener != null) {
-            downloadListener.success(flagCode, flagStr, result, headMap);
+        if (fullListener != null) {
+            fullListener.success(flagCode, flagStr, result, headMap);
         }
     }
 
     @Override
     protected void fail(String msg) {
         HttpLog.w(mUrlStr + " " + msg);
-        if (downloadListener != null) {
-            downloadListener.fail(flagCode, flagStr, msg);
+        if (fullListener != null) {
+            fullListener.fail(flagCode, flagStr, msg);
         }
     }
 
     private void progress(long currentPoint, long endPoint) {
-        if (downloadListener != null) {
-            downloadListener.progress(flagCode, flagStr, currentPoint, endPoint);
+        if (fullListener != null) {
+            fullListener.progress(flagCode, flagStr, currentPoint, endPoint);
         }
     }
 }

@@ -2,7 +2,7 @@ package com.jen.easy.http;
 
 import com.jen.easy.constant.FieldType;
 import com.jen.easy.exception.HttpLog;
-import com.jen.easy.http.imp.EasyHttpUploadListener;
+import com.jen.easy.http.imp.EasyHttpFullListener;
 import com.jen.easy.http.request.EasyHttpUploadRequest;
 import com.jen.easy.http.request.EasyRequestStatus;
 
@@ -18,11 +18,11 @@ import java.util.List;
 import java.util.Map;
 
 class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
-    private EasyHttpUploadListener uploadListener;
+    private EasyHttpFullListener fullListener;
 
-    URLConnectionUploadRunnable(EasyHttpUploadRequest request, EasyHttpUploadListener uploadListener, int flagCode, String flagStr) {
+    URLConnectionUploadRunnable(EasyHttpUploadRequest request, EasyHttpFullListener fullListener, int flagCode, String flagStr) {
         super(request, flagCode, flagStr);
-        this.uploadListener = uploadListener;
+        this.fullListener = fullListener;
     }
 
     @Override
@@ -63,7 +63,7 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
             return;
         }
         String result = buffer.toString();
-        HttpLog.i(mUrlStr + " 完成，返回数据：" + result);
+        HttpLog.i(mUrlStr + " 上传成功，返回数据：" + result);
         result = replaceResult(result);
         mRequest.setRequestStatus(EasyRequestStatus.finish);
         success(result, null);
@@ -71,8 +71,7 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
 
     @Override
     protected void success(String result, Map<String, List<String>> headMap) {
-        HttpLog.d(mUrlStr + " 上传成功！");
-        if (uploadListener == null) {
+        if (fullListener == null) {
             return;
         }
         Object parseObject;
@@ -82,23 +81,24 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
             parseObject = new HttpParseManager().parseResponseBody(mResponse, result);
         }
         if (parseObject == null) {
-            fail("返回数据解析异常");
+            fail("");
         } else {
-            uploadListener.success(flagCode, flagStr, parseObject, headMap);
+            HttpLog.d(mUrlStr + " 成功!\n   ");
+            fullListener.success(flagCode, flagStr, parseObject, headMap);
         }
     }
 
     @Override
     protected void fail(String msg) {
-        HttpLog.w(mUrlStr + " " + msg);
-        if (uploadListener != null) {
-            uploadListener.fail(flagCode, flagStr, msg);
+        HttpLog.w(mUrlStr + " 失败!\n   ");
+        if (fullListener != null) {
+            fullListener.fail(flagCode, flagStr, msg);
         }
     }
 
     private void progress(long currentPoint, long endPoint) {
-        if (uploadListener != null) {
-            uploadListener.progress(flagCode, flagStr, currentPoint, endPoint);
+        if (fullListener != null) {
+            fullListener.progress(flagCode, flagStr, currentPoint, endPoint);
         }
     }
 }

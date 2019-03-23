@@ -1,8 +1,6 @@
 package com.jen.easy.http;
 
-import com.jen.easy.http.imp.EasyHttpDataListener;
-import com.jen.easy.http.imp.EasyHttpDownloadListener;
-import com.jen.easy.http.imp.EasyHttpUploadListener;
+import com.jen.easy.http.imp.EasyHttpListener;
 import com.jen.easy.http.request.EasyHttpRequest;
 
 /**
@@ -79,18 +77,8 @@ public class EasyHttp extends EasyHttpManager {
     }
 
     @Override
-    public void setDataListener(EasyHttpDataListener httpBaseListener) {
+    public void setDataListener(EasyHttpListener httpBaseListener) {
         super.setDataListener(httpBaseListener);
-    }
-
-    @Override
-    public void setDownloadListener(EasyHttpDownloadListener httpDownloadListener) {
-        super.setDownloadListener(httpDownloadListener);
-    }
-
-    @Override
-    public void setUploadListener(EasyHttpUploadListener httpUploadListener) {
-        super.setUploadListener(httpUploadListener);
     }
 
 }
