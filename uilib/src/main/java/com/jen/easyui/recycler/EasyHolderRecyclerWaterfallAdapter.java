@@ -59,6 +59,11 @@ public abstract class EasyHolderRecyclerWaterfallAdapter<T> extends EasyRecycler
         return new MyHolder(this, view);
     }
 
+    @Override
+    public void onBindViewHolder(EasyHolder holder, int position) {
+        super.onBindViewHolder(holder, position);
+    }
+
     class MyHolder extends EasyHolder {
         public MyHolder(EasyRecyclerAdapter adapter, View itemView) {
             super(adapter, itemView);

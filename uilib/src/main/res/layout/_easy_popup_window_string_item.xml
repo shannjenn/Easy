@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.jen.easyui.view.shapeview.EasyShapeTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/shape_name"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:layout_marginStart="10dp"
+    android:gravity="center_vertical"
+    android:paddingStart="16dp"
+    android:text="item"
+    android:textColor="#ff000000"
+    android:textSize="16sp"
+    app:lineBottomColor="#F0F0F0"
+    app:lineBottomMarginLeft="16dp"
+    app:lineWidth="1dp" />

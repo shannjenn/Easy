@@ -36,8 +36,8 @@ public class EasyDialog extends Dialog implements View.OnClickListener, Compound
         return new Build(context);
     }
 
-    EasyDialog(Context context, Build build, int themeResId) {
-        super(context, themeResId);
+    EasyDialog(Build build, int themeResId) {
+        super(build.context, themeResId);
         this.build = build;
         initViews();
     }

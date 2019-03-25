@@ -13,23 +13,21 @@ import android.widget.PopupWindow;
 import com.jen.easyui.R;
 import com.jen.easyui.util.EasyDisplayUtil;
 
-
 /**
- * 说明：简单下拉框使用spinner即可
+ * 说明：
  * 作者：ShannJenn
  * 时间：2017/09/09.
  */
 
-public class EasyPopupWindow extends PopupWindow{
-    private final String TAG = EasyPopupWindow.class.getSimpleName() + " ";
+public class EasyFactoryWindow extends PopupWindow {
+    private Context context;
+    private float showAlpha = 0.5f;
+    private Drawable background;
+    protected View showView;
 
-    private Context mContext;
-    private float mShowAlpha = 0.5f;
-    private Drawable mBackgroundDrawable;
-
-    public EasyPopupWindow(Context context) {
-        this.mContext = context;
-        initBasePopupWindow();
+    EasyFactoryWindow(Context context) {
+        this.context = context;
+        initWindow();
     }
 
     @Override
@@ -37,14 +35,38 @@ public class EasyPopupWindow extends PopupWindow{
         super.setContentView(contentView);
     }
 
+    /**
+     * 初始化信息
+     */
+    private void initWindow() {
+        setOutsideTouchable(true);  //默认设置outside点击无响应
+        setFocusable(true);
+        setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
+        setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+    }
+
+    private void showWindow(boolean dropDown, View showView) {
+        this.showView = showView;
+        if (dropDown) {
+            setAnimationStyle(R.style.easy_popup_window_drop_down_anim_style);
+            setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+            setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+        } else {
+            setAnimationStyle(R.style.easy_popup_window_show_bottom_anim_style);
+            setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+            setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+        }
+        showAnimator().start();
+    }
+
     @Override
     public void setOutsideTouchable(boolean touchable) {
         super.setOutsideTouchable(touchable);
         if (touchable) {
-            if (mBackgroundDrawable == null) {
-                mBackgroundDrawable = new ColorDrawable(0x00000000);
+            if (background == null) {
+                background = new ColorDrawable(0x00000000);
             }
-            super.setBackgroundDrawable(mBackgroundDrawable);
+            super.setBackgroundDrawable(background);
         } else {
             super.setBackgroundDrawable(null);
         }
@@ -52,45 +74,32 @@ public class EasyPopupWindow extends PopupWindow{
 
     @Override
     public void setBackgroundDrawable(Drawable background) {
-        mBackgroundDrawable = background;
+        this.background = background;
         setOutsideTouchable(isOutsideTouchable());
-    }
-
-    /**
-     * 初始化BasePopupWindow的一些信息
-     */
-    private void initBasePopupWindow() {
-        setAnimationStyle(R.style.easy_popup_window_anim_style);
-        setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-        setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
-        setOutsideTouchable(true);  //默认设置outside点击无响应
-        setFocusable(true);
-        setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
-        setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
     }
 
     @Override
     public void showAtLocation(View parent, int gravity, int x, int y) {
+        showWindow(false, parent);
         super.showAtLocation(parent, gravity, x, y);
-        showAnimator().start();
     }
 
     @Override
     public void showAsDropDown(View anchor) {
+        showWindow(true, anchor);
         super.showAsDropDown(anchor);
-        showAnimator().start();
     }
 
     @Override
     public void showAsDropDown(View anchor, int xoff, int yoff) {
+        showWindow(true, anchor);
         super.showAsDropDown(anchor, xoff, yoff);
-        showAnimator().start();
     }
 
     @Override
     public void showAsDropDown(View anchor, int xoff, int yoff, int gravity) {
+        showWindow(true, anchor);
         super.showAsDropDown(anchor, xoff, yoff, gravity);
-        showAnimator().start();
     }
 
     @Override
@@ -99,24 +108,19 @@ public class EasyPopupWindow extends PopupWindow{
         dismissAnimator().start();
     }
 
-    public void setShowAlpha(float alpha){
-        mShowAlpha = alpha;
-    }
-
     /**
      * 窗口显示时，窗口背景透明度渐变动画
      */
     private ValueAnimator showAnimator() {
-        ValueAnimator animator = ValueAnimator.ofFloat(1.0f,mShowAlpha);
+        ValueAnimator animator = ValueAnimator.ofFloat(1.0f, showAlpha);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 float alpha = (float) animation.getAnimatedValue();
                 setWindowBackgroundAlpha(alpha);
             }
         });
-        animator.setDuration(360);
+        animator.setDuration(300);//要与动画 easy_popup_window_anim_style 时间一致
         return animator;
     }
 
@@ -124,7 +128,7 @@ public class EasyPopupWindow extends PopupWindow{
      * 窗口隐藏时，窗口背景透明度渐变动画
      */
     private ValueAnimator dismissAnimator() {
-        ValueAnimator animator = ValueAnimator.ofFloat(mShowAlpha,1.0f);
+        ValueAnimator animator = ValueAnimator.ofFloat(showAlpha, 1.0f);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -132,7 +136,7 @@ public class EasyPopupWindow extends PopupWindow{
                 setWindowBackgroundAlpha(alpha);
             }
         });
-        animator.setDuration(320);
+        animator.setDuration(200);//要与动画 easy_popup_window_anim_style 时间一致
         return animator;
     }
 
@@ -140,6 +144,11 @@ public class EasyPopupWindow extends PopupWindow{
      * 控制窗口背景的不透明度
      */
     private void setWindowBackgroundAlpha(float alpha) {
-        EasyDisplayUtil.setBackgroundAlpha((Activity) mContext, alpha);
+        EasyDisplayUtil.setBackgroundAlpha((Activity) context, alpha);
     }
+
+    public void setShowAlpha(float alpha) {
+        showAlpha = alpha;
+    }
+
 }

@@ -196,6 +196,10 @@ public class EasyTopBar extends RelativeLayout implements View.OnClickListener {
         tvLeft.setText(text);
     }
 
+    public ImageView getLeftImageView() {
+        return ivLeft;
+    }
+
     public void setRightText(String text) {
         tvRight.setText(text);
     }
