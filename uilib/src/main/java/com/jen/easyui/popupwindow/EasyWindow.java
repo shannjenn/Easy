@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 import com.jen.easyui.R;
 import com.jen.easyui.popupwindow.listener.WindowItemListener;
 import com.jen.easyui.recycler.EasyHolder;
-import com.jen.easyui.recycler.EasyHolderRecyclerBaseAdapter;
+import com.jen.easyui.recycler.EasyHolderRecyclerWaterfallAdapter;
 import com.jen.easyui.recycler.listener.EasyItemListener;
 import com.jen.easyui.view.baseview.EasyTopBar;
 
@@ -102,7 +102,7 @@ public abstract class EasyWindow extends EasyFactoryWindow {
         showAtLocation(showView, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
     }
 
-    class MyAdapter<T> extends EasyHolderRecyclerBaseAdapter<T> {
+    class MyAdapter<T> extends EasyHolderRecyclerWaterfallAdapter<T> {
         /**
          * @param context .
          * @param data    数据
@@ -112,8 +112,13 @@ public abstract class EasyWindow extends EasyFactoryWindow {
         }
 
         @Override
-        protected int onBindLayout() {
+        protected int[] onBindLayout() {
             return windowBindFactory().onBindItemLayout();
+        }
+
+        @Override
+        protected int getViewType(int position) {
+            return windowBindFactory().onBindViewType();
         }
 
         @Override

@@ -21,8 +21,13 @@ public class EasyWindowString extends EasyWindow {
 
     private WindowBind windowBind = new WindowBind() {
         @Override
-        public int onBindItemLayout() {
-            return R.layout._easy_popup_window_string_item;
+        public int[] onBindItemLayout() {
+            return new int[]{R.layout._easy_popup_window_string_item};
+        }
+
+        @Override
+        public int onBindViewType() {
+            return 0;
         }
 
         @Override
