@@ -92,11 +92,11 @@ public class EasyShapeRelativeLayout extends RelativeLayout {
             }
         }
         ta.recycle();
-        mShape.init();
+        mShape.update();
     }
 
     public void update() {
-        mShape.init();
+        mShape.update();
         invalidate();
     }
 

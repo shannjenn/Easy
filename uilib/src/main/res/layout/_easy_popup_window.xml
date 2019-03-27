@@ -12,9 +12,9 @@
         android:layout_height="46dp"
         android:background="#F4F4F4"
         app:topBarLeftImage="@drawable/icon_close"
-        app:topBarRightText=""
+        app:topBarRightText="确定"
         app:topBarRightTextColor="#335EC2"
-        app:topBarTitleText="选择提现方式" />
+        app:topBarTitleText="标题" />
     
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler"

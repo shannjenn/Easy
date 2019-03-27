@@ -13,7 +13,7 @@ import java.util.List;
  * 时间：2017/09/09.
  */
 
-public class EasyWindowString extends EasyWindow {
+class EasyWindowString extends EasyWindow {
 
     EasyWindowString(Build build) {
         super(build);

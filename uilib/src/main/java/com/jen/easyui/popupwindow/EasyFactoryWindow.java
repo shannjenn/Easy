@@ -6,7 +6,6 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 
@@ -23,7 +22,7 @@ public class EasyFactoryWindow extends PopupWindow {
     private Context context;
     private float showAlpha = 0.5f;
     private Drawable background;
-    protected View showView;
+    View showView;
 
     EasyFactoryWindow(Context context) {
         this.context = context;
@@ -47,15 +46,7 @@ public class EasyFactoryWindow extends PopupWindow {
 
     private void showWindow(boolean dropDown, View showView) {
         this.showView = showView;
-        if (dropDown) {
-            setAnimationStyle(R.style.easy_popup_window_drop_down_anim_style);
-            setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-            setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
-        } else {
-            setAnimationStyle(R.style.easy_popup_window_show_bottom_anim_style);
-            setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-            setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
-        }
+        setAnimationStyle(dropDown ? R.style.easy_popup_window_drop_down_anim_style : R.style.easy_popup_window_show_bottom_anim_style);
         showAnimator().start();
     }
 
@@ -150,5 +141,4 @@ public class EasyFactoryWindow extends PopupWindow {
     public void setShowAlpha(float alpha) {
         showAlpha = alpha;
     }
-
 }

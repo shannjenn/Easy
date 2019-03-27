@@ -55,7 +55,7 @@ public class EasyShapeTextView extends android.support.v7.widget.AppCompatTextVi
         mShape.mSolidClickColor = ta.getColor(R.styleable.EasyShapeTextView_solidClickColor, 0);
 
         mShape.mTextColor = ta.getColor(R.styleable.EasyShapeTextView_android_textColor, 0xFF000000);
-        mShape.mTextClickColor = ta.getColor(R.styleable.EasyShapeTextView_textClickColor, -1);
+        mShape.mTextClickColor = ta.getColor(R.styleable.EasyShapeTextView_textClickColor, mShape.mTextColor);
 
         mShape.mLineWidth = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_lineWidth, 0);
         mShape.mLineLeftColor = ta.getColor(R.styleable.EasyShapeTextView_lineLeftColor, 0);
@@ -78,10 +78,6 @@ public class EasyShapeTextView extends android.support.v7.widget.AppCompatTextVi
         mShape.mLineBottomMarginBottom = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_lineBottomMarginBottom, 0);
         mShape.mLineBottomMarginLeft = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_lineBottomMarginLeft, 0);
         mShape.mLineBottomMarginRight = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_lineBottomMarginRight, 0);
-
-        if (mShape.mTextClickColor == -1) {
-            mShape.mTextClickColor = mShape.mTextColor;
-        }
 
         int clickType = ta.getInt(R.styleable.EasyShapeTextView_clickType, -1);
         switch (clickType) {
@@ -111,11 +107,11 @@ public class EasyShapeTextView extends android.support.v7.widget.AppCompatTextVi
             mPaddingBottom = padding;
         }*/
         ta.recycle();
-        mShape.init();
+        mShape.update();
     }
 
     public void update() {
-        mShape.init();
+        mShape.update();
         invalidate();
     }
 

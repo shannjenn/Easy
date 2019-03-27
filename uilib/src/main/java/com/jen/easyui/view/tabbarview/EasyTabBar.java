@@ -162,7 +162,7 @@ public class EasyTabBar extends HorizontalScrollView {
         /*默认字体大小sp*/
         int TEXT_SIZE_DEFAULT = 16;
         String tabBarTextList = ta.getString(R.styleable.EasyTabBar_tabBarTextList);
-        mTabTextSize = ta.getDimensionPixelOffset(R.styleable.EasyTabBar_tabBarTextSize, (int) EasyDensityUtil.sp2px(TEXT_SIZE_DEFAULT));
+        mTabTextSize = ta.getDimensionPixelOffset(R.styleable.EasyTabBar_tabBarTextSize, EasyDensityUtil.sp2pxInt(TEXT_SIZE_DEFAULT));
         mTabWidth = ta.getDimensionPixelOffset(R.styleable.EasyTabBar_tabBarTabWidth, -2);//-2为WRAP_CONTENT属性
         mTabHeight = ta.getDimensionPixelOffset(R.styleable.EasyTabBar_tabBarTabHeight, -2);
         mTabPaddingLeft = ta.getDimensionPixelOffset(R.styleable.EasyTabBar_tabBarTabPaddingLeft, 0);

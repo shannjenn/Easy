@@ -9,7 +9,6 @@ import com.jen.easytest.R;
 import com.jen.easyui.base.EasyActivity;
 import com.jen.easyui.popupwindow.EasyWindow;
 import com.jen.easyui.popupwindow.WindowBind;
-import com.jen.easyui.popupwindow.listener.WindowItemListener;
 import com.jen.easyui.recycler.EasyHolder;
 
 import java.util.ArrayList;
@@ -53,21 +52,20 @@ public class PopupWindowActivity extends EasyActivity {
 
         easyWindowStr = EasyWindow.build(this)
                 .setData(list)
+                .setWidth(100)
                 .setShowTopBar(false)
                 .createString();
 
         easyWindowObject = EasyWindow.build(this)
-                .setData(list)
-                .setListener(new WindowItemListener() {
+                .setData(list).createObject(new WindowBind() {
                     @Override
-                    public void onClickItem(int flag, View view, Object item, int position) {
-
+                    public int[] onBindItemLayout() {
+                        return new int[]{R.layout._easy_recycler_foot};
                     }
-                })
-                .createObject(new WindowBind() {
+
                     @Override
-                    public int onBindItemLayout() {
-                        return R.layout._easy_recycler_foot;
+                    public int onBindViewType() {
+                        return 0;
                     }
 
                     @Override

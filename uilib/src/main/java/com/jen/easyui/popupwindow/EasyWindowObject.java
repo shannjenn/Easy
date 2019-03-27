@@ -6,7 +6,7 @@ package com.jen.easyui.popupwindow;
  * 时间：2017/09/09.
  */
 
-public class EasyWindowObject extends EasyWindow {
+class EasyWindowObject extends EasyWindow {
     private WindowBind windowBind;
 
     EasyWindowObject(Build build, WindowBind windowBind) {

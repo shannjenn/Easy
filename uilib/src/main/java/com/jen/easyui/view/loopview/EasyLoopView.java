@@ -228,7 +228,7 @@ public class EasyLoopView extends View {
     private void initLoopView(Context context, AttributeSet attrs) {
         this.context = context;
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.EasyLoopView);
-        int textSizeXp = (int) EasyDensityUtil.sp2px(16);
+        int textSizeXp = EasyDensityUtil.sp2pxInt(16);
 
         textSize = a.getDimensionPixelOffset(R.styleable.EasyLoopView_loopViewTextSize, textSizeXp);
         textColorSelect = a.getColor(R.styleable.EasyLoopView_loopViewTextSelectColor, 0xff0085f2);
@@ -503,7 +503,7 @@ public class EasyLoopView extends View {
 
     public void setTextSize(Integer size) {
         textSize = size;
-        float textSizeXp = EasyDensityUtil.sp2px(textSize);
+        float textSizeXp = EasyDensityUtil.sp2pxFloat(textSize);
         unselectedPaint.setTextSize(textSizeXp);
         selectedPaint.setTextSize(textSizeXp);
         unitPaint.setTextSize(textSizeXp);

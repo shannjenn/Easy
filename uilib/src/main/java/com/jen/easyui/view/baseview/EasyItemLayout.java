@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -58,6 +59,7 @@ public class EasyItemLayout extends RelativeLayout {
     int contentTextSize;
     int contentTextColor;
     int contentTextLines;//默认1
+    int contentTxtGray;//默认0
 
     int editTextSize;
     int editTextColor;
@@ -90,7 +92,7 @@ public class EasyItemLayout extends RelativeLayout {
     }
 
     private void initAttrs(AttributeSet attrs, int defStyleAttr) {
-        int defaultTextSize = (int) EasyDensityUtil.dp2px(DEFAULT_TEXT_SIZE);
+        int defaultTextSize = EasyDensityUtil.dp2pxInt(DEFAULT_TEXT_SIZE);
         TypedArray a = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.EasyItemLayout, defStyleAttr, 0);
 
         itemIsEdit = a.getBoolean(R.styleable.EasyItemLayout_itemIsEdit, false);
@@ -106,6 +108,7 @@ public class EasyItemLayout extends RelativeLayout {
         contentTextSize = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemTxtTextSize, defaultTextSize);
         contentTextColor = a.getColor(R.styleable.EasyItemLayout_itemTxtTextColor, DEFAULT_TEXT_COLOR_CONTENT);
         contentTextLines = a.getInt(R.styleable.EasyItemLayout_itemTxtLines, 1);
+        contentTxtGray = a.getInt(R.styleable.EasyItemLayout_itemTxtGray, 0);
 
         editTextSize = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemEditTextSize, defaultTextSize);
         editTextColor = a.getColor(R.styleable.EasyItemLayout_itemEditTextColor, DEFAULT_TEXT_COLOR_CONTENT);
@@ -142,6 +145,22 @@ public class EasyItemLayout extends RelativeLayout {
         iv_item_layout_clear = findViewById(R.id.iv_item_layout_clear);
         v_item_layout_bottomLine = findViewById(R.id.v_item_layout_bottomLine);
 
+        int txtGray = Gravity.START;
+        switch (contentTxtGray) {
+            case 0: {
+                txtGray= Gravity.START;
+                break;
+            }
+            case 1: {
+                txtGray= Gravity.CENTER;
+                break;
+            }
+            case 2: {
+                txtGray= Gravity.END;
+                break;
+            }
+        }
+
         tv_item_layout_content.setVisibility(itemIsEdit ? GONE : VISIBLE);
         et_item_layout_content.setVisibility(itemIsEdit ? VISIBLE : GONE);
         iv_item_layout_arrow.setVisibility(arrowVisible ? VISIBLE : GONE);
@@ -168,6 +187,7 @@ public class EasyItemLayout extends RelativeLayout {
         tv_item_layout_content.setTextSize(TypedValue.COMPLEX_UNIT_PX, contentTextSize);
         tv_item_layout_content.setTextColor(contentTextColor);
         tv_item_layout_content.setLines(contentTextLines);
+        tv_item_layout_content.setGravity(txtGray);
 
         et_item_layout_content.setHint(editTextHint);
         et_item_layout_content.setTextSize(TypedValue.COMPLEX_UNIT_PX, editTextSize);
@@ -186,6 +206,7 @@ public class EasyItemLayout extends RelativeLayout {
         }
         iv_item_layout_clear.setOnClickListener(clickListener);
         et_item_layout_content.addTextChangedListener(textWatcher);
+        et_item_layout_content.setGravity(txtGray);
 
         tv_item_layout_count.setText(countText);
         tv_item_layout_count.setTextSize(TypedValue.COMPLEX_UNIT_PX, countTextSize);

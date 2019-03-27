@@ -55,7 +55,7 @@ public class EasyTagDrawable extends Drawable {
         strokePaint.setAntiAlias(true);
         strokePaint.setStyle(Paint.Style.STROKE);
         strokePaint.setColor(strokeColor);
-        strokePaint.setStrokeWidth(EasyDensityUtil.sp2px(strokeWidth));
+        strokePaint.setStrokeWidth(EasyDensityUtil.sp2pxFloat(strokeWidth));
 
         //文字画笔
         textPaint = new Paint();
@@ -63,7 +63,7 @@ public class EasyTagDrawable extends Drawable {
         textPaint.setColor(textColor);
         textPaint.setTextAlign(Paint.Align.CENTER);
         textPaint.setStyle(Paint.Style.FILL);
-        textPaint.setTextSize(EasyDensityUtil.sp2px(textSize));
+        textPaint.setTextSize(EasyDensityUtil.sp2pxFloat(textSize));
 
         //测量文字的宽高
         Rect textRect = new Rect();
@@ -72,7 +72,7 @@ public class EasyTagDrawable extends Drawable {
         backgroundWidth = textRect.width() + (textRect.width() / text.length());
         //背景高度是文字高度的1.5倍
 //        backgroundHeight = (int) (textRect.height() * 1.5);
-        backgroundHeight = (int) EasyDensityUtil.dp2px(backgroundHeight);
+        backgroundHeight = EasyDensityUtil.dp2pxInt(backgroundHeight);
 
         return this;
     }

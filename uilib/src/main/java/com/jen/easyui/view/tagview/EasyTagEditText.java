@@ -101,22 +101,22 @@ public class EasyTagEditText extends android.support.v7.widget.AppCompatEditText
         tagBackgroundColor = ta.getColor(R.styleable.EasyTagEditText_tagBackgroundColor, 0xffcccccc);
         float backGroundHeight = ta.getDimensionPixelSize(R.styleable.EasyTagEditText_tagBackgroundHeight, -1);
         if (backGroundHeight == -1) {
-            backGroundHeight = EasyDensityUtil.sp2px(18);
+            backGroundHeight = EasyDensityUtil.sp2pxFloat(18);
         }
-        tagBackgroundHeight = (int) EasyDensityUtil.px2dp(backGroundHeight);
+        tagBackgroundHeight = EasyDensityUtil.px2dpInt(backGroundHeight);
 
         tagStrokeColor = ta.getColor(R.styleable.EasyTagEditText_tagStrokeColor, 0xff666666);
         tagStrokeWidth = ta.getDimensionPixelSize(R.styleable.EasyTagEditText_tagStrokeHeight, -1);
         if (tagStrokeWidth == -1) {
-            tagStrokeWidth = EasyDensityUtil.sp2px(18);
+            tagStrokeWidth = EasyDensityUtil.sp2pxFloat(18);
         }
 
         tagTextColor = ta.getColor(R.styleable.EasyTagEditText_tagTextColor, 0xff333333);
         float textSize = ta.getDimensionPixelSize(R.styleable.EasyTagEditText_tagTextSize, -1);
         if (textSize == -1) {
-            textSize = EasyDensityUtil.sp2px(18);
+            textSize = EasyDensityUtil.sp2pxFloat(18);
         }
-        tagTextSize = EasyDensityUtil.px2sp(textSize);
+        tagTextSize = EasyDensityUtil.px2spFloat(textSize);
 
         ta.recycle();
     }

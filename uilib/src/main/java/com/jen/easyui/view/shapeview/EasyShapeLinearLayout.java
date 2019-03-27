@@ -92,11 +92,11 @@ public class EasyShapeLinearLayout extends LinearLayout {
             }
         }
         ta.recycle();
-        mShape.init();
+        mShape.update();
     }
 
     public void update() {
-        mShape.init();
+        mShape.update();
         invalidate();
     }
 

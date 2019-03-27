@@ -1,10 +1,9 @@
 package com.jen.easyui.popupwindow;
 
 import android.content.Context;
-import android.content.res.Resources;
 
-import com.jen.easyui.dialog.StyleContent;
 import com.jen.easyui.popupwindow.listener.WindowListener;
+import com.jen.easyui.recycler.listener.EasyItemListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +12,16 @@ import java.util.List;
 public class Build {
     Context context;
     boolean showTopBar = true;
-    final List<Object> data = new ArrayList<>();
+    int height, width;
+
     int flagCode;
     WindowListener listener;
+    EasyItemListener itemListener;
+    final List<Object> data = new ArrayList<>();
 
     Build(Context context) {
         this.context = context;
+        data.add("");//默认一条数据
     }
 
     /**
@@ -56,8 +59,23 @@ public class Build {
         return this;
     }
 
+    public Build setHeight(int height) {
+        this.height = height;
+        return this;
+    }
+
+    public Build setWidth(int width) {
+        this.width = width;
+        return this;
+    }
+
     public Build setListener(WindowListener listener) {
         this.listener = listener;
+        return this;
+    }
+
+    public Build setItemListener(EasyItemListener itemListener) {
+        this.itemListener = itemListener;
         return this;
     }
 }

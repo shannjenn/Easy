@@ -90,8 +90,11 @@ public class EasyShapeBase {
         isTextView = view instanceof TextView;
     }
 
-    public void init() {
-        mDrawable = new GradientDrawable();
+    public void update() {
+        if (mDrawable == null || mLinePaint == null) {
+            mDrawable = new GradientDrawable();
+            mLinePaint = new Paint();
+        }
         mDrawable.setStroke(mStrokeWidth, mStrokeColor, mStrokeDashGapWidth, mStrokeDashGap);
         mDrawable.setColor(mSolidColor);
         mDrawable.setGradientType(GradientDrawable.LINEAR_GRADIENT);
@@ -103,7 +106,6 @@ public class EasyShapeBase {
         }
         mView.setBackground(mDrawable);
 
-        mLinePaint = new Paint();
         mLinePaint.setStyle(Paint.Style.FILL);//设置填充样式
         mLinePaint.setStrokeWidth(mLineWidth);//设置画笔宽度
     }
@@ -263,29 +265,38 @@ public class EasyShapeBase {
         return true;
     }
 
-    public void setSolidColor(int color) {
+    public EasyShapeBase setSolidColor(int color) {
         mSolidColor = color;
-        mDrawable.setColor(mSolidColor);
+        return this;
     }
 
-    public void setCorners(int db) {
+    public EasyShapeBase setStrokeColor(int color) {
+        mStrokeColor = color;
+        return this;
+    }
+
+    public EasyShapeBase setCorners(int db) {
         mCorners = dp2px(db);
+        return this;
     }
 
-    public void setCornerLeftBottom(int db) {
+    public EasyShapeBase setCornerLeftBottom(int db) {
         mCornerLeftBottom = dp2px(db);
+        return this;
     }
 
-    public void setCornerRightBottom(int db) {
+    public EasyShapeBase setCornerRightBottom(int db) {
         mCornerRightBottom = dp2px(db);
+        return this;
+    }
+
+    public EasyShapeBase setClickType(ClickType clickType) {
+        mClickType = clickType;
+        return this;
     }
 
     public ClickType getClickType() {
         return mClickType;
-    }
-
-    public void setClickType(ClickType clickType) {
-        mClickType = clickType;
     }
 
     public boolean isCheck() {

@@ -8,9 +8,10 @@ import java.util.List;
 
 public interface WindowBind {
 
-    int[] onBindItemLayout();
-
     int onBindViewType();
 
+    int[] onBindItemLayout();
+
     void onBindItemData(EasyHolder easyHolder, View view, List data, int position);
+
 }

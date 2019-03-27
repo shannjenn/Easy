@@ -16,6 +16,11 @@
         <attr name="itemTxtHint" format="string" />
         <attr name="itemTxtTextSize" format="dimension" />
         <attr name="itemTxtTextColor" format="color" />
+        <attr name="itemTxtGray">
+            <enum name="left" value="0" />
+            <enum name="center" value="1" />
+            <enum name="right" value="-1" />
+        </attr>
 
         <attr name="itemIsEdit" format="boolean" />
         <attr name="itemEditLines" format="integer" />
