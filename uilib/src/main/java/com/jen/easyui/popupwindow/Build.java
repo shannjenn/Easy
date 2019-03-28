@@ -3,7 +3,6 @@ package com.jen.easyui.popupwindow;
 import android.content.Context;
 
 import com.jen.easyui.popupwindow.listener.WindowListener;
-import com.jen.easyui.recycler.listener.EasyItemListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +10,13 @@ import java.util.List;
 
 public class Build {
     Context context;
-    boolean showTopBar = true;
     int height, width;
+    boolean showTopBar = true;
+    String topBarRightText;
+    String topBarTitleText;
 
     int flagCode;
     WindowListener listener;
-    EasyItemListener itemListener;
     final List<Object> data = new ArrayList<>();
 
     Build(Context context) {
@@ -39,6 +39,16 @@ public class Build {
      */
     public EasyWindow createObject(WindowBind windowBind) {
         return new EasyWindowObject(this, windowBind);
+    }
+
+    /**
+     * 滚动
+     *
+     * @param windowBind 绑定item数据
+     * @return .
+     */
+    public EasyWindow createScroll(WindowBind windowBind) {
+        return new EasyWindowScroll(this);
     }
 
     public Build setData(List data) {
@@ -74,8 +84,13 @@ public class Build {
         return this;
     }
 
-    public Build setItemListener(EasyItemListener itemListener) {
-        this.itemListener = itemListener;
+    public Build setTopBarRightText(String topBarRightText) {
+        this.topBarRightText = topBarRightText;
+        return this;
+    }
+
+    public Build setTopBarTitleText(String topBarTitleText) {
+        this.topBarTitleText = topBarTitleText;
         return this;
     }
 }

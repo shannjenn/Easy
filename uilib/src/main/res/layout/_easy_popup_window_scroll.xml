@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#fff"
+    android:minHeight="200dp">
+
+    <com.jen.easyui.view.baseview.EasyTopBar
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="#F4F4F4"
+        app:topBarLeftImage="@drawable/icon_close"
+        app:topBarRightText="确定"
+        app:topBarRightTextColor="#335EC2"
+        app:topBarTitleText="标题" />
+
+    <com.jen.easyui.view.loopview.StringScrollPicker
+        android:id="@+id/pick_string"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@+id/topBar"
+        app:ScrollPickerEndColor="#000000"
+        app:ScrollPickerIsCirculation="false"
+        app:ScrollPickerMaxTextSize="16sp"
+        app:ScrollPickerMinTextSize="14sp"
+        app:ScrollPickerStartColor="@color/color_text_blue_color"
+        app:ScrollPickerVisibleItemCount="5" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/topBar"
+        android:layout_marginTop="80dp"
+        android:background="@color/color_background_F4F4F4" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/topBar"
+        android:layout_marginTop="120dp"
+        android:background="@color/color_background_F4F4F4" />
+
+</RelativeLayout>
