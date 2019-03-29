@@ -30,6 +30,8 @@ class EasyWindowScroll extends EasyWindow implements View.OnClickListener {
         EasyTopBar topBar = popView.findViewById(R.id.topBar);
         StringScrollPicker pick_string = popView.findViewById(R.id.pick_string);
         topBar.setVisibility(build.showTopBar ? View.VISIBLE : View.GONE);
+        topBar.setTitle(build.topBarTitleText);
+        topBar.setRightText(build.topBarRightText);
         topBar.getRightText().setOnClickListener(this);
         topBar.getLeftImageView().setOnClickListener(this);
         List<String> list = new ArrayList<>();
@@ -44,7 +46,7 @@ class EasyWindowScroll extends EasyWindow implements View.OnClickListener {
     }
 
     @Override
-    void setData(List data) {
+    public void setData(List data) {
         build.data.clear();
         if (data != null && data.size() > 0) {
             build.data.addAll(data);
@@ -61,7 +63,7 @@ class EasyWindowScroll extends EasyWindow implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         WindowOkListener okListener;
-        if (!(build.listener instanceof WindowOkListener)) {
+        if (!(build.listener instanceof WindowOkListener) || build.data.size() == 0) {
             return;
         }
         okListener = (WindowOkListener) build.listener;

@@ -25,7 +25,7 @@
         app:ScrollPickerIsCirculation="false"
         app:ScrollPickerMaxTextSize="16sp"
         app:ScrollPickerMinTextSize="14sp"
-        app:ScrollPickerStartColor="@color/color_text_blue_color"
+        app:ScrollPickerStartColor="#335EC2"
         app:ScrollPickerVisibleItemCount="5" />
 
     <View
@@ -33,13 +33,13 @@
         android:layout_height="1dp"
         android:layout_below="@+id/topBar"
         android:layout_marginTop="80dp"
-        android:background="@color/color_background_F4F4F4" />
+        android:background="#F4F4F4" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/topBar"
         android:layout_marginTop="120dp"
-        android:background="@color/color_background_F4F4F4" />
+        android:background="#F4F4F4" />
 
 </RelativeLayout>

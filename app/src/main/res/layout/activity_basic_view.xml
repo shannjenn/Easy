@@ -119,5 +119,11 @@
                 app:upDownTextUp="总市值"
                 app:upDownTextUpDownSpace="0dp" />
         </LinearLayout>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/_easy_edittext_underline_background"
+            android:textCursorDrawable="@drawable/_easy_edittext_cursor"/>
     </LinearLayout>
 </ScrollView>

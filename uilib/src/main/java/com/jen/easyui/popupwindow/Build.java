@@ -12,8 +12,8 @@ public class Build {
     Context context;
     int height, width;
     boolean showTopBar = true;
-    String topBarRightText;
-    String topBarTitleText;
+    String topBarRightText = "确定";
+    String topBarTitleText = "标题";
 
     int flagCode;
     WindowListener listener;
@@ -44,10 +44,9 @@ public class Build {
     /**
      * 滚动
      *
-     * @param windowBind 绑定item数据
      * @return .
      */
-    public EasyWindow createScroll(WindowBind windowBind) {
+    public EasyWindow createScroll() {
         return new EasyWindowScroll(this);
     }
 

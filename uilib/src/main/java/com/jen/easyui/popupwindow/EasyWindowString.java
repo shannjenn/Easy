@@ -35,6 +35,8 @@ class EasyWindowString extends EasyWindow implements EasyItemListener, View.OnCl
         View popView = LayoutInflater.from(build.context).inflate(R.layout._easy_popup_window_string, null);
         EasyTopBar topBar = popView.findViewById(R.id.topBar);
         topBar.setVisibility(build.showTopBar ? View.VISIBLE : View.GONE);
+        topBar.setTitle(build.topBarTitleText);
+        topBar.setRightText(build.topBarRightText);
         topBar.getRightText().setOnClickListener(this);
         topBar.getLeftImageView().setOnClickListener(this);
 
@@ -47,7 +49,7 @@ class EasyWindowString extends EasyWindow implements EasyItemListener, View.OnCl
     }
 
     @Override
-    void setData(List data) {
+    public void setData(List data) {
         build.data.clear();
         if (data != null && data.size() > 0) {
             build.data.addAll(data);
@@ -69,15 +71,13 @@ class EasyWindowString extends EasyWindow implements EasyItemListener, View.OnCl
     @Override
     public void onClick(View v) {
         WindowOkListener okListener;
-        if (!(build.listener instanceof WindowOkListener)) {
+        if (!(build.listener instanceof WindowOkListener) || build.data.size() == 0) {
             return;
         }
         okListener = (WindowOkListener) build.listener;
         int i = v.getId();
         if (i == R.id.top_bar_tv_right) {
-            if (checkPosition >= 0) {
-                okListener.ok(build.flagCode, showView, checkPosition, build.data.get(checkPosition));
-            }
+            okListener.ok(build.flagCode, showView, checkPosition, build.data.get(checkPosition));
         } else if (i == R.id.top_bar_iv_close) {
             okListener.cancel(build.flagCode, showView);
         }
