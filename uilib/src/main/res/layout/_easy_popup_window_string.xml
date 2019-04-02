@@ -6,20 +6,57 @@
     android:background="#fff"
     android:minHeight="200dp">
 
-    <com.jen.easyui.view.baseview.EasyTopBar
-        android:id="@+id/topBar"
+    <RelativeLayout
+        android:id="@+id/rl_top_bar"
         android:layout_width="match_parent"
         android:layout_height="46dp"
-        android:background="#F4F4F4"
-        app:topBarLeftImage="@drawable/icon_close"
-        app:topBarRightText="确定"
-        app:topBarRightTextColor="#335EC2"
-        app:topBarTitleText="标题" />
-    
+        android:background="#F4F4F4">
+
+        <ImageView
+            android:id="@+id/iv_left"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:src="@drawable/icon_close" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="100dp"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="标题"
+            android:textColor="#000000"
+            android:textSize="19sp" />
+
+        <TextView
+            android:id="@+id/tv_right"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="确定"
+            android:textColor="#335EC2"
+            android:textSize="16sp" />
+
+        <View
+            android:id="@+id/v_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="#F4F4F4" />
+    </RelativeLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/topBar" />
+        android:layout_below="@+id/rl_top_bar" />
 
 </RelativeLayout>

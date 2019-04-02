@@ -1,4 +1,4 @@
-package com.jen.easytest.activity;
+package com.jen.easytest.activity.popupWindow;
 
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +10,7 @@ import com.jen.easyui.base.EasyActivity;
 import com.jen.easyui.popupwindow.EasyWindow;
 import com.jen.easyui.popupwindow.WindowBind;
 import com.jen.easyui.recycler.EasyHolder;
+import com.jen.easyui.util.EasyDensityUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +34,6 @@ public class PopupWindowActivity extends EasyActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_popup_window);
-    }
-
-    @Override
-    protected void intDataBeforeView() {
-
     }
 
     @Override
@@ -76,25 +72,24 @@ public class PopupWindowActivity extends EasyActivity {
 
     }
 
-    @Override
-    protected void loadDataAfterView() {
-
-    }
-
-    @EasyBindClick({R.id.popup_window_str, R.id.popup_window_object})
+    @EasyBindClick({R.id.popup_window_str, R.id.popup_window_object, R.id.popup_window_right})
     @Override
     protected void onBindClick(View view) {
         switch (view.getId()) {
             case R.id.popup_window_str: {
-                easyWindowStr.showAsDropDown(popup_window);
+                easyWindowStr.showAsBottom(popup_window);
                 break;
             }
             case R.id.popup_window_object: {
                 easyWindowObject.showAsBottom(popup_window);
                 break;
             }
-            default: {
-
+            case R.id.popup_window_right: {
+                EasyWindow.build(this)
+                        .setShowTopBar(false)
+                        .setWidth(EasyDensityUtil.dp2pxInt(195))
+                        .setHeight(EasyDensityUtil.dp2pxInt(45))
+                        .createObject(WindowBindEdit.bind()).showAsBottom(popup_window);
                 break;
             }
         }

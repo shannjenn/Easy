@@ -28,11 +28,6 @@ public class PickerViewActivity extends EasyActivity {
     }
 
     @Override
-    protected void intDataBeforeView() {
-
-    }
-
-    @Override
     protected void initViews() {
         List<String> data = new ArrayList<>();
         for (int i = 0; i < 24; i++) {
@@ -44,11 +39,6 @@ public class PickerViewActivity extends EasyActivity {
 
         pick_1.setData((ArrayList) data);
         pick_1.setInitPosition(0);
-    }
-
-    @Override
-    protected void loadDataAfterView() {
-
     }
 
     @Override

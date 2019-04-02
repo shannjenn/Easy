@@ -21,20 +21,12 @@ public class RecyclerViewMainActivity extends EasyActivity {
         setContentView(R.layout.activity_recycler_view_main);
     }
 
-    @Override
-    protected void intDataBeforeView() {
-
-    }
 
     @Override
     protected void initViews() {
 
     }
 
-    @Override
-    protected void loadDataAfterView() {
-
-    }
 
 
     @EasyBindClick({R.id.recycleHScroll, R.id.recycleViewLetter, R.id.SlideDelete})

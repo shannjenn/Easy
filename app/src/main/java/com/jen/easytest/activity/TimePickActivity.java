@@ -26,19 +26,11 @@ public class TimePickActivity extends EasyActivity {
         setContentView(R.layout.activity_time_pick);
     }
 
-    @Override
-    protected void intDataBeforeView() {
-
-    }
 
     @Override
     protected void initViews() {
     }
 
-    @Override
-    protected void loadDataAfterView() {
-
-    }
 
     @EasyBindClick({R.id.time_pick_1, R.id.time_pick_2, R.id.time_pick_3, R.id.time_pick_4, R.id.time_pick_5})
     @Override

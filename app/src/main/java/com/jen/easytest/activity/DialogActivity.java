@@ -26,10 +26,6 @@ public class DialogActivity extends EasyActivity {
         setContentView(R.layout.activity_dialog);
     }
 
-    @Override
-    protected void intDataBeforeView() {
-
-    }
 
     @Override
     protected void initViews() {
@@ -41,11 +37,6 @@ public class DialogActivity extends EasyActivity {
                 .setLeftButton("左边")
                 .setRightButton("右边")
                 .create();
-    }
-
-    @Override
-    protected void loadDataAfterView() {
-
     }
 
     @EasyBindClick({R.id.loading, R.id.dialog})

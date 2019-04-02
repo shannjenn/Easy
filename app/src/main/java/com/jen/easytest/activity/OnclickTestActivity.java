@@ -26,20 +26,12 @@ public class OnclickTestActivity extends EasyActivity {
         setContentView(R.layout.activity_onclick_test);
     }
 
-    @Override
-    protected void intDataBeforeView() {
-
-    }
 
     @Override
     protected void initViews() {
 
     }
 
-    @Override
-    protected void loadDataAfterView() {
-
-    }
 
     @EasyBindClick({R.id.tv_onclickTest})
     protected void onBindClick(View view) {

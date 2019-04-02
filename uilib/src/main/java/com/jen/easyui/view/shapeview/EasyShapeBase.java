@@ -217,52 +217,75 @@ public class EasyShapeBase {
      *
      * @param event e
      */
-    boolean onFocusEvent(MotionEvent event) {
+    void onFocusEvent(MotionEvent event) {
         if (mClickType == ClickType.NON)
-            return true;
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN: {
-                switch (mClickType) {
-                    case BUTTON: {
-                        mDrawable.setStroke(mStrokeWidth, mStrokeClickColor, mStrokeDashGapWidth, mStrokeDashGap);
-                        mDrawable.setColor(mSolidClickColor);
-                        if (isTextView) {
-                            ((TextView) mView).setTextColor(mTextClickColor);
-                        }
+            return;
+        switch (mClickType) {
+            case BUTTON: {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        updateButtonState(true);
                         break;
                     }
-                    case CHECK: {
-                        isCheck = !isCheck;
-                        if (isCheck) {
-                            mDrawable.setStroke(mStrokeWidth, mStrokeClickColor, mStrokeDashGapWidth, mStrokeDashGap);
-                            mDrawable.setColor(mSolidClickColor);
-                            if (isTextView) {
-                                ((TextView) mView).setTextColor(mTextClickColor);
-                            }
-                        } else {
-                            mDrawable.setStroke(mStrokeWidth, mStrokeColor, mStrokeDashGapWidth, mStrokeDashGap);
-                            mDrawable.setColor(mSolidColor);
-                            if (isTextView) {
-                                ((TextView) mView).setTextColor(mTextColor);
-                            }
-                        }
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_CANCEL: {
+                        updateButtonState(false);
                         break;
                     }
                 }
                 break;
             }
-            case MotionEvent.ACTION_UP: {
-                if (mClickType == ClickType.BUTTON) {
-                    mDrawable.setStroke(mStrokeWidth, mStrokeColor, mStrokeDashGapWidth, mStrokeDashGap);
-                    mDrawable.setColor(mSolidColor);
-                    if (isTextView) {
-                        ((TextView) mView).setTextColor(mTextColor);
+            case CHECK: {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        isCheck = !isCheck;
+                        updateCheckState();
+                        break;
+                    }
+                    case MotionEvent.ACTION_CANCEL: {//在ScrollView包含ViewPager的情况下,滑动时还原check状态
+                        isCheck = !isCheck;
+                        updateCheckState();
+                        break;
                     }
                 }
+                break;
+            }
+            case NON: {
                 break;
             }
         }
-        return true;
+    }
+
+    private void updateCheckState() {
+        if (isCheck) {
+            mDrawable.setStroke(mStrokeWidth, mStrokeClickColor, mStrokeDashGapWidth, mStrokeDashGap);
+            mDrawable.setColor(mSolidClickColor);
+            if (isTextView) {
+                ((TextView) mView).setTextColor(mTextClickColor);
+            }
+        } else {
+            mDrawable.setStroke(mStrokeWidth, mStrokeColor, mStrokeDashGapWidth, mStrokeDashGap);
+            mDrawable.setColor(mSolidColor);
+            if (isTextView) {
+                ((TextView) mView).setTextColor(mTextColor);
+            }
+        }
+    }
+
+    private void updateButtonState(boolean isActionDown) {
+        if (isActionDown) {
+            mDrawable.setStroke(mStrokeWidth, mStrokeClickColor, mStrokeDashGapWidth, mStrokeDashGap);
+            mDrawable.setColor(mSolidClickColor);
+            if (isTextView) {
+                ((TextView) mView).setTextColor(mTextClickColor);
+            }
+        } else {
+            mDrawable.setStroke(mStrokeWidth, mStrokeColor, mStrokeDashGapWidth, mStrokeDashGap);
+            mDrawable.setColor(mSolidColor);
+            if (isTextView) {
+                ((TextView) mView).setTextColor(mTextColor);
+            }
+        }
     }
 
     public EasyShapeBase setSolidColor(int color) {

@@ -39,17 +39,17 @@ public class EasyShapeLinearLayout extends LinearLayout {
 
     private void initAttrs(Context context, AttributeSet attrs) {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.EasyShapeLinearLayout);
-        mShape.mStrokeWidth =  ta.getDimensionPixelSize(R.styleable.EasyShapeLinearLayout_strokeWidth, 0);
+        mShape.mStrokeWidth = ta.getDimensionPixelSize(R.styleable.EasyShapeLinearLayout_strokeWidth, 0);
         mShape.mStrokeDashGapWidth = ta.getDimensionPixelSize(R.styleable.EasyShapeLinearLayout_strokeDashGapWidth, 0);
         mShape.mStrokeDashGap = ta.getDimensionPixelSize(R.styleable.EasyShapeLinearLayout_strokeDashGap, 0);
         mShape.mStrokeColor = ta.getColor(R.styleable.EasyShapeLinearLayout_strokeColor, 0);
         mShape.mStrokeClickColor = ta.getColor(R.styleable.EasyShapeLinearLayout_strokeClickColor, 0);
 
-        mShape.mCorners =  ta.getDimensionPixelSize(R.styleable.EasyShapeLinearLayout_corners, 0);
-        mShape.mCornerLeftTop =  ta.getDimensionPixelSize(R.styleable.EasyShapeLinearLayout_cornerLeftTop, 0);
-        mShape.mCornerLeftBottom =  ta.getDimensionPixelSize(R.styleable.EasyShapeLinearLayout_cornerLeftBottom, 0);
-        mShape.mCornerRightTop =  ta.getDimensionPixelSize(R.styleable.EasyShapeLinearLayout_cornerRightTop, 0);
-        mShape.mCornerRightBottom =  ta.getDimensionPixelSize(R.styleable.EasyShapeLinearLayout_cornerRightBottom, 0);
+        mShape.mCorners = ta.getDimensionPixelSize(R.styleable.EasyShapeLinearLayout_corners, 0);
+        mShape.mCornerLeftTop = ta.getDimensionPixelSize(R.styleable.EasyShapeLinearLayout_cornerLeftTop, 0);
+        mShape.mCornerLeftBottom = ta.getDimensionPixelSize(R.styleable.EasyShapeLinearLayout_cornerLeftBottom, 0);
+        mShape.mCornerRightTop = ta.getDimensionPixelSize(R.styleable.EasyShapeLinearLayout_cornerRightTop, 0);
+        mShape.mCornerRightBottom = ta.getDimensionPixelSize(R.styleable.EasyShapeLinearLayout_cornerRightBottom, 0);
 
         mShape.mSolidColor = ta.getColor(R.styleable.EasyShapeLinearLayout_solidColor, 0);
         mShape.mSolidClickColor = ta.getColor(R.styleable.EasyShapeLinearLayout_solidClickColor, 0);
@@ -119,11 +119,37 @@ public class EasyShapeLinearLayout extends LinearLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        mShape.onFocusEvent(event);
+        if (mShape.mClickType == EasyShapeBase.ClickType.NON) {
+            return super.onTouchEvent(event);
+        }
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN: {
+                mShape.onFocusEvent(event);
+//                EasyLog.d("MotionEvent.ACTION_DOWN ---------------");
+                break;
+            }
+            case MotionEvent.ACTION_UP: {
+                mShape.onFocusEvent(event);
+//                EasyLog.d("MotionEvent.ACTION_UP ---------------");
+                performClick();
+                return true;
+            }
+            case MotionEvent.ACTION_CANCEL: {
+                mShape.onFocusEvent(event);
+//                EasyLog.d("MotionEvent.ACTION_CANCEL ---------------");
+                return true;
+            }
+        }
         return super.onTouchEvent(event);
     }
 
-    public EasyShapeBase getShape(){
+    @Override
+    public boolean performClick() {
+//        EasyLog.d("performClick ---------------");
+        return super.performClick();
+    }
+
+    public EasyShapeBase getShape() {
         return mShape;
     }
 

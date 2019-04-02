@@ -30,10 +30,6 @@ public class ImageViewPagerActivity extends EasyActivity {
         setContentView(R.layout.activity_image_view_pager);
     }
 
-    @Override
-    protected void intDataBeforeView() {
-
-    }
 
     @Override
     protected void initViews() {
@@ -47,10 +43,7 @@ public class ImageViewPagerActivity extends EasyActivity {
         image_view_pager.setNumCount(4);
     }
 
-    @Override
-    protected void loadDataAfterView() {
 
-    }
 
     @Override
     protected void onBindClick(View view) {

@@ -34,18 +34,12 @@ public class HttpActivity extends EasyActivity {
 //        EasyMain.mHttp.setDefaultBaseListener(httpListener);
     }
 
-    @Override
-    protected void intDataBeforeView() {
-    }
 
     @Override
     protected void initViews() {
     }
 
-    @Override
-    protected void loadDataAfterView() {
 
-    }
 
     @EasyBindClick({R.id.get, R.id.post, R.id.put, R.id.upload, R.id.download, R.id.parse, R.id.request_parse, R.id.response_parse})
     protected void onBindClick(View view) {

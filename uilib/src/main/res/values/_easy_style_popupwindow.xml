@@ -5,6 +5,11 @@
         <item name="android:windowExitAnimation">@anim/_easy_popup_window_out_show_bottom</item>
     </style>
 
+    <style name="easy_popup_window_show_right_anim_style" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/_easy_popup_window_in_show_right</item>
+        <item name="android:windowExitAnimation">@anim/_easy_popup_window_out_show_right</item>
+    </style>
+
     <style name="easy_popup_window_drop_down_anim_style" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/_easy_popup_window_in_drop_down</item>
         <item name="android:windowExitAnimation">@anim/_easy_popup_window_out_drop_down</item>

@@ -5,7 +5,9 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.widget.TextView;
 
+import com.jen.easy.log.EasyLog;
 import com.jen.easyui.R;
 
 
@@ -134,8 +136,31 @@ public class EasyShapeTextView extends android.support.v7.widget.AppCompatTextVi
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        mShape.onFocusEvent(event);
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN: {
+                mShape.onFocusEvent(event);
+//                EasyLog.d("MotionEvent.ACTION_DOWN ---------------");
+                break;
+            }
+            case MotionEvent.ACTION_UP: {
+                mShape.onFocusEvent(event);
+//                EasyLog.d("MotionEvent.ACTION_UP ---------------");
+                performClick();
+                return true;
+            }
+            case MotionEvent.ACTION_CANCEL: {
+                mShape.onFocusEvent(event);
+//                EasyLog.d("MotionEvent.ACTION_CANCEL ---------------");
+                return true;
+            }
+        }
         return super.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean performClick() {
+//        EasyLog.d("performClick ---------------");
+        return super.performClick();
     }
 
     public EasyShapeBase getShape() {

@@ -26,20 +26,12 @@ public class SQLiteActivity extends EasyActivity {
         setContentView(R.layout.activity_sqlite);
     }
 
-    @Override
-    protected void intDataBeforeView() {
-
-    }
 
     @Override
     protected void initViews() {
 //        easyButon.setBackgroundColor(0xffff0000);
     }
 
-    @Override
-    protected void loadDataAfterView() {
-
-    }
 
     @EasyBindClick({R.id.replace, R.id.search})
     @Override

@@ -38,8 +38,9 @@ public class RecyclerSlideDeleteActivity extends EasyActivity {
         setContentView(R.layout.activity_recycler_slide);
     }
 
+
     @Override
-    protected void intDataBeforeView() {
+    protected void initViews() {
         mData.clear();
         for (int i = 0; i < 36; i++) {
             RecyclerViewModel model = new RecyclerViewModel();
@@ -110,15 +111,6 @@ public class RecyclerSlideDeleteActivity extends EasyActivity {
         });
     }
 
-    @Override
-    protected void initViews() {
-
-    }
-
-    @Override
-    protected void loadDataAfterView() {
-
-    }
 
     @Override
     protected void onBindClick(View view) {

@@ -22,11 +22,11 @@
         </activity>
 
         <activity android:name=".activity.TabBarActivity" />
-        <activity android:name=".activity.BasicViewActivity" />
+        <activity android:name=".activity.ShapeViewActivity" />
         <activity android:name=".activity.HttpActivity" />
         <activity android:name=".activity.ImageLoaderActivity" />
         <activity android:name=".activity.DialogActivity" />
-        <activity android:name=".activity.PopupWindowActivity" />
+        <activity android:name=".activity.popupWindow.PopupWindowActivity" />
         <activity android:name=".activity.SQLiteActivity" />
         <activity android:name=".activity.UtilActivity" />
         <activity android:name=".activity.TimePickActivity" />

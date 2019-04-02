@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#fff"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/tv_rename"
+        android:layout_width="65dp"
+        android:layout_height="45dp"
+        android:background="#D9D9D9"
+        android:gravity="center"
+        android:text="重命名"
+        android:textColor="#ffffffff"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/tv_edit"
+        android:layout_width="65dp"
+        android:layout_height="45dp"
+        android:background="#335EC2"
+        android:gravity="center"
+        android:text="修改"
+        android:textColor="#ffffffff"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/tv_delete"
+        android:layout_width="65dp"
+        android:layout_height="45dp"
+        android:background="#C73E1D"
+        android:gravity="center"
+        android:text="删除"
+        android:textColor="#ffffffff"
+        android:textSize="15sp" />
+</LinearLayout>

@@ -24,17 +24,7 @@ public class UtilActivity extends EasyActivity {
     }
 
     @Override
-    protected void intDataBeforeView() {
-
-    }
-
-    @Override
     protected void initViews() {
-
-    }
-
-    @Override
-    protected void loadDataAfterView() {
 
     }
 

@@ -15,6 +15,7 @@ import java.util.List;
 
 public abstract class EasyWindow extends EasyFactoryWindow {
     protected Build build;
+    int selectPosition;
 
     public static Build build(Context context) {
         return new Build(context);
@@ -29,7 +30,7 @@ public abstract class EasyWindow extends EasyFactoryWindow {
     }
 
     abstract View bindContentView();
-    abstract void setData(List data);
+    public abstract void setData(List data);
 
     @Override
     public void showAsDropDown(View anchor) {
@@ -43,4 +44,11 @@ public abstract class EasyWindow extends EasyFactoryWindow {
         showAtLocation(showView, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
     }
 
+    public int getSelectPosition() {
+        return selectPosition;
+    }
+
+    public void setSelectPosition(int selectPosition) {
+        this.selectPosition = selectPosition;
+    }
 }

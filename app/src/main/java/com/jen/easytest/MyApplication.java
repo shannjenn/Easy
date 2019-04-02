@@ -13,6 +13,8 @@ import com.jen.easy.log.imp.LogcatCrashListener;
 import com.jen.easy.sqlite.imp.DatabaseListener;
 import com.jen.easyui.base.LogCrashActivity;
 
+import java.io.File;
+
 /**
  * 作者：ShannJenn
  * 时间：2017/10/26.
@@ -78,7 +80,7 @@ public class MyApplication extends Application {
      */
     private LogcatCrashListener logcatCrashListener = new LogcatCrashListener() {
         @Override
-        public boolean onBeforeHandleException(Throwable throwable) {
+        public boolean onBeforeHandleException(Throwable throwable, File file) {
 //            EasyLog.w("捕获到异常---------------------");
 //            throwable.printStackTrace();
             Intent intent = new Intent(MyApplication.getAppContext(), LogCrashActivity.class);

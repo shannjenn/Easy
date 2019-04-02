@@ -73,8 +73,7 @@ class LogcatCrash implements UncaughtExceptionHandler {
             } catch (FileNotFoundException e) {
                 LogcatLog.exception(ExceptionType.FileNotFoundException, "文件不存在");
             }
-
-            userCatch = mListener.onBeforeHandleException(ex);
+            userCatch = mListener.onBeforeHandleException(ex, file);
         }
         if (!userCatch && exceptionHandler != null) {
             // 如果用户没有处理则让系统默认的异常处理器来处理

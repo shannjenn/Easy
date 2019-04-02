@@ -49,8 +49,9 @@ public class RecyclerViewLetterActivity extends EasyActivity {
         setContentView(R.layout.activity_recycler_view_main);
     }
 
+
     @Override
-    protected void intDataBeforeView() {
+    protected void initViews() {
         mData.clear();
         for (int i = 0; i < 36; i++) {
             RecyclerViewModel model = new RecyclerViewModel();
@@ -139,15 +140,7 @@ public class RecyclerViewLetterActivity extends EasyActivity {
         });
     }
 
-    @Override
-    protected void initViews() {
 
-    }
-
-    @Override
-    protected void loadDataAfterView() {
-
-    }
 
     @EasyBindClick({R.id.EasyRecyclerAdapter, R.id.EasyRecyclerWaterfallAdapter, R.id.EasyTreeRecyclerAdapter})
     @Override

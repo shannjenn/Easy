@@ -47,20 +47,12 @@ public class TabBarActivity extends EasyActivity {
         setContentView(R.layout.activity_tabbar);
     }
 
-    @Override
-    protected void intDataBeforeView() {
-
-    }
 
     @Override
     protected void initViews() {
         initScroll();
     }
 
-    @Override
-    protected void loadDataAfterView() {
-
-    }
 
     @Override
     protected void onBindClick(View view) {

@@ -2,10 +2,11 @@ package com.jen.easyui.popupwindow;
 
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.jen.easyui.R;
 import com.jen.easyui.popupwindow.listener.WindowOkListener;
-import com.jen.easyui.view.baseview.EasyTopBar;
 import com.jen.easyui.view.loopview.StringScrollPicker;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import java.util.List;
  */
 
 class EasyWindowScroll extends EasyWindow implements View.OnClickListener {
-    StringScrollPicker pick_string;
+    private StringScrollPicker pick_string;
 
     EasyWindowScroll(Build build) {
         super(build);
@@ -27,17 +28,23 @@ class EasyWindowScroll extends EasyWindow implements View.OnClickListener {
     @Override
     View bindContentView() {
         View popView = LayoutInflater.from(build.context).inflate(R.layout._easy_popup_window_scroll, null);
-        EasyTopBar topBar = popView.findViewById(R.id.topBar);
-        StringScrollPicker pick_string = popView.findViewById(R.id.pick_string);
-        topBar.setVisibility(build.showTopBar ? View.VISIBLE : View.GONE);
-        topBar.setTitle(build.topBarTitleText);
-        topBar.setRightText(build.topBarRightText);
-        topBar.getRightText().setOnClickListener(this);
-        topBar.getLeftImageView().setOnClickListener(this);
+        View rl_top_bar = popView.findViewById(R.id.rl_top_bar);
+        pick_string = popView.findViewById(R.id.pick_string);
+        ImageView iv_left = popView.findViewById(R.id.iv_left);
+        TextView tv_title = popView.findViewById(R.id.tv_title);
+        TextView tv_right = popView.findViewById(R.id.tv_right);
+
+        rl_top_bar.setVisibility(build.showTopBar ? View.VISIBLE : View.GONE);
+        tv_title.setText(build.topBarTitleText);
+        tv_right.setText(build.topBarRightText);
+
+        iv_left.setOnClickListener(this);
+        tv_right.setOnClickListener(this);
+
         List<String> list = new ArrayList<>();
         for (int i = 0; i < build.data.size(); i++) {
-            if (build.data.get(0) instanceof String) {
-                list.add((String) build.data.get(0));
+            if (build.data.get(i) instanceof String) {
+                list.add((String) build.data.get(i));
             }
         }
         pick_string.setData(list);
@@ -52,8 +59,8 @@ class EasyWindowScroll extends EasyWindow implements View.OnClickListener {
             build.data.addAll(data);
             List<String> list = new ArrayList<>();
             for (int i = 0; i < build.data.size(); i++) {
-                if (build.data.get(0) instanceof String) {
-                    list.add((String) build.data.get(0));
+                if (build.data.get(i) instanceof String) {
+                    list.add((String) build.data.get(i));
                 }
             }
             pick_string.setData(list);
@@ -68,9 +75,9 @@ class EasyWindowScroll extends EasyWindow implements View.OnClickListener {
         }
         okListener = (WindowOkListener) build.listener;
         int i = v.getId();
-        if (i == R.id.top_bar_tv_right) {
-            okListener.ok(build.flagCode, showView, pick_string.getSelectedPosition(), pick_string.getSelectedItem().toString());
-        } else if (i == R.id.top_bar_iv_close) {
+        if (i == R.id.tv_right) {
+            okListener.sure(build.flagCode, showView, pick_string.getSelectedPosition(), pick_string.getSelectedItem().toString());
+        } else if (i == R.id.iv_left) {
             okListener.cancel(build.flagCode, showView);
         }
     }

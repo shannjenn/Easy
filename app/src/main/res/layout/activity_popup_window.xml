@@ -19,6 +19,13 @@
         android:text="PopupWindowObject"
         android:textAllCaps="false" />
 
+    <Button
+        android:id="@+id/popup_window_right"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:text="PopupWindowObject"
+        android:textAllCaps="false" />
+
     <View
         android:id="@+id/popup_line"
         android:layout_width="match_parent"

@@ -5,23 +5,27 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.jen.easy.EasyBindClick;
-import com.jen.easy.log.EasyLog;
-import com.jen.easytest.activity.BasicViewActivity;
+import com.jen.easy.EasyBindId;
+import com.jen.easytest.activity.ShapeViewActivity;
 import com.jen.easytest.activity.DialogActivity;
 import com.jen.easytest.activity.HttpActivity;
 import com.jen.easytest.activity.ImageLoaderActivity;
 import com.jen.easytest.activity.ImageViewPagerActivity;
 import com.jen.easytest.activity.OnclickTestActivity;
 import com.jen.easytest.activity.PickerViewActivity;
-import com.jen.easytest.activity.PopupWindowActivity;
+import com.jen.easytest.activity.popupWindow.PopupWindowActivity;
 import com.jen.easytest.activity.SQLiteActivity;
 import com.jen.easytest.activity.TabBarActivity;
 import com.jen.easytest.activity.TimePickActivity;
 import com.jen.easytest.activity.UtilActivity;
 import com.jen.easytest.activity.recyclerView.RecyclerViewMainActivity;
 import com.jen.easyui.base.EasyActivity;
+import com.jen.easyui.view.baseview.EasyTopBar;
 
 public class MainActivity extends EasyActivity {
+
+    @EasyBindId(R.id.topBar)
+    EasyTopBar topBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,27 +34,15 @@ public class MainActivity extends EasyActivity {
     }
 
     @Override
-    protected void intDataBeforeView() {
-        EasyLog.d("1111111111");
-        EasyLog.i("2222222222");
-        EasyLog.w("33333333333");
-        EasyLog.e("44444444444");
-    }
-
-    @Override
     protected void initViews() {
+        topBar.bindOnBackClick(this);
 //        Throw.exception(ExceptionType.ClassCastException,"ClassCastException-*---------*-------");
 //        Throw.exception(ExceptionType.NullPointerException,"NullPointerException-*---------*-------");
 //        Throw.exception(ExceptionType.RuntimeException,"RuntimeException-*---------*-------");
     }
 
-    @Override
-    protected void loadDataAfterView() {
 
-    }
-
-
-    @EasyBindClick({R.id.tabBar, R.id.basicView, R.id.http, R.id.imageLoader, R.id.dialog, R.id.popupWindow,
+    @EasyBindClick({R.id.tabBar, R.id.shapeView, R.id.http, R.id.imageLoader, R.id.dialog, R.id.popupWindow,
             R.id.sqlite, R.id.util, R.id.recycleView, R.id.timePick, R.id.ImageViewPager, R.id.OnclickTest,
             R.id.PickerView})
     @Override
@@ -61,8 +53,8 @@ public class MainActivity extends EasyActivity {
                 clazz = TabBarActivity.class;
                 break;
             }
-            case R.id.basicView: {
-                clazz = BasicViewActivity.class;
+            case R.id.shapeView: {
+                clazz = ShapeViewActivity.class;
                 break;
             }
             case R.id.http: {

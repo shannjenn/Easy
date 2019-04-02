@@ -43,9 +43,7 @@ public abstract class EasyActivity<T> extends AppCompatActivity {
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
         mBindView.bind(this);
-        intDataBeforeView();
         initViews();
-        loadDataAfterView();
     }
 
     @Override
@@ -58,17 +56,10 @@ public abstract class EasyActivity<T> extends AppCompatActivity {
         }
     }
 
-    /**
-     * @return 布局，如：R.layout.main
-     */
-//    protected abstract int setLayout();
-    protected abstract void intDataBeforeView();
-
     protected abstract void initViews();
 
-    protected abstract void loadDataAfterView();
-
-    protected abstract void onBindClick(View view);
+    protected void onBindClick(View view) {
+    }
 
     /**
      * 6.0以上获取读写文件权限

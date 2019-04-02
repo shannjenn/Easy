@@ -119,11 +119,37 @@ public class EasyShapeRelativeLayout extends RelativeLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        mShape.onFocusEvent(event);
+        if (mShape.mClickType == EasyShapeBase.ClickType.NON) {
+            return super.onTouchEvent(event);
+        }
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN: {
+                mShape.onFocusEvent(event);
+//                EasyLog.d("MotionEvent.ACTION_DOWN ---------------");
+                break;
+            }
+            case MotionEvent.ACTION_UP: {
+                mShape.onFocusEvent(event);
+//                EasyLog.d("MotionEvent.ACTION_UP ---------------");
+                performClick();
+                return true;
+            }
+            case MotionEvent.ACTION_CANCEL: {
+                mShape.onFocusEvent(event);
+//                EasyLog.d("MotionEvent.ACTION_CANCEL ---------------");
+                return true;
+            }
+        }
         return super.onTouchEvent(event);
     }
 
-    public EasyShapeBase getShape(){
+    @Override
+    public boolean performClick() {
+//        EasyLog.d("performClick ---------------");
+        return super.performClick();
+    }
+
+    public EasyShapeBase getShape() {
         return mShape;
     }
 

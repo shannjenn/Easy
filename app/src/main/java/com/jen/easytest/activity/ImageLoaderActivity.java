@@ -38,12 +38,7 @@ public class ImageLoaderActivity<T extends ImageLoaderResponse> extends EasyActi
         setContentView(R.layout.activity_image_loader);
     }
 
-    @Override
-    protected void intDataBeforeView() {
-//        checkFilePermission();
-//        EasyMain.mImageLoader.setImage("http://pic4.nipic.com/20091217/3885730_124701000519_2.jpg", iv_pic);
 
-    }
 
     @Override
     protected void initViews() {
@@ -57,14 +52,7 @@ public class ImageLoaderActivity<T extends ImageLoaderResponse> extends EasyActi
         recycle.setAdapter(adapter);
     }
 
-    @Override
-    protected void loadDataAfterView() {
-        if (mData.size() == 0) {
-            ImageLoaderRequest request = new ImageLoaderRequest();
-//            EasyMain.mHttp.setDefaultBaseListener(this);
-//            EasyMain.mHttp.start(request);
-        }
-    }
+
 
     @Override
     protected void onBindClick(View view) {

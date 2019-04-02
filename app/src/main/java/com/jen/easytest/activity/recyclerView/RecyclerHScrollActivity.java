@@ -1,8 +1,6 @@
 package com.jen.easytest.activity.recyclerView;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -31,19 +29,9 @@ public class RecyclerHScrollActivity extends EasyActivity {
         setContentView(R.layout.activity_recycler_scroll);
     }
 
-    @Override
-    protected void intDataBeforeView() {
-
-    }
 
     @Override
     protected void initViews() {
-
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    @Override
-    protected void loadDataAfterView() {
         mData.clear();
         for (int i = 0; i < 36; i++) {
             RecyclerViewModel model = new RecyclerViewModel();
@@ -99,8 +87,8 @@ public class RecyclerHScrollActivity extends EasyActivity {
         });*/
         recyclerView.setLinearLayoutManager(RecyclerView.VERTICAL);
         recyclerView.setAdapter(mAdapter);
-
     }
+
 
 
     @EasyBindClick({})

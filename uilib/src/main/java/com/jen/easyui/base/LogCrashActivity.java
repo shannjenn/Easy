@@ -17,20 +17,9 @@ public class LogCrashActivity<T> extends EasyActivity<T> {
     }
 
     @Override
-    protected void intDataBeforeView() {
-
-    }
-
-    @Override
     protected void initViews() {
 
     }
-
-    @Override
-    protected void loadDataAfterView() {
-
-    }
-
     @Override
     protected void onBindClick(View view) {
 

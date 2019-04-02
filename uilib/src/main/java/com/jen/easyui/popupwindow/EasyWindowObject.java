@@ -5,6 +5,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.jen.easyui.R;
 import com.jen.easyui.popupwindow.listener.WindowItemListener;
@@ -12,7 +14,6 @@ import com.jen.easyui.popupwindow.listener.WindowOkListener;
 import com.jen.easyui.recycler.EasyHolder;
 import com.jen.easyui.recycler.EasyHolderRecyclerWaterfallAdapter;
 import com.jen.easyui.recycler.listener.EasyItemListener;
-import com.jen.easyui.view.baseview.EasyTopBar;
 
 import java.util.List;
 
@@ -25,7 +26,6 @@ import java.util.List;
 class EasyWindowObject extends EasyWindow implements EasyItemListener, View.OnClickListener {
     private WindowBind windowBind;
     private MyAdapter<Object> adapter;
-    private int checkPosition;//默认0
 
     EasyWindowObject(Build build, WindowBind windowBind) {
         super(build);
@@ -44,13 +44,17 @@ class EasyWindowObject extends EasyWindow implements EasyItemListener, View.OnCl
     @Override
     View bindContentView() {
         View popView = LayoutInflater.from(build.context).inflate(R.layout._easy_popup_window_object, null);
+        View rl_top_bar = popView.findViewById(R.id.rl_top_bar);
+        ImageView iv_left = popView.findViewById(R.id.iv_left);
+        TextView tv_title = popView.findViewById(R.id.tv_title);
+        TextView tv_right = popView.findViewById(R.id.tv_right);
 
-        EasyTopBar topBar = popView.findViewById(R.id.topBar);
-        topBar.setVisibility(build.showTopBar ? View.VISIBLE : View.GONE);
-        topBar.setTitle(build.topBarTitleText);
-        topBar.setRightText(build.topBarRightText);
-        topBar.getRightText().setOnClickListener(this);
-        topBar.getLeftImageView().setOnClickListener(this);
+        rl_top_bar.setVisibility(build.showTopBar ? View.VISIBLE : View.GONE);
+        tv_title.setText(build.topBarTitleText);
+        tv_right.setText(build.topBarRightText);
+
+        iv_left.setOnClickListener(this);
+        tv_right.setOnClickListener(this);
 
         adapter = new MyAdapter<>(build.context, build.data);
         adapter.setItemListener(this);
@@ -62,13 +66,13 @@ class EasyWindowObject extends EasyWindow implements EasyItemListener, View.OnCl
 
     @Override
     public void onItemClick(View view, int position) {
-        checkPosition = position;
+        selectPosition = position;
         WindowItemListener itemListener;
         if (!(build.listener instanceof WindowItemListener)) {
             return;
         }
         itemListener = (WindowItemListener) build.listener;
-        itemListener.itemClick(build.flagCode, showView, checkPosition, build.data.get(checkPosition));
+        itemListener.itemClick(build.flagCode, showView, selectPosition, build.data.get(selectPosition));
     }
 
     @Override
@@ -79,9 +83,9 @@ class EasyWindowObject extends EasyWindow implements EasyItemListener, View.OnCl
         }
         okListener = (WindowOkListener) build.listener;
         int i = v.getId();
-        if (i == R.id.top_bar_tv_right) {
-            okListener.ok(build.flagCode, showView, checkPosition, build.data.get(checkPosition));
-        } else if (i == R.id.top_bar_iv_close) {
+        if (i == R.id.tv_right) {
+            okListener.sure(build.flagCode, showView, selectPosition, build.data.get(selectPosition));
+        } else if (i == R.id.iv_left) {
             okListener.cancel(build.flagCode, showView);
         }
     }
