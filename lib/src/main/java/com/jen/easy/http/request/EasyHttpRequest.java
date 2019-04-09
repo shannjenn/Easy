@@ -5,6 +5,7 @@ import com.jen.easy.exception.ExceptionType;
 import com.jen.easy.exception.HttpLog;
 import com.jen.easy.invalid.EasyInvalid;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 
 /**
@@ -13,7 +14,7 @@ import java.util.LinkedHashMap;
  * 说明：http请求参数
  */
 @EasyInvalid
-public abstract class EasyHttpRequest {
+public abstract class EasyHttpRequest implements Serializable {
 
 //    /**
 //     * 请求标识
