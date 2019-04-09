@@ -162,6 +162,22 @@ public class EasyPagerTabBar extends HorizontalScrollView {
         initTabViews();
     }
 
+    public void updateTitle(String[] titles) {
+        mTitles.clear();
+        mTitles.addAll(Arrays.asList(titles));
+        initTabViews();
+    }
+
+    public void updateTitle(List<String> titles) {
+        mTitles.clear();
+        mTitles.addAll(titles);
+        initTabViews();
+    }
+
+    public void setViewPager(ViewPager viewPager) {
+        setViewPager(viewPager, false);
+    }
+
     public void setViewPager(ViewPager viewPager, boolean useAdapterTitle) {
         if (viewPager == null) {
             Log.w(TAG, "EasyTabBarTxtScroll setViewPager viewPager is null");

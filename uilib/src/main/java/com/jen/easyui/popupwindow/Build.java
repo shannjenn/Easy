@@ -14,6 +14,7 @@ public class Build {
     boolean showTopBar = true;
     String topBarRightText = "确定";
     String topBarTitleText = "标题";
+    AnimStyle animStyle = AnimStyle.BOTTOM;
 
     int flagCode;
     WindowListener listener;
@@ -90,6 +91,11 @@ public class Build {
 
     public Build setTopBarTitleText(String topBarTitleText) {
         this.topBarTitleText = topBarTitleText;
+        return this;
+    }
+
+    public Build setAnimStyle(AnimStyle animStyle) {
+        this.animStyle = animStyle;
         return this;
     }
 }

@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import com.jen.easyui.popupwindow.listener.WindowOkListener;
 import com.jen.easyui.recycler.EasyHolder;
 import com.jen.easyui.recycler.EasyHolderRecyclerBaseAdapter;
 import com.jen.easyui.recycler.listener.EasyItemListener;
+import com.jen.easyui.util.EasyDensityUtil;
 
 import java.util.List;
 
@@ -25,6 +27,7 @@ import java.util.List;
 
 class EasyWindowString extends EasyWindow implements EasyItemListener, View.OnClickListener {
     private MyAdapter<Object> adapter;
+    private RecyclerView recycler;
 
     EasyWindowString(Build build) {
         super(build);
@@ -47,10 +50,20 @@ class EasyWindowString extends EasyWindow implements EasyItemListener, View.OnCl
 
         adapter = new MyAdapter<>(build.context, build.data);
         adapter.setItemListener(this);
-        RecyclerView recycler = popView.findViewById(R.id.recycler);
+        recycler = popView.findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(build.context));
-        recycler.setAdapter(adapter);
+        updateHeight();
         return popView;
+    }
+
+    private void updateHeight() {
+        if (build.height != 0 && build.height != ViewGroup.LayoutParams.WRAP_CONTENT) {
+            return;
+        }
+        ViewGroup.LayoutParams lp = recycler.getLayoutParams();
+        lp.height = EasyDensityUtil.dp2pxInt(50 * build.data.size());
+        recycler.setLayoutParams(lp);
+        recycler.setAdapter(adapter);
     }
 
     @Override
@@ -59,6 +72,7 @@ class EasyWindowString extends EasyWindow implements EasyItemListener, View.OnCl
         if (data != null && data.size() > 0) {
             build.data.addAll(data);
         }
+        updateHeight();
         adapter.notifyDataSetChanged();
     }
 

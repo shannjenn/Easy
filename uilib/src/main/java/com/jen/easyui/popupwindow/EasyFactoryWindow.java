@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 
-import com.jen.easyui.R;
 import com.jen.easyui.util.EasyDisplayUtil;
 
 /**
@@ -18,11 +17,10 @@ import com.jen.easyui.util.EasyDisplayUtil;
  * 时间：2017/09/09.
  */
 
-public class EasyFactoryWindow extends PopupWindow {
+abstract class EasyFactoryWindow extends PopupWindow {
     private Context context;
     private float showAlpha = 0.5f;
     private Drawable background;
-    View showView;
 
     EasyFactoryWindow(Context context) {
         this.context = context;
@@ -44,9 +42,10 @@ public class EasyFactoryWindow extends PopupWindow {
         setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
     }
 
-    private void showWindow(boolean dropDown, View showView) {
-        this.showView = showView;
-        setAnimationStyle(dropDown ? R.style.easy_popup_window_drop_down_anim_style : R.style.easy_popup_window_show_bottom_anim_style);
+    protected abstract int animation();
+
+    private void showWindow() {
+        setAnimationStyle(animation());
         showAnimator().start();
     }
 
@@ -71,25 +70,25 @@ public class EasyFactoryWindow extends PopupWindow {
 
     @Override
     public void showAtLocation(View parent, int gravity, int x, int y) {
-        showWindow(false, parent);
+        showWindow();
         super.showAtLocation(parent, gravity, x, y);
     }
 
     @Override
     public void showAsDropDown(View anchor) {
-        showWindow(true, anchor);
+        showWindow();
         super.showAsDropDown(anchor);
     }
 
     @Override
     public void showAsDropDown(View anchor, int xoff, int yoff) {
-        showWindow(true, anchor);
+        showWindow();
         super.showAsDropDown(anchor, xoff, yoff);
     }
 
     @Override
     public void showAsDropDown(View anchor, int xoff, int yoff, int gravity) {
-        showWindow(true, anchor);
+        showWindow();
         super.showAsDropDown(anchor, xoff, yoff, gravity);
     }
 

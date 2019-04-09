@@ -25,10 +25,14 @@ public class PopupWindowActivity extends EasyActivity {
     EasyWindow easyWindowStr;
     EasyWindow easyWindowObject;
 
+    @EasyBindId(R.id.popup_window_object)
+    View popup_window_object;
     @EasyBindId(R.id.popup_line)
     View popup_line;
     @EasyBindId(R.id.popup_window_str)
     View popup_window;
+    @EasyBindId(R.id.tv_right)
+    View tv_right;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +52,7 @@ public class PopupWindowActivity extends EasyActivity {
 
         easyWindowStr = EasyWindow.build(this)
                 .setData(list)
-                .setWidth(100)
+//                .setWidth(500)
                 .setShowTopBar(false)
                 .createString();
 
@@ -77,19 +81,21 @@ public class PopupWindowActivity extends EasyActivity {
     protected void onBindClick(View view) {
         switch (view.getId()) {
             case R.id.popup_window_str: {
-                easyWindowStr.showAsBottom(popup_window);
+                easyWindowStr.showDropDown(popup_window);
                 break;
             }
             case R.id.popup_window_object: {
-                easyWindowObject.showAsBottom(popup_window);
+                easyWindowObject.showBottom(popup_window);
                 break;
             }
             case R.id.popup_window_right: {
+                int x = -EasyDensityUtil.dp2pxInt(195);
+                int y = EasyDensityUtil.dp2pxInt(23 + 10);
                 EasyWindow.build(this)
                         .setShowTopBar(false)
                         .setWidth(EasyDensityUtil.dp2pxInt(195))
                         .setHeight(EasyDensityUtil.dp2pxInt(45))
-                        .createObject(WindowBindEdit.bind()).showAsBottom(popup_window);
+                        .createObject(WindowBindEdit.bind()).showRight(tv_right, x, y);
                 break;
             }
         }

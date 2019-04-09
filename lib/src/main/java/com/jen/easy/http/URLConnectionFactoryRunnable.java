@@ -170,9 +170,11 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
             childRun(connection);
             connection.disconnect();
         } catch (IOException e) {
+            HttpLog.e(" 网络请求IOException异常：" + mUrlStr);
             HttpLog.exception(ExceptionType.IOException, "IOException 网络请求异常");
             fail("IOException 网络请求异常：" + mResponseCode);
         } catch (JSONException e) {
+            HttpLog.e(" 网络请求JSONException异常：" + mUrlStr);
             HttpLog.exception(ExceptionType.JSONException, "IOException 网络请求异常");
             fail("JSONException 网络请求异常：" + mResponseCode);
         }

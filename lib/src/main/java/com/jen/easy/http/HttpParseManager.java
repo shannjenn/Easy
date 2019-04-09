@@ -321,7 +321,7 @@ class HttpParseManager {
                 throwException(ExceptionType.ClassCastException, obj + " 不支持 int 类型转换");
             }
         } catch (NumberFormatException e) {
-            showErrorLog("NumberFormatException ：" + obj.getClass().getName());
+            throwException(ExceptionType.NumberFormatException, obj.getClass().getName());
         }
         return res;
     }
@@ -374,17 +374,17 @@ class HttpParseManager {
             } else if (obj instanceof Integer) {
                 Integer value = (Integer) obj;
                 res = value.floatValue();
-                showErrorLog(obj + " 转换为 Float 类型 可能会丢失精度");
+                showWarnLog(obj + " 转换为 Float 类型 可能会丢失精度");
             } else if (obj instanceof Boolean) {
                 throwException(ExceptionType.ClassCastException, obj + " 不支持 float 类型转换");
             } else if (obj instanceof Long) {
                 Long value = (Long) obj;
                 res = value.floatValue();
-                showErrorLog(obj + " 转换为 Float 类型 可能会丢失精度");
+                showWarnLog(obj + " 转换为 Float 类型 可能会丢失精度");
             } else if (obj instanceof Double) {
                 Double value = (Double) obj;
                 res = value.floatValue();
-                showErrorLog(obj + " 转换为 Float 类型 可能会丢失精度");
+                showWarnLog(obj + " 转换为 Float 类型 可能会丢失精度");
             } else if (obj instanceof Short) {
                 Short value = (Short) obj;
                 res = value.floatValue();
@@ -397,7 +397,7 @@ class HttpParseManager {
                 throwException(ExceptionType.ClassCastException, obj + " 不支持 float 类型转换");
             }
         } catch (NumberFormatException e) {
-            showErrorLog("NumberFormatException：" + obj.getClass().getName());
+            throwException(ExceptionType.NumberFormatException, obj.getClass().getName());
         }
         return res;
     }
@@ -423,11 +423,11 @@ class HttpParseManager {
             } else if (obj instanceof Float) {
                 Float value = (Float) obj;
                 res = value.longValue();
-                showErrorLog(obj + " 转换为 Long 类型 可能会丢失精度");
+                showWarnLog(obj + " 转换为 Long 类型 可能会丢失精度");
             } else if (obj instanceof Double) {
                 Double value = (Double) obj;
                 res = value.longValue();
-                showErrorLog(obj + " 转换为 Long 类型 可能会丢失精度");
+                showWarnLog(obj + " 转换为 Long 类型 可能会丢失精度");
             } else if (obj instanceof Short) {
                 Short value = (Short) obj;
                 res = value.longValue();
@@ -440,7 +440,7 @@ class HttpParseManager {
                 throwException(ExceptionType.ClassCastException, obj + " 不支持 Long 类型转换");
             }
         } catch (NumberFormatException e) {
-            showErrorLog("NumberFormatException：" + obj.getClass().getName());
+            throwException(ExceptionType.NumberFormatException, obj.getClass().getName());
         }
         return res;
     }
@@ -470,7 +470,7 @@ class HttpParseManager {
             } else if (obj instanceof Long) {
                 Long value = (Long) obj;
                 res = value.doubleValue();
-                showErrorLog(obj + "  转换为 double 可能会丢失精度");
+                showWarnLog(obj + "  转换为 double 可能会丢失精度");
             } else if (obj instanceof Short) {
                 Short value = (Short) obj;
                 res = value.doubleValue();
@@ -483,7 +483,7 @@ class HttpParseManager {
                 throwException(ExceptionType.ClassCastException, obj + " 不支持 double 类型转换");
             }
         } catch (NumberFormatException e) {
-            showErrorLog("NumberFormatException：" + obj.getClass().getName());
+            throwException(ExceptionType.NumberFormatException, obj.getClass().getName());
         }
         return res;
     }
@@ -504,21 +504,21 @@ class HttpParseManager {
             } else if (obj instanceof Integer) {
                 Integer value = (Integer) obj;
                 res = value.shortValue();
-                showErrorLog(obj + "  转换为 Short 可能会丢失精度");
+                showWarnLog(obj + "  转换为 Short 可能会丢失精度");
             } else if (obj instanceof Boolean) {
                 throwException(ExceptionType.ClassCastException, obj + " 不支持 Short 类型转换");
             } else if (obj instanceof Float) {
                 Float value = (Float) obj;
                 res = value.shortValue();
-                showErrorLog(obj + "  转换为 Short 可能会丢失精度");
+                showWarnLog(obj + "  转换为 Short 可能会丢失精度");
             } else if (obj instanceof Long) {
                 Long value = (Long) obj;
                 res = value.shortValue();
-                showErrorLog(obj + "  转换为 Short 可能会丢失精度");
+                showWarnLog(obj + "  转换为 Short 可能会丢失精度");
             } else if (obj instanceof Double) {
                 Double value = (Double) obj;
                 res = value.shortValue();
-                showErrorLog(obj + "  转换为 Short 可能会丢失精度");
+                showWarnLog(obj + "  转换为 Short 可能会丢失精度");
             } else if (obj instanceof Character) {
                 res = Short.valueOf(String.valueOf(obj));
             } else if (obj instanceof Byte) {
@@ -528,7 +528,7 @@ class HttpParseManager {
                 throwException(ExceptionType.ClassCastException, obj + " 不支持 Short 类型转换");
             }
         } catch (NumberFormatException e) {
-            showErrorLog("NumberFormatException：" + obj.getClass().getName());
+            throwException(ExceptionType.NumberFormatException, obj.getClass().getName());
         }
         return res;
     }
@@ -605,6 +605,18 @@ class HttpParseManager {
     private void showErrorLog(String error) {
         if (!mErrors.contains(error)) {
             HttpLog.e(error);
+            mErrors.add(error);
+        }
+    }
+
+    /**
+     * 警告Log
+     *
+     * @param error 错误信息
+     */
+    private void showWarnLog(String error) {
+        if (!mErrors.contains(error)) {
+            HttpLog.w(error);
             mErrors.add(error);
         }
     }
