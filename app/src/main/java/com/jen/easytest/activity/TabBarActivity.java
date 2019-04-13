@@ -12,9 +12,9 @@ import com.jen.easytest.R;
 import com.jen.easytest.fragment.EmptyFragmentBlue;
 import com.jen.easytest.fragment.EmptyFragmentRed;
 import com.jen.easyui.base.EasyActivity;
+import com.jen.easyui.recycler.viewpager.EasyFragmentPagerAdapter;
 import com.jen.easyui.view.tabbarview.EasyTabBar;
 import com.jen.easyui.view.tabbarview.EasyPagerTabBar;
-import com.jen.easyui.recycler.viewpager.EasyFragmentPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,6 @@ public class TabBarActivity extends EasyActivity {
     ViewPager viewpager_scroll;
 
     Handler handler = new Handler();
-    CenterFragmentPagerAdapter centerFragmentPagerAdapter;
     ScrollFragmentPagerAdapter scrollFragmentPagerAdapter;
 
     @Override
@@ -111,17 +110,15 @@ public class TabBarActivity extends EasyActivity {
     }
 
 
-    class CenterFragmentPagerAdapter extends EasyFragmentPagerAdapter {
-
-        protected CenterFragmentPagerAdapter(FragmentManager fm, List<String> title, List<Fragment> fragments) {
-            super(fm, title, fragments);
-        }
-    }
-
     class ScrollFragmentPagerAdapter extends EasyFragmentPagerAdapter {
 
-        protected ScrollFragmentPagerAdapter(FragmentManager fm, List<String> title, List<Fragment> fragments) {
-            super(fm, title, fragments);
+
+        public ScrollFragmentPagerAdapter(FragmentManager fm, List<String> titles, List<Fragment> fragments) {
+            super(fm, titles, fragments);
+        }
+
+        public ScrollFragmentPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
+            super(fm, fragments);
         }
     }
 

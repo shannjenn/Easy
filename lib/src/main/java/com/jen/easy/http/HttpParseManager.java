@@ -296,19 +296,19 @@ class HttpParseManager {
             } else if (obj instanceof String) {
                 res = Integer.valueOf((String) obj);
             } else if (obj instanceof Boolean) {
-                throwException(ExceptionType.ClassCastException, obj + " 不支持 int 类型转换");
+                throwException(ExceptionType.ClassCastException, "int 无法转换成 Boolean");
             } else if (obj instanceof Float) {
                 Float value = (Float) obj;
                 res = value.intValue();
-                showErrorLog("Float 转换为 Integer 类型 可能会丢失精度");
+                showWarnLog("Float 转换为 Integer 类型 可能会丢失精度");
             } else if (obj instanceof Long) {
                 Long value = (Long) obj;
                 res = value.intValue();
-                showErrorLog("Long 转换为 Integer 类型 可能会丢失精度");
+                showWarnLog("Long 转换为 Integer 类型 可能会丢失精度");
             } else if (obj instanceof Double) {
                 Double value = (Double) obj;
                 res = value.intValue();
-                showErrorLog("Double 转换为 Integer 类型 可能会丢失精度");
+                showWarnLog("Double 转换为 Integer 类型 可能会丢失精度");
             } else if (obj instanceof Short) {
                 Short value = (Short) obj;
                 res = value.intValue();
@@ -376,7 +376,7 @@ class HttpParseManager {
                 res = value.floatValue();
                 showWarnLog(obj + " 转换为 Float 类型 可能会丢失精度");
             } else if (obj instanceof Boolean) {
-                throwException(ExceptionType.ClassCastException, obj + " 不支持 float 类型转换");
+                throwException(ExceptionType.ClassCastException, "float 无法转换成 Boolean");
             } else if (obj instanceof Long) {
                 Long value = (Long) obj;
                 res = value.floatValue();
@@ -419,7 +419,7 @@ class HttpParseManager {
                 Integer value = (Integer) obj;
                 res = value.longValue();
             } else if (obj instanceof Boolean) {
-                throwException(ExceptionType.ClassCastException, obj + " 不支持 Long 类型转换");
+                throwException(ExceptionType.ClassCastException, obj + "Long 无法转换成 long");
             } else if (obj instanceof Float) {
                 Float value = (Float) obj;
                 res = value.longValue();
@@ -461,9 +461,9 @@ class HttpParseManager {
             } else if (obj instanceof Integer) {
                 Integer value = (Integer) obj;
                 res = value.doubleValue();
-                showErrorLog(obj + "  转换为 double 可能会丢失精度");
+                showWarnLog(obj + "  转换为 double 可能会丢失精度");
             } else if (obj instanceof Boolean) {
-                throwException(ExceptionType.ClassCastException, obj + " 不支持 double 类型转换");
+                throwException(ExceptionType.ClassCastException, "Boolean 无法转换成 double");
             } else if (obj instanceof Float) {
                 Float value = (Float) obj;
                 res = value.doubleValue();
@@ -506,7 +506,7 @@ class HttpParseManager {
                 res = value.shortValue();
                 showWarnLog(obj + "  转换为 Short 可能会丢失精度");
             } else if (obj instanceof Boolean) {
-                throwException(ExceptionType.ClassCastException, obj + " 不支持 Short 类型转换");
+                throwException(ExceptionType.ClassCastException, "Boolean 无法转换成 Short");
             } else if (obj instanceof Float) {
                 Float value = (Float) obj;
                 res = value.shortValue();

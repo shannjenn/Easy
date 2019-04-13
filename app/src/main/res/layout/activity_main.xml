@@ -46,6 +46,13 @@
                 android:textSize="14sp" />
 
             <Button
+                android:id="@+id/baseView"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:text="baseView"
+                android:textAllCaps="false" />
+
+            <Button
                 android:id="@+id/shapeView"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"

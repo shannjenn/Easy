@@ -86,6 +86,7 @@ public abstract class EasyHScrollRecyclerViewAdapter<T> extends EasyRecyclerAdap
         View v = holder.itemView.findViewById(onBindEasyHScrollViewId());
         if (v instanceof EasyHScrollView) {
             EasyHScrollView scrollView = (EasyHScrollView) v;
+            scrollView.setPosition(position);
             mHScrollViews.put(position, scrollView);
             Message message = mHandler.obtainMessage();
             message.what = H_UPDATE_SCROLL;

@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.jen.easy.EasyBindClick;
 import com.jen.easy.EasyBindId;
+import com.jen.easytest.activity.BaseViewActivity;
 import com.jen.easytest.activity.ShapeViewActivity;
 import com.jen.easytest.activity.DialogActivity;
 import com.jen.easytest.activity.HttpActivity;
@@ -42,7 +43,7 @@ public class MainActivity extends EasyActivity {
     }
 
 
-    @EasyBindClick({R.id.tabBar, R.id.shapeView, R.id.http, R.id.imageLoader, R.id.dialog, R.id.popupWindow,
+    @EasyBindClick({R.id.tabBar, R.id.baseView, R.id.shapeView, R.id.http, R.id.imageLoader, R.id.dialog, R.id.popupWindow,
             R.id.sqlite, R.id.util, R.id.recycleView, R.id.timePick, R.id.ImageViewPager, R.id.OnclickTest,
             R.id.PickerView})
     @Override
@@ -53,16 +54,12 @@ public class MainActivity extends EasyActivity {
                 clazz = TabBarActivity.class;
                 break;
             }
+            case R.id.baseView: {
+                clazz = BaseViewActivity.class;
+                break;
+            }
             case R.id.shapeView: {
                 clazz = ShapeViewActivity.class;
-                break;
-            }
-            case R.id.http: {
-                clazz = HttpActivity.class;
-                break;
-            }
-            case R.id.imageLoader: {
-                clazz = ImageLoaderActivity.class;
                 break;
             }
             case R.id.dialog: {
@@ -71,10 +68,6 @@ public class MainActivity extends EasyActivity {
             }
             case R.id.popupWindow: {
                 clazz = PopupWindowActivity.class;
-                break;
-            }
-            case R.id.sqlite: {
-                clazz = SQLiteActivity.class;
                 break;
             }
             case R.id.util: {
@@ -99,6 +92,20 @@ public class MainActivity extends EasyActivity {
             }
             case R.id.OnclickTest: {
                 clazz = OnclickTestActivity.class;
+                break;
+            }
+
+
+            case R.id.sqlite: {
+                clazz = SQLiteActivity.class;
+                break;
+            }
+            case R.id.imageLoader: {
+                clazz = ImageLoaderActivity.class;
+                break;
+            }
+            case R.id.http: {
+                clazz = HttpActivity.class;
                 break;
             }
         }

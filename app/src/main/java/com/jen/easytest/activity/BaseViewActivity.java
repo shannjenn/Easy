@@ -4,22 +4,16 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.jen.easy.EasyBindClick;
-import com.jen.easy.EasyBindId;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
 import com.jen.easyui.base.EasyActivity;
-import com.jen.easyui.view.baseview.EasyTopBar;
-import com.jen.easyui.view.shapeview.EasyShapeTextView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 作者：ShannJenn
  * 时间：2017/10/26.
  */
 
-public class ShapeViewActivity extends EasyActivity {
+public class BaseViewActivity extends EasyActivity {
 
 //    @EasyBindId(R.id.shapeTextView)
 //    EasyShapeTextView shapeTextView;
@@ -45,20 +39,20 @@ public class ShapeViewActivity extends EasyActivity {
     }
 
 
-//    @EasyBindClick({R.id.shapeTextView_check, R.id.shapeTextView_button})
-//    @Override
-//    protected void onBindClick(View view) {
-//        switch (view.getId()) {
-//            case R.id.shapeTextView_check: {
-//                EasyLog.d("shapeTextView_check click---------------");
-//                break;
-//            }
-//            case R.id.shapeTextView_button: {
-//                EasyLog.d("shapeTextView_button click---------------");
-//                break;
-//            }
-//        }
-//    }
+    @EasyBindClick({R.id.shapeTextView_check, R.id.shapeTextView_button})
+    @Override
+    protected void onBindClick(View view) {
+        switch (view.getId()) {
+            case R.id.shapeTextView_check: {
+                EasyLog.d("shapeTextView_check click---------------");
+                break;
+            }
+            case R.id.shapeTextView_button: {
+                EasyLog.d("shapeTextView_button click---------------");
+                break;
+            }
+        }
+    }
 
 
 }
