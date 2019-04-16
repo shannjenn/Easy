@@ -36,7 +36,7 @@ public class ShapeViewActivity extends EasyActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_base_view);
+        setContentView(R.layout.activity_shape_view);
     }
 
 

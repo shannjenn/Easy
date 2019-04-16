@@ -41,7 +41,7 @@ abstract class BindViewManager {
             try {
                 field.set(activity, view);
             } catch (IllegalAccessException e) {
-                BindLog.exception(ExceptionType.IllegalAccessException, activity.getClass().toString());
+                BindLog.exception(ExceptionType.IllegalAccessException, "错误类名:" + activity.getClass().toString() + " 错误变量名:" + field.getName());
             }
         }
 
@@ -60,9 +60,9 @@ abstract class BindViewManager {
                         try {
                             method.invoke(activity, view);
                         } catch (IllegalAccessException e) {
-                            BindLog.exception(ExceptionType.IllegalAccessException, activity.getClass().toString());
+                            BindLog.exception(ExceptionType.IllegalAccessException, "错误类名:" + activity.getClass().toString() + " 错误方法名:" + method.getName());
                         } catch (InvocationTargetException e) {
-                            BindLog.exception(ExceptionType.InvocationTargetException, "InvocationTargetException " + activity.getClass().toString());
+                            BindLog.exception(ExceptionType.InvocationTargetException, "错误类名:" + activity.getClass().toString() + " 错误方法名:" + method.getName());
                         }
                     }
                 });
@@ -86,7 +86,7 @@ abstract class BindViewManager {
             try {
                 field.set(obj, view);
             } catch (IllegalAccessException e) {
-                BindLog.exception(ExceptionType.IllegalAccessException, obj.getClass().toString());
+                BindLog.exception(ExceptionType.IllegalAccessException, "错误类名:" + obj.getClass().toString() + " 错误变量名:" + field.getName());
             }
         }
 
@@ -103,9 +103,9 @@ abstract class BindViewManager {
                         try {
                             method.invoke(obj, view);
                         } catch (IllegalAccessException e) {
-                            BindLog.exception(ExceptionType.IllegalAccessException, obj.getClass().toString());
+                            BindLog.exception(ExceptionType.IllegalAccessException, "错误类名:" + obj.getClass().toString() + " 错误方法名:" + method.getName());
                         } catch (InvocationTargetException e) {
-                            BindLog.exception(ExceptionType.InvocationTargetException, "InvocationTargetException " + obj.getClass().toString());
+                            BindLog.exception(ExceptionType.InvocationTargetException, "错误类名:" + obj.getClass().toString() + " 错误方法名:" + method.getName());
                         }
                     }
                 });

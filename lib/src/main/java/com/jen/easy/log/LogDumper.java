@@ -3,6 +3,7 @@ package com.jen.easy.log;
 import com.jen.easy.constant.Unicode;
 import com.jen.easy.exception.ExceptionType;
 import com.jen.easy.exception.LogcatLog;
+import com.jen.easy.log.imp.LogcatListener;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,6 +14,7 @@ import java.io.InputStreamReader;
 
 class LogDumper extends Thread {
     private static LogDumper instance;
+    private LogcatListener mListener;
     private Process logcatProc;
     private BufferedReader reader;
     private boolean running = true;
@@ -80,6 +82,12 @@ class LogDumper extends Thread {
             logcatProc = Runtime.getRuntime().exec(cmds);
             reader = new BufferedReader(new InputStreamReader(logcatProc.getInputStream(), Unicode.DEFAULT), 1024);
             String line;
+            File file = new File(LogcatPath.getInstance().getPath(), "LogcatHelper-" + LogcatDate.getFileName() + ".txt");
+            boolean isCreated = file.exists();//已经创建过文件
+            String addFileHeadStr = null;
+            if (mListener != null) {
+                addFileHeadStr = mListener.addFileHeader();
+            }
             while (running && (line = reader.readLine()) != null) {
                 if (!running) {
                     break;
@@ -89,8 +97,11 @@ class LogDumper extends Thread {
                 }
                 if (line.contains(PID)) {
                     try {
-                        File file = new File(LogcatPath.getInstance().getPath(), "LogcatHelper-" + LogcatDate.getFileName() + ".txt");
                         FileOutputStream out = new FileOutputStream(file, true);
+                        if (!isCreated && addFileHeadStr != null) {
+                            isCreated = true;
+                            out.write(addFileHeadStr.getBytes(Unicode.DEFAULT));
+                        }
                         out.write((LogcatDate.getDateEN() + "  " + line + "\n").getBytes(Unicode.DEFAULT));
                         out.flush();
                         out.close();
@@ -99,7 +110,9 @@ class LogDumper extends Thread {
                     }
                 }
             }
-
+            if (mListener != null && file.exists()) {
+                mListener.onLogPrint(file);
+            }
         } catch (IOException e) {
             LogcatLog.exception(ExceptionType.IOException, "IOException");
         } finally {
@@ -116,5 +129,9 @@ class LogDumper extends Thread {
                 }
             }
         }
+    }
+
+    void setListener(LogcatListener listener) {
+        this.mListener = listener;
     }
 }

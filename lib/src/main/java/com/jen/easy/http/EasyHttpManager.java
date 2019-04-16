@@ -86,7 +86,9 @@ abstract class EasyHttpManager {
             if (request == null) {
                 HttpLog.w("参数不能为空");
             } else {
-                HttpLog.w("请求参数类型错误，请继承:" + EasyHttpRequest.class.getName() + " 或者子类");
+                HttpLog.w("请求参数类型错误，请继承:" + EasyHttpRequest.class.getName() + "子类:数据"
+                        + EasyHttpDataRequest.class.getName() + "或上传" + EasyHttpUploadRequest.class.getName()
+                        + "或下载" + EasyHttpDownloadRequest.class.getName());
             }
             httpBaseListener.fail(flagCode, flagStr, "");
         }

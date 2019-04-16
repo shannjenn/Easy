@@ -25,6 +25,18 @@
             android:id="@+id/shapeTextView_button"
             android:layout_width="match_parent"
             android:layout_height="64dp"
+            android:layout_marginBottom="5dp"
+            android:gravity="center"
+            android:text="EasyShapeTextView_button"
+            app:clickType="button"
+            app:strokeClickColor="#00FF00"
+            app:strokeColor="#FF00"
+            app:strokeWidth="1dp" />
+
+        <com.jen.easyui.view.shapeview.EasyShapeTextView
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginBottom="5dp"
             android:gravity="center"
             android:text="EasyShapeTextView_button"
             app:clickType="button"

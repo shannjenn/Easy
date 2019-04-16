@@ -1,13 +1,16 @@
 package com.jen.easy.log;
 
+import com.jen.easy.constant.Unicode;
 import com.jen.easy.exception.ExceptionType;
 import com.jen.easy.exception.LogcatLog;
-import com.jen.easy.log.imp.LogcatCrashListener;
+import com.jen.easy.log.imp.LogcatListener;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.lang.Thread.UncaughtExceptionHandler;
 
 /**
@@ -17,7 +20,7 @@ import java.lang.Thread.UncaughtExceptionHandler;
  */
 class LogcatCrash implements UncaughtExceptionHandler {
     private static LogcatCrash instance; // 单例模式
-    private LogcatCrashListener mListener;
+    private LogcatListener mListener;
     private UncaughtExceptionHandler exceptionHandler; // 系统默认的UncaughtException处理类
 
     private LogcatCrash() {
@@ -64,6 +67,12 @@ class LogcatCrash implements UncaughtExceptionHandler {
             File file = new File(LogcatPath.getInstance().getPath(), "LogcatCrash-" + LogcatDate.getFileName() + ".txt");
             try {
                 FileOutputStream outputStream = new FileOutputStream(file, true);
+                if (mListener != null && !file.exists()) {
+                    String addFileHeadStr = mListener.addFileHeader();
+                    if (addFileHeadStr != null) {
+                        outputStream.write(addFileHeadStr.getBytes(Unicode.DEFAULT));
+                    }
+                }
                 PrintWriter p = new PrintWriter(outputStream);
                 p.println(LogcatDate.getDateEN() + " " + ex.toString() + "\n");
                 p.println(LogcatDate.getDateEN() + " " + ex.getLocalizedMessage());
@@ -72,6 +81,10 @@ class LogcatCrash implements UncaughtExceptionHandler {
                 p.flush();
             } catch (FileNotFoundException e) {
                 LogcatLog.exception(ExceptionType.FileNotFoundException, "文件不存在");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
             userCatch = mListener.onBeforeHandleException(ex, file);
         }
@@ -86,7 +99,7 @@ class LogcatCrash implements UncaughtExceptionHandler {
         }
     }
 
-    void setListener(LogcatCrashListener listener) {
+    void setListener(LogcatListener listener) {
         this.mListener = listener;
     }
 

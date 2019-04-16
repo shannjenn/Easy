@@ -7,13 +7,26 @@ import java.io.File;
  * 时间：2017/9/4:21:39
  * 说明：日志抓取监听
  */
-public interface LogcatCrashListener {
+public interface LogcatListener {
 
     /**
      * 崩溃信息抓取
      *
-     * @param ex 异常
+     * @param ex   异常
+     * @param file 保存的文件
      * @return true用户处理，false系统处理并抛出异常
      */
     boolean onBeforeHandleException(Throwable ex, File file);
+
+    /**
+     * Log打印日志
+     *
+     * @param file 保存的文件
+     */
+    void onLogPrint(File file);
+
+    /**
+     * @return 文件头部信息
+     */
+    String addFileHeader();
 }

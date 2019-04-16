@@ -2,7 +2,7 @@ package com.jen.easy.log;
 
 import com.jen.easy.exception.ExceptionType;
 import com.jen.easy.exception.LogcatLog;
-import com.jen.easy.log.imp.LogcatCrashListener;
+import com.jen.easy.log.imp.LogcatListener;
 
 /**
  * ClassName:LogcatHelperManager Function: log日志统计保存
@@ -58,7 +58,7 @@ abstract class LogcatHelperManager {
     /**
      * 抓取崩溃监听
      */
-    protected void setListener(LogcatCrashListener listener) {
+    protected void setListener(LogcatListener listener) {
         LogcatCrash.getInstance().setListener(listener);
     }
 }

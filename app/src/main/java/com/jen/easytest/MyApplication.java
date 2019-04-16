@@ -9,7 +9,7 @@ import com.jen.easy.imageLoader.ImageLoader;
 import com.jen.easy.imageLoader.ImageLoaderConfig;
 import com.jen.easy.log.EasyLog;
 import com.jen.easy.log.LogcatHelper;
-import com.jen.easy.log.imp.LogcatCrashListener;
+import com.jen.easy.log.imp.LogcatListener;
 import com.jen.easy.sqlite.imp.DatabaseListener;
 import com.jen.easyui.base.LogCrashActivity;
 
@@ -74,20 +74,6 @@ public class MyApplication extends Application {
         }
     };
 
-
-    /**
-     * 异常捕获，返回true用户处理，false系统处理并抛出异常
-     */
-    private LogcatCrashListener logcatCrashListener = new LogcatCrashListener() {
-        @Override
-        public boolean onBeforeHandleException(Throwable throwable, File file) {
-//            EasyLog.w("捕获到异常---------------------");
-//            throwable.printStackTrace();
-            Intent intent = new Intent(MyApplication.getAppContext(), LogCrashActivity.class);
-            startActivity(intent);
-            return false;
-        }
-    };
 
     public static Application getAppContext() {
         return mApp;
