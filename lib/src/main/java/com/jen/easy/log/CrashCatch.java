@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.Thread.UncaughtExceptionHandler;
@@ -22,6 +23,7 @@ class CrashCatch implements UncaughtExceptionHandler {
     private static CrashCatch instance; // 单例模式
     private LogcatListener mListener;
     private UncaughtExceptionHandler exceptionHandler; // 系统默认的UncaughtException处理类
+    private String suffix = ".txt";//默认后缀名
 
     private CrashCatch() {
     }
@@ -64,7 +66,7 @@ class CrashCatch implements UncaughtExceptionHandler {
     public void uncaughtException(Thread thread, Throwable ex) {
         boolean userCatch = false;
         if (mListener != null) {
-            File file = new File(LogcatPath.getInstance().getPath(), "CrashCatch-" + LogcatDate.getFileName() + ".txt");
+            File file = new File(LogcatPath.getInstance().getPath(), "CrashCatch-" + LogcatDate.getFileName() + suffix);
             boolean isCreated = file.exists();
             try {
                 FileOutputStream outputStream = new FileOutputStream(file, true);
@@ -101,8 +103,11 @@ class CrashCatch implements UncaughtExceptionHandler {
         }
     }
 
+    void setSuffix(String suffix) {
+        this.suffix = suffix;
+    }
+
     void setListener(LogcatListener listener) {
         this.mListener = listener;
     }
-
 }

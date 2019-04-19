@@ -20,6 +20,7 @@ class LogCatch extends Thread {
     private boolean running = true;
     private String cmds;
     private String PID;
+    private String suffix = ".txt";//默认后缀名
 
     private LogCatch() {
         PID = String.valueOf(android.os.Process.myPid());
@@ -82,7 +83,7 @@ class LogCatch extends Thread {
             logcatProc = Runtime.getRuntime().exec(cmds);
             reader = new BufferedReader(new InputStreamReader(logcatProc.getInputStream(), Unicode.DEFAULT), 1024);
             String line;
-            File file = new File(LogcatPath.getInstance().getPath(), "LogCatch-" + LogcatDate.getFileName() + ".txt");
+            File file = new File(LogcatPath.getInstance().getPath(), "LogCatch-" + LogcatDate.getFileName() + suffix);
             boolean isCreated = file.exists();//已经创建过文件
             String addFileHeadStr = null;
             if (mListener != null) {
@@ -130,6 +131,10 @@ class LogCatch extends Thread {
                 }
             }
         }
+    }
+
+    void setSuffix(String suffix) {
+        this.suffix = suffix;
     }
 
     void setListener(LogcatListener listener) {

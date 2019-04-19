@@ -62,4 +62,16 @@ abstract class LogcatHelperManager {
         LogCatch.getInstance().setListener(listener);
         CrashCatch.getInstance().setListener(listener);
     }
+
+    /**
+     * 设置后缀名
+     *
+     * @param suffix 后缀名
+     */
+    public void setSuffix(String suffix) {
+        if (suffix == null)
+            return;
+        LogCatch.getInstance().setSuffix(suffix);
+        CrashCatch.getInstance().setSuffix(suffix);
+    }
 }

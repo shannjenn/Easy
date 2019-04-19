@@ -59,4 +59,14 @@ public class LogcatHelper extends LogcatHelperManager {
     public void setListener(LogcatListener listener) {
         super.setListener(listener);
     }
+
+    /**
+     * 设置后缀名
+     *
+     * @param suffix 后缀名
+     */
+    @Override
+    public void setSuffix(String suffix) {
+        super.setSuffix(suffix);
+    }
 }
