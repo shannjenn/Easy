@@ -12,8 +12,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-class LogDumper extends Thread {
-    private static LogDumper instance;
+class LogCatch extends Thread {
+    private static LogCatch instance;
     private LogcatListener mListener;
     private Process logcatProc;
     private BufferedReader reader;
@@ -21,7 +21,7 @@ class LogDumper extends Thread {
     private String cmds;
     private String PID;
 
-    private LogDumper() {
+    private LogCatch() {
         PID = String.valueOf(android.os.Process.myPid());
         cmds = "logcat *:e *:d | grep \"(" + PID + ")\"";// d到e级别
     }
@@ -31,11 +31,11 @@ class LogDumper extends Thread {
      *
      * @return CrashHandler
      */
-    static LogDumper getInstance() {
+    static LogCatch getInstance() {
         if (instance == null) {
-            synchronized (LogDumper.class) {
+            synchronized (LogCatch.class) {
                 if (instance == null) {
-                    instance = new LogDumper();
+                    instance = new LogCatch();
                 }
             }
         }
@@ -82,7 +82,7 @@ class LogDumper extends Thread {
             logcatProc = Runtime.getRuntime().exec(cmds);
             reader = new BufferedReader(new InputStreamReader(logcatProc.getInputStream(), Unicode.DEFAULT), 1024);
             String line;
-            File file = new File(LogcatPath.getInstance().getPath(), "LogcatHelper-" + LogcatDate.getFileName() + ".txt");
+            File file = new File(LogcatPath.getInstance().getPath(), "LogCatch-" + LogcatDate.getFileName() + ".txt");
             boolean isCreated = file.exists();//已经创建过文件
             String addFileHeadStr = null;
             if (mListener != null) {
@@ -93,6 +93,7 @@ class LogDumper extends Thread {
                     break;
                 }
                 if (line.length() == 0) {
+                    EasyLog.d("LogCatch continue----------- ");
                     continue;
                 }
                 if (line.contains(PID)) {
@@ -100,7 +101,7 @@ class LogDumper extends Thread {
                         FileOutputStream out = new FileOutputStream(file, true);
                         if (!isCreated && addFileHeadStr != null) {
                             isCreated = true;
-                            out.write(addFileHeadStr.getBytes(Unicode.DEFAULT));
+                            out.write((addFileHeadStr + "\n").getBytes(Unicode.DEFAULT));
                         }
                         out.write((LogcatDate.getDateEN() + "  " + line + "\n").getBytes(Unicode.DEFAULT));
                         out.flush();

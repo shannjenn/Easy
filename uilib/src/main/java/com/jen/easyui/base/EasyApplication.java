@@ -20,17 +20,8 @@ public class EasyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mApp = this;
-//        EasyMain.init(this);
-//        EasyMain.mLog.start();
-//        EasyMain.mLog.setItemListener(logcatCrashListener);
-//
-//        EasyMain.mDBHelper.init();
-//        EasyMain.mDBHelper.setVersion(DB_VERSION);
-//        EasyMain.mDBHelper.setDatabaseListener(databaseListener);
-
         createTB();
 
-//        EasyMain.mHttp = new EasyHttp(5);
     }
 
 

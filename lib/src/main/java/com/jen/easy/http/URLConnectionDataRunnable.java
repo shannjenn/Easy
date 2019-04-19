@@ -5,7 +5,9 @@ import com.jen.easy.constant.Unicode;
 import com.jen.easy.exception.HttpLog;
 import com.jen.easy.http.imp.EasyHttpListener;
 import com.jen.easy.http.request.EasyHttpDataRequest;
-import com.jen.easy.http.request.EasyRequestStatus;
+import com.jen.easy.http.request.EasyRequestState;
+import com.jen.easy.http.response.EasyHttpResponse;
+import com.jen.easy.http.response.EasyResponseState;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -48,21 +50,21 @@ class URLConnectionDataRunnable extends URLConnectionFactoryRunnable {
             reader.close();
             inStream.close();
             connection.disconnect();
-            if (mRequest.getRequestStatus() == EasyRequestStatus.interrupt) {//拦截数据解析
+            if (mRequest.getRequestState() == EasyRequestState.interrupt) {//拦截数据解析
                 HttpLog.d(mUrlStr + " 网络请求停止!\n   ");
                 return;
             }
             String result = resultBuffer.toString();
             HttpLog.i(mUrlStr + " 返回原始数据：" + result);
             result = replaceResult(result);
-            mRequest.setRequestStatus(EasyRequestStatus.finish);
+            mRequest.setRequestState(EasyRequestState.finish);
             success(result, headMap);
         } else {
-            if (mRequest.getRequestStatus() == EasyRequestStatus.interrupt) {//拦截数据解析
+            if (mRequest.getRequestState() == EasyRequestState.interrupt) {//拦截数据解析
                 HttpLog.d(mUrlStr + " 网络请求停止!\n   ");
                 return;
             }
-            mRequest.setRequestStatus(EasyRequestStatus.finish);
+            mRequest.setRequestState(EasyRequestState.finish);
             fail(" 网络请求异常：" + mResponseCode);
         }
     }
@@ -82,6 +84,9 @@ class URLConnectionDataRunnable extends URLConnectionFactoryRunnable {
             fail("");
         } else {
             HttpLog.d(mUrlStr + " 成功!\n   ");
+            if(parseObject instanceof EasyHttpResponse){
+                ((EasyHttpResponse) parseObject).setResponseState(EasyResponseState.finish);
+            }
             baseListener.success(flagCode, flagStr, parseObject, headMap);
         }
     }

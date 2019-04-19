@@ -66,7 +66,7 @@ public class EasyShapeBase {
     ClickType mClickType = ClickType.NON;
     private boolean isCheck;
 
-    enum ClickType {
+    public enum ClickType {
         BUTTON,//按钮效果点击变色,默认效果
         CHECK,//check效果
         NON//没有点击效果
@@ -218,8 +218,6 @@ public class EasyShapeBase {
      * @param event e
      */
     void onFocusEvent(MotionEvent event) {
-        if (mClickType == ClickType.NON)
-            return;
         switch (mClickType) {
             case BUTTON: {
                 switch (event.getAction()) {
@@ -344,6 +342,22 @@ public class EasyShapeBase {
                 ((TextView) mView).setTextColor(mTextColor);
             }
         }
+    }
+
+    public int getTextColor() {
+        return mTextColor;
+    }
+
+    public void setTextColor(int textColor) {
+        this.mTextColor = textColor;
+    }
+
+    public int getTextClickColor() {
+        return mTextClickColor;
+    }
+
+    public void setTextClickColor(int textClickColor) {
+        this.mTextClickColor = textClickColor;
     }
 
     /**

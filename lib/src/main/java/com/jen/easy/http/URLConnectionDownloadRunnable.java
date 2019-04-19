@@ -4,7 +4,7 @@ import com.jen.easy.constant.Unicode;
 import com.jen.easy.exception.HttpLog;
 import com.jen.easy.http.imp.EasyHttpFullListener;
 import com.jen.easy.http.request.EasyHttpDownloadRequest;
-import com.jen.easy.http.request.EasyRequestStatus;
+import com.jen.easy.http.request.EasyRequestState;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -57,28 +57,28 @@ class URLConnectionDownloadRunnable extends URLConnectionFactoryRunnable {
             while ((len = inStream.read(buffer)) != -1) {
                 randFile.write(buffer, 0, len);
                 curBytes += len;
-                if (mRequest.getRequestStatus() == EasyRequestStatus.interrupt) {
+                if (mRequest.getRequestState() == EasyRequestState.interrupt) {
                     break;
                 } else {
                     progress(curBytes, request.endPoint);
                 }
             }
-            if (mRequest.getRequestStatus() == EasyRequestStatus.interrupt) {
+            if (mRequest.getRequestState() == EasyRequestState.interrupt) {
                 HttpLog.d(mUrlStr + " 网络请求停止!\n   ");
                 return;
             }
-            request.setRequestStatus(EasyRequestStatus.finish);
+            request.setRequestState(EasyRequestState.finish);
             if (curBytes == request.endPoint) {
                 success(request.filePath, headMap);
             } else {
                 fail("下载失败：" + mResponseCode + " curBytes = " + curBytes + " endPoint = " + request.endPoint);
             }
         } else {
-            if (mRequest.getRequestStatus() == EasyRequestStatus.interrupt) {
+            if (mRequest.getRequestState() == EasyRequestState.interrupt) {
                 HttpLog.d(mUrlStr + " 网络请求停止!\n   ");
                 return;
             }
-            request.setRequestStatus(EasyRequestStatus.finish);
+            request.setRequestState(EasyRequestState.finish);
             fail("下载失败：" + mResponseCode);
         }
     }

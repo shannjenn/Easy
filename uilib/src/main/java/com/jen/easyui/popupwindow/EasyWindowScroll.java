@@ -64,6 +64,7 @@ class EasyWindowScroll extends EasyWindow implements View.OnClickListener {
                 }
             }
             pick_string.setData(list);
+            pick_string.setSelectedPosition(selectPosition);
         }
     }
 

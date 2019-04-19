@@ -1,4 +1,4 @@
-package com.jen.easytest.activity;
+package com.jen.easytest.http;
 
 import android.os.Bundle;
 import android.view.View;

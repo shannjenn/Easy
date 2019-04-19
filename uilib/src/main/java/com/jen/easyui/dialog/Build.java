@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable;
 
 import com.jen.easyui.R;
 
-
 public class Build {
     Context context;
 
@@ -31,7 +30,7 @@ public class Build {
     }
 
     public EasyDialog create() {
-        return new EasyDialog(this, R.style._easy_dialog);
+        return new EasyDialog(context, this, R.style._easy_dialog);
     }
 
     /**

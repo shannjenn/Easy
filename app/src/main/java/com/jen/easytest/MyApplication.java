@@ -11,6 +11,7 @@ import com.jen.easy.log.EasyLog;
 import com.jen.easy.log.LogcatHelper;
 import com.jen.easy.log.imp.LogcatListener;
 import com.jen.easy.sqlite.imp.DatabaseListener;
+import com.jen.easyui.base.EasyApplication;
 import com.jen.easyui.base.LogCrashActivity;
 
 import java.io.File;
@@ -20,62 +21,12 @@ import java.io.File;
  * 时间：2017/10/26.
  */
 
-public class MyApplication extends Application {
-    private static MyApplication mApp;
+public class MyApplication extends EasyApplication {
     private final int DB_VERSION = 1;//数据库版本号
 
     @Override
     public void onCreate() {
         super.onCreate();
-        mApp = this;
-//        EasyMain.init(this);
-//        EasyMain.mLog.start();
-//        EasyMain.mLog.setItemListener(logcatCrashListener);
-//
-//        EasyMain.mDBHelper.init();
-//        EasyMain.mDBHelper.setVersion(DB_VERSION);
-//        EasyMain.mDBHelper.setDatabaseListener(databaseListener);
-//        createTB();
-//
-//        EasyMain.mHttp = new EasyHttp(5);
-
-        ImageLoaderConfig config = new ImageLoaderConfig(this)
-                .imgHeight(1024)
-                .imgWidth(1024)
-                .defaultImage(getResources().getDrawable(R.mipmap.ic_launcher))
-                .bitmapConfig(Bitmap.Config.RGB_565)
-                .build();
-        ImageLoader.getInstance().init(config);
-
-        LogcatHelper logcatHelper = new LogcatHelper();
-        logcatHelper.start();
     }
 
-
-    /**
-     * 创建表
-     */
-    private void createTB() {
-//        if (EasyMain.mDBHelper.getVersion() == 1) {//第一版开始全部执行创建,发版后使用升级操作
-//            EasyLog.d("创建表------------");
-//            EasyMain.mDBHelper.createTB(Student.class);
-//            EasyMain.mDBHelper.createTB(ImageLoaderModel.class);
-//
-//        }
-    }
-
-    /**
-     * 数据库监听
-     */
-    private DatabaseListener databaseListener = new DatabaseListener() {
-        @Override
-        public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {//升级数据库
-            EasyLog.d("升级数据库------------");
-        }
-    };
-
-
-    public static Application getAppContext() {
-        return mApp;
-    }
 }

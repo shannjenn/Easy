@@ -4,7 +4,9 @@ import com.jen.easy.constant.FieldType;
 import com.jen.easy.exception.HttpLog;
 import com.jen.easy.http.imp.EasyHttpFullListener;
 import com.jen.easy.http.request.EasyHttpUploadRequest;
-import com.jen.easy.http.request.EasyRequestStatus;
+import com.jen.easy.http.request.EasyRequestState;
+import com.jen.easy.http.response.EasyHttpResponse;
+import com.jen.easy.http.response.EasyResponseState;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -40,7 +42,7 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
         byte[] bufferOut = new byte[1024];
         while ((len = in.read(bufferOut)) != -1) {
             out.write(bufferOut, 0, len);
-            if (request.getRequestStatus() == EasyRequestStatus.interrupt) {
+            if (request.getRequestState() == EasyRequestState.interrupt) {
                 break;
             } else {
                 progress(curBytes, request.endPoint);
@@ -58,14 +60,14 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
             buffer.append(line);
         }
         reader.close();
-        if (mRequest.getRequestStatus() == EasyRequestStatus.interrupt) {//拦截数据解析
+        if (mRequest.getRequestState() == EasyRequestState.interrupt) {//拦截数据解析
             HttpLog.d(mUrlStr + " 网络请求停止!\n   ");
             return;
         }
         String result = buffer.toString();
         HttpLog.i(mUrlStr + " 上传成功，返回数据：" + result);
         result = replaceResult(result);
-        mRequest.setRequestStatus(EasyRequestStatus.finish);
+        mRequest.setRequestState(EasyRequestState.finish);
         success(result, null);
     }
 
@@ -84,6 +86,9 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
             fail("");
         } else {
             HttpLog.d(mUrlStr + " 成功!\n   ");
+            if(parseObject instanceof EasyHttpResponse){
+                ((EasyHttpResponse) parseObject).setResponseState(EasyResponseState.finish);
+            }
             fullListener.success(flagCode, flagStr, parseObject, headMap);
         }
     }

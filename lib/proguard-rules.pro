@@ -134,7 +134,10 @@
 -keep class com.jen.easy.http.EasyHttpTool {
     *;
 }
--keep class com.jen.easy.http.request.EasyRequestStatus {
+-keep class com.jen.easy.http.request.EasyRequestState {
+    *;
+}
+-keep class com.jen.easy.http.response.EasyResponseState {
     *;
 }
 

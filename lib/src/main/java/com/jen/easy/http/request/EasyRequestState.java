@@ -5,7 +5,7 @@ package com.jen.easy.http.request;
  * 时间：2017/8/12.
  * 说明：网络请求运行状态
  */
-public enum EasyRequestStatus {
+public enum EasyRequestState {
     ready,//准备状态,未执行
     running,//正在运行
     finish,//完成

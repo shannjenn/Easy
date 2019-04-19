@@ -43,6 +43,10 @@ public class EasyDateFormatUtil {
 
     }
 
+    public EasyDateFormatUtil(@NonNull String dateFormat) {
+        mFormat = new SimpleDateFormat(dateFormat, Locale.SIMPLIFIED_CHINESE);
+    }
+
     public static EasyDateFormatUtil getIns() {
         if (me == null) {
             synchronized (EasyDateFormatUtil.class) {

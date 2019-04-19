@@ -8,7 +8,7 @@ import com.jen.easy.http.request.EasyHttpDataRequest;
 import com.jen.easy.http.request.EasyHttpDownloadRequest;
 import com.jen.easy.http.request.EasyHttpUploadRequest;
 import com.jen.easy.http.request.EasyHttpRequest;
-import com.jen.easy.http.request.EasyRequestStatus;
+import com.jen.easy.http.request.EasyRequestState;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -163,7 +163,7 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
                 headBuilder.append(value);
                 headBuilder.append(" ");
             }
-            if (mRequest.getRequestStatus() == EasyRequestStatus.interrupt) {
+            if (mRequest.getRequestState() == EasyRequestState.interrupt) {
                 return;
             }
             HttpLog.i("网络请求：" + method + " " + mUrlStr + " 请求头部：" + headBuilder.toString() + " 请求参数：" + mBody.toString());

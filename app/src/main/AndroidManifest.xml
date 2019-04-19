@@ -23,7 +23,7 @@
 
         <activity android:name=".activity.TabBarActivity" />
         <activity android:name=".activity.ShapeViewActivity" />
-        <activity android:name=".activity.HttpActivity" />
+        <activity android:name=".http.HttpActivity" />
         <activity android:name=".activity.ImageLoaderActivity" />
         <activity android:name=".activity.DialogActivity" />
         <activity android:name=".activity.popupWindow.PopupWindowActivity" />
@@ -34,6 +34,7 @@
         <activity android:name=".activity.OnclickTestActivity" />
         <activity android:name=".activity.PickerViewActivity" />
         <activity android:name=".activity.BaseViewActivity" />
+        <activity android:name=".logcatch.LogcatCrashActivity" />
 
 
         <activity android:name=".activity.recyclerView.RecyclerViewMainActivity" />

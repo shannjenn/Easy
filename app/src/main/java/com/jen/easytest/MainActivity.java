@@ -9,7 +9,7 @@ import com.jen.easy.EasyBindId;
 import com.jen.easytest.activity.BaseViewActivity;
 import com.jen.easytest.activity.ShapeViewActivity;
 import com.jen.easytest.activity.DialogActivity;
-import com.jen.easytest.activity.HttpActivity;
+import com.jen.easytest.http.HttpActivity;
 import com.jen.easytest.activity.ImageLoaderActivity;
 import com.jen.easytest.activity.ImageViewPagerActivity;
 import com.jen.easytest.activity.OnclickTestActivity;
@@ -20,6 +20,7 @@ import com.jen.easytest.activity.TabBarActivity;
 import com.jen.easytest.activity.TimePickActivity;
 import com.jen.easytest.activity.UtilActivity;
 import com.jen.easytest.activity.recyclerView.RecyclerViewMainActivity;
+import com.jen.easytest.logcatch.LogcatCrashActivity;
 import com.jen.easyui.base.EasyActivity;
 import com.jen.easyui.view.baseview.EasyTopBar;
 
@@ -45,7 +46,7 @@ public class MainActivity extends EasyActivity {
 
     @EasyBindClick({R.id.tabBar, R.id.baseView, R.id.shapeView, R.id.http, R.id.imageLoader, R.id.dialog, R.id.popupWindow,
             R.id.sqlite, R.id.util, R.id.recycleView, R.id.timePick, R.id.ImageViewPager, R.id.OnclickTest,
-            R.id.PickerView})
+            R.id.PickerView,R.id.logcatCrash})
     @Override
     protected void onBindClick(View view) {
         Class clazz = null;
@@ -106,6 +107,10 @@ public class MainActivity extends EasyActivity {
             }
             case R.id.http: {
                 clazz = HttpActivity.class;
+                break;
+            }
+            case R.id.logcatCrash: {
+                clazz = LogcatCrashActivity.class;
                 break;
             }
         }

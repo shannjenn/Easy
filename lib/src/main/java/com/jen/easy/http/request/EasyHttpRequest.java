@@ -64,7 +64,7 @@ public abstract class EasyHttpRequest implements Serializable {
     /**
      * 网络请求运行状态
      */
-    private EasyRequestStatus requestStatus = EasyRequestStatus.ready;
+    private EasyRequestState requestState = EasyRequestState.ready;
 
     /**
      * 在解析数据前替换请求结果的特殊符号(返回数据前替换特殊字符如：斜杠/)
@@ -111,24 +111,24 @@ public abstract class EasyHttpRequest implements Serializable {
     /**
      * @return 获取请求状态
      */
-    public EasyRequestStatus getRequestStatus() {
-        return requestStatus;
+    public EasyRequestState getRequestState() {
+        return requestState;
     }
 
     /**
-     * @param requestStatus 设置请求状态
+     * @param requestState 设置请求状态
      */
-    public void setRequestStatus(EasyRequestStatus requestStatus) {
-        if (requestStatus == null) {//防止空指针
+    public void setRequestState(EasyRequestState requestState) {
+        if (requestState == null) {//防止空指针
             return;
         }
-        this.requestStatus = requestStatus;
+        this.requestState = requestState;
     }
 
     /**
      * 中断/停止请求请求
      */
     public void interrupt() {
-        this.requestStatus = EasyRequestStatus.interrupt;
+        this.requestState = EasyRequestState.interrupt;
     }
 }

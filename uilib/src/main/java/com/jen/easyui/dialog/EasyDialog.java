@@ -30,14 +30,15 @@ import com.jen.easyui.view.shapeview.EasyShapeTextView;
 public class EasyDialog extends Dialog implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     private Build build;
 
+    private TextView tv_title;
     private TextView tv_content;
 
     public static Build build(Context context) {
         return new Build(context);
     }
 
-    EasyDialog(Build build, int themeResId) {
-        super(build.context, themeResId);
+    EasyDialog(Context context, Build build, int themeResId) {
+        super(context, themeResId);
         this.build = build;
         initViews();
     }
@@ -47,7 +48,7 @@ public class EasyDialog extends Dialog implements View.OnClickListener, Compound
 
         ImageView iv_icon_left = layout.findViewById(R.id.iv_icon_left);
         ImageView iv_icon_right = layout.findViewById(R.id.iv_icon_right);
-        TextView tv_title = layout.findViewById(R.id.tv_title);
+        tv_title = layout.findViewById(R.id.tv_title);
 
         tv_content = layout.findViewById(R.id.tv_content);
         CheckBox cb_check = layout.findViewById(R.id.cb_check);
@@ -226,5 +227,9 @@ public class EasyDialog extends Dialog implements View.OnClickListener, Compound
      */
     public TextView getContentView() {
         return tv_content;
+    }
+
+    public TextView getTitleView() {
+        return tv_title;
     }
 }

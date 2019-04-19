@@ -31,7 +31,7 @@ abstract class LogcatHelperManager {
      * @param level :'d','i','w','e'
      */
     protected void setLevel(LogcatLevel level) {
-        LogDumper.getInstance().setLogLevel(level);
+        LogCatch.getInstance().setLogLevel(level);
     }
 
     /**
@@ -43,22 +43,23 @@ abstract class LogcatHelperManager {
             return;
         }
         LogcatLog.i("日志路径为:" + LogcatPath.getInstance().getPath());
-        LogDumper.getInstance().startLogs();
-        LogcatCrash.getInstance().start();
+        LogCatch.getInstance().startLogs();
+        CrashCatch.getInstance().start();
     }
 
     /**
      * 停止日志记录
      */
     protected void stop() {
-        LogDumper.getInstance().stopLogs();
-        LogcatCrash.getInstance().stop();
+        LogCatch.getInstance().stopLogs();
+        CrashCatch.getInstance().stop();
     }
 
     /**
      * 抓取崩溃监听
      */
     protected void setListener(LogcatListener listener) {
-        LogcatCrash.getInstance().setListener(listener);
+        LogCatch.getInstance().setListener(listener);
+        CrashCatch.getInstance().setListener(listener);
     }
 }

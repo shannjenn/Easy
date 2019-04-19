@@ -152,6 +152,12 @@
                 android:layout_height="46dp"
                 android:text="sqlite"
                 android:textAllCaps="false" />
+            <Button
+                android:id="@+id/logcatCrash"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:text="LogcatCrash"
+                android:textAllCaps="false" />
 
         </LinearLayout>
 

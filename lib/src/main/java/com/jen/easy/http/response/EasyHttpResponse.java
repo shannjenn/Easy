@@ -9,5 +9,16 @@ import com.jen.easy.invalid.EasyInvalid;
  */
 @EasyInvalid
 public abstract class EasyHttpResponse {
+    /**
+     * 解析状态
+     */
+    private EasyResponseState responseState = EasyResponseState.ready;
 
+    public EasyResponseState getResponseState() {
+        return responseState;
+    }
+
+    public void setResponseState(EasyResponseState responseState) {
+        this.responseState = responseState;
+    }
 }

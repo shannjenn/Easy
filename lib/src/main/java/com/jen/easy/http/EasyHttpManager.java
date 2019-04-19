@@ -7,7 +7,7 @@ import com.jen.easy.http.request.EasyHttpDataRequest;
 import com.jen.easy.http.request.EasyHttpDownloadRequest;
 import com.jen.easy.http.request.EasyHttpRequest;
 import com.jen.easy.http.request.EasyHttpUploadRequest;
-import com.jen.easy.http.request.EasyRequestStatus;
+import com.jen.easy.http.request.EasyRequestState;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -65,7 +65,7 @@ abstract class EasyHttpManager {
             HttpLog.w("线程池已经关闭，不可以再操作 start");
             httpBaseListener.fail(flagCode, flagStr, "");
         } else if (request instanceof EasyHttpDataRequest) {
-            request.setRequestStatus(EasyRequestStatus.running);
+            request.setRequestState(EasyRequestState.running);
             URLConnectionDataRunnable base = new URLConnectionDataRunnable((EasyHttpDataRequest) request, httpBaseListener, flagCode, flagStr);
             pool.execute(base);
         } else if (request instanceof EasyHttpDownloadRequest) {
