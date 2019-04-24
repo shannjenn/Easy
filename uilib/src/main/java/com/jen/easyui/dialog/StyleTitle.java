@@ -1,6 +1,73 @@
 package com.jen.easyui.dialog;
 
-public enum StyleTitle {
-    Left,//左边对齐
-    Center//中间对齐
+
+import android.view.Gravity;
+
+import com.jen.easyui.util.EasyDensityUtil;
+
+public class StyleTitle {
+    private int gravity;
+    private int paddingLeft;
+    private int paddingRight;
+    private int paddingTop;
+    private int paddingBottom;
+
+    public StyleTitle() {
+        gravity = Gravity.CENTER;
+        paddingLeft = EasyDensityUtil.dp2pxInt(40);
+        paddingRight = EasyDensityUtil.dp2pxInt(40);
+        paddingTop = EasyDensityUtil.dp2pxInt(20);
+    }
+
+    public int getGravity() {
+        return gravity;
+    }
+
+    public int getPaddingLeft() {
+        return paddingLeft;
+    }
+
+    public int getPaddingRight() {
+        return paddingRight;
+    }
+
+    public int getPaddingTop() {
+        return paddingTop;
+    }
+
+    public int getPaddingBottom() {
+        return paddingBottom;
+    }
+
+
+    //setter=========================================================
+    public StyleTitle setGravity(int gravity) {
+        this.gravity = gravity;
+        return this;
+
+    }
+
+    public StyleTitle setPaddingLeft(int paddingLeft) {
+        this.paddingLeft = paddingLeft;
+        return this;
+
+    }
+
+    public StyleTitle setPaddingRight(int paddingRight) {
+        this.paddingRight = paddingRight;
+        return this;
+
+    }
+
+    public StyleTitle setPaddingTop(int paddingTop) {
+        this.paddingTop = paddingTop;
+        return this;
+
+    }
+
+    public StyleTitle setPaddingBottom(int paddingBottom) {
+        this.paddingBottom = paddingBottom;
+        return this;
+
+    }
 }

@@ -31,7 +31,7 @@ public class DialogActivity extends EasyActivity {
     protected void initViews() {
         loading = new EasyLoading(this);
         dialog = EasyDialog.build(this)
-                .setIconLeft(getResources().getDrawable(R.mipmap.ic_launcher))
+//                .setIconLeft(getResources().getDrawable(R.mipmap.ic_launcher))
                 .setTitle("提示哟哟")
                 .setContent("这是一个Dialog测试")
                 .setLeftButton("左边")

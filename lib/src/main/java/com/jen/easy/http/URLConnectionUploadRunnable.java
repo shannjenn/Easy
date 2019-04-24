@@ -61,18 +61,21 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
         }
         reader.close();
         if (mRequest.getRequestState() == EasyRequestState.interrupt) {//拦截数据解析
-            HttpLog.d(mUrlStr + " 网络请求停止!\n   ");
+            HttpLog.d(mUrlStr + " 网络请求停止。\n");
             return;
         }
         String result = buffer.toString();
-        HttpLog.i(mUrlStr + " 上传成功，返回数据：" + result);
+        HttpLog.i(mRequestLogInfo + "\n上传成功，返回数据：" + result);
         result = replaceResult(result);
-        mRequest.setRequestState(EasyRequestState.finish);
         success(result, null);
     }
 
     @Override
     protected void success(String result, Map<String, List<String>> headMap) {
+        if (mRequest.getRequestState() == EasyRequestState.interrupt) {
+            HttpLog.d(mRequestLogInfo + " 请求中断。\n \t");
+            return;
+        }
         if (fullListener == null) {
             return;
         }
@@ -85,20 +88,27 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
         if (parseObject == null) {
             fail("");
         } else {
-            HttpLog.d(mUrlStr + " 成功!\n   ");
-            if(parseObject instanceof EasyHttpResponse){
+            if (parseObject instanceof EasyHttpResponse) {
                 ((EasyHttpResponse) parseObject).setResponseState(EasyResponseState.finish);
             }
+            mRequest.setRequestState(EasyRequestState.finish);
+            HttpLog.d(mRequestLogInfo + " 返回成功。\n \t");
             fullListener.success(flagCode, flagStr, parseObject, headMap);
         }
     }
 
     @Override
     protected void fail(String msg) {
-        HttpLog.w(mUrlStr + " 失败!\n   ");
-        if (fullListener != null) {
-            fullListener.fail(flagCode, flagStr, msg);
+        if (mRequest.getRequestState() == EasyRequestState.interrupt) {
+            HttpLog.d(mRequestLogInfo + " 请求中断。\n \t");
+            return;
         }
+        if (fullListener == null) {
+            return;
+        }
+        mRequest.setRequestState(EasyRequestState.finish);
+        HttpLog.w(mRequestLogInfo + " 返回失败。\n \t");
+        fullListener.fail(flagCode, flagStr, msg);
     }
 
     private void progress(long currentPoint, long endPoint) {

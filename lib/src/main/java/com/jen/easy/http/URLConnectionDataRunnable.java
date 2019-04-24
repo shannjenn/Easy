@@ -37,7 +37,6 @@ class URLConnectionDataRunnable extends URLConnectionFactoryRunnable {
         }
 
         mResponseCode = connection.getResponseCode();
-        HttpLog.d(mUrlStr + " Http请求返回码：" + mResponseCode);
         if ((mResponseCode == 200)) {
             Map<String, List<String>> headMap = connection.getHeaderFields();//获取head数据
             StringBuilder resultBuffer = new StringBuilder();
@@ -50,27 +49,22 @@ class URLConnectionDataRunnable extends URLConnectionFactoryRunnable {
             reader.close();
             inStream.close();
             connection.disconnect();
-            if (mRequest.getRequestState() == EasyRequestState.interrupt) {//拦截数据解析
-                HttpLog.d(mUrlStr + " 网络请求停止!\n   ");
-                return;
-            }
             String result = resultBuffer.toString();
-            HttpLog.i(mUrlStr + " 返回原始数据：" + result);
+            HttpLog.i(mRequestLogInfo + "\n 返回码：" + mResponseCode + "\n 返回原始数据：" + result);
             result = replaceResult(result);
-            mRequest.setRequestState(EasyRequestState.finish);
             success(result, headMap);
         } else {
-            if (mRequest.getRequestState() == EasyRequestState.interrupt) {//拦截数据解析
-                HttpLog.d(mUrlStr + " 网络请求停止!\n   ");
-                return;
-            }
-            mRequest.setRequestState(EasyRequestState.finish);
+            HttpLog.i(mRequestLogInfo + "\n 请求异常，返回码：" + mResponseCode);
             fail(" 网络请求异常：" + mResponseCode);
         }
     }
 
     @Override
     protected void success(String result, Map<String, List<String>> headMap) {
+        if (mRequest.getRequestState() == EasyRequestState.interrupt) {
+            HttpLog.d(mRequestLogInfo + " 请求中断。\n \t");//\n \t打印才出现空行
+            return;
+        }
         if (baseListener == null) {
             return;
         }
@@ -83,18 +77,26 @@ class URLConnectionDataRunnable extends URLConnectionFactoryRunnable {
         if (parseObject == null) {
             fail("");
         } else {
-            HttpLog.d(mUrlStr + " 成功!\n   ");
-            if(parseObject instanceof EasyHttpResponse){
+            if (parseObject instanceof EasyHttpResponse) {
                 ((EasyHttpResponse) parseObject).setResponseState(EasyResponseState.finish);
             }
+            mRequest.setRequestState(EasyRequestState.finish);
+            HttpLog.d(mUrlStr + " 返回成功。\n \t");
             baseListener.success(flagCode, flagStr, parseObject, headMap);
         }
     }
 
     @Override
     protected void fail(String result) {
-        HttpLog.w(mUrlStr + " 失败!\n   ");
-        if (baseListener != null)
-            baseListener.fail(flagCode, flagStr, result);
+        if (mRequest.getRequestState() == EasyRequestState.interrupt) {
+            HttpLog.d(mRequestLogInfo + " 请求中断。\n \t");
+            return;
+        }
+        if (baseListener == null) {
+            return;
+        }
+        mRequest.setRequestState(EasyRequestState.finish);
+        HttpLog.w(mUrlStr + " 返回失败。\n \t");
+        baseListener.fail(flagCode, flagStr, result);
     }
 }

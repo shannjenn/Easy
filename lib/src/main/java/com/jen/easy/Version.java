@@ -9,15 +9,15 @@ public final class Version {
     /**
      * 版本号(初版：1)
      */
-    public final static int VersionCode = 41;
+    public final static int VersionCode = 42;
     /**
      * 版本名称(初版：1.0.0)
      */
-    public final static String VersionName = "1.4.0";
+    public final static String VersionName = "1.4.1";
     /**
      * 时间(初版：2017.07.18)
      */
-    public final static String Time = "2019.04.19";
+    public final static String Time = "2019.04.23";
     /**
      * 作者(ShannJenn)
      */

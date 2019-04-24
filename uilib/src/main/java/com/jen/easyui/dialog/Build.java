@@ -11,16 +11,14 @@ public class Build {
 
     Drawable iconLeft;
     Drawable iconRight;
-    String txtTitle;
+    CharSequence txtTitle;
     CharSequence txtContent;
-    String txtCheckBox;
     String txtLeft;
-    String txtMiddle;
     String txtRight;
 
-    StyleTitle styleTitle = StyleTitle.Left;
-    StyleContent styleContent = StyleContent.Center;
-    StyleButtons styleButtons = StyleButtons.Fill;
+    StyleTitle styleTitle;
+    StyleContent styleContent;
+    StyleButtons styleButtons;
 
     int flagCode;
     DialogListener listener;
@@ -51,7 +49,7 @@ public class Build {
         return this;
     }
 
-    public Build setTitle(String txt) {
+    public Build setTitle(CharSequence txt) {
         txtTitle = txt;
         return this;
     }
@@ -61,18 +59,8 @@ public class Build {
         return this;
     }
 
-    public Build setTxtCheckBox(String txtCheckBox) {
-        this.txtCheckBox = txtCheckBox;
-        return this;
-    }
-
     public Build setLeftButton(String txt) {
         txtLeft = txt;
-        return this;
-    }
-
-    public Build setMiddleButton(String txt) {
-        txtMiddle = txt;
         return this;
     }
 

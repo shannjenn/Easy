@@ -34,6 +34,7 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
     String mCharset;//编码
     boolean mIsGet = true;
     JSONObject mBody;
+    String mRequestLogInfo;
 
     URLConnectionFactoryRunnable(EasyHttpRequest param, int flagCode, String flagStr) {
         super();
@@ -153,29 +154,26 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
             connection.setReadTimeout(mRequest.readTimeout);
             connection.setRequestMethod(method);
 
+            StringBuilder mHeadBuilder = new StringBuilder();
             Set<String> headKeys = heads.keySet();
-            StringBuilder headBuilder = new StringBuilder();
             for (String key : headKeys) {//设置请求头
                 String value = heads.get(key);
                 connection.setRequestProperty(key, value);
-                headBuilder.append(key);
-                headBuilder.append("=");
-                headBuilder.append(value);
-                headBuilder.append(" ");
+                mHeadBuilder.append(key);
+                mHeadBuilder.append("=");
+                mHeadBuilder.append(value);
+                mHeadBuilder.append(" ");
             }
-            if (mRequest.getRequestState() == EasyRequestState.interrupt) {
-                return;
-            }
-            HttpLog.i("网络请求：" + method + " " + mUrlStr + " 请求头部：" + headBuilder.toString() + " 请求参数：" + mBody.toString());
+            mRequestLogInfo = method + " " + mUrlStr + "\n 请求头部：" + mHeadBuilder.toString() + "\n 请求参数：" + mBody.toString();
             childRun(connection);
             connection.disconnect();
         } catch (IOException e) {
-            HttpLog.e(" 网络请求IOException异常：" + mUrlStr);
+            HttpLog.e("网络请求IOException异常：" + mRequestLogInfo);
             HttpLog.exception(ExceptionType.IOException, "IOException 网络请求异常");
             fail("IOException 网络请求异常：" + mResponseCode);
         } catch (JSONException e) {
-            HttpLog.e(" 网络请求JSONException异常：" + mUrlStr);
-            HttpLog.exception(ExceptionType.JSONException, "IOException 网络请求异常");
+            HttpLog.e("网络请求JSONException异常：" + mRequestLogInfo);
+            HttpLog.exception(ExceptionType.JSONException, "网络请求IOException异常：" + mRequestLogInfo);
             fail("JSONException 网络请求异常：" + mResponseCode);
         }
     }

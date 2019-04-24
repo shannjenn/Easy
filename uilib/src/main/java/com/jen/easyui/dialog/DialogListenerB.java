@@ -8,8 +8,6 @@ package com.jen.easyui.dialog;
 public interface DialogListenerB extends DialogListenerA {
 //    void leftButton(int flagCode);
 
-    void middleButton(int flagCode);
-
 //    void rightButton(int flagCode);
 
     void dismiss(int flagCode);

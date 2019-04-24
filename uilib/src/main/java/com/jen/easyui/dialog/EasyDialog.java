@@ -4,14 +4,10 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,11 +23,15 @@ import com.jen.easyui.view.shapeview.EasyShapeTextView;
  * 作者：ShannJenn
  * 时间：2018/1/15.
  */
-public class EasyDialog extends Dialog implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+public class EasyDialog extends Dialog implements View.OnClickListener {
     private Build build;
 
     private TextView tv_title;
     private TextView tv_content;
+
+    private LinearLayout ll_buttons;
+    private EasyShapeTextView btn_left;
+    private EasyShapeTextView btn_right;
 
     public static Build build(Context context) {
         return new Build(context);
@@ -49,21 +49,15 @@ public class EasyDialog extends Dialog implements View.OnClickListener, Compound
         ImageView iv_icon_left = layout.findViewById(R.id.iv_icon_left);
         ImageView iv_icon_right = layout.findViewById(R.id.iv_icon_right);
         tv_title = layout.findViewById(R.id.tv_title);
-
         tv_content = layout.findViewById(R.id.tv_content);
-        CheckBox cb_check = layout.findViewById(R.id.cb_check);
 
-        LinearLayout ll_buttons = layout.findViewById(R.id.ll_buttons);
-        EasyShapeTextView btn_left = layout.findViewById(R.id.btn_left);
-        Button btn_middle = layout.findViewById(R.id.btn_middle);
-        EasyShapeTextView btn_right = layout.findViewById(R.id.btn_right);
+        ll_buttons = layout.findViewById(R.id.ll_buttons);
+        btn_left = layout.findViewById(R.id.btn_left);
+        btn_right = layout.findViewById(R.id.btn_right);
 
         btn_left.setOnClickListener(this);
-        btn_middle.setOnClickListener(this);
         btn_right.setOnClickListener(this);
         iv_icon_right.setOnClickListener(this);
-
-        cb_check.setOnCheckedChangeListener(this);
 
         if (build.iconLeft != null) {
             iv_icon_left.setImageDrawable(build.iconLeft);
@@ -75,92 +69,87 @@ public class EasyDialog extends Dialog implements View.OnClickListener, Compound
             iv_icon_right.setImageDrawable(build.iconRight);
             iv_icon_right.setVisibility(View.VISIBLE);
         } else {
-            iv_icon_right.setVisibility(View.GONE);
+            iv_icon_right.setVisibility(build.iconLeft == null ? View.GONE : View.VISIBLE);
         }
+        setStyleTitle();
+        setStyleContent();
+        setStyleButtons();
+        setContentView(layout);
+    }
 
-        if (build.txtTitle != null) {
-            tv_title.setVisibility(View.VISIBLE);
-            tv_title.setText(build.txtTitle);
-            switch (build.styleTitle) {
-                case Left: {
-                    tv_title.setGravity(Gravity.CENTER_VERTICAL);
-                    break;
-                }
-                case Center: {
-                    tv_title.setGravity(Gravity.CENTER);
-                    break;
-                }
-                default:
-                    break;
-            }
-        } else {
+    /**
+     * 设置标题样式
+     */
+    private void setStyleTitle() {
+        if (build.txtTitle == null) {
             tv_title.setVisibility(View.GONE);
+            return;
         }
+        tv_title.setText(build.txtTitle);
+        if (build.styleTitle == null) {
+            build.styleTitle = new StyleTitle();
+        }
+        tv_title.setGravity(build.styleTitle.getGravity());
+        tv_title.setPadding(build.styleTitle.getPaddingLeft(), build.styleTitle.getPaddingTop(),
+                build.styleTitle.getPaddingRight(), build.styleTitle.getPaddingBottom());
+    }
 
-        if (build.txtContent != null) {
-            tv_content.setVisibility(View.VISIBLE);
-            tv_content.setText(build.txtContent);
-            switch (build.styleContent) {
-                case Left: {
-                    tv_content.setGravity(Gravity.CENTER_VERTICAL);
-                    break;
-                }
-                case Center: {
-                    tv_content.setGravity(Gravity.CENTER);
-                    break;
-                }
-                default:
-                    break;
-            }
-        } else {
+    /**
+     * 设置内容样式
+     */
+    private void setStyleContent() {
+        if (build.txtContent == null) {
             tv_content.setVisibility(View.GONE);
+            return;
         }
-
-        if (build.txtCheckBox != null) {
-            cb_check.setVisibility(View.VISIBLE);
-            cb_check.setText(build.txtCheckBox);
-        } else {
-            cb_check.setVisibility(View.GONE);
+        tv_content.setText(build.txtContent);
+        if (build.styleContent == null) {
+            build.styleContent = new StyleContent();
         }
+        tv_content.setGravity(build.styleContent.getGravity());
+        tv_content.setPadding(build.styleContent.getPaddingLeft(), build.styleContent.getPaddingTop(),
+                build.styleContent.getPaddingRight(), build.styleContent.getPaddingBottom());
+    }
 
-        switch (build.styleButtons) {
-            case Fill:
-                break;
-            case Margin:
-                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) ll_buttons.getLayoutParams();
-                params.leftMargin = Build.dp2px(StyleButtons.marginLeft());
-                params.rightMargin = Build.dp2px(StyleButtons.marginRight());
-                params.bottomMargin = Build.dp2px(StyleButtons.marginBottom());
-                btn_right.getShape().setCorners(4);
-                break;
-        }
-
-        if (build.txtLeft != null) {
-            btn_left.setVisibility(View.VISIBLE);
-            btn_left.setText(build.txtLeft);
-            if (btn_right.getVisibility() == View.GONE) {
-                btn_left.getShape().setCornerRightBottom(4);
-            }
-        } else {
+    /**
+     * 设置按钮样式
+     */
+    private void setStyleButtons() {
+        if (build.txtLeft == null) {
             btn_left.setVisibility(View.GONE);
         }
-
-        if (build.txtMiddle != null) {
-            btn_middle.setVisibility(View.VISIBLE);
-            btn_middle.setText(build.txtMiddle);
-        } else {
-            btn_middle.setVisibility(View.GONE);
-        }
-        if (build.txtRight != null) {
-            btn_right.setVisibility(View.VISIBLE);
-            btn_right.setText(build.txtRight);
-            if (btn_left.getVisibility() == View.GONE) {
-                btn_right.getShape().setCornerLeftBottom(4);
-            }
-        } else {
+        if (build.txtRight == null) {
             btn_right.setVisibility(View.GONE);
         }
-        setContentView(layout);
+        if (build.styleButtons == null) {
+            build.styleButtons = new StyleButtons();
+        }
+        LinearLayout.LayoutParams buttonsP = (LinearLayout.LayoutParams) ll_buttons.getLayoutParams();
+        buttonsP.topMargin = build.styleButtons.getButtonsMarginTop();
+        buttonsP.bottomMargin = build.styleButtons.getButtonsMarginBottom();
+        LinearLayout.LayoutParams buttonsL = (LinearLayout.LayoutParams) btn_left.getLayoutParams();
+        buttonsL.leftMargin = build.styleButtons.getLeftButtonMarginLeft();
+        buttonsL.rightMargin = build.styleButtons.getLeftButtonMarginRight();
+        LinearLayout.LayoutParams buttonsR = (LinearLayout.LayoutParams) btn_right.getLayoutParams();
+        buttonsR.leftMargin = build.styleButtons.getRightButtonMarginLeft();
+        buttonsR.rightMargin = build.styleButtons.getRightButtonMarginRight();
+
+        if (build.styleButtons.getLeftButtonCorners() > 0) {
+            btn_left.getShape().setCorners(build.styleButtons.getLeftButtonCorners());
+        } else {
+            btn_left.getShape().setCornerLeftTop(build.styleButtons.getLeftButtonCornerLeftTop());
+            btn_left.getShape().setCornerLeftBottom(build.styleButtons.getLeftButtonCornerLeftBottom());
+            btn_left.getShape().setCornerRightTop(build.styleButtons.getLeftButtonCornerRightTop());
+            btn_left.getShape().setCornerRightBottom(build.styleButtons.getLeftButtonCornerRightBottom());
+        }
+        if (build.styleButtons.getRightButtonCorners() > 0) {
+            btn_right.getShape().setCorners(build.styleButtons.getRightButtonCorners());
+        } else {
+            btn_right.getShape().setCornerLeftTop(build.styleButtons.getRightButtonCornerLeftTop());
+            btn_right.getShape().setCornerLeftBottom(build.styleButtons.getRightButtonCornerLeftBottom());
+            btn_right.getShape().setCornerRightTop(build.styleButtons.getRightButtonCornerRightTop());
+            btn_right.getShape().setCornerRightBottom(build.styleButtons.getRightButtonCornerRightBottom());
+        }
     }
 
     @Override
@@ -176,17 +165,17 @@ public class EasyDialog extends Dialog implements View.OnClickListener, Compound
     @Override
     public void dismiss() {
         super.dismiss();
+    }
+
+    @Override
+    public void hide() {
+        super.hide();
         if (build.listener != null) {
             if (build.listener instanceof DialogListenerB) {
                 DialogListenerB dialogListener = (DialogListenerB) build.listener;
                 dialogListener.dismiss(build.flagCode);
             }
         }
-    }
-
-    @Override
-    public void hide() {
-        super.hide();
     }
 
     @Override
@@ -201,23 +190,11 @@ public class EasyDialog extends Dialog implements View.OnClickListener, Compound
                 DialogListenerA dialogListener = (DialogListenerA) build.listener;
                 dialogListener.leftButton(build.flagCode);
             }
-        } else if (id == R.id.btn_middle) {
-            if (build.listener instanceof DialogListenerB) {
-                DialogListenerB dialogListener = (DialogListenerB) build.listener;
-                dialogListener.middleButton(build.flagCode);
-            }
         } else if (id == R.id.btn_right) {
             build.listener.rightButton(build.flagCode);
         }
     }
 
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (build.listener instanceof DialogListenerC) {
-            DialogListenerC dialogListener = (DialogListenerC) build.listener;
-            dialogListener.check(build.flagCode, buttonView, isChecked);
-        }
-    }
 
     /**
      * 用于方便设置部分文字点击事件 ClickableSpan

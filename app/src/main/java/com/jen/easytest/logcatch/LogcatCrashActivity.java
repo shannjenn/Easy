@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.jen.easy.EasyBindClick;
+import com.jen.easy.exception.HttpLog;
 import com.jen.easy.http.EasyHttp;
 import com.jen.easy.http.EasyHttpTool;
 import com.jen.easy.http.TestHttp;
@@ -39,6 +40,9 @@ public class LogcatCrashActivity extends EasyActivity {
 
     @Override
     protected void initViews() {
+        HttpLog.d("打印测试=======================================================" + " 请求中断。\n \t");//\n\t打印才出现空行
+        HttpLog.d("打印测试=======================================================" + " 请求中断。\n          ");//\n\t打印才出现空行
+        HttpLog.d("打印测试=======================================================" + " 请求中断。\n           ");//\n\t打印才出现空行
         LogcatCrashManager.getIns().start();
 //        bt_crash_error.length();
     }

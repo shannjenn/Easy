@@ -301,8 +301,18 @@ public class EasyShapeBase {
         return this;
     }
 
+    public EasyShapeBase setCornerLeftTop(int db) {
+        mCornerLeftTop = dp2px(db);
+        return this;
+    }
+
     public EasyShapeBase setCornerLeftBottom(int db) {
         mCornerLeftBottom = dp2px(db);
+        return this;
+    }
+
+    public EasyShapeBase setCornerRightTop(int db) {
+        mCornerRightTop = dp2px(db);
         return this;
     }
 
