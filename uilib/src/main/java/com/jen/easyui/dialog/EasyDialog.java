@@ -115,14 +115,18 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
      * 设置按钮样式
      */
     private void setStyleButtons() {
-        if (build.txtLeft == null) {
-            btn_left.setVisibility(View.GONE);
-        }
-        if (build.txtRight == null) {
-            btn_right.setVisibility(View.GONE);
-        }
         if (build.styleButtons == null) {
             build.styleButtons = new StyleButtons();
+        }
+        switch (build.styleButtons.show) {
+            case LEFT_RIGHT:
+                btn_left.setVisibility(View.VISIBLE);
+                btn_right.setVisibility(View.VISIBLE);
+                break;
+            case RIGHT:
+                btn_left.setVisibility(View.GONE);
+                btn_right.setVisibility(View.VISIBLE);
+                break;
         }
         LinearLayout.LayoutParams buttonsP = (LinearLayout.LayoutParams) ll_buttons.getLayoutParams();
         buttonsP.topMargin = build.styleButtons.getButtonsMarginTop();
