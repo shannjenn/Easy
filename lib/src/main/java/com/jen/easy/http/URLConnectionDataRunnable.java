@@ -49,12 +49,18 @@ class URLConnectionDataRunnable extends URLConnectionFactoryRunnable {
             reader.close();
             inStream.close();
             connection.disconnect();
+
             String result = resultBuffer.toString();
-            HttpLog.i(mRequestLogInfo + "\n 返回码：" + mResponseCode + "\n 返回原始数据：" + result);
-            result = replaceResult(result);
+            StringBuilder retLogBuild = new StringBuilder();
+            retLogBuild.append(mRequestLogInfo).append("\n返回码：").append(mResponseCode).append("\n返回原始数据：").append(result);
+            if (mRequest.getReplaceResult().size() > 0) {
+                result = replaceResult(result);
+                retLogBuild.append("\n格式化后数据：").append(result);
+            }
+            HttpLog.i(retLogBuild.toString());
             success(result, headMap);
         } else {
-            HttpLog.i(mRequestLogInfo + "\n 请求异常，返回码：" + mResponseCode);
+            HttpLog.i(mRequestLogInfo + "\n请求异常，返回码：" + mResponseCode);
             fail(" 网络请求异常：" + mResponseCode);
         }
     }

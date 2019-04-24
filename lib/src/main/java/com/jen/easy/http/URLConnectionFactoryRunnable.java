@@ -164,7 +164,7 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
                 mHeadBuilder.append(value);
                 mHeadBuilder.append(" ");
             }
-            mRequestLogInfo = method + " " + mUrlStr + "\n 请求头部：" + mHeadBuilder.toString() + "\n 请求参数：" + mBody.toString();
+            mRequestLogInfo = method + " " + mUrlStr + "\n请求头部：" + mHeadBuilder.toString() + "\n请求参数：" + mBody.toString();
             childRun(connection);
             connection.disconnect();
         } catch (IOException e) {
@@ -185,13 +185,10 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
      * @return String
      */
     String replaceResult(String response) {
-        if (mRequest.getReplaceResult().size() > 0) {
-            Set<String> oldChars = mRequest.getReplaceResult().keySet();
-            for (String oldChar : oldChars) {
-                String replacement = mRequest.getReplaceResult().get(oldChar);
-                response = response.replace(oldChar, replacement);
-            }
-            HttpLog.i(mUrlStr + " 格式化后数据：" + response);
+        Set<String> oldChars = mRequest.getReplaceResult().keySet();
+        for (String oldChar : oldChars) {
+            String replacement = mRequest.getReplaceResult().get(oldChar);
+            response = response.replace(oldChar, replacement);
         }
         return response;
     }

@@ -60,13 +60,15 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
             buffer.append(line);
         }
         reader.close();
-        if (mRequest.getRequestState() == EasyRequestState.interrupt) {//拦截数据解析
-            HttpLog.d(mUrlStr + " 网络请求停止。\n");
-            return;
-        }
+
         String result = buffer.toString();
-        HttpLog.i(mRequestLogInfo + "\n上传成功，返回数据：" + result);
-        result = replaceResult(result);
+        StringBuilder retLogBuild = new StringBuilder();
+        retLogBuild.append(mRequestLogInfo).append("\n返回码：").append(mResponseCode).append("\n返回原始数据：").append(result);
+        if (mRequest.getReplaceResult().size() > 0) {
+            result = replaceResult(result);
+            retLogBuild.append("\n格式化后数据：").append(result);
+        }
+        HttpLog.i(retLogBuild.toString());
         success(result, null);
     }
 
