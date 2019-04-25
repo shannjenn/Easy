@@ -6,8 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.jen.easyui.R;
 import com.jen.easyui.popupwindow.listener.WindowItemListener;
@@ -25,7 +23,7 @@ import java.util.List;
  * 时间：2017/09/09.
  */
 
-class EasyWindowString extends EasyWindow implements EasyItemListener, View.OnClickListener {
+class EasyWindowString extends EasyWindow implements EasyItemListener {
     private MyAdapter<Object> adapter;
     private RecyclerView recycler;
 
@@ -36,18 +34,6 @@ class EasyWindowString extends EasyWindow implements EasyItemListener, View.OnCl
     @Override
     View bindContentView() {
         View popView = LayoutInflater.from(build.context).inflate(R.layout._easy_popup_window_string, null);
-        View rl_top_bar = popView.findViewById(R.id.rl_top_bar);
-        ImageView iv_left = popView.findViewById(R.id.iv_left);
-        TextView tv_title = popView.findViewById(R.id.tv_title);
-        TextView tv_right = popView.findViewById(R.id.tv_right);
-
-        rl_top_bar.setVisibility(build.showTopBar ? View.VISIBLE : View.GONE);
-        tv_title.setText(build.topBarTitleText);
-        tv_right.setText(build.topBarRightText);
-
-        iv_left.setOnClickListener(this);
-        tv_right.setOnClickListener(this);
-
         adapter = new MyAdapter<>(build.context, build.data);
         adapter.setItemListener(this);
         recycler = popView.findViewById(R.id.recycler);
@@ -88,17 +74,16 @@ class EasyWindowString extends EasyWindow implements EasyItemListener, View.OnCl
     }
 
     @Override
-    public void onClick(View v) {
-        WindowOkListener okListener;
-        if (!(build.listener instanceof WindowOkListener) || build.data.size() == 0) {
-            return;
+    void clickLeftCallBack() {
+        if (build.listener instanceof WindowOkListener && build.data.size() > 0) {
+            ((WindowOkListener) build.listener).windowLeft(build.flagCode, showView, selectPosition, build.data.get(selectPosition));
         }
-        okListener = (WindowOkListener) build.listener;
-        int i = v.getId();
-        if (i == R.id.tv_right) {
-            okListener.sure(build.flagCode, showView, selectPosition, build.data.get(selectPosition));
-        } else if (i == R.id.iv_left) {
-            okListener.cancel(build.flagCode, showView);
+    }
+
+    @Override
+    void clickRightCallBack() {
+        if (build.listener instanceof WindowOkListener && build.data.size() > 0) {
+            ((WindowOkListener) build.listener).windowRight(build.flagCode, showView, selectPosition, build.data.get(selectPosition));
         }
     }
 

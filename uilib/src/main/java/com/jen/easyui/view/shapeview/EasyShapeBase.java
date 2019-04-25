@@ -271,7 +271,7 @@ public class EasyShapeBase {
     }
 
     private void updateButtonState(boolean isActionDown) {
-        if (isActionDown) {
+        if (isActionDown && !isCheck) {
             mDrawable.setStroke(mStrokeWidth, mStrokeClickColor, mStrokeDashGapWidth, mStrokeDashGap);
             mDrawable.setColor(mSolidClickColor);
             if (isTextView) {
@@ -335,7 +335,7 @@ public class EasyShapeBase {
     }
 
     public void setCheck(boolean check) {
-        if (mClickType != ClickType.CHECK) {
+        if (mClickType == ClickType.NON) {
             return;
         }
         isCheck = check;

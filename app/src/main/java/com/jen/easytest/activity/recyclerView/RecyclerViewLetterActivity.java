@@ -2,6 +2,7 @@ package com.jen.easytest.activity.recyclerView;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -46,7 +47,7 @@ public class RecyclerViewLetterActivity extends EasyActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recycler_view_main);
+        setContentView(R.layout.activity_recycler_view_letter);
     }
 
 
@@ -115,6 +116,9 @@ public class RecyclerViewLetterActivity extends EasyActivity {
                     if (mData.get(i).getLetter().equals(letter)) {
 //                        pos = i;
                         EasyLog.d("touch = " + letter);
+                        recyclerView.scrollToPosition(i);
+                        LinearLayoutManager mLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                        mLayoutManager.scrollToPositionWithOffset(i, 0);
 //                        recyclerView.scrollPositionToHeader(i);
                         break;
                     }
@@ -139,7 +143,6 @@ public class RecyclerViewLetterActivity extends EasyActivity {
             }
         });
     }
-
 
 
     @EasyBindClick({R.id.EasyRecyclerAdapter, R.id.EasyRecyclerWaterfallAdapter, R.id.EasyTreeRecyclerAdapter})

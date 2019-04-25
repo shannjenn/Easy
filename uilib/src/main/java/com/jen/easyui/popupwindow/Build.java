@@ -1,6 +1,7 @@
 package com.jen.easyui.popupwindow;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 
 import com.jen.easyui.popupwindow.listener.WindowListener;
 
@@ -12,9 +13,8 @@ public class Build {
     Context context;
     int height, width;
     boolean showTopBar = true;
-    String topBarRightText = "确定";
-    String topBarTitleText = "标题";
-    AnimStyle animStyle = AnimStyle.BOTTOM;
+    StyleTopBar styleTopBar;
+    StyleAnim styleAnim = StyleAnim.BOTTOM;
 
     int flagCode;
     WindowListener listener;
@@ -39,7 +39,18 @@ public class Build {
      * @return .
      */
     public EasyWindow createObject(WindowBind windowBind) {
-        return new EasyWindowObject(this, windowBind);
+        return createObject(windowBind, null);
+    }
+
+    /**
+     * 对象列表
+     *
+     * @param windowBind    绑定item数据
+     * @param layoutManager .
+     * @return .
+     */
+    public EasyWindow createObject(WindowBind windowBind, RecyclerView.LayoutManager layoutManager) {
+        return new EasyWindowObject(this, windowBind, layoutManager);
     }
 
     /**
@@ -84,18 +95,13 @@ public class Build {
         return this;
     }
 
-    public Build setTopBarRightText(String topBarRightText) {
-        this.topBarRightText = topBarRightText;
+    public Build setStyleTopBar(StyleTopBar styleTopBar) {
+        this.styleTopBar = styleTopBar;
         return this;
     }
 
-    public Build setTopBarTitleText(String topBarTitleText) {
-        this.topBarTitleText = topBarTitleText;
-        return this;
-    }
-
-    public Build setAnimStyle(AnimStyle animStyle) {
-        this.animStyle = animStyle;
+    public Build setStyleAnim(StyleAnim animStyle) {
+        this.styleAnim = animStyle;
         return this;
     }
 }
