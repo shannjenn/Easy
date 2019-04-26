@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import com.jen.easy.log.EasyLog;
 
 /**
- * 自动适应RecycleView高度(如遇到与ScrollView共用时会用到)
+ * 自动适应RecycleView高度(如遇到与ScrollView共用时会用到 调整适应高度)
  */
 public class FullyLinearLayoutManager extends LinearLayoutManager {
     private int totalHeight;

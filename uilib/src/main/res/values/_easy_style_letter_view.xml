@@ -1,21 +1,22 @@
 <resources>
     <declare-styleable name="EasyLetterView">
-        <attr name="textTouchColor" format="color" />
-        <attr name="textDefaultColor" format="color" />
-        <attr name="textSize" />
+        <attr name="letterTextTouchColor" format="color" />
+        <attr name="letterTextDefaultColor" format="color" />
+        <attr name="letterTextSize" />
 
-        <attr name="backgroundTouchColor" format="color" />
+        <attr name="letterBackgroundTouchColor" format="color" />
         <!--<attr name="backgroundDefaultColor" format="color" />-->
 
         <!--字符串数组，用逗号隔开-->
-        <attr name="lettersByComma" format="string" />
+        <attr name="letterByComma" format="string" />
 
-        <attr name="dialogTextBackground" format="reference" />
-        <attr name="dialogTextBackgroundWith" format="dimension" />
-        <attr name="dialogTextBackgroundHeight" format="dimension" />
-        <attr name="dialogTextSize" format="dimension" />
-        <attr name="dialogTextColor" format="color" />
-        <attr name="dialogTextMarginRight" format="dimension" />
+        <attr name="letterDialogShow" format="boolean" />
+        <attr name="letterDialogBackgroundColor" format="reference" />
+        <attr name="letterDialogWith" format="dimension" />
+        <attr name="letterDialogHeight" format="dimension" />
+        <attr name="letterDialogTextSize" format="dimension" />
+        <attr name="letterDialogTextColor" format="color" />
+        <attr name="letterDialogMarginRight" format="dimension" />
 
         <attr name="android:layout_width" />
         <attr name="android:layout_height" />

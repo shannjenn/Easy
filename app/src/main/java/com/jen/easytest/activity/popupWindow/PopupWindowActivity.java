@@ -6,10 +6,13 @@ import android.view.View;
 import com.jen.easy.EasyBindClick;
 import com.jen.easy.EasyBindId;
 import com.jen.easytest.R;
+import com.jen.easytest.model.RecyclerViewModel;
 import com.jen.easyui.base.EasyActivity;
 import com.jen.easyui.popupwindow.EasyWindow;
+import com.jen.easyui.popupwindow.StyleTopBar;
 import com.jen.easyui.popupwindow.WindowBind;
 import com.jen.easyui.recycler.EasyHolder;
+import com.jen.easyui.recycler.letter.EasyLetterDecoration;
 import com.jen.easyui.util.EasyDensityUtil;
 
 import java.util.ArrayList;
@@ -24,6 +27,9 @@ public class PopupWindowActivity extends EasyActivity {
 
     EasyWindow easyWindowStr;
     EasyWindow easyWindowObject;
+    EasyWindow easyWindowLetter;
+
+    StyleTopBar styleTopBar;
 
     @EasyBindId(R.id.popup_window_object)
     View popup_window_object;
@@ -50,14 +56,18 @@ public class PopupWindowActivity extends EasyActivity {
         list.add("2");
         list.add("1");
 
+        styleTopBar = new StyleTopBar();
+
         easyWindowStr = EasyWindow.build(this)
-                .setData(list)
+//                .setData(list)
 //                .setWidth(500)
                 .setShowTopBar(false)
                 .createString();
+        easyWindowStr.setData(list);
 
         easyWindowObject = EasyWindow.build(this)
-                .setData(list).createObject(new WindowBind() {
+                .setStyleTopBar(styleTopBar)
+                .createObject(new WindowBind() {
                     @Override
                     public int[] onBindItemLayout() {
                         return new int[]{R.layout._easy_recycler_foot};
@@ -73,10 +83,73 @@ public class PopupWindowActivity extends EasyActivity {
                         easyHolder.setTextView(R.id.tv_text, list.get(position));
                     }
                 });
+        easyWindowObject.setData(list);
+
+        List<RecyclerViewModel> mData = new ArrayList<>();
+        easyWindowLetter = EasyWindow.build(this)
+                .createLetter(new WindowBind() {
+                    @Override
+                    public int onBindViewType() {
+                        return 0;
+                    }
+
+                    @Override
+                    public int[] onBindItemLayout() {
+                        return new int[]{R.layout.item_test};
+                    }
+
+                    @Override
+                    public void onBindItemData(EasyHolder easyHolder, View view, List data, int position) {
+
+                    }
+                }, new EasyLetterDecoration());
+
+        mData.clear();
+        for (int i = 0; i < 36; i++) {
+            RecyclerViewModel model = new RecyclerViewModel();
+            mData.add(model);
+        }
+        mData.get(0).setLetter("A");
+        mData.get(1).setLetter("A");
+        mData.get(2).setLetter("B");
+        mData.get(3).setLetter("B");
+        mData.get(4).setLetter("C");
+        mData.get(5).setLetter("C");
+        mData.get(6).setLetter("D");
+        mData.get(7).setLetter("D");
+        mData.get(8).setLetter("E");
+        mData.get(9).setLetter("E");
+        mData.get(10).setLetter("F");
+        mData.get(11).setLetter("F");
+        mData.get(12).setLetter("G");
+        mData.get(13).setLetter("G");
+        mData.get(14).setLetter("H");
+        mData.get(15).setLetter("H");
+        mData.get(16).setLetter("I");
+        mData.get(17).setLetter("I");
+        mData.get(18).setLetter("J");
+        mData.get(19).setLetter("J");
+        mData.get(20).setLetter("K");
+        mData.get(21).setLetter("K");
+        mData.get(22).setLetter("L");
+        mData.get(23).setLetter("L");
+        mData.get(24).setLetter("M");
+        mData.get(25).setLetter("M");
+        mData.get(26).setLetter("N");
+        mData.get(27).setLetter("N");
+        mData.get(28).setLetter("O");
+        mData.get(29).setLetter("O");
+        mData.get(30).setLetter("P");
+        mData.get(31).setLetter("P");
+        mData.get(32).setLetter("Q");
+        mData.get(33).setLetter("Q");
+        mData.get(34).setLetter("R");
+
+        easyWindowLetter.setData(mData);
 
     }
 
-    @EasyBindClick({R.id.popup_window_str, R.id.popup_window_object, R.id.popup_window_right})
+    @EasyBindClick({R.id.popup_window_str, R.id.popup_window_object, R.id.popup_window_right, R.id.popup_window_letter})
     @Override
     protected void onBindClick(View view) {
         switch (view.getId()) {
@@ -85,6 +158,8 @@ public class PopupWindowActivity extends EasyActivity {
                 break;
             }
             case R.id.popup_window_object: {
+                styleTopBar.setTitleText("topBar测试");
+                easyWindowObject.updateTopBar();
                 easyWindowObject.showBottom(popup_window);
                 break;
             }
@@ -96,6 +171,10 @@ public class PopupWindowActivity extends EasyActivity {
                         .setWidth(EasyDensityUtil.dp2pxInt(195))
                         .setHeight(EasyDensityUtil.dp2pxInt(45))
                         .createObject(WindowBindEdit.bind()).showRight(tv_right, x, y);
+                break;
+            }
+            case R.id.popup_window_letter: {
+                easyWindowLetter.showBottom(view);
                 break;
             }
         }

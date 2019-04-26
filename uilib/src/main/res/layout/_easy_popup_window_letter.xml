@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#fff">
+
+    <include
+        android:id="@+id/layout_top_bar"
+        layout="@layout/_easy_popup_window_topbar" />
+
+    <com.jen.easyui.recycler.letter.EasyLetterView
+        android:id="@+id/lt_letter"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layout_top_bar"
+        android:layout_alignParentEnd="true"
+        android:background="#0000ff"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        app:letterBackgroundTouchColor="#ffff00"
+        app:letterDialogBackgroundColor="@drawable/_easy_viewpager_num_select"
+        app:letterDialogHeight="100dp"
+        app:letterDialogMarginRight="50dp"
+        app:letterDialogTextColor="@android:color/holo_red_light"
+        app:letterDialogTextSize="50sp"
+        app:letterDialogWith="100dp"
+        app:letterTextSize="14sp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_top_bar"
+        android:layout_toStartOf="@+id/lt_letter" />
+
+</RelativeLayout>

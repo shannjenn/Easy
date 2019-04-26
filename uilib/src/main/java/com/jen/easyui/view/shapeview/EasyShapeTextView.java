@@ -140,7 +140,7 @@ public class EasyShapeTextView extends android.support.v7.widget.AppCompatTextVi
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN: {
                 mShape.onFocusEvent(event);
-                break;
+                return true;
             }
             case MotionEvent.ACTION_UP: {
                 mShape.onFocusEvent(event);

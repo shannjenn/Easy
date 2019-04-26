@@ -42,7 +42,7 @@ public abstract class EasyHolderRecyclerWaterfallAdapter<T> extends EasyRecycler
             Log.w(TAG, "布局为空");
             return null;
         }
-        if (viewType < 0 || layouts.length < viewType) {
+        if (viewType < 0 || layouts.length == 0 || layouts.length < viewType) {
             Log.w(TAG, "viewType：" + viewType + "错误");
             return null;
         }

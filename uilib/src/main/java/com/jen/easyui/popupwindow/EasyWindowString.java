@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jen.easy.log.EasyLog;
 import com.jen.easyui.R;
 import com.jen.easyui.popupwindow.listener.WindowItemListener;
 import com.jen.easyui.popupwindow.listener.WindowOkListener;
@@ -15,6 +16,7 @@ import com.jen.easyui.recycler.EasyHolderRecyclerBaseAdapter;
 import com.jen.easyui.recycler.listener.EasyItemListener;
 import com.jen.easyui.util.EasyDensityUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,7 +26,8 @@ import java.util.List;
  */
 
 class EasyWindowString extends EasyWindow implements EasyItemListener {
-    private MyAdapter<Object> adapter;
+    private MyAdapter<String> adapter;
+    private List<String> data;
     private RecyclerView recycler;
 
     EasyWindowString(Build build) {
@@ -34,7 +37,9 @@ class EasyWindowString extends EasyWindow implements EasyItemListener {
     @Override
     View bindContentView() {
         View popView = LayoutInflater.from(build.context).inflate(R.layout._easy_popup_window_string, null);
-        adapter = new MyAdapter<>(build.context, build.data);
+        data = new ArrayList<>();
+        data.add("");//默认有一个
+        adapter = new MyAdapter<>(build.context, data);
         adapter.setItemListener(this);
         recycler = popView.findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(build.context));
@@ -47,17 +52,22 @@ class EasyWindowString extends EasyWindow implements EasyItemListener {
             return;
         }
         ViewGroup.LayoutParams lp = recycler.getLayoutParams();
-        lp.height = EasyDensityUtil.dp2pxInt(50 * build.data.size());
+        lp.height = EasyDensityUtil.dp2pxInt(50 * data.size());
         recycler.setLayoutParams(lp);
         recycler.setAdapter(adapter);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void setData(List data) {
-        build.data.clear();
-        if (data != null && data.size() > 0) {
-            build.data.addAll(data);
+        if (data == null || data.size() == 0) {
+            return;
+        } else if (!(data.get(0) instanceof String)) {
+            EasyLog.e("setData错误,请设置String集合");
+            return;
         }
+        this.data.clear();
+        this.data.addAll(data);
         updateHeight();
         adapter.notifyDataSetChanged();
     }
@@ -70,20 +80,20 @@ class EasyWindowString extends EasyWindow implements EasyItemListener {
             return;
         }
         itemListener = (WindowItemListener) build.listener;
-        itemListener.itemClick(build.flagCode, showView, selectPosition, build.data.get(selectPosition));
+        itemListener.itemClick(build.flagCode, showView, selectPosition, data.get(selectPosition));
     }
 
     @Override
     void clickLeftCallBack() {
-        if (build.listener instanceof WindowOkListener && build.data.size() > 0) {
-            ((WindowOkListener) build.listener).windowLeft(build.flagCode, showView, selectPosition, build.data.get(selectPosition));
+        if (build.listener instanceof WindowOkListener && data.size() > 0) {
+            ((WindowOkListener) build.listener).windowLeft(build.flagCode, showView, selectPosition, data.get(selectPosition));
         }
     }
 
     @Override
     void clickRightCallBack() {
-        if (build.listener instanceof WindowOkListener && build.data.size() > 0) {
-            ((WindowOkListener) build.listener).windowRight(build.flagCode, showView, selectPosition, build.data.get(selectPosition));
+        if (build.listener instanceof WindowOkListener && data.size() > 0) {
+            ((WindowOkListener) build.listener).windowRight(build.flagCode, showView, selectPosition, data.get(selectPosition));
         }
     }
 

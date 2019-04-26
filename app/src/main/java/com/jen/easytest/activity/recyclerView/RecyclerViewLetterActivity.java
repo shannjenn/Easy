@@ -15,6 +15,7 @@ import com.jen.easytest.R;
 import com.jen.easytest.model.RecyclerViewModel;
 import com.jen.easyui.base.EasyActivity;
 import com.jen.easyui.recycler.EasyHolder;
+import com.jen.easyui.recycler.letter.EasyLetterItem;
 import com.jen.easyui.recycler.listener.EasyItemListenerB;
 import com.jen.easyui.recycler.letter.EasyLetterDecoration;
 import com.jen.easyui.recycler.letter.EasyLetterView;
@@ -32,13 +33,13 @@ import java.util.List;
 public class RecyclerViewLetterActivity extends EasyActivity {
 
     @EasyBindId(R.id.recyclerView)
-    EasyRecyclerView recyclerView;
+    RecyclerView recyclerView;
 
     @EasyBindId(R.id.lt_letter)
     EasyLetterView lt_letter;
 
-    @EasyBindId(R.id.tv_letter_show)
-    TextView tv_letter_show;
+//    @EasyBindId(R.id.tv_letter_show)
+//    TextView tv_letter_show;
 
     List<RecyclerViewModel> mData = new ArrayList<>();
 
@@ -96,7 +97,7 @@ public class RecyclerViewLetterActivity extends EasyActivity {
 
 
         easyAdapter1 = new EasyAdapter1<>(this, mData);
-        recyclerView.setLinearLayoutManager(RecyclerView.VERTICAL);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         easyAdapter1.setItemTouchSortEvent(recyclerView);
         recyclerView.setAdapter(easyAdapter1);
 
@@ -104,7 +105,8 @@ public class RecyclerViewLetterActivity extends EasyActivity {
 //        recyclerView.showFooter(true);
 //        recyclerView.setRefreshListener(refreshListener);
 //        recyclerView.setLoadMoreListener(loadMoreListener);
-        EasyLetterDecoration itemDecoration = new EasyLetterDecoration(mData);
+        EasyLetterDecoration<RecyclerViewModel> itemDecoration = new EasyLetterDecoration<>();
+        itemDecoration.setData(mData);
         itemDecoration.setLetterTextColor(0xffff0000);
         recyclerView.addItemDecoration(itemDecoration);
 

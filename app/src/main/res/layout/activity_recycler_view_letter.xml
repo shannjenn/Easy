@@ -35,7 +35,7 @@
             android:textAllCaps="false" />
     </LinearLayout>
 
-    <com.jen.easyui.recycler.EasyRecyclerView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -45,29 +45,28 @@
         android:id="@+id/lt_letter"
         android:layout_width="50dp"
         android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
         android:layout_below="@+id/ll_type"
+        android:layout_alignParentEnd="true"
         android:background="#0000ff"
-        android:paddingBottom="10dp"
         android:paddingTop="10dp"
-        app:backgroundTouchColor="#ffff00"
-        app:dialogTextBackground="@drawable/_easy_viewpager_num_select"
-        app:dialogTextBackgroundHeight="100dp"
-        app:dialogTextBackgroundWith="100dp"
-        app:dialogTextColor="@android:color/holo_red_light"
-        app:dialogTextMarginRight="50dp"
-        app:dialogTextSize="50sp"
-        app:lettersByComma=""
-        app:textSize="14sp" />
+        android:paddingBottom="10dp"
+        app:letterBackgroundTouchColor="#ffff00"
+        app:letterDialogBackgroundColor="@drawable/_easy_viewpager_num_select"
+        app:letterDialogHeight="100dp"
+        app:letterDialogMarginRight="50dp"
+        app:letterDialogTextColor="@android:color/holo_red_light"
+        app:letterDialogTextSize="50sp"
+        app:letterDialogWith="100dp"
+        app:letterTextSize="14sp" />
 
-    <TextView
-        android:id="@+id/tv_letter_show"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:text="A"
-        android:textColor="@android:color/holo_red_light"
-        android:textSize="30sp"
-        android:visibility="gone" />
+    <!--<TextView-->
+        <!--android:id="@+id/tv_letter_show"-->
+        <!--android:layout_width="50dp"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:gravity="center"-->
+        <!--android:text="A"-->
+        <!--android:textColor="@android:color/holo_red_light"-->
+        <!--android:textSize="30sp"-->
+        <!--android:visibility="visible" />-->
 </RelativeLayout>

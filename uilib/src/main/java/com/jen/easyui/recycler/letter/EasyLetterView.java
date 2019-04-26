@@ -24,12 +24,10 @@ import com.jen.easyui.util.EasyDensityUtil;
  */
 
 public class EasyLetterView extends View {
-
-    private Context context;
     private Paint backgroundPaint;
     private Paint letterPaint;
     private Paint textDialogPaint;
-    private Paint textDialogBackgroundPaint;
+    //    private Paint textDialogBackgroundPaint;
     private int choosePosition = -1;//当前手指滑动到的位置
     private TouchListener touchListener;
     private final String[] LETTERS = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L",
@@ -53,12 +51,13 @@ public class EasyLetterView extends View {
 
     private String lettersByComma;
 
-    private int dialogTextBackground;
-    private int dialogTextBackgroundWith;
-    private int dialogTextBackgroundHeight;
+    private boolean dialogShow;
+    private int dialogBackgroundColor;
+    private int dialogWith;
+    private int dialogHeight;
     private float dialogTextSize;
     private int dialogTextColor;
-    private int dialogTextMarginRight;
+    private int dialogMarginRight;
 
     /*public EasyLetterView(Context context) {
         this(context, null);
@@ -75,7 +74,6 @@ public class EasyLetterView extends View {
     }
 
     private void initAttrs(Context context, AttributeSet attrs) {
-        this.context = context;
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.EasyLetterView);
 
         height = ta.getLayoutDimension(R.styleable.EasyLetterView_android_layout_height, 0);
@@ -83,22 +81,23 @@ public class EasyLetterView extends View {
         paddingTop = ta.getLayoutDimension(R.styleable.EasyLetterView_android_paddingTop, 0);
         paddingBottom = ta.getLayoutDimension(R.styleable.EasyLetterView_android_paddingBottom, 0);
 
-        textTouchColor = ta.getColor(R.styleable.EasyLetterView_textTouchColor, Color.RED);
-        textDefaultColor = ta.getColor(R.styleable.EasyLetterView_textDefaultColor, Color.BLACK);
-        textSize = ta.getDimensionPixelOffset(R.styleable.EasyLetterView_textSize, EasyDensityUtil.sp2pxInt(14));
+        textTouchColor = ta.getColor(R.styleable.EasyLetterView_letterTextTouchColor, Color.RED);
+        textDefaultColor = ta.getColor(R.styleable.EasyLetterView_letterTextDefaultColor, Color.BLACK);
+        textSize = ta.getDimensionPixelOffset(R.styleable.EasyLetterView_letterTextSize, EasyDensityUtil.sp2pxInt(14));
 
-        backgroundTouchColor = ta.getColor(R.styleable.EasyLetterView_backgroundTouchColor, Color.TRANSPARENT);
+        backgroundTouchColor = ta.getColor(R.styleable.EasyLetterView_letterBackgroundTouchColor, Color.TRANSPARENT);
         backgroundColor = ta.getLayoutDimension(R.styleable.EasyLetterView_android_background, Color.TRANSPARENT);
 //        backgroundDefaultColor = ta.getColor(R.styleable.EasyLetterView_backgroundDefaultColor, Color.TRANSPARENT);
 
-        lettersByComma = ta.getString(R.styleable.EasyLetterView_lettersByComma);//自定义Letter逗号隔开
+        lettersByComma = ta.getString(R.styleable.EasyLetterView_letterByComma);//自定义Letter逗号隔开
 
-        dialogTextBackground = ta.getResourceId(R.styleable.EasyLetterView_dialogTextBackground, -1);
-        dialogTextBackgroundWith = ta.getDimensionPixelSize(R.styleable.EasyLetterView_dialogTextBackgroundWith, 0);
-        dialogTextBackgroundHeight = ta.getDimensionPixelSize(R.styleable.EasyLetterView_dialogTextBackgroundHeight, 0);
-        dialogTextSize = ta.getDimensionPixelOffset(R.styleable.EasyLetterView_dialogTextSize, EasyDensityUtil.sp2pxInt(14));
-        dialogTextColor = ta.getColor(R.styleable.EasyLetterView_dialogTextColor, Color.RED);
-        dialogTextMarginRight = ta.getDimensionPixelSize(R.styleable.EasyLetterView_dialogTextMarginRight, 0);
+        dialogShow = ta.getBoolean(R.styleable.EasyLetterView_letterDialogShow, true);
+        dialogBackgroundColor = ta.getResourceId(R.styleable.EasyLetterView_letterDialogBackgroundColor, -1);
+        dialogWith = ta.getDimensionPixelSize(R.styleable.EasyLetterView_letterDialogWith, 0);
+        dialogHeight = ta.getDimensionPixelSize(R.styleable.EasyLetterView_letterDialogHeight, 0);
+        dialogTextSize = ta.getDimensionPixelOffset(R.styleable.EasyLetterView_letterDialogTextSize, EasyDensityUtil.sp2pxInt(14));
+        dialogTextColor = ta.getColor(R.styleable.EasyLetterView_letterDialogTextColor, Color.RED);
+        dialogMarginRight = ta.getDimensionPixelSize(R.styleable.EasyLetterView_letterDialogMarginRight, 0);
 
         ta.recycle();
         init();
@@ -117,8 +116,8 @@ public class EasyLetterView extends View {
         textDialogPaint.setAntiAlias(true);
         textDialogPaint.setTextSize(dialogTextSize);
 
-        textDialogBackgroundPaint = new Paint();
-        textDialogBackgroundPaint.setAntiAlias(true);
+//        textDialogBackgroundPaint = new Paint();
+//        textDialogBackgroundPaint.setAntiAlias(true);
 //        textDialogBackgroundPaint.setTextSize(textSize);
 
         if (lettersByComma != null && lettersByComma.trim().length() != 0) {
@@ -128,9 +127,9 @@ public class EasyLetterView extends View {
         }
 
         //计算垂直间距（顶部和底部padding）
-        /*if (dialogTextBackgroundHeight > 0) {
-            spacingTop = dialogTextBackgroundHeight / 4 + paddingTop;
-            spacingBottom = dialogTextBackgroundHeight / 4 + paddingBottom;
+        /*if (dialogHeight > 0) {
+            spacingTop = dialogHeight / 4 + paddingTop;
+            spacingBottom = dialogHeight / 4 + paddingBottom;
         } else {
             spacingTop = dialogTextSize / 2 + paddingTop;
             spacingBottom = dialogTextSize / 2 + paddingBottom;
@@ -158,7 +157,7 @@ public class EasyLetterView extends View {
     /**
      * 绘制背景
      *
-     * @param canvas
+     * @param canvas .
      */
     private void drawBackground(Canvas canvas) {
         float left;
@@ -179,7 +178,7 @@ public class EasyLetterView extends View {
     /**
      * 绘制Letters
      *
-     * @param canvas
+     * @param canvas .
      */
     private void drawLetters(Canvas canvas) {
         for (int i = 0; i < letters.length; i++) {
@@ -206,10 +205,12 @@ public class EasyLetterView extends View {
     /**
      * 绘制提示字符
      *
-     * @param canvas
+     * @param canvas .
      */
     private void drawChooseText(Canvas canvas) {
-        if (choosePosition == -1) {
+        if (!dialogShow) {
+            return;
+        } else if (choosePosition == -1) {
             return;
         }
         textDialogPaint.setColor(dialogTextColor);
@@ -218,13 +219,13 @@ public class EasyLetterView extends View {
         letterPaint.getTextBounds(target, 0, target.length(), letterRect);
 
         int letterWidth = (int) textDialogPaint.measureText(target);
-        int centerX = getWidth() - width - dialogTextBackgroundWith / 2 - dialogTextMarginRight;
+        int centerX = getWidth() - width - dialogWith / 2 - dialogMarginRight;
         int centerY = choosePosition * letterPerHeight + letterPerHeight / 2 + letterRect.height() / 2 + paddingTop;
 
-        Drawable drawable = getResources().getDrawable(dialogTextBackground);
+        Drawable drawable = getResources().getDrawable(dialogBackgroundColor);
         if (drawable != null) {
-            drawable.setBounds(centerX - dialogTextBackgroundWith / 2, centerY - dialogTextBackgroundHeight / 2,
-                    centerX + dialogTextBackgroundWith / 2, centerY + dialogTextBackgroundHeight / 2);
+            drawable.setBounds(centerX - dialogWith / 2, centerY - dialogHeight / 2,
+                    centerX + dialogWith / 2, centerY + dialogHeight / 2);
             drawable.draw(canvas);
         }
         Rect rect = new Rect();
@@ -238,10 +239,10 @@ public class EasyLetterView extends View {
             case MotionEvent.ACTION_UP:
                 setBackgroundColor(backgroundColor);
                 choosePosition = -1;
-                if (getLayoutParams().width != width) {
-                    getLayoutParams().width = width;
-                    requestLayout();
-                }
+//                if (getLayoutParams().width != width) {
+//                    getLayoutParams().width = width;
+//                    requestLayout();
+//                }
                 invalidate();
                 break;
             default: {
@@ -250,16 +251,16 @@ public class EasyLetterView extends View {
                 if (currentPosition > -1 && currentPosition < letters.length) {
                     String letter = letters[currentPosition];
                     setBackgroundColor(backgroundTouchColor);
-                    if (currentPosition > -1 && currentPosition < letters.length) {
+                    if (currentPosition < letters.length) {
                         if (touchListener != null) {
                             touchListener.onTouch(letter);
                         }
                         choosePosition = currentPosition;
                     }
-                    if (getLayoutParams().width != -1) {
-                        getLayoutParams().width = -1;//MATCH_PARENT
-                        requestLayout();
-                    }
+//                    if (getLayoutParams().width != -1) {
+//                        getLayoutParams().width = -1;//MATCH_PARENT
+//                        requestLayout();
+//                    }
                     invalidate();
                 }
                 break;
@@ -295,7 +296,7 @@ public class EasyLetterView extends View {
     /**
      * 设置监听触摸事件
      *
-     * @param touchListener
+     * @param touchListener .
      */
     public void setTouchListener(TouchListener touchListener) {
         this.touchListener = touchListener;
@@ -306,6 +307,9 @@ public class EasyLetterView extends View {
     }
 
     public void setLetters(String[] letters) {
+        if(letters == null || letters.length == 0){
+            return;
+        }
         this.letters = letters;
         invalidate();
     }

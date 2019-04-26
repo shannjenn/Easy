@@ -8,26 +8,31 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.jen.easyui.recycler.EasyRecyclerView;
-
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 说明：搭配EasyRecyclerView、EasyLetterItem使用
+ * 说明：搭配RecyclerView、EasyLetterItem使用
  * 作者：ShannJenn
  * 时间：2018/03/20.
  */
 
 public class EasyLetterDecoration<T extends EasyLetterItem> extends RecyclerView.ItemDecoration {
     private Paint mPaint;
-    private List<T> mData;
+    private final List<T> mData = new ArrayList<>();
     private int letterHeight = 80;
     private int letterTextColor = Color.BLUE;
     private int letterTextSize = 50;
     private int letterBackgroundColor = Color.GRAY;
 
+    public EasyLetterDecoration() {
+        init();
+    }
     public EasyLetterDecoration(List<T> data) {
-        this.mData = data;
+        if (data != null && data.size() > 0) {
+            mData.clear();
+            mData.addAll(data);
+        }
         init();
     }
 
@@ -36,16 +41,15 @@ public class EasyLetterDecoration<T extends EasyLetterItem> extends RecyclerView
         mPaint.setAntiAlias(true);
     }
 
-
-    @Override
-    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-        super.getItemOffsets(outRect, view, parent, state);
-        if (parent instanceof EasyRecyclerView) {
-            getItemOffsets(outRect, view, (EasyRecyclerView) parent, state);
+    public void setData(List<T> data) {
+        if (data != null && data.size() > 0) {
+            mData.clear();
+            mData.addAll(data);
         }
     }
 
-    public void getItemOffsets(Rect outRect, View view, EasyRecyclerView parent, RecyclerView.State state) {
+    @Override
+    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
         int position = ((RecyclerView.LayoutParams) view.getLayoutParams()).getViewLayoutPosition();
         if (position < 0)
@@ -66,15 +70,13 @@ public class EasyLetterDecoration<T extends EasyLetterItem> extends RecyclerView
         outRect.set(0, height, 0, 0);
     }
 
+//    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+//
+//    }
+
     @Override
     public void onDraw(Canvas canvas, RecyclerView parent, RecyclerView.State state) {
         super.onDraw(canvas, parent, state);
-        if (parent instanceof EasyRecyclerView) {
-            onDraw(canvas, (EasyRecyclerView) parent, state);
-        }
-    }
-
-    public void onDraw(Canvas canvas, EasyRecyclerView parent, RecyclerView.State state) {
         int left = parent.getPaddingLeft();
         int right = parent.getWidth() - parent.getPaddingRight();
         int childCount = parent.getChildCount();
@@ -122,14 +124,6 @@ public class EasyLetterDecoration<T extends EasyLetterItem> extends RecyclerView
         canvas.drawText(letter, child.getPaddingLeft(), child.getTop() - params.topMargin - (letterHeight / 2 - rect.height() / 2), mPaint);
     }
 
-    @Override
-    public void onDrawOver(Canvas canvas, final RecyclerView parent, RecyclerView.State state) {
-        super.onDrawOver(canvas, parent, state);
-        if (parent instanceof EasyRecyclerView) {
-            onDrawOver(canvas, (EasyRecyclerView) parent, state);
-        }
-    }
-
     /**
      * 最后调用，绘制最上层的title
      *
@@ -137,7 +131,9 @@ public class EasyLetterDecoration<T extends EasyLetterItem> extends RecyclerView
      * @param parent
      * @param state
      */
-    public void onDrawOver(Canvas canvas, final EasyRecyclerView parent, RecyclerView.State state) {
+    @Override
+    public void onDrawOver(Canvas canvas, final RecyclerView parent, RecyclerView.State state) {
+        super.onDrawOver(canvas, parent, state);
         int position = -1;
         RecyclerView.LayoutManager layoutManager = parent.getLayoutManager();
         if (layoutManager instanceof LinearLayoutManager) {

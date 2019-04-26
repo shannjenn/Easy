@@ -125,7 +125,7 @@ public class EasyShapeRelativeLayout extends RelativeLayout {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN: {
                 mShape.onFocusEvent(event);
-                break;
+                return true;
             }
             case MotionEvent.ACTION_UP: {
                 mShape.onFocusEvent(event);

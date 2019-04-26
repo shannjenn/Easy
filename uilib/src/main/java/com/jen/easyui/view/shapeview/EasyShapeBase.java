@@ -271,7 +271,10 @@ public class EasyShapeBase {
     }
 
     private void updateButtonState(boolean isActionDown) {
-        if (isActionDown && !isCheck) {
+        if (isActionDown) {
+            if (isCheck) {//选中状态不触发点击效果
+                return;
+            }
             mDrawable.setStroke(mStrokeWidth, mStrokeClickColor, mStrokeDashGapWidth, mStrokeDashGap);
             mDrawable.setColor(mSolidClickColor);
             if (isTextView) {

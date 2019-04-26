@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 
 import com.jen.easyui.popupwindow.listener.WindowListener;
+import com.jen.easyui.recycler.letter.EasyLetterDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +19,9 @@ public class Build {
 
     int flagCode;
     WindowListener listener;
-    final List<Object> data = new ArrayList<>();
 
     Build(Context context) {
         this.context = context;
-        data.add("");//默认一条数据
     }
 
     /**
@@ -62,12 +61,13 @@ public class Build {
         return new EasyWindowScroll(this);
     }
 
-    public Build setData(List data) {
-        this.data.clear();
-        if (data != null && data.size() > 0) {
-            this.data.addAll(data);
-        }
-        return this;
+    /**
+     * 字母列表
+     *
+     * @return .
+     */
+    public EasyWindow createLetter(WindowBind windowBind, EasyLetterDecoration letterDecoration) {
+        return new EasyWindowLetter(this, windowBind, letterDecoration);
     }
 
     public Build setFlagCode(int flagCode) {

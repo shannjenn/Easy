@@ -6,11 +6,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.jen.easy.log.EasyLog;
 import com.jen.easyui.R;
 import com.jen.easyui.popupwindow.listener.WindowItemListener;
 import com.jen.easyui.popupwindow.listener.WindowOkListener;
 import com.jen.easyui.recycler.EasyHolder;
 import com.jen.easyui.recycler.EasyHolderRecyclerWaterfallAdapter;
+import com.jen.easyui.recycler.letter.EasyLetterDecoration;
+import com.jen.easyui.recycler.letter.EasyLetterItem;
+import com.jen.easyui.recycler.letter.EasyLetterView;
 import com.jen.easyui.recycler.listener.EasyItemListener;
 
 import java.util.ArrayList;
@@ -22,16 +26,18 @@ import java.util.List;
  * 时间：2017/09/09.
  */
 
-class EasyWindowObject extends EasyWindow implements EasyItemListener {
+class EasyWindowLetter extends EasyWindow implements EasyItemListener {
     private WindowBind windowBind;
-    private MyAdapter<Object> adapter;
-    private List<Object> data;
-    private RecyclerView.LayoutManager layoutManager;
+    private RecyclerView recycler;
+    private EasyLetterView lt_letter;
+    private MyAdapter<EasyLetterItem> adapter;
+    private List<EasyLetterItem> data;
+    private EasyLetterDecoration<EasyLetterItem> letterDecoration;
 
-    EasyWindowObject(Build build, WindowBind windowBind, RecyclerView.LayoutManager layoutManager) {
+    EasyWindowLetter(Build build, WindowBind windowBind, EasyLetterDecoration<EasyLetterItem> letterDecoration) {
         super(build);
         this.windowBind = windowBind;
-        this.layoutManager = layoutManager;
+        this.letterDecoration = letterDecoration;
     }
 
     @SuppressWarnings("unchecked")
@@ -39,25 +45,50 @@ class EasyWindowObject extends EasyWindow implements EasyItemListener {
     public void setData(List data) {
         if (data == null || data.size() == 0) {
             return;
+        } else if (!(data.get(0) instanceof EasyLetterItem)) {
+            EasyLog.e("setData错误,请设置EasyLetterItem集合");
+            return;
         }
         this.data.clear();
         this.data.addAll(data);
+        letterDecoration.setData(this.data);
+        recycler.addItemDecoration(letterDecoration);
         adapter.notifyDataSetChanged();
+    }
+
+    /**
+     * 设置字母
+     * @param letters .
+     */
+    public void setLetters(String[] letters) {
+        lt_letter.setLetters(letters);
     }
 
     @Override
     View bindContentView() {
-        View popView = LayoutInflater.from(build.context).inflate(R.layout._easy_popup_window_object, null);
+        View popView = LayoutInflater.from(build.context).inflate(R.layout._easy_popup_window_letter, null);
+        lt_letter = popView.findViewById(R.id.lt_letter);
         data = new ArrayList<>();
-        data.add("");//默认有一个
+        data.add(new EasyLetterItem());//默认有一个
         adapter = new MyAdapter<>(build.context, data);
         adapter.setItemListener(this);
-        RecyclerView recycler = popView.findViewById(R.id.recycler);
-        if (layoutManager == null) {
-            layoutManager = new LinearLayoutManager(build.context);
-        }
-        recycler.setLayoutManager(layoutManager);
+        recycler = popView.findViewById(R.id.recycler);
+        recycler.setLayoutManager(new LinearLayoutManager(build.context));
         recycler.setAdapter(adapter);
+        lt_letter.setTouchListener(new EasyLetterView.TouchListener() {
+            @Override
+            public void onTouch(String letter) {
+                for (int i = 1; i < data.size(); i++) {
+                    if (data.get(i).getLetter().equals(letter)) {
+                        EasyLog.d("touch = " + letter);
+                        recycler.scrollToPosition(i);
+                        LinearLayoutManager mLayoutManager = (LinearLayoutManager) recycler.getLayoutManager();
+                        mLayoutManager.scrollToPositionWithOffset(i, 0);
+                        break;
+                    }
+                }
+            }
+        });
         return popView;
     }
 
@@ -86,12 +117,12 @@ class EasyWindowObject extends EasyWindow implements EasyItemListener {
         }
     }
 
-    class MyAdapter<T> extends EasyHolderRecyclerWaterfallAdapter<T> {
+    class MyAdapter<E> extends EasyHolderRecyclerWaterfallAdapter<E> {
         /**
          * @param context .
          * @param data    数据
          */
-        MyAdapter(Context context, List<T> data) {
+        MyAdapter(Context context, List<E> data) {
             super(context, data);
         }
 
