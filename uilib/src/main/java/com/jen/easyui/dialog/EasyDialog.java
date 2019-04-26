@@ -122,10 +122,13 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
             case LEFT_RIGHT:
                 btn_left.setVisibility(View.VISIBLE);
                 btn_right.setVisibility(View.VISIBLE);
+                btn_left.setText(build.txtLeft);
+                btn_right.setText(build.txtRight);
                 break;
             case RIGHT:
                 btn_left.setVisibility(View.GONE);
                 btn_right.setVisibility(View.VISIBLE);
+                btn_right.setText(build.txtRight);
                 break;
         }
         LinearLayout.LayoutParams buttonsP = (LinearLayout.LayoutParams) ll_buttons.getLayoutParams();

@@ -9,6 +9,13 @@
         android:id="@+id/layout_top_bar"
         layout="@layout/_easy_popup_window_topbar" />
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_top_bar"
+        android:layout_marginEnd="50dp" />
+
     <com.jen.easyui.recycler.letter.EasyLetterView
         android:id="@+id/lt_letter"
         android:layout_width="50dp"
@@ -26,12 +33,4 @@
         app:letterDialogTextSize="50sp"
         app:letterDialogWith="100dp"
         app:letterTextSize="14sp" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/layout_top_bar"
-        android:layout_toStartOf="@+id/lt_letter" />
-
 </RelativeLayout>

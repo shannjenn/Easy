@@ -6,7 +6,7 @@ package com.jen.easyui.recycler.letter;
  * 时间：2018/03/21.
  */
 
-public class EasyLetterItem {
+public abstract class EasyLetterItem {
     private String letter = "";
     private boolean hidden;
 

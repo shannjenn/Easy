@@ -239,10 +239,10 @@ public class EasyLetterView extends View {
             case MotionEvent.ACTION_UP:
                 setBackgroundColor(backgroundColor);
                 choosePosition = -1;
-//                if (getLayoutParams().width != width) {
-//                    getLayoutParams().width = width;
-//                    requestLayout();
-//                }
+                if (getLayoutParams().width != width) {
+                    getLayoutParams().width = width;
+                    requestLayout();
+                }
                 invalidate();
                 break;
             default: {
@@ -257,10 +257,10 @@ public class EasyLetterView extends View {
                         }
                         choosePosition = currentPosition;
                     }
-//                    if (getLayoutParams().width != -1) {
-//                        getLayoutParams().width = -1;//MATCH_PARENT
-//                        requestLayout();
-//                    }
+                    if (getLayoutParams().width != -1) {
+                        getLayoutParams().width = -1;//MATCH_PARENT
+                        requestLayout();
+                    }
                     invalidate();
                 }
                 break;
@@ -312,5 +312,9 @@ public class EasyLetterView extends View {
         }
         this.letters = letters;
         invalidate();
+    }
+
+    public void setDialogShow(boolean dialogShow) {
+        this.dialogShow = dialogShow;
     }
 }

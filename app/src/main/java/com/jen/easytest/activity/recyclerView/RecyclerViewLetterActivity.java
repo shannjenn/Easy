@@ -113,11 +113,9 @@ public class RecyclerViewLetterActivity extends EasyActivity {
         lt_letter.setTouchListener(new EasyLetterView.TouchListener() {
             @Override
             public void onTouch(String letter) {
-//                int pos = -1;
-                for (int i = 1; i < mData.size(); i++) {
+                for (int i = 0; i < mData.size(); i++) {
                     if (mData.get(i).getLetter().equals(letter)) {
-//                        pos = i;
-                        EasyLog.d("touch = " + letter);
+                        EasyLog.d("touch = " + letter + " i=" + i);
                         recyclerView.scrollToPosition(i);
                         LinearLayoutManager mLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
                         mLayoutManager.scrollToPositionWithOffset(i, 0);

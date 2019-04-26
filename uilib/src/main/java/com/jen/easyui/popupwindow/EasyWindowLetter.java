@@ -26,15 +26,15 @@ import java.util.List;
  * 时间：2017/09/09.
  */
 
-class EasyWindowLetter extends EasyWindow implements EasyItemListener {
+public class EasyWindowLetter extends EasyWindow implements EasyItemListener {
     private WindowBind windowBind;
     private RecyclerView recycler;
     private EasyLetterView lt_letter;
-    private MyAdapter<EasyLetterItem> adapter;
-    private List<EasyLetterItem> data;
-    private EasyLetterDecoration<EasyLetterItem> letterDecoration;
+    private MyAdapter<Object> adapter;
+    private List<Object> data;
+    private EasyLetterDecoration letterDecoration;
 
-    EasyWindowLetter(Build build, WindowBind windowBind, EasyLetterDecoration<EasyLetterItem> letterDecoration) {
+    EasyWindowLetter(Build build, WindowBind windowBind, EasyLetterDecoration letterDecoration) {
         super(build);
         this.windowBind = windowBind;
         this.letterDecoration = letterDecoration;
@@ -58,10 +58,19 @@ class EasyWindowLetter extends EasyWindow implements EasyItemListener {
 
     /**
      * 设置字母
+     *
      * @param letters .
      */
     public void setLetters(String[] letters) {
         lt_letter.setLetters(letters);
+    }
+
+    /**
+     * 设置字母提示
+     * @param dialogShow .
+     */
+    public void setDialogShow(boolean dialogShow) {
+        lt_letter.setDialogShow(dialogShow);
     }
 
     @Override
@@ -69,7 +78,7 @@ class EasyWindowLetter extends EasyWindow implements EasyItemListener {
         View popView = LayoutInflater.from(build.context).inflate(R.layout._easy_popup_window_letter, null);
         lt_letter = popView.findViewById(R.id.lt_letter);
         data = new ArrayList<>();
-        data.add(new EasyLetterItem());//默认有一个
+        data.add("");//默认有一个
         adapter = new MyAdapter<>(build.context, data);
         adapter.setItemListener(this);
         recycler = popView.findViewById(R.id.recycler);
@@ -78,13 +87,17 @@ class EasyWindowLetter extends EasyWindow implements EasyItemListener {
         lt_letter.setTouchListener(new EasyLetterView.TouchListener() {
             @Override
             public void onTouch(String letter) {
-                for (int i = 1; i < data.size(); i++) {
-                    if (data.get(i).getLetter().equals(letter)) {
-                        EasyLog.d("touch = " + letter);
-                        recycler.scrollToPosition(i);
-                        LinearLayoutManager mLayoutManager = (LinearLayoutManager) recycler.getLayoutManager();
-                        mLayoutManager.scrollToPositionWithOffset(i, 0);
-                        break;
+                for (int i = 0; i < data.size(); i++) {
+                    Object object = data.get(i);
+                    if (object instanceof EasyLetterItem) {
+                        EasyLetterItem letterItem = (EasyLetterItem) object;
+                        if (letterItem.getLetter().equals(letter)) {
+                            EasyLog.d("touch = " + letter);
+                            recycler.scrollToPosition(i);
+                            LinearLayoutManager mLayoutManager = (LinearLayoutManager) recycler.getLayoutManager();
+                            mLayoutManager.scrollToPositionWithOffset(i, 0);
+                            break;
+                        }
                     }
                 }
             }
