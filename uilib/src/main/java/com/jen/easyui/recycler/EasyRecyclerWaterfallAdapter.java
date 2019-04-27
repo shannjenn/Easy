@@ -14,7 +14,7 @@ import java.util.List;
  * 时间：2017/8/12.
  */
 
-public abstract class EasyRecyclerWaterfallAdapter<T> extends EasyRecyclerAdapter<T> {
+public abstract class EasyRecyclerWaterfallAdapter<T> extends EasyRecyclerAdapterFactory<T> {
     private final String TAG = EasyRecyclerWaterfallAdapter.class.getSimpleName();
     /**
      * @param data 数据

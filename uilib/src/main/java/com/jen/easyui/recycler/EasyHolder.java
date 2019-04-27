@@ -19,9 +19,9 @@ import com.jen.easyui.recycler.listener.EasyItemListenerB;
 
 public abstract class EasyHolder extends RecyclerView.ViewHolder {
     private final String TAG = EasyHolder.class.getSimpleName();
-    protected EasyRecyclerAdapter mAdapter;
+    protected EasyRecyclerAdapterFactory mAdapter;
 
-    public EasyHolder(EasyRecyclerAdapter adapter, View itemView) {
+    public EasyHolder(EasyRecyclerAdapterFactory adapter, View itemView) {
         super(itemView);
         this.mAdapter = adapter;
     }

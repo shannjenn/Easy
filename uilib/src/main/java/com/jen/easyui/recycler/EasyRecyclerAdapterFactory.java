@@ -18,7 +18,7 @@ import java.util.List;
  * 时间：2017/8/12.
  */
 
-public abstract class EasyRecyclerAdapter<T> extends RecyclerView.Adapter<EasyHolder> {
+public abstract class EasyRecyclerAdapterFactory<T> extends RecyclerView.Adapter<EasyHolder> {
     protected Context mContext;
     protected List<T> mData;
     EasyItemListener listener;
@@ -26,7 +26,7 @@ public abstract class EasyRecyclerAdapter<T> extends RecyclerView.Adapter<EasyHo
     /**
      * @param data 数据
      */
-    public EasyRecyclerAdapter(Context context, List<T> data) {
+    protected EasyRecyclerAdapterFactory(Context context, List<T> data) {
         this.mContext = context;
         mData = data;
     }
@@ -98,7 +98,7 @@ public abstract class EasyRecyclerAdapter<T> extends RecyclerView.Adapter<EasyHo
     /**
      * 设置拖拽排序
      *
-     * @param recyclerView
+     * @param recyclerView .
      */
     public void setItemTouchSortEvent(RecyclerView recyclerView) {
         itemTouchHelper.attachToRecyclerView(recyclerView);

@@ -14,7 +14,7 @@ import java.util.List;
  * 时间：2017/8/12.
  */
 
-public abstract class EasyHolderRecyclerWaterfallAdapter<T> extends EasyRecyclerAdapter<T> {
+public abstract class EasyHolderRecyclerWaterfallAdapter<T> extends EasyRecyclerAdapterFactory<T> {
     private final String TAG = EasyHolderRecyclerWaterfallAdapter.class.getSimpleName();
 
     /**
@@ -65,7 +65,7 @@ public abstract class EasyHolderRecyclerWaterfallAdapter<T> extends EasyRecycler
     }
 
     class MyHolder extends EasyHolder {
-        public MyHolder(EasyRecyclerAdapter adapter, View itemView) {
+        public MyHolder(EasyRecyclerAdapterFactory adapter, View itemView) {
             super(adapter, itemView);
         }
 
