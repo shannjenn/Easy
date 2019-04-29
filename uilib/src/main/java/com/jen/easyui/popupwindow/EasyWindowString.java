@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import com.jen.easy.log.EasyLog;
 import com.jen.easyui.R;
 import com.jen.easyui.popupwindow.listener.WindowCancelSureListener;
-import com.jen.easyui.popupwindow.listener.WindowItemListener;
 import com.jen.easyui.popupwindow.listener.WindowLeftRightListener;
 import com.jen.easyui.recycler.EasyHolder;
 import com.jen.easyui.recycler.EasyHolderRecyclerBaseAdapter;
@@ -89,12 +88,9 @@ class EasyWindowString extends EasyWindow implements EasyItemListener {
     @Override
     public void onItemClick(View view, int position) {
         selectPosition = position;
-        WindowItemListener itemListener;
-        if (!(build.listener instanceof WindowItemListener)) {
-            return;
+        if (build.itemClickListener != null) {
+            build.itemClickListener.itemClick(build.flagCode, showView, selectPosition, data.get(selectPosition));
         }
-        itemListener = (WindowItemListener) build.listener;
-        itemListener.itemClick(build.flagCode, showView, selectPosition, data.get(selectPosition));
     }
 
     @Override

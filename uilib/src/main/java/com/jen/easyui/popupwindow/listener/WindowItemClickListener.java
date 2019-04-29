@@ -2,7 +2,7 @@ package com.jen.easyui.popupwindow.listener;
 
 import android.view.View;
 
-public interface WindowItemListener extends WindowListener {
+public interface WindowItemClickListener {
 
     void itemClick(int flag, View view, int position, Object object);
 

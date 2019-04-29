@@ -3,6 +3,7 @@ package com.jen.easyui.popupwindow;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 
+import com.jen.easyui.popupwindow.listener.WindowItemClickListener;
 import com.jen.easyui.popupwindow.listener.WindowListener;
 import com.jen.easyui.recycler.letter.EasyLetterDecoration;
 
@@ -16,6 +17,7 @@ public class Build {
 
     int flagCode;
     WindowListener listener;
+    WindowItemClickListener itemClickListener;
 
     Build(Context context) {
         this.context = context;
@@ -89,6 +91,11 @@ public class Build {
 
     public Build setListener(WindowListener listener) {
         this.listener = listener;
+        return this;
+    }
+
+    public Build setItemClickListener(WindowItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
         return this;
     }
 
