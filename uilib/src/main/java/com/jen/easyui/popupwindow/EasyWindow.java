@@ -19,7 +19,7 @@ import java.util.List;
 
 public abstract class EasyWindow extends EasyFactoryWindow implements View.OnClickListener {
     protected Build build;
-    int selectPosition;
+    int selectPosition = -1;//返回时要进行判断
     private View mView;
     protected View showView;
 

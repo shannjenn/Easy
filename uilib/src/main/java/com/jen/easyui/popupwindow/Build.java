@@ -6,9 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import com.jen.easyui.popupwindow.listener.WindowListener;
 import com.jen.easyui.recycler.letter.EasyLetterDecoration;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class Build {
     Context context;

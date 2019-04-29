@@ -8,8 +8,9 @@ import android.view.View;
 
 import com.jen.easy.log.EasyLog;
 import com.jen.easyui.R;
+import com.jen.easyui.popupwindow.listener.WindowCancelSureListener;
 import com.jen.easyui.popupwindow.listener.WindowItemListener;
-import com.jen.easyui.popupwindow.listener.WindowOkListener;
+import com.jen.easyui.popupwindow.listener.WindowLeftRightListener;
 import com.jen.easyui.recycler.EasyHolder;
 import com.jen.easyui.recycler.EasyHolderRecyclerWaterfallAdapter;
 import com.jen.easyui.recycler.letter.EasyLetterDecoration;
@@ -58,20 +59,12 @@ public class EasyWindowLetter extends EasyWindow implements EasyItemListener {
     }
 
     /**
-     * 设置字母
-     *
-     * @param letters .
-     */
-    public void setLetters(String[] letters) {
-        lt_letter.setLetters(letters);
-    }
-
-    /**
      * 字母控件
      */
     public EasyLetterView getLetterView() {
         return lt_letter;
     }
+
 
     @Override
     View bindContentView() {
@@ -118,15 +111,21 @@ public class EasyWindowLetter extends EasyWindow implements EasyItemListener {
 
     @Override
     void clickLeftCallBack() {
-        if (build.listener instanceof WindowOkListener && data.size() > 0) {
-            ((WindowOkListener) build.listener).windowLeft(build.flagCode, showView, selectPosition, data.get(selectPosition));
+        if (build.listener instanceof WindowLeftRightListener) {
+            ((WindowLeftRightListener) build.listener).windowLeft(build.flagCode, showView, selectPosition);
+        } else if (build.listener instanceof WindowCancelSureListener) {
+            ((WindowCancelSureListener) build.listener).windowCancel(build.flagCode, showView);
         }
     }
 
     @Override
     void clickRightCallBack() {
-        if (build.listener instanceof WindowOkListener && data.size() > 0) {
-            ((WindowOkListener) build.listener).windowRight(build.flagCode, showView, selectPosition, data.get(selectPosition));
+        if (build.listener instanceof WindowLeftRightListener) {
+            ((WindowLeftRightListener) build.listener).windowRight(build.flagCode, showView, selectPosition);
+        } else if (build.listener instanceof WindowCancelSureListener) {
+            if (selectPosition >= 0 && selectPosition < data.size()) {
+                ((WindowCancelSureListener) build.listener).windowSure(build.flagCode, showView, selectPosition, data.get(selectPosition));
+            }
         }
     }
 

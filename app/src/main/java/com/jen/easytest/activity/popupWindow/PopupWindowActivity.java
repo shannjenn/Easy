@@ -56,6 +56,30 @@ public class PopupWindowActivity extends EasyActivity {
         list.add("13");
         list.add("1");
         list.add("2");
+        list.add("2");
+        list.add("2");
+        list.add("2");
+        list.add("2");
+        list.add("2");
+        list.add("2");
+        list.add("2");
+        list.add("2");
+        list.add("2");
+        list.add("2");
+        list.add("2");
+        list.add("2");
+        list.add("2");
+        list.add("2");
+        list.add("2");
+        list.add("2");
+        list.add("2");
+        list.add("2");
+        list.add("2");
+        list.add("2");
+        list.add("2");
+        list.add("2");
+        list.add("2");
+        list.add("2");
         list.add("1");
 
         styleTopBar = new StyleTopBar();
@@ -63,7 +87,7 @@ public class PopupWindowActivity extends EasyActivity {
         easyWindowStr = EasyWindow.build(this)
 //                .setData(list)
 //                .setWidth(500)
-                .setShowTopBar(false)
+                .setShowTopBar(true)
                 .createString();
         easyWindowStr.setData(list);
 
@@ -156,7 +180,8 @@ public class PopupWindowActivity extends EasyActivity {
     protected void onBindClick(View view) {
         switch (view.getId()) {
             case R.id.popup_window_str: {
-                easyWindowStr.showDropDown(popup_window);
+//                easyWindowStr.showDropDown(popup_window);
+                easyWindowStr.showBottom(popup_window);
                 break;
             }
             case R.id.popup_window_object: {

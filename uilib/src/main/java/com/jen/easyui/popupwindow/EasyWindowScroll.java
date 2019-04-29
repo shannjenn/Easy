@@ -5,7 +5,8 @@ import android.view.View;
 
 import com.jen.easy.log.EasyLog;
 import com.jen.easyui.R;
-import com.jen.easyui.popupwindow.listener.WindowOkListener;
+import com.jen.easyui.popupwindow.listener.WindowCancelSureListener;
+import com.jen.easyui.popupwindow.listener.WindowLeftRightListener;
 import com.jen.easyui.view.loopview.StringScrollPicker;
 
 import java.util.ArrayList;
@@ -51,15 +52,21 @@ class EasyWindowScroll extends EasyWindow {
 
     @Override
     void clickLeftCallBack() {
-        if (build.listener instanceof WindowOkListener && data.size() > 0) {
-            ((WindowOkListener) build.listener).windowLeft(build.flagCode, showView, pick_string.getSelectedPosition(), pick_string.getSelectedItem().toString());
+        if (build.listener instanceof WindowLeftRightListener) {
+            ((WindowLeftRightListener) build.listener).windowLeft(build.flagCode, showView, pick_string.getSelectedPosition());
+        } else if (build.listener instanceof WindowCancelSureListener) {
+            ((WindowCancelSureListener) build.listener).windowCancel(build.flagCode, showView);
         }
     }
 
     @Override
     void clickRightCallBack() {
-        if (build.listener instanceof WindowOkListener && data.size() > 0) {
-            ((WindowOkListener) build.listener).windowRight(build.flagCode, showView, pick_string.getSelectedPosition(), pick_string.getSelectedItem().toString());
+        if (build.listener instanceof WindowLeftRightListener && data.size() > 0) {
+            ((WindowLeftRightListener) build.listener).windowRight(build.flagCode, showView, pick_string.getSelectedPosition());
+        } else if (build.listener instanceof WindowCancelSureListener) {
+            if (selectPosition >= 0 && selectPosition < data.size()) {
+                ((WindowCancelSureListener) build.listener).windowSure(build.flagCode, showView, selectPosition, data.get(selectPosition));
+            }
         }
     }
 }

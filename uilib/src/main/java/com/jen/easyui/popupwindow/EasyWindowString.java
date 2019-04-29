@@ -9,12 +9,14 @@ import android.view.ViewGroup;
 
 import com.jen.easy.log.EasyLog;
 import com.jen.easyui.R;
+import com.jen.easyui.popupwindow.listener.WindowCancelSureListener;
 import com.jen.easyui.popupwindow.listener.WindowItemListener;
-import com.jen.easyui.popupwindow.listener.WindowOkListener;
+import com.jen.easyui.popupwindow.listener.WindowLeftRightListener;
 import com.jen.easyui.recycler.EasyHolder;
 import com.jen.easyui.recycler.EasyHolderRecyclerBaseAdapter;
 import com.jen.easyui.recycler.listener.EasyItemListener;
 import com.jen.easyui.util.EasyDensityUtil;
+import com.jen.easyui.util.EasyDisplayUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +45,7 @@ class EasyWindowString extends EasyWindow implements EasyItemListener {
         adapter.setItemListener(this);
         recycler = popView.findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(build.context));
+        recycler.setAdapter(adapter);
         updateHeight();
         return popView;
     }
@@ -52,9 +55,20 @@ class EasyWindowString extends EasyWindow implements EasyItemListener {
             return;
         }
         ViewGroup.LayoutParams lp = recycler.getLayoutParams();
-        lp.height = EasyDensityUtil.dp2pxInt(50 * data.size());
-        recycler.setLayoutParams(lp);
-        recycler.setAdapter(adapter);
+        int height = EasyDensityUtil.dp2pxInt(50 * data.size());
+        int maxHeight = EasyDisplayUtil.getScreenHeight(build.context);
+        int titleHeight;
+        if (build.showTopBar) {
+            titleHeight = EasyDensityUtil.dp2pxInt(46 + 10);//46是标题高度
+        } else {
+            titleHeight = EasyDensityUtil.dp2pxInt(10);//46是标题高度
+        }
+        if (height >= maxHeight - titleHeight) {
+            lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
+        } else {
+            lp.height = height;
+        }
+//        recycler.setLayoutParams(lp);
     }
 
     @SuppressWarnings("unchecked")
@@ -85,15 +99,21 @@ class EasyWindowString extends EasyWindow implements EasyItemListener {
 
     @Override
     void clickLeftCallBack() {
-        if (build.listener instanceof WindowOkListener && data.size() > 0) {
-            ((WindowOkListener) build.listener).windowLeft(build.flagCode, showView, selectPosition, data.get(selectPosition));
+        if (build.listener instanceof WindowLeftRightListener) {
+            ((WindowLeftRightListener) build.listener).windowLeft(build.flagCode, showView, selectPosition);
+        } else if (build.listener instanceof WindowCancelSureListener) {
+            ((WindowCancelSureListener) build.listener).windowCancel(build.flagCode, showView);
         }
     }
 
     @Override
     void clickRightCallBack() {
-        if (build.listener instanceof WindowOkListener && data.size() > 0) {
-            ((WindowOkListener) build.listener).windowRight(build.flagCode, showView, selectPosition, data.get(selectPosition));
+        if (build.listener instanceof WindowLeftRightListener) {
+            ((WindowLeftRightListener) build.listener).windowRight(build.flagCode, showView, selectPosition);
+        } else if (build.listener instanceof WindowCancelSureListener) {
+            if (selectPosition >= 0 && selectPosition < data.size()) {
+                ((WindowCancelSureListener) build.listener).windowSure(build.flagCode, showView, selectPosition, data.get(selectPosition));
+            }
         }
     }
 

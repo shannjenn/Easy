@@ -52,7 +52,7 @@ public class EasyLetterView extends View {
     private String lettersByComma;
 
     private boolean dialogShow;
-    private int dialogBackgroundDrawable;
+    private Drawable dialogBackgroundDrawable;
     private int dialogWith;
     private int dialogHeight;
     private float dialogTextSize;
@@ -92,7 +92,8 @@ public class EasyLetterView extends View {
         lettersByComma = ta.getString(R.styleable.EasyLetterView_letterByComma);//自定义Letter逗号隔开
 
         dialogShow = ta.getBoolean(R.styleable.EasyLetterView_letterDialogShow, true);
-        dialogBackgroundDrawable = ta.getResourceId(R.styleable.EasyLetterView_letterDialogBackgroundDrawable, -1);
+        int dialogBackgroundDrawableId = ta.getResourceId(R.styleable.EasyLetterView_letterDialogBackgroundDrawable, -1);
+        dialogBackgroundDrawable = getResources().getDrawable(dialogBackgroundDrawableId);
         dialogWith = ta.getDimensionPixelSize(R.styleable.EasyLetterView_letterDialogWith, 0);
         dialogHeight = ta.getDimensionPixelSize(R.styleable.EasyLetterView_letterDialogHeight, 0);
         dialogTextSize = ta.getDimensionPixelOffset(R.styleable.EasyLetterView_letterDialogTextSize, EasyDensityUtil.sp2pxInt(14));
@@ -222,11 +223,10 @@ public class EasyLetterView extends View {
         int centerX = getWidth() - width - dialogWith / 2 - dialogMarginRight;
         int centerY = choosePosition * letterPerHeight + letterPerHeight / 2 + letterRect.height() / 2 + paddingTop;
 
-        Drawable drawable = getResources().getDrawable(dialogBackgroundDrawable);
-        if (drawable != null) {
-            drawable.setBounds(centerX - dialogWith / 2, centerY - dialogHeight / 2,
+        if (dialogBackgroundDrawable != null) {
+            dialogBackgroundDrawable.setBounds(centerX - dialogWith / 2, centerY - dialogHeight / 2,
                     centerX + dialogWith / 2, centerY + dialogHeight / 2);
-            drawable.draw(canvas);
+            dialogBackgroundDrawable.draw(canvas);
         }
         Rect rect = new Rect();
         textDialogPaint.getTextBounds(target, 0, 1, rect);
@@ -271,22 +271,23 @@ public class EasyLetterView extends View {
 
     @Override
     public void setBackgroundColor(int color) {
-        super.setBackgroundColor(Color.TRANSPARENT);
+//        super.setBackgroundColor(Color.TRANSPARENT);
+        backgroundColor = color;
     }
 
     @Override
     public void setBackgroundResource(int resId) {
-        super.setBackgroundResource(-1);
+//        super.setBackgroundResource(-1);
     }
 
     @Override
     public void setBackground(Drawable background) {
-        super.setBackground(null);
+//        super.setBackground(null);
     }
 
     @Override
     public void setBackgroundDrawable(Drawable background) {
-        super.setBackgroundDrawable(null);
+//        super.setBackgroundDrawable(null);
     }
 
     public interface TouchListener {
@@ -302,16 +303,28 @@ public class EasyLetterView extends View {
         this.touchListener = touchListener;
     }
 
-    public String[] getLetters() {
-        return letters;
-    }
-
     public void setLetters(String[] letters) {
-        if(letters == null || letters.length == 0){
+        if (letters == null || letters.length == 0) {
             return;
         }
         this.letters = letters;
         invalidate();
+    }
+
+    public void setBackgroundTouchColor(int backgroundTouchColor) {
+        this.backgroundTouchColor = backgroundTouchColor;
+    }
+
+    public void setDialogBackgroundDrawable(Drawable dialogBackgroundDrawable) {
+        this.dialogBackgroundDrawable = dialogBackgroundDrawable;
+    }
+
+    public void setDialogTextColor(int dialogTextColor) {
+        this.dialogTextColor = dialogTextColor;
+    }
+
+    public void setDialogTextSize(float dialogTextSize) {
+        this.dialogTextSize = dialogTextSize;
     }
 
     public void setDialogShow(boolean dialogShow) {
