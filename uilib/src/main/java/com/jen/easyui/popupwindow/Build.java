@@ -14,7 +14,7 @@ public class Build {
     Context context;
     int height, width;
     boolean showTopBar = true;
-    StyleTopBar styleTopBar;
+    StyleTopBar styleTopBar = new StyleTopBar();//默认值
     StyleAnim styleAnim = StyleAnim.BOTTOM;
 
     int flagCode;

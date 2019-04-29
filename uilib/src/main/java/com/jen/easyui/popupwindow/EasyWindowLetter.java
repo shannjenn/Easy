@@ -33,7 +33,6 @@ public class EasyWindowLetter extends EasyWindow implements EasyItemListener {
     private MyAdapter<Object> adapter;
     private List<Object> data;
     private EasyLetterDecoration letterDecoration;
-    private boolean addedDecoration = false;
 
     EasyWindowLetter(Build build, WindowBind windowBind, EasyLetterDecoration letterDecoration) {
         super(build);
@@ -53,10 +52,8 @@ public class EasyWindowLetter extends EasyWindow implements EasyItemListener {
         this.data.clear();
         this.data.addAll(data);
         letterDecoration.setData(this.data);
-        if (!addedDecoration) {
-            recycler.addItemDecoration(letterDecoration);
-            addedDecoration = true;
-        }
+        recycler.removeItemDecoration(letterDecoration);
+        recycler.addItemDecoration(letterDecoration);
         adapter.notifyDataSetChanged();
     }
 
@@ -70,12 +67,10 @@ public class EasyWindowLetter extends EasyWindow implements EasyItemListener {
     }
 
     /**
-     * 设置字母提示
-     *
-     * @param dialogShow .
+     * 字母控件
      */
-    public void setDialogShow(boolean dialogShow) {
-        lt_letter.setDialogShow(dialogShow);
+    public EasyLetterView getLetterView() {
+        return lt_letter;
     }
 
     @Override

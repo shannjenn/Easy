@@ -52,7 +52,7 @@ public class EasyLetterView extends View {
     private String lettersByComma;
 
     private boolean dialogShow;
-    private int dialogBackgroundColor;
+    private int dialogBackgroundDrawable;
     private int dialogWith;
     private int dialogHeight;
     private float dialogTextSize;
@@ -92,7 +92,7 @@ public class EasyLetterView extends View {
         lettersByComma = ta.getString(R.styleable.EasyLetterView_letterByComma);//自定义Letter逗号隔开
 
         dialogShow = ta.getBoolean(R.styleable.EasyLetterView_letterDialogShow, true);
-        dialogBackgroundColor = ta.getResourceId(R.styleable.EasyLetterView_letterDialogBackgroundColor, -1);
+        dialogBackgroundDrawable = ta.getResourceId(R.styleable.EasyLetterView_letterDialogBackgroundDrawable, -1);
         dialogWith = ta.getDimensionPixelSize(R.styleable.EasyLetterView_letterDialogWith, 0);
         dialogHeight = ta.getDimensionPixelSize(R.styleable.EasyLetterView_letterDialogHeight, 0);
         dialogTextSize = ta.getDimensionPixelOffset(R.styleable.EasyLetterView_letterDialogTextSize, EasyDensityUtil.sp2pxInt(14));
@@ -222,7 +222,7 @@ public class EasyLetterView extends View {
         int centerX = getWidth() - width - dialogWith / 2 - dialogMarginRight;
         int centerY = choosePosition * letterPerHeight + letterPerHeight / 2 + letterRect.height() / 2 + paddingTop;
 
-        Drawable drawable = getResources().getDrawable(dialogBackgroundColor);
+        Drawable drawable = getResources().getDrawable(dialogBackgroundDrawable);
         if (drawable != null) {
             drawable.setBounds(centerX - dialogWith / 2, centerY - dialogHeight / 2,
                     centerX + dialogWith / 2, centerY + dialogHeight / 2);

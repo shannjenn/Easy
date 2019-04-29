@@ -282,11 +282,7 @@ public class EasyTimePickerPopWin extends PopupWindow implements OnClickListener
         if (null != timePickedListener) {
             int i = v.getId();
             if (i == R.id.btn_confirm) {
-                long selectTime = selectCalendar.getTimeInMillis();
-                long initTime = config.calendarGenerator.getInitCalendar().getTimeInMillis();
-                if (selectTime != initTime) {
-                    timePickedListener.onPick(selectCalendar);
-                }
+                timePickedListener.onPick(selectCalendar);
             } else {
 
             }

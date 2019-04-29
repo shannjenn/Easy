@@ -40,6 +40,8 @@ public class PopupWindowActivity extends EasyActivity {
     @EasyBindId(R.id.tv_right)
     View tv_right;
 
+    List<RecyclerViewModel> mData = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +87,6 @@ public class PopupWindowActivity extends EasyActivity {
                 });
         easyWindowObject.setData(list);
 
-        List<RecyclerViewModel> mData = new ArrayList<>();
         easyWindowLetter = EasyWindow.build(this)
                 .createLetter(new WindowBind() {
                     @Override
@@ -100,13 +101,16 @@ public class PopupWindowActivity extends EasyActivity {
 
                     @Override
                     public void onBindItemData(EasyHolder easyHolder, View view, List data, int position) {
+                        RecyclerViewModel model = (RecyclerViewModel) data.get(position);
 
+                        easyHolder.setTextView(R.id.tv_rename,model.getName());
                     }
                 }, new EasyLetterDecoration());
 
         mData.clear();
         for (int i = 0; i < 36; i++) {
             RecyclerViewModel model = new RecyclerViewModel();
+            model.setName("字母" + i);
             mData.add(model);
         }
         mData.get(0).setLetter("A");
@@ -145,8 +149,6 @@ public class PopupWindowActivity extends EasyActivity {
         mData.get(33).setLetter("Q");
         mData.get(34).setLetter("R");
 
-        easyWindowLetter.setData(mData);
-
     }
 
     @EasyBindClick({R.id.popup_window_str, R.id.popup_window_object, R.id.popup_window_right, R.id.popup_window_letter})
@@ -174,6 +176,7 @@ public class PopupWindowActivity extends EasyActivity {
                 break;
             }
             case R.id.popup_window_letter: {
+                easyWindowLetter.setData(mData);
                 easyWindowLetter.showBottom(view);
                 break;
             }

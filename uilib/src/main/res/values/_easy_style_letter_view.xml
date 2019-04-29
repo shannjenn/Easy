@@ -11,7 +11,7 @@
         <attr name="letterByComma" format="string" />
 
         <attr name="letterDialogShow" format="boolean" />
-        <attr name="letterDialogBackgroundColor" format="reference" />
+        <attr name="letterDialogBackgroundDrawable" format="reference" />
         <attr name="letterDialogWith" format="dimension" />
         <attr name="letterDialogHeight" format="dimension" />
         <attr name="letterDialogTextSize" format="dimension" />

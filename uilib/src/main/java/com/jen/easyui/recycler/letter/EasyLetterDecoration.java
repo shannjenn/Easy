@@ -28,6 +28,7 @@ public class EasyLetterDecoration<T extends EasyLetterItem> extends RecyclerView
     public EasyLetterDecoration() {
         init();
     }
+
     public EasyLetterDecoration(List<T> data) {
         if (data != null && data.size() > 0) {
             mData.clear();
@@ -70,10 +71,6 @@ public class EasyLetterDecoration<T extends EasyLetterItem> extends RecyclerView
         outRect.set(0, height, 0, 0);
     }
 
-//    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-//
-//    }
-
     @Override
     public void onDraw(Canvas canvas, RecyclerView parent, RecyclerView.State state) {
         super.onDraw(canvas, parent, state);
@@ -88,14 +85,10 @@ public class EasyLetterDecoration<T extends EasyLetterItem> extends RecyclerView
                 continue;
             RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
             int position = params.getViewLayoutPosition();
-            if (position == 0) {
+            String letter = mData.get(position).getLetter();
+            if (!letter.equals(lastLetter)) {
+                lastLetter = letter;
                 drawTitle(canvas, left, right, child, params, position, 0);
-            } else {
-                String letter = mData.get(position).getLetter();
-                if (!letter.equals(lastLetter)) {
-                    lastLetter = letter;
-                    drawTitle(canvas, left, right, child, params, position, 0);
-                }
             }
         }
     }
@@ -104,13 +97,13 @@ public class EasyLetterDecoration<T extends EasyLetterItem> extends RecyclerView
      * 绘制Title区域背景和文字的方法
      * 最先调用，绘制最下层的title
      *
-     * @param canvas
-     * @param left
-     * @param right
-     * @param child
-     * @param params
-     * @param position
-     * @param headItems
+     * @param canvas    .
+     * @param left      .
+     * @param right     .
+     * @param child     .
+     * @param params    .
+     * @param position  .
+     * @param headItems .
      */
     private void drawTitle(Canvas canvas, int left, int right, View child, RecyclerView.LayoutParams params, int position, int headItems) {
         mPaint.setColor(letterBackgroundColor);
@@ -127,9 +120,9 @@ public class EasyLetterDecoration<T extends EasyLetterItem> extends RecyclerView
     /**
      * 最后调用，绘制最上层的title
      *
-     * @param canvas
-     * @param parent
-     * @param state
+     * @param canvas .
+     * @param parent .
+     * @param state  .
      */
     @Override
     public void onDrawOver(Canvas canvas, final RecyclerView parent, RecyclerView.State state) {
@@ -167,14 +160,6 @@ public class EasyLetterDecoration<T extends EasyLetterItem> extends RecyclerView
         canvas.drawText(letter, child.getPaddingLeft(), parent.getPaddingTop() + letterHeight - (letterHeight / 2 - rect.height() / 2), mPaint);
         if (flag)
             canvas.restore();//恢复画布到之前保存的状态
-    }
-
-    public Paint getmPaint() {
-        return mPaint;
-    }
-
-    public void setmPaint(Paint mPaint) {
-        this.mPaint = mPaint;
     }
 
     public int getLetterHeight() {
