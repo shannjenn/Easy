@@ -1,6 +1,8 @@
 package com.jen.easytest.activity.popupWindow;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.jen.easy.EasyBindClick;
@@ -10,8 +12,8 @@ import com.jen.easytest.model.RecyclerViewModel;
 import com.jen.easyui.base.EasyActivity;
 import com.jen.easyui.popupwindow.EasyWindow;
 import com.jen.easyui.popupwindow.StyleTopBar;
-import com.jen.easyui.popupwindow.WindowBind;
 import com.jen.easyui.recycler.EasyHolder;
+import com.jen.easyui.recycler.EasyHolderRecyclerBaseAdapter;
 import com.jen.easyui.recycler.letter.EasyLetterDecoration;
 import com.jen.easyui.util.EasyDensityUtil;
 
@@ -25,7 +27,6 @@ import java.util.List;
 
 public class PopupWindowActivity extends EasyActivity {
 
-    EasyWindow easyWindowStr;
     EasyWindow easyWindowObject;
     EasyWindow easyWindowLetter;
 
@@ -41,6 +42,7 @@ public class PopupWindowActivity extends EasyActivity {
     View tv_right;
 
     List<RecyclerViewModel> mData = new ArrayList<>();
+    final List<String> list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +52,7 @@ public class PopupWindowActivity extends EasyActivity {
 
     @Override
     protected void initViews() {
-        final List<String> list = new ArrayList<>();
+
         list.add("1");
         list.add("1");
         list.add("13");
@@ -84,52 +86,13 @@ public class PopupWindowActivity extends EasyActivity {
 
         styleTopBar = new StyleTopBar();
 
-        easyWindowStr = EasyWindow.build(this)
-//                .setData(list)
-//                .setWidth(500)
-                .setShowTopBar(true)
-                .createString();
-        easyWindowStr.setData(list);
-
         easyWindowObject = EasyWindow.build(this)
                 .setStyleTopBar(styleTopBar)
-                .createObject(new WindowBind() {
-                    @Override
-                    public int[] onBindItemLayout() {
-                        return new int[]{R.layout._easy_recycler_foot};
-                    }
-
-                    @Override
-                    public int onBindViewType() {
-                        return 0;
-                    }
-
-                    @Override
-                    public void onBindItemData(EasyHolder easyHolder, View view, List data, int position) {
-                        easyHolder.setTextView(R.id.tv_text, list.get(position));
-                    }
-                });
+                .createObject(new MyAdapter(this, list));
         easyWindowObject.setData(list);
 
         easyWindowLetter = EasyWindow.build(this)
-                .createLetter(new WindowBind() {
-                    @Override
-                    public int onBindViewType() {
-                        return 0;
-                    }
-
-                    @Override
-                    public int[] onBindItemLayout() {
-                        return new int[]{R.layout.item_test};
-                    }
-
-                    @Override
-                    public void onBindItemData(EasyHolder easyHolder, View view, List data, int position) {
-                        RecyclerViewModel model = (RecyclerViewModel) data.get(position);
-
-                        easyHolder.setTextView(R.id.tv_rename,model.getName());
-                    }
-                }, new EasyLetterDecoration());
+                .createLetter(new MyAdapter(this, list), new EasyLetterDecoration());
 
         mData.clear();
         for (int i = 0; i < 36; i++) {
@@ -181,7 +144,7 @@ public class PopupWindowActivity extends EasyActivity {
         switch (view.getId()) {
             case R.id.popup_window_str: {
 //                easyWindowStr.showDropDown(popup_window);
-                easyWindowStr.showBottom(popup_window);
+//                easyWindowStr.showBottom(popup_window);
                 break;
             }
             case R.id.popup_window_object: {
@@ -197,7 +160,7 @@ public class PopupWindowActivity extends EasyActivity {
                         .setShowTopBar(false)
                         .setWidth(EasyDensityUtil.dp2pxInt(195))
                         .setHeight(EasyDensityUtil.dp2pxInt(45))
-                        .createObject(WindowBindEdit.bind()).showRight(tv_right, x, y);
+                        .createObject(new MyAdapter(this, list)).showRight(tv_right, x, y);
                 break;
             }
             case R.id.popup_window_letter: {
@@ -208,4 +171,29 @@ public class PopupWindowActivity extends EasyActivity {
         }
     }
 
+    class MyAdapter extends EasyHolderRecyclerBaseAdapter {
+
+        /**
+         * @param context .
+         * @param data    数据
+         */
+        public MyAdapter(Context context, List data) {
+            super(context, data);
+        }
+
+        @Override
+        protected int onBindLayout() {
+            return R.layout.item_test;
+        }
+
+        @Override
+        protected void onBindHolderData(EasyHolder easyHolder, View view, int viewType, int position) {
+            easyHolder.setTextView(R.id.tv_text, mData.get(position).toString());
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+
+        }
+    }
 }

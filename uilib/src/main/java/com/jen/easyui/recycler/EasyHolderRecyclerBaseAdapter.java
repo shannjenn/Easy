@@ -28,13 +28,13 @@ public abstract class EasyHolderRecyclerBaseAdapter<T> extends EasyRecyclerAdapt
     public EasyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         int layout = onBindLayout();
         if (layout == 0) {
-            Log.w(TAG, "找不到该值对应item布局R.layout.id：" + layout);
-            return null;
+            Log.e(TAG, "找不到该值对应item布局R.layout.id：" + layout);
+            return super.createViewHolder(parent, viewType);
         }
         View view = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
         if (view == null) {
-            Log.w(TAG, "找不到该值对应item布局R.layout.id：" + layout);
-            return null;
+            Log.e(TAG, "找不到该值对应item布局R.layout.id：" + layout);
+            return super.createViewHolder(parent, viewType);
         }
         return bindHolder(view);
     }

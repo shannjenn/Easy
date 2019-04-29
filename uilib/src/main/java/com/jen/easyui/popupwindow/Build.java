@@ -3,8 +3,8 @@ package com.jen.easyui.popupwindow;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 
-import com.jen.easyui.popupwindow.listener.WindowItemClickListener;
-import com.jen.easyui.popupwindow.listener.WindowListener;
+import com.jen.easyui.popupwindow.listener.WindowTopBarListener;
+import com.jen.easyui.recycler.EasyRecyclerAdapterFactory;
 import com.jen.easyui.recycler.letter.EasyLetterDecoration;
 
 
@@ -16,39 +16,40 @@ public class Build {
     StyleAnim styleAnim = StyleAnim.BOTTOM;
 
     int flagCode;
-    WindowListener listener;
-    WindowItemClickListener itemClickListener;
+    WindowTopBarListener topBarListener;
 
     Build(Context context) {
         this.context = context;
     }
 
     /**
-     * @return 字符串列表
-     */
-    public EasyWindow createString() {
-        return new EasyWindowString(this);
-    }
-
-    /**
      * 对象列表
      *
-     * @param windowBind 绑定item数据
+     * @param adapter 绑定item数据
      * @return .
      */
-    public EasyWindow createObject(WindowBind windowBind) {
-        return createObject(windowBind, null);
+    public EasyWindow createObject(EasyRecyclerAdapterFactory adapter) {
+        return createObject(adapter, null);
     }
 
     /**
      * 对象列表
      *
-     * @param windowBind    绑定item数据
+     * @param adapter       绑定item数据
      * @param layoutManager .
      * @return .
      */
-    public EasyWindow createObject(WindowBind windowBind, RecyclerView.LayoutManager layoutManager) {
-        return new EasyWindowObject(this, windowBind, layoutManager);
+    public EasyWindow createObject(EasyRecyclerAdapterFactory adapter, RecyclerView.LayoutManager layoutManager) {
+        return new EasyWindowObject(this, adapter, layoutManager);
+    }
+
+    /**
+     * 字母列表
+     *
+     * @return .
+     */
+    public EasyWindow createLetter(EasyRecyclerAdapterFactory adapter, EasyLetterDecoration letterDecoration) {
+        return new EasyWindowLetter(this, adapter, letterDecoration);
     }
 
     /**
@@ -58,15 +59,6 @@ public class Build {
      */
     public EasyWindow createScroll() {
         return new EasyWindowScroll(this);
-    }
-
-    /**
-     * 字母列表
-     *
-     * @return .
-     */
-    public EasyWindow createLetter(WindowBind windowBind, EasyLetterDecoration letterDecoration) {
-        return new EasyWindowLetter(this, windowBind, letterDecoration);
     }
 
     public Build setFlagCode(int flagCode) {
@@ -89,14 +81,8 @@ public class Build {
         return this;
     }
 
-    public Build setListener(WindowListener listener) {
-        this.listener = listener;
-        return this;
-    }
-
-    public Build setItemClickListener(WindowItemClickListener itemClickListener) {
-        this.itemClickListener = itemClickListener;
-        return this;
+    public Build setTopBarListener(WindowTopBarListener topBarListener) {
+        this.topBarListener = topBarListener;return this;
     }
 
     public Build setStyleTopBar(StyleTopBar styleTopBar) {

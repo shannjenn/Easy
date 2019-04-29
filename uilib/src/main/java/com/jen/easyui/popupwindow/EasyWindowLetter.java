@@ -1,6 +1,5 @@
 package com.jen.easyui.popupwindow;
 
-import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,14 +7,10 @@ import android.view.View;
 
 import com.jen.easy.log.EasyLog;
 import com.jen.easyui.R;
-import com.jen.easyui.popupwindow.listener.WindowCancelSureListener;
-import com.jen.easyui.popupwindow.listener.WindowLeftRightListener;
-import com.jen.easyui.recycler.EasyHolder;
-import com.jen.easyui.recycler.EasyHolderRecyclerWaterfallAdapter;
+import com.jen.easyui.recycler.EasyRecyclerAdapterFactory;
 import com.jen.easyui.recycler.letter.EasyLetterDecoration;
 import com.jen.easyui.recycler.letter.EasyLetterItem;
 import com.jen.easyui.recycler.letter.EasyLetterView;
-import com.jen.easyui.recycler.listener.EasyItemListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,17 +21,14 @@ import java.util.List;
  * 时间：2017/09/09.
  */
 
-public class EasyWindowLetter extends EasyWindow implements EasyItemListener {
-    private WindowBind windowBind;
+public class EasyWindowLetter extends EasyWindow  {
     private RecyclerView recycler;
     private EasyLetterView lt_letter;
-    private MyAdapter<Object> adapter;
     private List<Object> data;
     private EasyLetterDecoration letterDecoration;
 
-    EasyWindowLetter(Build build, WindowBind windowBind, EasyLetterDecoration letterDecoration) {
-        super(build);
-        this.windowBind = windowBind;
+    EasyWindowLetter(Build build, EasyRecyclerAdapterFactory adapter, EasyLetterDecoration letterDecoration) {
+        super(build,adapter);
         this.letterDecoration = letterDecoration;
     }
 
@@ -71,8 +63,6 @@ public class EasyWindowLetter extends EasyWindow implements EasyItemListener {
         lt_letter = popView.findViewById(R.id.lt_letter);
         data = new ArrayList<>();
         data.add("");//默认有一个
-        adapter = new MyAdapter<>(build.context, data);
-        adapter.setItemListener(this);
         recycler = popView.findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(build.context));
         recycler.setAdapter(adapter);
@@ -95,59 +85,6 @@ public class EasyWindowLetter extends EasyWindow implements EasyItemListener {
             }
         });
         return popView;
-    }
-
-    @Override
-    public void onItemClick(View view, int position) {
-        selectPosition = position;
-        if (build.itemClickListener != null) {
-            build.itemClickListener.itemClick(build.flagCode, showView, selectPosition, data.get(selectPosition));
-        }
-    }
-
-    @Override
-    void clickLeftCallBack() {
-        if (build.listener instanceof WindowLeftRightListener) {
-            ((WindowLeftRightListener) build.listener).windowLeft(build.flagCode, showView, selectPosition);
-        } else if (build.listener instanceof WindowCancelSureListener) {
-            ((WindowCancelSureListener) build.listener).windowCancel(build.flagCode, showView);
-        }
-    }
-
-    @Override
-    void clickRightCallBack() {
-        if (build.listener instanceof WindowLeftRightListener) {
-            ((WindowLeftRightListener) build.listener).windowRight(build.flagCode, showView, selectPosition);
-        } else if (build.listener instanceof WindowCancelSureListener) {
-            if (selectPosition >= 0 && selectPosition < data.size()) {
-                ((WindowCancelSureListener) build.listener).windowSure(build.flagCode, showView, selectPosition, data.get(selectPosition));
-            }
-        }
-    }
-
-    class MyAdapter<E> extends EasyHolderRecyclerWaterfallAdapter<E> {
-        /**
-         * @param context .
-         * @param data    数据
-         */
-        MyAdapter(Context context, List<E> data) {
-            super(context, data);
-        }
-
-        @Override
-        protected int[] onBindLayout() {
-            return windowBind.onBindItemLayout();
-        }
-
-        @Override
-        protected int getViewType(int position) {
-            return windowBind.onBindViewType();
-        }
-
-        @Override
-        protected void onBindHolderData(EasyHolder easyHolder, View view, int viewType, int position) {
-            windowBind.onBindItemData(easyHolder, view, mData, position);
-        }
     }
 
 }

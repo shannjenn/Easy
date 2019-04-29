@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jen.easyui.R;
+import com.jen.easyui.recycler.EasyRecyclerAdapterFactory;
 
 import java.util.List;
 
@@ -19,12 +20,23 @@ import java.util.List;
 
 public abstract class EasyWindow extends EasyFactoryWindow implements View.OnClickListener {
     protected Build build;
-    int selectPosition = -1;//返回时要进行判断
+    protected EasyRecyclerAdapterFactory adapter;
     private View mView;
     protected View showView;
 
     public static Build build(Context context) {
         return new Build(context);
+    }
+
+    EasyWindow(Build build, EasyRecyclerAdapterFactory adapter) {
+        super(build.context);
+        this.build = build;
+        this.adapter = adapter;
+        mView = bindContentView();
+        updateTopBar();
+        setContentView(mView);
+        setHeight(build.height == 0 ? ViewGroup.LayoutParams.WRAP_CONTENT : build.height);
+        setWidth(build.width == 0 ? ViewGroup.LayoutParams.MATCH_PARENT : build.width);
     }
 
     EasyWindow(Build build) {
@@ -72,14 +84,6 @@ public abstract class EasyWindow extends EasyFactoryWindow implements View.OnCli
         showAtLocation(showView, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
     }
 
-    public int getSelectPosition() {
-        return selectPosition;
-    }
-
-    public void setSelectPosition(int selectPosition) {
-        this.selectPosition = selectPosition;
-    }
-
     public void setFlagCode(int flagCode) {
         build.flagCode = flagCode;
     }
@@ -106,11 +110,14 @@ public abstract class EasyWindow extends EasyFactoryWindow implements View.OnCli
 
     @Override
     public void onClick(View v) {
+        if (build.topBarListener == null) {
+            return;
+        }
         int i = v.getId();
         if (i == R.id.iv_left || i == R.id.tv_left) {
-            clickLeftCallBack();
+            build.topBarListener.windowLeft(build.flagCode, showView);
         } else if (i == R.id.iv_right || i == R.id.tv_right) {
-            clickRightCallBack();
+            build.topBarListener.windowRight(build.flagCode, showView);
         }
     }
 
@@ -175,9 +182,5 @@ public abstract class EasyWindow extends EasyFactoryWindow implements View.OnCli
                 break;
         }
     }
-
-    abstract void clickLeftCallBack();
-
-    abstract void clickRightCallBack();
 
 }

@@ -39,17 +39,17 @@ public abstract class EasyHolderRecyclerWaterfallAdapter<T> extends EasyRecycler
     public EasyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         int[] layouts = onBindLayout();
         if (layouts == null) {
-            Log.w(TAG, "布局为空");
-            return null;
+            Log.e(TAG, "布局为空");
+            return super.onCreateViewHolder(parent, viewType);
         }
         if (viewType < 0 || layouts.length == 0 || layouts.length < viewType) {
-            Log.w(TAG, "viewType：" + viewType + "错误");
-            return null;
+            Log.e(TAG, "viewType：" + viewType + "错误");
+            return super.onCreateViewHolder(parent, viewType);
         }
         View view = LayoutInflater.from(parent.getContext()).inflate(layouts[viewType], parent, false);
         if (view == null) {
-            Log.w(TAG, "找不到该值对应item布局R.layout.id：" + layouts[viewType]);
-            return null;
+            Log.e(TAG, "找不到该值对应item布局R.layout.id：" + layouts[viewType]);
+            return super.onCreateViewHolder(parent, viewType);
         }
         return bindHolder(view);
     }
