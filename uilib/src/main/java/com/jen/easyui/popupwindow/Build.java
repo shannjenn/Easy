@@ -28,7 +28,7 @@ public class Build {
      * @param adapter 绑定item数据
      * @return .
      */
-    public EasyWindow createObject(EasyRecyclerAdapterFactory adapter) {
+    public EasyWindowObject createObject(EasyRecyclerAdapterFactory adapter) {
         return createObject(adapter, null);
     }
 
@@ -39,7 +39,7 @@ public class Build {
      * @param layoutManager .
      * @return .
      */
-    public EasyWindow createObject(EasyRecyclerAdapterFactory adapter, RecyclerView.LayoutManager layoutManager) {
+    public EasyWindowObject createObject(EasyRecyclerAdapterFactory adapter, RecyclerView.LayoutManager layoutManager) {
         return new EasyWindowObject(this, adapter, layoutManager);
     }
 
@@ -48,7 +48,7 @@ public class Build {
      *
      * @return .
      */
-    public EasyWindow createLetter(EasyRecyclerAdapterFactory adapter, EasyLetterDecoration letterDecoration) {
+    public EasyWindowLetter createLetter(EasyRecyclerAdapterFactory adapter, EasyLetterDecoration letterDecoration) {
         return new EasyWindowLetter(this, adapter, letterDecoration);
     }
 
@@ -57,7 +57,7 @@ public class Build {
      *
      * @return .
      */
-    public EasyWindow createScroll() {
+    public EasyWindowScroll createScroll() {
         return new EasyWindowScroll(this);
     }
 
@@ -82,7 +82,8 @@ public class Build {
     }
 
     public Build setTopBarListener(WindowTopBarListener topBarListener) {
-        this.topBarListener = topBarListener;return this;
+        this.topBarListener = topBarListener;
+        return this;
     }
 
     public Build setStyleTopBar(StyleTopBar styleTopBar) {

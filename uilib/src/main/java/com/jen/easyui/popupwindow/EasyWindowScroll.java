@@ -3,7 +3,6 @@ package com.jen.easyui.popupwindow;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.jen.easy.log.EasyLog;
 import com.jen.easyui.R;
 import com.jen.easyui.view.loopview.StringScrollPicker;
 
@@ -38,9 +37,6 @@ public class EasyWindowScroll extends EasyWindow {
     @Override
     public void setData(List data) {
         if (data == null || data.size() == 0) {
-            return;
-        } else if (!(data.get(0) instanceof String)) {
-            EasyLog.e("setData错误,请设置String集合");
             return;
         }
         this.data.clear();

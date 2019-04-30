@@ -237,7 +237,7 @@ public class EasyLetterView extends View {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_UP:
-                setBackgroundColor(backgroundColor);
+                super.setBackgroundColor(backgroundColor);
                 choosePosition = -1;
                 if (getLayoutParams().width != width) {
                     getLayoutParams().width = width;
@@ -250,7 +250,7 @@ public class EasyLetterView extends View {
                 int currentPosition = (int) ((y - paddingTop) / letterPerHeight);
                 if (currentPosition > -1 && currentPosition < letters.length) {
                     String letter = letters[currentPosition];
-                    setBackgroundColor(backgroundTouchColor);
+                    super.setBackgroundColor(backgroundTouchColor);
                     if (currentPosition < letters.length) {
                         if (touchListener != null) {
                             touchListener.onTouch(letter);
@@ -303,31 +303,37 @@ public class EasyLetterView extends View {
         this.touchListener = touchListener;
     }
 
-    public void setLetters(String[] letters) {
+    public EasyLetterView setLetters(String[] letters) {
         if (letters == null || letters.length == 0) {
-            return;
+            return this;
         }
         this.letters = letters;
         invalidate();
+        return this;
     }
 
-    public void setBackgroundTouchColor(int backgroundTouchColor) {
+    public EasyLetterView setBackgroundTouchColor(int backgroundTouchColor) {
         this.backgroundTouchColor = backgroundTouchColor;
+        return this;
     }
 
-    public void setDialogBackgroundDrawable(Drawable dialogBackgroundDrawable) {
+    public EasyLetterView setDialogBackgroundDrawable(Drawable dialogBackgroundDrawable) {
         this.dialogBackgroundDrawable = dialogBackgroundDrawable;
+        return this;
     }
 
-    public void setDialogTextColor(int dialogTextColor) {
+    public EasyLetterView setDialogTextColor(int dialogTextColor) {
         this.dialogTextColor = dialogTextColor;
+        return this;
     }
 
-    public void setDialogTextSize(float dialogTextSize) {
+    public EasyLetterView setDialogTextSize(float dialogTextSize) {
         this.dialogTextSize = dialogTextSize;
+        return this;
     }
 
-    public void setDialogShow(boolean dialogShow) {
+    public EasyLetterView setDialogShow(boolean dialogShow) {
         this.dialogShow = dialogShow;
+        return this;
     }
 }

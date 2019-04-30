@@ -18,7 +18,7 @@ import java.util.List;
  * 时间：2017/09/09.
  */
 
-public abstract class EasyWindow extends EasyFactoryWindow implements View.OnClickListener {
+public abstract class EasyWindow<T> extends EasyFactoryWindow implements View.OnClickListener {
     protected Build build;
     protected EasyRecyclerAdapterFactory adapter;
     private View mView;
@@ -51,7 +51,7 @@ public abstract class EasyWindow extends EasyFactoryWindow implements View.OnCli
 
     abstract View bindContentView();
 
-    public abstract void setData(List data);
+    public abstract void setData(List<T> data);
 
     public void showDropDown(View showView) {
         this.showView = showView;

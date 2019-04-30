@@ -31,6 +31,20 @@ public abstract class EasyRecyclerAdapterFactory<T> extends RecyclerView.Adapter
         mData = data;
     }
 
+    /**
+     * @return 获取数据
+     */
+    public List<T> getData() {
+        return mData;
+    }
+
+    /**
+     * @param data 设置数据
+     */
+    public void setData(List<T> data){
+        mData = data;
+    }
+
     @Override
     public int getItemCount() {
         if (mData == null || mData.size() == 0) {
