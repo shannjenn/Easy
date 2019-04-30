@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jen.easyui.R;
-import com.jen.easyui.recycler.EasyRecyclerAdapterFactory;
 
 import java.util.List;
 
@@ -18,9 +17,8 @@ import java.util.List;
  * 时间：2017/09/09.
  */
 
-public abstract class EasyWindow<T> extends EasyFactoryWindow implements View.OnClickListener {
+public abstract class EasyWindow extends EasyFactoryWindow implements View.OnClickListener {
     protected Build build;
-    protected EasyRecyclerAdapterFactory adapter;
     private View mView;
     protected View showView;
 
@@ -28,30 +26,19 @@ public abstract class EasyWindow<T> extends EasyFactoryWindow implements View.On
         return new Build(context);
     }
 
-    EasyWindow(Build build, EasyRecyclerAdapterFactory adapter) {
-        super(build.context);
-        this.build = build;
-        this.adapter = adapter;
-        mView = bindContentView();
-        updateTopBar();
-        setContentView(mView);
-        setHeight(build.height == 0 ? ViewGroup.LayoutParams.WRAP_CONTENT : build.height);
-        setWidth(build.width == 0 ? ViewGroup.LayoutParams.MATCH_PARENT : build.width);
-    }
-
     EasyWindow(Build build) {
         super(build.context);
         this.build = build;
-        mView = bindContentView();
+        mView = bindView();
         updateTopBar();
         setContentView(mView);
         setHeight(build.height == 0 ? ViewGroup.LayoutParams.WRAP_CONTENT : build.height);
         setWidth(build.width == 0 ? ViewGroup.LayoutParams.MATCH_PARENT : build.width);
     }
 
-    abstract View bindContentView();
+    abstract View bindView();
 
-    public abstract void setData(List<T> data);
+    public abstract void setData(List data);
 
     public void showDropDown(View showView) {
         this.showView = showView;

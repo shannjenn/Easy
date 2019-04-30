@@ -19,22 +19,28 @@ import java.util.List;
 public class EasyWindowObject extends EasyWindow {
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView recyclerView;
+    private EasyRecyclerAdapterFactory adapter;
 
     EasyWindowObject(Build build, EasyRecyclerAdapterFactory adapter, RecyclerView.LayoutManager layoutManager) {
-        super(build, adapter);
+        super(build);
+        this.adapter = adapter;
         this.layoutManager = layoutManager;
+        initView();
     }
 
     @Override
-    View bindContentView() {
+    View bindView() {
         View popView = LayoutInflater.from(build.context).inflate(R.layout._easy_popup_window_object, null);
         recyclerView = popView.findViewById(R.id.recycler);
+        return popView;
+    }
+
+    private void initView(){
         if (layoutManager == null) {
             layoutManager = new LinearLayoutManager(build.context);
         }
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
-        return popView;
     }
 
     @SuppressWarnings("unchecked")
@@ -49,5 +55,9 @@ public class EasyWindowObject extends EasyWindow {
 
     public RecyclerView getRecyclerView() {
         return recyclerView;
+    }
+
+    public EasyRecyclerAdapterFactory getAdapter() {
+        return adapter;
     }
 }

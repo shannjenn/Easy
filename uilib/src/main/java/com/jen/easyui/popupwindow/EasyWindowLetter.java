@@ -22,29 +22,35 @@ import java.util.List;
 
 public class EasyWindowLetter extends EasyWindow implements EasyLetterView.TouchListener {
     private RecyclerView recyclerView;
+    private EasyRecyclerAdapterFactory adapter;
     private EasyLetterView lt_letter;
     private EasyLetterDecoration letterDecoration;
 
     EasyWindowLetter(Build build, EasyRecyclerAdapterFactory adapter, EasyLetterDecoration letterDecoration) {
-        super(build, adapter);
+        super(build);
+        this.adapter = adapter;
         this.letterDecoration = letterDecoration;
+        initView();
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    View bindContentView() {
+    View bindView() {
         View popView = LayoutInflater.from(build.context).inflate(R.layout._easy_popup_window_letter, null);
         lt_letter = popView.findViewById(R.id.lt_letter);
         recyclerView = popView.findViewById(R.id.recycler);
+        return popView;
+    }
+
+    @SuppressWarnings("unchecked")
+    private void initView(){
         recyclerView.setLayoutManager(new LinearLayoutManager(build.context));
-        recyclerView.setAdapter(adapter);
         lt_letter.setTouchListener(this);
+        recyclerView.setAdapter(adapter);
         if (adapter.getData() != null && adapter.getData().size() > 0 && !(adapter.getData().get(0) instanceof EasyLetterItem)) {
             letterDecoration.setData(adapter.getData());
             recyclerView.removeItemDecoration(letterDecoration);
             recyclerView.addItemDecoration(letterDecoration);
         }
-        return popView;
     }
 
     @SuppressWarnings("unchecked")
@@ -82,6 +88,10 @@ public class EasyWindowLetter extends EasyWindow implements EasyLetterView.Touch
 
     public RecyclerView getRecyclerView() {
         return recyclerView;
+    }
+
+    public EasyRecyclerAdapterFactory getAdapter() {
+        return adapter;
     }
 
     /**

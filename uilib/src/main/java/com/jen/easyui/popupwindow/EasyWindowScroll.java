@@ -25,7 +25,7 @@ public class EasyWindowScroll extends EasyWindow {
     }
 
     @Override
-    View bindContentView() {
+    View bindView() {
         View popView = LayoutInflater.from(build.context).inflate(R.layout._easy_popup_window_scroll, null);
         pick_string = popView.findViewById(R.id.pick_string);
         data = new ArrayList<>();
