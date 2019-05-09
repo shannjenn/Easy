@@ -108,6 +108,14 @@ public abstract class EasyWindow extends EasyFactoryWindow implements View.OnCli
         }
     }
 
+    @Override
+    public void dismiss() {
+        super.dismiss();
+        if (build.dismissListener != null) {
+            build.dismissListener.dismiss(build.flagCode, showView);
+        }
+    }
+
     public void updateTopBar() {
         View rl_top_bar = mView.findViewById(R.id.layout_top_bar);
         if (!build.showTopBar) {
@@ -170,4 +178,7 @@ public abstract class EasyWindow extends EasyFactoryWindow implements View.OnCli
         }
     }
 
+    public View getShowView() {
+        return showView;
+    }
 }

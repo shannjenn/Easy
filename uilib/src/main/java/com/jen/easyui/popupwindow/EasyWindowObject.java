@@ -4,6 +4,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.jen.easyui.R;
 import com.jen.easyui.recycler.EasyRecyclerAdapterFactory;
@@ -51,6 +52,11 @@ public class EasyWindowObject extends EasyWindow {
         }
         adapter.setData(data);
         adapter.notifyDataSetChanged();
+    }
+
+    public void setRecyclerViewMargins(int left, int top, int right, int bottom) {
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
+        params.setMargins(left, top, right, bottom);
     }
 
     public RecyclerView getRecyclerView() {

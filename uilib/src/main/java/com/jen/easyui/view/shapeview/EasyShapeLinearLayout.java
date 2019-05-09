@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.LinearLayout;
 
+import com.jen.easy.log.EasyLog;
 import com.jen.easyui.R;
 
 
@@ -125,15 +126,18 @@ public class EasyShapeLinearLayout extends LinearLayout {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN: {
                 mShape.onFocusEvent(event);
-                return true;
+                EasyLog.d("MotionEvent.ACTION_DOWN ---------------");
+                break;
             }
             case MotionEvent.ACTION_UP: {
                 mShape.onFocusEvent(event);
                 performClick();
+                EasyLog.d("MotionEvent.ACTION_UP ---------------");
                 return true;
             }
             case MotionEvent.ACTION_CANCEL: {
                 mShape.onFocusEvent(event);
+                EasyLog.d("MotionEvent.ACTION_CANCEL ---------------");
                 return true;
             }
         }

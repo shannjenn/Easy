@@ -3,6 +3,7 @@ package com.jen.easyui.popupwindow;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 
+import com.jen.easyui.popupwindow.listener.WindowDismissListener;
 import com.jen.easyui.popupwindow.listener.WindowTopBarListener;
 import com.jen.easyui.recycler.EasyRecyclerAdapterFactory;
 import com.jen.easyui.recycler.letter.EasyLetterDecoration;
@@ -17,6 +18,7 @@ public class Build {
 
     int flagCode;
     WindowTopBarListener topBarListener;
+    WindowDismissListener dismissListener;
 
     Build(Context context) {
         this.context = context;
@@ -83,6 +85,10 @@ public class Build {
 
     public Build setTopBarListener(WindowTopBarListener topBarListener) {
         this.topBarListener = topBarListener;
+        return this;
+    }
+    public Build setDismissListener(WindowDismissListener dismissListener) {
+        this.dismissListener = dismissListener;
         return this;
     }
 

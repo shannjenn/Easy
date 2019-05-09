@@ -182,7 +182,7 @@ public class EasyTabBar extends HorizontalScrollView {
         ta.recycle();
 
         String[] titles;
-        if (tabBarTextList != null && tabBarTextList.contains(",")) {
+        if (tabBarTextList != null) {
             titles = tabBarTextList.split(",");
         } else {
             titles = new String[]{"标题1", "标题2", "标题3", "标题4", "标题5"};
