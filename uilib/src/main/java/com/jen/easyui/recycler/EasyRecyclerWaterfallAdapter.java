@@ -16,11 +16,17 @@ import java.util.List;
 
 public abstract class EasyRecyclerWaterfallAdapter<T> extends EasyRecyclerAdapterFactory<T> {
     private final String TAG = EasyRecyclerWaterfallAdapter.class.getSimpleName();
+
     /**
      * @param data 数据
      */
     public EasyRecyclerWaterfallAdapter(Context context, List<T> data) {
         super(context, data);
+    }
+
+    @Override
+    public int getItemCount() {
+        return super.getItemCount();
     }
 
     @Override
@@ -38,19 +44,24 @@ public abstract class EasyRecyclerWaterfallAdapter<T> extends EasyRecyclerAdapte
     public EasyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         int[] layouts = onBindLayout();
         if (layouts == null) {
-            Log.e(TAG,"布局为空");
+            Log.e(TAG, "布局为空");
             return super.onCreateViewHolder(parent, viewType);
         }
         if (viewType < 0 || layouts.length < viewType) {
-            Log.e(TAG,"viewType：" + viewType + "错误");
+            Log.e(TAG, "viewType：" + viewType + "错误");
             return super.onCreateViewHolder(parent, viewType);
         }
         View view = LayoutInflater.from(parent.getContext()).inflate(layouts[viewType], parent, false);
         if (view == null) {
-            Log.e(TAG,"找不到该值对应item布局R.layout.id：" + layouts[viewType]);
+            Log.e(TAG, "找不到该值对应item布局R.layout.id：" + layouts[viewType]);
             return super.onCreateViewHolder(parent, viewType);
         }
         return bindHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(EasyHolder holder, int position) {
+        super.onBindViewHolder(holder, position);
     }
 
     /**

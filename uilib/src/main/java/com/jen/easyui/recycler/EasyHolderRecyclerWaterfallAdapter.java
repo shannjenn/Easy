@@ -25,6 +25,11 @@ public abstract class EasyHolderRecyclerWaterfallAdapter<T> extends EasyRecycler
     }
 
     @Override
+    public int getItemCount() {
+        return super.getItemCount();
+    }
+
+    @Override
     public int getItemViewType(int position) {
 //        int viewType = super.getItemViewType(position);
         return getViewType(position);
@@ -55,13 +60,13 @@ public abstract class EasyHolderRecyclerWaterfallAdapter<T> extends EasyRecycler
     }
 
     @Override
-    protected EasyHolder bindHolder(View view) {
-        return new MyHolder(this, view);
+    public void onBindViewHolder(EasyHolder holder, int position) {
+        super.onBindViewHolder(holder, position);
     }
 
     @Override
-    public void onBindViewHolder(EasyHolder holder, int position) {
-        super.onBindViewHolder(holder, position);
+    protected EasyHolder bindHolder(View view) {
+        return new MyHolder(this, view);
     }
 
     class MyHolder extends EasyHolder {

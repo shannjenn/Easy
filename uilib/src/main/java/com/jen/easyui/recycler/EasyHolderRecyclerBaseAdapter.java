@@ -25,6 +25,16 @@ public abstract class EasyHolderRecyclerBaseAdapter<T> extends EasyRecyclerAdapt
     }
 
     @Override
+    public int getItemCount() {
+        return super.getItemCount();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
+    }
+
+    @Override
     public EasyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         int layout = onBindLayout();
         if (layout == 0) {
@@ -40,6 +50,11 @@ public abstract class EasyHolderRecyclerBaseAdapter<T> extends EasyRecyclerAdapt
     }
 
     @Override
+    public void onBindViewHolder(EasyHolder holder, int position) {
+        super.onBindViewHolder(holder, position);
+    }
+
+    @Override
     protected int setGridLayoutItemRows(int position) {
         return 0;
     }
@@ -49,13 +64,8 @@ public abstract class EasyHolderRecyclerBaseAdapter<T> extends EasyRecyclerAdapt
         return new MyHolder(this, view);
     }
 
-    @Override
-    public void onBindViewHolder(EasyHolder holder, int position) {
-        super.onBindViewHolder(holder, position);
-    }
-
     class MyHolder extends EasyHolder {
-        public MyHolder(EasyRecyclerAdapterFactory adapter, View itemView) {
+        MyHolder(EasyRecyclerAdapterFactory adapter, View itemView) {
             super(adapter, itemView);
         }
 

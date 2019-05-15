@@ -1,0 +1,5 @@
+1.android recyclerView只调用一次onCreateViewHolder，只生成一个item
+  按理说RecyclerView中getItemCount函数返回的数是多少，就会生成多少个item。
+  但是getItemCount返回3，RecyclerView也只生成一个item。
+  原因：item的layout的最外层布局的layout_width和layout_height不能是match_parent。如果recyclerView是横向排列的，item的width不能是match_parent，如果item是纵向排列的，
+  item的height不能是match_parent。否则第一个item就会把其他的item挤出recyclerLayout
