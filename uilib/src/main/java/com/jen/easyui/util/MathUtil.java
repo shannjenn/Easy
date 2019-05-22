@@ -117,7 +117,7 @@ public class MathUtil {
      * @param scale .位数
      * @return .
      */
-    private static double roundUp(Double value, int scale) {
+    public static double roundUp(Double value, int scale) {
         if (value == null) {
             return 0;
         }
@@ -139,7 +139,7 @@ public class MathUtil {
      * @param scale .位数
      * @return .
      */
-    private static double roundDown(Double value, int scale) {
+    public static double roundDown(Double value, int scale) {
         if (value == null) {
             return 0.0d;
         }

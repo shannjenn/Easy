@@ -26,6 +26,15 @@
             android:textCursorDrawable="@drawable/_easy_edit_text_cursor"
             android:textSize="16sp" />
 
+        <com.jen.easytest.widget.DrawViewTest
+            android:layout_width="match_parent"
+            android:layout_height="100dp" />
+
+        <com.jen.easyui.view.histogram.HistogramTest
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginBottom="50dp" />
+
 
     </com.jen.easyui.view.shapeview.EasyShapeLinearLayout>
 </ScrollView>

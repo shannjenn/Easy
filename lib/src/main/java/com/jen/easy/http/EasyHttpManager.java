@@ -62,8 +62,7 @@ abstract class EasyHttpManager {
      */
     public void start(EasyHttpRequest request, int flagCode, String flagStr) {
         if (isShutdown) {
-            HttpLog.w("线程池已经关闭，不可以再操作 start");
-            httpBaseListener.fail(flagCode, flagStr, "");
+            HttpLog.w("你已经调用shutdown()关闭线程池，不可以再操作请求，错误信息位置：EasyHttp.start");
         } else if (request instanceof EasyHttpDataRequest) {
             request.setRequestState(EasyRequestState.running);
             URLConnectionDataRunnable base = new URLConnectionDataRunnable((EasyHttpDataRequest) request, httpBaseListener, flagCode, flagStr);
@@ -90,7 +89,6 @@ abstract class EasyHttpManager {
                         + EasyHttpDataRequest.class.getName() + "或上传" + EasyHttpUploadRequest.class.getName()
                         + "或下载" + EasyHttpDownloadRequest.class.getName());
             }
-            httpBaseListener.fail(flagCode, flagStr, "");
         }
     }
 
@@ -124,7 +122,7 @@ abstract class EasyHttpManager {
 
     public void setListener(EasyHttpListener httpBaseListener) {
         if (isShutdown) {
-            HttpLog.w("线程池已经关闭，不可以再操作 setListener");
+            HttpLog.w("你已经调用shutdown()关闭线程池，不可以再操作请求，错误信息位置：EasyHttp.setListener");
             return;
         }
         this.httpBaseListener = httpBaseListener;

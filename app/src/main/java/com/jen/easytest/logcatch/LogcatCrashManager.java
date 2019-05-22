@@ -51,7 +51,7 @@ public class LogcatCrashManager {
             EasyLog.d("onBeforeHandleException ------------------" + file.getPath());
 //            LogcatCrashActivity.actStart(XGApplication.getApplication());
             MyApplication.getAppContext().startActivity(new Intent(MyApplication.getAppContext(), MainActivity.class));
-            return true;
+            return false;
         }
 
         /**
