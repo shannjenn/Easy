@@ -22,4 +22,9 @@ public @interface EasyRequest {
      * 请求参数类型
      */
     EasyRequestType type() default EasyRequestType.Param;
+
+    /**
+     * 请求参数类型()
+     */
+    EasyRequestCommit commit() default EasyRequestCommit.def;
 }

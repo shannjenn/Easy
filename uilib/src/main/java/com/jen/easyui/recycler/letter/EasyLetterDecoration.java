@@ -19,11 +19,14 @@ import java.util.List;
 
 public class EasyLetterDecoration<T extends EasyLetterItem> extends RecyclerView.ItemDecoration {
     private Paint mPaint;
+    private Paint mLinePaint;
     private final List<T> mData = new ArrayList<>();
     private int letterHeight = 80;
     private int letterTextColor = Color.BLUE;
     private int letterTextSize = 50;
     private int letterBackgroundColor = Color.GRAY;
+    private int bottomLineWidth = 0;//为0时不画线条
+    private int bottomLineColor = Color.GRAY;
 
     public EasyLetterDecoration() {
         init();
@@ -40,6 +43,10 @@ public class EasyLetterDecoration<T extends EasyLetterItem> extends RecyclerView
     private void init() {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
+        mLinePaint = new Paint();
+        mLinePaint.setStyle(Paint.Style.FILL);//设置填充样式
+        mLinePaint.setStrokeWidth(bottomLineWidth);//设置画笔宽度
+        mLinePaint.setColor(bottomLineColor);  //设置画笔颜色
     }
 
     public void setData(List<T> data) {
@@ -108,7 +115,9 @@ public class EasyLetterDecoration<T extends EasyLetterItem> extends RecyclerView
     private void drawTitle(Canvas canvas, int left, int right, View child, RecyclerView.LayoutParams params, int position, int headItems) {
         mPaint.setColor(letterBackgroundColor);
         canvas.drawRect(left, child.getTop() - params.topMargin - letterHeight, right, child.getTop() - params.topMargin, mPaint);
-
+        if (bottomLineWidth >= 0) {
+            canvas.drawLine(left, child.getTop() - params.topMargin, right, child.getTop() - params.topMargin, mLinePaint);
+        }
         mPaint.setColor(letterTextColor);
         mPaint.setTextSize(letterTextSize);
         String letter = mData.get(position - headItems).getLetter();
@@ -166,31 +175,48 @@ public class EasyLetterDecoration<T extends EasyLetterItem> extends RecyclerView
         return letterHeight;
     }
 
-    public void setLetterHeight(int letterHeight) {
-        this.letterHeight = letterHeight;
-    }
-
-    public int getLetterTextColor() {
-        return letterTextColor;
-    }
-
-    public void setLetterTextColor(int letterTextColor) {
-        this.letterTextColor = letterTextColor;
+    public int getLetterBackgroundColor() {
+        return letterBackgroundColor;
     }
 
     public int getLetterTextSize() {
         return letterTextSize;
     }
 
-    public void setLetterTextSize(int letterTextSize) {
+    public int getLetterTextColor() {
+        return letterTextColor;
+    }
+
+    //setter===================================================================
+    public EasyLetterDecoration setLetterHeight(int letterHeight) {
+        this.letterHeight = letterHeight;
+        return this;
+    }
+
+    public EasyLetterDecoration setLetterTextColor(int letterTextColor) {
+        this.letterTextColor = letterTextColor;
+        return this;
+    }
+
+    public EasyLetterDecoration setLetterTextSize(int letterTextSize) {
         this.letterTextSize = letterTextSize;
+        return this;
     }
 
-    public int getLetterBackgroundColor() {
-        return letterBackgroundColor;
-    }
-
-    public void setLetterBackgroundColor(int letterBackgroundColor) {
+    public EasyLetterDecoration setLetterBackgroundColor(int letterBackgroundColor) {
         this.letterBackgroundColor = letterBackgroundColor;
+        return this;
+    }
+
+    public EasyLetterDecoration setBottomLineWidth(int bottomLineWidth) {
+        this.bottomLineWidth = bottomLineWidth;
+        mLinePaint.setStrokeWidth(bottomLineWidth);
+        return this;
+    }
+
+    public EasyLetterDecoration setBottomLineColor(int bottomLineColor) {
+        this.bottomLineColor = bottomLineColor;
+        mLinePaint.setColor(bottomLineColor);
+        return this;
     }
 }

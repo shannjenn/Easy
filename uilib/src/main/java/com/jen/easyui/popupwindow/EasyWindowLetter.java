@@ -53,6 +53,10 @@ public class EasyWindowLetter extends EasyWindow implements EasyLetterView.Touch
         }
     }
 
+    /**
+     * 数据改变时需要调该方法刷新Letter
+     * @param data .
+     */
     @SuppressWarnings("unchecked")
     @Override
     public void setData(List data) {

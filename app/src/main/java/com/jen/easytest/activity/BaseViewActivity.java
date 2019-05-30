@@ -6,6 +6,7 @@ import android.view.View;
 import com.jen.easy.EasyBindClick;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
+import com.jen.easytest.model.Book;
 import com.jen.easyui.base.EasyActivity;
 
 /**
@@ -36,6 +37,7 @@ public class BaseViewActivity extends EasyActivity {
 
     @Override
     protected void initViews() {
+
     }
 
 
@@ -53,6 +55,5 @@ public class BaseViewActivity extends EasyActivity {
             }
         }
     }
-
 
 }

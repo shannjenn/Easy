@@ -17,7 +17,7 @@ public class EasyHttpTool {
      *
      * @param object 对象数据
      */
-    public static JSONObject parseRequst(Object object) {
+    public static JSONObject parseRequstBody(Object object) {
         JSONObject jsonParam = new JSONObject();
         if (object == null) {
             HttpLog.exception(ExceptionType.NullPointerException, "参数不能为空");

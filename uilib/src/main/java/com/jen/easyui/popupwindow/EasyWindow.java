@@ -1,6 +1,7 @@
 package com.jen.easyui.popupwindow;
 
 import android.content.Context;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -137,6 +138,14 @@ public abstract class EasyWindow extends EasyFactoryWindow implements View.OnCli
         if (build.styleTopBar == null) {
             build.styleTopBar = new StyleTopBar();
         }
+        tv_left.setTextSize(TypedValue.COMPLEX_UNIT_SP, build.styleTopBar.getLeftTextSize());
+        tv_title.setTextSize(TypedValue.COMPLEX_UNIT_SP, build.styleTopBar.getTitleTextSize());
+        tv_right.setTextSize(TypedValue.COMPLEX_UNIT_SP, build.styleTopBar.getRightTextSize());
+
+        tv_left.setTextColor(build.styleTopBar.getLeftTextColor());
+        tv_title.setTextColor(build.styleTopBar.getTitleTextColor());
+        tv_right.setTextColor(build.styleTopBar.getRightTextColor());
+
         switch (build.styleTopBar.getShowLeft()) {
             case IMAGE:
                 iv_left.setVisibility(View.VISIBLE);

@@ -37,8 +37,8 @@ public class EasyRotateSpanTextView extends View {
 
     private float baseline;
     private float drawY;
-    private int textWidth;
-    private int textHeight;
+    private float textWidth;
+    private float textHeight;
 
     private int spanTextColor1;
     private int spanIndexStart1;
@@ -199,7 +199,7 @@ public class EasyRotateSpanTextView extends View {
 
         Paint.FontMetricsInt fontMetrics = textPaint.getFontMetricsInt();
         baseline = ((fontMetrics.bottom - fontMetrics.top) >> 1) - fontMetrics.bottom;
-        int myTextWidth = (int) getTextWidth(textPaint, text);
+        float myTextWidth = getTextWidth(textPaint, text);
 
         if (degree == 0) {//0度
             textHeight = fontMetrics.bottom - fontMetrics.top;
@@ -235,7 +235,7 @@ public class EasyRotateSpanTextView extends View {
         if (layoutWidth == ViewGroup.LayoutParams.WRAP_CONTENT) {
             if (degree == 0) {
                 int widthMeasureSpec1 = MeasureSpec.makeMeasureSpec(widthMeasureSpec, MeasureSpec.EXACTLY);
-                int widthMeasureSpec2 = MeasureSpec.makeMeasureSpec(textWidth, MeasureSpec.EXACTLY);
+                int widthMeasureSpec2 = MeasureSpec.makeMeasureSpec((int) textWidth, MeasureSpec.EXACTLY);
                 if (widthMeasureSpec2 > widthMeasureSpec1) {
                     widthMeasureSpec = widthMeasureSpec1;
                     int temp = widthMeasureSpec2 - widthMeasureSpec1;
@@ -247,15 +247,15 @@ public class EasyRotateSpanTextView extends View {
                     widthMeasureSpec = widthMeasureSpec2;
                 }
             } else if (degree % 90 == 0) {
-                widthMeasureSpec = MeasureSpec.makeMeasureSpec(textWidth, MeasureSpec.EXACTLY);
+                widthMeasureSpec = MeasureSpec.makeMeasureSpec((int) textWidth, MeasureSpec.EXACTLY);
             }
         }
 
         if (layoutHeight == ViewGroup.LayoutParams.WRAP_CONTENT) {
             if (degree == 0) {
-                heightMeasureSpec = MeasureSpec.makeMeasureSpec(textHeight * lines, MeasureSpec.EXACTLY);
+                heightMeasureSpec = MeasureSpec.makeMeasureSpec((int) (textHeight * lines), MeasureSpec.EXACTLY);
             } else if (degree % 90 == 0) {
-                heightMeasureSpec = MeasureSpec.makeMeasureSpec(textHeight + 5, MeasureSpec.EXACTLY);
+                heightMeasureSpec = MeasureSpec.makeMeasureSpec((int) (textHeight + 5), MeasureSpec.EXACTLY);
             }
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -282,7 +282,7 @@ public class EasyRotateSpanTextView extends View {
                 drawXY.l = drawText0(canvas, span, drawXY);
             }
         } else if (degree % 90 == 0) {//90度
-            drawY = ((getWidth() - textWidth) >> 1) + baseline;
+            drawY = ((getWidth() - (int) textWidth) >> 1) + baseline;
             float x = 1;
             for (int i = 0; i < mSpans.size(); i++) {
                 Span span = mSpans.get(i);
@@ -350,8 +350,28 @@ public class EasyRotateSpanTextView extends View {
         return x;
     }
 
+    public float getTextWidth() {
+        return textWidth;
+    }
+
+    public float getTextHeight() {
+        return textHeight;
+    }
+
     public String getText() {
         return text == null ? "" : text;
+    }
+
+    public int getTextSize() {
+        return textSize;
+    }
+
+    public int getTextColorDefault() {
+        return textColorDefault;
+    }
+
+    public void setSpanTextColor4(int spanTextColor4) {
+        this.spanTextColor4 = spanTextColor4;
     }
 
     public EasyRotateSpanTextView setText(String textDefault) {
@@ -359,17 +379,9 @@ public class EasyRotateSpanTextView extends View {
         return this;
     }
 
-    public int getTextSize() {
-        return textSize;
-    }
-
     public EasyRotateSpanTextView setTextSize(int textSizeDefault) {
         this.textSize = textSizeDefault;
         return this;
-    }
-
-    public int getTextColorDefault() {
-        return textColorDefault;
     }
 
     public EasyRotateSpanTextView setTextColorDefault(int textColorDefault) {
@@ -408,10 +420,6 @@ public class EasyRotateSpanTextView extends View {
         this.spanIndexStart3 = spanIndexStart3;
         this.spanIndexEnd3 = spanIndexEnd3;
         return this;
-    }
-
-    public void setSpanTextColor4(int spanTextColor4) {
-        this.spanTextColor4 = spanTextColor4;
     }
 
     public EasyRotateSpanTextView setSpanIndex4(int spanIndexStart4, int spanIndexEnd4) {

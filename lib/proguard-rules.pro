@@ -78,6 +78,9 @@
 -keep class com.jen.easy.EasyRequestType {
     *;
 }
+-keep class com.jen.easy.EasyRequestCommit {
+    *;
+}
 -keep class com.jen.easy.EasyResponse {
     *;
 }

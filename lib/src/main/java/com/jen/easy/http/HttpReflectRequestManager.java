@@ -4,6 +4,7 @@ import com.jen.easy.EasyHttpGet;
 import com.jen.easy.EasyHttpPost;
 import com.jen.easy.EasyHttpPut;
 import com.jen.easy.EasyRequest;
+import com.jen.easy.EasyRequestCommit;
 import com.jen.easy.EasyRequestType;
 import com.jen.easy.constant.FieldType;
 import com.jen.easy.exception.ExceptionType;
@@ -160,9 +161,11 @@ class HttpReflectRequestManager {
             boolean isAnnotation = field.isAnnotationPresent(EasyRequest.class);
             String key = "";
             EasyRequestType paramType = EasyRequestType.Param;
+            EasyRequestCommit commitType = EasyRequestCommit.def;
             if (isAnnotation) {
                 EasyRequest param = field.getAnnotation(EasyRequest.class);
                 paramType = param.type();
+                commitType = param.commit();
                 key = param.value().trim();
             }
             if (key.length() == 0) {
@@ -181,22 +184,44 @@ class HttpReflectRequestManager {
                 if (value == null) {
                     continue;
                 }
-                if (value instanceof String || value instanceof Integer || value instanceof Float || value instanceof Long
+                if (value instanceof JSONObject || value instanceof JSONArray
+                        || value instanceof String || value instanceof Integer || value instanceof Float || value instanceof Long
                         || value instanceof Double || value instanceof Boolean) {
                     switch (paramType) {
                         case Param: {
-                            body.put(key, value);
+                            if (body.has(key)) {
+                                if (commitType == EasyRequestCommit.single) {//必须提交的参数
+                                    body.put(key, value);
+                                } else {
+                                    continue;
+                                }
+                            } else {
+                                body.put(key, value);
+                            }
                             break;
                         }
                         case Head: {
                             if (heads.containsKey(key)) {
-                                continue;
+                                if (commitType == EasyRequestCommit.single) {//必须提交的参数
+                                    heads.put(key, value + "");
+                                } else {
+                                    continue;
+                                }
+                            } else {
+                                heads.put(key, value + "");
                             }
-                            heads.put(key, value + "");
                             break;
                         }
                         case Url: {
-                            urls.put(key, value + "");
+                            if (urls.containsKey(key)) {
+                                if (commitType == EasyRequestCommit.single) {//必须提交的参数
+                                    urls.put(key, value + "");
+                                } else {
+                                    continue;
+                                }
+                            } else {
+                                urls.put(key, value + "");
+                            }
                             break;
                         }
                     }
@@ -208,20 +233,26 @@ class HttpReflectRequestManager {
                     Object item0 = listObj.get(0);
                     boolean isBasic = item0 instanceof String || item0 instanceof Integer || item0 instanceof Float
                             || item0 instanceof Long || item0 instanceof Double || item0 instanceof Boolean;
-                    JSONArray jsonArray = null;
-                    boolean haveArray = false;
-                    /*
-                     * 重复key对象叠加字段 重要标记
-                     */
-                    if (body.has(key)) {
-                        Object object = body.get(key);
-                        if (object instanceof JSONArray) {
-                            jsonArray = (JSONArray) object;
-                            haveArray = true;
-                        }
-                    }
-                    if (jsonArray == null) {
-                        jsonArray = new JSONArray();
+                    JSONArray jsonArray = new JSONArray();
+                    boolean haveArray = body.has(key);
+                    switch (commitType) {
+                        case def:
+                            if (haveArray) {
+                                continue;
+                            }
+                            break;
+                        case single:
+                            break;
+                        case multiple:
+                            if (haveArray) {
+                                Object object = body.get(key);
+                                if (object instanceof JSONArray) {
+                                    jsonArray = (JSONArray) object;
+                                } else {
+                                    HttpLog.e("object is not JSONArray, http reflectRequest error: EasyRequestCommit multiple");
+                                }
+                            }
+                            break;
                     }
                     if (isBasic) {
                         for (int i = 0; i < listObj.size(); i++) {
@@ -244,29 +275,31 @@ class HttpReflectRequestManager {
                             }
                         }
                     }
-                    if (!haveArray && jsonArray.length() > 0) {
-                        body.put(key, jsonArray);
-                    }
+                    body.put(key, jsonArray);
                 } else if (FieldType.isEntityClass(field.getType())) {
-                    JSONObject item = null;
-                    boolean haveObject = false;
-                    /*
-                     * 重复key对象叠加字段 重要标记
-                     */
-                    if (body.has(key)) {
-                        Object object = body.get(key);
-                        if (object instanceof JSONObject) {
-                            item = (JSONObject) object;
-                            haveObject = true;
-                        }
-                    }
-                    if (item == null) {
-                        item = new JSONObject();
+                    JSONObject item = new JSONObject();
+                    boolean haveObject = body.has(key);
+                    switch (commitType) {
+                        case def:
+                            if (haveObject) {
+                                continue;
+                            }
+                            break;
+                        case single:
+                            break;
+                        case multiple:
+                            if (haveObject) {
+                                Object object = body.get(key);
+                                if (object instanceof JSONObject) {
+                                    item = (JSONObject) object;
+                                } else {
+                                    HttpLog.e("object is not JSONObject, http reflectRequest error: EasyRequestCommit multiple");
+                                }
+                            }
+                            break;
                     }
                     parseRequest(loopMap, value, urls, item, heads);
-                    if (!haveObject && item.length() != 0) {//有值才加入
-                        body.put(key, item);
-                    }
+                    body.put(key, item);
                 } else {
                     HttpLog.exception(ExceptionType.IllegalArgumentException, "不支持该类型参数：" + field.getName());
                 }
