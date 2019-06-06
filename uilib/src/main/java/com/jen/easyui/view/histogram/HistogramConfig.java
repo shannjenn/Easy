@@ -8,8 +8,8 @@ import java.util.List;
 public class HistogramConfig<T> {
     public float totalHeight;//View高度
     public float totalWidth;//View宽度
-    public int centerX = 30;//第一个位置X轴中心点坐标
-    public float maxValue = 100f, minValue = 0;
+    public int centerX = 30;//第一个位置X轴中心点坐标/每一根间距
+    public float maxValue = 10f, minValue = 0;
     public float paddingTop = 0, paddingBottom = 20;//坐标上下空隙
     public List<T> data = new ArrayList<>();
 

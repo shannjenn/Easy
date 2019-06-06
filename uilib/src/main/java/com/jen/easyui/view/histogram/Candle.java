@@ -29,19 +29,23 @@ public abstract class Candle<T> extends HistogramFactory<T> {
     public void draw(Canvas canvas) {
         for (int i = 0; i < config.data.size(); i++) {
             T t = config.data.get(i);
-            float y1 = valueChangY(candleLineTopValue(t));//计算出蜡烛顶端尖尖的Y轴坐标
-            float y4 = valueChangY(candleLineBottomValue(t));//计算出蜡烛底端尖尖的Y轴坐标
-            float y2 = valueChangY(candleTopValue(t));//计算出蜡烛顶端横线的Y轴坐标
-            float y3 = valueChangY(candleBottomValue(t));//计算出蜡烛底端横线的Y轴坐标
+            int y1 = (int) valueChangY(candleLineTopValue(t));//计算出蜡烛顶端尖尖的Y轴坐标
+            int y4 = (int) valueChangY(candleLineBottomValue(t));//计算出蜡烛底端尖尖的Y轴坐标
+            int y2 = (int) valueChangY(candleTopValue(t));//计算出蜡烛顶端横线的Y轴坐标
+            int y3 = (int) valueChangY(candleBottomValue(t));//计算出蜡烛底端横线的Y轴坐标
 
             float x = (i + 1) * config.centerX;
             candlePaint.setColor(candleColor(t));
             {//画蜡烛的方块主干
                 int x1 = (int) (x - candleWidth / 2);
                 int x2 = (int) (x + candleWidth / 2);
-                if (y2 != y3 && Math.abs(y2 - y3) > 1) {//非停牌且今开和收盘价差高于1块
+                if (y2 != y3/* && Math.abs(y2 - y3) > 1*/) {//非停牌且今开和收盘价差高于1块
                     Rect rect = new Rect();
-                    rect.set(x1, (int) y2, x2, (int) y3);
+                    if (y2 < y3) {
+                        rect.set(x1, y2, x2, y3);
+                    } else {
+                        rect.set(x1, y3, x2, y2);
+                    }
                     canvas.drawRect(rect, candlePaint);
                 } else {//停牌,今开等于收盘
                     canvas.drawLine(x1, y2, x2, y2, candlePaint);

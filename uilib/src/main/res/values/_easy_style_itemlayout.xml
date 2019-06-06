@@ -16,6 +16,7 @@
         <attr name="itemTxtHint" format="string" />
         <attr name="itemTxtTextSize" format="dimension" />
         <attr name="itemTxtTextColor" format="color" />
+        <attr name="itemTxtTextHintColor" format="color" />
         <attr name="itemTxtGray">
             <enum name="left" value="0" />
             <enum name="center" value="1" />
@@ -26,6 +27,7 @@
         <attr name="itemEditLines" format="integer" />
         <attr name="itemEditTextSize" format="dimension" />
         <attr name="itemEditTextColor" format="color" />
+        <attr name="itemEditTextHintColor" format="color" />
         <attr name="itemEditTextHint" format="string" />
         <attr name="itemEditTextMarginTop" format="dimension" />
         <attr name="itemEditTextMarginBottom" format="dimension" />

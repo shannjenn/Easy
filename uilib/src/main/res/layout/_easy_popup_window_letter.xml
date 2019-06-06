@@ -18,7 +18,7 @@
 
     <com.jen.easyui.recycler.letter.EasyLetterView
         android:id="@+id/lt_letter"
-        android:layout_width="50dp"
+        android:layout_width="40dp"
         android:layout_height="match_parent"
         android:layout_below="@+id/layout_top_bar"
         android:layout_alignParentEnd="true"

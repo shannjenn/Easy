@@ -18,6 +18,8 @@ public class StyleTopBar {
     private int titleTextColor;
     private int rightTextColor;
 
+    private int backgroundColor = 0xFFF4F4F4;
+
     public enum ShowLeft {
         IMAGE, TEXT, NON//NON为不显示
     }
@@ -106,6 +108,10 @@ public class StyleTopBar {
         return rightTextColor;
     }
 
+    public int getBackgroundColor() {
+        return backgroundColor;
+    }
+
     //setter========================================================================================
     public StyleTopBar setLeftText(String leftText) {
         this.leftText = leftText;
@@ -164,6 +170,11 @@ public class StyleTopBar {
 
     public StyleTopBar setRightTextColor(int rightTextColor) {
         this.rightTextColor = rightTextColor;
+        return this;
+    }
+
+    public StyleTopBar setBackgroundColor(int backgroundColor) {
+        this.backgroundColor = backgroundColor;
         return this;
     }
 }

@@ -18,7 +18,6 @@ import java.util.List;
 public class EasyWindowScroll extends EasyWindow {
     private StringScrollPicker pick_string;
     private List<String> data;
-    private int selectPosition;
 
     EasyWindowScroll(Build build) {
         super(build);
@@ -42,15 +41,22 @@ public class EasyWindowScroll extends EasyWindow {
         this.data.clear();
         this.data.addAll(data);
         pick_string.setData(this.data);
-        pick_string.setSelectedPosition(selectPosition);
+        pick_string.setSelectedPosition(0);//默认选中第一个
+    }
+
+    public List<String> getData() {
+        if (data == null) {
+            return new ArrayList<>();
+        }
+        return data;
     }
 
     public int getSelectPosition() {
-        return selectPosition;
+        return pick_string.getSelectedPosition();
     }
 
     public void setSelectPosition(int selectPosition) {
-        this.selectPosition = selectPosition;
+        pick_string.setSelectedPosition(selectPosition);
     }
 
     public String getSelectString() {

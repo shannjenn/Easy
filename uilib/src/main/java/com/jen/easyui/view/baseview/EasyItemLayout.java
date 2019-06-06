@@ -33,6 +33,7 @@ public class EasyItemLayout extends RelativeLayout {
     private final int DEFAULT_TEXT_COLOR_TITLE = 0XFF313B40;//默认字体颜色Title
     private final int DEFAULT_TEXT_COLOR_CONTENT = 0XFF313B40;//默认字体颜色content
     private final int DEFAULT_TEXT_COLOR_COUNT = 0XFF6b6b6b;//默认字体颜色count
+    private final int TEXT_HINT_COLOR = 0XFFD9D9D9;
 
     /*是否为输入模式：TRUE显示EditText，隐藏TextView*/
     boolean itemIsEdit;
@@ -58,11 +59,13 @@ public class EasyItemLayout extends RelativeLayout {
     String contentHint;
     int contentTextSize;
     int contentTextColor;
+    int itemTxtTextHintColor;
     int contentTextLines;//默认1
     int contentTxtGray;//默认0
 
     int editTextSize;
     int editTextColor;
+    int editTextHintColor;
     String editTextHint;
     int editLines = 1;
 
@@ -107,11 +110,13 @@ public class EasyItemLayout extends RelativeLayout {
         contentHint = a.getString(R.styleable.EasyItemLayout_itemTxtHint);
         contentTextSize = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemTxtTextSize, defaultTextSize);
         contentTextColor = a.getColor(R.styleable.EasyItemLayout_itemTxtTextColor, DEFAULT_TEXT_COLOR_CONTENT);
+        itemTxtTextHintColor = a.getColor(R.styleable.EasyItemLayout_itemTxtTextHintColor, TEXT_HINT_COLOR);
         contentTextLines = a.getInt(R.styleable.EasyItemLayout_itemTxtLines, 1);
         contentTxtGray = a.getInt(R.styleable.EasyItemLayout_itemTxtGray, 0);
 
         editTextSize = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemEditTextSize, defaultTextSize);
         editTextColor = a.getColor(R.styleable.EasyItemLayout_itemEditTextColor, DEFAULT_TEXT_COLOR_CONTENT);
+        editTextHintColor = a.getColor(R.styleable.EasyItemLayout_itemEditTextHintColor, TEXT_HINT_COLOR);
         editTextHint = a.getString(R.styleable.EasyItemLayout_itemEditTextHint);
         editLines = a.getInt(R.styleable.EasyItemLayout_itemEditLines, 1);
         editTextMarginTop = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemEditTextMarginTop, 0);
@@ -186,12 +191,14 @@ public class EasyItemLayout extends RelativeLayout {
         tv_item_layout_content.setHint(contentHint);
         tv_item_layout_content.setTextSize(TypedValue.COMPLEX_UNIT_PX, contentTextSize);
         tv_item_layout_content.setTextColor(contentTextColor);
+        tv_item_layout_content.setHintTextColor(itemTxtTextHintColor);
         tv_item_layout_content.setLines(contentTextLines);
         tv_item_layout_content.setGravity(txtGray);
 
         et_item_layout_content.setHint(editTextHint);
         et_item_layout_content.setTextSize(TypedValue.COMPLEX_UNIT_PX, editTextSize);
         et_item_layout_content.setTextColor(editTextColor);
+        et_item_layout_content.setHintTextColor(editTextHintColor);
 //        et_item_layout_content.setFilters(new InputFilter[]{new InputFilter.LengthFilter(itemEditMaxLength)});
         LinearLayout.LayoutParams et_params = (LinearLayout.LayoutParams) et_item_layout_content.getLayoutParams();
         et_params.topMargin = editTextMarginTop;

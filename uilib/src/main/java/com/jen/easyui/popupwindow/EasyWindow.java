@@ -138,6 +138,7 @@ public abstract class EasyWindow extends EasyFactoryWindow implements View.OnCli
         if (build.styleTopBar == null) {
             build.styleTopBar = new StyleTopBar();
         }
+        rl_top_bar.setBackgroundColor(build.styleTopBar.getBackgroundColor());
         tv_left.setTextSize(TypedValue.COMPLEX_UNIT_SP, build.styleTopBar.getLeftTextSize());
         tv_title.setTextSize(TypedValue.COMPLEX_UNIT_SP, build.styleTopBar.getTitleTextSize());
         tv_right.setTextSize(TypedValue.COMPLEX_UNIT_SP, build.styleTopBar.getRightTextSize());
