@@ -28,6 +28,7 @@ class URLConnectionDataRunnable extends URLConnectionFactoryRunnable {
 
     @Override
     protected void childRun(HttpURLConnection connection) throws IOException {
+        long startTime = System.currentTimeMillis();
         if (!mIsGet) {
             connection.connect();
             DataOutputStream out = new DataOutputStream(connection.getOutputStream());
@@ -50,9 +51,11 @@ class URLConnectionDataRunnable extends URLConnectionFactoryRunnable {
             inStream.close();
             connection.disconnect();
 
+            double timeSec = (System.currentTimeMillis() - startTime) / 1000d;
             String result = resultBuffer.toString();
             StringBuilder retLogBuild = new StringBuilder();
             retLogBuild.append(mRequestLogInfo).append("\n返回码：").append(mResponseCode).append("\n返回原始数据：").append(result);
+            retLogBuild.insert(retLogBuild.indexOf(mUrlStr) + mUrlStr.length(), " 服务器响应时间:" + timeSec + "秒");
             if (mRequest.getReplaceResult().size() > 0) {
                 result = replaceResult(result);
                 retLogBuild.append("\n格式化后数据：").append(result);
@@ -60,7 +63,11 @@ class URLConnectionDataRunnable extends URLConnectionFactoryRunnable {
             HttpLog.i(retLogBuild.toString());
             success(result, headMap);
         } else {
-            HttpLog.i(mRequestLogInfo + "\n请求异常，返回码：" + mResponseCode);
+            double timeSec = (System.currentTimeMillis() - startTime) / 1000d;
+            StringBuilder retLogBuild = new StringBuilder();
+            retLogBuild.append(mRequestLogInfo).append("\n返回码：").append(mResponseCode);
+            retLogBuild.insert(retLogBuild.indexOf(mUrlStr) + mUrlStr.length(), " 服务器响应时间:" + timeSec + "秒");
+            HttpLog.e(retLogBuild.toString());
             fail(" 网络请求异常：" + mResponseCode);
         }
     }

@@ -34,6 +34,7 @@ class HttpParseManager {
      */
     <T> T parseResponseBody(Class<T> tClass, String obj) {
         HttpLog.d("解析：" + tClass.getName() + "----开始");
+        long startTime = System.currentTimeMillis();
         T t;
         JSONObject object;
         try {
@@ -44,10 +45,11 @@ class HttpParseManager {
         }
         t = parseJSONObject(tClass, object);
         mErrors.clear();
+        double timeSec = (System.currentTimeMillis() - startTime) / 1000d;
         if (t == null) {
-            HttpLog.w("解析：" + tClass.getName() + "----失败");
+            HttpLog.w("解析：" + tClass.getName() + "----失败 解析耗时:" + timeSec + "秒");
         } else {
-            HttpLog.d("解析：" + tClass.getName() + "----成功");
+            HttpLog.d("解析：" + tClass.getName() + "----成功 解析耗时:" + timeSec + "秒");
         }
         return t;
     }

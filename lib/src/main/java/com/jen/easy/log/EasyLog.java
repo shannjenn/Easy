@@ -12,7 +12,7 @@ public class EasyLog {
     private static final int maxLength = 2000;
 
     /**
-     * 日志是否打印
+     * 日志打印级别
      */
     public static LogLevel level = LogLevel.D;
 

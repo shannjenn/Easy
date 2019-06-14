@@ -17,16 +17,16 @@ public class CoordinateImp<T extends Float> extends Coordinate<T> {
 
     @Override
     public String xText(T t) {
-        return "2019-05-21";
+        return null;
     }
 
     @Override
-    public float xNextValue() {
-        return 25f;
+    public float yUnitValue() {
+        return 0;
     }
 
     @Override
-    public int ySpaceSize() {
-        return 5;
+    public int xUnitSize() {
+        return 0;
     }
 }
