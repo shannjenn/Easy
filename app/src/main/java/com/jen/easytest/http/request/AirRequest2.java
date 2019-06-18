@@ -2,19 +2,16 @@ package com.jen.easytest.http.request;
 
 import com.jen.easy.EasyHttpPost;
 import com.jen.easy.EasyResponse;
-import com.jen.easy.EasyResponse;
 import com.jen.easytest.http.TaskUserInfo;
 import com.jen.easytest.http.response.AirResponse;
-import com.jen.easytest.model.Book;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @EasyHttpPost(UrlBase = "http://apics.baoku.com/api/air/query", Response = AirResponse.class)
-public class AirRequest2 extends ExampleBaseRequest {
+public class AirRequest2 extends BaseRequest {
 
     public AirRequest2() {
     }

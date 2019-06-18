@@ -11,7 +11,7 @@ import java.util.List;
 
 //@EasyRequestInvalid
 @EasyInvalid
-public class ExampleBaseRequest extends EasyHttpDataRequest {
+public class BaseRequest extends EasyHttpDataRequest {
 
     @EasyRequest("_id")//请求参数为_id,值为当前id变量值
     private int id;
@@ -25,7 +25,7 @@ public class ExampleBaseRequest extends EasyHttpDataRequest {
     private String type;
 
 
-    public ExampleBaseRequest() {
+    public BaseRequest() {
         tests.add("list1");
         tests.add("list2");
         tests.add("list3");
