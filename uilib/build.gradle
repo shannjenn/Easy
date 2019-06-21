@@ -2,19 +2,21 @@
 apply plugin: 'com.android.library'
 
 android {
-    signingConfigs {
-    }
-    compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+//    signingConfigs {
+//    }
+    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
+    buildToolsVersion rootProject.ext.android["buildToolsVersion"]
     defaultConfig {
+        minSdkVersion rootProject.ext.android["minSdkVersion"]
+        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
+        versionCode rootProject.ext.android["versionCode"]
+        versionName rootProject.ext.android["versionName"]
 //        applicationId "com.jen.easyui"
-        minSdkVersion 17
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+//        minSdkVersion 17
+//        targetSdkVersion 26
+//        versionCode 1
+//        versionName "1.0"
+//        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -33,16 +35,16 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.android.support:appcompat-v7:26.+'
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:recyclerview-v7:26.0.0-alpha1'
-    compile project(':lib')
+    api fileTree(include: ['*.jar'], dir: 'libs')
+//    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+//        exclude group: 'com.android.support', module: 'support-annotations'
+//    })
+    api 'com.android.support:appcompat-v7:26.+'
+//    testImplementation 'junit:junit:4.12'
+    api 'com.android.support:recyclerview-v7:26.0.0-alpha1'
+    api project(':lib')
 
     //recycleView 加载更多 下拉刷新
-    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.4'
-    implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.4'
+    api 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.4'
+    api 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.4'
 }
