@@ -19,6 +19,7 @@ public class EasyShapeBase {
     private boolean isTextView;//是否为textView
 
     /*------------------------------------------------公共属性start*/
+    private RippleAnimator mRippleAnimator;
     private GradientDrawable mDrawable;
     private int mHeight;
 
@@ -88,6 +89,7 @@ public class EasyShapeBase {
     EasyShapeBase(View view) {
         this.mView = view;
         isTextView = view instanceof TextView;
+        mRippleAnimator = new RippleAnimator(mView);
     }
 
     public void update() {
@@ -142,6 +144,7 @@ public class EasyShapeBase {
             int y = mLineBottomMarginBottom > 0 ? height - mLineBottomMarginBottom : height;
             canvas.drawLine(x1, y, x2, y, mLinePaint);
         }
+        mRippleAnimator.onDraw(canvas);
     }
 
     /**
@@ -231,6 +234,7 @@ public class EasyShapeBase {
                         break;
                     }
                 }
+                mRippleAnimator.onTouchEvent(event);
                 break;
             }
             case CHECK: {
