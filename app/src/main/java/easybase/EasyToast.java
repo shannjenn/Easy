@@ -1,10 +1,7 @@
-package com.jen.easyui.util;
+package easybase;
 
-import android.content.Context;
 import android.view.Gravity;
 import android.widget.Toast;
-
-import com.jen.easyui.base.EasyApplication;
 
 
 /**

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.jen.easyui.recycler.listener.EasyItemListener;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,6 +30,9 @@ public abstract class EasyRecyclerAdapterFactory<T> extends RecyclerView.Adapter
     protected EasyRecyclerAdapterFactory(Context context, List<T> data) {
         this.mContext = context;
         mData = data;
+        if (mData == null) {
+            mData = new ArrayList<>();
+        }
     }
 
     /**
@@ -41,8 +45,11 @@ public abstract class EasyRecyclerAdapterFactory<T> extends RecyclerView.Adapter
     /**
      * @param data 设置数据
      */
-    public void setData(List<T> data){
+    public void setData(List<T> data) {
         mData = data;
+        if (mData == null) {
+            mData = new ArrayList<>();
+        }
     }
 
     @Override

@@ -13,14 +13,12 @@ import com.jen.easy.EasyBindId;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
 import com.jen.easytest.model.RecyclerViewModel;
-import com.jen.easyui.base.EasyActivity;
+import easybase.EasyActivity;
 import com.jen.easyui.recycler.EasyHolder;
-import com.jen.easyui.recycler.letter.EasyLetterItem;
 import com.jen.easyui.recycler.listener.EasyItemListenerB;
 import com.jen.easyui.recycler.letter.EasyLetterDecoration;
 import com.jen.easyui.recycler.letter.EasyLetterView;
 import com.jen.easyui.recycler.EasyRecyclerBaseAdapter;
-import com.jen.easyui.recycler.EasyRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;

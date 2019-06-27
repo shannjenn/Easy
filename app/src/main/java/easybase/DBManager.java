@@ -1,4 +1,4 @@
-package com.jen.easyui.base;
+package easybase;
 
 import android.database.sqlite.SQLiteDatabase;
 

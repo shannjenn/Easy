@@ -8,7 +8,7 @@ import com.jen.easy.EasyBindClick;
 import com.jen.easy.EasyBindId;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
-import com.jen.easyui.base.EasyActivity;
+import easybase.EasyActivity;
 
 /**
  * 作者：ShannJenn

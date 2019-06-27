@@ -13,7 +13,7 @@ import com.jen.easytest.activity.recyclerView.adapter.SortStockTextView;
 import com.jen.easytest.activity.recyclerView.adapter.StockInfo;
 import com.jen.easytest.activity.recyclerView.adapter.StockInfoListAdapter;
 import com.jen.easytest.http.request.StockChooseConditionResultRequest;
-import com.jen.easyui.base.EasyFragment;
+import easybase.EasyFragment;
 import com.jen.easyui.recycler.HScroll.EasyHScrollRecyclerView;
 import com.jen.easyui.recycler.HScroll.EasyHScrollView;
 import com.jen.easyui.recycler.listener.EasyItemListenerB;

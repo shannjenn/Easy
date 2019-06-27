@@ -9,10 +9,9 @@ import android.widget.ImageView;
 import com.jen.easy.EasyBindId;
 import com.jen.easytest.R;
 import com.jen.easytest.adapter.ImageLoaderAdapter;
-import com.jen.easytest.http.request.ImageLoaderRequest;
 import com.jen.easytest.http.response.ImageLoaderResponse;
 import com.jen.easytest.model.ImageLoaderModel;
-import com.jen.easyui.base.EasyActivity;
+import easybase.EasyActivity;
 
 import java.util.ArrayList;
 import java.util.List;

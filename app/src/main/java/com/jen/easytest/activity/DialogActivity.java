@@ -5,7 +5,7 @@ import android.view.View;
 
 import com.jen.easy.EasyBindClick;
 import com.jen.easytest.R;
-import com.jen.easyui.base.EasyActivity;
+import easybase.EasyActivity;
 import com.jen.easyui.dialog.EasyDialog;
 import com.jen.easyui.dialog.EasyLoading;
 

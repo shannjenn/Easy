@@ -11,7 +11,7 @@ import com.jen.easy.EasyBindId;
 import com.jen.easytest.R;
 import com.jen.easytest.fragment.EmptyFragmentBlue;
 import com.jen.easytest.fragment.EmptyFragmentRed;
-import com.jen.easyui.base.EasyActivity;
+import easybase.EasyActivity;
 import com.jen.easyui.recycler.viewpager.EasyFragmentPagerAdapter;
 import com.jen.easyui.view.tabbarview.EasyTabBar;
 import com.jen.easyui.view.tabbarview.EasyPagerTabBar;

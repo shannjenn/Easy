@@ -11,12 +11,15 @@ android {
         targetSdkVersion rootProject.ext.android["targetSdkVersion"]
         versionCode rootProject.ext.android["versionCode"]
         versionName rootProject.ext.android["versionName"]
+
+//        consumerProguardFiles 'proguard-rules.pro'
+
 //        applicationId "com.jen.easy"
 //        minSdkVersion 17
 //        targetSdkVersion 26
 //        versionCode 1
 //        versionName "1.0"
-//        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {

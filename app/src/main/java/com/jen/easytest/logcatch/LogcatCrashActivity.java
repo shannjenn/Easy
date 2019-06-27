@@ -2,24 +2,13 @@ package com.jen.easytest.logcatch;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
 import com.jen.easy.EasyBindClick;
 import com.jen.easy.exception.HttpLog;
 import com.jen.easy.http.EasyHttp;
-import com.jen.easy.http.EasyHttpTool;
-import com.jen.easy.http.TestHttp;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
-import com.jen.easytest.http.request.AirRequest;
-import com.jen.easytest.http.request.AirRequest2;
-import com.jen.easytest.http.request.PutRequest;
-import com.jen.easytest.http.request.QNRequest;
-import com.jen.easytest.http.response.StockQuotationResponse;
-import com.jen.easytest.request.SystemParamRequest;
-import com.jen.easyui.base.EasyActivity;
-
-import org.json.JSONObject;
+import easybase.EasyActivity;
 
 /**
  * 作者：ShannJenn

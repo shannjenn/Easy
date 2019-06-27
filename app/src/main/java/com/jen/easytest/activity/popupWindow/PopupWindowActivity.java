@@ -9,7 +9,7 @@ import com.jen.easy.EasyBindClick;
 import com.jen.easy.EasyBindId;
 import com.jen.easytest.R;
 import com.jen.easytest.model.RecyclerViewModel;
-import com.jen.easyui.base.EasyActivity;
+import easybase.EasyActivity;
 import com.jen.easyui.popupwindow.EasyWindow;
 import com.jen.easyui.popupwindow.StyleTopBar;
 import com.jen.easyui.recycler.EasyHolder;

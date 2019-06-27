@@ -1,7 +1,7 @@
 package com.jen.easytest.fragment;
 
 import com.jen.easytest.R;
-import com.jen.easyui.base.EasyFragment;
+import easybase.EasyFragment;
 
 /**
  * Created by Administrator on 2017/10/31.

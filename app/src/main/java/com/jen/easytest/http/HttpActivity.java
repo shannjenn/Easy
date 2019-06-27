@@ -15,7 +15,7 @@ import com.jen.easytest.http.request.PutRequest;
 import com.jen.easytest.http.request.QNRequest;
 import com.jen.easytest.http.response.StockQuotationResponse;
 import com.jen.easytest.request.SystemParamRequest;
-import com.jen.easyui.base.EasyActivity;
+import easybase.EasyActivity;
 
 import org.json.JSONObject;
 

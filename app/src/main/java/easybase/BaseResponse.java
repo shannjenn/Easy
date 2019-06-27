@@ -1,4 +1,4 @@
-package com.jen.easyui.base;
+package easybase;
 
 /**
  * @author Created by zs on 2018/10/22.

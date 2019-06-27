@@ -6,7 +6,7 @@ import android.view.View;
 import com.jen.easy.EasyBindClick;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
-import com.jen.easyui.base.EasyActivity;
+import easybase.EasyActivity;
 import com.jen.easyui.util.EasyDateFormatUtil;
 
 /**

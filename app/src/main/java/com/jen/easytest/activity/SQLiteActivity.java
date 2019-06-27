@@ -7,8 +7,8 @@ import com.jen.easy.EasyBindClick;
 import com.jen.easy.sqlite.EasyTBDao;
 import com.jen.easytest.R;
 import com.jen.easytest.sqlite.Student;
-import com.jen.easyui.base.EasyActivity;
-import com.jen.easyui.util.EasyToast;
+import easybase.EasyActivity;
+import easybase.EasyToast;
 
 import java.util.List;
 

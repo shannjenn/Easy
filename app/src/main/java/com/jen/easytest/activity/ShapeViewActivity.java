@@ -4,16 +4,10 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.jen.easy.EasyBindClick;
-import com.jen.easy.EasyBindId;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
 import com.jen.easytest.model.Book;
-import com.jen.easyui.base.EasyActivity;
-import com.jen.easyui.view.baseview.EasyTopBar;
-import com.jen.easyui.view.shapeview.EasyShapeTextView;
-
-import java.util.ArrayList;
-import java.util.List;
+import easybase.EasyActivity;
 
 /**
  * 作者：ShannJenn

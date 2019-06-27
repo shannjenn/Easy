@@ -21,7 +21,7 @@ import com.jen.easytest.activity.TimePickActivity;
 import com.jen.easytest.activity.UtilActivity;
 import com.jen.easytest.activity.recyclerView.RecyclerViewMainActivity;
 import com.jen.easytest.logcatch.LogcatCrashActivity;
-import com.jen.easyui.base.EasyActivity;
+import easybase.EasyActivity;
 import com.jen.easyui.view.baseview.EasyTopBar;
 
 public class MainActivity extends EasyActivity {
