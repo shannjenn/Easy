@@ -17,10 +17,14 @@ import java.util.List;
 public abstract class EasyRecyclerBaseAdapter<T> extends EasyRecyclerAdapterFactory<T> {
     private final String TAG = EasyRecyclerBaseAdapter.class.getSimpleName();
 
+    public EasyRecyclerBaseAdapter(Context context) {
+        super(context);
+    }
+
     /**
      * @param data 数据
      */
-    protected EasyRecyclerBaseAdapter(Context context, List<T> data) {
+    public EasyRecyclerBaseAdapter(Context context, List<T> data) {
         super(context, data);
     }
 

@@ -17,6 +17,10 @@ import java.util.List;
 public abstract class EasyHolderRecyclerWaterfallAdapter<T> extends EasyRecyclerAdapterFactory<T> {
     private final String TAG = EasyHolderRecyclerWaterfallAdapter.class.getSimpleName();
 
+    public EasyHolderRecyclerWaterfallAdapter(Context context) {
+        super(context);
+    }
+
     /**
      * @param data 数据
      */

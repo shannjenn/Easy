@@ -19,7 +19,6 @@ public class EasyShapeBase {
     private boolean isTextView;//是否为textView
 
     /*------------------------------------------------公共属性start*/
-    private RippleAnimator mRippleAnimator;
     private GradientDrawable mDrawable;
     private int mHeight;
 
@@ -89,7 +88,6 @@ public class EasyShapeBase {
     EasyShapeBase(View view) {
         this.mView = view;
         isTextView = view instanceof TextView;
-        mRippleAnimator = new RippleAnimator(mView);
     }
 
     public void update() {
@@ -144,7 +142,6 @@ public class EasyShapeBase {
             int y = mLineBottomMarginBottom > 0 ? height - mLineBottomMarginBottom : height;
             canvas.drawLine(x1, y, x2, y, mLinePaint);
         }
-        mRippleAnimator.onDraw(canvas);
     }
 
     /**
@@ -216,79 +213,56 @@ public class EasyShapeBase {
     }
 
     /**
-     * 触摸点击事件
+     * 刷新check
      *
-     * @param event e
+     * @param eventAction .
      */
-    void onFocusEvent(MotionEvent event) {
-        switch (mClickType) {
-            case BUTTON: {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN: {
-                        updateButtonState(true);
-                        break;
+    void updateCheckState(int eventAction) {
+        switch (eventAction) {
+            case MotionEvent.ACTION_DOWN:
+            case MotionEvent.ACTION_CANCEL: {//在ScrollView包含ViewPager的情况下,滑动时还原check状态
+                isCheck = !isCheck;
+                if (isCheck) {
+                    mDrawable.setStroke(mStrokeWidth, mStrokeClickColor, mStrokeDashGapWidth, mStrokeDashGap);
+                    mDrawable.setColor(mSolidClickColor);
+                    if (isTextView) {
+                        ((TextView) mView).setTextColor(mTextClickColor);
                     }
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_CANCEL: {
-                        updateButtonState(false);
-                        break;
-                    }
-                }
-                mRippleAnimator.onTouchEvent(event);
-                break;
-            }
-            case CHECK: {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN: {
-                        isCheck = !isCheck;
-                        updateCheckState();
-                        break;
-                    }
-                    case MotionEvent.ACTION_CANCEL: {//在ScrollView包含ViewPager的情况下,滑动时还原check状态
-                        isCheck = !isCheck;
-                        updateCheckState();
-                        break;
+                } else {
+                    mDrawable.setStroke(mStrokeWidth, mStrokeColor, mStrokeDashGapWidth, mStrokeDashGap);
+                    mDrawable.setColor(mSolidColor);
+                    if (isTextView) {
+                        ((TextView) mView).setTextColor(mTextColor);
                     }
                 }
-                break;
-            }
-            case NON: {
                 break;
             }
         }
     }
 
-    private void updateCheckState() {
-        if (isCheck) {
-            mDrawable.setStroke(mStrokeWidth, mStrokeClickColor, mStrokeDashGapWidth, mStrokeDashGap);
-            mDrawable.setColor(mSolidClickColor);
-            if (isTextView) {
-                ((TextView) mView).setTextColor(mTextClickColor);
+    /**
+     * 刷新button
+     *
+     * @param eventAction .
+     */
+    void updateButtonState(int eventAction) {
+        switch (eventAction) {
+            case MotionEvent.ACTION_DOWN: {
+                mDrawable.setStroke(mStrokeWidth, mStrokeClickColor, mStrokeDashGapWidth, mStrokeDashGap);
+                mDrawable.setColor(mSolidClickColor);
+                if (isTextView) {
+                    ((TextView) mView).setTextColor(mTextClickColor);
+                }
+                break;
             }
-        } else {
-            mDrawable.setStroke(mStrokeWidth, mStrokeColor, mStrokeDashGapWidth, mStrokeDashGap);
-            mDrawable.setColor(mSolidColor);
-            if (isTextView) {
-                ((TextView) mView).setTextColor(mTextColor);
-            }
-        }
-    }
-
-    private void updateButtonState(boolean isActionDown) {
-        if (isActionDown) {
-            if (isCheck) {//选中状态不触发点击效果
-                return;
-            }
-            mDrawable.setStroke(mStrokeWidth, mStrokeClickColor, mStrokeDashGapWidth, mStrokeDashGap);
-            mDrawable.setColor(mSolidClickColor);
-            if (isTextView) {
-                ((TextView) mView).setTextColor(mTextClickColor);
-            }
-        } else {
-            mDrawable.setStroke(mStrokeWidth, mStrokeColor, mStrokeDashGapWidth, mStrokeDashGap);
-            mDrawable.setColor(mSolidColor);
-            if (isTextView) {
-                ((TextView) mView).setTextColor(mTextColor);
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL: {
+                mDrawable.setStroke(mStrokeWidth, mStrokeColor, mStrokeDashGapWidth, mStrokeDashGap);
+                mDrawable.setColor(mSolidColor);
+                if (isTextView) {
+                    ((TextView) mView).setTextColor(mTextColor);
+                }
+                break;
             }
         }
     }

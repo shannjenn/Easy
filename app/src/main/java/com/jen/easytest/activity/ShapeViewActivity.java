@@ -41,7 +41,7 @@ public class ShapeViewActivity extends EasyActivity {
     protected void initViews() {
         book = new Book();
         book.setName("thread test id");
-        new MyThread(book).start();
+//        new MyThread(book).start();
     }
 
 
@@ -66,25 +66,25 @@ public class ShapeViewActivity extends EasyActivity {
         EasyLog.d(book.getName() + " onDestroy = " + book);
     }
 
-    private static class MyThread extends Thread {
-        Book book;
-
-        public MyThread(Book book) {
-            this.book = book;
-        }
-
-        @Override
-        public void run() {
-            super.run();
-            while (true) {
-                try {
-                    Thread.sleep(2000);
-                    EasyLog.d(book.getName() + " " + book);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
+//    private static class MyThread extends Thread {
+//        Book book;
+//
+//        public MyThread(Book book) {
+//            this.book = book;
+//        }
+//
+//        @Override
+//        public void run() {
+//            super.run();
+//            while (true) {
+//                try {
+//                    Thread.sleep(2000);
+//                    EasyLog.d(book.getName() + " " + book);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//    }
 
 }

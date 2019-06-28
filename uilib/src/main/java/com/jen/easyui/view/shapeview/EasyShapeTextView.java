@@ -18,6 +18,7 @@ import com.jen.easyui.R;
 
 public class EasyShapeTextView extends android.support.v7.widget.AppCompatTextView {
     private EasyShapeBase mShape;
+    private RippleAnimator mRippleAnimator;
 
     /*public EasyTextViewManager(Context context) {
         super(context);
@@ -28,12 +29,14 @@ public class EasyShapeTextView extends android.support.v7.widget.AppCompatTextVi
     public EasyShapeTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mShape = new EasyShapeBase(this);
+        mRippleAnimator = new RippleAnimator(this);
         initAttrs(context, attrs);
     }
 
     public EasyShapeTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mShape = new EasyShapeBase(this);
+        mRippleAnimator = new RippleAnimator(this);
         initAttrs(context, attrs);
     }
 
@@ -131,32 +134,51 @@ public class EasyShapeTextView extends android.support.v7.widget.AppCompatTextVi
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         mShape.onDraw(canvas);
+        mRippleAnimator.onDraw(canvas);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (!isEnabled()) {
-            return super.onTouchEvent(event);
+//        switch (event.getAction()) {
+//            case MotionEvent.ACTION_DOWN: {
+//                EasyLog.d("MotionEvent.ACTION_DOWN ---------------");
+//                break;
+//            }
+//            case MotionEvent.ACTION_UP: {
+//                EasyLog.d("MotionEvent.ACTION_UP ---------------");
+//                break;
+//            }
+//            case MotionEvent.ACTION_CANCEL: {
+//                EasyLog.d("MotionEvent.ACTION_CANCEL ---------------");
+//                break;
+//            }
+//        }
+        boolean result = super.onTouchEvent(event);
+        if (isEnabled()) {
+            switch (mShape.mClickType) {
+                case BUTTON:
+                    if (result) {
+                        mShape.updateButtonState(event.getAction());
+                    }
+                    break;
+                case CHECK:
+                    mShape.updateCheckState(event.getAction());
+                    break;
+                case NON:
+                    break;
+                default:
+                    break;
+            }
         }
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN: {
-                mShape.onFocusEvent(event);
-                EasyLog.d("MotionEvent.ACTION_DOWN ---------------");
+        switch (mShape.mClickType) {
+            case BUTTON:
+            case CHECK:
+                mRippleAnimator.onTouchEvent(event);
                 break;
-            }
-            case MotionEvent.ACTION_UP: {
-                mShape.onFocusEvent(event);
-                performClick();
-                EasyLog.d("MotionEvent.ACTION_UP ---------------");
-                return true;
-            }
-            case MotionEvent.ACTION_CANCEL: {
-                mShape.onFocusEvent(event);
-                EasyLog.d("MotionEvent.ACTION_CANCEL ---------------");
-                return true;
-            }
+            case NON:
+                break;
         }
-        return super.onTouchEvent(event);
+        return result;
     }
 
     @Override

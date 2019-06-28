@@ -2,10 +2,12 @@ package com.jen.easyui.recycler;
 
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
 
 import com.jen.easyui.recycler.listener.EasyItemListener;
 
@@ -24,15 +26,68 @@ public abstract class EasyRecyclerAdapterFactory<T> extends RecyclerView.Adapter
     protected List<T> mData;
     EasyItemListener listener;
 
+    public EasyRecyclerAdapterFactory(Context context) {
+        this.mContext = context;
+        mData = new ArrayList<>();
+    }
+
     /**
      * @param data 数据
      */
-    protected EasyRecyclerAdapterFactory(Context context, List<T> data) {
+    public EasyRecyclerAdapterFactory(Context context, List<T> data) {
         this.mContext = context;
         mData = data;
         if (mData == null) {
             mData = new ArrayList<>();
         }
+    }
+
+    /**
+     * 竖向列表
+     *
+     * @param recyclerView .
+     */
+    public void bindRecycleLinearVertical(RecyclerView recyclerView) {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(this);
+    }
+
+    /**
+     * 横向列表
+     *
+     * @param recyclerView .
+     */
+    public void bindRecycleLinearHorizontal(RecyclerView recyclerView) {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(this);
+    }
+
+    /**
+     * 竖向Grid布局
+     *
+     * @param size 数量
+     */
+    public void bindRecycleVertical(RecyclerView recyclerView, int size) {
+        GridLayoutManager layoutManager = new GridLayoutManager(mContext, size);
+        layoutManager.setOrientation(GridLayout.VERTICAL);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(this);
+    }
+
+    /**
+     * 横向Grid布局
+     *
+     * @param size 数量
+     */
+    public void bindRecycleHorizontal(RecyclerView recyclerView, int size) {
+        GridLayoutManager layoutManager = new GridLayoutManager(mContext, size);
+        layoutManager.setOrientation(GridLayout.HORIZONTAL);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(this);
     }
 
     /**

@@ -32,7 +32,7 @@
             android:text="EasyShapeTextView_button"
             app:clickType="button"
             app:strokeClickColor="#00FF00"
-            app:strokeColor="#FF00"
+            app:strokeColor="#FF0000"
             app:strokeWidth="1dp" />
 
 

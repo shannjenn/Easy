@@ -17,6 +17,10 @@ import java.util.List;
 public abstract class EasyHolderRecyclerBaseAdapter<T> extends EasyRecyclerAdapterFactory<T> {
     private final String TAG = EasyHolderRecyclerBaseAdapter.class.getSimpleName();
 
+    public EasyHolderRecyclerBaseAdapter(Context context) {
+        super(context);
+    }
+
     /**
      * @param data 数据
      */
