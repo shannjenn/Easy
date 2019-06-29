@@ -55,6 +55,15 @@ public class Build {
     }
 
     /**
+     * String
+     *
+     * @return .
+     */
+    public EasyWindowString createString() {
+        return new EasyWindowString(this);
+    }
+
+    /**
      * 滚动
      *
      * @return .

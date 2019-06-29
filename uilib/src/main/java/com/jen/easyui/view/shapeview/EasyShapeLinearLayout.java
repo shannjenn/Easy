@@ -7,7 +7,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.LinearLayout;
 
-import com.jen.easy.log.EasyLog;
 import com.jen.easyui.R;
 
 
@@ -84,10 +83,12 @@ public class EasyShapeLinearLayout extends LinearLayout {
         switch (clickType) {
             case 0: {
                 mShape.mClickType = EasyShapeBase.ClickType.BUTTON;
+                setClickable(true);
                 break;
             }
             case 1: {
                 mShape.mClickType = EasyShapeBase.ClickType.CHECK;
+                setClickable(true);
                 break;
             }
             case -1: {

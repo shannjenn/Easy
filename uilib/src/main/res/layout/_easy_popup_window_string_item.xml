@@ -10,6 +10,7 @@
     android:text="item"
     android:textColor="#ff000000"
     android:textSize="16sp"
+    app:clickType="button"
     app:lineBottomColor="#F0F0F0"
     app:lineBottomMarginLeft="16dp"
     app:lineWidth="1dp" />

@@ -60,7 +60,7 @@ public class EasyRecyclerView extends RecyclerView {
     }
 
     @Override
-    public void setAdapter(RecyclerView.Adapter adapter) {
+    public void setAdapter(Adapter adapter) {
         super.setAdapter(adapter);
     }
 

@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-import com.jen.easy.log.EasyLog;
 import com.jen.easyui.R;
 
 
@@ -87,10 +86,12 @@ public class EasyShapeTextView extends android.support.v7.widget.AppCompatTextVi
         switch (clickType) {
             case 0: {
                 mShape.mClickType = EasyShapeBase.ClickType.BUTTON;
+                setClickable(true);
                 break;
             }
             case 1: {
                 mShape.mClickType = EasyShapeBase.ClickType.CHECK;
+                setClickable(true);
                 break;
             }
             case -1: {

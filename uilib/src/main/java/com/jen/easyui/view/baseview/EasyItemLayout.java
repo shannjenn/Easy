@@ -222,7 +222,7 @@ public class EasyItemLayout extends RelativeLayout {
         tv_count_params.rightMargin = countMarginRight;
     }
 
-    private View.OnClickListener clickListener = new OnClickListener() {
+    private OnClickListener clickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
             int i = v.getId();

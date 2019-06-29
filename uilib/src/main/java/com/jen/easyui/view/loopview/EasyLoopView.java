@@ -104,7 +104,7 @@ public class EasyLoopView extends View {
     static final int H_INVALIDATE = 1000;
     static final int H_SMOOTH_SCROLL = 2000;
     static final int H_ITEM_SELECTED = 3000;
-    private Handler loopViewHandler = new android.os.Handler(Looper.myLooper()) {
+    private Handler loopViewHandler = new Handler(Looper.myLooper()) {
         @Override
         public final void handleMessage(Message msg) {
             if (msg.what == H_INVALIDATE)

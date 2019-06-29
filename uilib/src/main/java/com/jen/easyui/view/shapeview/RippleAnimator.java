@@ -2,13 +2,10 @@ package com.jen.easyui.view.shapeview;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RadialGradient;
 import android.graphics.Shader;
-import android.support.v7.widget.AppCompatButton;
-import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;

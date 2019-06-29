@@ -147,11 +147,11 @@ public class EasyTopBar extends RelativeLayout implements View.OnClickListener {
         if (mRightImage != null) {
             ivRight.setImageDrawable(mRightImage);
             if (mRightImageWidth != -1) {
-                RelativeLayout.LayoutParams params = (LayoutParams) ivRight.getLayoutParams();
+                LayoutParams params = (LayoutParams) ivRight.getLayoutParams();
                 params.width = mRightImageWidth;
             }
             if (mRightImageHeight != -1) {
-                RelativeLayout.LayoutParams params = (LayoutParams) ivRight.getLayoutParams();
+                LayoutParams params = (LayoutParams) ivRight.getLayoutParams();
                 params.height = mRightImageHeight;
             }
         }

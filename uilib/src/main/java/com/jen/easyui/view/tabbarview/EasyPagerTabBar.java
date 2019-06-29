@@ -157,7 +157,7 @@ public class EasyPagerTabBar extends HorizontalScrollView {
         removeAllViews();
         mTabsContainer = new LinearLayout(mContext);
         mTabsContainer.setOrientation(LinearLayout.HORIZONTAL);
-        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
         addView(mTabsContainer, layoutParams);
         initTabViews();
     }
@@ -402,7 +402,7 @@ public class EasyPagerTabBar extends HorizontalScrollView {
         canvas.drawRoundRect(mRect, 5, 5, mPaint);
     }
 
-    View.OnClickListener onClickListener = new View.OnClickListener() {
+    OnClickListener onClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
             int position = (int) v.getTag();
