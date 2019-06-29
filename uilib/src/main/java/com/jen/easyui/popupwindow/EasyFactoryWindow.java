@@ -2,7 +2,6 @@ package com.jen.easyui.popupwindow;
 
 import android.animation.ValueAnimator;
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
@@ -18,12 +17,10 @@ import com.jen.easyui.util.EasyDisplayUtil;
  */
 
 abstract class EasyFactoryWindow extends PopupWindow {
-    private Context context;
-    private float showAlpha = 0.5f;
-    private Drawable background;
+    protected Build build;
 
-    EasyFactoryWindow(Context context) {
-        this.context = context;
+    EasyFactoryWindow(Build build) {
+        this.build = build;
         initWindow();
     }
 
@@ -44,19 +41,14 @@ abstract class EasyFactoryWindow extends PopupWindow {
 
     protected abstract int animation();
 
-    private void showWindow() {
-        setAnimationStyle(animation());
-        showAnimator().start();
-    }
-
     @Override
     public void setOutsideTouchable(boolean touchable) {
         super.setOutsideTouchable(touchable);
         if (touchable) {
-            if (background == null) {
-                background = new ColorDrawable(0x00000000);
+            if (build.background == null) {
+                build.background = new ColorDrawable(0x00000000);
             }
-            super.setBackgroundDrawable(background);
+            super.setBackgroundDrawable(build.background);
         } else {
             super.setBackgroundDrawable(null);
         }
@@ -64,7 +56,7 @@ abstract class EasyFactoryWindow extends PopupWindow {
 
     @Override
     public void setBackgroundDrawable(Drawable background) {
-        this.background = background;
+        build.background = background;
         setOutsideTouchable(isOutsideTouchable());
     }
 
@@ -92,41 +84,29 @@ abstract class EasyFactoryWindow extends PopupWindow {
         super.showAsDropDown(anchor, xoff, yoff, gravity);
     }
 
+    private void showWindow() {
+        setAnimationStyle(animation());
+        alphaAnimator(true, 300).start();
+    }
+
     @Override
     public void dismiss() {
         super.dismiss();
-        dismissAnimator().start();
+        alphaAnimator(false, 200).start();
     }
 
     /**
      * 窗口显示时，窗口背景透明度渐变动画
      */
-    private ValueAnimator showAnimator() {
-        ValueAnimator animator = ValueAnimator.ofFloat(1.0f, showAlpha);
+    private ValueAnimator alphaAnimator(boolean isShow, int time) {
+        ValueAnimator animator = ValueAnimator.ofFloat(isShow ? 1.0f : build.showAlpha, isShow ? build.showAlpha : 1.0f);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                float alpha = (float) animation.getAnimatedValue();
-                setWindowBackgroundAlpha(alpha);
+                setWindowBackgroundAlpha((float) animation.getAnimatedValue());
             }
         });
-        animator.setDuration(300);//要与动画 easy_popup_window_anim_style 时间一致
-        return animator;
-    }
-
-    /**
-     * 窗口隐藏时，窗口背景透明度渐变动画
-     */
-    private ValueAnimator dismissAnimator() {
-        ValueAnimator animator = ValueAnimator.ofFloat(showAlpha, 1.0f);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float alpha = (float) animation.getAnimatedValue();
-                setWindowBackgroundAlpha(alpha);
-            }
-        });
-        animator.setDuration(200);//要与动画 easy_popup_window_anim_style 时间一致
+        animator.setDuration(time);//要与属性动画时间一致
         return animator;
     }
 
@@ -134,10 +114,10 @@ abstract class EasyFactoryWindow extends PopupWindow {
      * 控制窗口背景的不透明度
      */
     private void setWindowBackgroundAlpha(float alpha) {
-        EasyDisplayUtil.setBackgroundAlpha((Activity) context, alpha);
+        EasyDisplayUtil.setBackgroundAlpha((Activity) build.context, alpha);
     }
 
     public void setShowAlpha(float alpha) {
-        showAlpha = alpha;
+        build.showAlpha = alpha;
     }
 }

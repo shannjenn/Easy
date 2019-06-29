@@ -1,6 +1,7 @@
 package com.jen.easyui.popupwindow;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 
 import com.jen.easyui.popupwindow.listener.WindowDismissListener;
@@ -12,6 +13,8 @@ import com.jen.easyui.recycler.letter.EasyLetterDecoration;
 public class Build {
     Context context;
     int height, width;
+    float showAlpha = 0.5f;
+    Drawable background;
     boolean showTopBar = true;
     StyleTopBar styleTopBar = new StyleTopBar();//默认值
     StyleAnim styleAnim = StyleAnim.BOTTOM;
@@ -96,6 +99,7 @@ public class Build {
         this.topBarListener = topBarListener;
         return this;
     }
+
     public Build setDismissListener(WindowDismissListener dismissListener) {
         this.dismissListener = dismissListener;
         return this;
@@ -108,6 +112,16 @@ public class Build {
 
     public Build setStyleAnim(StyleAnim animStyle) {
         this.styleAnim = animStyle;
+        return this;
+    }
+
+    public Build setShowAlpha(float showAlpha) {
+        this.showAlpha = showAlpha;
+        return this;
+    }
+
+    public Build setBackground(Drawable background) {
+        this.background = background;
         return this;
     }
 }

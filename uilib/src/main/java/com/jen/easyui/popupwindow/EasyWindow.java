@@ -19,8 +19,7 @@ import java.util.List;
  */
 
 public abstract class EasyWindow extends EasyFactoryWindow implements View.OnClickListener {
-    protected Build build;
-    private View mView;
+    protected View mView;
     protected View showView;
 
     public static Build build(Context context) {
@@ -28,8 +27,7 @@ public abstract class EasyWindow extends EasyFactoryWindow implements View.OnCli
     }
 
     EasyWindow(Build build) {
-        super(build.context);
-        this.build = build;
+        super(build);
         mView = bindView();
         updateTopBar();
         setContentView(mView);

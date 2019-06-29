@@ -20,7 +20,6 @@ import java.util.List;
  */
 
 public class EasyWindowString extends EasyWindow {
-    private RecyclerView.LayoutManager layoutManager;
     private RecyclerView recyclerView;
     private MyAdapter<String> adapter;
 
