@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:background="#33000000">
 
     <LinearLayout
@@ -52,14 +52,14 @@
         <LinearLayout
             android:id="@+id/loop_contains"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center_horizontal">
 
             <com.jen.easyui.view.loopview.EasyLoopView
                 android:id="@+id/picker_year"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:loopViewTextSize="20sp" />
 
@@ -73,21 +73,28 @@
             <com.jen.easyui.view.loopview.EasyLoopView
                 android:id="@+id/picker_day"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:loopViewTextSize="20sp" />
 
             <com.jen.easyui.view.loopview.EasyLoopView
                 android:id="@+id/picker_clock"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:loopViewTextSize="20sp" />
 
             <com.jen.easyui.view.loopview.EasyLoopView
                 android:id="@+id/picker_minute"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:loopViewTextSize="20sp" />
+
+            <com.jen.easyui.view.loopview.EasyLoopView
+                android:id="@+id/picker_sec"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:loopViewTextSize="20sp" />
         </LinearLayout>

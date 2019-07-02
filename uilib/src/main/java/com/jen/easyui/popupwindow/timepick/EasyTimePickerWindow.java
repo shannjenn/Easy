@@ -1,6 +1,7 @@
 package com.jen.easyui.popupwindow.timepick;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -30,8 +31,9 @@ import java.util.Locale;
  * 作者：ShannJenn
  * 时间：2018/07/31.
  */
-public class EasyTimePickerPopWin extends PopupWindow implements OnClickListener {
+public class EasyTimePickerWindow extends PopupWindow implements OnClickListener {
     private Calendar selectCalendar = (Calendar) Calendar.getInstance(Locale.CHINA).clone();
+    private Activity activity;
     private EasyTimePickerConfig config;
     private EasyTimePickListener timePickedListener;
 
@@ -42,6 +44,7 @@ public class EasyTimePickerPopWin extends PopupWindow implements OnClickListener
     private EasyLoopView dayLoopView;
     private EasyLoopView hourLoopView;
     private EasyLoopView minuteLoopView;
+    private EasyLoopView secLoopView;
     private View pickerContainerV;
 
     private final List<String> yearList = new ArrayList<>();
@@ -49,15 +52,21 @@ public class EasyTimePickerPopWin extends PopupWindow implements OnClickListener
     private final List<String> dayList = new ArrayList<>();
     private final List<String> hourList = new ArrayList<>();
     private final List<String> minuteList = new ArrayList<>();
+    private final List<String> secList = new ArrayList<>();
 
-    public EasyTimePickerPopWin(EasyTimePickerConfig timePickerConfig) {
-        this.config = timePickerConfig;
-        selectCalendar.setTimeInMillis(timePickerConfig.calendarGenerator.getInitCalendar().getTimeInMillis());
-        initView(timePickerConfig.type);
+    public static EasyTimePickerWindow buildConfig(Activity activity, EasyTimePickerConfig timePickerConfig) {
+        return new EasyTimePickerWindow(activity, timePickerConfig);
     }
 
-    private void initView(EasyTimePickerConfig.Type type) {
-        View contentView = LayoutInflater.from(config.context).inflate(R.layout._easy_time_picker, null);
+    public EasyTimePickerWindow(Activity activity, EasyTimePickerConfig timePickerConfig) {
+        this.activity = activity;
+        this.config = timePickerConfig;
+        selectCalendar.setTimeInMillis(timePickerConfig.calendarGenerator.getInitCalendar().getTimeInMillis());
+        initView();
+    }
+
+    private void initView() {
+        View contentView = LayoutInflater.from(activity).inflate(R.layout._easy_time_picker, null);
         Button cancelBtn = (Button) contentView.findViewById(R.id.btn_cancel);
         Button confirmBtn = (Button) contentView.findViewById(R.id.btn_confirm);
         LinearLayout loop_contains = (LinearLayout) contentView.findViewById(R.id.loop_contains);
@@ -66,6 +75,7 @@ public class EasyTimePickerPopWin extends PopupWindow implements OnClickListener
         dayLoopView = (EasyLoopView) contentView.findViewById(R.id.picker_day);
         hourLoopView = (EasyLoopView) contentView.findViewById(R.id.picker_clock);
         minuteLoopView = (EasyLoopView) contentView.findViewById(R.id.picker_minute);
+        secLoopView = (EasyLoopView) contentView.findViewById(R.id.picker_sec);
         pickerContainerV = contentView.findViewById(R.id.container_picker);
 
         switch (config.unit) {
@@ -74,19 +84,28 @@ public class EasyTimePickerPopWin extends PopupWindow implements OnClickListener
                 break;
             }
             case YEAR_MONTH_DAY_HOUR_MIN: {
-                yearLoopView.setUnitText(config.context.getString(config.UNIT_YEAR));
-                monthLoopView.setUnitText(config.context.getString(config.UNIT_MONTH));
-                dayLoopView.setUnitText(config.context.getString(config.UNIT_DAY));
-                hourLoopView.setUnitText(config.context.getString(config.UNIT_HOUR));
-                minuteLoopView.setUnitText(config.context.getString(config.UNIT_MINUTE));
+                yearLoopView.setUnitText(activity.getString(config.UNIT_YEAR));
+                monthLoopView.setUnitText(activity.getString(config.UNIT_MONTH));
+                dayLoopView.setUnitText(activity.getString(config.UNIT_DAY));
+                hourLoopView.setUnitText(activity.getString(config.UNIT_HOUR));
+                minuteLoopView.setUnitText(activity.getString(config.UNIT_MINUTE));
+                break;
+            }
+            case YEAR_MONTH_DAY_HOUR_MIN_SEC: {
+                yearLoopView.setUnitText(activity.getString(config.UNIT_YEAR));
+                monthLoopView.setUnitText(activity.getString(config.UNIT_MONTH));
+                dayLoopView.setUnitText(activity.getString(config.UNIT_DAY));
+                hourLoopView.setUnitText(activity.getString(config.UNIT_HOUR));
+                minuteLoopView.setUnitText(activity.getString(config.UNIT_MINUTE));
+                secLoopView.setUnitText(activity.getString(config.UNIT_SEC));
                 break;
             }
             case YEAR_MONTH_HOUR_MIN: {
-                yearLoopView.setUnitText(config.context.getString(config.UNIT_YEAR));
-                monthLoopView.setUnitText(config.context.getString(config.UNIT_MONTH));
-//                dayLoopView.setUnitText(config.context.getString(config.UNIT_DAY));
-                hourLoopView.setUnitText(config.context.getString(config.UNIT_HOUR));
-                minuteLoopView.setUnitText(config.context.getString(config.UNIT_MINUTE));
+                yearLoopView.setUnitText(activity.getString(config.UNIT_YEAR));
+                monthLoopView.setUnitText(activity.getString(config.UNIT_MONTH));
+//                dayLoopView.setUnitText(activity.getString(config.UNIT_DAY));
+                hourLoopView.setUnitText(activity.getString(config.UNIT_HOUR));
+                minuteLoopView.setUnitText(activity.getString(config.UNIT_MINUTE));
                 break;
             }
         }
@@ -97,6 +116,7 @@ public class EasyTimePickerPopWin extends PopupWindow implements OnClickListener
             dayLoopView.setTextSize(config.loopTextSize);
             hourLoopView.setTextSize(config.loopTextSize);
             minuteLoopView.setTextSize(config.loopTextSize);
+            secLoopView.setTextSize(config.loopTextSize);
         }
 
         initPickerViews(); // init year and month loop view
@@ -106,6 +126,7 @@ public class EasyTimePickerPopWin extends PopupWindow implements OnClickListener
         dayLoopView.setListener(loopViewListener);
         hourLoopView.setListener(loopViewListener);
         minuteLoopView.setListener(loopViewListener);
+        secLoopView.setListener(loopViewListener);
 
         cancelBtn.setOnClickListener(this);
         confirmBtn.setOnClickListener(this);
@@ -125,20 +146,24 @@ public class EasyTimePickerPopWin extends PopupWindow implements OnClickListener
                 dayLoopView.setVisibility(View.GONE);
                 hourLoopView.setVisibility(View.GONE);
                 minuteLoopView.setVisibility(View.GONE);
+                secLoopView.setVisibility(View.GONE);
                 break;
             }
             case MONTH_DAY_HOUR_MIN:
             case MONTH_DAY_HOUR_MIN_WEEK: {
                 yearLoopView.setVisibility(View.GONE);
+                secLoopView.setVisibility(View.GONE);
                 break;
             }
             case HOUR_MIN: {
                 yearLoopView.setVisibility(View.GONE);
                 monthLoopView.setVisibility(View.GONE);
                 dayLoopView.setVisibility(View.GONE);
+                secLoopView.setVisibility(View.GONE);
                 break;
             }
             case YEAR_MONTH_DAY_HOUR_MIN:
+            case YEAR_MONTH_DAY_HOUR_MIN_SEC:
             case YEAR_MONTH_DAY_HOUR_MIN_WEEK: {
                 break;
             }
@@ -146,6 +171,7 @@ public class EasyTimePickerPopWin extends PopupWindow implements OnClickListener
             case YEAR_MONTH_DAY_WEEK: {
                 hourLoopView.setVisibility(View.GONE);
                 minuteLoopView.setVisibility(View.GONE);
+                secLoopView.setVisibility(View.GONE);
                 break;
             }
         }
@@ -169,7 +195,9 @@ public class EasyTimePickerPopWin extends PopupWindow implements OnClickListener
             hourList.add(format2LenStr(k));
         }
         for (int z = 0; z < 60; z++) {
-            minuteList.add(format2LenStr(z));
+            String val = format2LenStr(z);
+            minuteList.add(val);
+            secList.add(val);
         }
         yearLoopView.setData(yearList);
         yearLoopView.setInitPosition(selectCalendar.get(Calendar.YEAR) - minYear);
@@ -179,6 +207,8 @@ public class EasyTimePickerPopWin extends PopupWindow implements OnClickListener
         hourLoopView.setInitPosition(selectCalendar.get(Calendar.HOUR_OF_DAY));
         minuteLoopView.setData(minuteList);
         minuteLoopView.setInitPosition(selectCalendar.get(Calendar.MINUTE));
+        secLoopView.setData(secList);
+        secLoopView.setInitPosition(selectCalendar.get(Calendar.SECOND));
 
         initDayPickerView(); // init day loop view
     }
@@ -192,6 +222,7 @@ public class EasyTimePickerPopWin extends PopupWindow implements OnClickListener
             List<String> list = new ArrayList<>();
             switch (config.type) {
                 case YEAR_MONTH_DAY_HOUR_MIN:
+                case YEAR_MONTH_DAY_HOUR_MIN_SEC:
                 case YEAR_MONTH_DAY:
                 case YEAR_MONTH:
                 case MONTH_DAY_HOUR_MIN:
@@ -231,38 +262,30 @@ public class EasyTimePickerPopWin extends PopupWindow implements OnClickListener
 
     /**
      * Show date picker popWindow
-     *
-     * @param activity
      */
-    public void showPopWin(Activity activity) {
-        if (null != activity) {
-            TranslateAnimation trans = new TranslateAnimation(
-                    Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF,
-                    0, Animation.RELATIVE_TO_SELF, 1,
-                    Animation.RELATIVE_TO_SELF, 0);
-            showAtLocation(activity.getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
-            trans.setDuration(240);
-            trans.setInterpolator(new AccelerateDecelerateInterpolator());
-            pickerContainerV.startAnimation(trans);
-        }
+    public void showPopWin() {
+        TranslateAnimation trans = new TranslateAnimation(
+                Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF,
+                0, Animation.RELATIVE_TO_SELF, 1,
+                Animation.RELATIVE_TO_SELF, 0);
+        showAtLocation(activity.getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
+        trans.setDuration(240);
+        trans.setInterpolator(new AccelerateDecelerateInterpolator());
+        pickerContainerV.startAnimation(trans);
     }
 
     /**
      * Show date picker popWindow
-     *
-     * @param activity
      */
-    public void showPopWin(Activity activity, View view) {
-        if (null != activity) {
-            TranslateAnimation trans = new TranslateAnimation(
-                    Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF,
-                    0, Animation.RELATIVE_TO_SELF, 1,
-                    Animation.RELATIVE_TO_SELF, 0);
-            showAtLocation(view, Gravity.BOTTOM, 0, 0);
-            trans.setDuration(240);
-            trans.setInterpolator(new AccelerateDecelerateInterpolator());
-            pickerContainerV.startAnimation(trans);
-        }
+    public void showPopWin(View view) {
+        TranslateAnimation trans = new TranslateAnimation(
+                Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF,
+                0, Animation.RELATIVE_TO_SELF, 1,
+                Animation.RELATIVE_TO_SELF, 0);
+        showAtLocation(view, Gravity.BOTTOM, 0, 0);
+        trans.setDuration(240);
+        trans.setInterpolator(new AccelerateDecelerateInterpolator());
+        pickerContainerV.startAnimation(trans);
     }
 
     /**
@@ -311,6 +334,9 @@ public class EasyTimePickerPopWin extends PopupWindow implements OnClickListener
             } else if (loopView == minuteLoopView) {
                 int selectMinute = selectCalendar.get(Calendar.MINUTE);
                 selectCalendar.add(Calendar.MINUTE, item - selectMinute);
+            } else if (loopView == secLoopView) {
+                int selectSec = selectCalendar.get(Calendar.SECOND);
+                selectCalendar.add(Calendar.SECOND, item - selectSec);
             }
         }
     };
@@ -325,7 +351,8 @@ public class EasyTimePickerPopWin extends PopupWindow implements OnClickListener
         return (num < 10) ? "0" + num : String.valueOf(num);
     }
 
-    public void setTimePickedListener(EasyTimePickListener timePickedListener) {
+    public EasyTimePickerWindow setTimePickedListener(EasyTimePickListener timePickedListener) {
         this.timePickedListener = timePickedListener;
+        return this;
     }
 }

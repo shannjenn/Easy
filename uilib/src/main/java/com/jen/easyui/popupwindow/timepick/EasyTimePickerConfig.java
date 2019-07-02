@@ -11,7 +11,6 @@ import com.jen.easyui.R;
  */
 public class EasyTimePickerConfig {
     Integer loopTextSize;
-    Context context;
     final EasyCalendarGenerator calendarGenerator = new EasyCalendarGenerator();
     Type type = Type.YEAR_MONTH_DAY_HOUR_MIN;
     Unit unit = Unit.NON;
@@ -21,12 +20,13 @@ public class EasyTimePickerConfig {
     final int UNIT_DAY = R.string._easy_time_unit_day;
     final int UNIT_HOUR = R.string._easy_time_unit_hour;
     final int UNIT_MINUTE = R.string._easy_time_unit_minute;
+    final int UNIT_SEC = R.string._easy_time_unit_sec;
 
     /**
      * 模式，年月日时分，年月日，时分，月日时分
      */
     public enum Type {
-        YEAR_MONTH_DAY_HOUR_MIN, YEAR_MONTH_DAY, YEAR_MONTH, MONTH_DAY_HOUR_MIN, HOUR_MIN,
+        YEAR_MONTH_DAY_HOUR_MIN, YEAR_MONTH_DAY_HOUR_MIN_SEC, YEAR_MONTH_DAY, YEAR_MONTH, MONTH_DAY_HOUR_MIN, HOUR_MIN,
         YEAR_MONTH_DAY_HOUR_MIN_WEEK, YEAR_MONTH_DAY_WEEK, MONTH_DAY_HOUR_MIN_WEEK
     }
 
@@ -34,11 +34,22 @@ public class EasyTimePickerConfig {
      * 单位
      */
     public enum Unit {
-        NON, YEAR_MONTH_DAY_HOUR_MIN, YEAR_MONTH_HOUR_MIN
+        NON, YEAR_MONTH_DAY_HOUR_MIN, YEAR_MONTH_DAY_HOUR_MIN_SEC, YEAR_MONTH_HOUR_MIN
     }
 
-    public EasyTimePickerConfig(Context context) {
-        this.context = context;
+    public static EasyTimePickerConfig build() {
+        return new EasyTimePickerConfig();
+    }
+
+    public static EasyTimePickerConfig build(Type type, Unit unit) {
+        EasyTimePickerConfig pickerConfig = new EasyTimePickerConfig();
+        pickerConfig.setType(type).setUnit(unit);
+        return pickerConfig;
+    }
+
+    ;
+
+    public EasyTimePickerConfig() {
     }
 
     public EasyTimePickerConfig setType(Type type) {

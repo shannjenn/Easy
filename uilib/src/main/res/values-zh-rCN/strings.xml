@@ -8,4 +8,5 @@
     <string name="_easy_time_unit_day">日</string>
     <string name="_easy_time_unit_hour">时</string>
     <string name="_easy_time_unit_minute">分</string>
+    <string name="_easy_time_unit_sec">秒</string>
 </resources>

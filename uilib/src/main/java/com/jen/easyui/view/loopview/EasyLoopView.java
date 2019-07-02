@@ -89,6 +89,7 @@ public class EasyLoopView extends View {
     private float rawY;
 
     private int layoutWidth;
+    private int layoutHeight;
     private float layoutWeight;
 
     /*public LoopView(Context context) {
@@ -233,7 +234,7 @@ public class EasyLoopView extends View {
         textSize = a.getDimensionPixelOffset(R.styleable.EasyLoopView_loopViewTextSize, textSizeXp);
         textColorSelect = a.getColor(R.styleable.EasyLoopView_loopViewTextSelectColor, 0xff0085f2);
         textColorUnSelect = a.getColor(R.styleable.EasyLoopView_loopViewTextUnSelectColor, 0xffaaaaaa);
-        textVerticalMargin = a.getDimensionPixelOffset(R.styleable.EasyLoopView_loopViewTextVerticalMargin, 100);
+        textVerticalMargin = a.getDimensionPixelOffset(R.styleable.EasyLoopView_loopViewTextVerticalMargin, 30);
 
         viewHorizontalMargin = a.getDimensionPixelOffset(R.styleable.EasyLoopView_loopViewHorizontalMargin, 20);
 
@@ -241,9 +242,10 @@ public class EasyLoopView extends View {
 
         unitText = a.getString(R.styleable.EasyLoopView_loopViewUnitText);
         unitTextColor = a.getColor(R.styleable.EasyLoopView_loopViewUnitTextColor, 0xff0085f2);
-        unitHorizontalMargin = a.getColor(R.styleable.EasyLoopView_loopViewUnitHorizontalMargin, 40);
+        unitHorizontalMargin = a.getColor(R.styleable.EasyLoopView_loopViewUnitHorizontalMargin, 30);
 
         layoutWidth = a.getLayoutDimension(R.styleable.EasyLoopView_android_layout_width, 0);
+        layoutHeight = a.getLayoutDimension(R.styleable.EasyLoopView_android_layout_height, 0);
         layoutWeight = a.getFloat(R.styleable.EasyLoopView_android_layout_weight, 0f);
 
         a.recycle();
@@ -316,6 +318,9 @@ public class EasyLoopView extends View {
         if (layoutWidth == ViewGroup.LayoutParams.WRAP_CONTENT && layoutWeight == 0) {
             int widthSpec = maxTextWidth + unitTextWidth + unitHorizontalMargin + viewHorizontalMargin * 2;
             widthMeasureSpec = MeasureSpec.makeMeasureSpec(widthSpec, MeasureSpec.EXACTLY);
+        }
+        if (layoutHeight == ViewGroup.LayoutParams.WRAP_CONTENT) {
+            heightMeasureSpec = MeasureSpec.makeMeasureSpec(measuredHeight + 10, MeasureSpec.EXACTLY);
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         measuredWidth = getMeasuredWidth();

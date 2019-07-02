@@ -8,4 +8,5 @@
     <string name="_easy_time_unit_day">d</string>
     <string name="_easy_time_unit_hour">h</string>
     <string name="_easy_time_unit_minute">min</string>
+    <string name="_easy_time_unit_sec">s</string>
 </resources>

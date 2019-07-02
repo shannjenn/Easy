@@ -4,7 +4,7 @@
     android:id="@+id/shape_name"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:layout_marginStart="10dp"
+    android:layout_marginStart="5dp"
     android:gravity="center_vertical"
     android:paddingStart="16dp"
     android:text="item"
