@@ -18,7 +18,7 @@ import java.util.List;
  * 时间：2017/09/09.
  */
 
-public abstract class EasyWindow extends EasyFactoryWindow implements View.OnClickListener {
+public abstract class EasyWindow extends EasyWindowFactory implements View.OnClickListener {
     protected View mView;
     protected View showView;
 
@@ -72,26 +72,6 @@ public abstract class EasyWindow extends EasyFactoryWindow implements View.OnCli
 
     public void setFlagCode(int flagCode) {
         build.flagCode = flagCode;
-    }
-
-    @Override
-    protected int animation() {
-        int style;
-        switch (build.styleAnim) {
-            case BOTTOM:
-                style = R.style.easy_popup_window_show_bottom_anim_style;
-                break;
-            case DROP:
-                style = R.style.easy_popup_window_drop_down_anim_style;
-                break;
-            case RIGHT:
-                style = R.style.easy_popup_window_show_right_anim_style;
-                break;
-            default:
-                style = R.style.easy_popup_window_show_bottom_anim_style;
-                break;
-        }
-        return style;
     }
 
     @Override

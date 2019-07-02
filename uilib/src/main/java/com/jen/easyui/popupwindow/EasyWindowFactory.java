@@ -1,5 +1,7 @@
 package com.jen.easyui.popupwindow;
 
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
@@ -16,10 +18,14 @@ import com.jen.easyui.util.EasyDisplayUtil;
  * 时间：2017/09/09.
  */
 
-abstract class EasyFactoryWindow extends PopupWindow {
+abstract class EasyWindowFactory extends PopupWindow {
     protected Build build;
+    private float windowHeight;
+    private float windowWidth;
+    private int showDurationTime = 300;
+    private int hideDurationTime = 200;
 
-    EasyFactoryWindow(Build build) {
+    EasyWindowFactory(Build build) {
         this.build = build;
         initWindow();
     }
@@ -27,6 +33,8 @@ abstract class EasyFactoryWindow extends PopupWindow {
     @Override
     public void setContentView(View contentView) {
         super.setContentView(contentView);
+        windowHeight = 0;//重置宽高
+        windowWidth = 0;
     }
 
     /**
@@ -38,8 +46,6 @@ abstract class EasyFactoryWindow extends PopupWindow {
         setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
         setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
     }
-
-    protected abstract int animation();
 
     @Override
     public void setOutsideTouchable(boolean touchable) {
@@ -85,14 +91,52 @@ abstract class EasyFactoryWindow extends PopupWindow {
     }
 
     private void showWindow() {
-        setAnimationStyle(animation());
-        alphaAnimator(true, 300).start();
+        propertyAnimator();
+        alphaAnimator(true, showDurationTime).start();
     }
 
     @Override
     public void dismiss() {
         super.dismiss();
-        alphaAnimator(false, 200).start();
+        alphaAnimator(false, hideDurationTime).start();
+    }
+
+
+    /**
+     * 属性动画
+     */
+    private void propertyAnimator() {
+        if (windowHeight <= 0) {
+            getContentView().measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+            if (build.height > 0) {
+                windowHeight = build.height;
+            } else {
+                windowHeight = getContentView().getMeasuredHeight();
+            }
+            if (build.width > 0) {
+                windowWidth = build.width;
+            } else {
+                windowWidth = getContentView().getMeasuredWidth();
+            }
+        }
+        PropertyValuesHolder propertyValuesHolder;
+        switch (build.styleAnim) {
+            case BOTTOM:
+                propertyValuesHolder = PropertyValuesHolder.ofFloat("translationY", windowHeight, 0);
+                break;
+            case DROP:
+                propertyValuesHolder = PropertyValuesHolder.ofFloat("translationY", -windowHeight, 0);
+                break;
+            case RIGHT:
+                propertyValuesHolder = PropertyValuesHolder.ofFloat("translationX", windowWidth, 0);
+                break;
+            default:
+                propertyValuesHolder = PropertyValuesHolder.ofFloat("translationY", 0, windowHeight);
+                break;
+        }
+        ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(getContentView(), propertyValuesHolder);
+        animator.setDuration(showDurationTime);
+        animator.start();
     }
 
     /**
@@ -119,5 +163,13 @@ abstract class EasyFactoryWindow extends PopupWindow {
 
     public void setShowAlpha(float alpha) {
         build.showAlpha = alpha;
+    }
+
+    public void setShowDurationTime(int showDurationTime) {
+        this.showDurationTime = showDurationTime;
+    }
+
+    public void setHideDurationTime(int hideDurationTime) {
+        this.hideDurationTime = hideDurationTime;
     }
 }
