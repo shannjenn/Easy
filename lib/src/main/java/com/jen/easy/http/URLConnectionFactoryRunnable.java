@@ -160,9 +160,9 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
                 String value = heads.get(key);
                 connection.setRequestProperty(key, value);
                 mHeadBuilder.append(key);
-                mHeadBuilder.append("=");
+                mHeadBuilder.append("：");
                 mHeadBuilder.append(value);
-                mHeadBuilder.append(" ");
+                mHeadBuilder.append(", ");
             }
             mRequestLogInfo = method + " " + mUrlStr + "\n请求头部：" + mHeadBuilder.toString() + "\n请求参数：" + mBody.toString();
             childRun(connection);

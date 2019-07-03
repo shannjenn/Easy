@@ -169,14 +169,6 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
         return setTextView(itemView, id, text);
     }
 
-    public EasyHolder setTextView(int id, int strId) {
-        return setTextView(itemView, id, strId);
-    }
-
-    public EasyHolder setTextView(View parent, int id, int strId) {
-        return setTextView(parent, id, mAdapter.mContext.getString(strId));
-    }
-
     /**
      * 设置颜色
      *

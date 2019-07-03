@@ -107,6 +107,21 @@ public abstract class EasyRecyclerAdapterFactory<T> extends RecyclerView.Adapter
         }
     }
 
+    /**
+     * @param data 设置数据
+     */
+    public void setDataAndNotify(List<T> data) {
+        mData = data;
+        if (mData == null) {
+            mData = new ArrayList<>();
+        }
+        notifyDataSetChanged();
+    }
+
+    public void removeItem(int position) {
+        mData.remove(position);
+    }
+
     @Override
     public int getItemCount() {
         if (mData == null || mData.size() == 0) {
