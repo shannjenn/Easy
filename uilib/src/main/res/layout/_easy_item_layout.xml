@@ -6,7 +6,7 @@
     <!--android:layout_height="45dp">-->
 
     <TextView
-        android:id="@+id/tv_item_layout_title"
+        android:id="@+id/easy_item_left_tv"
         android:layout_width="90dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
@@ -15,16 +15,42 @@
         android:textSize="14sp" />
 
     <LinearLayout
+        android:id="@+id/easy_item_right_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/easy_item_right_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text=""
+            android:textColor="#b6b6b6"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/easy_item_right_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/_arrow_right" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/easy_item_center_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginStart="10dp"
-        android:layout_toEndOf="@+id/tv_item_layout_title"
+        android:layout_toStartOf="@+id/easy_item_right_layout"
+        android:layout_toEndOf="@+id/easy_item_left_tv"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tv_item_layout_content"
+            android:id="@+id/easy_item_center_tv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -33,7 +59,7 @@
             android:textSize="14sp" />
 
         <EditText
-            android:id="@+id/et_item_layout_content"
+            android:id="@+id/easy_item_center_et"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -44,31 +70,16 @@
             android:visibility="visible" />
 
         <ImageView
-            android:id="@+id/iv_item_layout_clear"
+            android:id="@+id/easy_item_center_icon_clear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:src="@drawable/icon_clear"
             android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/tv_item_layout_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:text=""
-            android:textColor="#b6b6b6"
-            android:textSize="14sp" />
-
-        <ImageView
-            android:id="@+id/iv_item_layout_arrow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/_arrow_right" />
     </LinearLayout>
 
     <View
-        android:id="@+id/v_item_layout_bottomLine"
+        android:id="@+id/easy_item_v_bottomLine"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_alignParentBottom="true"

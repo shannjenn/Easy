@@ -1,10 +1,10 @@
 package com.jen.easyui.popupwindow;
 
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import com.jen.easyui.R;
 import com.jen.easyui.recycler.EasyHolder;
@@ -21,7 +21,8 @@ import java.util.List;
 
 public class EasyWindowString extends EasyWindow {
     private RecyclerView recyclerView;
-    private MyAdapter<String> adapter;
+    private MyAdapter adapter;
+    private ItemBuild itemBuild;
 
     EasyWindowString(Build build) {
         super(build);
@@ -36,7 +37,7 @@ public class EasyWindowString extends EasyWindow {
     }
 
     private void initView() {
-        adapter = new MyAdapter<>(build.context);
+        adapter = new MyAdapter(build.context);
         adapter.bindRecycleLinearVertical(recyclerView);
     }
 
@@ -58,9 +59,8 @@ public class EasyWindowString extends EasyWindow {
         return adapter;
     }
 
-    private class MyAdapter<T extends String> extends EasyHolderRecyclerBaseAdapter<T> {
-
-        public MyAdapter(Context context) {
+    private class MyAdapter extends EasyHolderRecyclerBaseAdapter {
+        MyAdapter(Context context) {
             super(context);
         }
 
@@ -71,8 +71,22 @@ public class EasyWindowString extends EasyWindow {
 
         @Override
         protected void onBindHolderData(EasyHolder easyHolder, View view, int viewType, int position) {
-            String name = mData.get(position);
+            String name;
+            if (itemBuild != null) {
+                TextView shape_name = view.findViewById(R.id.shape_name);
+                name = itemBuild.item(position, shape_name);
+            } else {
+                name = mData.get(position).toString();
+            }
             easyHolder.setTextView(R.id.shape_name, name);
         }
+    }
+
+    public interface ItemBuild {
+        String item(int position, TextView itemView);
+    }
+
+    public void setItemBuild(ItemBuild itemBuild) {
+        this.itemBuild = itemBuild;
     }
 }

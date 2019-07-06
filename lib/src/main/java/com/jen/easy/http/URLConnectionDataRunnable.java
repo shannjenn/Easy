@@ -8,6 +8,7 @@ import com.jen.easy.http.request.EasyHttpDataRequest;
 import com.jen.easy.http.request.EasyRequestState;
 import com.jen.easy.http.response.EasyHttpResponse;
 import com.jen.easy.http.response.EasyResponseState;
+import com.jen.easy.log.JsonLogFormat;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -54,20 +55,17 @@ class URLConnectionDataRunnable extends URLConnectionFactoryRunnable {
             double timeSec = (System.currentTimeMillis() - startTime) / 1000d;
             String result = resultBuffer.toString();
             StringBuilder retLogBuild = new StringBuilder();
-            retLogBuild.append(mRequestLogInfo).append("\n返回码：").append(mResponseCode).append("\n返回原始数据：").append(result);
-            retLogBuild.insert(retLogBuild.indexOf(mUrlStr) + mUrlStr.length(), " 服务器响应时间:" + timeSec + "秒");
+            retLogBuild.append(mRequestLogInfo).append("\n返回原始数据：\n").append(result);
             if (mRequest.getReplaceResult().size() > 0) {
                 result = replaceResult(result);
-                retLogBuild.append("\n格式化后数据：").append(result);
+                retLogBuild.append("\n格式化后数据：\n").append(result);
             }
-            HttpLog.i(retLogBuild.toString());
+            retLogBuild.append("\n服务器返回码：").append(mResponseCode).append("  响应时间:").append(timeSec).append("秒");
+            HttpLog.i(JsonLogFormat.formatJson(retLogBuild.toString()));
             success(result, headMap);
         } else {
             double timeSec = (System.currentTimeMillis() - startTime) / 1000d;
-            StringBuilder retLogBuild = new StringBuilder();
-            retLogBuild.append(mRequestLogInfo).append("\n返回码：").append(mResponseCode);
-            retLogBuild.insert(retLogBuild.indexOf(mUrlStr) + mUrlStr.length(), " 服务器响应时间:" + timeSec + "秒");
-            HttpLog.e(retLogBuild.toString());
+            HttpLog.e(JsonLogFormat.formatJson(mRequestLogInfo + "\n返回码：" + mResponseCode + "  响应时间:" + timeSec + "秒"));
             fail(" 网络请求异常：" + mResponseCode);
         }
     }

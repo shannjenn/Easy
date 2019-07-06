@@ -14,34 +14,6 @@ public class MathUtil {
     private static final String TAG = MathUtil.class.getSimpleName();
 
     /**
-     * 股票数据统一转换
-     *
-     * @param num   值
-     * @param point 保留小数位数
-     * @param round 是否四舍五入
-     * @return 。
-     */
-    public static String turnBillionThousand(double num, int point, boolean round) {
-//        String billion = XGApplication.getApplication().getString(R.string.billion);
-//        String ten_thousand = XGApplication.getApplication().getString(R.string.ten_thousand);
-        String billion = "亿";
-        String ten_thousand = "万";
-        String unit = "";
-        if (num > 100000000.0) {
-            num = num / 100000000.0;
-            unit = billion;
-            if (num > 10000.0) {
-                num = num / 10000.0;
-                unit = ten_thousand + billion;
-            }
-        } else if (num > 10000.0) {
-            num = num / 10000.0;
-            unit = ten_thousand;
-        }
-        return turnToStr(num, point, round) + unit;
-    }
-
-    /**
      * double保留小数位
      *
      * @param value 。
@@ -49,9 +21,9 @@ public class MathUtil {
      * @param round 是否四舍五入
      * @return 。
      */
-    public static String turnToStr(Object value, int point, boolean round) {
+    public static String changeToStr(Object value, int point, boolean round) {
         if (value == null) {
-            EasyLog.e(TAG, "turnToStr error -------- ");
+            EasyLog.e(TAG, "changeToStr error -------- ");
             return "";
         }
         Double result = null;
@@ -65,7 +37,7 @@ public class MathUtil {
             }
         }
         if (result == null) {
-            EasyLog.e(TAG, "turnToStr NumberFormatException error -------- ");
+            EasyLog.e(TAG, "changeToStr NumberFormatException error -------- ");
             return "";
         }
         if (round) {
@@ -85,7 +57,7 @@ public class MathUtil {
      */
     public static double turnToDouble(Object value, int point, boolean round) {
         if (value == null) {
-            EasyLog.e(TAG, "turnToStr error -------- ");
+            EasyLog.e(TAG, "changeToStr error -------- ");
             return 0;
         }
         double result = 0;
@@ -99,7 +71,7 @@ public class MathUtil {
             }
         }
         if (result == 0) {
-            EasyLog.e(TAG, "turnToStr NumberFormatException error -------- ");
+            EasyLog.e(TAG, "changeToStr NumberFormatException error -------- ");
             return 0;
         }
         if (round) {

@@ -154,17 +154,21 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
             connection.setReadTimeout(mRequest.readTimeout);
             connection.setRequestMethod(method);
 
-            StringBuilder mHeadBuilder = new StringBuilder();
+            StringBuilder mHeadLogBuilder = new StringBuilder();
             Set<String> headKeys = heads.keySet();
             for (String key : headKeys) {//设置请求头
                 String value = heads.get(key);
                 connection.setRequestProperty(key, value);
-                mHeadBuilder.append(key);
-                mHeadBuilder.append("：");
-                mHeadBuilder.append(value);
-                mHeadBuilder.append(", ");
+                mHeadLogBuilder.append(key);
+                mHeadLogBuilder.append("：");
+                mHeadLogBuilder.append(value);
+                mHeadLogBuilder.append(",");
             }
-            mRequestLogInfo = method + " " + mUrlStr + "\n请求头部：" + mHeadBuilder.toString() + "\n请求参数：" + mBody.toString();
+            if (mHeadLogBuilder.length() > 0) {
+                mHeadLogBuilder.insert(0, "{");
+                mHeadLogBuilder.replace(mHeadLogBuilder.length() - 1, mHeadLogBuilder.length(), "}");
+            }
+            mRequestLogInfo = method + " " + mUrlStr + "\nHead：\n" + mHeadLogBuilder.toString() + "\nBody：\n" + mBody.toString();
             childRun(connection);
             connection.disconnect();
         } catch (IOException e) {

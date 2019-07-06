@@ -36,43 +36,46 @@ public class EasyItemLayout extends RelativeLayout {
     private final int TEXT_HINT_COLOR = 0XFFD9D9D9;
 
     /*是否为输入模式：TRUE显示EditText，隐藏TextView*/
-    boolean itemIsEdit;
+    boolean centerIsEdit;
 
-    TextView tv_item_layout_title;
-    TextView tv_item_layout_content;
-    EditText et_item_layout_content;
-    TextView tv_item_layout_count;
-    ImageView iv_item_layout_arrow;
-    ImageView iv_item_layout_clear;
-    View v_item_layout_bottomLine;
+    TextView easy_item_left_tv;
+    TextView easy_item_center_tv;
+    EditText easy_item_center_et;
+    TextView easy_item_right_tv;
+    ImageView easy_item_right_icon;
+    ImageView easy_item_center_icon_clear;
+    View easy_item_v_bottomLine;
 
-    private int editTextMarginTop;
-    private int editTextMarginBottom;
+    private int centerEditTextMarginTop;
+    private int centerEditTextMarginBottom;
 
-    String titleText;
-    int titleTextSize;
-    int titleWidth;
-    int titleTextColor;
+    int leftWidth;
+    String leftText;
+    int leftTextSize;
+    int leftTextColor;
     int titleTextMarginLeft;
 
-    String contentText;
-    String contentHint;
-    int contentTextSize;
-    int contentTextColor;
-    int itemTxtTextHintColor;
-    int contentTextLines;//默认1
-    int contentTxtGray;//默认0
+    String centerTextText;
+    String centerTextHint;
+    int centerTextTextSize;
+    int centerTextTextColor;
+    int centerTextTextHintColor;
+    int centerTextTextLines;//默认1
+    int centerTextGray;//默认0
+    final int GRAY_LEFT = 0, GRAY_CENTER = 1, GRAY_RIGHT = 2;
 
-    int editTextSize;
-    int editTextColor;
-    int editTextHintColor;
-    String editTextHint;
-    int editLines = 1;
+    int centerEditTextSize;
+    int centerEditTextColor;
+    int centerEditTextHintColor;
+    String centerEditTextHint;
+    int centerEditLines = 1;
 
-    String countText;
-    int countTextSize;
-    int countTextColor;
-    int countMarginRight;
+    int rightWidth;
+    String rightText;
+    int rightTextSize;
+    int rightTextColor;
+    int rightMarginRight;
+    int rightTextViewGray;
 
     boolean arrowVisible;
     boolean clearVisible;
@@ -98,37 +101,39 @@ public class EasyItemLayout extends RelativeLayout {
         int defaultTextSize = EasyDensityUtil.dp2pxInt(DEFAULT_TEXT_SIZE);
         TypedArray a = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.EasyItemLayout, defStyleAttr, 0);
 
-        itemIsEdit = a.getBoolean(R.styleable.EasyItemLayout_itemIsEdit, false);
+        centerIsEdit = a.getBoolean(R.styleable.EasyItemLayout_centerIsEditText, false);
+        leftText = a.getString(R.styleable.EasyItemLayout_leftText);
 
-        titleText = a.getString(R.styleable.EasyItemLayout_itemTitleText);
-        titleTextSize = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemTitleTextSize, defaultTextSize);
-        titleWidth = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemTitleWidth, -1);
-        titleTextColor = a.getColor(R.styleable.EasyItemLayout_itemTitleTextColor, DEFAULT_TEXT_COLOR_TITLE);
-        titleTextMarginLeft = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemTitleMarginLeft, 0);
+        leftTextSize = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_leftTextSize, defaultTextSize);
+        leftWidth = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_leftWidth, -1);
+        leftTextColor = a.getColor(R.styleable.EasyItemLayout_leftTextColor, DEFAULT_TEXT_COLOR_TITLE);
+        titleTextMarginLeft = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_leftMarginLeft, 0);
 
-        contentText = a.getString(R.styleable.EasyItemLayout_itemTxtText);
-        contentHint = a.getString(R.styleable.EasyItemLayout_itemTxtHint);
-        contentTextSize = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemTxtTextSize, defaultTextSize);
-        contentTextColor = a.getColor(R.styleable.EasyItemLayout_itemTxtTextColor, DEFAULT_TEXT_COLOR_CONTENT);
-        itemTxtTextHintColor = a.getColor(R.styleable.EasyItemLayout_itemTxtTextHintColor, TEXT_HINT_COLOR);
-        contentTextLines = a.getInt(R.styleable.EasyItemLayout_itemTxtLines, 1);
-        contentTxtGray = a.getInt(R.styleable.EasyItemLayout_itemTxtGray, 0);
+        centerTextText = a.getString(R.styleable.EasyItemLayout_centerTextViewText);
+        centerTextTextSize = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_centerTextViewTextSize, defaultTextSize);
+        centerTextHint = a.getString(R.styleable.EasyItemLayout_centerTextViewTextHint);
+        centerTextTextColor = a.getColor(R.styleable.EasyItemLayout_centerTextViewTextColor, DEFAULT_TEXT_COLOR_CONTENT);
+        centerTextTextHintColor = a.getColor(R.styleable.EasyItemLayout_centerTextViewTextHintColor, TEXT_HINT_COLOR);
+        centerTextTextLines = a.getInt(R.styleable.EasyItemLayout_centerTextViewLines, 1);
+        centerTextGray = a.getInt(R.styleable.EasyItemLayout_centerTextViewGray, GRAY_LEFT);
 
-        editTextSize = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemEditTextSize, defaultTextSize);
-        editTextColor = a.getColor(R.styleable.EasyItemLayout_itemEditTextColor, DEFAULT_TEXT_COLOR_CONTENT);
-        editTextHintColor = a.getColor(R.styleable.EasyItemLayout_itemEditTextHintColor, TEXT_HINT_COLOR);
-        editTextHint = a.getString(R.styleable.EasyItemLayout_itemEditTextHint);
-        editLines = a.getInt(R.styleable.EasyItemLayout_itemEditLines, 1);
-        editTextMarginTop = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemEditTextMarginTop, 0);
-        editTextMarginBottom = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemEditTextMarginBottom, 0);
+        centerEditTextSize = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_centerEditTextTextSize, defaultTextSize);
+        centerEditTextColor = a.getColor(R.styleable.EasyItemLayout_centerEditTextTextColor, DEFAULT_TEXT_COLOR_CONTENT);
+        centerEditTextHintColor = a.getColor(R.styleable.EasyItemLayout_centerEditTextTextHintColor, TEXT_HINT_COLOR);
+        centerEditTextHint = a.getString(R.styleable.EasyItemLayout_centerEditTextTextHint);
+        centerEditLines = a.getInt(R.styleable.EasyItemLayout_centerEditTextLines, 1);
+        centerEditTextMarginTop = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_centerEditTextMarginTop, 0);
+        centerEditTextMarginBottom = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_centerEditTextMarginBottom, 0);
 
-        countText = a.getString(R.styleable.EasyItemLayout_itemCountText);
-        countTextSize = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemCountTextSize, defaultTextSize);
-        countTextColor = a.getColor(R.styleable.EasyItemLayout_itemCountTextColor, DEFAULT_TEXT_COLOR_COUNT);
-        countMarginRight = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemCountMarginRight, 0);
+        rightWidth = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_rightWidth, -1);
+        rightText = a.getString(R.styleable.EasyItemLayout_rightText);
+        rightTextSize = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_rightTextSize, defaultTextSize);
+        rightTextColor = a.getColor(R.styleable.EasyItemLayout_rightTextColor, DEFAULT_TEXT_COLOR_COUNT);
+        rightMarginRight = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_rightMarginRight, 0);
+        rightTextViewGray = a.getInt(R.styleable.EasyItemLayout_rightTextViewGray, GRAY_LEFT);
 
-        arrowVisible = a.getBoolean(R.styleable.EasyItemLayout_itemArrowVisible, false);
-        clearVisible = a.getBoolean(R.styleable.EasyItemLayout_itemClearVisible, false);
+        arrowVisible = a.getBoolean(R.styleable.EasyItemLayout_rightIconVisible, false);
+        clearVisible = a.getBoolean(R.styleable.EasyItemLayout_centerEditTextClearIconVisible, false);
 
         bottomLineVisible = a.getBoolean(R.styleable.EasyItemLayout_itemBottomLineVisible, false);
         bottomLineMarginLeft = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_itemBottomLineMarginLeft, 0);
@@ -142,92 +147,113 @@ public class EasyItemLayout extends RelativeLayout {
     private void initView() {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout._easy_item_layout, this, true);
-        tv_item_layout_title = findViewById(R.id.tv_item_layout_title);
-        tv_item_layout_content = findViewById(R.id.tv_item_layout_content);
-        et_item_layout_content = findViewById(R.id.et_item_layout_content);
-        tv_item_layout_count = findViewById(R.id.tv_item_layout_count);
-        iv_item_layout_arrow = findViewById(R.id.iv_item_layout_arrow);
-        iv_item_layout_clear = findViewById(R.id.iv_item_layout_clear);
-        v_item_layout_bottomLine = findViewById(R.id.v_item_layout_bottomLine);
+        easy_item_left_tv = findViewById(R.id.easy_item_left_tv);
+        easy_item_center_tv = findViewById(R.id.easy_item_center_tv);
+        easy_item_center_et = findViewById(R.id.easy_item_center_et);
+        easy_item_right_tv = findViewById(R.id.easy_item_right_tv);
+        easy_item_right_icon = findViewById(R.id.easy_item_right_icon);
+        easy_item_center_icon_clear = findViewById(R.id.easy_item_center_icon_clear);
+        easy_item_v_bottomLine = findViewById(R.id.easy_item_v_bottomLine);
 
         int txtGray = Gravity.START;
-        switch (contentTxtGray) {
-            case 0: {
-                txtGray= Gravity.START;
+        switch (centerTextGray) {
+            case GRAY_LEFT: {
+                txtGray = Gravity.START;
                 break;
             }
-            case 1: {
-                txtGray= Gravity.CENTER;
+            case GRAY_CENTER: {
+                txtGray = Gravity.CENTER;
                 break;
             }
-            case 2: {
-                txtGray= Gravity.END;
+            case GRAY_RIGHT: {
+                txtGray = Gravity.END;
                 break;
             }
         }
 
-        tv_item_layout_content.setVisibility(itemIsEdit ? GONE : VISIBLE);
-        et_item_layout_content.setVisibility(itemIsEdit ? VISIBLE : GONE);
-        iv_item_layout_arrow.setVisibility(arrowVisible ? VISIBLE : GONE);
+        easy_item_center_tv.setVisibility(centerIsEdit ? GONE : VISIBLE);
+        easy_item_center_et.setVisibility(centerIsEdit ? VISIBLE : GONE);
+        easy_item_right_icon.setVisibility(arrowVisible ? VISIBLE : GONE);
 
-        v_item_layout_bottomLine.setVisibility(bottomLineVisible ? VISIBLE : GONE);
+        easy_item_v_bottomLine.setVisibility(bottomLineVisible ? VISIBLE : GONE);
         if (bottomLineMarginLeft > 0) {
-            LayoutParams line_params = (LayoutParams) v_item_layout_bottomLine.getLayoutParams();
+            LayoutParams line_params = (LayoutParams) easy_item_v_bottomLine.getLayoutParams();
             line_params.leftMargin = bottomLineMarginLeft;
         }
 
-        tv_item_layout_title.setText(titleText);
-        tv_item_layout_title.setTextSize(TypedValue.COMPLEX_UNIT_PX, titleTextSize);
-        tv_item_layout_title.setTextColor(titleTextColor);
-        LayoutParams title_params = (LayoutParams) tv_item_layout_title.getLayoutParams();
-        if (titleWidth > 0) {
-            title_params.width = titleWidth;
+        easy_item_left_tv.setText(leftText);
+        easy_item_left_tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, leftTextSize);
+        easy_item_left_tv.setTextColor(leftTextColor);
+        LayoutParams title_params = (LayoutParams) easy_item_left_tv.getLayoutParams();
+        if (leftWidth > 0) {
+            title_params.width = leftWidth;
         }
         if (titleTextMarginLeft > 0) {
             title_params.leftMargin = titleTextMarginLeft;
         }
 
-        tv_item_layout_content.setText(contentText);
-        tv_item_layout_content.setHint(contentHint);
-        tv_item_layout_content.setTextSize(TypedValue.COMPLEX_UNIT_PX, contentTextSize);
-        tv_item_layout_content.setTextColor(contentTextColor);
-        tv_item_layout_content.setHintTextColor(itemTxtTextHintColor);
-        tv_item_layout_content.setLines(contentTextLines);
-        tv_item_layout_content.setGravity(txtGray);
+        easy_item_center_tv.setText(centerTextText);
+        easy_item_center_tv.setHint(centerTextHint);
+        easy_item_center_tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, centerTextTextSize);
+        easy_item_center_tv.setTextColor(centerTextTextColor);
+        easy_item_center_tv.setHintTextColor(centerTextTextHintColor);
+        easy_item_center_tv.setLines(centerTextTextLines);
+        easy_item_center_tv.setGravity(txtGray);
 
-        et_item_layout_content.setHint(editTextHint);
-        et_item_layout_content.setTextSize(TypedValue.COMPLEX_UNIT_PX, editTextSize);
-        et_item_layout_content.setTextColor(editTextColor);
-        et_item_layout_content.setHintTextColor(editTextHintColor);
-//        et_item_layout_content.setFilters(new InputFilter[]{new InputFilter.LengthFilter(itemEditMaxLength)});
-        LinearLayout.LayoutParams et_params = (LinearLayout.LayoutParams) et_item_layout_content.getLayoutParams();
-        et_params.topMargin = editTextMarginTop;
-        et_params.bottomMargin = editTextMarginBottom;
-        if (editLines == 1) {
-            et_item_layout_content.setSingleLine(true);
+        easy_item_center_et.setHint(centerEditTextHint);
+        easy_item_center_et.setTextSize(TypedValue.COMPLEX_UNIT_PX, centerEditTextSize);
+        easy_item_center_et.setTextColor(centerEditTextColor);
+        easy_item_center_et.setHintTextColor(centerEditTextHintColor);
+//        easy_item_center_et.setFilters(new InputFilter[]{new InputFilter.LengthFilter(itemEditMaxLength)});
+        LinearLayout.LayoutParams et_params = (LinearLayout.LayoutParams) easy_item_center_et.getLayoutParams();
+        et_params.topMargin = centerEditTextMarginTop;
+        et_params.bottomMargin = centerEditTextMarginBottom;
+        if (centerEditLines == 1) {
+            easy_item_center_et.setSingleLine(true);
         } else {
-//            et_item_layout_content.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-            et_item_layout_content.setSingleLine(false);
-            et_item_layout_content.setMaxLines(editLines);
-//            et_item_layout_content.setHorizontallyScrolling(false);
+//            easy_item_center_et.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+            easy_item_center_et.setSingleLine(false);
+            easy_item_center_et.setMaxLines(centerEditLines);
+//            easy_item_center_et.setHorizontallyScrolling(false);
         }
-        iv_item_layout_clear.setOnClickListener(clickListener);
-        et_item_layout_content.addTextChangedListener(textWatcher);
-        et_item_layout_content.setGravity(txtGray);
+        easy_item_center_icon_clear.setOnClickListener(clickListener);
+        easy_item_center_et.addTextChangedListener(textWatcher);
+        easy_item_center_et.setGravity(txtGray);
 
-        tv_item_layout_count.setText(countText);
-        tv_item_layout_count.setTextSize(TypedValue.COMPLEX_UNIT_PX, countTextSize);
-        tv_item_layout_count.setTextColor(countTextColor);
-        LinearLayout.LayoutParams tv_count_params = (LinearLayout.LayoutParams) tv_item_layout_count.getLayoutParams();
-        tv_count_params.rightMargin = countMarginRight;
+        LinearLayout.LayoutParams right_params = (LinearLayout.LayoutParams) easy_item_right_tv.getLayoutParams();
+        if (rightWidth > 0) {
+            right_params.width = rightWidth;
+        }
+        easy_item_right_tv.setText(rightText);
+        easy_item_right_tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, rightTextSize);
+        easy_item_right_tv.setTextColor(rightTextColor);
+        int rightGray = Gravity.START;
+        switch (rightTextViewGray) {
+            case GRAY_LEFT: {
+                rightGray = Gravity.START;
+                break;
+            }
+            case GRAY_CENTER: {
+                rightGray = Gravity.CENTER;
+                break;
+            }
+            case GRAY_RIGHT: {
+                rightGray = Gravity.END;
+                break;
+            }
+        }
+        easy_item_right_tv.setGravity(rightGray);
+
+        LinearLayout.LayoutParams tv_count_params = (LinearLayout.LayoutParams) easy_item_right_tv.getLayoutParams();
+        tv_count_params.rightMargin = rightMarginRight;
     }
 
     private OnClickListener clickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
             int i = v.getId();
-            if (i == R.id.iv_item_layout_clear) {
-                et_item_layout_content.setText("");
+            if (i == R.id.easy_item_center_icon_clear) {
+                easy_item_center_et.setText("");
             }
         }
     };
@@ -245,60 +271,54 @@ public class EasyItemLayout extends RelativeLayout {
 
         @Override
         public void afterTextChanged(Editable s) {
-            iv_item_layout_clear.setVisibility(clearVisible && s.length() > 0 ? VISIBLE : GONE);
+            easy_item_center_icon_clear.setVisibility(clearVisible && s.length() > 0 ? VISIBLE : GONE);
         }
     };
 
     public void setTitle(String text) {
-        tv_item_layout_title.setText(text);
+        easy_item_left_tv.setText(text);
     }
 
-    public void setContentText(String text) {
-        tv_item_layout_content.setText(text);
+    public void setCenterTextText(String text) {
+        easy_item_center_tv.setText(text);
     }
 
     public void setContentEdit(String text) {
-        et_item_layout_content.setText(text);
+        easy_item_center_et.setText(text);
     }
 
     public void setCount(String text) {
-        tv_item_layout_count.setText(text);
+        easy_item_right_tv.setText(text);
     }
 
     public void setBottomLineVisible(int visible) {
         bottomLineVisible = visible == View.VISIBLE;
-        v_item_layout_bottomLine.setVisibility(visible);
+        easy_item_v_bottomLine.setVisibility(visible);
     }
 
-    public void setCountText(String text) {
-        tv_item_layout_count.setText(text);
+    public String getLeftText(String text) {
+        return easy_item_left_tv.getText().toString();
     }
 
-    public void setCountVisible(int visible) {
-        tv_item_layout_count.setVisibility(visible);
+    public void setLeftText(String text) {
+        easy_item_left_tv.setText(text);
     }
 
-    public TextView getTitleView() {
-        return tv_item_layout_title;
+    public void setRightText(String text) {
+        easy_item_right_tv.setText(text);
     }
 
-    public TextView getTextView() {
-        return tv_item_layout_content;
+    public String getRightText() {
+        return easy_item_right_tv.getText().toString();
     }
 
-    public EditText getEdiText() {
-        return et_item_layout_content;
+    public void setCenterText(String text) {
+        easy_item_center_tv.setText(text);
     }
 
-    public TextView getCountView() {
-        return tv_item_layout_count;
+    public String getCenterText() {
+        return easy_item_center_tv.getText().toString();
     }
 
-    public String getTextEt() {
-        return et_item_layout_content.getText().toString();
-    }
 
-    public String getTextTv() {
-        return tv_item_layout_content.getText().toString();
-    }
 }

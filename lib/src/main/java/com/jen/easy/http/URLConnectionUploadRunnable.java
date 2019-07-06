@@ -7,6 +7,7 @@ import com.jen.easy.http.request.EasyHttpUploadRequest;
 import com.jen.easy.http.request.EasyRequestState;
 import com.jen.easy.http.response.EasyHttpResponse;
 import com.jen.easy.http.response.EasyResponseState;
+import com.jen.easy.log.JsonLogFormat;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -63,12 +64,13 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
 
         String result = buffer.toString();
         StringBuilder retLogBuild = new StringBuilder();
-        retLogBuild.append(mRequestLogInfo).append("\n返回码：").append(mResponseCode).append("\n返回原始数据：").append(result);
+        retLogBuild.append(mRequestLogInfo).append("\n返回原始数据：\n").append(result);
         if (mRequest.getReplaceResult().size() > 0) {
             result = replaceResult(result);
-            retLogBuild.append("\n格式化后数据：").append(result);
+            retLogBuild.append("\n格式化后数据：\n").append(result);
         }
-        HttpLog.i(retLogBuild.toString());
+        retLogBuild.append("\n服务器返回码：").append(mResponseCode);
+        HttpLog.i(JsonLogFormat.formatJson(retLogBuild.toString()));
         success(result, null);
     }
 
