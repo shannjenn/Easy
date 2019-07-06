@@ -65,7 +65,7 @@ class URLConnectionDataRunnable extends URLConnectionFactoryRunnable {
             success(result, headMap);
         } else {
             double timeSec = (System.currentTimeMillis() - startTime) / 1000d;
-            HttpLog.e(JsonLogFormat.formatJson(mRequestLogInfo + "\n返回码：" + mResponseCode + "  响应时间:" + timeSec + "秒"));
+            HttpLog.e(JsonLogFormat.formatJson(mRequestLogInfo + "\n服务器返回码：" + mResponseCode + "  响应时间:" + timeSec + "秒"));
             fail(" 网络请求异常：" + mResponseCode);
         }
     }

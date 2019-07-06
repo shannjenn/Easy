@@ -9,6 +9,7 @@ import com.jen.easy.http.request.EasyHttpDownloadRequest;
 import com.jen.easy.http.request.EasyHttpUploadRequest;
 import com.jen.easy.http.request.EasyHttpRequest;
 import com.jen.easy.http.request.EasyRequestState;
+import com.jen.easy.log.JsonLogFormat;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -172,11 +173,11 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
             childRun(connection);
             connection.disconnect();
         } catch (IOException e) {
-            HttpLog.e("网络请求IOException异常：" + mRequestLogInfo);
-            HttpLog.exception(ExceptionType.IOException, "IOException 网络请求异常");
+            HttpLog.e("网络请求IOException异常：" + JsonLogFormat.formatJson(mRequestLogInfo));
+            HttpLog.exception(ExceptionType.IOException, "IOException 网络请求异常" + mRequestLogInfo);
             fail("IOException 网络请求异常：" + mResponseCode);
         } catch (JSONException e) {
-            HttpLog.e("网络请求JSONException异常：" + mRequestLogInfo);
+            HttpLog.e("网络请求JSONException异常：" + JsonLogFormat.formatJson(mRequestLogInfo));
             HttpLog.exception(ExceptionType.JSONException, "网络请求IOException异常：" + mRequestLogInfo);
             fail("JSONException 网络请求异常：" + mResponseCode);
         }

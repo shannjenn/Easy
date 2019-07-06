@@ -102,7 +102,7 @@ public abstract class Coordinate<T> extends HistogramFactory<T> {
             }
             for (float i = config.minValue; i <= config.maxValue; i += unitValue) {
                 float y = valueChangY(i);
-                String text = MathUtil.roundUp((double) i, yPoint) + "";
+                String text = MathUtil.round((double) i, yPoint) + "";
                 linePath.moveTo(0, y);
                 linePath.lineTo(config.totalWidth, y);
                 canvas.drawPath(linePath, linePaint);
