@@ -21,12 +21,12 @@ import java.util.List;
  * 时间：2017/8/12.
  */
 
-public abstract class EasyRecyclerAdapterFactory<T> extends RecyclerView.Adapter<EasyHolder> {
+public abstract class EasyAdapterFactory<T> extends RecyclerView.Adapter<EasyHolder> {
     protected Context mContext;
     protected List<T> mData;
     EasyItemListener listener;
 
-    public EasyRecyclerAdapterFactory(Context context) {
+    public EasyAdapterFactory(Context context) {
         this.mContext = context;
         mData = new ArrayList<>();
     }
@@ -34,7 +34,7 @@ public abstract class EasyRecyclerAdapterFactory<T> extends RecyclerView.Adapter
     /**
      * @param data 数据
      */
-    public EasyRecyclerAdapterFactory(Context context, List<T> data) {
+    public EasyAdapterFactory(Context context, List<T> data) {
         this.mContext = context;
         mData = data;
         if (mData == null) {

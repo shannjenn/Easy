@@ -9,22 +9,22 @@ import android.view.ViewGroup;
 import java.util.List;
 
 /**
- * list或者grid模式
+ * list或者grid模式 带holder
  * 作者：ShannJenn
  * 时间：2017/8/12.
  */
 
-public abstract class EasyRecyclerBaseAdapter<T> extends EasyRecyclerAdapterFactory<T> {
-    private final String TAG = EasyRecyclerBaseAdapter.class.getSimpleName();
+public abstract class EasyHolderBaseAdapter<T> extends EasyAdapterFactory<T> {
+    private final String TAG = EasyHolderBaseAdapter.class.getSimpleName();
 
-    public EasyRecyclerBaseAdapter(Context context) {
+    public EasyHolderBaseAdapter(Context context) {
         super(context);
     }
 
     /**
      * @param data 数据
      */
-    public EasyRecyclerBaseAdapter(Context context, List<T> data) {
+    public EasyHolderBaseAdapter(Context context, List<T> data) {
         super(context, data);
     }
 
@@ -43,12 +43,12 @@ public abstract class EasyRecyclerBaseAdapter<T> extends EasyRecyclerAdapterFact
         int layout = onBindLayout();
         if (layout == 0) {
             Log.e(TAG, "找不到该值对应item布局R.layout.id：" + layout);
-            return super.onCreateViewHolder(parent, viewType);
+            return super.createViewHolder(parent, viewType);
         }
         View view = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
         if (view == null) {
             Log.e(TAG, "找不到该值对应item布局R.layout.id：" + layout);
-            return super.onCreateViewHolder(parent, viewType);
+            return super.createViewHolder(parent, viewType);
         }
         return bindHolder(view);
     }
@@ -63,6 +63,25 @@ public abstract class EasyRecyclerBaseAdapter<T> extends EasyRecyclerAdapterFact
         return 0;
     }
 
+    @Override
+    protected EasyHolder bindHolder(View view) {
+        return new MyHolder(this, view);
+    }
+
+    class MyHolder extends EasyHolder {
+        MyHolder(EasyAdapterFactory adapter, View itemView) {
+            super(adapter, itemView);
+        }
+
+        @Override
+        protected void onBindData(View view, int viewType, int position) {
+            onBindHolderData(this, view, viewType, position);
+        }
+    }
+
     protected abstract int onBindLayout();
+
+    protected abstract void onBindHolderData(EasyHolder easyHolder, View view, int viewType, int position);
+
 
 }

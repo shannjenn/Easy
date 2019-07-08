@@ -18,7 +18,7 @@ import com.jen.easyui.recycler.EasyHolder;
 import com.jen.easyui.recycler.listener.EasyItemListenerB;
 import com.jen.easyui.recycler.letter.EasyLetterDecoration;
 import com.jen.easyui.recycler.letter.EasyLetterView;
-import com.jen.easyui.recycler.EasyRecyclerBaseAdapter;
+import com.jen.easyui.recycler.EasyBaseAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -166,7 +166,7 @@ public class RecyclerViewLetterActivity extends EasyActivity {
         }
     }
 
-    private class EasyAdapter1<T extends RecyclerViewModel> extends EasyRecyclerBaseAdapter<T> {
+    private class EasyAdapter1<T extends RecyclerViewModel> extends EasyBaseAdapter<T> {
 
         /**
          * @param context
@@ -193,7 +193,7 @@ public class RecyclerViewLetterActivity extends EasyActivity {
 
         class MyHolder extends EasyHolder {
 
-            public MyHolder(EasyRecyclerBaseAdapter adapter, View itemView) {
+            public MyHolder(EasyBaseAdapter adapter, View itemView) {
                 super(adapter, itemView);
             }
 

@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.jen.easyui.R;
-import com.jen.easyui.recycler.EasyRecyclerAdapterFactory;
+import com.jen.easyui.recycler.EasyAdapterFactory;
 
 import java.util.List;
 
@@ -19,9 +19,9 @@ import java.util.List;
 public class EasyWindowObject extends EasyWindow {
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView recyclerView;
-    private EasyRecyclerAdapterFactory adapter;
+    private EasyAdapterFactory adapter;
 
-    EasyWindowObject(Build build, EasyRecyclerAdapterFactory adapter, RecyclerView.LayoutManager layoutManager) {
+    EasyWindowObject(Build build, EasyAdapterFactory adapter, RecyclerView.LayoutManager layoutManager) {
         super(build);
         this.adapter = adapter;
         this.layoutManager = layoutManager;
@@ -57,7 +57,7 @@ public class EasyWindowObject extends EasyWindow {
         return recyclerView;
     }
 
-    public EasyRecyclerAdapterFactory getAdapter() {
+    public EasyAdapterFactory getAdapter() {
         return adapter;
     }
 }

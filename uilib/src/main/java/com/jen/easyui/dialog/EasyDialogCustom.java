@@ -1,27 +1,24 @@
 package com.jen.easyui.dialog;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.jen.easy.bind.EasyBind;
-import com.jen.easyui.R;
 
 
 /**
+ * 用Build创建
+ * 只有一个按钮时，用左边按钮
+ * 没有值时控件会隐藏，比如icon==null则隐藏图标
  * 作者：ShannJenn
  * 时间：2018/1/15.
  */
-public abstract class EasyDialogCustom extends Dialog {
+public abstract class EasyDialogCustom extends EasyDialogFactory {
     public Context context;
 
     public EasyDialogCustom(Context context) {
-        super(context, R.style._easy_dialog);
+        super(context);
         this.context = context;
         init();
     }
@@ -34,17 +31,19 @@ public abstract class EasyDialogCustom extends Dialog {
         setContentView(layout);
     }
 
+    @Override
+    protected void onTouchOutside() {
+        if(touchOutsideHideInputMethod){
+
+        }
+    }
+
     protected abstract int bindLayout();
 
     protected abstract void initView(View layout);
 
     @Override
     public void show() {
-        Window window = getWindow();
-        if (window != null) {
-            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        }
         super.show();
     }
 

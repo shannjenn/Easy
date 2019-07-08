@@ -13,7 +13,7 @@ import easybase.EasyActivity;
 import com.jen.easyui.popupwindow.EasyWindow;
 import com.jen.easyui.popupwindow.StyleTopBar;
 import com.jen.easyui.recycler.EasyHolder;
-import com.jen.easyui.recycler.EasyHolderRecyclerBaseAdapter;
+import com.jen.easyui.recycler.EasyHolderBaseAdapter;
 import com.jen.easyui.recycler.letter.EasyLetterDecoration;
 import com.jen.easyui.util.EasyDensityUtil;
 
@@ -171,7 +171,7 @@ public class PopupWindowActivity extends EasyActivity {
         }
     }
 
-    class MyAdapter extends EasyHolderRecyclerBaseAdapter {
+    class MyAdapter extends EasyHolderBaseAdapter {
 
         /**
          * @param context .

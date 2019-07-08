@@ -1,13 +1,8 @@
 package com.jen.easyui.dialog;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,7 +18,7 @@ import com.jen.easyui.view.shapeview.EasyShapeTextView;
  * 作者：ShannJenn
  * 时间：2018/1/15.
  */
-public class EasyDialog extends Dialog implements View.OnClickListener {
+public class EasyDialog extends EasyDialogFactory implements View.OnClickListener {
     private Build build;
 
     private TextView tv_title;
@@ -37,8 +32,8 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
         return new Build(context);
     }
 
-    EasyDialog(Context context, Build build, int themeResId) {
-        super(context, themeResId);
+    EasyDialog(Context context, Build build) {
+        super(context);
         this.build = build;
         initViews();
     }
@@ -161,12 +156,12 @@ public class EasyDialog extends Dialog implements View.OnClickListener {
 
     @Override
     public void show() {
-        Window window = getWindow();
-        if (window != null) {
-            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        }
         super.show();
+    }
+
+    @Override
+    protected void onTouchOutside() {
+
     }
 
     @Override

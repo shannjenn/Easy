@@ -14,9 +14,9 @@ import com.jen.easytest.R;
 import com.jen.easytest.activity.recyclerView.fragment.StockInfoListFragment;
 import com.jen.easyui.view.shapeview.EasyShapeTextView;
 import com.jen.easyui.recycler.HScroll.EasyHScrollRecyclerView;
-import com.jen.easyui.recycler.HScroll.EasyHScrollRecyclerViewAdapter;
+import com.jen.easyui.recycler.HScroll.EasyHScrollViewAdapter;
 import com.jen.easyui.recycler.EasyHolder;
-import com.jen.easyui.recycler.EasyRecyclerAdapterFactory;
+import com.jen.easyui.recycler.EasyAdapterFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ import java.util.List;
  * 时间：2018/10/30.
  */
 
-public class StockInfoListAdapter<T extends StockInfo> extends EasyHScrollRecyclerViewAdapter<T> {
+public class StockInfoListAdapter<T extends StockInfo> extends EasyHScrollViewAdapter<T> {
     private final String TAG = StockInfoListAdapter.class.getSimpleName();
     private StockInfoListFragment.Type mType = StockInfoListFragment.Type.SELECTION_SINGLE;
     private final List<Integer> mNeedUpdatePosition = new ArrayList<>();
@@ -68,7 +68,7 @@ public class StockInfoListAdapter<T extends StockInfo> extends EasyHScrollRecycl
     private class mEasyHolder extends EasyHolder {
 
 
-        public mEasyHolder(EasyRecyclerAdapterFactory adapter, View itemView) {
+        public mEasyHolder(EasyAdapterFactory adapter, View itemView) {
             super(adapter, itemView);
         }
 

@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.jen.easy.log.EasyLog;
 import com.jen.easyui.R;
-import com.jen.easyui.recycler.EasyRecyclerAdapterFactory;
+import com.jen.easyui.recycler.EasyAdapterFactory;
 import com.jen.easyui.recycler.letter.EasyLetterDecoration;
 import com.jen.easyui.recycler.letter.EasyLetterItem;
 import com.jen.easyui.recycler.letter.EasyLetterView;
@@ -22,11 +22,11 @@ import java.util.List;
 
 public class EasyWindowLetter extends EasyWindow implements EasyLetterView.TouchListener {
     private RecyclerView recyclerView;
-    private EasyRecyclerAdapterFactory adapter;
+    private EasyAdapterFactory adapter;
     private EasyLetterView lt_letter;
     private EasyLetterDecoration letterDecoration;
 
-    EasyWindowLetter(Build build, EasyRecyclerAdapterFactory adapter, EasyLetterDecoration letterDecoration) {
+    EasyWindowLetter(Build build, EasyAdapterFactory adapter, EasyLetterDecoration letterDecoration) {
         super(build);
         this.adapter = adapter;
         this.letterDecoration = letterDecoration;
@@ -94,7 +94,7 @@ public class EasyWindowLetter extends EasyWindow implements EasyLetterView.Touch
         return recyclerView;
     }
 
-    public EasyRecyclerAdapterFactory getAdapter() {
+    public EasyAdapterFactory getAdapter() {
         return adapter;
     }
 

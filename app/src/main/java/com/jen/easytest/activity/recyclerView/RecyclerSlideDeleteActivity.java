@@ -13,7 +13,7 @@ import com.jen.easytest.R;
 import com.jen.easytest.model.RecyclerViewModel;
 import easybase.EasyActivity;
 import com.jen.easyui.recycler.EasyHolder;
-import com.jen.easyui.recycler.EasyRecyclerBaseAdapter;
+import com.jen.easyui.recycler.EasyBaseAdapter;
 import com.jen.easyui.recycler.letter.EasyLetterDecoration;
 import com.jen.easyui.recycler.listener.EasyItemListenerB;
 
@@ -117,7 +117,7 @@ public class RecyclerSlideDeleteActivity extends EasyActivity {
 
     }
 
-    private class EasyAdapter1<T extends RecyclerViewModel> extends EasyRecyclerBaseAdapter<T> {
+    private class EasyAdapter1<T extends RecyclerViewModel> extends EasyBaseAdapter<T> {
 
         /**
          * @param context
@@ -144,7 +144,7 @@ public class RecyclerSlideDeleteActivity extends EasyActivity {
 
         class MyHolder extends EasyHolder {
 
-            public MyHolder(EasyRecyclerBaseAdapter adapter, View itemView) {
+            public MyHolder(EasyBaseAdapter adapter, View itemView) {
                 super(adapter, itemView);
             }
 

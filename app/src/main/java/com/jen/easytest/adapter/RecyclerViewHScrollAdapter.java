@@ -5,9 +5,9 @@ import android.view.View;
 
 import com.jen.easytest.R;
 import com.jen.easytest.model.RecyclerViewModel;
-import com.jen.easyui.recycler.HScroll.EasyHScrollRecyclerViewAdapter;
+import com.jen.easyui.recycler.HScroll.EasyHScrollViewAdapter;
 import com.jen.easyui.recycler.EasyHolder;
-import com.jen.easyui.recycler.EasyRecyclerAdapterFactory;
+import com.jen.easyui.recycler.EasyAdapterFactory;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import java.util.List;
  * Created by Administrator on 2018/3/2.
  */
 
-public class RecyclerViewHScrollAdapter<T extends RecyclerViewModel> extends EasyHScrollRecyclerViewAdapter<T> {
+public class RecyclerViewHScrollAdapter<T extends RecyclerViewModel> extends EasyHScrollViewAdapter<T> {
     /**
      * @param context
      * @param data    数据
@@ -41,7 +41,7 @@ public class RecyclerViewHScrollAdapter<T extends RecyclerViewModel> extends Eas
 
     private class myEasyHolder extends EasyHolder {
 
-        public myEasyHolder(EasyRecyclerAdapterFactory adapter, View itemView) {
+        public myEasyHolder(EasyAdapterFactory adapter, View itemView) {
             super(adapter, itemView);
         }
 

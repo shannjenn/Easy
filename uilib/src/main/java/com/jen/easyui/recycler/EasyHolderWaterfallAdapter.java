@@ -14,17 +14,17 @@ import java.util.List;
  * 时间：2017/8/12.
  */
 
-public abstract class EasyHolderRecyclerWaterfallAdapter<T> extends EasyRecyclerAdapterFactory<T> {
-    private final String TAG = EasyHolderRecyclerWaterfallAdapter.class.getSimpleName();
+public abstract class EasyHolderWaterfallAdapter<T> extends EasyAdapterFactory<T> {
+    private final String TAG = EasyHolderWaterfallAdapter.class.getSimpleName();
 
-    public EasyHolderRecyclerWaterfallAdapter(Context context) {
+    public EasyHolderWaterfallAdapter(Context context) {
         super(context);
     }
 
     /**
      * @param data 数据
      */
-    public EasyHolderRecyclerWaterfallAdapter(Context context, List<T> data) {
+    public EasyHolderWaterfallAdapter(Context context, List<T> data) {
         super(context, data);
     }
 
@@ -74,7 +74,7 @@ public abstract class EasyHolderRecyclerWaterfallAdapter<T> extends EasyRecycler
     }
 
     class MyHolder extends EasyHolder {
-        public MyHolder(EasyRecyclerAdapterFactory adapter, View itemView) {
+        public MyHolder(EasyAdapterFactory adapter, View itemView) {
             super(adapter, itemView);
         }
 

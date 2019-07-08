@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.jen.easyui.popupwindow.listener.WindowDismissListener;
 import com.jen.easyui.popupwindow.listener.WindowTopBarListener;
-import com.jen.easyui.recycler.EasyRecyclerAdapterFactory;
+import com.jen.easyui.recycler.EasyAdapterFactory;
 import com.jen.easyui.recycler.letter.EasyLetterDecoration;
 
 
@@ -33,7 +33,7 @@ public class Build {
      * @param adapter 绑定item数据
      * @return .
      */
-    public EasyWindowObject createObject(EasyRecyclerAdapterFactory adapter) {
+    public EasyWindowObject createObject(EasyAdapterFactory adapter) {
         return createObject(adapter, null);
     }
 
@@ -44,7 +44,7 @@ public class Build {
      * @param layoutManager .
      * @return .
      */
-    public EasyWindowObject createObject(EasyRecyclerAdapterFactory adapter, RecyclerView.LayoutManager layoutManager) {
+    public EasyWindowObject createObject(EasyAdapterFactory adapter, RecyclerView.LayoutManager layoutManager) {
         return new EasyWindowObject(this, adapter, layoutManager);
     }
 
@@ -53,7 +53,7 @@ public class Build {
      *
      * @return .
      */
-    public EasyWindowLetter createLetter(EasyRecyclerAdapterFactory adapter, EasyLetterDecoration letterDecoration) {
+    public EasyWindowLetter createLetter(EasyAdapterFactory adapter, EasyLetterDecoration letterDecoration) {
         return new EasyWindowLetter(this, adapter, letterDecoration);
     }
 

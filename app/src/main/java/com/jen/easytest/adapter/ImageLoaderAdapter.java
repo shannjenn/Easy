@@ -9,7 +9,7 @@ import com.jen.easy.imageLoader.ImageLoader;
 import com.jen.easytest.R;
 import com.jen.easytest.model.ImageLoaderModel;
 import com.jen.easyui.recycler.EasyHolder;
-import com.jen.easyui.recycler.EasyRecyclerBaseAdapter;
+import com.jen.easyui.recycler.EasyBaseAdapter;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ import java.util.List;
  * Created by Administrator on 2018/3/2.
  */
 
-public class ImageLoaderAdapter<T extends ImageLoaderModel> extends EasyRecyclerBaseAdapter<T> {
+public class ImageLoaderAdapter<T extends ImageLoaderModel> extends EasyBaseAdapter<T> {
     /**
      * @param context
      * @param data    数据
@@ -44,7 +44,7 @@ public class ImageLoaderAdapter<T extends ImageLoaderModel> extends EasyRecycler
 
     class MyHolder extends EasyHolder {
 
-        public MyHolder(EasyRecyclerBaseAdapter adapter, View itemView) {
+        public MyHolder(EasyBaseAdapter adapter, View itemView) {
             super(adapter, itemView);
         }
 

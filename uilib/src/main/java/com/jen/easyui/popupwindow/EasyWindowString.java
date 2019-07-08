@@ -8,8 +8,8 @@ import android.widget.TextView;
 
 import com.jen.easyui.R;
 import com.jen.easyui.recycler.EasyHolder;
-import com.jen.easyui.recycler.EasyHolderRecyclerBaseAdapter;
-import com.jen.easyui.recycler.EasyRecyclerAdapterFactory;
+import com.jen.easyui.recycler.EasyHolderBaseAdapter;
+import com.jen.easyui.recycler.EasyAdapterFactory;
 
 import java.util.List;
 
@@ -55,11 +55,11 @@ public class EasyWindowString extends EasyWindow {
         return recyclerView;
     }
 
-    public EasyRecyclerAdapterFactory getAdapter() {
+    public EasyAdapterFactory getAdapter() {
         return adapter;
     }
 
-    private class MyAdapter extends EasyHolderRecyclerBaseAdapter {
+    private class MyAdapter extends EasyHolderBaseAdapter {
         MyAdapter(Context context) {
             super(context);
         }

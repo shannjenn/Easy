@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jen.easyui.recycler.EasyHolder;
-import com.jen.easyui.recycler.EasyRecyclerAdapterFactory;
+import com.jen.easyui.recycler.EasyAdapterFactory;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,8 +22,8 @@ import java.util.Set;
  * 时间：2018/10/30.
  */
 
-public abstract class EasyHScrollRecyclerViewAdapter<T> extends EasyRecyclerAdapterFactory<T> {
-    private final String TAG = EasyHScrollRecyclerViewAdapter.class.getSimpleName();
+public abstract class EasyHScrollViewAdapter<T> extends EasyAdapterFactory<T> {
+    private final String TAG = EasyHScrollViewAdapter.class.getSimpleName();
     protected final Map<Integer, EasyHScrollView> mHScrollViews = new HashMap<>();
     protected int mScrollX;
     private EasyHScrollView.ScrollListener mScrollListener;
@@ -48,7 +48,7 @@ public abstract class EasyHScrollRecyclerViewAdapter<T> extends EasyRecyclerAdap
      * @param context .
      * @param data    数据
      */
-    protected EasyHScrollRecyclerViewAdapter(Context context, List<T> data) {
+    protected EasyHScrollViewAdapter(Context context, List<T> data) {
         super(context, data);
     }
 

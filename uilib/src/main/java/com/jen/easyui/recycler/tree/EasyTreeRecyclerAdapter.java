@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jen.easyui.recycler.EasyHolder;
-import com.jen.easyui.recycler.EasyRecyclerAdapterFactory;
+import com.jen.easyui.recycler.EasyAdapterFactory;
 import com.jen.easyui.util.EasyDensityUtil;
 
 import java.util.HashMap;
@@ -21,7 +21,7 @@ import java.util.Map;
  * 时间：2017/8/12.
  */
 
-public abstract class EasyTreeRecyclerAdapter<T extends EasyTreeItem> extends EasyRecyclerAdapterFactory<T> {
+public abstract class EasyTreeRecyclerAdapter<T extends EasyTreeItem> extends EasyAdapterFactory<T> {
     private final String TAG = EasyTreeRecyclerAdapter.class.getSimpleName();
     private int spaceSize;
     private Map<Integer, int[]> mLayoutParam = new HashMap<>();

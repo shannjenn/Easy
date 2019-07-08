@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 
-import com.jen.easyui.R;
-
 
 public class Build {
     Context context;
@@ -29,7 +27,7 @@ public class Build {
     }
 
     public EasyDialog create() {
-        return new EasyDialog(context, this, R.style._easy_dialog);
+        return new EasyDialog(context, this);
     }
 
     /**
@@ -90,7 +88,6 @@ public class Build {
         this.styleButtons = styleButtons;
         return this;
     }
-
 
     public Build setFlagCode(int flagCode) {
         this.flagCode = flagCode;
