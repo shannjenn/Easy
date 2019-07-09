@@ -61,11 +61,11 @@ public class EasyHScrollRecyclerView extends RecyclerView {
 
     @Override
     public void setAdapter(Adapter adapter) {
-        if (adapter instanceof EasyHScrollViewAdapter) {
+        if (adapter instanceof EasyHScrollAdapter) {
             super.setAdapter(adapter);
         } else {
             try {
-                throw new RuntimeException("未引用：" + EasyHScrollViewAdapter.class.getName());
+                throw new RuntimeException("未引用：" + EasyHScrollAdapter.class.getName());
             } catch (RuntimeException e) {
                 e.printStackTrace();
             }
@@ -75,7 +75,7 @@ public class EasyHScrollRecyclerView extends RecyclerView {
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
-        EasyHScrollViewAdapter easyAdapter = (EasyHScrollViewAdapter) EasyHScrollRecyclerView.this.getAdapter();
+        EasyHScrollAdapter easyAdapter = (EasyHScrollAdapter) EasyHScrollRecyclerView.this.getAdapter();
         easyAdapter.recyclerViewOnScrollChanged(this, l, t, oldl, oldt);
     }
 

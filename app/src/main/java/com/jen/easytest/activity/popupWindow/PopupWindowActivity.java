@@ -8,8 +8,11 @@ import android.view.View;
 import com.jen.easy.EasyBindClick;
 import com.jen.easy.EasyBindId;
 import com.jen.easytest.R;
+import com.jen.easytest.adapter.decoration.MyItemDecoration;
 import com.jen.easytest.model.RecyclerViewModel;
+
 import easybase.EasyActivity;
+
 import com.jen.easyui.popupwindow.EasyWindow;
 import com.jen.easyui.popupwindow.StyleTopBar;
 import com.jen.easyui.recycler.EasyHolder;
@@ -173,12 +176,22 @@ public class PopupWindowActivity extends EasyActivity {
 
     class MyAdapter extends EasyHolderBaseAdapter {
 
-        /**
-         * @param context .
-         * @param data    数据
-         */
-        public MyAdapter(Context context, List data) {
-            super(context, data);
+
+        public MyAdapter(Context context) {
+            super(context);
+        }
+
+        public MyAdapter(Context context, List<String> list) {
+            super(context);
+        }
+
+        public MyAdapter(Context context, RecyclerView recyclerView) {
+            super(context, recyclerView);
+        }
+
+        @Override
+        public RecyclerView.ItemDecoration onDecoration() {
+            return MyItemDecoration.newInstance(mContext);
         }
 
         @Override

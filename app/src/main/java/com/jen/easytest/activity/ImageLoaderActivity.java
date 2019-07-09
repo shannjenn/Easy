@@ -29,7 +29,6 @@ public class ImageLoaderActivity<T extends ImageLoaderResponse> extends EasyActi
     RecyclerView recycle;
 
     ImageLoaderAdapter adapter;
-    List<ImageLoaderModel> mData = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +43,7 @@ public class ImageLoaderActivity<T extends ImageLoaderResponse> extends EasyActi
 //        List<ImageLoaderModel> list = EasyMain.mDao.searchAll(ImageLoaderModel.class);
 //        mData.addAll(list);
 //        mData.addAll(list);
-        adapter = new ImageLoaderAdapter<>(this, mData);
+        adapter = new ImageLoaderAdapter<>(this);
 
         RecyclerView.LayoutManager manager = new GridLayoutManager(this, 2);
         recycle.setLayoutManager(manager);

@@ -37,8 +37,7 @@ public class EasyWindowString extends EasyWindow {
     }
 
     private void initView() {
-        adapter = new MyAdapter(build.context);
-        adapter.bindRecycleLinearVertical(recyclerView);
+        adapter = new MyAdapter(build.context, recyclerView);
     }
 
     @SuppressWarnings("unchecked")
@@ -60,8 +59,9 @@ public class EasyWindowString extends EasyWindow {
     }
 
     private class MyAdapter extends EasyHolderBaseAdapter {
-        MyAdapter(Context context) {
-            super(context);
+
+        public MyAdapter(Context context, RecyclerView recyclerView) {
+            super(context, recyclerView);
         }
 
         @Override
@@ -79,6 +79,11 @@ public class EasyWindowString extends EasyWindow {
                 name = mData.get(position).toString();
             }
             easyHolder.setTextView(R.id.shape_name, name);
+        }
+
+        @Override
+        public RecyclerView.ItemDecoration onDecoration() {
+            return null;
         }
     }
 

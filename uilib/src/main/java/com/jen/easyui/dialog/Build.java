@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 
+import com.jen.easyui.R;
+
 
 public class Build {
     Context context;

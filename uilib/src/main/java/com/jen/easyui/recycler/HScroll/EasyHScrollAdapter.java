@@ -4,16 +4,16 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jen.easyui.recycler.EasyHolder;
 import com.jen.easyui.recycler.EasyAdapterFactory;
+import com.jen.easyui.recycler.EasyHolder;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,8 +22,8 @@ import java.util.Set;
  * 时间：2018/10/30.
  */
 
-public abstract class EasyHScrollViewAdapter<T> extends EasyAdapterFactory<T> {
-    private final String TAG = EasyHScrollViewAdapter.class.getSimpleName();
+public abstract class EasyHScrollAdapter<T> extends EasyAdapterFactory<T> {
+    private final String TAG = EasyHScrollAdapter.class.getSimpleName();
     protected final Map<Integer, EasyHScrollView> mHScrollViews = new HashMap<>();
     protected int mScrollX;
     private EasyHScrollView.ScrollListener mScrollListener;
@@ -44,12 +44,12 @@ public abstract class EasyHScrollViewAdapter<T> extends EasyAdapterFactory<T> {
         }
     };
 
-    /**
-     * @param context .
-     * @param data    数据
-     */
-    protected EasyHScrollViewAdapter(Context context, List<T> data) {
-        super(context, data);
+    public EasyHScrollAdapter(Context context) {
+        super(context);
+    }
+
+    public EasyHScrollAdapter(Context context, RecyclerView recyclerView) {
+        super(context, recyclerView);
     }
 
     public Map<Integer, EasyHScrollView> getHScrollViews() {
@@ -102,7 +102,7 @@ public abstract class EasyHScrollViewAdapter<T> extends EasyAdapterFactory<T> {
     }
 
     @Override
-    protected int setGridLayoutItemRows(int position) {
+    protected int gridLayoutItemRows(int position) {
         return 0;
     }
 

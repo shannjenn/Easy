@@ -26,13 +26,8 @@ public abstract class EasyTreeRecyclerAdapter<T extends EasyTreeItem> extends Ea
     private int spaceSize;
     private Map<Integer, int[]> mLayoutParam = new HashMap<>();
 
-    /**
-     * @param context
-     * @param data
-     */
-    public EasyTreeRecyclerAdapter(Context context, List<T> data) {
-        super(context, data);
-        spaceSize = EasyDensityUtil.dp2pxInt(itemLeftSpace());
+    public EasyTreeRecyclerAdapter(Context context, RecyclerView recyclerView) {
+        super(context, recyclerView);
     }
 
     @Override

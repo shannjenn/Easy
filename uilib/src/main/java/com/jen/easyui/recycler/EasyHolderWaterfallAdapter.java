@@ -1,6 +1,7 @@
 package com.jen.easyui.recycler;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,11 +22,8 @@ public abstract class EasyHolderWaterfallAdapter<T> extends EasyAdapterFactory<T
         super(context);
     }
 
-    /**
-     * @param data 数据
-     */
-    public EasyHolderWaterfallAdapter(Context context, List<T> data) {
-        super(context, data);
+    public EasyHolderWaterfallAdapter(Context context, RecyclerView recyclerView) {
+        super(context, recyclerView);
     }
 
     @Override
@@ -40,7 +38,7 @@ public abstract class EasyHolderWaterfallAdapter<T> extends EasyAdapterFactory<T
     }
 
     @Override
-    protected int setGridLayoutItemRows(int position) {
+    protected int gridLayoutItemRows(int position) {
         return 0;
     }
 

@@ -134,6 +134,18 @@ public class EasyShapeTextView extends android.support.v7.widget.AppCompatTextVi
     }
 
     @Override
+    public void setSelected(boolean selected) {
+        super.setSelected(selected);
+        if (mShape.mClickType == EasyShapeBase.ClickType.SELECTED) {
+            if (selected) {
+                setTextColor(mShape.mTextColorPressed);
+            } else {
+                setTextColor(mShape.mTextColor);
+            }
+        }
+    }
+
+    @Override
     public boolean onTouchEvent(MotionEvent event) {
 //        switch (event.getAction()) {
 //            case MotionEvent.ACTION_DOWN: {

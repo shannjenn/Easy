@@ -119,6 +119,11 @@ public class EasyShapeLinearLayout extends LinearLayout {
     }
 
     @Override
+    public void setSelected(boolean selected) {
+        super.setSelected(selected);
+    }
+
+    @Override
     public boolean onTouchEvent(MotionEvent event) {
 //        switch (event.getAction()) {
 //            case MotionEvent.ACTION_DOWN: {

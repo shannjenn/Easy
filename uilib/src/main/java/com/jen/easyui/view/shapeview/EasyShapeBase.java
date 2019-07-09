@@ -62,7 +62,7 @@ public class EasyShapeBase {
 
     /*点击类型：normal：点击变色，check：check，-1：不允许点击*/
     ClickType mClickType = ClickType.NON;
-    private boolean isCheck;
+//    private boolean isCheck;
 
     public enum ClickType {
         BUTTON,//按钮效果点击变色,默认效果
@@ -88,7 +88,7 @@ public class EasyShapeBase {
         isTextView = view instanceof TextView;
     }
 
-    public void init(){
+    public void init() {
         mLinePaint = new Paint();
         mLinePaint.setStyle(Paint.Style.FILL);//设置填充样式
         mLinePaint.setStrokeWidth(mLineWidth);//设置画笔宽度
@@ -252,9 +252,9 @@ public class EasyShapeBase {
         switch (eventAction) {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_CANCEL: {//在ScrollView包含ViewPager的情况下,滑动时还原check状态
-                isCheck = !isCheck;
-                if (isCheck) {
-                    mView.setSelected(true);
+                mView.setSelected(true);
+//                isCheck = !isCheck;
+                if (mView.isSelected()) {
                     if (isTextView) {
                         ((TextView) mView).setTextColor(mTextColorPressed);
                     }
@@ -334,32 +334,6 @@ public class EasyShapeBase {
 
     public ClickType getClickType() {
         return mClickType;
-    }
-
-    public boolean isCheck() {
-        return isCheck;
-    }
-
-    public void setCheck(boolean check) {
-        if (mClickType == ClickType.NON) {
-            return;
-        }
-        isCheck = check;
-        if (isCheck) {
-//            mDrawableNormal.setStroke(mStrokeWidthNormal, mStrokeColorPressed, mStrokeDashGapWidthNormal, mStrokeDashGapNormal);
-//            mDrawableNormal.setColor(mSolidColorPressed);
-            mView.setSelected(true);
-            if (isTextView) {
-                ((TextView) mView).setTextColor(mTextColorPressed);
-            }
-        } else {
-//            mDrawableNormal.setStroke(mStrokeWidthNormal, mStrokeColorNormal, mStrokeDashGapWidthNormal, mStrokeDashGapNormal);
-//            mDrawableNormal.setColor(mSolidColorNormal);
-            mView.setSelected(false);
-            if (isTextView) {
-                ((TextView) mView).setTextColor(mTextColor);
-            }
-        }
     }
 
     public int getTextColor() {

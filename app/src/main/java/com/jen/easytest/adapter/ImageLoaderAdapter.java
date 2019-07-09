@@ -1,12 +1,14 @@
 package com.jen.easytest.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jen.easy.imageLoader.ImageLoader;
 import com.jen.easytest.R;
+import com.jen.easytest.adapter.decoration.MyItemDecoration;
 import com.jen.easytest.model.ImageLoaderModel;
 import com.jen.easyui.recycler.EasyHolder;
 import com.jen.easyui.recycler.EasyBaseAdapter;
@@ -18,17 +20,23 @@ import java.util.List;
  */
 
 public class ImageLoaderAdapter<T extends ImageLoaderModel> extends EasyBaseAdapter<T> {
-    /**
-     * @param context
-     * @param data    数据
-     */
-    public ImageLoaderAdapter(Context context, List<T> data) {
-        super(context, data);
+
+    public ImageLoaderAdapter(Context context) {
+        super(context);
+    }
+
+    public ImageLoaderAdapter(Context context, RecyclerView recyclerView) {
+        super(context, recyclerView);
     }
 
     @Override
-    protected int setGridLayoutItemRows(int position) {
+    protected int gridLayoutItemRows(int position) {
         return 0;
+    }
+
+    @Override
+    public RecyclerView.ItemDecoration onDecoration() {
+        return MyItemDecoration.newInstance(mContext);
     }
 
     @Override

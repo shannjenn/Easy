@@ -11,7 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-public class RecycleViewDivider extends RecyclerView.ItemDecoration {
+public class EasyItemDecoration extends RecyclerView.ItemDecoration {
 
     private Paint mPaint;
     private Drawable mDivider;
@@ -25,7 +25,7 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
      * @param context
      * @param orientation 列表方向
      */
-    public RecycleViewDivider(Context context, int orientation) {
+    public EasyItemDecoration(Context context, int orientation) {
         if (orientation != LinearLayoutManager.VERTICAL && orientation != LinearLayoutManager.HORIZONTAL) {
             throw new IllegalArgumentException("请输入正确的参数！");
         }
@@ -43,7 +43,7 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
      * @param orientation 列表方向
      * @param drawableId  分割线图片
      */
-    public RecycleViewDivider(Context context, int orientation, int drawableId) {
+    public EasyItemDecoration(Context context, int orientation, int drawableId) {
         this(context, orientation);
         mDivider = ContextCompat.getDrawable(context, drawableId);
         mDividerHeight = mDivider.getIntrinsicHeight();
@@ -57,7 +57,7 @@ public class RecycleViewDivider extends RecyclerView.ItemDecoration {
      * @param dividerHeight 分割线高度
      * @param dividerColor  分割线颜色
      */
-    public RecycleViewDivider(Context context, int orientation, int dividerHeight, int dividerColor) {
+    public EasyItemDecoration(Context context, int orientation, int dividerHeight, int dividerColor) {
         this(context, orientation);
         mDividerHeight = dividerHeight;
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);

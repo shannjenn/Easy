@@ -31,64 +31,44 @@ public abstract class EasyAdapterFactory<T> extends RecyclerView.Adapter<EasyHol
         mData = new ArrayList<>();
     }
 
-    /**
-     * @param data 数据
-     */
-    public EasyAdapterFactory(Context context, List<T> data) {
+    public EasyAdapterFactory(Context context, RecyclerView recyclerView) {
         this.mContext = context;
-        mData = data;
-        if (mData == null) {
-            mData = new ArrayList<>();
+        mData = new ArrayList<>();
+        bindRecycle(recyclerView);
+    }
+
+    /**
+     * 绑定(默认)
+     *
+     * @param recyclerView .
+     */
+    public void bindRecycle(RecyclerView recyclerView) {
+        recyclerView.setLayoutManager(LayoutType.getLayout(mContext, LayoutType.LinearVertical, 0));
+        recyclerView.setAdapter(this);
+        RecyclerView.ItemDecoration itemDecoration = onDecoration();
+        if (itemDecoration != null) {
+            recyclerView.addItemDecoration(itemDecoration);
         }
     }
 
     /**
-     * 竖向列表
-     *
      * @param recyclerView .
+     * @param type         .
+     * @param size         .LinearLayout随意传
      */
-    public void bindRecycleLinearVertical(RecyclerView recyclerView) {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
+    public void bindRecycle(RecyclerView recyclerView, LayoutType type, int size) {
+        recyclerView.setLayoutManager(LayoutType.getLayout(mContext, type, size));
         recyclerView.setAdapter(this);
+        RecyclerView.ItemDecoration itemDecoration = onDecoration();
+        if (itemDecoration != null) {
+            recyclerView.addItemDecoration(itemDecoration);
+        }
     }
 
     /**
-     * 横向列表
-     *
-     * @param recyclerView .
+     * @return 默认分割线
      */
-    public void bindRecycleLinearHorizontal(RecyclerView recyclerView) {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(this);
-    }
-
-    /**
-     * 竖向Grid布局
-     *
-     * @param size 数量
-     */
-    public void bindRecycleVertical(RecyclerView recyclerView, int size) {
-        GridLayoutManager layoutManager = new GridLayoutManager(mContext, size);
-        layoutManager.setOrientation(GridLayout.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(this);
-    }
-
-    /**
-     * 横向Grid布局
-     *
-     * @param size 数量
-     */
-    public void bindRecycleHorizontal(RecyclerView recyclerView, int size) {
-        GridLayoutManager layoutManager = new GridLayoutManager(mContext, size);
-        layoutManager.setOrientation(GridLayout.HORIZONTAL);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(this);
-    }
+    public abstract RecyclerView.ItemDecoration onDecoration();
 
     /**
      * @return 获取数据
@@ -162,7 +142,7 @@ public abstract class EasyAdapterFactory<T> extends RecyclerView.Adapter<EasyHol
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-        boolean isSet = setGridLayoutItemRows(0) <= 0;//如果没设置直接返回
+        boolean isSet = gridLayoutItemRows(0) <= 0;//如果没设置直接返回
         if (isSet) {
             return;
         }
@@ -175,7 +155,7 @@ public abstract class EasyAdapterFactory<T> extends RecyclerView.Adapter<EasyHol
                 @Override
                 public int getSpanSize(int position) {
                     int total = gridLayoutManager.getSpanCount();
-                    int rows = setGridLayoutItemRows(position);
+                    int rows = gridLayoutItemRows(position);
                     if (rows > total || rows <= 0) {
                         return total;
                     } else {
@@ -240,12 +220,12 @@ public abstract class EasyAdapterFactory<T> extends RecyclerView.Adapter<EasyHol
     }
 
     /**
-     * 设置合并头布局的跨度，只对GridLayoutManager有效
+     * 设置合并布局的跨度，只对GridLayoutManager有效
      *
      * @param position 下标
-     * @return 跨行
+     * @return 跨行数量
      */
-    protected abstract int setGridLayoutItemRows(int position);
+    protected abstract int gridLayoutItemRows(int position);
 
     protected abstract EasyHolder bindHolder(View view);
 }

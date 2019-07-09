@@ -10,8 +10,11 @@ import android.widget.Toast;
 
 import com.jen.easy.EasyBindId;
 import com.jen.easytest.R;
+import com.jen.easytest.adapter.decoration.MyItemDecoration;
 import com.jen.easytest.model.RecyclerViewModel;
+
 import easybase.EasyActivity;
+
 import com.jen.easyui.recycler.EasyHolder;
 import com.jen.easyui.recycler.EasyBaseAdapter;
 import com.jen.easyui.recycler.letter.EasyLetterDecoration;
@@ -119,16 +122,25 @@ public class RecyclerSlideDeleteActivity extends EasyActivity {
 
     private class EasyAdapter1<T extends RecyclerViewModel> extends EasyBaseAdapter<T> {
 
-        /**
-         * @param context
-         * @param data    数据
-         */
-        protected EasyAdapter1(Context context, List<T> data) {
-            super(context, data);
+        public EasyAdapter1(Context context) {
+            super(context);
+        }
+
+        public EasyAdapter1(Context context, List<T> list) {
+            super(context);
+        }
+
+        public EasyAdapter1(Context context, RecyclerView recyclerView) {
+            super(context, recyclerView);
         }
 
         @Override
-        protected int setGridLayoutItemRows(int position) {
+        public RecyclerView.ItemDecoration onDecoration() {
+            return MyItemDecoration.newInstance(mContext);
+        }
+
+        @Override
+        protected int gridLayoutItemRows(int position) {
             return 0;
         }
 

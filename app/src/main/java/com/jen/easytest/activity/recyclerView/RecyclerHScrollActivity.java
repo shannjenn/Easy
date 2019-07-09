@@ -9,7 +9,9 @@ import com.jen.easy.EasyBindId;
 import com.jen.easytest.R;
 import com.jen.easytest.adapter.RecyclerViewHScrollAdapter;
 import com.jen.easytest.model.RecyclerViewModel;
+
 import easybase.EasyActivity;
+
 import com.jen.easyui.recycler.HScroll.EasyHScrollRecyclerView;
 
 import java.util.ArrayList;
@@ -73,22 +75,8 @@ public class RecyclerHScrollActivity extends EasyActivity {
         mData.get(33).setLetter("Q");
         mData.get(34).setLetter("R");
 
-        mAdapter = new RecyclerViewHScrollAdapter<>(this, mData);
-        /*mAdapter.setEasyAdapterOnClickListener(new EasyAdapterOnClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-
-            }
-
-            @Override
-            public boolean onLongClick(View view, int position) {
-                return false;
-            }
-        });*/
-        recyclerView.setLinearLayoutManager(RecyclerView.VERTICAL);
-        recyclerView.setAdapter(mAdapter);
+        mAdapter = new RecyclerViewHScrollAdapter<>(this, recyclerView);
     }
-
 
 
     @EasyBindClick({})

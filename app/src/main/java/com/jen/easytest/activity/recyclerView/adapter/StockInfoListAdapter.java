@@ -12,9 +12,10 @@ import com.jen.easy.bind.EasyBind;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
 import com.jen.easytest.activity.recyclerView.fragment.StockInfoListFragment;
+import com.jen.easytest.adapter.decoration.MyItemDecoration;
 import com.jen.easyui.view.shapeview.EasyShapeTextView;
 import com.jen.easyui.recycler.HScroll.EasyHScrollRecyclerView;
-import com.jen.easyui.recycler.HScroll.EasyHScrollViewAdapter;
+import com.jen.easyui.recycler.HScroll.EasyHScrollAdapter;
 import com.jen.easyui.recycler.EasyHolder;
 import com.jen.easyui.recycler.EasyAdapterFactory;
 
@@ -26,17 +27,18 @@ import java.util.List;
  * 时间：2018/10/30.
  */
 
-public class StockInfoListAdapter<T extends StockInfo> extends EasyHScrollViewAdapter<T> {
+public class StockInfoListAdapter<T extends StockInfo> extends EasyHScrollAdapter<T> {
     private final String TAG = StockInfoListAdapter.class.getSimpleName();
     private StockInfoListFragment.Type mType = StockInfoListFragment.Type.SELECTION_SINGLE;
     private final List<Integer> mNeedUpdatePosition = new ArrayList<>();
 
-    /**
-     * @param context
-     * @param data    数据
-     */
-    public StockInfoListAdapter(Context context, List<T> data) {
-        super(context, data);
+    public StockInfoListAdapter(Context context, RecyclerView recyclerView) {
+        super(context, recyclerView);
+    }
+
+    @Override
+    public RecyclerView.ItemDecoration onDecoration() {
+        return MyItemDecoration.newInstance(mContext);
     }
 
     public void update(List<T> data) {
