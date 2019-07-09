@@ -88,7 +88,7 @@
                 android:textSize="16sp"
                 app:clickType="button"
                 app:cornerLeftBottom="4dp"
-                app:solidClickColor="#d5d0bc"
+                app:solidColorPressed="#d5d0bc"
                 app:solidColor="#DDDDDD" />
 
             <com.jen.easyui.view.shapeview.EasyShapeTextView
@@ -102,7 +102,7 @@
                 android:textSize="16sp"
                 app:clickType="button"
                 app:cornerRightBottom="4dp"
-                app:solidClickColor="#4D7AE4"
+                app:solidColorPressed="#4D7AE4"
                 app:solidColor="#335EC2" />
         </LinearLayout>
     </com.jen.easyui.view.shapeview.EasyShapeLinearLayout>

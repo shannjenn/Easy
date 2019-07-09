@@ -41,24 +41,24 @@ public class EasyShapeTextView extends android.support.v7.widget.AppCompatTextVi
 
     protected void initAttrs(Context context, AttributeSet attrs) {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.EasyShapeTextView);
-        mShape.mStrokeWidth = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_strokeWidth, 0);
-        mShape.mStrokeDashGapWidth = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_strokeDashGapWidth, 0);
-        mShape.mStrokeDashGap = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_strokeDashGap, 0);
-        mShape.mStrokeWidth = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_strokeWidth, 0);
-        mShape.mStrokeColor = ta.getColor(R.styleable.EasyShapeTextView_strokeColor, 0);
-        mShape.mStrokeClickColor = ta.getColor(R.styleable.EasyShapeTextView_strokeClickColor, 0);
+        mShape.mStrokeWidthNormal = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_strokeWidth, 0);
+        mShape.mStrokeDashGapWidthNormal = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_strokeDashGapWidth, 0);
+        mShape.mStrokeDashGapNormal = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_strokeDashGap, 0);
+        mShape.mStrokeWidthNormal = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_strokeWidth, 0);
+        mShape.mStrokeColorNormal = ta.getColor(R.styleable.EasyShapeTextView_strokeColor, 0);
+        mShape.mStrokeColorPressed = ta.getColor(R.styleable.EasyShapeTextView_strokeColorPressed, 0);
 
-        mShape.mCorners = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_corners, 0);
-        mShape.mCornerLeftTop = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_cornerLeftTop, 0);
-        mShape.mCornerLeftBottom = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_cornerLeftBottom, 0);
-        mShape.mCornerRightTop = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_cornerRightTop, 0);
-        mShape.mCornerRightBottom = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_cornerRightBottom, 0);
+        mShape.mCornersNormal = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_corners, 0);
+        mShape.mCornerLeftTopNormal = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_cornerLeftTop, 0);
+        mShape.mCornerLeftBottomNormal = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_cornerLeftBottom, 0);
+        mShape.mCornerRightTopNormal = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_cornerRightTop, 0);
+        mShape.mCornerRightBottomNormal = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_cornerRightBottom, 0);
 
-        mShape.mSolidColor = ta.getColor(R.styleable.EasyShapeTextView_solidColor, 0);
-        mShape.mSolidClickColor = ta.getColor(R.styleable.EasyShapeTextView_solidClickColor, 0);
+        mShape.mSolidColorNormal = ta.getColor(R.styleable.EasyShapeTextView_solidColor, 0);
+        mShape.mSolidColorPressed = ta.getColor(R.styleable.EasyShapeTextView_solidColorPressed, 0);
 
         mShape.mTextColor = ta.getColor(R.styleable.EasyShapeTextView_android_textColor, 0xFF000000);
-        mShape.mTextClickColor = ta.getColor(R.styleable.EasyShapeTextView_textClickColor, mShape.mTextColor);
+        mShape.mTextColorPressed = ta.getColor(R.styleable.EasyShapeTextView_textColorPressed, mShape.mTextColor);
 
         mShape.mLineWidth = ta.getDimensionPixelSize(R.styleable.EasyShapeTextView_lineWidth, 0);
         mShape.mLineLeftColor = ta.getColor(R.styleable.EasyShapeTextView_lineLeftColor, 0);
@@ -90,7 +90,7 @@ public class EasyShapeTextView extends android.support.v7.widget.AppCompatTextVi
                 break;
             }
             case 1: {
-                mShape.mClickType = EasyShapeBase.ClickType.CHECK;
+                mShape.mClickType = EasyShapeBase.ClickType.SELECTED;
                 setClickable(true);
                 break;
             }
@@ -112,12 +112,7 @@ public class EasyShapeTextView extends android.support.v7.widget.AppCompatTextVi
             mPaddingBottom = padding;
         }*/
         ta.recycle();
-        mShape.update();
-    }
-
-    public void update() {
-        mShape.update();
-        invalidate();
+        mShape.init();
     }
 
     @Override
@@ -162,7 +157,7 @@ public class EasyShapeTextView extends android.support.v7.widget.AppCompatTextVi
                         mShape.updateButtonState(event.getAction());
                     }
                     break;
-                case CHECK:
+                case SELECTED:
                     mShape.updateCheckState(event.getAction());
                     break;
                 case NON:
@@ -173,7 +168,7 @@ public class EasyShapeTextView extends android.support.v7.widget.AppCompatTextVi
         }
         switch (mShape.mClickType) {
             case BUTTON:
-            case CHECK:
+            case SELECTED:
                 mRippleAnimator.onTouchEvent(event);
                 break;
             case NON:

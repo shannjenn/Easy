@@ -4,7 +4,7 @@
         <attr name="strokeDashGapWidth"/>
         <attr name="strokeDashGap"/>
         <attr name="strokeColor"/>
-        <attr name="strokeClickColor"/>
+        <attr name="strokeColorPressed"/>
 
         <attr name="corners"/>
         <attr name="cornerLeftTop"/>
@@ -13,7 +13,7 @@
         <attr name="cornerRightBottom"/>
 
         <attr name="solidColor"/>
-        <attr name="solidClickColor"/>
+        <attr name="solidColorPressed"/>
 
         <attr name="lineLeftColor"/>
         <attr name="lineRightColor"/>

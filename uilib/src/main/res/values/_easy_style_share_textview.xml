@@ -4,7 +4,7 @@
         <attr name="strokeDashGapWidth" format="dimension" />
         <attr name="strokeDashGap" format="dimension" />
         <attr name="strokeColor" format="color" />
-        <attr name="strokeClickColor" format="color" />
+        <attr name="strokeColorPressed" format="color" />
 
         <attr name="corners" format="dimension" />
         <attr name="cornerLeftTop" format="dimension" />
@@ -13,7 +13,7 @@
         <attr name="cornerRightBottom" format="dimension" />
 
         <attr name="solidColor" format="color" />
-        <attr name="solidClickColor" format="color" />
+        <attr name="solidColorPressed" format="color" />
 
         <attr name="lineLeftColor" format="color" />
         <attr name="lineRightColor" format="color" />
@@ -39,12 +39,12 @@
         <attr name="lineWidth" format="dimension" />
 
         <attr name="android:textColor" />
-        <attr name="textClickColor" format="color" />
+        <attr name="textColorPressed" format="color" />
 
         <attr name="clickType">
             <enum name="button" value="0" />
             <enum name="check" value="1" />
-            <enum name="enable" value="-1" />
+            <enum name="non" value="-1" />
         </attr>
 
         <!--<attr name="android:paddingLeft"/>

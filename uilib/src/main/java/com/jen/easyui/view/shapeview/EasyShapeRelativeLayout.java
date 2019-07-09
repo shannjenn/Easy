@@ -42,20 +42,20 @@ public class EasyShapeRelativeLayout extends RelativeLayout {
 
     private void initAttrs(Context context, AttributeSet attrs) {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.EasyShapeRelativeLayout);
-        mShape.mStrokeWidth = ta.getDimensionPixelSize(R.styleable.EasyShapeRelativeLayout_strokeWidth, 0);
-        mShape.mStrokeDashGapWidth = ta.getDimensionPixelSize(R.styleable.EasyShapeRelativeLayout_strokeDashGapWidth, 0);
-        mShape.mStrokeDashGap = ta.getDimensionPixelSize(R.styleable.EasyShapeRelativeLayout_strokeDashGap, 0);
-        mShape.mStrokeColor = ta.getColor(R.styleable.EasyShapeRelativeLayout_strokeColor, 0);
-        mShape.mStrokeClickColor = ta.getColor(R.styleable.EasyShapeRelativeLayout_strokeClickColor, 0);
+        mShape.mStrokeWidthNormal = ta.getDimensionPixelSize(R.styleable.EasyShapeRelativeLayout_strokeWidth, 0);
+        mShape.mStrokeDashGapWidthNormal = ta.getDimensionPixelSize(R.styleable.EasyShapeRelativeLayout_strokeDashGapWidth, 0);
+        mShape.mStrokeDashGapNormal = ta.getDimensionPixelSize(R.styleable.EasyShapeRelativeLayout_strokeDashGap, 0);
+        mShape.mStrokeColorNormal = ta.getColor(R.styleable.EasyShapeRelativeLayout_strokeColor, 0);
+        mShape.mStrokeColorPressed = ta.getColor(R.styleable.EasyShapeRelativeLayout_strokeColorPressed, 0);
 
-        mShape.mCorners = ta.getDimensionPixelOffset(R.styleable.EasyShapeRelativeLayout_corners, 0);
-        mShape.mCornerLeftTop = ta.getDimensionPixelOffset(R.styleable.EasyShapeRelativeLayout_cornerLeftTop, 0);
-        mShape.mCornerLeftBottom = ta.getDimensionPixelOffset(R.styleable.EasyShapeRelativeLayout_cornerLeftBottom, 0);
-        mShape.mCornerRightTop = ta.getDimensionPixelOffset(R.styleable.EasyShapeRelativeLayout_cornerRightTop, 0);
-        mShape.mCornerRightBottom = ta.getDimensionPixelOffset(R.styleable.EasyShapeRelativeLayout_cornerRightBottom, 0);
+        mShape.mCornersNormal = ta.getDimensionPixelOffset(R.styleable.EasyShapeRelativeLayout_corners, 0);
+        mShape.mCornerLeftTopNormal = ta.getDimensionPixelOffset(R.styleable.EasyShapeRelativeLayout_cornerLeftTop, 0);
+        mShape.mCornerLeftBottomNormal = ta.getDimensionPixelOffset(R.styleable.EasyShapeRelativeLayout_cornerLeftBottom, 0);
+        mShape.mCornerRightTopNormal = ta.getDimensionPixelOffset(R.styleable.EasyShapeRelativeLayout_cornerRightTop, 0);
+        mShape.mCornerRightBottomNormal = ta.getDimensionPixelOffset(R.styleable.EasyShapeRelativeLayout_cornerRightBottom, 0);
 
-        mShape.mSolidColor = ta.getColor(R.styleable.EasyShapeRelativeLayout_solidColor, 0);
-        mShape.mSolidClickColor = ta.getColor(R.styleable.EasyShapeRelativeLayout_solidClickColor, 0);
+        mShape.mSolidColorNormal = ta.getColor(R.styleable.EasyShapeRelativeLayout_solidColor, 0);
+        mShape.mSolidColorPressed = ta.getColor(R.styleable.EasyShapeRelativeLayout_solidColorPressed, 0);
 
         mShape.mLineWidth = ta.getDimensionPixelOffset(R.styleable.EasyShapeRelativeLayout_lineWidth, 0);
         mShape.mLineLeftColor = ta.getColor(R.styleable.EasyShapeRelativeLayout_lineLeftColor, 0);
@@ -87,7 +87,7 @@ public class EasyShapeRelativeLayout extends RelativeLayout {
                 break;
             }
             case 1: {
-                mShape.mClickType = EasyShapeBase.ClickType.CHECK;
+                mShape.mClickType = EasyShapeBase.ClickType.SELECTED;
                 setClickable(true);
                 break;
             }
@@ -97,12 +97,7 @@ public class EasyShapeRelativeLayout extends RelativeLayout {
             }
         }
         ta.recycle();
-        mShape.update();
-    }
-
-    public void update() {
-        mShape.update();
-        invalidate();
+        mShape.init();
     }
 
     @Override
@@ -147,7 +142,7 @@ public class EasyShapeRelativeLayout extends RelativeLayout {
                         mShape.updateButtonState(event.getAction());
                     }
                     break;
-                case CHECK:
+                case SELECTED:
                     mShape.updateCheckState(event.getAction());
                     break;
                 case NON:
@@ -158,7 +153,7 @@ public class EasyShapeRelativeLayout extends RelativeLayout {
         }
         switch (mShape.mClickType) {
             case BUTTON:
-            case CHECK:
+            case SELECTED:
                 mRippleAnimator.onTouchEvent(event);
                 break;
             case NON:

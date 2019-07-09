@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -19,23 +20,23 @@ public class EasyShapeBase {
     private boolean isTextView;//是否为textView
 
     /*------------------------------------------------公共属性start*/
-    private GradientDrawable mDrawable;
     private int mHeight;
+//    private GradientDrawable mDrawableNormal;
+//    private GradientDrawable mDrawablePressed;
 
-    int mStrokeWidth;
-    float mStrokeDashGapWidth;
-    float mStrokeDashGap;
-    int mStrokeColor;
-    int mStrokeClickColor;
+    int mSolidColorNormal;
+    int mStrokeWidthNormal;
+    float mStrokeDashGapWidthNormal;
+    float mStrokeDashGapNormal;
+    int mStrokeColorNormal;
+    float mCornersNormal;
+    float mCornerLeftTopNormal;
+    float mCornerLeftBottomNormal;
+    float mCornerRightTopNormal;
+    float mCornerRightBottomNormal;
 
-    float mCorners;
-    float mCornerLeftTop;
-    float mCornerLeftBottom;
-    float mCornerRightTop;
-    float mCornerRightBottom;
-//    boolean mCornersHalfRound;//是否半圆
-//    boolean mCornersShowLeft;
-//    boolean mCornersShowRight;
+    int mSolidColorPressed;
+    int mStrokeColorPressed;
 
     int mLineLeftColor;
     int mLineLeftMarginLeft;
@@ -59,16 +60,13 @@ public class EasyShapeBase {
 
     float mLineWidth;
 
-    int mSolidColor;
-    int mSolidClickColor;
-
     /*点击类型：normal：点击变色，check：check，-1：不允许点击*/
     ClickType mClickType = ClickType.NON;
     private boolean isCheck;
 
     public enum ClickType {
         BUTTON,//按钮效果点击变色,默认效果
-        CHECK,//check效果
+        SELECTED,//选中效果
         NON//没有点击效果
     }
 
@@ -80,7 +78,7 @@ public class EasyShapeBase {
 
     /*------------------------------------------------只属于TextView属性start*/
     int mTextColor;
-    int mTextClickColor;
+    int mTextColorPressed;
     /*------------------------------------------------只属于TextView属性end*/
 
     private Paint mLinePaint;
@@ -90,25 +88,64 @@ public class EasyShapeBase {
         isTextView = view instanceof TextView;
     }
 
-    public void update() {
-        if (mDrawable == null || mLinePaint == null) {
-            mDrawable = new GradientDrawable();
-            mLinePaint = new Paint();
-        }
-        mDrawable.setStroke(mStrokeWidth, mStrokeColor, mStrokeDashGapWidth, mStrokeDashGap);
-        mDrawable.setColor(mSolidColor);
-        mDrawable.setGradientType(GradientDrawable.LINEAR_GRADIENT);
-        if (mCorners > 0) {
-            mDrawable.setCornerRadius(mCorners);
-        } else {
-            mDrawable.setCornerRadii(new float[]{mCornerLeftTop, mCornerLeftTop, mCornerRightTop, mCornerRightTop,
-                    mCornerRightBottom, mCornerRightBottom, mCornerLeftBottom, mCornerLeftBottom});
-        }
-        mView.setBackground(mDrawable);
-
+    public void init(){
+        mLinePaint = new Paint();
         mLinePaint.setStyle(Paint.Style.FILL);//设置填充样式
         mLinePaint.setStrokeWidth(mLineWidth);//设置画笔宽度
+        initDrawable();
     }
+
+    private void initDrawable() {
+        GradientDrawable mDrawableNormal = new GradientDrawable();
+        mDrawableNormal.setColor(mSolidColorNormal);
+        mDrawableNormal.setStroke(mStrokeWidthNormal, mStrokeColorNormal, mStrokeDashGapWidthNormal, mStrokeDashGapNormal);
+        if (mCornersNormal > 0) {
+            mDrawableNormal.setCornerRadius(mCornersNormal);
+        } else {
+            mDrawableNormal.setCornerRadii(new float[]{mCornerLeftTopNormal, mCornerLeftTopNormal, mCornerRightTopNormal, mCornerRightTopNormal,
+                    mCornerRightBottomNormal, mCornerRightBottomNormal, mCornerLeftBottomNormal, mCornerLeftBottomNormal});
+        }
+        mDrawableNormal.setShape(GradientDrawable.RECTANGLE);
+        mDrawableNormal.setGradientType(GradientDrawable.LINEAR_GRADIENT);
+
+        GradientDrawable mDrawablePressed = new GradientDrawable();
+        mDrawablePressed.setColor(mSolidColorPressed);
+        mDrawablePressed.setStroke(mStrokeWidthNormal, mStrokeColorPressed, mStrokeDashGapWidthNormal, mStrokeDashGapNormal);
+        if (mCornersNormal > 0) {
+            mDrawablePressed.setCornerRadius(mCornersNormal);
+        } else {
+            mDrawablePressed.setCornerRadii(new float[]{mCornerLeftTopNormal, mCornerLeftTopNormal, mCornerRightTopNormal, mCornerRightTopNormal,
+                    mCornerRightBottomNormal, mCornerRightBottomNormal, mCornerLeftBottomNormal, mCornerLeftBottomNormal});
+        }
+        mDrawablePressed.setShape(GradientDrawable.RECTANGLE);
+        mDrawablePressed.setGradientType(GradientDrawable.LINEAR_GRADIENT);
+
+        StateListDrawable drawable = new StateListDrawable();
+        switch (mClickType) {
+            case BUTTON: {
+                int pressed = android.R.attr.state_pressed; //取负值就表示pressed为false的意思
+                drawable.addState(new int[]{pressed}, mDrawablePressed);
+                drawable.addState(new int[]{-pressed}, mDrawableNormal);//默认状态下的图片
+                break;
+            }
+            case SELECTED:
+                int selected = android.R.attr.state_selected;
+                drawable.addState(new int[]{selected}, mDrawablePressed);
+                drawable.addState(new int[]{-selected}, mDrawableNormal);
+                break;
+            case NON:
+                int normal = android.R.attr.state_pressed;
+                drawable.addState(new int[]{normal}, mDrawableNormal);
+                drawable.addState(new int[]{-normal}, mDrawableNormal);
+                break;
+        }
+        mView.setBackground(drawable);
+    }
+
+//    public void update() {
+//        mLinePaint.setStyle(Paint.Style.FILL);//设置填充样式
+//        mLinePaint.setStrokeWidth(mLineWidth);//设置画笔宽度
+//    }
 
     void onDraw(Canvas canvas) {
         int width = mView.getMeasuredWidth() - 1;
@@ -157,12 +194,6 @@ public class EasyShapeBase {
             } else {
                 mHeight = measureLayoutHeight(heightMeasureSpec);
             }
-        }
-        if (mCorners > 0) {
-            mDrawable.setCornerRadius(mCorners);
-        } else {
-            mDrawable.setCornerRadii(new float[]{mCornerLeftTop, mCornerLeftTop, mCornerRightTop, mCornerRightTop,
-                    mCornerRightBottom, mCornerRightBottom, mCornerLeftBottom, mCornerLeftBottom});
         }
     }
 
@@ -223,14 +254,12 @@ public class EasyShapeBase {
             case MotionEvent.ACTION_CANCEL: {//在ScrollView包含ViewPager的情况下,滑动时还原check状态
                 isCheck = !isCheck;
                 if (isCheck) {
-                    mDrawable.setStroke(mStrokeWidth, mStrokeClickColor, mStrokeDashGapWidth, mStrokeDashGap);
-                    mDrawable.setColor(mSolidClickColor);
+                    mView.setSelected(true);
                     if (isTextView) {
-                        ((TextView) mView).setTextColor(mTextClickColor);
+                        ((TextView) mView).setTextColor(mTextColorPressed);
                     }
                 } else {
-                    mDrawable.setStroke(mStrokeWidth, mStrokeColor, mStrokeDashGapWidth, mStrokeDashGap);
-                    mDrawable.setColor(mSolidColor);
+                    mView.setSelected(false);
                     if (isTextView) {
                         ((TextView) mView).setTextColor(mTextColor);
                     }
@@ -248,17 +277,13 @@ public class EasyShapeBase {
     void updateButtonState(int eventAction) {
         switch (eventAction) {
             case MotionEvent.ACTION_DOWN: {
-                mDrawable.setStroke(mStrokeWidth, mStrokeClickColor, mStrokeDashGapWidth, mStrokeDashGap);
-                mDrawable.setColor(mSolidClickColor);
                 if (isTextView) {
-                    ((TextView) mView).setTextColor(mTextClickColor);
+                    ((TextView) mView).setTextColor(mTextColorPressed);
                 }
                 break;
             }
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL: {
-                mDrawable.setStroke(mStrokeWidth, mStrokeColor, mStrokeDashGapWidth, mStrokeDashGap);
-                mDrawable.setColor(mSolidColor);
                 if (isTextView) {
                     ((TextView) mView).setTextColor(mTextColor);
                 }
@@ -268,37 +293,37 @@ public class EasyShapeBase {
     }
 
     public EasyShapeBase setSolidColor(int color) {
-        mSolidColor = color;
+        mSolidColorNormal = color;
         return this;
     }
 
     public EasyShapeBase setStrokeColor(int color) {
-        mStrokeColor = color;
+        mStrokeColorNormal = color;
         return this;
     }
 
     public EasyShapeBase setCorners(int db) {
-        mCorners = dp2px(db);
+        mCornersNormal = dp2px(db);
         return this;
     }
 
     public EasyShapeBase setCornerLeftTop(int db) {
-        mCornerLeftTop = dp2px(db);
+        mCornerLeftTopNormal = dp2px(db);
         return this;
     }
 
     public EasyShapeBase setCornerLeftBottom(int db) {
-        mCornerLeftBottom = dp2px(db);
+        mCornerLeftBottomNormal = dp2px(db);
         return this;
     }
 
     public EasyShapeBase setCornerRightTop(int db) {
-        mCornerRightTop = dp2px(db);
+        mCornerRightTopNormal = dp2px(db);
         return this;
     }
 
     public EasyShapeBase setCornerRightBottom(int db) {
-        mCornerRightBottom = dp2px(db);
+        mCornerRightBottomNormal = dp2px(db);
         return this;
     }
 
@@ -321,14 +346,16 @@ public class EasyShapeBase {
         }
         isCheck = check;
         if (isCheck) {
-            mDrawable.setStroke(mStrokeWidth, mStrokeClickColor, mStrokeDashGapWidth, mStrokeDashGap);
-            mDrawable.setColor(mSolidClickColor);
+//            mDrawableNormal.setStroke(mStrokeWidthNormal, mStrokeColorPressed, mStrokeDashGapWidthNormal, mStrokeDashGapNormal);
+//            mDrawableNormal.setColor(mSolidColorPressed);
+            mView.setSelected(true);
             if (isTextView) {
-                ((TextView) mView).setTextColor(mTextClickColor);
+                ((TextView) mView).setTextColor(mTextColorPressed);
             }
         } else {
-            mDrawable.setStroke(mStrokeWidth, mStrokeColor, mStrokeDashGapWidth, mStrokeDashGap);
-            mDrawable.setColor(mSolidColor);
+//            mDrawableNormal.setStroke(mStrokeWidthNormal, mStrokeColorNormal, mStrokeDashGapWidthNormal, mStrokeDashGapNormal);
+//            mDrawableNormal.setColor(mSolidColorNormal);
+            mView.setSelected(false);
             if (isTextView) {
                 ((TextView) mView).setTextColor(mTextColor);
             }
@@ -343,12 +370,12 @@ public class EasyShapeBase {
         this.mTextColor = textColor;
     }
 
-    public int getTextClickColor() {
-        return mTextClickColor;
+    public int gettextColorPressed() {
+        return mTextColorPressed;
     }
 
-    public void setTextClickColor(int textClickColor) {
-        this.mTextClickColor = textClickColor;
+    public void settextColorPressed(int textColorPressed) {
+        this.mTextColorPressed = textColorPressed;
     }
 
     /**

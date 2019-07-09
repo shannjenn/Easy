@@ -42,20 +42,20 @@ public class EasyShapeLinearLayout extends LinearLayout {
 
     private void initAttrs(Context context, AttributeSet attrs) {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.EasyShapeLinearLayout);
-        mShape.mStrokeWidth = ta.getDimensionPixelSize(R.styleable.EasyShapeLinearLayout_strokeWidth, 0);
-        mShape.mStrokeDashGapWidth = ta.getDimensionPixelSize(R.styleable.EasyShapeLinearLayout_strokeDashGapWidth, 0);
-        mShape.mStrokeDashGap = ta.getDimensionPixelSize(R.styleable.EasyShapeLinearLayout_strokeDashGap, 0);
-        mShape.mStrokeColor = ta.getColor(R.styleable.EasyShapeLinearLayout_strokeColor, 0);
-        mShape.mStrokeClickColor = ta.getColor(R.styleable.EasyShapeLinearLayout_strokeClickColor, 0);
+        mShape.mStrokeWidthNormal = ta.getDimensionPixelSize(R.styleable.EasyShapeLinearLayout_strokeWidth, 0);
+        mShape.mStrokeDashGapWidthNormal = ta.getDimensionPixelSize(R.styleable.EasyShapeLinearLayout_strokeDashGapWidth, 0);
+        mShape.mStrokeDashGapNormal = ta.getDimensionPixelSize(R.styleable.EasyShapeLinearLayout_strokeDashGap, 0);
+        mShape.mStrokeColorNormal = ta.getColor(R.styleable.EasyShapeLinearLayout_strokeColor, 0);
+        mShape.mStrokeColorPressed = ta.getColor(R.styleable.EasyShapeLinearLayout_strokeColorPressed, 0);
 
-        mShape.mCorners = ta.getDimensionPixelSize(R.styleable.EasyShapeLinearLayout_corners, 0);
-        mShape.mCornerLeftTop = ta.getDimensionPixelSize(R.styleable.EasyShapeLinearLayout_cornerLeftTop, 0);
-        mShape.mCornerLeftBottom = ta.getDimensionPixelSize(R.styleable.EasyShapeLinearLayout_cornerLeftBottom, 0);
-        mShape.mCornerRightTop = ta.getDimensionPixelSize(R.styleable.EasyShapeLinearLayout_cornerRightTop, 0);
-        mShape.mCornerRightBottom = ta.getDimensionPixelSize(R.styleable.EasyShapeLinearLayout_cornerRightBottom, 0);
+        mShape.mCornersNormal = ta.getDimensionPixelSize(R.styleable.EasyShapeLinearLayout_corners, 0);
+        mShape.mCornerLeftTopNormal = ta.getDimensionPixelSize(R.styleable.EasyShapeLinearLayout_cornerLeftTop, 0);
+        mShape.mCornerLeftBottomNormal = ta.getDimensionPixelSize(R.styleable.EasyShapeLinearLayout_cornerLeftBottom, 0);
+        mShape.mCornerRightTopNormal = ta.getDimensionPixelSize(R.styleable.EasyShapeLinearLayout_cornerRightTop, 0);
+        mShape.mCornerRightBottomNormal = ta.getDimensionPixelSize(R.styleable.EasyShapeLinearLayout_cornerRightBottom, 0);
 
-        mShape.mSolidColor = ta.getColor(R.styleable.EasyShapeLinearLayout_solidColor, 0);
-        mShape.mSolidClickColor = ta.getColor(R.styleable.EasyShapeLinearLayout_solidClickColor, 0);
+        mShape.mSolidColorNormal = ta.getColor(R.styleable.EasyShapeLinearLayout_solidColor, 0);
+        mShape.mSolidColorPressed = ta.getColor(R.styleable.EasyShapeLinearLayout_solidColorPressed, 0);
 
         mShape.mLineWidth = ta.getDimensionPixelOffset(R.styleable.EasyShapeLinearLayout_lineWidth, 0);
         mShape.mLineLeftColor = ta.getColor(R.styleable.EasyShapeLinearLayout_lineLeftColor, 0);
@@ -87,7 +87,7 @@ public class EasyShapeLinearLayout extends LinearLayout {
                 break;
             }
             case 1: {
-                mShape.mClickType = EasyShapeBase.ClickType.CHECK;
+                mShape.mClickType = EasyShapeBase.ClickType.SELECTED;
                 setClickable(true);
                 break;
             }
@@ -97,12 +97,7 @@ public class EasyShapeLinearLayout extends LinearLayout {
             }
         }
         ta.recycle();
-        mShape.update();
-    }
-
-    public void update() {
-        mShape.update();
-        invalidate();
+        mShape.init();
     }
 
     @Override
@@ -147,7 +142,7 @@ public class EasyShapeLinearLayout extends LinearLayout {
                         mShape.updateButtonState(event.getAction());
                     }
                     break;
-                case CHECK:
+                case SELECTED:
                     mShape.updateCheckState(event.getAction());
                     break;
                 case NON:
@@ -158,7 +153,7 @@ public class EasyShapeLinearLayout extends LinearLayout {
         }
         switch (mShape.mClickType) {
             case BUTTON:
-            case CHECK:
+            case SELECTED:
                 mRippleAnimator.onTouchEvent(event);
                 break;
             case NON:
