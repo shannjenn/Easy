@@ -86,14 +86,15 @@ public class EasyDateFormatUtil {
     public String format(String timeStamp) {
         if (timeStamp == null) {
             Log.w(TAG, "时间戳为空");
-            return null;
+            return "";
         }
         long time;
         try {
             time = Long.parseLong(timeStamp);
         } catch (NumberFormatException e) {
             Log.w(TAG, "时间戳错误");
-            return null;
+            e.printStackTrace();
+            return "";
         }
         Date date = new Date(time);
         return mFormat.format(date);

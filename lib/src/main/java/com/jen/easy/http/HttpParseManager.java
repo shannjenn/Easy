@@ -219,7 +219,7 @@ class HttpParseManager {
                         throwException(ExceptionType.ClassCastException, "JSONArray数据解析错误3：" + type.toString());
                     }
                 } catch (ClassNotFoundException e) {
-                    showErrorLog("ClassNotFoundException：JSONArray数据解析错误，集合：" + type.toString() + " 集合对象：" + type1.toString());
+                    showErrorLog(String.format("ClassNotFoundException：JSONArray数据解析错误，集合：%s 集合对象：%s", type.toString(), type1.toString()));
                 }
             } else if (jsonObj instanceof JSONArray) {
                 if (FieldType.isList(type1)) {
@@ -242,7 +242,7 @@ class HttpParseManager {
                         throwException(ExceptionType.ClassCastException, "JSONArray数据解析错误6：" + type.toString());
                     }
                 } catch (ClassNotFoundException e) {
-                    showErrorLog("ClassNotFoundException：JSONArray数据解析错误，集合：" + type.toString() + " 集合对象：" + type1.toString());
+                    showErrorLog(String.format("ClassNotFoundException：JSONArray数据解析错误，集合：%s 集合对象：%s", type.toString(), type1.toString()));
                 }
             }
         }
@@ -259,6 +259,7 @@ class HttpParseManager {
      * @return 返回
      */
     private String parseString(String param, Object obj) {
+        final String logType = "String";
         String res = null;
         if (obj instanceof String) {
             res = (String) obj;
@@ -279,7 +280,7 @@ class HttpParseManager {
         } else if (obj instanceof Byte) {
             res = String.valueOf(obj);
         } else {
-            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "String"));
+            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
         }
         return res;
     }
@@ -291,6 +292,7 @@ class HttpParseManager {
      * @return 返回
      */
     private int parseInt(String param, Object obj) {
+        final String logType = "Integer";
         int res = 0;
         try {
             if (obj instanceof Integer) {
@@ -298,19 +300,19 @@ class HttpParseManager {
             } else if (obj instanceof String) {
                 res = Integer.valueOf((String) obj);
             } else if (obj instanceof Boolean) {
-                throwException(ExceptionType.ClassCastException, getParseErrorEnable(param, obj, "int"));
+                throwException(ExceptionType.ClassCastException, getParseErrorEnable(param, obj, logType));
             } else if (obj instanceof Float) {
                 Float value = (Float) obj;
                 res = value.intValue();
-                showWarnLog(getParseErrorLoss(param, obj, "int"));
+                showWarnLog(getParseErrorLoss(param, obj, logType));
             } else if (obj instanceof Long) {
                 Long value = (Long) obj;
                 res = value.intValue();
-                showWarnLog(getParseErrorLoss(param, obj, "int"));
+                showWarnLog(getParseErrorLoss(param, obj, logType));
             } else if (obj instanceof Double) {
                 Double value = (Double) obj;
                 res = value.intValue();
-                showWarnLog(getParseErrorLoss(param, obj, "int"));
+                showWarnLog(getParseErrorLoss(param, obj, logType));
             } else if (obj instanceof Short) {
                 Short value = (Short) obj;
                 res = value.intValue();
@@ -320,10 +322,10 @@ class HttpParseManager {
                 Byte value = (Byte) obj;
                 res = value.intValue();
             } else {
-                throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "int"));
+                throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
             }
         } catch (NumberFormatException e) {
-            throwException(ExceptionType.NumberFormatException, getParseErrorThrow(param, obj, "int"));
+            throwException(ExceptionType.NumberFormatException, getParseErrorThrow(param, obj, logType));
         }
         return res;
     }
@@ -335,27 +337,28 @@ class HttpParseManager {
      * @return 返回
      */
     private boolean parseBoolean(String param, Object obj) {
+        final String logType = "Boolean";
         boolean res = false;
         if (obj instanceof Boolean) {
             res = (boolean) obj;
         } else if (obj instanceof String) {
-            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "boolean"));
+            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
         } else if (obj instanceof Integer) {
-            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "boolean"));
+            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
         } else if (obj instanceof Float) {
-            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "boolean"));
+            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
         } else if (obj instanceof Long) {
-            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "boolean"));
+            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
         } else if (obj instanceof Double) {
-            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "boolean"));
+            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
         } else if (obj instanceof Short) {
-            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "boolean"));
+            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
         } else if (obj instanceof Character) {
-            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "boolean"));
+            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
         } else if (obj instanceof Byte) {
-            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "boolean"));
+            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
         } else {
-            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "boolean"));
+            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
         }
         return res;
     }
@@ -367,6 +370,7 @@ class HttpParseManager {
      * @return 返回
      */
     private float parseFloat(String param, Object obj) {
+        final String logType = "Float";
         float res = 0.0f;
         try {
             if (obj instanceof Float) {
@@ -376,17 +380,17 @@ class HttpParseManager {
             } else if (obj instanceof Integer) {
                 Integer value = (Integer) obj;
                 res = value.floatValue();
-                showWarnLog(getParseErrorLoss(param, obj, "float"));
+                showWarnLog(getParseErrorLoss(param, obj, logType));
             } else if (obj instanceof Boolean) {
-                throwException(ExceptionType.ClassCastException, getParseErrorEnable(param, obj, "float"));
+                throwException(ExceptionType.ClassCastException, getParseErrorEnable(param, obj, logType));
             } else if (obj instanceof Long) {
                 Long value = (Long) obj;
                 res = value.floatValue();
-                showWarnLog(getParseErrorLoss(param, obj, "float"));
+                showWarnLog(getParseErrorLoss(param, obj, logType));
             } else if (obj instanceof Double) {
                 Double value = (Double) obj;
                 res = value.floatValue();
-                showWarnLog(getParseErrorLoss(param, obj, "float"));
+                showWarnLog(getParseErrorLoss(param, obj, logType));
             } else if (obj instanceof Short) {
                 Short value = (Short) obj;
                 res = value.floatValue();
@@ -396,10 +400,10 @@ class HttpParseManager {
                 Byte value = (Byte) obj;
                 res = value.floatValue();
             } else {
-                throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "float"));
+                throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
             }
         } catch (NumberFormatException e) {
-            throwException(ExceptionType.NumberFormatException, getParseErrorThrow(param, obj, "float"));
+            throwException(ExceptionType.NumberFormatException, getParseErrorThrow(param, obj, logType));
         }
         return res;
     }
@@ -411,6 +415,7 @@ class HttpParseManager {
      * @return 返回
      */
     private long parseLong(String param, Object obj) {
+        final String logType = "Long";
         long res = 0;
         try {
             if (obj instanceof Long) {
@@ -421,15 +426,15 @@ class HttpParseManager {
                 Integer value = (Integer) obj;
                 res = value.longValue();
             } else if (obj instanceof Boolean) {
-                throwException(ExceptionType.ClassCastException, getParseErrorEnable(param, obj, "long"));
+                throwException(ExceptionType.ClassCastException, getParseErrorEnable(param, obj, logType));
             } else if (obj instanceof Float) {
                 Float value = (Float) obj;
                 res = value.longValue();
-                showWarnLog(getParseErrorLoss(param, obj, "long"));
+                showWarnLog(getParseErrorLoss(param, obj, logType));
             } else if (obj instanceof Double) {
                 Double value = (Double) obj;
                 res = value.longValue();
-                showWarnLog(getParseErrorLoss(param, obj, "long"));
+                showWarnLog(getParseErrorLoss(param, obj, logType));
             } else if (obj instanceof Short) {
                 Short value = (Short) obj;
                 res = value.longValue();
@@ -439,10 +444,10 @@ class HttpParseManager {
                 Byte value = (Byte) obj;
                 res = value.longValue();
             } else {
-                throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "long"));
+                throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
             }
         } catch (NumberFormatException e) {
-            throwException(ExceptionType.NumberFormatException, getParseErrorThrow(param, obj, "long"));
+            throwException(ExceptionType.NumberFormatException, getParseErrorThrow(param, obj, logType));
         }
         return res;
     }
@@ -454,6 +459,7 @@ class HttpParseManager {
      * @return 返回
      */
     private double parseDouble(String param, Object obj) {
+        final String logType = "Double";
         double res = 0;
         try {
             if (obj instanceof Double) {
@@ -463,16 +469,16 @@ class HttpParseManager {
             } else if (obj instanceof Integer) {
                 Integer value = (Integer) obj;
                 res = value.doubleValue();
-                showWarnLog(getParseErrorLoss(param, obj, "double"));
+                showWarnLog(getParseErrorLoss(param, obj, logType));
             } else if (obj instanceof Boolean) {
-                throwException(ExceptionType.ClassCastException, getParseErrorEnable(param, obj, "double"));
+                throwException(ExceptionType.ClassCastException, getParseErrorEnable(param, obj, logType));
             } else if (obj instanceof Float) {
                 Float value = (Float) obj;
                 res = value.doubleValue();
             } else if (obj instanceof Long) {
                 Long value = (Long) obj;
                 res = value.doubleValue();
-                showWarnLog(getParseErrorLoss(param, obj, "double"));
+                showWarnLog(getParseErrorLoss(param, obj, logType));
             } else if (obj instanceof Short) {
                 Short value = (Short) obj;
                 res = value.doubleValue();
@@ -482,10 +488,10 @@ class HttpParseManager {
                 Byte value = (Byte) obj;
                 res = value.doubleValue();
             } else {
-                throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "double"));
+                throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
             }
         } catch (NumberFormatException e) {
-            throwException(ExceptionType.NumberFormatException, getParseErrorThrow(param, obj, "double"));
+            throwException(ExceptionType.NumberFormatException, getParseErrorThrow(param, obj, logType));
         }
         return res;
     }
@@ -497,6 +503,7 @@ class HttpParseManager {
      * @return 返回
      */
     private short parseShort(String param, Object obj) {
+        final String logType = "Short";
         short res = 0;
         try {
             if (obj instanceof Short) {
@@ -506,31 +513,31 @@ class HttpParseManager {
             } else if (obj instanceof Integer) {
                 Integer value = (Integer) obj;
                 res = value.shortValue();
-                showWarnLog(getParseErrorLoss(param, obj, "short"));
+                showWarnLog(getParseErrorLoss(param, obj, logType));
             } else if (obj instanceof Boolean) {
-                throwException(ExceptionType.ClassCastException, getParseErrorEnable(param, obj, "short"));
+                throwException(ExceptionType.ClassCastException, getParseErrorEnable(param, obj, logType));
             } else if (obj instanceof Float) {
                 Float value = (Float) obj;
                 res = value.shortValue();
-                showWarnLog(getParseErrorLoss(param, obj, "short"));
+                showWarnLog(getParseErrorLoss(param, obj, logType));
             } else if (obj instanceof Long) {
                 Long value = (Long) obj;
                 res = value.shortValue();
-                showWarnLog(getParseErrorLoss(param, obj, "short"));
+                showWarnLog(getParseErrorLoss(param, obj, logType));
             } else if (obj instanceof Double) {
                 Double value = (Double) obj;
                 res = value.shortValue();
-                showWarnLog(getParseErrorLoss(param, obj, "short"));
+                showWarnLog(getParseErrorLoss(param, obj, logType));
             } else if (obj instanceof Character) {
                 res = Short.valueOf(String.valueOf(obj));
             } else if (obj instanceof Byte) {
                 Byte value = (Byte) obj;
                 res = value.shortValue();
             } else {
-                throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "short"));
+                throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
             }
         } catch (NumberFormatException e) {
-            throwException(ExceptionType.NumberFormatException, getParseErrorThrow(param, obj, "short"));
+            throwException(ExceptionType.NumberFormatException, getParseErrorThrow(param, obj, logType));
         }
         return res;
     }
@@ -542,27 +549,28 @@ class HttpParseManager {
      * @return 返回
      */
     private char parseCharacter(String param, Object obj) {
+        final String logType = "Character";
         char res = 0;
         if (obj instanceof Character) {
             res = (char) obj;
         } else if (obj instanceof String) {
-            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "char"));
+            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
         } else if (obj instanceof Integer) {
-            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "char"));
+            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
         } else if (obj instanceof Boolean) {
-            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "char"));
+            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
         } else if (obj instanceof Float) {
-            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "char"));
+            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
         } else if (obj instanceof Long) {
-            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "char"));
+            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
         } else if (obj instanceof Double) {
-            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "char"));
+            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
         } else if (obj instanceof Short) {
-            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "char"));
+            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
         } else if (obj instanceof Byte) {
-            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "char"));
+            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
         } else {
-            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "char"));
+            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
         }
         return res;
     }
@@ -574,27 +582,28 @@ class HttpParseManager {
      * @return 返回
      */
     private byte parseByte(String param, Object obj) {
+        final String logType = "Byte";
         byte res = 0;
         if (obj instanceof Byte) {
             res = (byte) obj;
         } else if (obj instanceof String) {
-            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "byte"));
+            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
         } else if (obj instanceof Integer) {
-            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "byte"));
+            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
         } else if (obj instanceof Boolean) {
-            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "byte"));
+            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
         } else if (obj instanceof Float) {
-            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "byte"));
+            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
         } else if (obj instanceof Long) {
-            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "byte"));
+            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
         } else if (obj instanceof Double) {
-            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "byte"));
+            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
         } else if (obj instanceof Short) {
-            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "byte"));
+            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
         } else if (obj instanceof Character) {
-            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "byte"));
+            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
         } else {
-            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, "byte"));
+            throwException(ExceptionType.ClassCastException, getParseErrorUnInvalid(param, obj, logType));
         }
         return res;
     }
