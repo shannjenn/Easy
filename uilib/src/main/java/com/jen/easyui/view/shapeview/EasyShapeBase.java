@@ -17,10 +17,10 @@ import android.widget.TextView;
 
 public class EasyShapeBase {
     private View mView;
-    private boolean isTextView;//是否为textView
+//    private boolean isTextView;//是否为textView
 
     /*------------------------------------------------公共属性start*/
-    private int mHeight;
+//    private int mHeight;
 //    private GradientDrawable mDrawableNormal;
 //    private GradientDrawable mDrawablePressed;
 
@@ -85,7 +85,7 @@ public class EasyShapeBase {
 
     EasyShapeBase(View view) {
         this.mView = view;
-        isTextView = view instanceof TextView;
+//        isTextView = view instanceof TextView;
     }
 
     public void init() {
@@ -97,6 +97,7 @@ public class EasyShapeBase {
 
     private void initDrawable() {
         GradientDrawable mDrawableNormal = new GradientDrawable();
+        GradientDrawable mDrawablePressed = new GradientDrawable();
         mDrawableNormal.setColor(mSolidColorNormal);
         mDrawableNormal.setStroke(mStrokeWidthNormal, mStrokeColorNormal, mStrokeDashGapWidthNormal, mStrokeDashGapNormal);
         if (mCornersNormal > 0) {
@@ -108,7 +109,6 @@ public class EasyShapeBase {
         mDrawableNormal.setShape(GradientDrawable.RECTANGLE);
         mDrawableNormal.setGradientType(GradientDrawable.LINEAR_GRADIENT);
 
-        GradientDrawable mDrawablePressed = new GradientDrawable();
         mDrawablePressed.setColor(mSolidColorPressed);
         mDrawablePressed.setStroke(mStrokeWidthNormal, mStrokeColorPressed, mStrokeDashGapWidthNormal, mStrokeDashGapNormal);
         if (mCornersNormal > 0) {
@@ -181,67 +181,66 @@ public class EasyShapeBase {
         }
     }
 
-    /**
-     * 设置半圆角
-     *
-     * @param heightMeasureSpec measureSpec
-     */
-    void setHalfRound(int heightMeasureSpec) {
-        if (mHeight == 0) {
-//            mHeight = getMeasuredHeight();
-            if (isTextView) {
-                mHeight = measureTextViewHeight(heightMeasureSpec);
-            } else {
-                mHeight = measureLayoutHeight(heightMeasureSpec);
-            }
-        }
-    }
+//    /**
+//     * 设置半圆角
+//     *
+//     * @param heightMeasureSpec measureSpec
+//     */
+//    void setHalfRound(int heightMeasureSpec) {
+//        if (mHeight == 0) {
+//            if (isTextView) {
+//                mHeight = measureTextViewHeight(heightMeasureSpec);
+//            } else {
+//                mHeight = measureLayoutHeight(heightMeasureSpec);
+//            }
+//        }
+//    }
 
-    /**
-     * 获取TextView高度
-     *
-     * @param measureSpec measureSpec
-     * @return int
-     */
-    private int measureTextViewHeight(int measureSpec) {
-        int result;
-        int specMode = View.MeasureSpec.getMode(measureSpec);
-        int specSize = View.MeasureSpec.getSize(measureSpec);
-
-        Paint paint = ((TextView) mView).getPaint();
-        int ascent = (int) paint.ascent();
-        if (specMode == View.MeasureSpec.EXACTLY) {
-            result = specSize;
-        } else {
-            result = (int) (-ascent + paint.descent()) + mView.getPaddingTop() + mView.getPaddingBottom();
-            if (specMode == View.MeasureSpec.AT_MOST) {
-                result = Math.min(result, specSize);
-            }
-        }
-        return result;
-    }
-
-    /**
-     * 获取Layout高度
-     *
-     * @param measureSpec measureSpec
-     * @return int
-     */
-    private int measureLayoutHeight(int measureSpec) {
-        int result;
-        int specMode = View.MeasureSpec.getMode(measureSpec);
-        int specSize = View.MeasureSpec.getSize(measureSpec);
-
-        if (specMode == View.MeasureSpec.EXACTLY) {
-            result = specSize;
-        } else {
-            result = mView.getPaddingTop() + mView.getPaddingBottom();
-            if (specMode == View.MeasureSpec.AT_MOST) {
-                result = Math.min(result, specSize);
-            }
-        }
-        return result;
-    }
+//    /**
+//     * 获取TextView高度
+//     *
+//     * @param measureSpec measureSpec
+//     * @return int
+//     */
+//    private int measureTextViewHeight(int measureSpec) {
+//        int result;
+//        int specMode = View.MeasureSpec.getMode(measureSpec);
+//        int specSize = View.MeasureSpec.getSize(measureSpec);
+//
+//        Paint paint = ((TextView) mView).getPaint();
+//        int ascent = (int) paint.ascent();
+//        if (specMode == View.MeasureSpec.EXACTLY) {
+//            result = specSize;
+//        } else {
+//            result = (int) (-ascent + paint.descent()) + mView.getPaddingTop() + mView.getPaddingBottom();
+//            if (specMode == View.MeasureSpec.AT_MOST) {
+//                result = Math.min(result, specSize);
+//            }
+//        }
+//        return result;
+//    }
+//
+//    /**
+//     * 获取Layout高度
+//     *
+//     * @param measureSpec measureSpec
+//     * @return int
+//     */
+//    private int measureLayoutHeight(int measureSpec) {
+//        int result;
+//        int specMode = View.MeasureSpec.getMode(measureSpec);
+//        int specSize = View.MeasureSpec.getSize(measureSpec);
+//
+//        if (specMode == View.MeasureSpec.EXACTLY) {
+//            result = specSize;
+//        } else {
+//            result = mView.getPaddingTop() + mView.getPaddingBottom();
+//            if (specMode == View.MeasureSpec.AT_MOST) {
+//                result = Math.min(result, specSize);
+//            }
+//        }
+//        return result;
+//    }
 
     /**
      * 刷新check
@@ -252,41 +251,7 @@ public class EasyShapeBase {
         switch (eventAction) {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_CANCEL: {//在ScrollView包含ViewPager的情况下,滑动时还原check状态
-                mView.setSelected(true);
-//                isCheck = !isCheck;
-                if (mView.isSelected()) {
-                    if (isTextView) {
-                        ((TextView) mView).setTextColor(mTextColorPressed);
-                    }
-                } else {
-                    mView.setSelected(false);
-                    if (isTextView) {
-                        ((TextView) mView).setTextColor(mTextColor);
-                    }
-                }
-                break;
-            }
-        }
-    }
-
-    /**
-     * 刷新button
-     *
-     * @param eventAction .
-     */
-    void updateButtonState(int eventAction) {
-        switch (eventAction) {
-            case MotionEvent.ACTION_DOWN: {
-                if (isTextView) {
-                    ((TextView) mView).setTextColor(mTextColorPressed);
-                }
-                break;
-            }
-            case MotionEvent.ACTION_UP:
-            case MotionEvent.ACTION_CANCEL: {
-                if (isTextView) {
-                    ((TextView) mView).setTextColor(mTextColor);
-                }
+                mView.setSelected(!mView.isSelected());
                 break;
             }
         }
@@ -302,28 +267,28 @@ public class EasyShapeBase {
         return this;
     }
 
-    public EasyShapeBase setCorners(int db) {
-        mCornersNormal = dp2px(db);
+    public EasyShapeBase setCorners(int size) {
+        mCornersNormal = size;
         return this;
     }
 
-    public EasyShapeBase setCornerLeftTop(int db) {
-        mCornerLeftTopNormal = dp2px(db);
+    public EasyShapeBase setCornerLeftTop(int size) {
+        mCornerLeftTopNormal = size;
         return this;
     }
 
-    public EasyShapeBase setCornerLeftBottom(int db) {
-        mCornerLeftBottomNormal = dp2px(db);
+    public EasyShapeBase setCornerLeftBottom(int size) {
+        mCornerLeftBottomNormal = size;
         return this;
     }
 
-    public EasyShapeBase setCornerRightTop(int db) {
-        mCornerRightTopNormal = dp2px(db);
+    public EasyShapeBase setCornerRightTop(int size) {
+        mCornerRightTopNormal = size;
         return this;
     }
 
-    public EasyShapeBase setCornerRightBottom(int db) {
-        mCornerRightBottomNormal = dp2px(db);
+    public EasyShapeBase setCornerRightBottom(int size) {
+        mCornerRightBottomNormal = size;
         return this;
     }
 
@@ -352,11 +317,4 @@ public class EasyShapeBase {
         this.mTextColorPressed = textColorPressed;
     }
 
-    /**
-     * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
-     */
-    static int dp2px(float dpValue) {
-        final float scale = Resources.getSystem().getDisplayMetrics().density;
-        return (int) (dpValue * scale + 0.5f);
-    }
 }

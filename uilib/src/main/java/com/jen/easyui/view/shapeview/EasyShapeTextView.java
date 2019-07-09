@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.widget.TextView;
 
 import com.jen.easyui.R;
 
@@ -118,7 +119,6 @@ public class EasyShapeTextView extends android.support.v7.widget.AppCompatTextVi
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        mShape.setHalfRound(heightMeasureSpec);
     }
 
     @Override
@@ -137,54 +137,55 @@ public class EasyShapeTextView extends android.support.v7.widget.AppCompatTextVi
     public void setSelected(boolean selected) {
         super.setSelected(selected);
         if (mShape.mClickType == EasyShapeBase.ClickType.SELECTED) {
-            if (selected) {
+            updateText(selected);
+        }
+    }
+
+    private void updateText(boolean pressed) {
+        if (pressed) {
+            setTextColor(mShape.mTextColorPressed);
+        } else {
+            setTextColor(mShape.mTextColor);
+        }
+    }
+
+    /**
+     * 刷新button
+     */
+    void updateButtonState(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN: {
                 setTextColor(mShape.mTextColorPressed);
-            } else {
+                break;
+            }
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL: {
                 setTextColor(mShape.mTextColor);
+                break;
             }
         }
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-//        switch (event.getAction()) {
-//            case MotionEvent.ACTION_DOWN: {
-//                EasyLog.d("MotionEvent.ACTION_DOWN ---------------");
-//                break;
-//            }
-//            case MotionEvent.ACTION_UP: {
-//                EasyLog.d("MotionEvent.ACTION_UP ---------------");
-//                break;
-//            }
-//            case MotionEvent.ACTION_CANCEL: {
-//                EasyLog.d("MotionEvent.ACTION_CANCEL ---------------");
-//                break;
-//            }
-//        }
         boolean result = super.onTouchEvent(event);
         if (isEnabled()) {
             switch (mShape.mClickType) {
                 case BUTTON:
                     if (result) {
-                        mShape.updateButtonState(event.getAction());
+                        updateButtonState(event);
+                        mRippleAnimator.onTouchEvent(event);
                     }
                     break;
                 case SELECTED:
                     mShape.updateCheckState(event.getAction());
+                    mRippleAnimator.onTouchEvent(event);
                     break;
                 case NON:
                     break;
                 default:
                     break;
             }
-        }
-        switch (mShape.mClickType) {
-            case BUTTON:
-            case SELECTED:
-                mRippleAnimator.onTouchEvent(event);
-                break;
-            case NON:
-                break;
         }
         return result;
     }

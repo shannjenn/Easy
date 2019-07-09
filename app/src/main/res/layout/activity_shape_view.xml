@@ -14,6 +14,19 @@
         app:strokeColor="#ff00ff"
         app:strokeWidth="2dp">
 
+        <com.jen.easyui.view.shapeview.EasyShapeLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginBottom="5dp"
+            android:gravity="center"
+            app:clickType="check"
+            app:corners="5dp"
+            app:solidColor="@color/_easy_blue_text"
+            app:solidColorPressed="#ff0000"
+            app:strokeColor="#FF00"
+            app:strokeColorPressed="#00FF00"
+            app:strokeWidth="1dp" />
+
         <com.jen.easyui.view.shapeview.EasyShapeTextView
             android:id="@+id/shapeTextView_check"
             android:layout_width="match_parent"
@@ -28,7 +41,8 @@
             app:solidColorPressed="#ff0000"
             app:strokeColor="#FF00"
             app:strokeColorPressed="#00FF00"
-            app:strokeWidth="1dp" />
+            app:strokeWidth="1dp"
+            app:textColorPressed="@color/_easy_blue_text" />
 
         <com.jen.easyui.view.shapeview.EasyShapeTextView
             android:id="@+id/shapeTextView_button"

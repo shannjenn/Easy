@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.jen.easyui.R;
 
@@ -103,7 +104,6 @@ public class EasyShapeLinearLayout extends LinearLayout {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        mShape.setHalfRound(heightMeasureSpec);
     }
 
     @Override
@@ -125,44 +125,19 @@ public class EasyShapeLinearLayout extends LinearLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-//        switch (event.getAction()) {
-//            case MotionEvent.ACTION_DOWN: {
-//                EasyLog.d("MotionEvent.ACTION_DOWN ---------------");
-//                break;
-//            }
-//            case MotionEvent.ACTION_UP: {
-//                EasyLog.d("MotionEvent.ACTION_UP ---------------");
-//                break;
-//            }
-//            case MotionEvent.ACTION_CANCEL: {
-//                EasyLog.d("MotionEvent.ACTION_CANCEL ---------------");
-//                break;
-//            }
-//        }
         boolean result = super.onTouchEvent(event);
         if (isEnabled()) {
             switch (mShape.mClickType) {
                 case BUTTON:
-                    if (result) {
-                        mShape.updateButtonState(event.getAction());
-                    }
+                    mRippleAnimator.onTouchEvent(event);
                     break;
                 case SELECTED:
                     mShape.updateCheckState(event.getAction());
+                    mRippleAnimator.onTouchEvent(event);
                     break;
                 case NON:
                     break;
-                default:
-                    break;
             }
-        }
-        switch (mShape.mClickType) {
-            case BUTTON:
-            case SELECTED:
-                mRippleAnimator.onTouchEvent(event);
-                break;
-            case NON:
-                break;
         }
         return result;
     }
