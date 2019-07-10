@@ -1,8 +1,0 @@
-<resources>
-
-    <style name="easyTimerPiker">
-        <item name="android:backgroundDimEnabled">true</item>
-        <item name="android:windowEnterAnimation">@anim/_easy_time_picker_popwin_in</item>
-        <item name="android:windowExitAnimation">@anim/_easy_time_picker_popwin_out</item>
-    </style>
-</resources>

@@ -242,7 +242,7 @@ public class EasyLoopView extends View {
 
         unitText = a.getString(R.styleable.EasyLoopView_loopViewUnitText);
         unitTextColor = a.getColor(R.styleable.EasyLoopView_loopViewUnitTextColor, 0xff0085f2);
-        unitHorizontalMargin = a.getColor(R.styleable.EasyLoopView_loopViewUnitHorizontalMargin, 30);
+        unitHorizontalMargin = a.getColor(R.styleable.EasyLoopView_loopViewUnitHorizontalMargin, 15);
 
         layoutWidth = a.getLayoutDimension(R.styleable.EasyLoopView_android_layout_width, 0);
         layoutHeight = a.getLayoutDimension(R.styleable.EasyLoopView_android_layout_height, 0);

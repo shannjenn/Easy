@@ -14,6 +14,8 @@ import com.jen.easytest.model.RecyclerViewModel;
 import easybase.EasyActivity;
 
 import com.jen.easyui.popupwindow.EasyWindow;
+import com.jen.easyui.popupwindow.EasyWindowLetter;
+import com.jen.easyui.popupwindow.EasyWindowObject;
 import com.jen.easyui.popupwindow.StyleTopBar;
 import com.jen.easyui.recycler.EasyHolder;
 import com.jen.easyui.recycler.EasyHolderBaseAdapter;
@@ -30,8 +32,8 @@ import java.util.List;
 
 public class PopupWindowActivity extends EasyActivity {
 
-    EasyWindow easyWindowObject;
-    EasyWindow easyWindowLetter;
+    EasyWindowObject easyWindowObject;
+    EasyWindowLetter easyWindowLetter;
 
     StyleTopBar styleTopBar;
 
@@ -95,7 +97,7 @@ public class PopupWindowActivity extends EasyActivity {
         easyWindowObject.setData(list);
 
         easyWindowLetter = EasyWindow.build(this)
-                .createLetter(new MyAdapter(this, list), new EasyLetterDecoration());
+                .createLetter(new MyAdapter(this));
 
         mData.clear();
         for (int i = 0; i < 36; i++) {
@@ -153,7 +155,7 @@ public class PopupWindowActivity extends EasyActivity {
             case R.id.popup_window_object: {
                 styleTopBar.setTitleText("topBar测试");
                 easyWindowObject.updateTopBar();
-                easyWindowObject.showBottom(popup_window);
+                easyWindowObject.showBottom();
                 break;
             }
             case R.id.popup_window_right: {
@@ -168,7 +170,7 @@ public class PopupWindowActivity extends EasyActivity {
             }
             case R.id.popup_window_letter: {
                 easyWindowLetter.setData(mData);
-                easyWindowLetter.showBottom(view);
+                easyWindowLetter.showBottom();
                 break;
             }
         }

@@ -6,17 +6,17 @@ public class StyleTopBar {
     private ShowRight showRight;
     private ShowTitle showTitle;
 
-    private String leftText;
-    private String titleText;
-    private String rightText;
+    private String leftText = "取消";
+    private String titleText = "标题";
+    private String rightText = "确定";
 
-    private int leftTextSize;
-    private int titleTextSize;
-    private int rightTextSize;
+    private int leftTextSize = 22;
+    private int titleTextSize = 24;
+    private int rightTextSize = 22;
 
-    private int leftTextColor;
-    private int titleTextColor;
-    private int rightTextColor;
+    private int leftTextColor = 0xff666666;
+    private int titleTextColor = 0xff000000;
+    private int rightTextColor = 0xff666666;
 
     private int backgroundColor = 0xFFF4F4F4;
 
@@ -33,31 +33,15 @@ public class StyleTopBar {
     }
 
     public StyleTopBar() {
-        showLeft = ShowLeft.IMAGE;
+        showLeft = ShowLeft.TEXT;
         showRight = ShowRight.TEXT;
         showTitle = ShowTitle.TEXT;
-        defaultTextSize();
-        defaultTextColor();
     }
 
     public StyleTopBar(ShowLeft showLeft, ShowTitle showTitle, ShowRight showRight) {
         this.showLeft = showLeft;
         this.showTitle = showTitle;
         this.showRight = showRight;
-        defaultTextSize();
-        defaultTextColor();
-    }
-
-    private void defaultTextSize() {
-        leftTextSize = 15;
-        titleTextSize = 16;
-        rightTextSize = 15;
-    }
-
-    private void defaultTextColor() {
-        leftTextColor = 0xff666666;
-        titleTextColor = 0xff000000;
-        rightTextColor = 0xff335EC2;
     }
 
     public String getLeftText() {

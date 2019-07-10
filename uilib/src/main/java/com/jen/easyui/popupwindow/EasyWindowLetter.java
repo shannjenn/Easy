@@ -20,16 +20,15 @@ import java.util.List;
  * 时间：2017/09/09.
  */
 
-public class EasyWindowLetter extends EasyWindow implements EasyLetterView.TouchListener {
+public class EasyWindowLetter<T> extends EasyWindow<T> implements EasyLetterView.TouchListener {
     private RecyclerView recyclerView;
-    private EasyAdapterFactory adapter;
+    private EasyAdapterFactory<EasyLetterItem> adapter;
     private EasyLetterView lt_letter;
-    private EasyLetterDecoration letterDecoration;
+    private EasyLetterDecoration<EasyLetterItem> letterDecoration;
 
-    EasyWindowLetter(Build build, EasyAdapterFactory adapter, EasyLetterDecoration letterDecoration) {
+    EasyWindowLetter(Build<T> build, EasyAdapterFactory<EasyLetterItem> adapter) {
         super(build);
         this.adapter = adapter;
-        this.letterDecoration = letterDecoration;
         initView();
     }
 
@@ -41,12 +40,15 @@ public class EasyWindowLetter extends EasyWindow implements EasyLetterView.Touch
         return popView;
     }
 
-    @SuppressWarnings("unchecked")
-    private void initView(){
+    private void initView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(build.context));
         lt_letter.setTouchListener(this);
         recyclerView.setAdapter(adapter);
-        if (adapter.getData() != null && adapter.getData().size() > 0 && !(adapter.getData().get(0) instanceof EasyLetterItem)) {
+        if (letterDecoration == null) {
+            letterDecoration = new EasyLetterDecoration<>();
+        }
+
+        if (adapter.getData() != null && adapter.getData().size() > 0) {
             letterDecoration.setData(adapter.getData());
             recyclerView.removeItemDecoration(letterDecoration);
             recyclerView.addItemDecoration(letterDecoration);
@@ -55,15 +57,11 @@ public class EasyWindowLetter extends EasyWindow implements EasyLetterView.Touch
 
     /**
      * 数据改变时需要调该方法刷新Letter
+     *
      * @param data .
      */
-    @SuppressWarnings("unchecked")
-    @Override
-    public void setData(List data) {
+    public void setData(List<EasyLetterItem> data) {
         if (data == null || data.size() == 0) {
-            return;
-        } else if (!(data.get(0) instanceof EasyLetterItem)) {
-            EasyLog.e("setData错误,请设置EasyLetterItem集合");
             return;
         }
         recyclerView.removeItemDecoration(letterDecoration);
@@ -76,16 +74,13 @@ public class EasyWindowLetter extends EasyWindow implements EasyLetterView.Touch
     @Override
     public void onTouch(String letter) {
         for (int i = 0; i < adapter.getData().size(); i++) {
-            Object object = adapter.getData().get(i);
-            if (object instanceof EasyLetterItem) {
-                EasyLetterItem letterItem = (EasyLetterItem) object;
-                if (letterItem.getLetter().equals(letter)) {
-                    EasyLog.d("touch = " + letter);
-                    recyclerView.scrollToPosition(i);
-                    LinearLayoutManager mLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                    mLayoutManager.scrollToPositionWithOffset(i, 0);
-                    break;
-                }
+            EasyLetterItem letterItem = adapter.getData().get(i);
+            if (letterItem.getLetter().equals(letter)) {
+                EasyLog.d("touch = " + letter);
+                recyclerView.scrollToPosition(i);
+                LinearLayoutManager mLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                mLayoutManager.scrollToPositionWithOffset(i, 0);
+                break;
             }
         }
     }
@@ -103,5 +98,9 @@ public class EasyWindowLetter extends EasyWindow implements EasyLetterView.Touch
      */
     public EasyLetterView getLetterView() {
         return lt_letter;
+    }
+
+    public EasyLetterDecoration<EasyLetterItem> getLetterDecoration() {
+        return letterDecoration;
     }
 }

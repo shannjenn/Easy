@@ -127,6 +127,7 @@ public class EasyDateFormatUtil {
             date = mFormat.parse(formatDate);
         } catch (ParseException e) {
             Log.w(TAG, "时间格式不正确");
+            e.printStackTrace();
         }
         return date;
     }

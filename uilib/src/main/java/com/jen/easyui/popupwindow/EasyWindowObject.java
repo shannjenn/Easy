@@ -1,6 +1,5 @@
 package com.jen.easyui.popupwindow;
 
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,16 +15,13 @@ import java.util.List;
  * 时间：2017/09/09.
  */
 
-public class EasyWindowObject extends EasyWindow {
-    private RecyclerView.LayoutManager layoutManager;
+public class EasyWindowObject<T> extends EasyWindow<T> {
     private RecyclerView recyclerView;
-    private EasyAdapterFactory adapter;
+    private EasyAdapterFactory<T> adapter;
 
-    EasyWindowObject(Build build, EasyAdapterFactory adapter, RecyclerView.LayoutManager layoutManager) {
+    EasyWindowObject(Build<T> build, EasyAdapterFactory<T> adapter) {
         super(build);
         this.adapter = adapter;
-        this.layoutManager = layoutManager;
-        initView();
     }
 
     @Override
@@ -35,22 +31,14 @@ public class EasyWindowObject extends EasyWindow {
         return popView;
     }
 
-    private void initView() {
-        if (layoutManager == null) {
-            layoutManager = new LinearLayoutManager(build.context);
-        }
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public void setData(List data) {
+    public void setData(List<T> data) {
         if (data == null || data.size() == 0) {
             return;
         }
-        adapter.setData(data);
-        adapter.notifyDataSetChanged();
+        if (adapter != null) {
+            adapter.setData(data);
+            adapter.notifyDataSetChanged();
+        }
     }
 
     public RecyclerView getRecyclerView() {

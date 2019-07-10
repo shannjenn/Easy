@@ -15,11 +15,11 @@ import java.util.List;
  * 时间：2017/09/09.
  */
 
-public class EasyWindowScroll extends EasyWindow {
+public class EasyWindowScroll<T> extends EasyWindow<T> {
     private StringScrollPicker pick_string;
     private List<String> data;
 
-    EasyWindowScroll(Build build) {
+    EasyWindowScroll(Build<T> build) {
         super(build);
     }
 
@@ -32,9 +32,7 @@ public class EasyWindowScroll extends EasyWindow {
         return popView;
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public void setData(List data) {
+    public void setData(List<String> data) {
         if (data == null || data.size() == 0) {
             return;
         }

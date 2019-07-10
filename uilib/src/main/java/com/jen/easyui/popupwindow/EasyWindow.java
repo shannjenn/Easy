@@ -1,7 +1,6 @@
 package com.jen.easyui.popupwindow;
 
 import android.content.Context;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,37 +9,40 @@ import android.widget.TextView;
 
 import com.jen.easyui.R;
 
-import java.util.List;
-
 /**
  * 说明：
  * 作者：ShannJenn
  * 时间：2017/09/09.
  */
+public abstract class EasyWindow<T> extends EasyWindowFactory implements View.OnClickListener {
+    private View mView;
 
-public abstract class EasyWindow extends EasyWindowFactory implements View.OnClickListener {
-    protected View mView;
-    protected View showView;
-
-    public static Build build(Context context) {
-        return new Build(context);
+    public static <T> Build<T> build(Context context) {
+        return new Build<>(context);
     }
 
-    EasyWindow(Build build) {
+    public static TimePickerBuild buildTimerPicker(Context context) {
+        return new TimePickerBuild(context);
+    }
+
+    EasyWindow(Build<T> build) {
         super(build);
         mView = bindView();
         updateTopBar();
         setContentView(mView);
+//        if (build.height > 0) {//如果高度大于0，设置高度，小于等于0默认是ViewGroup.LayoutParams.WRAP_CONTENT
+//            setHeight(build.height);
+//        }
+//        if (build.width > 0) {
+//            setWidth(build.width);
+//        }
         setHeight(build.height == 0 ? ViewGroup.LayoutParams.WRAP_CONTENT : build.height);
-        setWidth(build.width == 0 ? ViewGroup.LayoutParams.MATCH_PARENT : build.width);
+        setWidth(build.width == 0 ? ViewGroup.LayoutParams.WRAP_CONTENT : build.width);
     }
 
     abstract View bindView();
 
-    public abstract void setData(List data);
-
     public void showDropDown(View showView) {
-        this.showView = showView;
         build.styleAnim = StyleAnim.DROP;
         showAsDropDown(showView);
     }
@@ -56,7 +58,6 @@ public abstract class EasyWindow extends EasyWindowFactory implements View.OnCli
      * 显示在右边
      */
     public void showRight(View showView, int x, int y) {
-        this.showView = showView;
         build.styleAnim = StyleAnim.RIGHT;
         showAsDropDown(showView, x, y);
     }
@@ -64,10 +65,17 @@ public abstract class EasyWindow extends EasyWindowFactory implements View.OnCli
     /**
      * 显示在底部
      */
-    public void showBottom(View showView) {
-        this.showView = showView;
+    public void showCenter() {
         build.styleAnim = StyleAnim.BOTTOM;
-        showAtLocation(showView, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+        showAtLocation(getContentView(), Gravity.CENTER, 0, 0);
+    }
+
+    /**
+     * 显示在底部
+     */
+    public void showBottom() {
+        build.styleAnim = StyleAnim.BOTTOM;
+        showAtLocation(getContentView(), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
     }
 
     public void setFlagCode(int flagCode) {
@@ -81,9 +89,9 @@ public abstract class EasyWindow extends EasyWindowFactory implements View.OnCli
         }
         int i = v.getId();
         if (i == R.id.iv_left || i == R.id.tv_left) {
-            build.topBarListener.windowLeft(build.flagCode, showView);
+            build.topBarListener.windowLeft(build.flagCode);
         } else if (i == R.id.iv_right || i == R.id.tv_right) {
-            build.topBarListener.windowRight(build.flagCode, showView);
+            build.topBarListener.windowRight(build.flagCode);
         }
     }
 
@@ -91,7 +99,7 @@ public abstract class EasyWindow extends EasyWindowFactory implements View.OnCli
     public void dismiss() {
         super.dismiss();
         if (build.dismissListener != null) {
-            build.dismissListener.dismiss(build.flagCode, showView);
+            build.dismissListener.dismiss(build.flagCode);
         }
     }
 
@@ -117,9 +125,9 @@ public abstract class EasyWindow extends EasyWindowFactory implements View.OnCli
             build.styleTopBar = new StyleTopBar();
         }
         rl_top_bar.setBackgroundColor(build.styleTopBar.getBackgroundColor());
-        tv_left.setTextSize(TypedValue.COMPLEX_UNIT_SP, build.styleTopBar.getLeftTextSize());
-        tv_title.setTextSize(TypedValue.COMPLEX_UNIT_SP, build.styleTopBar.getTitleTextSize());
-        tv_right.setTextSize(TypedValue.COMPLEX_UNIT_SP, build.styleTopBar.getRightTextSize());
+        tv_left.setTextSize(build.styleTopBar.getLeftTextSize());
+        tv_title.setTextSize(build.styleTopBar.getTitleTextSize());
+        tv_right.setTextSize(build.styleTopBar.getRightTextSize());
 
         tv_left.setTextColor(build.styleTopBar.getLeftTextColor());
         tv_title.setTextColor(build.styleTopBar.getTitleTextColor());
@@ -164,9 +172,5 @@ public abstract class EasyWindow extends EasyWindowFactory implements View.OnCli
                 tv_right.setVisibility(View.GONE);
                 break;
         }
-    }
-
-    public View getShowView() {
-        return showView;
     }
 }

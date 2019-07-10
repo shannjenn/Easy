@@ -19,9 +19,9 @@ import java.util.List;
  * 时间：2017/09/09.
  */
 
-public class EasyWindowString extends EasyWindow {
+public class EasyWindowString<T> extends EasyWindow<T> {
     private RecyclerView recyclerView;
-    private MyAdapter adapter;
+    private MyAdapter<T> adapter;
     private ItemBuild itemBuild;
 
     EasyWindowString(Build build) {
@@ -37,12 +37,10 @@ public class EasyWindowString extends EasyWindow {
     }
 
     private void initView() {
-        adapter = new MyAdapter(build.context, recyclerView);
+        adapter = new MyAdapter<>(build.context, recyclerView);
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public void setData(List data) {
+    public void setData(List<T> data) {
         if (data == null || data.size() == 0) {
             return;
         }
@@ -58,7 +56,7 @@ public class EasyWindowString extends EasyWindow {
         return adapter;
     }
 
-    private class MyAdapter extends EasyHolderBaseAdapter {
+    private class MyAdapter<T> extends EasyHolderBaseAdapter<T> {
 
         public MyAdapter(Context context, RecyclerView recyclerView) {
             super(context, recyclerView);
@@ -94,4 +92,5 @@ public class EasyWindowString extends EasyWindow {
     public void setItemBuild(ItemBuild itemBuild) {
         this.itemBuild = itemBuild;
     }
+
 }

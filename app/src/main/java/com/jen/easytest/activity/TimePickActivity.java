@@ -6,14 +6,12 @@ import android.view.View;
 import com.jen.easy.EasyBindClick;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
-
-import easybase.EasyActivity;
-
-import com.jen.easyui.popupwindow.timepick.EasyTimePickListener;
-import com.jen.easyui.popupwindow.timepick.EasyTimePickerConfig;
-import com.jen.easyui.popupwindow.timepick.EasyTimePickerWindow;
+import com.jen.easyui.popupwindow.EasyWindow;
+import com.jen.easyui.popupwindow.TimePickerBuild;
 
 import java.util.Calendar;
+
+import easybase.EasyActivity;
 
 /**
  * 作者：ShannJenn
@@ -39,102 +37,97 @@ public class TimePickActivity extends EasyActivity {
     protected void onBindClick(View view) {
         switch (view.getId()) {
             case R.id.time_pick_1: {
-                EasyTimePickerConfig timePickerConfig = new EasyTimePickerConfig()
-//                        .setLoopTextSize(16) // pick view text size
-                        .setType(EasyTimePickerConfig.Type.YEAR_MONTH_DAY_WEEK);
-                EasyTimePickerWindow pickerPopWin = new EasyTimePickerWindow(this, timePickerConfig);
-                pickerPopWin.setTimePickedListener(new EasyTimePickListener() {
-                    @Override
-                    public void onPick(Calendar calendar) {
-                        int year = calendar.get(Calendar.YEAR);
-                        int moth = calendar.get(Calendar.MONTH);
-                        int day = calendar.get(Calendar.DAY_OF_MONTH);
-                        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-                        int minute = calendar.get(Calendar.MINUTE);
-                        EasyLog.d(year + "-" + moth + "-" + day + " " + hour + ":" + minute);
-                    }
-                });
-                pickerPopWin.showPopWin();
+                EasyWindow.buildTimerPicker(this)
+                        .setType(TimePickerBuild.Type.YEAR_MONTH_DAY_WEEK)
+                        .setTimePickerListener(new TimePickerBuild.PickerListener() {
+                            @Override
+                            public void onPick(Calendar calendar) {
+                                int year = calendar.get(Calendar.YEAR);
+                                int moth = calendar.get(Calendar.MONTH);
+                                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                                int minute = calendar.get(Calendar.MINUTE);
+                                EasyLog.d(year + "-" + moth + "-" + day + " " + hour + ":" + minute);
+                            }
+                        })
+                        .createTimePicker()
+                        .showCenter();
                 break;
             }
             case R.id.time_pick_2: {
-                EasyTimePickerConfig timePickerConfig = new EasyTimePickerConfig()
-//                        .setLoopTextSize(16) // pick view text size
-                        .setType(EasyTimePickerConfig.Type.YEAR_MONTH_DAY_HOUR_MIN_WEEK)
-                        .setCurrentDate(System.currentTimeMillis() - 24 * 3600 * 1000);
-                EasyTimePickerWindow pickerPopWin = new EasyTimePickerWindow(this, timePickerConfig);
-                pickerPopWin.setTimePickedListener(new EasyTimePickListener() {
-                    @Override
-                    public void onPick(Calendar calendar) {
-                        int year = calendar.get(Calendar.YEAR);
-                        int moth = calendar.get(Calendar.MONTH);
-                        int day = calendar.get(Calendar.DAY_OF_MONTH);
-                        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-                        int minute = calendar.get(Calendar.MINUTE);
-                        EasyLog.d(year + "-" + moth + "-" + day + " " + hour + ":" + minute);
-                    }
-                });
-                pickerPopWin.showPopWin();
+                EasyWindow.buildTimerPicker(this)
+                        .setType(TimePickerBuild.Type.YEAR_MONTH_DAY_HOUR_MIN_WEEK)
+                        .setInitCalendar(System.currentTimeMillis() - 24 * 3600 * 1000)
+                        .setTimePickerListener(new TimePickerBuild.PickerListener() {
+                            @Override
+                            public void onPick(Calendar calendar) {
+                                int year = calendar.get(Calendar.YEAR);
+                                int moth = calendar.get(Calendar.MONTH);
+                                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                                int minute = calendar.get(Calendar.MINUTE);
+                                EasyLog.d(year + "-" + moth + "-" + day + " " + hour + ":" + minute);
+                            }
+                        })
+                        .createTimePicker()
+                        .showCenter();
                 break;
             }
             case R.id.time_pick_3: {
-                EasyTimePickerConfig timePickerConfig = new EasyTimePickerConfig()
-//                        .setLoopTextSize(16) // pick view text size
-                        .setType(EasyTimePickerConfig.Type.YEAR_MONTH_DAY)
-                        .setUnit(EasyTimePickerConfig.Unit.YEAR_MONTH_DAY_HOUR_MIN);
-                EasyTimePickerWindow pickerPopWin = new EasyTimePickerWindow(this, timePickerConfig);
-                pickerPopWin.setTimePickedListener(new EasyTimePickListener() {
-                    @Override
-                    public void onPick(Calendar calendar) {
-                        int year = calendar.get(Calendar.YEAR);
-                        int moth = calendar.get(Calendar.MONTH);
-                        int day = calendar.get(Calendar.DAY_OF_MONTH);
-                        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-                        int minute = calendar.get(Calendar.MINUTE);
-                        EasyLog.d(year + "-" + moth + "-" + day + " " + hour + ":" + minute);
-                    }
-                });
-                pickerPopWin.showPopWin();
+                EasyWindow.buildTimerPicker(this)
+                        .setType(TimePickerBuild.Type.YEAR_MONTH_DAY)
+                        .setUnit(TimePickerBuild.Unit.YEAR_MONTH_DAY_HOUR_MIN)
+                        .setTimePickerListener(new TimePickerBuild.PickerListener() {
+                            @Override
+                            public void onPick(Calendar calendar) {
+                                int year = calendar.get(Calendar.YEAR);
+                                int moth = calendar.get(Calendar.MONTH);
+                                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                                int minute = calendar.get(Calendar.MINUTE);
+                                EasyLog.d(year + "-" + moth + "-" + day + " " + hour + ":" + minute);
+                            }
+                        })
+                        .createTimePicker()
+                        .showCenter();
                 break;
             }
             case R.id.time_pick_4: {
-                EasyTimePickerConfig timePickerConfig = new EasyTimePickerConfig()
-//                        .setLoopTextSize(16) // pick view text size
-                        .setType(EasyTimePickerConfig.Type.YEAR_MONTH_DAY_HOUR_MIN)
-                        .setUnit(EasyTimePickerConfig.Unit.YEAR_MONTH_DAY_HOUR_MIN);
-                EasyTimePickerWindow pickerPopWin = new EasyTimePickerWindow(this, timePickerConfig);
-                pickerPopWin.setTimePickedListener(new EasyTimePickListener() {
-                    @Override
-                    public void onPick(Calendar calendar) {
-                        int year = calendar.get(Calendar.YEAR);
-                        int moth = calendar.get(Calendar.MONTH);
-                        int day = calendar.get(Calendar.DAY_OF_MONTH);
-                        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-                        int minute = calendar.get(Calendar.MINUTE);
-                        EasyLog.d(year + "-" + moth + "-" + day + " " + hour + ":" + minute);
-                    }
-                });
-                pickerPopWin.showPopWin();
+                EasyWindow.buildTimerPicker(this)
+                        .setType(TimePickerBuild.Type.YEAR_MONTH_DAY_HOUR_MIN)
+                        .setUnit(TimePickerBuild.Unit.YEAR_MONTH_DAY_HOUR_MIN)
+                        .setTimePickerListener(new TimePickerBuild.PickerListener() {
+                            @Override
+                            public void onPick(Calendar calendar) {
+                                int year = calendar.get(Calendar.YEAR);
+                                int moth = calendar.get(Calendar.MONTH);
+                                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                                int minute = calendar.get(Calendar.MINUTE);
+                                EasyLog.d(year + "-" + moth + "-" + day + " " + hour + ":" + minute);
+                            }
+                        })
+                        .createTimePicker()
+                        .showCenter();
                 break;
             }
             case R.id.time_pick_5: {
-                EasyTimePickerConfig timePickerConfig = new EasyTimePickerConfig()
-//                        .setLoopTextSize(16) // pick view text size
-                        .setType(EasyTimePickerConfig.Type.HOUR_MIN)
-                        .setUnit(EasyTimePickerConfig.Unit.YEAR_MONTH_DAY_HOUR_MIN);
-                EasyTimePickerWindow pickerPopWin = new EasyTimePickerWindow(this, timePickerConfig);
-                pickerPopWin.setTimePickedListener(new EasyTimePickListener() {
-                    @Override
-                    public void onPick(Calendar calendar) {
-                        int year = calendar.get(Calendar.YEAR);
-                        int moth = calendar.get(Calendar.MONTH);
-                        int day = calendar.get(Calendar.DAY_OF_MONTH);
-                        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-                        int minute = calendar.get(Calendar.MINUTE);
-                        EasyLog.d(year + "-" + moth + "-" + day + " " + hour + ":" + minute);
-                    }
-                });
-                pickerPopWin.showPopWin();
+                EasyWindow.buildTimerPicker(this)
+                        .setType(TimePickerBuild.Type.HOUR_MIN)
+                        .setUnit(TimePickerBuild.Unit.YEAR_MONTH_DAY_HOUR_MIN)
+                        .setTimePickerListener(new TimePickerBuild.PickerListener() {
+                            @Override
+                            public void onPick(Calendar calendar) {
+                                int year = calendar.get(Calendar.YEAR);
+                                int moth = calendar.get(Calendar.MONTH);
+                                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                                int minute = calendar.get(Calendar.MINUTE);
+                                EasyLog.d(year + "-" + moth + "-" + day + " " + hour + ":" + minute);
+                            }
+                        })
+                        .createTimePicker()
+                        .showCenter();
                 break;
             }
             default: {

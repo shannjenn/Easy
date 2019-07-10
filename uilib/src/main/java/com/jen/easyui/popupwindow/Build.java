@@ -8,9 +8,10 @@ import com.jen.easyui.popupwindow.listener.WindowDismissListener;
 import com.jen.easyui.popupwindow.listener.WindowTopBarListener;
 import com.jen.easyui.recycler.EasyAdapterFactory;
 import com.jen.easyui.recycler.letter.EasyLetterDecoration;
+import com.jen.easyui.recycler.letter.EasyLetterItem;
 
 
-public class Build {
+public class Build<T> {
     Context context;
     int height, width;
     float showAlpha = 0.5f;
@@ -23,7 +24,7 @@ public class Build {
     WindowTopBarListener topBarListener;
     WindowDismissListener dismissListener;
 
-    Build(Context context) {
+    public Build(Context context) {
         this.context = context;
     }
 
@@ -33,19 +34,8 @@ public class Build {
      * @param adapter 绑定item数据
      * @return .
      */
-    public EasyWindowObject createObject(EasyAdapterFactory adapter) {
-        return createObject(adapter, null);
-    }
-
-    /**
-     * 对象列表
-     *
-     * @param adapter       绑定item数据
-     * @param layoutManager .
-     * @return .
-     */
-    public EasyWindowObject createObject(EasyAdapterFactory adapter, RecyclerView.LayoutManager layoutManager) {
-        return new EasyWindowObject(this, adapter, layoutManager);
+    public EasyWindowObject<T> createObject(EasyAdapterFactory<T> adapter) {
+        return new EasyWindowObject<>(this, adapter);
     }
 
     /**
@@ -53,8 +43,8 @@ public class Build {
      *
      * @return .
      */
-    public EasyWindowLetter createLetter(EasyAdapterFactory adapter, EasyLetterDecoration letterDecoration) {
-        return new EasyWindowLetter(this, adapter, letterDecoration);
+    public EasyWindowLetter<T> createLetter(EasyAdapterFactory<EasyLetterItem> adapter) {
+        return new EasyWindowLetter<>(this, adapter);
     }
 
     /**
@@ -62,8 +52,8 @@ public class Build {
      *
      * @return .
      */
-    public EasyWindowString createString() {
-        return new EasyWindowString(this);
+    public EasyWindowString<T> createString() {
+        return new EasyWindowString<>(this);
     }
 
     /**
@@ -71,56 +61,57 @@ public class Build {
      *
      * @return .
      */
-    public EasyWindowScroll createScroll() {
-        return new EasyWindowScroll(this);
+    public EasyWindowScroll<T> createScroll() {
+        return new EasyWindowScroll<>(this);
     }
 
-    public Build setFlagCode(int flagCode) {
+
+    public Build<T> setFlagCode(int flagCode) {
         this.flagCode = flagCode;
         return this;
     }
 
-    public Build setShowTopBar(boolean showTopBar) {
+    public Build<T> setShowTopBar(boolean showTopBar) {
         this.showTopBar = showTopBar;
         return this;
     }
 
-    public Build setHeight(int height) {
+    public Build<T> setHeight(int height) {
         this.height = height;
         return this;
     }
 
-    public Build setWidth(int width) {
+    public Build<T> setWidth(int width) {
         this.width = width;
         return this;
     }
 
-    public Build setTopBarListener(WindowTopBarListener topBarListener) {
+    public Build<T> setTopBarListener(WindowTopBarListener topBarListener) {
         this.topBarListener = topBarListener;
         return this;
     }
 
-    public Build setDismissListener(WindowDismissListener dismissListener) {
+    public Build<T> setDismissListener(WindowDismissListener dismissListener) {
         this.dismissListener = dismissListener;
         return this;
     }
 
-    public Build setStyleTopBar(StyleTopBar styleTopBar) {
+    public Build<T> setStyleTopBar(StyleTopBar styleTopBar) {
         this.styleTopBar = styleTopBar;
         return this;
     }
 
-    public Build setStyleAnim(StyleAnim animStyle) {
+    public Build<T> setStyleAnim(StyleAnim animStyle) {
         this.styleAnim = animStyle;
         return this;
     }
 
-    public Build setShowAlpha(float showAlpha) {
+    public Build<T> setShowAlpha(float showAlpha) {
         this.showAlpha = showAlpha;
         return this;
     }
 
-    public Build setBackground(Drawable background) {
+    public Build<T> setBackground(Drawable background) {
         this.background = background;
         return this;
     }

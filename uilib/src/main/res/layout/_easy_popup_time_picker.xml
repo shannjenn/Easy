@@ -4,99 +4,69 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#33000000">
+    android:layout_gravity="center"
+    android:background="#00000000">
 
     <LinearLayout
-        android:id="@+id/container_picker"
-        android:layout_width="match_parent"
+        android:layout_width="700px"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="#f2f7fa"
+        android:layout_centerInParent="true"
+        android:background="@android:color/white"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/container_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btn_cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@null"
-                android:gravity="center"
-                android:text="@string/_easy_cancel"
-                android:textSize="18sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/_easy_select_time"
-                android:textColor="#111"
-                android:textSize="18sp" />
-
-            <Button
-                android:id="@+id/btn_confirm"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@null"
-                android:gravity="center"
-                android:text="@string/_easy_confirm"
-                android:textColor="#0085f2"
-                android:textSize="18sp" />
-        </LinearLayout>
+        <include
+            android:id="@+id/layout_top_bar"
+            layout="@layout/_easy_popup_window_topbar" />
 
         <LinearLayout
-            android:id="@+id/loop_contains"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            android:paddingStart="20px"
+            android:paddingEnd="10px">
 
             <com.jen.easyui.view.loopview.EasyLoopView
                 android:id="@+id/picker_year"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:loopViewTextSize="20sp" />
+                app:loopViewTextSize="28px" />
 
             <com.jen.easyui.view.loopview.EasyLoopView
                 android:id="@+id/picker_month"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:loopViewTextSize="20sp" />
+                app:loopViewTextSize="28px" />
 
             <com.jen.easyui.view.loopview.EasyLoopView
                 android:id="@+id/picker_day"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:loopViewTextSize="20sp" />
+                app:loopViewTextSize="28px" />
 
             <com.jen.easyui.view.loopview.EasyLoopView
                 android:id="@+id/picker_clock"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:loopViewTextSize="20sp" />
+                app:loopViewTextSize="28px" />
 
             <com.jen.easyui.view.loopview.EasyLoopView
                 android:id="@+id/picker_minute"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:loopViewTextSize="20sp" />
+                app:loopViewTextSize="28px" />
 
             <com.jen.easyui.view.loopview.EasyLoopView
                 android:id="@+id/picker_sec"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:loopViewTextSize="20sp" />
+                app:loopViewTextSize="28px" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
