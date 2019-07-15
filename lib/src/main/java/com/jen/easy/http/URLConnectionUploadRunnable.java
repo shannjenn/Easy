@@ -54,30 +54,34 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
         out.close();
 
         // 读取返回数据
-        StringBuilder buffer = new StringBuilder();
+        StringBuilder bodyBuffer = new StringBuilder();
         BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), mCharset));
         String line;
         while ((line = reader.readLine()) != null) {
-            buffer.append(line);
+            bodyBuffer.append(line);
         }
         reader.close();
 
-        String result = buffer.toString();
-        StringBuilder retLogBuild = new StringBuilder();
-        retLogBuild.append(mRequestLogInfo).append("\n返回原始数据：\n").append(result);
+        String body = bodyBuffer.toString();
+        String bodyFormat = null;
         if (mRequest.getReplaceResult().size() > 0) {
-            result = replaceResult(result);
-            retLogBuild.append("\n格式化后数据：\n").append(result);
+            bodyFormat = replaceResult(body);
         }
-        retLogBuild.append("\n服务器返回码：").append(mResponseCode);
+        success(bodyFormat != null ? bodyFormat : body, null);
+
+        StringBuilder retLogBuild = new StringBuilder();
+        retLogBuild.append(mRequestLogInfo).append("\nreturn body：\n").append(body);
+        if (bodyFormat != null) {
+            retLogBuild.append("\nformat return body：\n").append(bodyFormat);
+        }
+        retLogBuild.append("\nreturn code：").append(mResponseCode);
         HttpLog.i(JsonLogFormat.formatJson(retLogBuild.toString()));
-        success(result, null);
     }
 
     @Override
     protected void success(String result, Map<String, List<String>> headMap) {
         if (mRequest.getRequestState() == EasyRequestState.interrupt) {
-            HttpLog.d(mRequestLogInfo + " 请求中断。\n \t");
+            HttpLog.d(mRequestLogInfo + " The request was interrupted.\n \t");
             return;
         }
         if (fullListener == null) {
@@ -96,7 +100,7 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
                 ((EasyHttpResponse) parseObject).setResponseState(EasyResponseState.finish);
             }
             mRequest.setRequestState(EasyRequestState.finish);
-            HttpLog.d(mRequestLogInfo + " 返回成功。\n \t");
+            HttpLog.d(mRequestLogInfo + " return SUCCESS\n \t");
             fullListener.success(flagCode, flagStr, parseObject, headMap);
         }
     }
@@ -104,14 +108,14 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
     @Override
     protected void fail(String msg) {
         if (mRequest.getRequestState() == EasyRequestState.interrupt) {
-            HttpLog.d(mRequestLogInfo + " 请求中断。\n \t");
+            HttpLog.d(mRequestLogInfo + " return FAIL\n \t");
             return;
         }
         if (fullListener == null) {
             return;
         }
         mRequest.setRequestState(EasyRequestState.finish);
-        HttpLog.w(mRequestLogInfo + " 返回失败。\n \t");
+        HttpLog.w(mRequestLogInfo + "  return FAIL\n \t");
         fullListener.fail(flagCode, flagStr, msg);
     }
 

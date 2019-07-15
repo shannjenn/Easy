@@ -69,7 +69,7 @@ public class MathUtil {
                 case Add:
                     return bd1.add(bd2);
                 case Subtract:
-                    return bd1.add(bd2);
+                    return bd1.subtract(bd2);
                 case Multiply:
                     return bd1.multiply(bd2);
                 case Divide:

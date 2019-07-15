@@ -169,16 +169,16 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
                 mHeadLogBuilder.insert(0, "{");
                 mHeadLogBuilder.replace(mHeadLogBuilder.length() - 1, mHeadLogBuilder.length(), "}");
             }
-            mRequestLogInfo = method + " " + mUrlStr + "\nHead：\n" + mHeadLogBuilder.toString() + "\nBody：\n" + mBody.toString();
+            mRequestLogInfo = method + " " + mUrlStr + "\nheads：\n" + mHeadLogBuilder.toString() + "\nbody：\n" + mBody.toString();
             childRun(connection);
             connection.disconnect();
         } catch (IOException e) {
-            String infoFormat = "网络请求IOException异常：" + JsonLogFormat.formatJson(mRequestLogInfo);
+            String infoFormat = "http request IOException error：" + JsonLogFormat.formatJson(mRequestLogInfo);
             HttpLog.e(infoFormat);
             HttpLog.exception(ExceptionType.IOException, infoFormat);
             fail("");
         } catch (JSONException e) {
-            String infoFormat = "网络请求JSONException异常：" + JsonLogFormat.formatJson(mRequestLogInfo);
+            String infoFormat = "http request JSONException error：" + JsonLogFormat.formatJson(mRequestLogInfo);
             HttpLog.e(infoFormat);
             HttpLog.exception(ExceptionType.JSONException, infoFormat);
             fail("");

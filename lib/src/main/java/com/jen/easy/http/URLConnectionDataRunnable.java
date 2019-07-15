@@ -41,39 +41,50 @@ class URLConnectionDataRunnable extends URLConnectionFactoryRunnable {
         mResponseCode = connection.getResponseCode();
         if ((mResponseCode == 200)) {
             Map<String, List<String>> headMap = connection.getHeaderFields();//获取head数据
-            StringBuilder resultBuffer = new StringBuilder();
+            StringBuilder bodyBuffer = new StringBuilder();
             InputStream inStream = connection.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(inStream, mCharset));
             String s;
             while ((s = reader.readLine()) != null) {
-                resultBuffer.append(s);
+                bodyBuffer.append(s);
             }
             reader.close();
             inStream.close();
             connection.disconnect();
 
             double timeSec = (System.currentTimeMillis() - startTime) / 1000d;
-            String result = resultBuffer.toString();
-            StringBuilder retLogBuild = new StringBuilder();
-            retLogBuild.append(mRequestLogInfo).append("\n返回原始数据：\n").append(result);
+            String body = bodyBuffer.toString();
+            String bodyFormat = null;
             if (mRequest.getReplaceResult().size() > 0) {
-                result = replaceResult(result);
-                retLogBuild.append("\n格式化后数据：\n").append(result);
+                bodyFormat = replaceResult(body);
             }
-            retLogBuild.append("\n服务器返回码：").append(mResponseCode).append("  响应时间:").append(timeSec).append("秒");
-            HttpLog.i(JsonLogFormat.formatJson(retLogBuild.toString()));
-            success(result, headMap);
+            success(bodyFormat != null ? bodyFormat : body, headMap);
+
+            StringBuilder returnLogBuild = new StringBuilder();
+            returnLogBuild.append(mRequestLogInfo).append("\nreturn heads：\n{");
+            for (Map.Entry<String, List<String>> entry : headMap.entrySet()) {
+                returnLogBuild.append(entry.getKey());
+                returnLogBuild.append(":");
+                returnLogBuild.append(entry.getValue());
+            }
+            returnLogBuild.append("}");
+            returnLogBuild.append("\nreturn body：\n").append(body);
+            if (bodyFormat != null) {
+                returnLogBuild.append("\nformat return body：\n").append(bodyFormat);
+            }
+            returnLogBuild.append("\nreturn code：").append(mResponseCode).append(" response time:").append(timeSec).append("second");
+            HttpLog.i(JsonLogFormat.formatJson(returnLogBuild.toString()));
         } else {
+            fail("http request error：" + mResponseCode);
             double timeSec = (System.currentTimeMillis() - startTime) / 1000d;
-            HttpLog.e(JsonLogFormat.formatJson(mRequestLogInfo + "\n服务器返回码：" + mResponseCode + "  响应时间:" + timeSec + "秒"));
-            fail(" 网络请求异常：" + mResponseCode);
+            HttpLog.e(JsonLogFormat.formatJson(mRequestLogInfo + "\nreturn code：" + mResponseCode + " response:" + timeSec + "second"));
         }
     }
 
     @Override
     protected void success(String result, Map<String, List<String>> headMap) {
         if (mRequest.getRequestState() == EasyRequestState.interrupt) {
-            HttpLog.d(mRequestLogInfo + " 请求中断。\n \t");//\n \t打印才出现空行
+            HttpLog.d(mRequestLogInfo + " The request was interrupted.\n \t");//\n \t打印才出现空行
             return;
         }
         if (baseListener == null) {
@@ -92,7 +103,7 @@ class URLConnectionDataRunnable extends URLConnectionFactoryRunnable {
                 ((EasyHttpResponse) parseObject).setResponseState(EasyResponseState.finish);
             }
             mRequest.setRequestState(EasyRequestState.finish);
-            HttpLog.d(mUrlStr + " 返回成功。\n \t");
+            HttpLog.d(mUrlStr + " return SUCCESS\n \t");
             baseListener.success(flagCode, flagStr, parseObject, headMap);
         }
     }
@@ -100,14 +111,14 @@ class URLConnectionDataRunnable extends URLConnectionFactoryRunnable {
     @Override
     protected void fail(String result) {
         if (mRequest.getRequestState() == EasyRequestState.interrupt) {
-            HttpLog.d(mRequestLogInfo + " 请求中断。\n \t");
+            HttpLog.d(mRequestLogInfo + " The request was interrupted。\n \t");
             return;
         }
         if (baseListener == null) {
             return;
         }
         mRequest.setRequestState(EasyRequestState.finish);
-        HttpLog.w(mUrlStr + " 返回失败。\n \t");
+        HttpLog.w(mUrlStr + " return FAIL。\n \t");
         baseListener.fail(flagCode, flagStr, result);
     }
 }
