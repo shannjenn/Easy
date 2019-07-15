@@ -63,25 +63,22 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
         reader.close();
 
         String body = bodyBuffer.toString();
-        String bodyFormat = null;
-        if (mRequest.getReplaceResult().size() > 0) {
-            bodyFormat = replaceResult(body);
-        }
-        success(bodyFormat != null ? bodyFormat : body, null);
 
         StringBuilder retLogBuild = new StringBuilder();
-        retLogBuild.append(mRequestLogInfo).append("\nreturn body：\n").append(body);
-        if (bodyFormat != null) {
-            retLogBuild.append("\nformat return body：\n").append(bodyFormat);
+        retLogBuild.append(mRequestLogInfo).append("\nresponse body：\n").append(body);
+        if (mRequest.getReplaceResult().size() > 0) {
+            body = replaceResult(body);
+            retLogBuild.append("\nformat return body：\n").append(body);
         }
-        retLogBuild.append("\nreturn code：").append(mResponseCode);
+        retLogBuild.append("\nresponse code：").append(mResponseCode);
         HttpLog.i(JsonLogFormat.formatJson(retLogBuild.toString()));
+        success(body, null);
     }
 
     @Override
     protected void success(String result, Map<String, List<String>> headMap) {
         if (mRequest.getRequestState() == EasyRequestState.interrupt) {
-            HttpLog.d(mRequestLogInfo + " The request was interrupted.\n \t");
+            HttpLog.i(mUrlStr + " The request was interrupted.\n \t");
             return;
         }
         if (fullListener == null) {
@@ -100,7 +97,7 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
                 ((EasyHttpResponse) parseObject).setResponseState(EasyResponseState.finish);
             }
             mRequest.setRequestState(EasyRequestState.finish);
-            HttpLog.d(mRequestLogInfo + " return SUCCESS\n \t");
+            HttpLog.i(mUrlStr + " SUCCESS\n \t");
             fullListener.success(flagCode, flagStr, parseObject, headMap);
         }
     }
@@ -108,14 +105,14 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
     @Override
     protected void fail(String msg) {
         if (mRequest.getRequestState() == EasyRequestState.interrupt) {
-            HttpLog.d(mRequestLogInfo + " return FAIL\n \t");
+            HttpLog.w(mUrlStr + " FAIL\n \t");
             return;
         }
         if (fullListener == null) {
             return;
         }
         mRequest.setRequestState(EasyRequestState.finish);
-        HttpLog.w(mRequestLogInfo + "  return FAIL\n \t");
+        HttpLog.w(mUrlStr + " FAIL\n \t");
         fullListener.fail(flagCode, flagStr, msg);
     }
 

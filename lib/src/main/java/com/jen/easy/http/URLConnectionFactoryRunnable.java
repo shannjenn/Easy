@@ -6,9 +6,8 @@ import com.jen.easy.exception.ExceptionType;
 import com.jen.easy.exception.HttpLog;
 import com.jen.easy.http.request.EasyHttpDataRequest;
 import com.jen.easy.http.request.EasyHttpDownloadRequest;
-import com.jen.easy.http.request.EasyHttpUploadRequest;
 import com.jen.easy.http.request.EasyHttpRequest;
-import com.jen.easy.http.request.EasyRequestState;
+import com.jen.easy.http.request.EasyHttpUploadRequest;
 import com.jen.easy.log.JsonLogFormat;
 
 import org.json.JSONException;
@@ -169,7 +168,7 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
                 mHeadLogBuilder.insert(0, "{");
                 mHeadLogBuilder.replace(mHeadLogBuilder.length() - 1, mHeadLogBuilder.length(), "}");
             }
-            mRequestLogInfo = method + " " + mUrlStr + "\nheads：\n" + mHeadLogBuilder.toString() + "\nbody：\n" + mBody.toString();
+            mRequestLogInfo = method + " " + mUrlStr + "\nrequest heads：\n" + mHeadLogBuilder.toString() + "\nrequest body：\n" + mBody.toString();
             childRun(connection);
             connection.disconnect();
         } catch (IOException e) {

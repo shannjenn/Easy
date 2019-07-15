@@ -16,7 +16,7 @@ public class EasyLog {
      */
     public static LogLevel level = LogLevel.D;
 
-    private static boolean isPrint(LogLevel myLevel) {
+    public static boolean isPrint(LogLevel myLevel) {
         return myLevel.ordinal() >= level.ordinal();
     }
 
