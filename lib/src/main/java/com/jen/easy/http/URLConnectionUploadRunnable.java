@@ -93,9 +93,6 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
         if (parseObject == null) {
             fail("");
         } else {
-            if (parseObject instanceof EasyHttpResponse) {
-                ((EasyHttpResponse) parseObject).setResponseState(EasyResponseState.finish);
-            }
             mRequest.setRequestState(EasyRequestState.finish);
             HttpLog.i(mUrlStr + " SUCCESS\n \t");
             fullListener.success(flagCode, flagStr, parseObject, headMap);
@@ -103,7 +100,7 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
     }
 
     @Override
-    protected void fail(String msg) {
+    protected void fail(String result) {
         if (mRequest.getRequestState() == EasyRequestState.interrupt) {
             HttpLog.w(mUrlStr + " FAIL\n \t");
             return;
@@ -112,8 +109,17 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
             return;
         }
         mRequest.setRequestState(EasyRequestState.finish);
+        Object parseObject;
+        if (FieldType.isObject(mResponse) || FieldType.isString(mResponse)) {//Object和String类型
+            parseObject = result;
+        } else {
+            parseObject = new HttpParseManager().newResponseInstance(mResponse, result);
+        }
+        if (parseObject == null) {
+            parseObject = "";
+        }
         HttpLog.w(mUrlStr + " FAIL\n \t");
-        fullListener.fail(flagCode, flagStr, msg);
+        fullListener.fail(flagCode, flagStr, parseObject);
     }
 
     private void progress(long currentPoint, long endPoint) {

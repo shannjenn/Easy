@@ -269,7 +269,7 @@ abstract class ImageLoaderManager {
         }
 
         @Override
-        public void fail(int flagCode, String imageUrl, String msg) {
+        public void fail(int flagCode, String imageUrl, Object msg) {
             ImageLoaderLog.d("图片下载失败-----");
             mDownloadingUrl.remove(imageUrl);
         }

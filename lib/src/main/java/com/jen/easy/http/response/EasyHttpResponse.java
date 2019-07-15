@@ -9,6 +9,8 @@ import com.jen.easy.invalid.EasyInvalid;
  */
 @EasyInvalid
 public abstract class EasyHttpResponse {
+    private String errorMsg;
+
     /**
      * 解析状态
      */
@@ -20,5 +22,13 @@ public abstract class EasyHttpResponse {
 
     public void setResponseState(EasyResponseState responseState) {
         this.responseState = responseState;
+    }
+
+    public String getErrorMsg() {
+        return errorMsg == null ? "" : errorMsg;
+    }
+
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
     }
 }

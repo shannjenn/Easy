@@ -3,6 +3,8 @@ package com.jen.easy.http;
 import com.jen.easy.constant.FieldType;
 import com.jen.easy.exception.ExceptionType;
 import com.jen.easy.exception.HttpLog;
+import com.jen.easy.http.response.EasyHttpResponse;
+import com.jen.easy.http.response.EasyResponseState;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,13 +31,37 @@ class HttpParseManager {
      * json解析
      *
      * @param tClass 类
+     * @param msg    数据
+     * @return 值
+     */
+    <T> T newResponseInstance(Class<T> tClass, String msg) {
+        T response;
+        try {
+            response = tClass.newInstance();
+        } catch (InstantiationException e) {
+            HttpLog.w("newResponseInstance InstantiationException 创建对象出错：" + tClass.getName());
+            return null;
+        } catch (IllegalAccessException e) {
+            HttpLog.w("newResponseInstance IllegalAccessException 创建对象出错" + tClass.getName());
+            return null;
+        }
+        if (response instanceof EasyHttpResponse) {
+            ((EasyHttpResponse) response).setErrorMsg(msg);
+        }
+        return response;
+    }
+
+    /**
+     * json解析
+     *
+     * @param tClass 类
      * @param obj    数据
      * @return 值
      */
     <T> T parseResponseBody(Class<T> tClass, String obj) {
         HttpLog.d("解析：" + tClass.getName() + "----开始");
         long startTime = System.currentTimeMillis();
-        T t;
+        T response;
         JSONObject object;
         try {
             object = new JSONObject(obj);
@@ -43,15 +69,18 @@ class HttpParseManager {
             showErrorLog("JSONException 解析错误，不属于JSONObject数据");
             return null;
         }
-        t = parseJSONObject(tClass, object);
+        response = parseJSONObject(tClass, object);
         mErrors.clear();
         double timeSec = (System.currentTimeMillis() - startTime) / 1000d;
-        if (t == null) {
+        if (response == null) {
             HttpLog.w("解析：" + tClass.getName() + "----失败 解析耗时:" + timeSec + "秒");
         } else {
+            if (response instanceof EasyHttpResponse) {
+                ((EasyHttpResponse) response).setResponseState(EasyResponseState.finish);
+            }
             HttpLog.d("解析：" + tClass.getName() + "----成功 解析耗时:" + timeSec + "秒");
         }
-        return t;
+        return response;
     }
 
     /**

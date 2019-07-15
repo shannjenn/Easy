@@ -23,9 +23,9 @@ public interface EasyHttpListener {
     /**
      * 失败
      *
-     * @param flagCode 标记
-     * @param flagStr  标记
-     * @param msg      错误码
+     * @param flagCode     标记
+     * @param flagStr      标记
+     * @param responseBody 返回实体对象
      */
-    void fail(int flagCode, String flagStr, String msg);
+    void fail(int flagCode, String flagStr, Object responseBody);
 }
