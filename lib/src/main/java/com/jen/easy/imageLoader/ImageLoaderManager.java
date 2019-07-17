@@ -253,15 +253,15 @@ abstract class ImageLoaderManager {
     private EasyHttpFullListener mHttpListener = new EasyHttpFullListener() {
 
         @Override
-        public void success(int flagCode, String flag, Object filePath, Map<String, List<String>> headMap) {
+        public void success(int flagCode, String flag, Object response, Map<String, List<String>> headMap) {
             ImageLoaderLog.d("图片下载成功-----");
             mImageViewCache.remove(null);
             Set<ImageView> set = mImageViewCache.keySet();
             for (ImageView imageView : set) {
                 String value = mImageViewCache.get(imageView);
-                if (filePath.equals(value)) {
-                    if (filePath instanceof String && imageView != null) {
-                        getFromSDCard(config.getImgWidth(), config.getImgHeight(), (String) filePath, imageView);
+                if (response.equals(value)) {
+                    if (response instanceof String && imageView != null) {
+                        getFromSDCard(config.getImgWidth(), config.getImgHeight(), (String) response, imageView);
                     }
                     break;
                 }
@@ -275,7 +275,7 @@ abstract class ImageLoaderManager {
         }
 
         @Override
-        public void progress(int flagCode, String flag, long currentPoint, long endPoint) {
+        public void progress(int flagCode, String flag, Object response, long currentPoint, long endPoint) {
             ImageLoaderLog.d("flag = " + flag + " currentPoint = " + currentPoint + " endPoint=" + endPoint);
         }
     };

@@ -16,6 +16,7 @@ import java.util.Map;
 
 class URLConnectionDownloadRunnable extends URLConnectionFactoryRunnable {
     private EasyHttpFullListener fullListener;
+    private Object responseObjectProgress;
 
     URLConnectionDownloadRunnable(EasyHttpDownloadRequest request, EasyHttpFullListener fullListener, int flagCode, String flagStr) {
         super(request, flagCode, flagStr);
@@ -24,6 +25,7 @@ class URLConnectionDownloadRunnable extends URLConnectionFactoryRunnable {
 
     @Override
     protected void childRun(HttpURLConnection connection) throws IOException {
+        responseObjectProgress = createResponseObjectProgress(Type.fileDown);
         EasyHttpDownloadRequest request = (EasyHttpDownloadRequest) mRequest;
         if (request.startPoint <= 1024 * 2) {
             request.startPoint = 0;
@@ -74,7 +76,7 @@ class URLConnectionDownloadRunnable extends URLConnectionFactoryRunnable {
     }
 
     @Override
-    protected void success(String result, Map<String, List<String>> headMap) {
+    protected void success(String filePath, Map<String, List<String>> headMap) {
         if (mRequest.getRequestState() == EasyRequestState.interrupt) {
             HttpLog.d(mRequestLogInfo + " 请求中断。\n \t");
             return;
@@ -82,13 +84,11 @@ class URLConnectionDownloadRunnable extends URLConnectionFactoryRunnable {
         if (fullListener == null) {
             return;
         }
-        mRequest.setRequestState(EasyRequestState.finish);
-        HttpLog.d(mUrlStr + " 返回成功。\n \t");
-        fullListener.success(flagCode, flagStr, result, headMap);
+        fullListener.success(flagCode, flagStr, createResponseObjectSuccess(Type.fileDown, filePath), headMap);
     }
 
     @Override
-    protected void fail(String msg) {
+    protected void fail(String errorMsg) {
         if (mRequest.getRequestState() == EasyRequestState.interrupt) {
             HttpLog.d(mRequestLogInfo + " 请求中断。\n \t");
             return;
@@ -96,14 +96,14 @@ class URLConnectionDownloadRunnable extends URLConnectionFactoryRunnable {
         if (fullListener == null) {
             return;
         }
-        mRequest.setRequestState(EasyRequestState.finish);
-        HttpLog.w(mUrlStr + " 返回失败。\n \t");
-        fullListener.fail(flagCode, flagStr, msg);
+        fullListener.fail(flagCode, flagStr, createResponseObjectFail(Type.fileDown, errorMsg));
     }
 
     private void progress(long currentPoint, long endPoint) {
+        HttpLog.d(mUrlStr + " 下载进度：currentPoint = " + currentPoint + " endPoint = " + endPoint);
         if (fullListener != null) {
-            fullListener.progress(flagCode, flagStr, currentPoint, endPoint);
+            fullListener.progress(flagCode, flagStr, responseObjectProgress, currentPoint, endPoint);
         }
     }
+
 }

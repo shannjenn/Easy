@@ -4,7 +4,6 @@ import com.jen.easy.constant.FieldType;
 import com.jen.easy.exception.ExceptionType;
 import com.jen.easy.exception.HttpLog;
 import com.jen.easy.http.response.EasyHttpResponse;
-import com.jen.easy.http.response.EasyResponseState;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,11 +29,11 @@ class HttpParseManager {
     /**
      * json解析
      *
-     * @param tClass 类
-     * @param msg    数据
+     * @param tClass   类
+     * @param errorMsg 错误信息
      * @return 值
      */
-    <T> T newResponseInstance(Class<T> tClass, String msg) {
+    <T> T newResponseInstance(Class<T> tClass, String errorMsg) {
         T response;
         try {
             response = tClass.newInstance();
@@ -46,7 +45,7 @@ class HttpParseManager {
             return null;
         }
         if (response instanceof EasyHttpResponse) {
-            ((EasyHttpResponse) response).setErrorMsg(msg);
+            ((EasyHttpResponse) response).setErrorMsg(errorMsg);
         }
         return response;
     }
@@ -75,9 +74,6 @@ class HttpParseManager {
         if (response == null) {
             HttpLog.w("解析：" + tClass.getName() + "----失败 解析耗时:" + timeSec + "秒");
         } else {
-            if (response instanceof EasyHttpResponse) {
-                ((EasyHttpResponse) response).setResponseState(EasyResponseState.finish);
-            }
             HttpLog.d("解析：" + tClass.getName() + "----成功 解析耗时:" + timeSec + "秒");
         }
         return response;

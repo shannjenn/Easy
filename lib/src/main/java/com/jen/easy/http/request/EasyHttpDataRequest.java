@@ -4,6 +4,7 @@ import com.jen.easy.EasyRequest;
 import com.jen.easy.EasyRequestType;
 
 /**
+ * 注意请求方式如：post/get
  * 作者：ShannJenn
  * 时间：2017/8/12.
  * 说明：基本数据请求参数

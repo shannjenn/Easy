@@ -5,8 +5,6 @@ import com.jen.easy.exception.HttpLog;
 import com.jen.easy.http.imp.EasyHttpFullListener;
 import com.jen.easy.http.request.EasyHttpUploadRequest;
 import com.jen.easy.http.request.EasyRequestState;
-import com.jen.easy.http.response.EasyHttpResponse;
-import com.jen.easy.http.response.EasyResponseState;
 import com.jen.easy.log.JsonLogFormat;
 
 import java.io.BufferedReader;
@@ -22,6 +20,7 @@ import java.util.Map;
 
 class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
     private EasyHttpFullListener fullListener;
+    private Object responseObjectProgress;
 
     URLConnectionUploadRunnable(EasyHttpUploadRequest request, EasyHttpFullListener fullListener, int flagCode, String flagStr) {
         super(request, flagCode, flagStr);
@@ -30,6 +29,7 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
 
     @Override
     protected void childRun(HttpURLConnection connection) throws IOException {
+        responseObjectProgress = createResponseObjectProgress(Type.fileUp);
         EasyHttpUploadRequest request = (EasyHttpUploadRequest) mRequest;
         if (request.isBreak && request.endPoint > request.startPoint + 100) {
             connection.setRequestProperty("Range", "bytes=" + request.startPoint + "-" + request.endPoint);
@@ -84,23 +84,11 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
         if (fullListener == null) {
             return;
         }
-        Object parseObject;
-        if (FieldType.isObject(mResponse) || FieldType.isString(mResponse)) {//Object和String类型不做数据解析
-            parseObject = result;
-        } else {
-            parseObject = new HttpParseManager().parseResponseBody(mResponse, result);
-        }
-        if (parseObject == null) {
-            fail("");
-        } else {
-            mRequest.setRequestState(EasyRequestState.finish);
-            HttpLog.i(mUrlStr + " SUCCESS\n \t");
-            fullListener.success(flagCode, flagStr, parseObject, headMap);
-        }
+        fullListener.success(flagCode, flagStr, createResponseObjectSuccess(Type.fileUp, result), headMap);
     }
 
     @Override
-    protected void fail(String result) {
+    protected void fail(String errorMsg) {
         if (mRequest.getRequestState() == EasyRequestState.interrupt) {
             HttpLog.w(mUrlStr + " FAIL\n \t");
             return;
@@ -108,23 +96,14 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
         if (fullListener == null) {
             return;
         }
-        mRequest.setRequestState(EasyRequestState.finish);
-        Object parseObject;
-        if (FieldType.isObject(mResponse) || FieldType.isString(mResponse)) {//Object和String类型
-            parseObject = result;
-        } else {
-            parseObject = new HttpParseManager().newResponseInstance(mResponse, result);
-        }
-        if (parseObject == null) {
-            parseObject = "";
-        }
-        HttpLog.w(mUrlStr + " FAIL\n \t");
-        fullListener.fail(flagCode, flagStr, parseObject);
+        fullListener.fail(flagCode, flagStr, createResponseObjectFail(Type.fileUp, errorMsg));
     }
 
     private void progress(long currentPoint, long endPoint) {
-        if (fullListener != null) {
-            fullListener.progress(flagCode, flagStr, currentPoint, endPoint);
+        HttpLog.d(mUrlStr + " 上传进度：currentPoint = " + currentPoint + " endPoint = " + endPoint);
+        if (fullListener == null) {
+            return;
         }
+        fullListener.progress(flagCode, flagStr, responseObjectProgress, currentPoint, endPoint);
     }
 }

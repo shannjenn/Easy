@@ -1,13 +1,10 @@
 package com.jen.easy.http;
 
-import com.jen.easy.constant.FieldType;
 import com.jen.easy.constant.Unicode;
 import com.jen.easy.exception.HttpLog;
 import com.jen.easy.http.imp.EasyHttpListener;
 import com.jen.easy.http.request.EasyHttpDataRequest;
 import com.jen.easy.http.request.EasyRequestState;
-import com.jen.easy.http.response.EasyHttpResponse;
-import com.jen.easy.http.response.EasyResponseState;
 import com.jen.easy.log.JsonLogFormat;
 
 import java.io.BufferedReader;
@@ -101,23 +98,11 @@ class URLConnectionDataRunnable extends URLConnectionFactoryRunnable {
         if (baseListener == null) {
             return;
         }
-        Object parseObject;
-        if (FieldType.isObject(mResponse) || FieldType.isString(mResponse)) {//Object和String类型不做数据解析
-            parseObject = result;
-        } else {
-            parseObject = new HttpParseManager().parseResponseBody(mResponse, result);
-        }
-        if (parseObject == null) {
-            fail("");
-        } else {
-            mRequest.setRequestState(EasyRequestState.finish);
-            HttpLog.i(mUrlStr + " SUCCESS\n \t");
-            baseListener.success(flagCode, flagStr, parseObject, headMap);
-        }
+        baseListener.success(flagCode, flagStr, createResponseObjectSuccess(Type.data, result), headMap);
     }
 
     @Override
-    protected void fail(String result) {
+    protected void fail(String errorMsg) {
         if (mRequest.getRequestState() == EasyRequestState.interrupt) {
             HttpLog.i(mUrlStr + " The request was interrupted。\n \t");
             return;
@@ -125,17 +110,7 @@ class URLConnectionDataRunnable extends URLConnectionFactoryRunnable {
         if (baseListener == null) {
             return;
         }
-        mRequest.setRequestState(EasyRequestState.finish);
-        Object parseObject;
-        if (FieldType.isObject(mResponse) || FieldType.isString(mResponse)) {//Object和String类型
-            parseObject = result;
-        } else {
-            parseObject = new HttpParseManager().newResponseInstance(mResponse, result);
-        }
-        if (parseObject == null) {
-            parseObject = "";
-        }
-        HttpLog.w(mUrlStr + " return FAIL\n \t");
-        baseListener.fail(flagCode, flagStr, parseObject);
+        baseListener.fail(flagCode, flagStr, createResponseObjectFail(Type.data, errorMsg));
     }
+
 }

@@ -14,31 +14,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 请继承使用
  * 创建人：ShannJenn
  * 时间：2017/8/14.
  */
-
-public class EasySharedUtil {
+public abstract class EasySharedUtil {
     private final String TAG = "EasySharedUtil";
     private static final String xmlFileName = "easyShare";
     private final String Unicode = "UTF-8";
     private SharedPreferences config;
     private SharedPreferences.Editor editor;
-    private static EasySharedUtil me;
+//    protected static EasySharedUtil me;
 
-    public static EasySharedUtil getIns() {
-        if (me == null) {
-            synchronized (EasySharedUtil.class) {
-                if (me == null) {
+//    public static EasySharedUtil getIns() {
+//        if (me == null) {
+//            synchronized (EasySharedUtil.class) {
+//                if (me == null) {
 //                    me = new EasySharedUtil(XGApplication.getApplication());
-                }
-            }
-        }
-        return me;
-    }
+//                }
+//            }
+//        }
+//        return me;
+//    }
 
 
-    public EasySharedUtil(Context context) {
+    protected EasySharedUtil(Context context) {
         config = context.getSharedPreferences(xmlFileName, Context.MODE_PRIVATE);
     }
 
@@ -112,14 +112,14 @@ public class EasySharedUtil {
     }
 
     /**
-     * 保存list
+     * 保存list(需要序列化)
      *
-     * @param name 参数
-     * @param list 值
+     * @param name             参数
+     * @param serializableList 值(需要序列化)
      * @return 是否成功
      */
-    public <T> boolean setList(String name, List<T> list) {
-        String value = list2String(list);
+    public <T> boolean setList(String name, List<T> serializableList) {
+        String value = list2String(serializableList);
         if (value == null) {
             return false;
         }
@@ -133,13 +133,13 @@ public class EasySharedUtil {
      * @param name 参数
      * @return 值
      */
-    public <T> List<T> getList(String name) {
+    public <T> List<T> getList(String name, Class<T> cls) {
         List<T> valueList = new ArrayList<>();
         String value = getString(name, "");
         if (value.length() == 0) {
             return valueList;
         }
-        List<T> list = string2List(value);
+        List<T> list = string2List(value, cls);
         valueList.addAll(list);
         return valueList;
     }
@@ -186,6 +186,13 @@ public class EasySharedUtil {
     }
 
 
+    /**
+     * T对象需要序列化
+     *
+     * @param list .
+     * @param <T>  .
+     * @return .
+     */
     private <T> String list2String(List<T> list) {
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -201,13 +208,19 @@ public class EasySharedUtil {
         return null;
     }
 
-    private <T> List<T> string2List(String str) {
-        List list = null;
+    private <T> List<T> string2List(String str, Class<T> cls) {
+        List<T> list = new ArrayList<>();
         try {
             byte[] mobileBytes = Base64.decode(str.getBytes(Unicode), 0);
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(mobileBytes);
             ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
-            list = (List) objectInputStream.readObject();
+            Object object = objectInputStream.readObject();
+            if (object instanceof List) {
+                List<?> objectList = (List<?>) object;
+                if (objectList.size() > 0 && objectList.get(0).getClass().getName().equals(cls.getName())) {
+                    list = (List<T>) objectList;
+                }
+            }
             objectInputStream.close();
         } catch (IOException e) {
             e.printStackTrace();

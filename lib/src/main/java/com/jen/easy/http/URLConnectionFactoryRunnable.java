@@ -1,13 +1,17 @@
 package com.jen.easy.http;
 
+import android.support.annotation.IntDef;
 import android.text.TextUtils;
 
+import com.jen.easy.constant.FieldType;
 import com.jen.easy.exception.ExceptionType;
 import com.jen.easy.exception.HttpLog;
 import com.jen.easy.http.request.EasyHttpDataRequest;
 import com.jen.easy.http.request.EasyHttpDownloadRequest;
 import com.jen.easy.http.request.EasyHttpRequest;
 import com.jen.easy.http.request.EasyHttpUploadRequest;
+import com.jen.easy.http.request.EasyRequestState;
+import com.jen.easy.http.response.EasyHttpFileResponse;
 import com.jen.easy.log.JsonLogFormat;
 
 import org.json.JSONException;
@@ -27,7 +31,7 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
     int flagCode;//请求标识
     String flagStr;//请求标识
     EasyHttpRequest mRequest;
-    Class mResponse;
+    private Class mResponse;
 
     String mUrlStr;
     int mResponseCode = -1;//返回码
@@ -62,25 +66,30 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
             return;
         }
 
+        mResponse = response;
         if (mRequest instanceof EasyHttpDataRequest) {//===============基本数据处理
-            mResponse = response;
+
         } else if (mRequest instanceof EasyHttpUploadRequest) {//===============上传请求处理
-            mResponse = response;
             EasyHttpUploadRequest uploadRequest = (EasyHttpUploadRequest) mRequest;
             if (TextUtils.isEmpty(uploadRequest.filePath)) {
-                HttpLog.exception(ExceptionType.NullPointerException, "文件地址不能为空");
+                HttpLog.exception(ExceptionType.NullPointerException, "上传文件地址不能为空");
                 fail("文件地址不能为空");
                 return;
             }
             File file = new File(uploadRequest.filePath);
             if (!file.isFile()) {
-                HttpLog.exception(ExceptionType.IllegalArgumentException, "文件地址参数错误");
+                HttpLog.exception(ExceptionType.IllegalArgumentException, "上传文件地址不可用");
                 fail("文件地址参数错误");
                 return;
             }
         } else if (mRequest instanceof EasyHttpDownloadRequest) {//===============下载请求处理
             EasyHttpDownloadRequest downloadRequest = (EasyHttpDownloadRequest) mRequest;
             if (downloadRequest.deleteOldFile) {
+                if (TextUtils.isEmpty(downloadRequest.filePath)) {
+                    HttpLog.exception(ExceptionType.NullPointerException, "要保存文件地址不能为空");
+                    fail("要保存文件地址不能为空");
+                    return;
+                }
                 File file = new File(downloadRequest.filePath);
                 if (file.exists()) {
                     boolean ret = file.delete();
@@ -197,6 +206,139 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
             response = response.replace(oldChar, replacement);
         }
         return response;
+    }
+
+    @IntDef({Type.data, Type.fileUp, Type.fileDown})
+    public @interface Type {
+        int data = 0;//基本数据
+        int fileUp = 1;//文件上传
+        int fileDown = 2;//文件下载
+    }
+
+    @IntDef({Response.success, Response.fail, Response.progress})
+    public @interface Response {
+        int success = 0;//成功
+        int fail = 1;//失败
+        int progress = 2;//上传、下载进度
+    }
+
+    Object createResponseObjectSuccess(@Type int type, String resultOrFilePath) {
+        switch (type) {
+            case Type.data:
+                return createResponseObject(type, Response.success, resultOrFilePath, null, null);
+            case Type.fileDown:
+                return createResponseObject(type, Response.success, null, null, resultOrFilePath);
+            case Type.fileUp:
+                return createResponseObject(type, Response.success, resultOrFilePath, null, null);
+        }
+        return "";
+    }
+
+    Object createResponseObjectFail(@Type int type, String errorMsg) {
+        return createResponseObject(type, Response.fail, null, errorMsg, null);
+    }
+
+    Object createResponseObjectProgress(@Type int type) {
+        return createResponseObject(type, Response.progress, null, null, null);
+    }
+
+    /**
+     * 创建返回实体
+     *
+     * @param type         类型
+     * @param result       返回数据
+     * @param errorMsg     错误数据
+     * @param responseType 返回类型
+     * @return .
+     */
+    private Object createResponseObject(@Type int type, @Response int responseType, String result, String errorMsg, String filePath) {
+        Object responseObject = null;
+        if (FieldType.isObject(mResponse) || FieldType.isString(mResponse)) {//Object和String类型不做数据解析
+            switch (responseType) {
+                case Response.success:
+                    responseObject = result;
+                    break;
+                case Response.fail:
+                    responseObject = errorMsg;
+                    break;
+                case Response.progress:
+                    responseObject = "";
+                    break;
+            }
+        } else {
+            switch (type) {
+                case Type.data: {
+                    switch (responseType) {
+                        case Response.success: {
+                            responseObject = new HttpParseManager().parseResponseBody(mResponse, result);
+                            break;
+                        }
+                        case Response.fail: {
+                            responseObject = new HttpParseManager().newResponseInstance(mResponse, errorMsg);
+                            break;
+                        }
+                        case Response.progress: {
+                            break;
+                        }
+                    }
+                    break;
+                }
+                case Type.fileDown: {
+                    switch (responseType) {
+                        case Response.success: {
+                            responseObject = new HttpParseManager().newResponseInstance(mResponse, null);
+                            if (responseObject instanceof EasyHttpFileResponse) {
+                                EasyHttpFileResponse fileResponse = (EasyHttpFileResponse) responseObject;
+                                fileResponse.setFilePath(filePath);
+                            }
+                            break;
+                        }
+                        case Response.fail: {
+                            responseObject = new HttpParseManager().newResponseInstance(mResponse, errorMsg);
+                            break;
+                        }
+                        case Response.progress: {
+                            responseObject = new HttpParseManager().newResponseInstance(mResponse, null);
+                            break;
+                        }
+                    }
+                    break;
+                }
+                case Type.fileUp: {
+                    switch (responseType) {
+                        case Response.success: {
+                            responseObject = new HttpParseManager().parseResponseBody(mResponse, result);
+                            break;
+                        }
+                        case Response.fail: {
+                            responseObject = new HttpParseManager().newResponseInstance(mResponse, errorMsg);
+                            break;
+                        }
+                        case Response.progress: {
+                            responseObject = new HttpParseManager().newResponseInstance(mResponse, null);
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+            if (responseObject == null) {
+                responseObject = "";
+            }
+        }
+        switch (responseType) {
+            case Response.success:
+                mRequest.setRequestState(EasyRequestState.finish);
+                HttpLog.i(mUrlStr + " SUCCESS\n \t");
+                break;
+            case Response.fail:
+                mRequest.setRequestState(EasyRequestState.finish);
+                HttpLog.i(mUrlStr + " FAIL\n \t");
+                break;
+            case Response.progress:
+                break;
+        }
+        return responseObject;
     }
 
     protected abstract void childRun(HttpURLConnection connection) throws IOException;

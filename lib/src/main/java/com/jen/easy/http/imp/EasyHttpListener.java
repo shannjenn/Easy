@@ -15,17 +15,17 @@ public interface EasyHttpListener {
      *
      * @param flagCode     标记
      * @param flagStr      标记
-     * @param responseBody 返回实体对象
+     * @param response 返回实体对象
      * @param headMap      返回头部信息
      */
-    void success(int flagCode, String flagStr, Object responseBody, Map<String, List<String>> headMap);
+    void success(int flagCode, String flagStr, Object response, Map<String, List<String>> headMap);
 
     /**
      * 失败
      *
      * @param flagCode     标记
      * @param flagStr      标记
-     * @param responseBody 返回实体对象
+     * @param response 返回实体对象
      */
-    void fail(int flagCode, String flagStr, Object responseBody);
+    void fail(int flagCode, String flagStr, Object response);
 }

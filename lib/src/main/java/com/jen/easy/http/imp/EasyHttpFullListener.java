@@ -31,8 +31,9 @@ public interface EasyHttpFullListener extends EasyHttpListener {
      *
      * @param flagCode     标记
      * @param flagStr      标记
+     * @param response 返回实体对象
      * @param currentPoint 当前下载大小
      * @param endPoint     最大大小
      */
-    void progress(int flagCode, String flagStr, long currentPoint, long endPoint);
+    void progress(int flagCode, String flagStr, Object response, long currentPoint, long endPoint);
 }

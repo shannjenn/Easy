@@ -3,6 +3,7 @@ package com.jen.easy.http.request;
 import com.jen.easy.invalid.EasyInvalid;
 
 /**
+ * 注意请求方式如：post/get
  * 作者：ShannJenn
  * 时间：2017/8/12.
  * 说明：下载文件请求参数

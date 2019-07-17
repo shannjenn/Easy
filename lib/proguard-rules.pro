@@ -128,6 +128,9 @@
 -keep class com.jen.easy.http.response.EasyHttpResponse* {
     *;
 }
+-keep class com.jen.easy.http.response.EasyHttpFileResponse* {
+    *;
+}
 -keep class com.jen.easy.http.imp.EasyHttpListener {
     *;
 }
@@ -138,9 +141,6 @@
     *;
 }
 -keep class com.jen.easy.http.request.EasyRequestState {
-    *;
-}
--keep class com.jen.easy.http.response.EasyResponseState {
     *;
 }
 
