@@ -1,5 +1,6 @@
 package com.jen.easyui.popupwindow;
 
+import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +9,9 @@ import android.view.View;
 import com.jen.easy.log.EasyLog;
 import com.jen.easyui.R;
 import com.jen.easyui.recycler.EasyAdapterFactory;
+import com.jen.easyui.recycler.EasyHolder;
+import com.jen.easyui.recycler.EasyHolderWaterfallAdapter;
+import com.jen.easyui.recycler.LayoutType;
 import com.jen.easyui.recycler.letter.EasyLetterDecoration;
 import com.jen.easyui.recycler.letter.EasyLetterItem;
 import com.jen.easyui.recycler.letter.EasyLetterView;
@@ -20,15 +24,17 @@ import java.util.List;
  * 时间：2017/09/09.
  */
 
-public class EasyWindowLetter<T> extends EasyWindow<T> implements EasyLetterView.TouchListener {
+public class EasyWindowLetter<T extends EasyLetterItem> extends EasyWindow<T> implements EasyLetterView.TouchListener {
     private RecyclerView recyclerView;
-    private EasyAdapterFactory<EasyLetterItem> adapter;
+    private MyAdapter adapter;
+    private EasyWindowAdapter<T> adapterImp;
     private EasyLetterView lt_letter;
-    private EasyLetterDecoration<EasyLetterItem> letterDecoration;
+    private EasyLetterDecoration<T> letterDecoration = new EasyLetterDecoration<>();
 
-    EasyWindowLetter(Build<T> build, EasyAdapterFactory<EasyLetterItem> adapter) {
+    EasyWindowLetter(BuildLetter<T> build, EasyWindowAdapter<T> adapterImp) {
         super(build);
-        this.adapter = adapter;
+        this.build = build;
+        this.adapterImp = adapterImp;
         initView();
     }
 
@@ -41,18 +47,22 @@ public class EasyWindowLetter<T> extends EasyWindow<T> implements EasyLetterView
     }
 
     private void initView() {
-        recyclerView.setLayoutManager(new LinearLayoutManager(build.context));
-        lt_letter.setTouchListener(this);
-        recyclerView.setAdapter(adapter);
-        if (letterDecoration == null) {
-            letterDecoration = new EasyLetterDecoration<>();
+        if (adapterImp.bindRecycleLayout() == null) {
+            adapter = new MyAdapter(build.context, recyclerView);
+        } else {
+            adapter = new MyAdapter(build.context);
+            recyclerView.setAdapter(adapter);
+            LayoutType layoutType = adapterImp.bindRecycleLayout().getKey();
+            int size = adapterImp.bindRecycleLayout().getValue();
+            recyclerView.setLayoutManager(LayoutType.getLayout(build.context, layoutType, size));
         }
+        recyclerView.removeItemDecoration(letterDecoration);
+        letterDecoration.setData(adapter.getData());
+        recyclerView.addItemDecoration(letterDecoration);
 
-        if (adapter.getData() != null && adapter.getData().size() > 0) {
-            letterDecoration.setData(adapter.getData());
-            recyclerView.removeItemDecoration(letterDecoration);
-            recyclerView.addItemDecoration(letterDecoration);
-        }
+        lt_letter.setTouchListener(this);
+        adapter.setItemListener(adapterImp.itemListener());
+        adapter.setDataAndNotify(build.data);
     }
 
     /**
@@ -60,15 +70,14 @@ public class EasyWindowLetter<T> extends EasyWindow<T> implements EasyLetterView
      *
      * @param data .
      */
-    public void setData(List<EasyLetterItem> data) {
+    public void setData(List<T> data) {
         if (data == null || data.size() == 0) {
             return;
         }
         recyclerView.removeItemDecoration(letterDecoration);
         letterDecoration.setData(data);
         recyclerView.addItemDecoration(letterDecoration);
-        adapter.setData(data);
-        adapter.notifyDataSetChanged();
+        adapter.setDataAndNotify(data);
     }
 
     @Override
@@ -100,7 +109,37 @@ public class EasyWindowLetter<T> extends EasyWindow<T> implements EasyLetterView
         return lt_letter;
     }
 
-    public EasyLetterDecoration<EasyLetterItem> getLetterDecoration() {
+    public EasyLetterDecoration<T> getLetterDecoration() {
         return letterDecoration;
+    }
+
+    private class MyAdapter extends EasyHolderWaterfallAdapter<T> {
+        MyAdapter(Context context) {
+            super(context);
+        }
+
+        MyAdapter(Context context, RecyclerView recyclerView) {
+            super(context, recyclerView);
+        }
+
+        @Override
+        protected int[] onBindLayout() {
+            return adapterImp.onBindLayout();
+        }
+
+        @Override
+        protected int getViewType(int position) {
+            return adapterImp.getViewType(mData.get(position), position);
+        }
+
+        @Override
+        protected void onBindHolderData(EasyHolder easyHolder, View view, int viewType, int position) {
+            adapterImp.onBindHolderData(easyHolder, view, viewType, mData.get(position), position);
+        }
+
+        @Override
+        public RecyclerView.ItemDecoration onDecoration() {
+            return letterDecoration;
+        }
     }
 }

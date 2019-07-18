@@ -1,36 +1,50 @@
 package com.jen.easyui.util;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Rect;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.inputmethod.InputMethodManager;
+
+import java.util.Objects;
 
 public class KeyboardUtil {
-    /**
-     * 虚拟键盘高度
-     */
-    private int virtualKeyboardHeight;
-    /**
-     * 屏幕高度
-     */
-    private int screenHeight;
-    /**
-     * 屏幕6分之一的高度，作用是防止获取到虚拟键盘的高度
-     */
-    private int screenHeight6;
-    private View rootView;
 
-    public KeyboardUtil(Activity context) {
-        //获取屏幕的高度,该方式的获取不包含虚拟键盘
-        screenHeight = context.getResources().getDisplayMetrics().heightPixels;
-        screenHeight6 = screenHeight / 6;
-        rootView = context.getWindow().getDecorView();
+    public KeyboardUtil() {
+
+    }
+
+    /**
+     * 隐藏软键盘
+     */
+    public static void hideKeyboard(Activity activity) {
+        Object imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm instanceof InputMethodManager && ((InputMethodManager) imm).isActive()) {
+            ((InputMethodManager) imm).hideSoftInputFromWindow(activity.getWindow().getDecorView().getWindowToken(), 0);
+        }
+    }
+
+    /**
+     * 隐藏软键盘
+     */
+    public static void hideKeyboard(Dialog dialog) {
+        Object imm = dialog.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm instanceof InputMethodManager && ((InputMethodManager) imm).isActive()) {
+            ((InputMethodManager) imm).hideSoftInputFromWindow(Objects.requireNonNull(dialog.getWindow()).getDecorView().getWindowToken(), 0);
+        }
     }
 
     /**
      * @param listener .
      */
-    public void setOnKeyboardChangeListener(final KeyboardChangeListener listener) {
+    public static void setOnKeyboardChangeListener(Activity context, final KeyboardChangeListener listener) {
+        final int[] virtualKeyboardHeight = new int[1];//获取屏幕的高度,该方式的获取不包含虚拟键盘
+        final int screenHeight = context.getResources().getDisplayMetrics().heightPixels;
+        final int screenHeight6 = screenHeight / 6;//屏幕6分之一的高度，作用是防止获取到虚拟键盘的高度
+        final View rootView = context.getWindow().getDecorView();
+
         rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             //当键盘弹出隐藏的时候会 调用此方法。
             @Override
@@ -45,13 +59,13 @@ public class KeyboardUtil {
                         //获取键盘的高度
                         int heightDifference = screenHeight - rect.bottom;
                         if (heightDifference < screenHeight6) {
-                            virtualKeyboardHeight = heightDifference;
+                            virtualKeyboardHeight[0] = heightDifference;
                             if (listener != null) {
                                 listener.onKeyboardHide();
                             }
                         } else {
                             if (listener != null) {
-                                listener.onKeyboardShow(heightDifference - virtualKeyboardHeight);
+                                listener.onKeyboardShow(heightDifference - virtualKeyboardHeight[0]);
                             }
                         }
                     }

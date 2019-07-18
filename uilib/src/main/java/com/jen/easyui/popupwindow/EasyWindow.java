@@ -14,15 +14,30 @@ import com.jen.easyui.R;
  * 作者：ShannJenn
  * 时间：2017/09/09.
  */
-public abstract class EasyWindow<T> extends EasyWindowFactory implements View.OnClickListener {
+public abstract class EasyWindow<T> extends EasyWindowFactory<T> implements View.OnClickListener {
     private View mView;
 
     public static <T> Build<T> build(Context context) {
         return new Build<>(context);
     }
 
-    public static TimePickerBuild buildTimerPicker(Context context) {
-        return new TimePickerBuild(context);
+    /**
+     * 时间
+     *
+     * @param context .
+     * @return .
+     */
+    public static BuildTimePicker buildTimerPicker(Context context) {
+        return new BuildTimePicker(context);
+    }
+
+    /**
+     * 字母列表
+     *
+     * @return .
+     */
+    public static BuildLetter buildLetter(Context context) {
+        return new BuildLetter(context);
     }
 
     EasyWindow(Build<T> build) {

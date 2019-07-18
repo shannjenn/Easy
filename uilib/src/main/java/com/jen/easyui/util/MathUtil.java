@@ -5,7 +5,7 @@ import com.jen.easy.log.EasyLog;
 import java.math.BigDecimal;
 
 /**
- * 数据工具
+ * 数据工具 请继承使用
  * 作者：ShannJenn
  * 时间：2018/11/15.
  * 说明：
@@ -23,6 +23,74 @@ public class MathUtil {
         Subtract,//减法
         Multiply,//乘法
         Divide,//除法
+    }
+
+    /**
+     * double保留小数位
+     * <p>
+     * %s        字符串类型 
+     * String.format("字符%s","串")             结果：  "字符串"
+     * -----------------------------------------------------------------
+     * %c        字符类型
+     * String.format("字符%c",'A')              结果：  "字符A"
+     * -----------------------------------------------------------------
+     * %b        布尔类型
+     * String.format("字符%b",1==2)             结果：  "字符false"
+     * -----------------------------------------------------------------
+     * %d        整数类型（十进制）
+     * String.format("字符%d",20/2)             结果：  "字符10"
+     * -----------------------------------------------------------------
+     * %x        整数类型（十六进制）
+     * String.format("字符%x",100)              结果：  "64"
+     * -----------------------------------------------------------------
+     * %o        整数类型（八进制）
+     * String.format("字符%o",100)              结果：  "字符144"
+     * -----------------------------------------------------------------
+     * %f         浮点类型
+     * String.format("字符%f",10*0.05)          结果：  "字符0.500000"
+     * -----------------------------------------------------------------
+     * %h        散列码
+     * String.format("字符%h",'A')              结果：  "字符41"
+     * -----------------------------------------------------------------
+     * %%       百分比类型
+     * String.format("字符%d%%",85)              结果：  "字符85%"
+     * -----------------------------------------------------------------
+     * %a        浮点类型（十六进制）
+     * %e        指数类型
+     * %g        通用浮点类型
+     * %n        换行符
+     * %tx       日期与时间类型（x代表不同的日期与时间转换符）
+     * -----------------------------------------------------------------
+     *
+     * @param value 。
+     * @param scale 小数位，不足位数用0补位
+     * @return 。
+     */
+    public static String format(Object value, int scale) {
+        if (value == null) {
+            EasyLog.e(TAG, "changeToStr error -------- ");
+            return "";
+        }
+        Double result = null;
+        if (value instanceof Double) {
+            result = (Double) value;
+        } else {
+            try {
+                result = Double.parseDouble(String.valueOf(value));
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+        if (result == null) {
+            EasyLog.e(TAG, "changeToStr NumberFormatException error -------- ");
+            return "";
+        }
+        String unit = "%." + scale + "f";
+        return String.format(unit, result);
+    }
+
+    public static String format(Object value) {
+        return format(value, myScale);
     }
 
 

@@ -18,14 +18,14 @@ import com.jen.easyui.util.EasyDisplayUtil;
  * 时间：2017/09/09.
  */
 
-abstract class EasyWindowFactory extends PopupWindow {
-    protected Build build;
+abstract class EasyWindowFactory<T> extends PopupWindow {
+    protected Build<T> build;
     private float windowHeight;
     private float windowWidth;
     private int showDurationTime = 300;
     private int hideDurationTime = 200;
 
-    EasyWindowFactory(Build build) {
+    EasyWindowFactory(Build<T> build) {
         this.build = build;
         initWindow();
     }

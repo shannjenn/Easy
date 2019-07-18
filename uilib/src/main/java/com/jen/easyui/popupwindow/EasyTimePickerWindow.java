@@ -20,7 +20,7 @@ import java.util.Locale;
  */
 public class EasyTimePickerWindow<T> extends EasyWindow<T> {
     private Calendar selectCalendar = (Calendar) Calendar.getInstance(Locale.CHINA).clone();
-    private TimePickerBuild<T> timePickerBuild;
+    private BuildTimePicker<T> buildTimePicker;
 
     private EasyLoopView yearLoopView;
     private EasyLoopView monthLoopView;
@@ -36,9 +36,9 @@ public class EasyTimePickerWindow<T> extends EasyWindow<T> {
     private final List<String> minuteList = new ArrayList<>();
     private final List<String> secList = new ArrayList<>();
 
-    EasyTimePickerWindow(TimePickerBuild<T> timePickerBuild) {
-        super(timePickerBuild);
-        this.timePickerBuild = timePickerBuild;
+    EasyTimePickerWindow(BuildTimePicker<T> buildTimePicker) {
+        super(buildTimePicker);
+        this.buildTimePicker = buildTimePicker;
         init();
     }
 
@@ -55,46 +55,46 @@ public class EasyTimePickerWindow<T> extends EasyWindow<T> {
     }
 
     private void init() {
-        selectCalendar.setTimeInMillis(timePickerBuild.mInitCalendar.getTimeInMillis());
-        switch (timePickerBuild.unit) {
+        selectCalendar.setTimeInMillis(buildTimePicker.mInitCalendar.getTimeInMillis());
+        switch (buildTimePicker.unit) {
             case NON: {
 
                 break;
             }
             case YEAR_MONTH_DAY_HOUR_MIN: {
-                yearLoopView.setUnitText(this.build.context.getString(timePickerBuild.UNIT_YEAR));
-                monthLoopView.setUnitText(this.build.context.getString(timePickerBuild.UNIT_MONTH));
-                dayLoopView.setUnitText(this.build.context.getString(timePickerBuild.UNIT_DAY));
-                hourLoopView.setUnitText(this.build.context.getString(timePickerBuild.UNIT_HOUR));
-                minuteLoopView.setUnitText(this.build.context.getString(timePickerBuild.UNIT_MINUTE));
+                yearLoopView.setUnitText(this.build.context.getString(buildTimePicker.UNIT_YEAR));
+                monthLoopView.setUnitText(this.build.context.getString(buildTimePicker.UNIT_MONTH));
+                dayLoopView.setUnitText(this.build.context.getString(buildTimePicker.UNIT_DAY));
+                hourLoopView.setUnitText(this.build.context.getString(buildTimePicker.UNIT_HOUR));
+                minuteLoopView.setUnitText(this.build.context.getString(buildTimePicker.UNIT_MINUTE));
                 break;
             }
             case YEAR_MONTH_DAY_HOUR_MIN_SEC: {
-                yearLoopView.setUnitText(this.build.context.getString(timePickerBuild.UNIT_YEAR));
-                monthLoopView.setUnitText(this.build.context.getString(timePickerBuild.UNIT_MONTH));
-                dayLoopView.setUnitText(this.build.context.getString(timePickerBuild.UNIT_DAY));
-                hourLoopView.setUnitText(this.build.context.getString(timePickerBuild.UNIT_HOUR));
-                minuteLoopView.setUnitText(this.build.context.getString(timePickerBuild.UNIT_MINUTE));
-                secLoopView.setUnitText(this.build.context.getString(timePickerBuild.UNIT_SEC));
+                yearLoopView.setUnitText(this.build.context.getString(buildTimePicker.UNIT_YEAR));
+                monthLoopView.setUnitText(this.build.context.getString(buildTimePicker.UNIT_MONTH));
+                dayLoopView.setUnitText(this.build.context.getString(buildTimePicker.UNIT_DAY));
+                hourLoopView.setUnitText(this.build.context.getString(buildTimePicker.UNIT_HOUR));
+                minuteLoopView.setUnitText(this.build.context.getString(buildTimePicker.UNIT_MINUTE));
+                secLoopView.setUnitText(this.build.context.getString(buildTimePicker.UNIT_SEC));
                 break;
             }
             case YEAR_MONTH_HOUR_MIN: {
-                yearLoopView.setUnitText(this.build.context.getString(timePickerBuild.UNIT_YEAR));
-                monthLoopView.setUnitText(this.build.context.getString(timePickerBuild.UNIT_MONTH));
+                yearLoopView.setUnitText(this.build.context.getString(buildTimePicker.UNIT_YEAR));
+                monthLoopView.setUnitText(this.build.context.getString(buildTimePicker.UNIT_MONTH));
 //                dayLoopView.setUnitText(build.context.getString(build.UNIT_DAY));
-                hourLoopView.setUnitText(this.build.context.getString(timePickerBuild.UNIT_HOUR));
-                minuteLoopView.setUnitText(this.build.context.getString(timePickerBuild.UNIT_MINUTE));
+                hourLoopView.setUnitText(this.build.context.getString(buildTimePicker.UNIT_HOUR));
+                minuteLoopView.setUnitText(this.build.context.getString(buildTimePicker.UNIT_MINUTE));
                 break;
             }
         }
 
-        if (timePickerBuild.loopTextSize != null) {
-            yearLoopView.setTextSize(timePickerBuild.loopTextSize);
-            monthLoopView.setTextSize(timePickerBuild.loopTextSize);
-            dayLoopView.setTextSize(timePickerBuild.loopTextSize);
-            hourLoopView.setTextSize(timePickerBuild.loopTextSize);
-            minuteLoopView.setTextSize(timePickerBuild.loopTextSize);
-            secLoopView.setTextSize(timePickerBuild.loopTextSize);
+        if (buildTimePicker.loopTextSize != null) {
+            yearLoopView.setTextSize(buildTimePicker.loopTextSize);
+            monthLoopView.setTextSize(buildTimePicker.loopTextSize);
+            dayLoopView.setTextSize(buildTimePicker.loopTextSize);
+            hourLoopView.setTextSize(buildTimePicker.loopTextSize);
+            minuteLoopView.setTextSize(buildTimePicker.loopTextSize);
+            secLoopView.setTextSize(buildTimePicker.loopTextSize);
         }
 
         initPickerViews(); // init year and month loop view
@@ -112,7 +112,7 @@ public class EasyTimePickerWindow<T> extends EasyWindow<T> {
         setTouchable(true);
         setFocusable(true);
 
-        switch (timePickerBuild.type) {
+        switch (buildTimePicker.type) {
             case YEAR_MONTH: {
                 dayLoopView.setVisibility(View.GONE);
                 hourLoopView.setVisibility(View.GONE);
@@ -153,8 +153,8 @@ public class EasyTimePickerWindow<T> extends EasyWindow<T> {
      * separately
      */
     private void initPickerViews() {
-        int minYear = timePickerBuild.mMinCalendar.get(Calendar.YEAR);
-        int maxYear = timePickerBuild.mMaxCalendar.get(Calendar.YEAR);
+        int minYear = buildTimePicker.mMinCalendar.get(Calendar.YEAR);
+        int maxYear = buildTimePicker.mMaxCalendar.get(Calendar.YEAR);
         int yearCount = maxYear - minYear + 1;
         for (int i = 0; i < yearCount; i++) {
             yearList.add(format2LenStr(minYear + i));
@@ -190,7 +190,7 @@ public class EasyTimePickerWindow<T> extends EasyWindow<T> {
         synchronized (this) {
             int dayMaxInMonth = selectCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
             List<String> list = new ArrayList<>();
-            switch (timePickerBuild.type) {
+            switch (buildTimePicker.type) {
                 case YEAR_MONTH_DAY_HOUR_MIN:
                 case YEAR_MONTH_DAY_HOUR_MIN_SEC:
                 case YEAR_MONTH_DAY:
@@ -233,7 +233,7 @@ public class EasyTimePickerWindow<T> extends EasyWindow<T> {
         @Override
         public void onItemSelect(EasyLoopView loopView, int item) {
             if (loopView == yearLoopView) {
-                int minYear = timePickerBuild.mMinCalendar.get(Calendar.YEAR);
+                int minYear = buildTimePicker.mMinCalendar.get(Calendar.YEAR);
                 int selectY = selectCalendar.get(Calendar.YEAR);
                 selectCalendar.add(Calendar.YEAR, item - (selectY - minYear));
                 initDayPickerView();
@@ -260,14 +260,14 @@ public class EasyTimePickerWindow<T> extends EasyWindow<T> {
     @Override
     public void onClick(View v) {
 //        super.onClick(v);
-        if (timePickerBuild.pickerListener == null) {
+        if (buildTimePicker.pickerListener == null) {
             return;
         }
         int i = v.getId();
         if (i == R.id.iv_left || i == R.id.tv_left) {
             dismiss();
         } else if (i == R.id.iv_right || i == R.id.tv_right) {
-            timePickerBuild.pickerListener.onPick(selectCalendar);
+            buildTimePicker.pickerListener.onPick(selectCalendar);
         }
     }
 

@@ -7,9 +7,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.jen.easyui.R;
+import com.jen.easyui.recycler.EasyAdapterFactory;
 import com.jen.easyui.recycler.EasyHolder;
 import com.jen.easyui.recycler.EasyHolderBaseAdapter;
-import com.jen.easyui.recycler.EasyAdapterFactory;
 
 import java.util.List;
 
@@ -21,10 +21,10 @@ import java.util.List;
 
 public class EasyWindowString<T> extends EasyWindow<T> {
     private RecyclerView recyclerView;
-    private MyAdapter<T> adapter;
+    private MyAdapter adapter;
     private ItemBuild itemBuild;
 
-    EasyWindowString(Build build) {
+    EasyWindowString(Build<T> build) {
         super(build);
         initView();
     }
@@ -37,15 +37,15 @@ public class EasyWindowString<T> extends EasyWindow<T> {
     }
 
     private void initView() {
-        adapter = new MyAdapter<>(build.context, recyclerView);
+        adapter = new MyAdapter(build.context, recyclerView);
+        adapter.setDataAndNotify(build.data);
     }
 
     public void setData(List<T> data) {
         if (data == null || data.size() == 0) {
             return;
         }
-        adapter.setData(data);
-        adapter.notifyDataSetChanged();
+        adapter.setDataAndNotify(data);
     }
 
     public RecyclerView getRecyclerView() {
@@ -56,9 +56,9 @@ public class EasyWindowString<T> extends EasyWindow<T> {
         return adapter;
     }
 
-    private class MyAdapter<T> extends EasyHolderBaseAdapter<T> {
+    private class MyAdapter extends EasyHolderBaseAdapter<T> {
 
-        public MyAdapter(Context context, RecyclerView recyclerView) {
+        MyAdapter(Context context, RecyclerView recyclerView) {
             super(context, recyclerView);
         }
 

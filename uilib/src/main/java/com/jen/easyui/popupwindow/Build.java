@@ -2,13 +2,11 @@ package com.jen.easyui.popupwindow;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.v7.widget.RecyclerView;
 
 import com.jen.easyui.popupwindow.listener.WindowDismissListener;
 import com.jen.easyui.popupwindow.listener.WindowTopBarListener;
-import com.jen.easyui.recycler.EasyAdapterFactory;
-import com.jen.easyui.recycler.letter.EasyLetterDecoration;
-import com.jen.easyui.recycler.letter.EasyLetterItem;
+
+import java.util.List;
 
 
 public class Build<T> {
@@ -19,6 +17,7 @@ public class Build<T> {
     boolean showTopBar = true;
     StyleTopBar styleTopBar = new StyleTopBar();//默认值
     StyleAnim styleAnim = StyleAnim.BOTTOM;
+    List<T> data;
 
     int flagCode;
     WindowTopBarListener topBarListener;
@@ -34,17 +33,8 @@ public class Build<T> {
      * @param adapter 绑定item数据
      * @return .
      */
-    public EasyWindowObject<T> createObject(EasyAdapterFactory<T> adapter) {
+    public EasyWindowObject<T> createObject(EasyWindowAdapter<T> adapter) {
         return new EasyWindowObject<>(this, adapter);
-    }
-
-    /**
-     * 字母列表
-     *
-     * @return .
-     */
-    public EasyWindowLetter<T> createLetter(EasyAdapterFactory<EasyLetterItem> adapter) {
-        return new EasyWindowLetter<>(this, adapter);
     }
 
     /**
@@ -113,6 +103,11 @@ public class Build<T> {
 
     public Build<T> setBackground(Drawable background) {
         this.background = background;
+        return this;
+    }
+
+    public Build<T> setData(List<T> data) {
+        this.data = data;
         return this;
     }
 }

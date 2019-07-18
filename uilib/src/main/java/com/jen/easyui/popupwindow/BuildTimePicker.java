@@ -8,6 +8,7 @@ import com.jen.easyui.popupwindow.listener.WindowDismissListener;
 import com.jen.easyui.popupwindow.listener.WindowTopBarListener;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -15,7 +16,7 @@ import java.util.Locale;
  * 作者：ShannJenn
  * 时间：2018/07/31.
  */
-public class TimePickerBuild<T> extends Build<T> {
+public class BuildTimePicker<T> extends Build<T> {
     public Integer loopTextSize;
     public Type type = Type.YEAR_MONTH_DAY_HOUR_MIN;
     public Unit unit = Unit.NON;
@@ -39,7 +40,7 @@ public class TimePickerBuild<T> extends Build<T> {
 
     public PickerListener pickerListener;
 
-    TimePickerBuild(Context context) {
+    BuildTimePicker(Context context) {
         super(context);
         mInitCalendar = (Calendar) Calendar.getInstance(Locale.CHINA).clone();
 
@@ -76,12 +77,12 @@ public class TimePickerBuild<T> extends Build<T> {
         NON, YEAR_MONTH_DAY_HOUR_MIN, YEAR_MONTH_DAY_HOUR_MIN_SEC, YEAR_MONTH_HOUR_MIN
     }
 
-    public TimePickerBuild setType(Type type) {
+    public BuildTimePicker setType(Type type) {
         this.type = type;
         return this;
     }
 
-    public TimePickerBuild setUnit(Unit unit) {
+    public BuildTimePicker setUnit(Unit unit) {
         this.unit = unit;
         return this;
     }
@@ -89,7 +90,7 @@ public class TimePickerBuild<T> extends Build<T> {
     /**
      * 轴大小
      */
-    public TimePickerBuild setLoopTextSize(Integer textSize) {
+    public BuildTimePicker setLoopTextSize(Integer textSize) {
         this.loopTextSize = textSize;
         return this;
     }
@@ -97,87 +98,93 @@ public class TimePickerBuild<T> extends Build<T> {
     /**
      * 设置初始日期
      */
-    public TimePickerBuild setInitCalendar(long timeInMillis) {
+    public BuildTimePicker setInitCalendar(long timeInMillis) {
         mInitCalendar.setTimeInMillis(timeInMillis);
         return this;
     }
 
-    public TimePickerBuild setMinYearLimit(int minYearLimit) {
+    public BuildTimePicker setMinYearLimit(int minYearLimit) {
         int limit = minYearLimit - this.minYearLimit;
         this.minYearLimit = minYearLimit;
         mMinCalendar.add(Calendar.YEAR, -limit);
         return this;
     }
 
-    public TimePickerBuild setMaxYearLimit(int maxYearLimit) {
+    public BuildTimePicker setMaxYearLimit(int maxYearLimit) {
         int limit = maxYearLimit - this.maxYearLimit;
         this.maxYearLimit = maxYearLimit;
         mMaxCalendar.add(Calendar.YEAR, limit);
         return this;
     }
 
-    public TimePickerBuild setTimePickerListener(PickerListener pickerListener) {
+    public BuildTimePicker setTimePickerListener(PickerListener pickerListener) {
         this.pickerListener = pickerListener;
         return this;
     }
 
     @Override
-    public TimePickerBuild setFlagCode(int flagCode) {
+    public BuildTimePicker<T> setFlagCode(int flagCode) {
         super.setFlagCode(flagCode);
         return this;
     }
 
     @Override
-    public TimePickerBuild setShowTopBar(boolean showTopBar) {
+    public BuildTimePicker<T> setShowTopBar(boolean showTopBar) {
         super.setShowTopBar(showTopBar);
         return this;
     }
 
     @Override
-    public TimePickerBuild setHeight(int height) {
+    public BuildTimePicker<T> setHeight(int height) {
         super.setHeight(height);
         return this;
     }
 
     @Override
-    public TimePickerBuild setWidth(int width) {
+    public BuildTimePicker<T> setWidth(int width) {
         super.setWidth(width);
         return this;
     }
 
     @Override
-    public TimePickerBuild setTopBarListener(WindowTopBarListener topBarListener) {
+    public BuildTimePicker<T> setTopBarListener(WindowTopBarListener topBarListener) {
         super.setTopBarListener(topBarListener);
         return this;
     }
 
     @Override
-    public TimePickerBuild setDismissListener(WindowDismissListener dismissListener) {
+    public BuildTimePicker<T> setDismissListener(WindowDismissListener dismissListener) {
         super.setDismissListener(dismissListener);
         return this;
     }
 
     @Override
-    public TimePickerBuild setStyleTopBar(StyleTopBar styleTopBar) {
+    public BuildTimePicker<T> setStyleTopBar(StyleTopBar styleTopBar) {
         super.setStyleTopBar(styleTopBar);
         return this;
     }
 
     @Override
-    public TimePickerBuild setStyleAnim(StyleAnim animStyle) {
+    public BuildTimePicker<T> setStyleAnim(StyleAnim animStyle) {
         super.setStyleAnim(animStyle);
         return this;
     }
 
     @Override
-    public TimePickerBuild setShowAlpha(float showAlpha) {
+    public BuildTimePicker<T> setShowAlpha(float showAlpha) {
         super.setShowAlpha(showAlpha);
         return this;
     }
 
     @Override
-    public TimePickerBuild setBackground(Drawable background) {
+    public BuildTimePicker<T> setBackground(Drawable background) {
         super.setBackground(background);
+        return this;
+    }
+
+    @Override
+    public BuildTimePicker<T> setData(List<T> data) {
+        super.setData(data);
         return this;
     }
 

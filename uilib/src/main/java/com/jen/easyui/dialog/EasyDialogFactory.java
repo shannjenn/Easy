@@ -34,6 +34,11 @@ public abstract class EasyDialogFactory extends Dialog {
     }
 
     @Override
+    public boolean dispatchTouchEvent(@NonNull MotionEvent ev) {
+        return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
         if (isOutOfBounds(getContext(), event)) {
             switch (event.getAction()) {

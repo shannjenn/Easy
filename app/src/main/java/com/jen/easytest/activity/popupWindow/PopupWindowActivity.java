@@ -14,16 +14,19 @@ import com.jen.easytest.model.RecyclerViewModel;
 import easybase.EasyActivity;
 
 import com.jen.easyui.popupwindow.EasyWindow;
+import com.jen.easyui.popupwindow.EasyWindowAdapter;
 import com.jen.easyui.popupwindow.EasyWindowLetter;
 import com.jen.easyui.popupwindow.EasyWindowObject;
 import com.jen.easyui.popupwindow.StyleTopBar;
 import com.jen.easyui.recycler.EasyHolder;
 import com.jen.easyui.recycler.EasyHolderBaseAdapter;
+import com.jen.easyui.recycler.LayoutType;
 import com.jen.easyui.recycler.letter.EasyLetterDecoration;
 import com.jen.easyui.util.EasyDensityUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 作者：ShannJenn
@@ -32,7 +35,7 @@ import java.util.List;
 
 public class PopupWindowActivity extends EasyActivity {
 
-    EasyWindowObject easyWindowObject;
+    EasyWindowObject<String> easyWindowObject;
     EasyWindowLetter easyWindowLetter;
 
     StyleTopBar styleTopBar;
@@ -91,13 +94,32 @@ public class PopupWindowActivity extends EasyActivity {
 
         styleTopBar = new StyleTopBar();
 
-        easyWindowObject = EasyWindow.build(this)
+        easyWindowObject = EasyWindow.<String>build(this)
                 .setStyleTopBar(styleTopBar)
-                .createObject(new MyAdapter(this, list));
-        easyWindowObject.setData(list);
+                .createObject(new EasyWindowAdapter<String>() {
+                    @Override
+                    public int[] onBindLayout() {
+                        return new int[0];
+                    }
 
-        easyWindowLetter = EasyWindow.build(this)
-                .createLetter(new MyAdapter(this));
+                    @Override
+                    public void onBindHolderData(EasyHolder easyHolder, View view, int viewType, String item, int position) {
+
+                    }
+                });
+        easyWindowObject.setData(list);
+        easyWindowLetter = EasyWindow.buildLetter(this)
+                .createLetter(new EasyWindowAdapter() {
+                    @Override
+                    public int[] onBindLayout() {
+                        return new int[0];
+                    }
+
+                    @Override
+                    public void onBindHolderData(EasyHolder easyHolder, View view, int viewType, Object item, int position) {
+
+                    }
+                });
 
         mData.clear();
         for (int i = 0; i < 36; i++) {
@@ -165,7 +187,17 @@ public class PopupWindowActivity extends EasyActivity {
                         .setShowTopBar(false)
                         .setWidth(EasyDensityUtil.dp2pxInt(195))
                         .setHeight(EasyDensityUtil.dp2pxInt(45))
-                        .createObject(new MyAdapter(this, list)).showRight(tv_right, x, y);
+                        .createObject(new EasyWindowAdapter<Object>() {
+                            @Override
+                            public int[] onBindLayout() {
+                                return new int[0];
+                            }
+
+                            @Override
+                            public void onBindHolderData(EasyHolder easyHolder, View view, int viewType, Object item, int position) {
+
+                            }
+                        }).showRight(tv_right, x, y);
                 break;
             }
             case R.id.popup_window_letter: {
@@ -176,39 +208,4 @@ public class PopupWindowActivity extends EasyActivity {
         }
     }
 
-    class MyAdapter extends EasyHolderBaseAdapter {
-
-
-        public MyAdapter(Context context) {
-            super(context);
-        }
-
-        public MyAdapter(Context context, List<String> list) {
-            super(context);
-        }
-
-        public MyAdapter(Context context, RecyclerView recyclerView) {
-            super(context, recyclerView);
-        }
-
-        @Override
-        public RecyclerView.ItemDecoration onDecoration() {
-            return MyItemDecoration.newInstance(mContext);
-        }
-
-        @Override
-        protected int onBindLayout() {
-            return R.layout.item_test;
-        }
-
-        @Override
-        protected void onBindHolderData(EasyHolder easyHolder, View view, int viewType, int position) {
-            easyHolder.setTextView(R.id.tv_text, mData.get(position).toString());
-        }
-
-        @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
-        }
-    }
 }
