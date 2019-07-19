@@ -8,7 +8,6 @@ import android.view.View;
 
 import com.jen.easy.log.EasyLog;
 import com.jen.easyui.R;
-import com.jen.easyui.recycler.EasyAdapterFactory;
 import com.jen.easyui.recycler.EasyHolder;
 import com.jen.easyui.recycler.EasyHolderWaterfallAdapter;
 import com.jen.easyui.recycler.LayoutType;
@@ -98,7 +97,7 @@ public class EasyWindowLetter<T extends EasyLetterItem> extends EasyWindow<T> im
         return recyclerView;
     }
 
-    public EasyAdapterFactory getAdapter() {
+    public MyAdapter getAdapter() {
         return adapter;
     }
 
@@ -113,7 +112,7 @@ public class EasyWindowLetter<T extends EasyLetterItem> extends EasyWindow<T> im
         return letterDecoration;
     }
 
-    private class MyAdapter extends EasyHolderWaterfallAdapter<T> {
+    public class MyAdapter extends EasyHolderWaterfallAdapter<T> {
         MyAdapter(Context context) {
             super(context);
         }

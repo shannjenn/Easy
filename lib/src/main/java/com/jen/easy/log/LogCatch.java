@@ -108,7 +108,7 @@ class LogCatch extends Thread {
                         out.flush();
                         out.close();
                     } catch (FileNotFoundException e) {
-                        LogcatLog.exception(ExceptionType.FileNotFoundException, "FileNotFoundException");
+                        e.printStackTrace();
                     }
                 }
             }
@@ -116,7 +116,7 @@ class LogCatch extends Thread {
                 mListener.onLogPrint(file);
             }
         } catch (IOException e) {
-            LogcatLog.exception(ExceptionType.IOException, "IOException");
+            e.printStackTrace();
         } finally {
             if (logcatProc != null) {
                 logcatProc.destroy();
@@ -127,7 +127,7 @@ class LogCatch extends Thread {
                     reader.close();
                     reader = null;
                 } catch (IOException e) {
-                    LogcatLog.exception(ExceptionType.IOException, "IOException");
+                    e.printStackTrace();
                 }
             }
         }

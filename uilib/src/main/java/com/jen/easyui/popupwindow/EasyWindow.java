@@ -188,4 +188,5 @@ public abstract class EasyWindow<T> extends EasyWindowFactory<T> implements View
                 break;
         }
     }
+
 }

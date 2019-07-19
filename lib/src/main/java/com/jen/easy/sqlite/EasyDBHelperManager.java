@@ -34,7 +34,7 @@ abstract class EasyDBHelperManager {
         try {
             return database.getReadableDatabase();
         } catch (SQLiteCantOpenDatabaseException e) {
-            SQLLog.exception(ExceptionType.SQLiteCantOpenDatabaseException, "SQLiteCantOpenDatabaseException");
+            e.printStackTrace();
             return null;
         }
     }
@@ -46,7 +46,7 @@ abstract class EasyDBHelperManager {
         try {
             return database.getWritableDatabase();
         } catch (SQLiteCantOpenDatabaseException e) {
-            SQLLog.exception(ExceptionType.SQLiteCantOpenDatabaseException, "SQLiteCantOpenDatabaseException");
+            e.printStackTrace();
             return null;
         }
     }
@@ -123,7 +123,8 @@ abstract class EasyDBHelperManager {
             db.setTransactionSuccessful();
             SQLLog.d("创建表:" + tableName + " 列明:" + fieldSql + " 主键:" + primaryKeySql + " 成功");
         } catch (SQLiteException e) {
-            SQLLog.exception(ExceptionType.SQLiteException, "创建表：" + tableName + " 失败  SQLiteException");
+            SQLLog.e("SQLiteException 创建表：" + tableName + " 失败  SQLiteException:\n");
+            e.printStackTrace();
         } finally {
             db.endTransaction();
             db.close();
@@ -147,7 +148,8 @@ abstract class EasyDBHelperManager {
             SQLLog.d("删除表: " + tableName + " 成功");
             return true;
         } catch (SQLiteException e) {
-            SQLLog.exception(ExceptionType.SQLiteException, "删除表: " + tableName + " 失败 SQLiteException");
+            SQLLog.e("SQLiteException删除表: " + tableName + " 失败 SQLiteException:\n");
+            e.printStackTrace();
         } finally {
             db.endTransaction();
             db.close();
@@ -205,7 +207,7 @@ abstract class EasyDBHelperManager {
             db.setTransactionSuccessful();
             SQLLog.d("add table name : " + tableName + " column : " + columnName + " SUCCESS");
         } catch (SQLiteException e) {
-            SQLLog.exception(ExceptionType.SQLiteException, "addColumn SQLiteException");
+            e.printStackTrace();
         } finally {
             db.endTransaction();
             db.close();

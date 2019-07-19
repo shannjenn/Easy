@@ -41,7 +41,7 @@ abstract class BindViewManager {
             try {
                 field.set(activity, view);
             } catch (IllegalAccessException e) {
-                BindLog.exception(ExceptionType.IllegalAccessException, errorField(activity.getClass(), field, e));
+                throwErrorField(activity.getClass(), field, e);
             }
         }
 
@@ -60,9 +60,10 @@ abstract class BindViewManager {
                         try {
                             method.invoke(activity, view);
                         } catch (IllegalAccessException e) {
-                            BindLog.exception(ExceptionType.IllegalAccessException, errorMethod(activity.getClass(), method, e));
+                            throwErrorMethod(activity.getClass(), method, e);
+                            e.printStackTrace();
                         } catch (InvocationTargetException e) {
-                            BindLog.exception(ExceptionType.InvocationTargetException, errorMethod(activity.getClass(), method, e));
+                            throwErrorMethod(activity.getClass(), method, e);
                         }
                     }
                 });
@@ -89,7 +90,7 @@ abstract class BindViewManager {
             try {
                 field.set(obj, view);
             } catch (IllegalAccessException e) {
-                BindLog.exception(ExceptionType.IllegalAccessException, errorField(obj.getClass(), field, e));
+                throwErrorField(obj.getClass(), field, e);
             }
         }
 
@@ -106,9 +107,9 @@ abstract class BindViewManager {
                         try {
                             method.invoke(obj, view);
                         } catch (IllegalAccessException e) {
-                            BindLog.exception(ExceptionType.IllegalAccessException, errorMethod(obj.getClass(), method, e));
+                            throwErrorMethod(obj.getClass(), method, e);
                         } catch (InvocationTargetException e) {
-                            BindLog.exception(ExceptionType.InvocationTargetException, errorMethod(obj.getClass(), method, e));
+                            throwErrorMethod(obj.getClass(), method, e);
                         }
                     }
                 });
@@ -116,12 +117,14 @@ abstract class BindViewManager {
         }
     }
 
-    private String errorField(Class cls, Field field, Exception e) {
-        return "类名: " + cls.toString() + " 变量名: " + field.getName() + " 出现错误(没有找到该ID)：\n" + e;
+    private void throwErrorField(Class cls, Field field, Exception e) {
+        BindLog.e("类名: " + cls.toString() + " 变量名: " + field.getName() + " 出现错误(没有找到该ID)：\n");
+        e.printStackTrace();
     }
 
-    private String errorMethod(Class cls, Method method, Exception e) {
-        return "类名: " + cls.toString() + " 方法名: " + method.getName() + "出现错误：\n" + e;
+    private void throwErrorMethod(Class cls, Method method, Exception e) {
+        BindLog.e("类名: " + cls.toString() + " 方法名: " + method.getName() + "出现错误：\n");
+        e.printStackTrace();
     }
 
     /**

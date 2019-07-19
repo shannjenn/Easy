@@ -181,14 +181,14 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
             childRun(connection);
             connection.disconnect();
         } catch (IOException e) {
-            String infoFormat = "http request IOException error：" + JsonLogFormat.formatJson(mRequestLogInfo);
+            String infoFormat = "Http IOException error：\n" + JsonLogFormat.formatJson(mRequestLogInfo);
             HttpLog.e(infoFormat);
-            HttpLog.exception(ExceptionType.IOException, infoFormat);
+            e.printStackTrace();
             fail("");
         } catch (JSONException e) {
-            String infoFormat = "http request JSONException error：" + JsonLogFormat.formatJson(mRequestLogInfo);
+            String infoFormat = "Http JSONException error：\n" + JsonLogFormat.formatJson(mRequestLogInfo);
             HttpLog.e(infoFormat);
-            HttpLog.exception(ExceptionType.JSONException, infoFormat);
+            e.printStackTrace();
             fail("");
         }
     }

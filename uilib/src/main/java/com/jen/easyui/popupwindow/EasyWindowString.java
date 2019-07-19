@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.jen.easyui.R;
-import com.jen.easyui.recycler.EasyAdapterFactory;
 import com.jen.easyui.recycler.EasyHolder;
 import com.jen.easyui.recycler.EasyHolderBaseAdapter;
 
@@ -22,7 +21,7 @@ import java.util.List;
 public class EasyWindowString<T> extends EasyWindow<T> {
     private RecyclerView recyclerView;
     private MyAdapter adapter;
-    private ItemBuild itemBuild;
+    private ItemBuild<T> itemBuild;
 
     EasyWindowString(Build<T> build) {
         super(build);
@@ -52,11 +51,11 @@ public class EasyWindowString<T> extends EasyWindow<T> {
         return recyclerView;
     }
 
-    public EasyAdapterFactory getAdapter() {
+    public MyAdapter getAdapter() {
         return adapter;
     }
 
-    private class MyAdapter extends EasyHolderBaseAdapter<T> {
+    public class MyAdapter extends EasyHolderBaseAdapter<T> {
 
         MyAdapter(Context context, RecyclerView recyclerView) {
             super(context, recyclerView);
@@ -72,7 +71,7 @@ public class EasyWindowString<T> extends EasyWindow<T> {
             String name;
             if (itemBuild != null) {
                 TextView shape_name = view.findViewById(R.id.shape_name);
-                name = itemBuild.item(position, shape_name);
+                name = itemBuild.item(mData.get(position), position, shape_name);
             } else {
                 name = mData.get(position).toString();
             }
@@ -85,11 +84,11 @@ public class EasyWindowString<T> extends EasyWindow<T> {
         }
     }
 
-    public interface ItemBuild {
-        String item(int position, TextView itemView);
+    public interface ItemBuild<T> {
+        String item(T item, int position, TextView itemView);
     }
 
-    public void setItemBuild(ItemBuild itemBuild) {
+    public void setItemBuild(ItemBuild<T> itemBuild) {
         this.itemBuild = itemBuild;
     }
 

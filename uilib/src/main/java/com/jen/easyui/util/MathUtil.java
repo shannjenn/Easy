@@ -108,31 +108,53 @@ public class MathUtil {
      * @param value1 值1
      * @param value2 值2
      * @param math   方法
-     * @param scale  保留小数（只有除法）
      * @return .
      */
     public static BigDecimal math(Object value1, Object value2, Math math, int scale) {
-        boolean isError = false;
+        return math(value1, value2, math, scale, BigDecimal.ROUND_HALF_UP);//BigDecimal.ROUND_HALF_UP 默认四舍五入
+    }
+
+    /**
+     * @param value1 值1
+     * @param value2 值2
+     * @param math   方法
+     * @param scale  保留小数（只有除法）
+     * @return .
+     */
+    public static BigDecimal math(Object value1, Object value2, Math math, int scale, int roundingMode) {
+        boolean isErrorOrEmpty1 = false;
+        boolean isErrorOrEmpty2 = false;
         if (value1 instanceof String) {
             if (((String) value1).length() == 0) {
-                isError = true;
-            }
-        } else if (value2 instanceof String) {
-            if (((String) value2).length() == 0) {
-                isError = true;
+                isErrorOrEmpty1 = true;
             }
         } else if (!(value1 instanceof Double) && !(value1 instanceof Integer) && !(value1 instanceof Long) && !(value1 instanceof Float)) {
-            isError = true;
-        } else if (!(value2 instanceof Double) && !(value2 instanceof Integer) && !(value2 instanceof Long) && !(value2 instanceof Float)) {
-            isError = true;
+            isErrorOrEmpty1 = true;
         }
-        if (isError) {
-            EasyLog.e(TAG, "math方法：数据类型错误");
-            return new BigDecimal(0);
+        if (value2 instanceof String) {
+            if (((String) value2).length() == 0) {
+                isErrorOrEmpty2 = true;
+            }
+        } else if (!(value2 instanceof Double) && !(value2 instanceof Integer) && !(value2 instanceof Long) && !(value2 instanceof Float)) {
+            isErrorOrEmpty2 = true;
         }
         try {
-            BigDecimal bd1 = new BigDecimal(String.valueOf(value1));
-            BigDecimal bd2 = new BigDecimal(String.valueOf(value2));
+            BigDecimal bd1;
+            BigDecimal bd2;
+            if (value1 instanceof BigDecimal) {
+                bd1 = (BigDecimal) value1;
+            } else if (isErrorOrEmpty1) {
+                bd1 = new BigDecimal(0);
+            } else {
+                bd1 = new BigDecimal(String.valueOf(value1));
+            }
+            if (value2 instanceof BigDecimal) {
+                bd2 = (BigDecimal) value2;
+            } else if (isErrorOrEmpty2) {
+                bd2 = new BigDecimal(0);
+            } else {
+                bd2 = new BigDecimal(String.valueOf(value2));
+            }
             switch (math) {
                 case Add:
                     return bd1.add(bd2);
@@ -141,7 +163,7 @@ public class MathUtil {
                 case Multiply:
                     return bd1.multiply(bd2);
                 case Divide:
-                    return bd1.divide(bd2, scale);
+                    return bd1.divide(bd2, scale, roundingMode);
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
@@ -342,20 +364,23 @@ public class MathUtil {
      * @return .
      */
     private static BigDecimal round(Object value, int scale, int type) {
-        boolean isError = false;
+        boolean isErrorOrEmpty = false;
         if (value instanceof String) {
             if (((String) value).length() == 0) {
-                isError = true;
+                isErrorOrEmpty = true;
             }
         } else if (!(value instanceof Double) && !(value instanceof Integer) && !(value instanceof Long) && !(value instanceof Float)) {
-            isError = true;
-        }
-        if (isError) {
-            EasyLog.e(TAG, "round方法：数据类型错误");
-            return new BigDecimal(0);
+            isErrorOrEmpty = true;
         }
         try {
-            BigDecimal bigDecimal = new BigDecimal(String.valueOf(value));
+            BigDecimal bigDecimal;
+            if (value instanceof BigDecimal) {
+                bigDecimal = (BigDecimal) value;
+            } else if (isErrorOrEmpty) {
+                return new BigDecimal(0);
+            } else {
+                bigDecimal = new BigDecimal(String.valueOf(value));
+            }
             bigDecimal = bigDecimal.setScale(scale, type);
             return bigDecimal;
         } catch (NumberFormatException e) {

@@ -83,7 +83,7 @@ class CrashCatch implements UncaughtExceptionHandler {
                 ex.printStackTrace(p);
                 p.flush();
             } catch (FileNotFoundException e) {
-                LogcatLog.exception(ExceptionType.FileNotFoundException, "文件不存在");
+                e.printStackTrace();
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             } catch (IOException e) {

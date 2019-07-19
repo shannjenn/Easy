@@ -43,7 +43,8 @@ class EasyDatabase {
             db.close();
             return true;
         } catch (SQLiteException e) {
-            SQLLog.exception(ExceptionType.SQLiteException, "数据库创建失败");
+            SQLLog.e("SQLiteException 数据库创建失败:\n");
+            e.printStackTrace();
         }
         return false;
     }
@@ -58,7 +59,7 @@ class EasyDatabase {
         try {
             db = getWritableDatabase();
         } catch (SQLiteCantOpenDatabaseException e) {
-            SQLLog.exception(ExceptionType.SQLiteCantOpenDatabaseException, "SQLiteCantOpenDatabaseException");
+            e.printStackTrace();
             return;
         }
         try {
@@ -75,7 +76,7 @@ class EasyDatabase {
             }
 
         } catch (SQLiteException e) {
-            SQLLog.exception(ExceptionType.SQLiteException, "SQLiteException");
+            e.printStackTrace();
         } finally {
             db.close();
         }
@@ -85,7 +86,7 @@ class EasyDatabase {
         try {
             return getReadableDatabase().getVersion();
         } catch (SQLiteCantOpenDatabaseException e) {
-            SQLLog.exception(ExceptionType.SQLiteCantOpenDatabaseException, "SQLiteCantOpenDatabaseException");
+            e.printStackTrace();
             return -1;
         }
     }
@@ -119,7 +120,8 @@ class EasyDatabase {
                 return false;
             }
         } catch (SQLiteException e) {
-            SQLLog.exception(ExceptionType.SQLiteException, "checkTableExist 表不存在");
+            SQLLog.e("SQLiteException checkTableExist 表不存在:\n");
+            e.printStackTrace();
             return false;
         }
     }

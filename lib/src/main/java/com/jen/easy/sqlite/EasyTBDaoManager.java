@@ -40,17 +40,17 @@ abstract class EasyTBDaoManager {
      */
     protected <T> T searchById(Class<T> clazz, String id) {
         if (clazz == null || id == null) {
-            throwException(ExceptionType.NullPointerException, "参数不能为空");
+            showErrorLog("参数不能为空");
             return null;
         }
         String tableName = DBReflectManager.getTableName(clazz);
         if (tableName == null) {
-            throwException(ExceptionType.RuntimeException, "表名不能为空，请注释 class=" + clazz.getName());
+            showErrorLog("表名不能为空，请注释 class=" + clazz.getName());
             return null;
         }
         DBReflectManager.ColumnInfo columnInfo = DBReflectManager.getColumnInfo(clazz);
         if (columnInfo.primaryKeys.size() == 0) {
-            throwException(ExceptionType.RuntimeException, "主键不能为空，请注释 class=" + clazz.getName());
+            showErrorLog("主键不能为空，请注释 class=" + clazz.getName());
             return null;
         }
 
@@ -58,7 +58,7 @@ abstract class EasyTBDaoManager {
         try {
             db = database.getReadableDatabase();
         } catch (SQLiteCantOpenDatabaseException e) {
-            throwException(ExceptionType.SQLiteCantOpenDatabaseException, "SQLiteCantOpenDatabaseException class=" + clazz.getName());
+            throwException(e, "SQLiteCantOpenDatabaseException class=" + clazz.getName());
             return null;
         }
         try {
@@ -74,7 +74,7 @@ abstract class EasyTBDaoManager {
             db.close();
             return obj;
         } catch (SQLiteException e) {
-            throwException(ExceptionType.SQLiteException, "SQLiteException class=" + clazz.getName());
+            throwException(e, "SQLiteException class=" + clazz.getName());
         } finally {
             db.close();
         }
@@ -96,12 +96,12 @@ abstract class EasyTBDaoManager {
     protected <T> List<T> searchByWhere(Class<T> clazz, String selection, String[] selectionArgs, String orderBy, int page, int pageNo) {
         List<T> objs = new ArrayList<>();
         if (clazz == null) {
-            throwException(ExceptionType.NullPointerException, "class参数不能为空");
+            showErrorLog("class参数不能为空");
             return objs;
         }
         String tableName = DBReflectManager.getTableName(clazz);
         if (tableName == null) {
-            throwException(ExceptionType.RuntimeException, "表名不能为空，请注释 class=" + clazz.getName());
+            showErrorLog("表名不能为空，请注释 class=" + clazz.getName());
             return objs;
         }
         DBReflectManager.ColumnInfo columnInfo = DBReflectManager.getColumnInfo(clazz);
@@ -117,7 +117,7 @@ abstract class EasyTBDaoManager {
         try {
             db = database.getReadableDatabase();
         } catch (SQLiteCantOpenDatabaseException e) {
-            throwException(ExceptionType.SQLiteCantOpenDatabaseException, "SQLiteCantOpenDatabaseException class=" + clazz.getName());
+            throwException(e, "SQLiteCantOpenDatabaseException class=" + clazz.getName());
             return objs;
         }
         try {
@@ -133,7 +133,7 @@ abstract class EasyTBDaoManager {
             cursor.close();
             db.close();
         } catch (SQLiteException e) {
-            throwException(ExceptionType.SQLiteException, "SQLiteException class=" + clazz.getName());
+            throwException(e, "SQLiteException class=" + clazz.getName());
         } finally {
             db.close();
         }
@@ -187,14 +187,14 @@ abstract class EasyTBDaoManager {
      */
     protected <T> boolean insert(T t) {
         if (t == null) {
-            throwException(ExceptionType.RuntimeException, "参数不能为空");
+            showErrorLog("参数不能为空");
             return false;
         }
         SQLiteDatabase db;
         try {
             db = database.getWritableDatabase();
         } catch (SQLiteCantOpenDatabaseException e) {
-            throwException(ExceptionType.SQLiteCantOpenDatabaseException, "SQLiteCantOpenDatabaseException object=" + t.getClass().toString());
+            throwException(e, "SQLiteCantOpenDatabaseException object=" + t.getClass().toString());
             return false;
         }
         try {
@@ -207,7 +207,7 @@ abstract class EasyTBDaoManager {
                 }
                 String tableName = DBReflectManager.getTableName(list.get(0).getClass());
                 if (tableName == null) {
-                    throwException(ExceptionType.RuntimeException, "表名不能为空，请注释 object=" + t.getClass().toString());
+                    showErrorLog("表名不能为空，请注释 object=" + t.getClass().toString());
                     return false;
                 }
                 DBReflectManager.ColumnInfo columnInfo = DBReflectManager.getColumnInfo(list.get(0).getClass());
@@ -224,7 +224,7 @@ abstract class EasyTBDaoManager {
                 }
                 String tableName = DBReflectManager.getTableName(objects[0].getClass());
                 if (tableName == null) {
-                    throwException(ExceptionType.RuntimeException, "表名不能为空，请注释 object=" + t.getClass().toString());
+                    showErrorLog("表名不能为空，请注释 object=" + t.getClass().toString());
                     return false;
                 }
                 DBReflectManager.ColumnInfo columnInfo = DBReflectManager.getColumnInfo(objects[0].getClass());
@@ -244,7 +244,7 @@ abstract class EasyTBDaoManager {
                 String tableName = DBReflectManager.getTableName(collection[0].getClass());
                 DBReflectManager.ColumnInfo columnInfo = DBReflectManager.getColumnInfo(collection[0].getClass());
                 if (tableName == null) {
-                    throwException(ExceptionType.RuntimeException, "表名不能为空，请注释 object=" + t.getClass().toString());
+                    showErrorLog("表名不能为空，请注释 object=" + t.getClass().toString());
                     return false;
                 }
 
@@ -255,7 +255,7 @@ abstract class EasyTBDaoManager {
             } else {
                 String tableName = DBReflectManager.getTableName(t.getClass());
                 if (tableName == null) {
-                    throwException(ExceptionType.RuntimeException, "表名不能为空，请注释 object=" + t.getClass().toString());
+                    showErrorLog("表名不能为空，请注释 object=" + t.getClass().toString());
                     return false;
                 }
                 DBReflectManager.ColumnInfo columnInfo = DBReflectManager.getColumnInfo(t.getClass());
@@ -265,7 +265,7 @@ abstract class EasyTBDaoManager {
             db.setTransactionSuccessful();
             return true;
         } catch (SQLiteException e) {
-            throwException(ExceptionType.SQLiteException, "insert SQLiteException object=" + t.getClass().toString());
+            throwException(e, "insert SQLiteException object=" + t.getClass().toString());
         } finally {
             db.endTransaction();
             db.close();
@@ -282,14 +282,14 @@ abstract class EasyTBDaoManager {
      */
     protected <T> boolean replace(T t) {
         if (t == null) {
-            throwException(ExceptionType.NullPointerException, "参数不能为空");
+            showErrorLog("参数不能为空");
             return false;
         }
         SQLiteDatabase db;
         try {
             db = database.getWritableDatabase();
         } catch (SQLiteCantOpenDatabaseException e) {
-            throwException(ExceptionType.SQLiteCantOpenDatabaseException, "SQLiteCantOpenDatabaseException object=" + t.getClass().toString());
+            throwException(e, "SQLiteCantOpenDatabaseException object=" + t.getClass().toString());
             return false;
         }
         try {
@@ -302,7 +302,7 @@ abstract class EasyTBDaoManager {
                 }
                 String tableName = DBReflectManager.getTableName(list.get(0).getClass());
                 if (tableName == null) {
-                    throwException(ExceptionType.RuntimeException, "表名不能为空，请注释 object=" + t.getClass().toString());
+                    showErrorLog("表名不能为空，请注释 object=" + t.getClass().toString());
                     return false;
                 }
                 DBReflectManager.ColumnInfo columnInfo = DBReflectManager.getColumnInfo(list.get(0).getClass());
@@ -318,7 +318,7 @@ abstract class EasyTBDaoManager {
                 }
                 String tableName = DBReflectManager.getTableName(objs[0].getClass());
                 if (tableName == null) {
-                    throwException(ExceptionType.RuntimeException, "表名不能为空，请注释 object=" + t.getClass().toString());
+                    showErrorLog("表名不能为空，请注释 object=" + t.getClass().toString());
                     return false;
                 }
                 DBReflectManager.ColumnInfo columnInfo = DBReflectManager.getColumnInfo(objs[0].getClass());
@@ -335,7 +335,7 @@ abstract class EasyTBDaoManager {
                 Object[] collection = map.values().toArray();
                 String tableName = DBReflectManager.getTableName(collection[0].getClass());
                 if (tableName == null) {
-                    throwException(ExceptionType.RuntimeException, "表名不能为空，请注释 object=" + t.getClass().toString());
+                    showErrorLog("表名不能为空，请注释 object=" + t.getClass().toString());
                     return false;
                 }
                 DBReflectManager.ColumnInfo columnInfo = DBReflectManager.getColumnInfo(collection[0].getClass());
@@ -346,7 +346,7 @@ abstract class EasyTBDaoManager {
             } else {
                 String tableName = DBReflectManager.getTableName(t.getClass());
                 if (tableName == null) {
-                    throwException(ExceptionType.RuntimeException, "表名不能为空，请注释 object=" + t.getClass().toString());
+                    showErrorLog("表名不能为空，请注释 object=" + t.getClass().toString());
                     return false;
                 }
                 DBReflectManager.ColumnInfo columnInfo = DBReflectManager.getColumnInfo(t.getClass());
@@ -356,7 +356,7 @@ abstract class EasyTBDaoManager {
             db.setTransactionSuccessful();
             return true;
         } catch (SQLiteException e) {
-            throwException(ExceptionType.SQLiteException, "replace SQLiteException object=" + t.getClass().toString());
+            throwException(e, "replace SQLiteException object=" + t.getClass().toString());
         } finally {
             db.endTransaction();
             db.close();
@@ -372,12 +372,12 @@ abstract class EasyTBDaoManager {
      */
     protected boolean delete(Class clazz, String id) {
         if (clazz == null || id == null) {
-            throwException(ExceptionType.NullPointerException, "参数不能为空");
+            showErrorLog("参数不能为空");
             return false;
         }
         String tableName = DBReflectManager.getTableName(clazz);
         if (tableName == null) {
-            throwException(ExceptionType.RuntimeException, "表名不能为空，请注释 clazz=" + clazz.toString());
+            showErrorLog("表名不能为空，请注释 clazz=" + clazz.toString());
             return false;
         }
         List<String> primaryKeys = DBReflectManager.getPrimaryKeys(clazz);
@@ -389,7 +389,7 @@ abstract class EasyTBDaoManager {
         try {
             db = database.getWritableDatabase();
         } catch (SQLiteCantOpenDatabaseException e) {
-            throwException(ExceptionType.SQLiteCantOpenDatabaseException, "SQLiteCantOpenDatabaseException clazz=" + clazz.toString());
+            throwException(e, "SQLiteCantOpenDatabaseException clazz=" + clazz.toString());
             return false;
         }
         try {
@@ -398,7 +398,7 @@ abstract class EasyTBDaoManager {
             db.setTransactionSuccessful();
             return true;
         } catch (SQLiteException e) {
-            throwException(ExceptionType.SQLiteException, "delete error SQLiteException clazz=" + clazz.toString());
+            throwException(e, "delete error SQLiteException clazz=" + clazz.toString());
         } finally {
             db.endTransaction();
             db.close();
@@ -414,24 +414,24 @@ abstract class EasyTBDaoManager {
      */
     protected boolean delete(Class clazz, List<String> ids) {
         if (clazz == null || ids == null || ids.size() == 0) {
-            throwException(ExceptionType.NullPointerException, "参数不能为空");
+            showErrorLog("参数不能为空");
             return false;
         }
         String tableName = DBReflectManager.getTableName(clazz);
         if (tableName == null) {
-            throwException(ExceptionType.RuntimeException, "表名不能为空，请注释 clazz=" + clazz.toString());
+            showErrorLog("表名不能为空，请注释 clazz=" + clazz.toString());
             return false;
         }
         List<String> primaryKeys = DBReflectManager.getPrimaryKeys(clazz);
         if (primaryKeys.size() == 0) {
-            throwException(ExceptionType.RuntimeException, "主键不能为空，请注释 clazz=" + clazz.toString());
+            showErrorLog("主键不能为空，请注释 clazz=" + clazz.toString());
             return false;
         }
         SQLiteDatabase db;
         try {
             db = database.getWritableDatabase();
         } catch (SQLiteCantOpenDatabaseException e) {
-            throwException(ExceptionType.SQLiteCantOpenDatabaseException, "SQLiteCantOpenDatabaseException clazz=" + clazz.toString());
+            throwException(e, "SQLiteCantOpenDatabaseException clazz=" + clazz.toString());
             return false;
         }
         try {
@@ -456,7 +456,7 @@ abstract class EasyTBDaoManager {
      */
     protected <T> boolean delete(T t) {
         if (t == null) {
-            throwException(ExceptionType.NullPointerException, "参数不能为空，请注释");
+            showErrorLog("参数不能为空，请注释");
             return false;
         }
 
@@ -492,7 +492,7 @@ abstract class EasyTBDaoManager {
         String tableName = DBReflectManager.getTableName(clazz);
 
         if (tableName == null) {
-            throwException(ExceptionType.RuntimeException, "表名不能为空，请注释 object =" + t.getClass().toString());
+            showErrorLog("表名不能为空，请注释 object =" + t.getClass().toString());
             return false;
         }
 
@@ -500,7 +500,7 @@ abstract class EasyTBDaoManager {
         try {
             db = database.getWritableDatabase();
         } catch (SQLiteCantOpenDatabaseException e) {
-            throwException(ExceptionType.SQLiteCantOpenDatabaseException, "SQLiteCantOpenDatabaseException object =" + t.getClass().toString());
+            throwException(e, "SQLiteCantOpenDatabaseException object =" + t.getClass().toString());
             return false;
         }
         try {
@@ -556,19 +556,19 @@ abstract class EasyTBDaoManager {
 
     protected boolean delete(Class clazz, String whereCause, String[] selectionArgs) {
         if (clazz == null || whereCause == null || selectionArgs == null || selectionArgs.length == 0) {
-            throwException(ExceptionType.NullPointerException, "参数不能为空，请注释");
+            showErrorLog("参数不能为空，请注释");
             return false;
         }
         String tableName = DBReflectManager.getTableName(clazz);
         if (tableName == null) {
-            throwException(ExceptionType.RuntimeException, "表名不能为空，请注释 clazz =" + clazz.toString());
+            showErrorLog("表名不能为空，请注释 clazz =" + clazz.toString());
             return false;
         }
         SQLiteDatabase db;
         try {
             db = database.getWritableDatabase();
         } catch (SQLiteCantOpenDatabaseException e) {
-            throwException(ExceptionType.SQLiteCantOpenDatabaseException, "SQLiteCantOpenDatabaseException clazz =" + clazz.toString());
+            throwException(e, "SQLiteCantOpenDatabaseException clazz =" + clazz.toString());
             return false;
         }
         try {
@@ -592,7 +592,7 @@ abstract class EasyTBDaoManager {
         try {
             db = database.getWritableDatabase();
         } catch (SQLiteCantOpenDatabaseException e) {
-            throwException(ExceptionType.SQLiteCantOpenDatabaseException, "SQLiteCantOpenDatabaseException");
+            throwException(e, "execSQL SQLiteCantOpenDatabaseException");
             return false;
         }
         try {
@@ -600,7 +600,7 @@ abstract class EasyTBDaoManager {
             db.execSQL(sql);
             db.setTransactionSuccessful();
         } catch (SQLiteException e) {
-            throwException(ExceptionType.SQLiteException, "execSQL SQLiteException");
+            throwException(e, "execSQL SQLiteException");
         } finally {
             db.endTransaction();
             db.close();
@@ -648,7 +648,7 @@ abstract class EasyTBDaoManager {
                 }
             }
         } catch (IllegalAccessException e) {
-            throwException(ExceptionType.IllegalAccessException, "contentValues IllegalAccessException");
+            throwException(e, "contentValues IllegalAccessException");
         }
         return values;
     }
@@ -667,9 +667,9 @@ abstract class EasyTBDaoManager {
         try {
             obj = clazz.newInstance();
         } catch (InstantiationException e) {
-            throwException(ExceptionType.InstantiationException, "valuation InstantiationException");
+            throwException(e, "valuation InstantiationException");
         } catch (IllegalAccessException e) {
-            throwException(ExceptionType.IllegalAccessException, "valuation IllegalAccessException");
+            throwException(e, "valuation IllegalAccessException");
         }
 
         List<String> columns = columnInfo.columns;
@@ -698,14 +698,14 @@ abstract class EasyTBDaoManager {
                     boolean value = cursor.getInt(cursor.getColumnIndex(column)) > 0;
                     field.set(obj, value);
                 } else {
-                    throwException(ExceptionType.IllegalArgumentException, "valuation 不支持该类型：" + fieldClass);
+                    showErrorLog("valuation 不支持该类型：" + fieldClass);
                 }
             } catch (IllegalAccessException e) {
-                throwException(ExceptionType.IllegalAccessException, "valuation IllegalAccessException type=" + fieldClass);
+                throwException(e, "valuation IllegalAccessException type=" + fieldClass);
             } catch (IllegalArgumentException e) {
-                throwException(ExceptionType.IllegalArgumentException, "valuation IllegalArgumentException type=" + fieldClass);
+                throwException(e, "valuation IllegalArgumentException type=" + fieldClass);
             } catch (IllegalStateException e) {
-                throwException(ExceptionType.IllegalStateException, "valuation IllegalStateException type=" + fieldClass);
+                throwException(e, "valuation IllegalStateException type=" + fieldClass);
             }
         }
         return obj;
@@ -726,12 +726,13 @@ abstract class EasyTBDaoManager {
     /**
      * 抛出异常
      *
-     * @param exception 异常类型
-     * @param error     错误信息
+     * @param e     异常类型
+     * @param error 错误信息
      */
-    private void throwException(@ExceptionType int exception, String error) {
+    private void throwException(Exception e, String error) {
         if (!mErrors.contains(error)) {
-            SQLLog.exception(exception, error);
+            SQLLog.e(error);
+            e.printStackTrace();
             mErrors.add(error);
         }
     }
