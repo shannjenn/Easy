@@ -6,8 +6,9 @@ import android.view.View;
 import com.jen.easy.EasyBindClick;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
+import com.jen.easyui.popupwindow.BuildTimePicker;
 import com.jen.easyui.popupwindow.EasyWindow;
-import com.jen.easyui.popupwindow.TimePickerBuild;
+import com.jen.easyui.popupwindow.BuildTimePicker;
 
 import java.util.Calendar;
 
@@ -38,8 +39,8 @@ public class TimePickActivity extends EasyActivity {
         switch (view.getId()) {
             case R.id.time_pick_1: {
                 EasyWindow.buildTimerPicker(this)
-                        .setType(TimePickerBuild.Type.YEAR_MONTH_DAY_WEEK)
-                        .setTimePickerListener(new TimePickerBuild.PickerListener() {
+                        .setType(BuildTimePicker.Type.YEAR_MONTH_DAY_WEEK)
+                        .setTimePickerListener(new BuildTimePicker.PickerListener() {
                             @Override
                             public void onPick(Calendar calendar) {
                                 int year = calendar.get(Calendar.YEAR);
@@ -56,9 +57,9 @@ public class TimePickActivity extends EasyActivity {
             }
             case R.id.time_pick_2: {
                 EasyWindow.buildTimerPicker(this)
-                        .setType(TimePickerBuild.Type.YEAR_MONTH_DAY_HOUR_MIN_WEEK)
+                        .setType(BuildTimePicker.Type.YEAR_MONTH_DAY_HOUR_MIN_WEEK)
                         .setInitCalendar(System.currentTimeMillis() - 24 * 3600 * 1000)
-                        .setTimePickerListener(new TimePickerBuild.PickerListener() {
+                        .setTimePickerListener(new BuildTimePicker.PickerListener() {
                             @Override
                             public void onPick(Calendar calendar) {
                                 int year = calendar.get(Calendar.YEAR);
@@ -75,9 +76,9 @@ public class TimePickActivity extends EasyActivity {
             }
             case R.id.time_pick_3: {
                 EasyWindow.buildTimerPicker(this)
-                        .setType(TimePickerBuild.Type.YEAR_MONTH_DAY)
-                        .setUnit(TimePickerBuild.Unit.YEAR_MONTH_DAY_HOUR_MIN)
-                        .setTimePickerListener(new TimePickerBuild.PickerListener() {
+                        .setType(BuildTimePicker.Type.YEAR_MONTH_DAY)
+                        .setUnit(BuildTimePicker.Unit.YEAR_MONTH_DAY_HOUR_MIN)
+                        .setTimePickerListener(new BuildTimePicker.PickerListener() {
                             @Override
                             public void onPick(Calendar calendar) {
                                 int year = calendar.get(Calendar.YEAR);
@@ -94,9 +95,9 @@ public class TimePickActivity extends EasyActivity {
             }
             case R.id.time_pick_4: {
                 EasyWindow.buildTimerPicker(this)
-                        .setType(TimePickerBuild.Type.YEAR_MONTH_DAY_HOUR_MIN)
-                        .setUnit(TimePickerBuild.Unit.YEAR_MONTH_DAY_HOUR_MIN)
-                        .setTimePickerListener(new TimePickerBuild.PickerListener() {
+                        .setType(BuildTimePicker.Type.YEAR_MONTH_DAY_HOUR_MIN)
+                        .setUnit(BuildTimePicker.Unit.YEAR_MONTH_DAY_HOUR_MIN)
+                        .setTimePickerListener(new BuildTimePicker.PickerListener() {
                             @Override
                             public void onPick(Calendar calendar) {
                                 int year = calendar.get(Calendar.YEAR);
@@ -113,9 +114,9 @@ public class TimePickActivity extends EasyActivity {
             }
             case R.id.time_pick_5: {
                 EasyWindow.buildTimerPicker(this)
-                        .setType(TimePickerBuild.Type.HOUR_MIN)
-                        .setUnit(TimePickerBuild.Unit.YEAR_MONTH_DAY_HOUR_MIN)
-                        .setTimePickerListener(new TimePickerBuild.PickerListener() {
+                        .setType(BuildTimePicker.Type.HOUR_MIN)
+                        .setUnit(BuildTimePicker.Unit.YEAR_MONTH_DAY_HOUR_MIN)
+                        .setTimePickerListener(new BuildTimePicker.PickerListener() {
                             @Override
                             public void onPick(Calendar calendar) {
                                 int year = calendar.get(Calendar.YEAR);

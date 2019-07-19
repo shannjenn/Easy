@@ -39,7 +39,7 @@ abstract class BindReflectManager {
     static FieldInfo getFields(Class clazz) {
         FieldInfo fieldInfo = new FieldInfo();
         if (clazz == null) {
-            BindLog.exception(ExceptionType.NullPointerException,"参数不能为空");
+            BindLog.exception(ExceptionType.NullPointerException, "BindView getMethods出现空指针错误：clazz不能为空");
             return fieldInfo;
         }
 
@@ -69,7 +69,7 @@ abstract class BindReflectManager {
     static Map<Method, int[]> getMethods(Class clazz) {
         Map<Method, int[]> method_ids = new HashMap<>();
         if (clazz == null) {
-            BindLog.exception(ExceptionType.NullPointerException, "参数不能为空");
+            BindLog.exception(ExceptionType.NullPointerException, "BindView getMethods出现空指针错误：clazz不能为空");
             return method_ids;
         }
         Method[] methods = clazz.getDeclaredMethods();

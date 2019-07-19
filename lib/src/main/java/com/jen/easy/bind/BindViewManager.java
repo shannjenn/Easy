@@ -26,7 +26,7 @@ abstract class BindViewManager {
      */
     protected void bind(final Activity activity) {
         if (activity == null) {
-            BindLog.exception(ExceptionType.NullPointerException, "参数不能为空");
+            BindLog.exception(ExceptionType.NullPointerException, "BindView bind 出现空指针：activity不能为空");
             return;
         }
         String name = activity.getClass().getName();
@@ -41,7 +41,7 @@ abstract class BindViewManager {
             try {
                 field.set(activity, view);
             } catch (IllegalAccessException e) {
-                BindLog.exception(ExceptionType.IllegalAccessException, "错误类名:" + activity.getClass().toString() + " 错误变量名:" + field.getName());
+                BindLog.exception(ExceptionType.IllegalAccessException, errorField(activity.getClass(), field, e));
             }
         }
 
@@ -60,9 +60,9 @@ abstract class BindViewManager {
                         try {
                             method.invoke(activity, view);
                         } catch (IllegalAccessException e) {
-                            BindLog.exception(ExceptionType.IllegalAccessException, "错误类名:" + activity.getClass().toString() + " 错误方法名:" + method.getName());
+                            BindLog.exception(ExceptionType.IllegalAccessException, errorMethod(activity.getClass(), method, e));
                         } catch (InvocationTargetException e) {
-                            BindLog.exception(ExceptionType.InvocationTargetException, "错误类名:" + activity.getClass().toString() + " 错误方法名:" + method.getName());
+                            BindLog.exception(ExceptionType.InvocationTargetException, errorMethod(activity.getClass(), method, e));
                         }
                     }
                 });
@@ -74,8 +74,11 @@ abstract class BindViewManager {
      * 注入
      */
     protected void inject(final Object obj, final View parent) {
-        if (obj == null || parent == null) {
-            BindLog.exception(ExceptionType.NullPointerException, "参数不能为空");
+        if (obj == null) {
+            BindLog.exception(ExceptionType.NullPointerException, "BindView inject 出现空指针：类 不能为空");
+            return;
+        } else if (parent == null) {
+            BindLog.exception(ExceptionType.NullPointerException, "BindView inject 出现空指针：View 不能为空");
             return;
         }
         BindReflectManager.FieldInfo fieldInfo = BindReflectManager.getFields(obj.getClass());
@@ -86,7 +89,7 @@ abstract class BindViewManager {
             try {
                 field.set(obj, view);
             } catch (IllegalAccessException e) {
-                BindLog.exception(ExceptionType.IllegalAccessException, "错误类名:" + obj.getClass().toString() + " 错误变量名:" + field.getName());
+                BindLog.exception(ExceptionType.IllegalAccessException, errorField(obj.getClass(), field, e));
             }
         }
 
@@ -103,14 +106,22 @@ abstract class BindViewManager {
                         try {
                             method.invoke(obj, view);
                         } catch (IllegalAccessException e) {
-                            BindLog.exception(ExceptionType.IllegalAccessException, "错误类名:" + obj.getClass().toString() + " 错误方法名:" + method.getName());
+                            BindLog.exception(ExceptionType.IllegalAccessException, errorMethod(obj.getClass(), method, e));
                         } catch (InvocationTargetException e) {
-                            BindLog.exception(ExceptionType.InvocationTargetException, "错误类名:" + obj.getClass().toString() + " 错误方法名:" + method.getName());
+                            BindLog.exception(ExceptionType.InvocationTargetException, errorMethod(obj.getClass(), method, e));
                         }
                     }
                 });
             }
         }
+    }
+
+    private String errorField(Class cls, Field field, Exception e) {
+        return "类名: " + cls.toString() + " 变量名: " + field.getName() + " 出现错误(没有找到该ID)：\n" + e;
+    }
+
+    private String errorMethod(Class cls, Method method, Exception e) {
+        return "类名: " + cls.toString() + " 方法名: " + method.getName() + "出现错误：\n" + e;
     }
 
     /**
