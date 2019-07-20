@@ -82,11 +82,22 @@ public class InputUtil {
                     builder.replace(dStart, dEnd, source.toString());
                 }
 
-                if (builder.toString().contains(".")) {
+                boolean containsPoint = builder.toString().contains(".");
+                if (containsPoint) {//限制小数位数
                     int index = builder.indexOf(".");
-                    int length = builder.substring(index).length();
-                    if (length - 1 > point) {
+                    String pointValue = builder.substring(index).replaceFirst(".", "");
+                    if (pointValue.length() > point) {
                         return "";
+                    } else if (pointValue.length() == point) {//限制0的位数
+                        double value = 0d;
+                        try {
+                            value = Double.parseDouble(pointValue);
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                        }
+                        if (value == 0) {
+                            return "";
+                        }
                     }
                 }
                 if (builder.length() > 0) {
@@ -96,6 +107,24 @@ public class InputUtil {
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
                     }
+                    if (point > 0) {//有小数的时候
+                        if (value == 0) {
+                            if (containsPoint) {
+                                if (builder.length() - 1 > point) {//超出位数
+                                    return "";
+                                } else {
+                                    return null;//没超出位数可以输入0
+                                }
+                            } else {
+                                if (builder.length() == 1) {
+                                    return null;//1个0
+                                } else {
+                                    return "";//多个0
+                                }
+                            }
+                        }
+                    }
+
                     if (max != null) {
                         if (value > max) {
                             return "";
