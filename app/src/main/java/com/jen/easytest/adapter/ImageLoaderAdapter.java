@@ -41,7 +41,7 @@ public class ImageLoaderAdapter<T extends ImageLoaderModel> extends EasyBaseAdap
 
     @Override
     protected EasyHolder bindHolder(View view) {
-        return new MyHolder(this,view);
+        return new MyHolder(this, view);
     }
 
     @Override
@@ -51,7 +51,6 @@ public class ImageLoaderAdapter<T extends ImageLoaderModel> extends EasyBaseAdap
 
 
     class MyHolder extends EasyHolder {
-
         public MyHolder(EasyBaseAdapter adapter, View itemView) {
             super(adapter, itemView);
         }
@@ -60,10 +59,13 @@ public class ImageLoaderAdapter<T extends ImageLoaderModel> extends EasyBaseAdap
         protected void onBindData(View view, int viewType, int position) {
             ImageLoaderModel model = mData.get(position);
 
-            ImageView icon = view.findViewById(R.id.iv_icon_left);
+            ImageView icon = view.findViewById(R.id.iv_icon);
             TextView tv_name = view.findViewById(R.id.tv_name);
 
             tv_name.setText(model.getTitle());
+            if (model.getPic().trim().length() == 0) {
+                model.setPic("http://tenants.oss-cn-beijing.aliyuncs.com/1562382054001.jpg");
+            }
             ImageLoader.getInstance().setImage(model.getPic(), icon);
         }
 

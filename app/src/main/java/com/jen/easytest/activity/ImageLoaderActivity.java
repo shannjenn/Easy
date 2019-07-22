@@ -7,10 +7,14 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.jen.easy.EasyBindId;
+import com.jen.easy.imageLoader.ImageLoader;
+import com.jen.easy.imageLoader.ImageLoaderConfig;
+import com.jen.easytest.MyApplication;
 import com.jen.easytest.R;
 import com.jen.easytest.adapter.ImageLoaderAdapter;
 import com.jen.easytest.http.response.ImageLoaderResponse;
 import com.jen.easytest.model.ImageLoaderModel;
+
 import easybase.EasyActivity;
 
 import java.util.ArrayList;
@@ -28,7 +32,7 @@ public class ImageLoaderActivity<T extends ImageLoaderResponse> extends EasyActi
     @EasyBindId(R.id.recycle)
     RecyclerView recycle;
 
-    ImageLoaderAdapter adapter;
+    ImageLoaderAdapter<ImageLoaderModel> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,19 +41,21 @@ public class ImageLoaderActivity<T extends ImageLoaderResponse> extends EasyActi
     }
 
 
-
     @Override
     protected void initViews() {
-//        List<ImageLoaderModel> list = EasyMain.mDao.searchAll(ImageLoaderModel.class);
-//        mData.addAll(list);
-//        mData.addAll(list);
-        adapter = new ImageLoaderAdapter<>(this);
-
-        RecyclerView.LayoutManager manager = new GridLayoutManager(this, 2);
-        recycle.setLayoutManager(manager);
-        recycle.setAdapter(adapter);
+        ImageLoader.getInstance().init(ImageLoaderConfig.build(MyApplication.getAppContext()));
+        List<ImageLoaderModel> loaderModels = new ArrayList<>();
+        loaderModels.add(new ImageLoaderModel());
+        loaderModels.add(new ImageLoaderModel());
+        loaderModels.add(new ImageLoaderModel());
+        loaderModels.add(new ImageLoaderModel());
+        loaderModels.add(new ImageLoaderModel());
+        loaderModels.add(new ImageLoaderModel());
+        loaderModels.add(new ImageLoaderModel());
+        loaderModels.add(new ImageLoaderModel());
+        adapter = new ImageLoaderAdapter<>(this, recycle);
+        adapter.setDataAndNotify(loaderModels);
     }
-
 
 
     @Override

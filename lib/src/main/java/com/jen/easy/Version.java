@@ -9,11 +9,11 @@ public final class Version {
     /**
      * 版本号(初版：1)
      */
-    public final static int VersionCode = 51;
+    public final static int VersionCode = 52;
     /**
      * 版本名称(初版：1.0.0)
      */
-    public final static String VersionName = "1.5.0";
+    public final static String VersionName = "1.5.1";
     /**
      * 时间(初版：2017.07.18)
      */

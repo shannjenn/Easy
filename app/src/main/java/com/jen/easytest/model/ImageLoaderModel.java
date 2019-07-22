@@ -45,7 +45,7 @@ public class ImageLoaderModel {
 
 
     public String getAid() {
-        return aid;
+        return aid == null ? "" : aid;
     }
 
     public void setAid(String aid) {
@@ -53,7 +53,7 @@ public class ImageLoaderModel {
     }
 
     public String getCatid() {
-        return catid;
+        return catid == null ? "" : catid;
     }
 
     public void setCatid(String catid) {
@@ -61,7 +61,7 @@ public class ImageLoaderModel {
     }
 
     public String getTitle() {
-        return title;
+        return title == null ? "" : title;
     }
 
     public void setTitle(String title) {
@@ -69,7 +69,7 @@ public class ImageLoaderModel {
     }
 
     public String getSummary() {
-        return summary;
+        return summary == null ? "" : summary;
     }
 
     public void setSummary(String summary) {
@@ -77,7 +77,7 @@ public class ImageLoaderModel {
     }
 
     public String getPic() {
-        return pic;
+        return pic == null ? "" : pic;
     }
 
     public void setPic(String pic) {
@@ -85,7 +85,7 @@ public class ImageLoaderModel {
     }
 
     public String getDateline() {
-        return dateline;
+        return dateline == null ? "" : dateline;
     }
 
     public void setDateline(String dateline) {
@@ -93,7 +93,7 @@ public class ImageLoaderModel {
     }
 
     public String getMovieid() {
-        return movieid;
+        return movieid == null ? "" : movieid;
     }
 
     public void setMovieid(String movieid) {
@@ -116,6 +116,14 @@ public class ImageLoaderModel {
         this.viewSize = viewSize;
     }
 
+    public int getBitTitleVisible() {
+        return bitTitleVisible;
+    }
+
+    public void setBitTitleVisible(int bitTitleVisible) {
+        this.bitTitleVisible = bitTitleVisible;
+    }
+
     public boolean isShowEnter() {
         return showEnter;
     }
@@ -130,13 +138,5 @@ public class ImageLoaderModel {
 
     public void setShowChange(boolean showChange) {
         this.showChange = showChange;
-    }
-
-    public int getBitTitleVisible() {
-        return bitTitleVisible;
-    }
-
-    public void setBitTitleVisible(int bitTitleVisible) {
-        this.bitTitleVisible = bitTitleVisible;
     }
 }

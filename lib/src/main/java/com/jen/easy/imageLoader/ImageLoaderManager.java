@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -31,8 +30,7 @@ import java.util.concurrent.Executors;
 
 abstract class ImageLoaderManager {
     private LruCache<String, Bitmap> mImageCache;//图片缓存
-    private List<String> mDownloadingUrl = new ArrayList<>();
-    private Map<ImageView, String> mImageViewCache = new HashMap<>();//key:,ImageView:imageUrl缓存
+    private Map<String, List<ImageView>> mImageViewCache = new HashMap<>();
     private ExecutorService mExecutorService;
     private EasyHttp mHttp;
     private final int H_IMAGE = 100;
@@ -42,66 +40,63 @@ abstract class ImageLoaderManager {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            runHandler(msg);
-        }
-    };
-
-    ImageLoaderManager() {
-
-    }
-
-    private void setImageView(final ImageView imageView) {
-        Message message = new Message();
-        message.what = H_IMAGE;
-        message.obj = imageView;
-        mHandler.sendMessage(message);
-    }
-
-    private void setImageViewEmpty(ImageView imageView) {
-        Message message = new Message();
-        message.what = H_IMAGE_EMPTY;
-        message.obj = imageView;
-        mHandler.sendMessage(message);
-    }
-
-    private void runHandler(Message msg) {
-        synchronized (this) {
-            switch (msg.what) {
-                case H_IMAGE: {
-                    ImageView imageView = (ImageView) msg.obj;
-                    if (imageView == null) {
-                        mImageViewCache.remove(null);
-                        ImageLoaderLog.exception(ExceptionType.NullPointerException, "Handler imageView 为空---");
-                        return;
+            synchronized (this) {
+                switch (msg.what) {
+                    case H_IMAGE: {
+                        String imageUrl = (String) msg.obj;
+                        List<ImageView> imageViews = mImageViewCache.remove(imageUrl);
+                        Bitmap bitmap = mImageCache.get(imageUrl);
+                        if (imageViews == null) {
+                            ImageLoaderLog.w("handler H_IMAGE imageViews List is null imageUrl = " + imageUrl);
+                            return;
+                        }
+                        for (int i = 0; i < imageViews.size(); i++) {
+                            if (imageViews.get(i) != null) {
+                                imageViews.get(i).setImageBitmap(bitmap);
+                                ImageLoaderLog.d("handler H_IMAGE ImageView success imageUrl = " + imageUrl);
+                            } else {
+                                ImageLoaderLog.w("handler H_IMAGE ImageView is null imageUrl = " + imageUrl);
+                            }
+                        }
+                        break;
                     }
-                    String imageUrl = mImageViewCache.remove(imageView);
-                    if (imageUrl == null) {
-                        ImageLoaderLog.exception(ExceptionType.NullPointerException, "Handler imageUrl 为空---");
-                        return;
+                    case H_IMAGE_EMPTY: {
+                        String imageUrl = (String) msg.obj;
+                        List<ImageView> imageViews = mImageViewCache.get(imageUrl);
+                        if (imageViews == null) {
+                            ImageLoaderLog.w("handler H_IMAGE imageViews List is null imageUrl = " + imageUrl);
+                            return;
+                        }
+                        for (int i = 0; i < imageViews.size(); i++) {
+                            if (imageViews.get(i) != null) {
+                                imageViews.get(i).setImageDrawable(config.getDefaultImage());
+                            } else {
+                                ImageLoaderLog.w("handler H_IMAGE_EMPTY ImageView is null imageUrl = " + imageUrl);
+                            }
+                        }
+                        break;
                     }
-                    Bitmap bitmap = mImageCache.get(imageUrl);
-                    if (bitmap != null) {
-                        imageView.setImageBitmap(bitmap);
-                    } else {
-                        setImage(imageUrl, imageView);
-                    }
-                    break;
-                }
-                case H_IMAGE_EMPTY: {
-                    ImageView imageView = (ImageView) msg.obj;
-                    if (imageView == null) {
-                        ImageLoaderLog.exception(ExceptionType.NullPointerException, "imageView 为空---");
-                        return;
-                    }
-                    imageView.setImageDrawable(config.getDefaultImage());
-                    break;
-                }
-                default: {
+                    default: {
 
-                    break;
+                        break;
+                    }
                 }
             }
         }
+    };
+
+    private void setImageViewByHandler(String imageUrl) {
+        Message message = new Message();
+        message.what = H_IMAGE;
+        message.obj = imageUrl;
+        mHandler.sendMessage(message);
+    }
+
+    private void setImageViewEmptyByHanler(String imageUrl) {
+        Message message = new Message();
+        message.what = H_IMAGE_EMPTY;
+        message.obj = imageUrl;
+        mHandler.sendMessage(message);
     }
 
     protected void init(ImageLoaderConfig builder) {
@@ -122,32 +117,31 @@ abstract class ImageLoaderManager {
     protected void setImage(final String imageUrl, final ImageView imageView, final int width, final int height) {
         mExecutorService.submit(new Runnable() {
             public void run() {
-                if (imageView == null) {
-                    ImageLoaderLog.exception(ExceptionType.NullPointerException, "setImage ImageView is null");
+                if (TextUtils.isEmpty(imageUrl) || imageView == null) {
+                    ImageLoaderLog.exception(ExceptionType.NullPointerException, "imageUrl == null || imageView == null");
                     return;
                 }
-                if (TextUtils.isEmpty(imageUrl)) {
-                    setImageViewEmpty(imageView);
+                List<ImageView> imageViews = new ArrayList<>();
+                if (mImageViewCache.containsKey(imageUrl)) {//正在下载
+                    imageViews = mImageViewCache.get(imageUrl);
+                    imageViews.add(imageView);
+                    mImageViewCache.put(imageUrl, imageViews);
+                    ImageLoaderLog.d("正在下载 imageUrl = " + imageUrl);
                     return;
                 }
+                imageViews.add(imageView);
+                mImageViewCache.put(imageUrl, imageViews);
 
-                if (mDownloadingUrl.contains(imageUrl)) {//正在下载
-                    return;
-                }
-                if (mImageViewCache.containsKey(imageView)) {
-                    return;
-                }
-                mImageViewCache.put(imageView, imageUrl);
-
-                boolean cacheResult = getFromCache(imageUrl, imageView);
+                boolean cacheResult = getFromCache(imageUrl);
                 if (cacheResult)
                     return;
 
-                boolean SDCardResult = getFromSDCard(width, height, imageUrl, imageView);
-                if (SDCardResult)
+                boolean SDCardResult = createBitmapByUrl(width, height, imageUrl);
+                if (SDCardResult) {
+                    setImageViewByHandler(imageUrl);
                     return;
-
-                setImageViewEmpty(imageView);
+                }
+                setImageViewEmptyByHanler(imageUrl);
                 getFromHttp(imageUrl);
             }
         });
@@ -157,12 +151,12 @@ abstract class ImageLoaderManager {
         setImage(imageUrl, imageView, config.getImgWidth(), config.getImgHeight());
     }
 
-    private boolean getFromCache(String imageUrl, ImageView imageView) {
+    private boolean getFromCache(String imageUrl) {
         Bitmap bitmap = mImageCache.get(imageUrl);
         if (bitmap == null) {
             return false;
         } else {
-            setImageView(imageView);
+            setImageViewByHandler(imageUrl);
             return true;
         }
 
@@ -174,11 +168,10 @@ abstract class ImageLoaderManager {
      * @param picWidth  宽
      * @param picHeight 高
      * @param imageUrl  url
-     * @param imageView 。
      * @return 。
      */
-    private boolean getFromSDCard(int picWidth, int picHeight, String imageUrl, ImageView imageView) {
-        ImageLoaderLog.d("getFromSDCard-----");
+    private boolean createBitmapByUrl(int picWidth, int picHeight, String imageUrl) {
+        ImageLoaderLog.d("createBitmapByUrl imageUrl = " + imageUrl);
         String name = urlChangeToName(imageUrl);
         final String filePath = config.getLocalPath() + File.separator + name;
         File file = new File(filePath);
@@ -209,10 +202,10 @@ abstract class ImageLoaderManager {
         opt.inPreferredConfig = config.getBitmapConfig();
         final Bitmap bitmap = BitmapFactory.decodeFile(filePath, opt);
         if (bitmap == null) {
+            ImageLoaderLog.w("createBitmapByUrl bitmap is null imageUrl = " + imageUrl);
             return false;
         } else {
             mImageCache.put(imageUrl, bitmap);
-            setImageView(imageView);
             return true;
         }
     }
@@ -224,10 +217,9 @@ abstract class ImageLoaderManager {
      */
     private void getFromHttp(String imageUrl) {
         ImageLoaderLog.d("getFromHttp-----");
-        mDownloadingUrl.add(imageUrl);
         String name = urlChangeToName(imageUrl);
         String filePath = config.getLocalPath() + File.separator + name;
-        ImagLoaderRequest request = new ImagLoaderRequest();//网络获取图片请求参数
+        ImageLoaderRequest request = new ImageLoaderRequest();//网络获取图片请求参数
         request.urlBase = imageUrl;
         request.timeout = config.getTimeOut();
         request.filePath = filePath;
@@ -253,26 +245,20 @@ abstract class ImageLoaderManager {
     private EasyHttpListener mHttpListener = new EasyHttpListener() {
 
         @Override
-        public void success(int flagCode, String flag, Object response, Map<String, List<String>> headMap) {
-            ImageLoaderLog.d("图片下载成功-----");
-            mImageViewCache.remove(null);
-            if (response instanceof ImagLoaderResponse) {
-                ImagLoaderResponse imgResponse = (ImagLoaderResponse) response;
-                Set<ImageView> set = mImageViewCache.keySet();
-                for (ImageView imageView : set) {
-                    String value = mImageViewCache.get(imageView);
-                    if (response.equals(value)) {
-                        getFromSDCard(config.getImgWidth(), config.getImgHeight(), imgResponse.getFilePath(), imageView);
-                        break;
-                    }
-                }
+        public void success(int flagCode, String flagStr, Object response, Map<String, List<String>> headMap) {
+            ImageLoaderLog.d("图片下载成功 imageUrl = " + flagStr);
+            boolean result = createBitmapByUrl(config.getImgWidth(), config.getImgHeight(), flagStr);
+            if (result) {
+                setImageViewByHandler(flagStr);
+            } else {
+                mImageViewCache.remove(flagStr);
             }
         }
 
         @Override
-        public void fail(int flagCode, String imageUrl, Object msg) {
-            ImageLoaderLog.d("图片下载失败-----");
-            mDownloadingUrl.remove(imageUrl);
+        public void fail(int flagCode, String flagStr, Object response) {
+            ImageLoaderLog.e("图片下载失败 imageUrl = " + flagStr);
+            mImageViewCache.remove(flagStr);
         }
 
         @Override
