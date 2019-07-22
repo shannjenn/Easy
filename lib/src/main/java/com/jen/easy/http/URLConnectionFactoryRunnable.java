@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.jen.easy.constant.FieldType;
 import com.jen.easy.exception.ExceptionType;
 import com.jen.easy.exception.HttpLog;
+import com.jen.easy.http.imp.EasyHttpListener;
 import com.jen.easy.http.request.EasyHttpDataRequest;
 import com.jen.easy.http.request.EasyHttpDownloadRequest;
 import com.jen.easy.http.request.EasyHttpRequest;
@@ -28,6 +29,7 @@ import java.util.Map;
 import java.util.Set;
 
 abstract class URLConnectionFactoryRunnable implements Runnable {
+    EasyHttpListener httpListener;
     int flagCode;//请求标识
     String flagStr;//请求标识
     EasyHttpRequest mRequest;
@@ -40,9 +42,10 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
     JSONObject mBody;
     String mRequestLogInfo;
 
-    URLConnectionFactoryRunnable(EasyHttpRequest param, int flagCode, String flagStr) {
+    URLConnectionFactoryRunnable(EasyHttpRequest param, EasyHttpListener httpListener, int flagCode, String flagStr) {
         super();
         this.mRequest = param;
+        this.httpListener = httpListener;
         this.flagCode = flagCode;
         this.flagStr = flagStr;
     }
@@ -111,7 +114,7 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
             if (!fileFolder.exists()) {
                 boolean ret = fileFolder.mkdirs();
                 if (!ret) {
-                    HttpLog.exception(ExceptionType.IllegalArgumentException, "保存文件失败，请检查文件路径是否正确");
+                    HttpLog.exception(ExceptionType.IllegalArgumentException, "保存文件失败，请检查文件路径是否正确：" + downloadRequest.filePath);
                     fail("保存文件失败，请检查文件路径是否正确");
                     return;
                 }
@@ -253,7 +256,7 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
      */
     private Object createResponseObject(@Type int type, @Response int responseType, String result, String errorMsg, String filePath) {
         Object responseObject = null;
-        if (FieldType.isObject(mResponse) || FieldType.isString(mResponse)) {//Object和String类型不做数据解析
+        if (mResponse == null || FieldType.isObject(mResponse) || FieldType.isString(mResponse)) {//Object和String类型不做数据解析
             switch (responseType) {
                 case Response.success:
                     responseObject = result;
@@ -339,6 +342,14 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
                 break;
         }
         return responseObject;
+    }
+
+    boolean checkListener() {
+        if (mRequest.getRequestState() == EasyRequestState.interrupt) {
+            HttpLog.i(mUrlStr + " The request was interrupted.\n \t");
+            return false;
+        }
+        return httpListener != null;
     }
 
     protected abstract void childRun(HttpURLConnection connection) throws IOException;

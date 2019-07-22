@@ -134,9 +134,6 @@
 -keep class com.jen.easy.http.imp.EasyHttpListener {
     *;
 }
--keep class com.jen.easy.http.imp.EasyHttpFullListener {
-    *;
-}
 -keep class com.jen.easy.http.EasyHttpTool {
     *;
 }

@@ -30,7 +30,7 @@ public class EasyWindowString<T> extends EasyWindow<T> {
 
     @Override
     View bindView() {
-        View popView = LayoutInflater.from(build.context).inflate(R.layout._easy_popup_window_object, null);
+        View popView = LayoutInflater.from(build.context).inflate(R.layout._easy_popup_window_string, null);
         recyclerView = popView.findViewById(R.id.recycler);
         return popView;
     }

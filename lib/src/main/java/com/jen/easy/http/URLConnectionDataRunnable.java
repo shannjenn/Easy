@@ -17,11 +17,9 @@ import java.util.List;
 import java.util.Map;
 
 class URLConnectionDataRunnable extends URLConnectionFactoryRunnable {
-    private EasyHttpListener baseListener;
 
-    URLConnectionDataRunnable(EasyHttpDataRequest request, EasyHttpListener baseListener, int flagCode, String flagStr) {
-        super(request, flagCode, flagStr);
-        this.baseListener = baseListener;
+    URLConnectionDataRunnable(EasyHttpDataRequest request, EasyHttpListener httpListener, int flagCode, String flagStr) {
+        super(request, httpListener, flagCode, flagStr);
     }
 
     @Override
@@ -91,26 +89,14 @@ class URLConnectionDataRunnable extends URLConnectionFactoryRunnable {
 
     @Override
     protected void success(String result, Map<String, List<String>> headMap) {
-        if (mRequest.getRequestState() == EasyRequestState.interrupt) {
-            HttpLog.i(mUrlStr + " The request was interrupted.\n \t");//\n \t打印才出现空行
-            return;
-        }
-        if (baseListener == null) {
-            return;
-        }
-        baseListener.success(flagCode, flagStr, createResponseObjectSuccess(Type.data, result), headMap);
+        if (checkListener())
+            httpListener.success(flagCode, flagStr, createResponseObjectSuccess(Type.data, result), headMap);
     }
 
     @Override
     protected void fail(String errorMsg) {
-        if (mRequest.getRequestState() == EasyRequestState.interrupt) {
-            HttpLog.i(mUrlStr + " The request was interrupted。\n \t");
-            return;
-        }
-        if (baseListener == null) {
-            return;
-        }
-        baseListener.fail(flagCode, flagStr, createResponseObjectFail(Type.data, errorMsg));
+        if (checkListener())
+            httpListener.fail(flagCode, flagStr, createResponseObjectFail(Type.data, errorMsg));
     }
 
 }

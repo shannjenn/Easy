@@ -12,8 +12,7 @@ import android.widget.ImageView;
 import com.jen.easy.exception.ExceptionType;
 import com.jen.easy.exception.ImageLoaderLog;
 import com.jen.easy.http.EasyHttp;
-import com.jen.easy.http.imp.EasyHttpFullListener;
-import com.jen.easy.http.request.EasyHttpDownloadRequest;
+import com.jen.easy.http.imp.EasyHttpListener;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -46,6 +45,10 @@ abstract class ImageLoaderManager {
             runHandler(msg);
         }
     };
+
+    ImageLoaderManager() {
+
+    }
 
     private void setImageView(final ImageView imageView) {
         Message message = new Message();
@@ -99,9 +102,6 @@ abstract class ImageLoaderManager {
                 }
             }
         }
-    }
-
-    ImageLoaderManager() {
     }
 
     protected void init(ImageLoaderConfig builder) {
@@ -227,7 +227,7 @@ abstract class ImageLoaderManager {
         mDownloadingUrl.add(imageUrl);
         String name = urlChangeToName(imageUrl);
         String filePath = config.getLocalPath() + File.separator + name;
-        EasyHttpDownloadRequest request = new EasyHttpDownloadRequest();//网络获取图片请求参数
+        ImagLoaderRequest request = new ImagLoaderRequest();//网络获取图片请求参数
         request.urlBase = imageUrl;
         request.timeout = config.getTimeOut();
         request.filePath = filePath;
@@ -250,20 +250,21 @@ abstract class ImageLoaderManager {
         return name;
     }
 
-    private EasyHttpFullListener mHttpListener = new EasyHttpFullListener() {
+    private EasyHttpListener mHttpListener = new EasyHttpListener() {
 
         @Override
         public void success(int flagCode, String flag, Object response, Map<String, List<String>> headMap) {
             ImageLoaderLog.d("图片下载成功-----");
             mImageViewCache.remove(null);
-            Set<ImageView> set = mImageViewCache.keySet();
-            for (ImageView imageView : set) {
-                String value = mImageViewCache.get(imageView);
-                if (response.equals(value)) {
-                    if (response instanceof String && imageView != null) {
-                        getFromSDCard(config.getImgWidth(), config.getImgHeight(), (String) response, imageView);
+            if (response instanceof ImagLoaderResponse) {
+                ImagLoaderResponse imgResponse = (ImagLoaderResponse) response;
+                Set<ImageView> set = mImageViewCache.keySet();
+                for (ImageView imageView : set) {
+                    String value = mImageViewCache.get(imageView);
+                    if (response.equals(value)) {
+                        getFromSDCard(config.getImgWidth(), config.getImgHeight(), imgResponse.getFilePath(), imageView);
+                        break;
                     }
-                    break;
                 }
             }
         }

@@ -8,24 +8,37 @@ import java.util.Map;
  * 时间：2017/9/4:21:44
  * 说明：基本数据网络请求监听
  */
-public interface EasyHttpListener {
+public abstract class EasyHttpListener {
 
     /**
      * 成功
      *
-     * @param flagCode     标记
-     * @param flagStr      标记
+     * @param flagCode 标记
+     * @param flagStr  标记
      * @param response 返回实体对象
-     * @param headMap      返回头部信息
+     * @param headMap  返回头部信息
      */
-    void success(int flagCode, String flagStr, Object response, Map<String, List<String>> headMap);
+    public abstract void success(int flagCode, String flagStr, Object response, Map<String, List<String>> headMap);
 
     /**
      * 失败
      *
-     * @param flagCode     标记
-     * @param flagStr      标记
+     * @param flagCode 标记
+     * @param flagStr  标记
      * @param response 返回实体对象
      */
-    void fail(int flagCode, String flagStr, Object response);
+    public abstract void fail(int flagCode, String flagStr, Object response);
+
+    /**
+     * 进度
+     *
+     * @param flagCode     标记
+     * @param flagStr      标记
+     * @param response     返回实体对象
+     * @param currentPoint 当前下载大小
+     * @param endPoint     最大大小
+     */
+    public void progress(int flagCode, String flagStr, Object response, long currentPoint, long endPoint) {
+
+    }
 }

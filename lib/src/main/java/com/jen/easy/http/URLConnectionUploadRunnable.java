@@ -1,8 +1,7 @@
 package com.jen.easy.http;
 
-import com.jen.easy.constant.FieldType;
 import com.jen.easy.exception.HttpLog;
-import com.jen.easy.http.imp.EasyHttpFullListener;
+import com.jen.easy.http.imp.EasyHttpListener;
 import com.jen.easy.http.request.EasyHttpUploadRequest;
 import com.jen.easy.http.request.EasyRequestState;
 import com.jen.easy.log.JsonLogFormat;
@@ -19,12 +18,10 @@ import java.util.List;
 import java.util.Map;
 
 class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
-    private EasyHttpFullListener fullListener;
     private Object responseObjectProgress;
 
-    URLConnectionUploadRunnable(EasyHttpUploadRequest request, EasyHttpFullListener fullListener, int flagCode, String flagStr) {
-        super(request, flagCode, flagStr);
-        this.fullListener = fullListener;
+    URLConnectionUploadRunnable(EasyHttpUploadRequest request, EasyHttpListener httpListener, int flagCode, String flagStr) {
+        super(request, httpListener, flagCode, flagStr);
     }
 
     @Override
@@ -77,33 +74,19 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
 
     @Override
     protected void success(String result, Map<String, List<String>> headMap) {
-        if (mRequest.getRequestState() == EasyRequestState.interrupt) {
-            HttpLog.i(mUrlStr + " The request was interrupted.\n \t");
-            return;
-        }
-        if (fullListener == null) {
-            return;
-        }
-        fullListener.success(flagCode, flagStr, createResponseObjectSuccess(Type.fileUp, result), headMap);
+        if (checkListener())
+            httpListener.success(flagCode, flagStr, createResponseObjectSuccess(Type.fileUp, result), headMap);
     }
 
     @Override
     protected void fail(String errorMsg) {
-        if (mRequest.getRequestState() == EasyRequestState.interrupt) {
-            HttpLog.w(mUrlStr + " FAIL\n \t");
-            return;
-        }
-        if (fullListener == null) {
-            return;
-        }
-        fullListener.fail(flagCode, flagStr, createResponseObjectFail(Type.fileUp, errorMsg));
+        if (checkListener())
+            httpListener.fail(flagCode, flagStr, createResponseObjectFail(Type.fileUp, errorMsg));
     }
 
     private void progress(long currentPoint, long endPoint) {
         HttpLog.d(mUrlStr + " 上传进度：currentPoint = " + currentPoint + " endPoint = " + endPoint);
-        if (fullListener == null) {
-            return;
-        }
-        fullListener.progress(flagCode, flagStr, responseObjectProgress, currentPoint, endPoint);
+        if (checkListener())
+            httpListener.progress(flagCode, flagStr, responseObjectProgress, currentPoint, endPoint);
     }
 }

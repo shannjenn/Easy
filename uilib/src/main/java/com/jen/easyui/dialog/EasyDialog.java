@@ -178,10 +178,7 @@ public class EasyDialog extends EasyDialogFactory implements View.OnClickListene
     public void hide() {
         super.hide();
         if (build.listener != null) {
-            if (build.listener instanceof DialogListenerB) {
-                DialogListenerB dialogListener = (DialogListenerB) build.listener;
-                dialogListener.dismiss(build.flagCode);
-            }
+            build.listener.dismiss(build.flagCode);
         }
     }
 
@@ -193,10 +190,7 @@ public class EasyDialog extends EasyDialogFactory implements View.OnClickListene
         }
         int id = v.getId();
         if (id == R.id.btn_left) {
-            if (build.listener instanceof DialogListenerA) {
-                DialogListenerA dialogListener = (DialogListenerA) build.listener;
-                dialogListener.leftButton(build.flagCode);
-            }
+            build.listener.leftButton(build.flagCode);
         } else if (id == R.id.btn_right) {
             build.listener.rightButton(build.flagCode);
         }

@@ -25,14 +25,20 @@ public class ImageLoaderConfig {
     private Drawable defaultImage;//默认图片
     private int imgHeight = 300, imgWidth = 300;//默认高宽
     private final int httpMaxThread = 5;//默认三个线程
-    private int timeOut = 5000;//默认超时毫秒
+    private int timeOut = 30000;//默认超时毫秒
     private Bitmap.Config bitmapConfig;//图片配置
 
-    public ImageLoaderConfig(Application context) {
+    private ImageLoaderConfig(Application context) {
         this.context = context;
     }
 
-    public ImageLoaderConfig build() {
+    public static ImageLoaderConfig build(Application context) {
+        ImageLoaderConfig config = new ImageLoaderConfig(context);
+        config.init();
+        return config;
+    }
+
+    public void init() {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {// 优先保存到SD卡中
             localPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + ".EasyImageLoaderCache";
             File file = new File(localPath);
@@ -42,7 +48,8 @@ public class ImageLoaderConfig {
                     ImageLoaderLog.exception(ExceptionType.IllegalArgumentException, "创建图片缓存目录失败1");
                 }
             }
-        } else if (localPath == null) {
+        }
+        if (localPath == null) {
             localPath = context.getFilesDir().getAbsolutePath() + File.separator + ".EasyImageLoaderCache";
             File file = new File(localPath);
             if (!file.exists()) {
@@ -52,8 +59,6 @@ public class ImageLoaderConfig {
                 }
             }
         }
-        return this;
-//            return new ImageLoaderManager(this);
     }
 
     public ImageLoaderConfig defaultImage(Drawable defaultImage) {

@@ -2,7 +2,7 @@ package com.jen.easy.http;
 
 import com.jen.easy.constant.Unicode;
 import com.jen.easy.exception.HttpLog;
-import com.jen.easy.http.imp.EasyHttpFullListener;
+import com.jen.easy.http.imp.EasyHttpListener;
 import com.jen.easy.http.request.EasyHttpDownloadRequest;
 import com.jen.easy.http.request.EasyRequestState;
 
@@ -15,12 +15,10 @@ import java.util.List;
 import java.util.Map;
 
 class URLConnectionDownloadRunnable extends URLConnectionFactoryRunnable {
-    private EasyHttpFullListener fullListener;
     private Object responseObjectProgress;
 
-    URLConnectionDownloadRunnable(EasyHttpDownloadRequest request, EasyHttpFullListener fullListener, int flagCode, String flagStr) {
-        super(request, flagCode, flagStr);
-        this.fullListener = fullListener;
+    URLConnectionDownloadRunnable(EasyHttpDownloadRequest request, EasyHttpListener httpListener, int flagCode, String flagStr) {
+        super(request, httpListener, flagCode, flagStr);
     }
 
     @Override
@@ -77,33 +75,20 @@ class URLConnectionDownloadRunnable extends URLConnectionFactoryRunnable {
 
     @Override
     protected void success(String filePath, Map<String, List<String>> headMap) {
-        if (mRequest.getRequestState() == EasyRequestState.interrupt) {
-            HttpLog.d(mRequestLogInfo + " 请求中断。\n \t");
-            return;
-        }
-        if (fullListener == null) {
-            return;
-        }
-        fullListener.success(flagCode, flagStr, createResponseObjectSuccess(Type.fileDown, filePath), headMap);
+        if (checkListener())
+            httpListener.success(flagCode, flagStr, createResponseObjectSuccess(Type.fileDown, filePath), headMap);
     }
 
     @Override
     protected void fail(String errorMsg) {
-        if (mRequest.getRequestState() == EasyRequestState.interrupt) {
-            HttpLog.d(mRequestLogInfo + " 请求中断。\n \t");
-            return;
-        }
-        if (fullListener == null) {
-            return;
-        }
-        fullListener.fail(flagCode, flagStr, createResponseObjectFail(Type.fileDown, errorMsg));
+        if (checkListener())
+            httpListener.fail(flagCode, flagStr, createResponseObjectFail(Type.fileDown, errorMsg));
     }
 
     private void progress(long currentPoint, long endPoint) {
         HttpLog.d(mUrlStr + " 下载进度：currentPoint = " + currentPoint + " endPoint = " + endPoint);
-        if (fullListener != null) {
-            fullListener.progress(flagCode, flagStr, responseObjectProgress, currentPoint, endPoint);
-        }
+        if (checkListener())
+            httpListener.progress(flagCode, flagStr, responseObjectProgress, currentPoint, endPoint);
     }
 
 }

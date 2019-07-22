@@ -5,6 +5,12 @@ package com.jen.easyui.dialog;
  * 时间：2017/10/26.
  */
 
-public interface DialogListener {
-    void rightButton(int flagCode);
+public abstract class DialogListener {
+    public abstract void rightButton(int flagCode);
+
+    public void leftButton(int flagCode) {
+    }
+
+    public void dismiss(int flagCode) {
+    }
 }
