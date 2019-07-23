@@ -9,14 +9,13 @@ import com.jen.easy.invalid.EasyInvalid;
  */
 @EasyInvalid
 public abstract class EasyHttpResponse {
-    private String errorMsg;
+    private int responseCode;
 
-    public String getErrorMsg() {
-        return errorMsg == null ? "" : errorMsg;
+    public int getResponseCode() {
+        return responseCode;
     }
 
-    public void setErrorMsg(String errorMsg) {
-        this.errorMsg = errorMsg;
+    public void setResponseCode(int responseCode) {
+        this.responseCode = responseCode;
     }
-
 }

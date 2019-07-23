@@ -13,6 +13,7 @@ import com.jen.easy.http.request.EasyHttpRequest;
 import com.jen.easy.http.request.EasyHttpUploadRequest;
 import com.jen.easy.http.request.EasyRequestState;
 import com.jen.easy.http.response.EasyHttpFileResponse;
+import com.jen.easy.http.response.EasyHttpResponse;
 import com.jen.easy.log.JsonLogFormat;
 
 import org.json.JSONException;
@@ -55,7 +56,7 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
         HttpReflectRequestManager.RequestType requestType = HttpReflectRequestManager.getRequestType(mRequest);
         if (requestType == null) {
             HttpLog.exception(ExceptionType.RuntimeException, "请求参数未加注释");
-            fail("请求参数未加注释");
+            fail();
             return;
         }
         String method = requestType.method;
@@ -65,7 +66,7 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
         if (TextUtils.isEmpty(mUrlStr)) {
             mUrlStr = "";
             HttpLog.exception(ExceptionType.NullPointerException, "URL请求地址空");
-            fail("URL地址为空");
+            fail();
             return;
         }
 
@@ -76,13 +77,13 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
             EasyHttpUploadRequest uploadRequest = (EasyHttpUploadRequest) mRequest;
             if (TextUtils.isEmpty(uploadRequest.filePath)) {
                 HttpLog.exception(ExceptionType.NullPointerException, "上传文件地址不能为空");
-                fail("文件地址不能为空");
+                fail();
                 return;
             }
             File file = new File(uploadRequest.filePath);
             if (!file.isFile()) {
                 HttpLog.exception(ExceptionType.IllegalArgumentException, "上传文件地址不可用");
-                fail("文件地址参数错误");
+                fail();
                 return;
             }
         } else if (mRequest instanceof EasyHttpDownloadRequest) {//===============下载请求处理
@@ -90,7 +91,7 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
             if (downloadRequest.deleteOldFile) {
                 if (TextUtils.isEmpty(downloadRequest.filePath)) {
                     HttpLog.exception(ExceptionType.NullPointerException, "要保存文件地址不能为空");
-                    fail("要保存文件地址不能为空");
+                    fail();
                     return;
                 }
                 File file = new File(downloadRequest.filePath);
@@ -98,7 +99,7 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
                     boolean ret = file.delete();
                     if (!ret) {
                         HttpLog.exception(ExceptionType.IllegalArgumentException, "删除旧文件失败，请检查文件路径是否正确");
-                        fail("删除旧文件失败，请检查文件路径是否正确");
+                        fail();
                         return;
                     }
                 }
@@ -106,7 +107,7 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
 
             if (TextUtils.isEmpty(downloadRequest.filePath)) {
                 HttpLog.exception(ExceptionType.NullPointerException, "文件地址不能为空");
-                fail("文件地址不能为空");
+                fail();
                 return;
             }
 
@@ -115,7 +116,7 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
                 boolean ret = fileFolder.mkdirs();
                 if (!ret) {
                     HttpLog.exception(ExceptionType.IllegalArgumentException, "保存文件失败，请检查文件路径是否正确：" + downloadRequest.filePath);
-                    fail("保存文件失败，请检查文件路径是否正确");
+                    fail();
                     return;
                 }
             }
@@ -187,12 +188,12 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
             String infoFormat = "Http IOException error：\n" + JsonLogFormat.formatJson(mRequestLogInfo);
             HttpLog.e(infoFormat);
             e.printStackTrace();
-            fail("");
+            fail();
         } catch (JSONException e) {
             String infoFormat = "Http JSONException error：\n" + JsonLogFormat.formatJson(mRequestLogInfo);
             HttpLog.e(infoFormat);
             e.printStackTrace();
-            fail("");
+            fail();
         }
     }
 
@@ -228,21 +229,21 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
     Object createResponseObjectSuccess(@Type int type, String resultOrFilePath) {
         switch (type) {
             case Type.data:
-                return createResponseObject(type, Response.success, resultOrFilePath, null, null);
+                return createResponseObject(type, Response.success, resultOrFilePath, null);
             case Type.fileDown:
-                return createResponseObject(type, Response.success, null, null, resultOrFilePath);
+                return createResponseObject(type, Response.success, null, resultOrFilePath);
             case Type.fileUp:
-                return createResponseObject(type, Response.success, resultOrFilePath, null, null);
+                return createResponseObject(type, Response.success, resultOrFilePath, null);
         }
         return "";
     }
 
-    Object createResponseObjectFail(@Type int type, String errorMsg) {
-        return createResponseObject(type, Response.fail, null, errorMsg, null);
+    Object createResponseObjectFail(@Type int type) {
+        return createResponseObject(type, Response.fail, null, null);
     }
 
     Object createResponseObjectProgress(@Type int type) {
-        return createResponseObject(type, Response.progress, null, null, null);
+        return createResponseObject(type, Response.progress, null, null);
     }
 
     /**
@@ -250,11 +251,10 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
      *
      * @param type         类型
      * @param result       返回数据
-     * @param errorMsg     错误数据
      * @param responseType 返回类型
      * @return .
      */
-    private Object createResponseObject(@Type int type, @Response int responseType, String result, String errorMsg, String filePath) {
+    private Object createResponseObject(@Type int type, @Response int responseType, String result, String filePath) {
         Object responseObject = null;
         if (mResponse == null || FieldType.isObject(mResponse) || FieldType.isString(mResponse)) {//Object和String类型不做数据解析
             switch (responseType) {
@@ -262,8 +262,6 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
                     responseObject = result;
                     break;
                 case Response.fail:
-                    responseObject = errorMsg;
-                    break;
                 case Response.progress:
                     responseObject = "";
                     break;
@@ -277,7 +275,7 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
                             break;
                         }
                         case Response.fail: {
-                            responseObject = new HttpParseManager().newResponseInstance(mResponse, errorMsg);
+                            responseObject = new HttpParseManager().newResponseInstance(mResponse);
                             break;
                         }
                         case Response.progress: {
@@ -289,19 +287,16 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
                 case Type.fileDown: {
                     switch (responseType) {
                         case Response.success: {
-                            responseObject = new HttpParseManager().newResponseInstance(mResponse, null);
+                            responseObject = new HttpParseManager().newResponseInstance(mResponse);
                             if (responseObject instanceof EasyHttpFileResponse) {
                                 EasyHttpFileResponse fileResponse = (EasyHttpFileResponse) responseObject;
                                 fileResponse.setFilePath(filePath);
                             }
                             break;
                         }
-                        case Response.fail: {
-                            responseObject = new HttpParseManager().newResponseInstance(mResponse, errorMsg);
-                            break;
-                        }
+                        case Response.fail:
                         case Response.progress: {
-                            responseObject = new HttpParseManager().newResponseInstance(mResponse, null);
+                            responseObject = new HttpParseManager().newResponseInstance(mResponse);
                             break;
                         }
                     }
@@ -313,19 +308,18 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
                             responseObject = new HttpParseManager().parseResponseBody(mResponse, result);
                             break;
                         }
-                        case Response.fail: {
-                            responseObject = new HttpParseManager().newResponseInstance(mResponse, errorMsg);
-                            break;
-                        }
+                        case Response.fail:
                         case Response.progress: {
-                            responseObject = new HttpParseManager().newResponseInstance(mResponse, null);
+                            responseObject = new HttpParseManager().newResponseInstance(mResponse);
                             break;
                         }
                     }
                     break;
                 }
             }
-            if (responseObject == null) {
+            if (responseObject instanceof EasyHttpResponse) {
+                ((EasyHttpResponse) responseObject).setResponseCode(mResponseCode);
+            } else if (responseObject == null) {
                 responseObject = "";
             }
         }
@@ -356,5 +350,5 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
 
     protected abstract void success(String result, Map<String, List<String>> headMap);
 
-    protected abstract void fail(String msg);
+    protected abstract void fail();
 }

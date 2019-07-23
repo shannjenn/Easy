@@ -1,0 +1,6 @@
+<resources>
+    <declare-styleable name="GifView">
+        <attr name="gifSrc" format="reference" />
+        <attr name="gifPaused" format="boolean" />
+    </declare-styleable>
+</resources>

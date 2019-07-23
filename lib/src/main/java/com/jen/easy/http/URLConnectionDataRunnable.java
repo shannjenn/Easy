@@ -4,7 +4,6 @@ import com.jen.easy.constant.Unicode;
 import com.jen.easy.exception.HttpLog;
 import com.jen.easy.http.imp.EasyHttpListener;
 import com.jen.easy.http.request.EasyHttpDataRequest;
-import com.jen.easy.http.request.EasyRequestState;
 import com.jen.easy.log.JsonLogFormat;
 
 import java.io.BufferedReader;
@@ -83,7 +82,7 @@ class URLConnectionDataRunnable extends URLConnectionFactoryRunnable {
         } else {
             double timeSec = (System.currentTimeMillis() - startTime) / 1000d;
             HttpLog.e(JsonLogFormat.formatJson(mRequestLogInfo + "\nresponse code：" + mResponseCode + " time: " + timeSec + " second"));
-            fail("http request error：" + mResponseCode);
+            fail();
         }
     }
 
@@ -94,9 +93,9 @@ class URLConnectionDataRunnable extends URLConnectionFactoryRunnable {
     }
 
     @Override
-    protected void fail(String errorMsg) {
+    protected void fail() {
         if (checkListener())
-            httpListener.fail(flagCode, flagStr, createResponseObjectFail(Type.data, errorMsg));
+            httpListener.fail(flagCode, flagStr, createResponseObjectFail(Type.data));
     }
 
 }

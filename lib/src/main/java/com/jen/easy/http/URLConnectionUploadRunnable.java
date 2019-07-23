@@ -79,9 +79,9 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
     }
 
     @Override
-    protected void fail(String errorMsg) {
+    protected void fail() {
         if (checkListener())
-            httpListener.fail(flagCode, flagStr, createResponseObjectFail(Type.fileUp, errorMsg));
+            httpListener.fail(flagCode, flagStr, createResponseObjectFail(Type.fileUp));
     }
 
     private void progress(long currentPoint, long endPoint) {

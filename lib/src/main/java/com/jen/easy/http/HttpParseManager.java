@@ -3,7 +3,6 @@ package com.jen.easy.http;
 import com.jen.easy.constant.FieldType;
 import com.jen.easy.exception.ExceptionType;
 import com.jen.easy.exception.HttpLog;
-import com.jen.easy.http.response.EasyHttpResponse;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,10 +29,9 @@ class HttpParseManager {
      * json解析
      *
      * @param tClass   类
-     * @param errorMsg 错误信息
      * @return 值
      */
-    <T> T newResponseInstance(Class<T> tClass, String errorMsg) {
+    <T> T newResponseInstance(Class<T> tClass) {
         T response;
         try {
             response = tClass.newInstance();
@@ -43,9 +41,6 @@ class HttpParseManager {
         } catch (IllegalAccessException e) {
             HttpLog.w("newResponseInstance IllegalAccessException 创建对象出错" + tClass.getName());
             return null;
-        }
-        if (response instanceof EasyHttpResponse) {
-            ((EasyHttpResponse) response).setErrorMsg(errorMsg);
         }
         return response;
     }

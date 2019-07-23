@@ -66,10 +66,10 @@ class URLConnectionDownloadRunnable extends URLConnectionFactoryRunnable {
             if (curBytes == request.endPoint) {
                 success(request.filePath, headMap);
             } else {
-                fail("下载失败：" + mResponseCode + " curBytes = " + curBytes + " endPoint = " + request.endPoint);
+                fail();
             }
         } else {
-            fail("下载失败：" + mResponseCode);
+            fail();
         }
     }
 
@@ -80,9 +80,9 @@ class URLConnectionDownloadRunnable extends URLConnectionFactoryRunnable {
     }
 
     @Override
-    protected void fail(String errorMsg) {
+    protected void fail() {
         if (checkListener())
-            httpListener.fail(flagCode, flagStr, createResponseObjectFail(Type.fileDown, errorMsg));
+            httpListener.fail(flagCode, flagStr, createResponseObjectFail(Type.fileDown));
     }
 
     private void progress(long currentPoint, long endPoint) {
