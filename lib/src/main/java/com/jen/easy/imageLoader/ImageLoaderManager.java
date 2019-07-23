@@ -30,7 +30,7 @@ import java.util.concurrent.Executors;
 
 abstract class ImageLoaderManager {
     private LruCache<String, Bitmap> mImageCache;//图片缓存
-    private Map<String, List<ImageView>> mImageViewCache = new HashMap<>();
+    private Map<String, List<Image>> mImageViewCache = new HashMap<>();
     private ExecutorService mExecutorService;
     private EasyHttp mHttp;
     private final int H_IMAGE = 100;
@@ -44,15 +44,15 @@ abstract class ImageLoaderManager {
                 switch (msg.what) {
                     case H_IMAGE: {
                         String imageUrl = (String) msg.obj;
-                        List<ImageView> imageViews = mImageViewCache.remove(imageUrl);
+                        List<Image> images = mImageViewCache.remove(imageUrl);
                         Bitmap bitmap = mImageCache.get(imageUrl);
-                        if (imageViews == null) {
+                        if (images == null) {
                             ImageLoaderLog.w("handler H_IMAGE imageViews List is null imageUrl = " + imageUrl);
                             return;
                         }
-                        for (int i = 0; i < imageViews.size(); i++) {
-                            if (imageViews.get(i) != null) {
-                                imageViews.get(i).setImageBitmap(bitmap);
+                        for (int i = 0; i < images.size(); i++) {
+                            if (images.get(i).imageView != null) {
+                                images.get(i).imageView.setImageBitmap(bitmap);
                                 ImageLoaderLog.d("handler H_IMAGE ImageView success imageUrl = " + imageUrl);
                             } else {
                                 ImageLoaderLog.w("handler H_IMAGE ImageView is null imageUrl = " + imageUrl);
@@ -62,14 +62,14 @@ abstract class ImageLoaderManager {
                     }
                     case H_IMAGE_EMPTY: {
                         String imageUrl = (String) msg.obj;
-                        List<ImageView> imageViews = mImageViewCache.get(imageUrl);
-                        if (imageViews == null) {
+                        List<Image> images = mImageViewCache.get(imageUrl);
+                        if (images == null) {
                             ImageLoaderLog.w("handler H_IMAGE imageViews List is null imageUrl = " + imageUrl);
                             return;
                         }
-                        for (int i = 0; i < imageViews.size(); i++) {
-                            if (imageViews.get(i) != null) {
-                                imageViews.get(i).setImageDrawable(config.getDefaultImage());
+                        for (int i = 0; i < images.size(); i++) {
+                            if (images.get(i).imageView != null) {
+                                images.get(i).imageView.setImageDrawable(config.getDefaultImage());
                             } else {
                                 ImageLoaderLog.w("handler H_IMAGE_EMPTY ImageView is null imageUrl = " + imageUrl);
                             }
@@ -85,6 +85,20 @@ abstract class ImageLoaderManager {
         }
     };
 
+    class Image {
+        String url;
+        int width;
+        int height;
+        ImageView imageView;
+
+        Image(String url, ImageView imageView, int width, int height) {
+            this.url = url;
+            this.width = width;
+            this.height = height;
+            this.imageView = imageView;
+        }
+    }
+
     private void setImageViewByHandler(String imageUrl) {
         Message message = new Message();
         message.what = H_IMAGE;
@@ -92,7 +106,7 @@ abstract class ImageLoaderManager {
         mHandler.sendMessage(message);
     }
 
-    private void setImageViewEmptyByHanler(String imageUrl) {
+    private void setImageViewEmptyByHandler(String imageUrl) {
         Message message = new Message();
         message.what = H_IMAGE_EMPTY;
         message.obj = imageUrl;
@@ -114,22 +128,22 @@ abstract class ImageLoaderManager {
         };
     }
 
-    protected void setImage(final String imageUrl, final ImageView imageView, final int width, final int height) {
+    protected void setImage(final String imageUrl, final ImageView imageView, final boolean showDefImg, final int width, final int height) {
         mExecutorService.submit(new Runnable() {
             public void run() {
                 if (TextUtils.isEmpty(imageUrl) || imageView == null) {
                     ImageLoaderLog.exception(ExceptionType.NullPointerException, "imageUrl == null || imageView == null");
                     return;
                 }
-                List<ImageView> imageViews = new ArrayList<>();
+                List<Image> imageViews = new ArrayList<>();
                 if (mImageViewCache.containsKey(imageUrl)) {//正在下载
                     imageViews = mImageViewCache.get(imageUrl);
-                    imageViews.add(imageView);
+                    imageViews.add(new Image(imageUrl, imageView, width, height));
                     mImageViewCache.put(imageUrl, imageViews);
                     ImageLoaderLog.d("正在下载 imageUrl = " + imageUrl);
                     return;
                 }
-                imageViews.add(imageView);
+                imageViews.add(new Image(imageUrl, imageView, width, height));
                 mImageViewCache.put(imageUrl, imageViews);
 
                 boolean cacheResult = getFromCache(imageUrl);
@@ -141,14 +155,23 @@ abstract class ImageLoaderManager {
                     setImageViewByHandler(imageUrl);
                     return;
                 }
-                setImageViewEmptyByHanler(imageUrl);
+                if (showDefImg)
+                    setImageViewEmptyByHandler(imageUrl);
                 getFromHttp(imageUrl);
             }
         });
     }
 
+    protected void setImage(final String imageUrl, final ImageView imageView, final int width, final int height) {
+        setImage(imageUrl, imageView, false, width, height);
+    }
+
     protected void setImage(String imageUrl, ImageView imageView) {
-        setImage(imageUrl, imageView, config.getImgWidth(), config.getImgHeight());
+        setImage(imageUrl, imageView, false, 0, 0);
+    }
+
+    protected void setImage(String imageUrl, ImageView imageView, boolean showDefImg) {
+        setImage(imageUrl, imageView, showDefImg, 0, 0);
     }
 
     private boolean getFromCache(String imageUrl) {
@@ -190,11 +213,25 @@ abstract class ImageLoaderManager {
         }
         opt.inSampleSize = 1;
         if (width > height) {
-            if (width > picWidth)
-                opt.inSampleSize *= width / picWidth;
+            if (picWidth > 0) {
+                if (width > picWidth) {
+                    opt.inSampleSize *= width / picWidth;
+                }
+            } else {
+                if (width > config.getImgMaxWidth()) {
+                    opt.inSampleSize *= width / config.getImgMaxWidth();
+                }
+            }
         } else {
-            if (height > picHeight)
-                opt.inSampleSize *= height / picHeight;
+            if (picHeight > 0) {
+                if (height > picHeight) {
+                    opt.inSampleSize *= height / picHeight;
+                }
+            } else {
+                if (height > config.getImgMaxHeight()) {
+                    opt.inSampleSize *= height / config.getImgMaxHeight();
+                }
+            }
         }
 
         //这次再真正地生成一个有像素的，经过缩放了的bitmap
@@ -247,11 +284,14 @@ abstract class ImageLoaderManager {
         @Override
         public void success(int flagCode, String flagStr, Object response, Map<String, List<String>> headMap) {
             ImageLoaderLog.d("图片下载成功 imageUrl = " + flagStr);
-            boolean result = createBitmapByUrl(config.getImgWidth(), config.getImgHeight(), flagStr);
-            if (result) {
-                setImageViewByHandler(flagStr);
-            } else {
-                mImageViewCache.remove(flagStr);
+            List<Image> images = mImageViewCache.get(flagStr);
+            if (images != null && images.size() > 0) {
+                boolean result = createBitmapByUrl(images.get(0).width, images.get(0).height, flagStr);
+                if (result) {
+                    setImageViewByHandler(flagStr);
+                } else {
+                    mImageViewCache.remove(flagStr);
+                }
             }
         }
 

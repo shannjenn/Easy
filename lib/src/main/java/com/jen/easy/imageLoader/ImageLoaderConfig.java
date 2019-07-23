@@ -23,7 +23,7 @@ public class ImageLoaderConfig {
     private String localPath;//本地缓存目录
     private final int nameMaxLen = 100;//保存文件名最长长度
     private Drawable defaultImage;//默认图片
-    private int imgHeight = 300, imgWidth = 300;//默认高宽
+    private int imgMaxHeight = 1920, imgMaxWidth = 1080;//默认高宽
     private final int httpMaxThread = 5;//默认三个线程
     private int timeOut = 30000;//默认超时毫秒
     private Bitmap.Config bitmapConfig;//图片配置
@@ -67,12 +67,12 @@ public class ImageLoaderConfig {
     }
 
     public ImageLoaderConfig imgHeight(int defaultHeight) {
-        this.imgHeight = defaultHeight;
+        this.imgMaxHeight = defaultHeight;
         return this;
     }
 
     public ImageLoaderConfig imgWidth(int defaultWidth) {
-        this.imgWidth = defaultWidth;
+        this.imgMaxWidth = defaultWidth;
         return this;
     }
 
@@ -106,12 +106,12 @@ public class ImageLoaderConfig {
         return defaultImage;
     }
 
-    int getImgHeight() {
-        return imgHeight;
+    int getImgMaxHeight() {
+        return imgMaxHeight;
     }
 
-    int getImgWidth() {
-        return imgWidth;
+    int getImgMaxWidth() {
+        return imgMaxWidth;
     }
 
     int getHttpMaxThread() {
