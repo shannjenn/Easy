@@ -32,13 +32,21 @@ public class StyleTopBar {
         TEXT, NON
     }
 
-    public StyleTopBar() {
+    public static StyleTopBar build() {
+        return new StyleTopBar();
+    }
+
+    public static StyleTopBar build(ShowLeft showLeft, ShowTitle showTitle, ShowRight showRight) {
+        return new StyleTopBar(showLeft, showTitle, showRight);
+    }
+
+    private StyleTopBar() {
         showLeft = ShowLeft.TEXT;
         showRight = ShowRight.TEXT;
         showTitle = ShowTitle.TEXT;
     }
 
-    public StyleTopBar(ShowLeft showLeft, ShowTitle showTitle, ShowRight showRight) {
+    private StyleTopBar(ShowLeft showLeft, ShowTitle showTitle, ShowRight showRight) {
         this.showLeft = showLeft;
         this.showTitle = showTitle;
         this.showRight = showRight;

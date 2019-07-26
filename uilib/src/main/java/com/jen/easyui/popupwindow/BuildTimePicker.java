@@ -189,6 +189,6 @@ public class BuildTimePicker<T> extends Build<T> {
     }
 
     public interface PickerListener {
-        void onPick(Calendar calendar);
+        void onPick(EasyTimePickerWindow window, Calendar calendar);
     }
 }

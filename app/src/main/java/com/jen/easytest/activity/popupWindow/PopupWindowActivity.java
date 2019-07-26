@@ -92,7 +92,7 @@ public class PopupWindowActivity extends EasyActivity {
         list.add("2");
         list.add("1");
 
-        styleTopBar = new StyleTopBar();
+        styleTopBar = StyleTopBar.build();
 
         easyWindowObject = EasyWindow.<String>build(this)
                 .setStyleTopBar(styleTopBar)

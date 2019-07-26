@@ -69,21 +69,21 @@ public class EasyLoopView extends View {
     private Paint linePaint; // paint that draw line besides center text
 
     public final List<String> mData = new ArrayList<>();
-    private int maxTextWidth;
-    private int unitTextWidth;
-    public int maxTextHeight;
+    private float maxTextWidth;
+    private float unitTextWidth;
+    public float maxTextHeight;
 
-    private int firstLineY;
-    private int secondLineY;
+    private float firstLineY;
+    private float secondLineY;
 
     private int preCurrentIndex;
     private int initPosition;
     private int itemCount = 7;
 
-    private int measuredHeight;
-    private int measuredWidth;
-    private int halfCircumference;
-    private int radius;
+    private float measuredHeight;
+    private float measuredWidth;
+    private float halfCircumference;
+    private float radius;
 
     public int totalScrollY;
     private float rawY;
@@ -285,8 +285,7 @@ public class EasyLoopView extends View {
         Rect rect = new Rect();
         for (int i = 0, len = mData.size(); i < len; i++) {
             String s1 = mData.get(i);
-            selectedPaint.getTextBounds(s1, 0, s1.length(), rect);
-            int textWidth = rect.width();
+            float textWidth = selectedPaint.measureText(s1);
             if (textWidth > maxTextWidth) {
                 maxTextWidth = textWidth;
             }
@@ -297,8 +296,7 @@ public class EasyLoopView extends View {
             }
         }
         if (unitText != null) {
-            unitPaint.getTextBounds(unitText, 0, unitText.length(), rect);
-            unitTextWidth = rect.width();
+            unitTextWidth = unitPaint.measureText(unitText);
         }
 
         halfCircumference = (maxTextHeight + textVerticalMargin) * (itemCount - 1);
@@ -315,12 +313,12 @@ public class EasyLoopView extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 //        int specMode = MeasureSpec.getMode(widthMeasureSpec);//得到模式
 //        int specSize = MeasureSpec.getSize(widthMeasureSpec);//得到大小
-        if (layoutWidth == ViewGroup.LayoutParams.WRAP_CONTENT && layoutWeight == 0) {
-            int widthSpec = maxTextWidth + unitTextWidth + unitHorizontalMargin + viewHorizontalMargin * 2;
-            widthMeasureSpec = MeasureSpec.makeMeasureSpec(widthSpec, MeasureSpec.EXACTLY);
+        if (layoutWidth == ViewGroup.LayoutParams.WRAP_CONTENT) {
+            float widthSpec = maxTextWidth + unitTextWidth + unitHorizontalMargin + viewHorizontalMargin * 2;
+            widthMeasureSpec = MeasureSpec.makeMeasureSpec((int) widthSpec, MeasureSpec.EXACTLY);
         }
         if (layoutHeight == ViewGroup.LayoutParams.WRAP_CONTENT) {
-            heightMeasureSpec = MeasureSpec.makeMeasureSpec(measuredHeight + 10, MeasureSpec.EXACTLY);
+            heightMeasureSpec = MeasureSpec.makeMeasureSpec((int) (measuredHeight + 10), MeasureSpec.EXACTLY);
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         measuredWidth = getMeasuredWidth();
@@ -338,7 +336,7 @@ public class EasyLoopView extends View {
             return;
         }
         int size = mData.size();
-        int change = totalScrollY / ((maxTextHeight + textVerticalMargin));
+        int change = (int) (totalScrollY / ((maxTextHeight + textVerticalMargin)));
         preCurrentIndex = initPosition + change % size;
         if (preCurrentIndex < 0) {
             preCurrentIndex = size + preCurrentIndex;
@@ -347,11 +345,11 @@ public class EasyLoopView extends View {
             preCurrentIndex = preCurrentIndex - size;
         }
 
-        int scrollY = totalScrollY % (maxTextHeight + textVerticalMargin);
+        float scrollY = totalScrollY % (maxTextHeight + textVerticalMargin);
         canvas.drawLine(0.0F, firstLineY, measuredWidth, firstLineY, linePaint);
         canvas.drawLine(0.0F, secondLineY, measuredWidth, secondLineY, linePaint);
 
-        int left;
+        float left;
         if (unitText != null) {
             left = (measuredWidth - maxTextWidth - unitTextWidth - unitHorizontalMargin) / 2;
             canvas.save();
@@ -387,11 +385,11 @@ public class EasyLoopView extends View {
         return texts;
     }
 
-    private void onDrawLoopView(Canvas canvas, List<String> texts, int scrollY, int left) {
+    private void onDrawLoopView(Canvas canvas, List<String> texts, float scrollY, float left) {
         int count = texts.size();
         for (int i = 0; i < count; i++) {
             canvas.save();
-            int itemHeight = maxTextHeight + textVerticalMargin;
+            float itemHeight = maxTextHeight + textVerticalMargin;
             double radian = ((itemHeight * i - scrollY) * Math.PI) / halfCircumference;
             float angle = (float) (90D - (radian / Math.PI) * 180D);
             if (angle >= 90F || angle <= -90F) {
@@ -433,8 +431,8 @@ public class EasyLoopView extends View {
 
     public void smoothScroll() {
         cancelFuture();
-        int offset = totalScrollY % ((maxTextHeight + textVerticalMargin));
-        mFuture = mExecutor.scheduleWithFixedDelay(new ScrollOffsetTimerTask(offset), 0, 10, TimeUnit.MILLISECONDS);
+        float offset = totalScrollY % ((maxTextHeight + textVerticalMargin));
+        mFuture = mExecutor.scheduleWithFixedDelay(new ScrollOffsetTimerTask((int) offset), 0, 10, TimeUnit.MILLISECONDS);
     }
 
     public final void smoothScroll(float velocityY) {

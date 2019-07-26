@@ -15,7 +15,7 @@ public class Build<T> {
     float showAlpha = 0.5f;
     Drawable background;
     boolean showTopBar = true;
-    StyleTopBar styleTopBar = new StyleTopBar();//默认值
+    StyleTopBar styleTopBar = StyleTopBar.build();//默认值
     StyleAnim styleAnim = StyleAnim.BOTTOM;
     List<T> data;
 

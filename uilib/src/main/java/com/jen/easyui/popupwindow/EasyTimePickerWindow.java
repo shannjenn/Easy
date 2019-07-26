@@ -267,7 +267,7 @@ public class EasyTimePickerWindow<T> extends EasyWindow<T> {
         if (i == R.id.iv_left || i == R.id.tv_left) {
             dismiss();
         } else if (i == R.id.iv_right || i == R.id.tv_right) {
-            buildTimePicker.pickerListener.onPick(selectCalendar);
+            buildTimePicker.pickerListener.onPick(this, selectCalendar);
         }
     }
 
@@ -279,5 +279,15 @@ public class EasyTimePickerWindow<T> extends EasyWindow<T> {
      */
     public static String format2LenStr(int num) {
         return (num < 10) ? "0" + num : String.valueOf(num);
+    }
+
+    @Override
+    public void showBottom() {
+        super.showBottom();
+    }
+
+    @Override
+    public void showCenter() {
+        super.showCenter();
     }
 }

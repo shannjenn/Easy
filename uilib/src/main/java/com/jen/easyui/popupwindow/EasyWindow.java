@@ -137,7 +137,7 @@ public abstract class EasyWindow<T> extends EasyWindowFactory<T> implements View
         tv_right.setOnClickListener(this);
 
         if (build.styleTopBar == null) {
-            build.styleTopBar = new StyleTopBar();
+            build.styleTopBar = StyleTopBar.build();
         }
         rl_top_bar.setBackgroundColor(build.styleTopBar.getBackgroundColor());
         tv_left.setTextSize(build.styleTopBar.getLeftTextSize());

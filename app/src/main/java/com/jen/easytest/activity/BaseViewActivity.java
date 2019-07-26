@@ -40,19 +40,19 @@ public class BaseViewActivity extends EasyActivity {
     }
 
 
-    @EasyBindClick({R.id.shapeTextView_check, R.id.shapeTextView_button})
-    @Override
-    protected void onBindClick(View view) {
-        switch (view.getId()) {
-            case R.id.shapeTextView_check: {
-                EasyLog.d("shapeTextView_check click---------------");
-                break;
-            }
-            case R.id.shapeTextView_button: {
-                EasyLog.d("shapeTextView_button click---------------");
-                break;
-            }
-        }
-    }
+//    @EasyBindClick({R.id.shapeTextView_check, R.id.shapeTextView_button})
+//    @Override
+//    protected void onBindClick(View view) {
+//        switch (view.getId()) {
+//            case R.id.shapeTextView_check: {
+//                EasyLog.d("shapeTextView_check click---------------");
+//                break;
+//            }
+//            case R.id.shapeTextView_button: {
+//                EasyLog.d("shapeTextView_button click---------------");
+//                break;
+//            }
+//        }
+//    }
 
 }

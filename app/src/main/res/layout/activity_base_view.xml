@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/white">
 
-    <com.jen.easyui.view.shapeview.EasyShapeLinearLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -27,45 +27,16 @@
             android:textCursorDrawable="@drawable/_easy_edit_text_cursor"
             android:textSize="16sp" />
 
-        <com.jen.easytest.widget.DrawViewTest
-            android:layout_width="match_parent"
-            android:layout_height="100dp" />
+        <com.jen.easyui.view.gif.GifView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:gifSrc="@mipmap/gif_test" />
 
-        <LinearLayout
-            android:layout_width="64dp"
-            android:layout_height="500dp"
-            android:orientation="vertical">
+        <com.jen.easyui.view.gif.GifView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:gifSrc="@mipmap/gif_login_out_tips" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:rotation="90"
-                android:singleLine="true"
-                android:text="呀呀呀呀哎呀呀阿卡卡"
-                android:textSize="16sp" />
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
-
-                <com.jen.easyui.view.baseview.EasyRotateSpanTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    app:rotateDegree="90"
-                    app:rotateText="呀呀呀呀哎呀呀阿卡卡"
-                    app:rotateTextSize="14sp" />
-            </FrameLayout>
-        </LinearLayout>
-
-        <com.jen.easyui.view.histogram.HistogramTest
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_marginBottom="50dp" />
-
-
-    </com.jen.easyui.view.shapeview.EasyShapeLinearLayout>
+    </LinearLayout>
 </ScrollView>
