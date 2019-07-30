@@ -1,8 +1,13 @@
 ext {
+
+    annotationsVersion = "26.1.0"
+    v7appcompatVersion = "26.+"
+    recyclerviewVersion = "26.0.0-alpha1"
+
     android = [
             compileSdkVersion: 27,
             buildToolsVersion: "27.0.3",
-            minSdkVersion    : 21,
+            minSdkVersion    : 15,
             targetSdkVersion : 27,
             versionCode      : 150,
             versionName      : "2.3.5"

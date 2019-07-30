@@ -16,13 +16,6 @@ android {
         targetSdkVersion rootProject.ext.android["targetSdkVersion"]
         versionCode rootProject.ext.android["versionCode"]
         versionName rootProject.ext.android["versionName"]
-//        applicationId "com.jen.easytest"
-//        minSdkVersion 17
-//        targetSdkVersion 26
-//        versionCode 1
-//        versionName "1.0"
-//        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-//        signingConfig signingConfigs.config
     }
     buildTypes {
         release {
@@ -45,10 +38,17 @@ dependencies {
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    implementation 'com.android.support:appcompat-v7:26.+'
+//    implementation 'com.android.support:appcompat-v7:26.+'
+    implementation "com.android.support:recyclerview-v7:$rootProject.recyclerviewVersion"
+    implementation "com.android.support:appcompat-v7:$rootProject.v7appcompatVersion"
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    //recycleView 加载更多 下拉刷新
+    api 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.4'
+    api 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.4'
+
 //    testimplementation 'junit:junit:4.12'
-    //    implementation project(':lib')
+    implementation project(':lib')
     implementation project(':uilib')
 }
 
