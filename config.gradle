@@ -1,9 +1,5 @@
 ext {
 
-    annotationsVersion = "26.1.0"
-    v7appcompatVersion = "26.+"
-    recyclerviewVersion = "26.0.0-alpha1"
-
     android = [
             compileSdkVersion: 27,
             buildToolsVersion: "27.0.3",
@@ -11,5 +7,15 @@ ext {
             targetSdkVersion : 27,
             versionCode      : 150,
             versionName      : "2.3.5"
+    ]
+
+    version = [
+            androidSupportSdkVersion: "27.0.2"
+    ]
+
+    dependencies = [
+            "appcompat-v7"   : "com.android.support:appcompat-v7:${version["androidSupportSdkVersion"]}",
+            "recyclerview-v7": "com.android.support:recyclerview-v7:${version["androidSupportSdkVersion"]}",
+            "annotations": "com.android.support:support-annotations:${version["androidSupportSdkVersion"]}"
     ]
 }
