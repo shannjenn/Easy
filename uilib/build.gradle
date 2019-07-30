@@ -2,7 +2,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 //group='com.github.shannjenn'
-group='com.gitee.shannjenn'
+group = 'com.gitee.shannjenn'
 
 android {
 //    signingConfigs {
@@ -39,8 +39,8 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    api fileTree(include: ['*.jar'], dir: 'libs')//公用jar包必须用api
     implementation rootProject.ext.dependencies["appcompat-v7"]
     implementation rootProject.ext.dependencies["recyclerview-v7"]
-    implementation project(':lib')
+//    implementation project(':lib')
 }

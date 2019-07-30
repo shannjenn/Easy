@@ -2,21 +2,21 @@ package easybase;
 
 import com.jen.easy.sqlite.EasyTBDao;
 
-public class TableManager {
-    private static final String TAG = TableManager.class.getSimpleName();
+public class TBManager {
+    private static final String TAG = TBManager.class.getSimpleName();
 
-    private static TableManager manager;
+    private static TBManager manager;
     private EasyTBDao dbDao;
 
-    private TableManager() {
+    private TBManager() {
         dbDao = new EasyTBDao(EasyApplication.getAppContext());
     }
 
-    public static TableManager getIns() {
+    public static TBManager getIns() {
         if (manager == null) {
-            synchronized (TableManager.class) {
+            synchronized (TBManager.class) {
                 if (manager == null) {
-                    manager = new TableManager();
+                    manager = new TBManager();
                 }
             }
         }

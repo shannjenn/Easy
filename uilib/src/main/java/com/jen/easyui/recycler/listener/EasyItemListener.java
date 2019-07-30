@@ -7,6 +7,14 @@ import android.view.View;
  * 作者：ShannJenn
  * 时间：2017/8/12.
  */
-public interface EasyItemListener {
-    void onItemClick(View view, int position);
+public abstract class EasyItemListener {
+
+    public abstract void onItemClick(View view, int position);
+
+    public void onViewClick(View view, int position) {
+    }
+
+    public boolean onViewLongClick(View view, int position) {
+        return false;
+    }
 }

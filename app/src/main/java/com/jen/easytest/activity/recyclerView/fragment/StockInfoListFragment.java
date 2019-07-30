@@ -13,13 +13,14 @@ import com.jen.easytest.activity.recyclerView.adapter.SortStockTextView;
 import com.jen.easytest.activity.recyclerView.adapter.StockInfo;
 import com.jen.easytest.activity.recyclerView.adapter.StockInfoListAdapter;
 import com.jen.easytest.http.request.StockChooseConditionResultRequest;
-import easybase.EasyFragment;
 import com.jen.easyui.recycler.HScroll.EasyHScrollRecyclerView;
 import com.jen.easyui.recycler.HScroll.EasyHScrollView;
-import com.jen.easyui.recycler.listener.EasyItemListenerB;
+import com.jen.easyui.recycler.listener.EasyItemListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import easybase.EasyFragment;
 
 /**
  * 股票列表详情
@@ -226,7 +227,7 @@ public class StockInfoListFragment extends EasyFragment {
     /**
      * item点击事件
      */
-    private EasyItemListenerB mEasyAdapterOnClickListener = new EasyItemListenerB() {
+    private EasyItemListener mEasyAdapterOnClickListener = new EasyItemListener() {
         @Override
         public void onItemClick(View view, int position) {
             StockInfo data = mData.get(position);
@@ -264,11 +265,6 @@ public class StockInfoListFragment extends EasyFragment {
                     break;
                 }
             }
-        }
-
-        @Override
-        public boolean onViewLongClick(View view, int position) {
-            return false;
         }
     };
 

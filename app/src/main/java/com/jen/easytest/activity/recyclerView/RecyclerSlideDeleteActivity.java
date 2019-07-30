@@ -12,16 +12,15 @@ import com.jen.easy.EasyBindId;
 import com.jen.easytest.R;
 import com.jen.easytest.adapter.decoration.MyItemDecoration;
 import com.jen.easytest.model.RecyclerViewModel;
-
-import easybase.EasyActivity;
-
-import com.jen.easyui.recycler.EasyHolder;
 import com.jen.easyui.recycler.EasyBaseAdapter;
+import com.jen.easyui.recycler.EasyHolder;
 import com.jen.easyui.recycler.letter.EasyLetterDecoration;
-import com.jen.easyui.recycler.listener.EasyItemListenerB;
+import com.jen.easyui.recycler.listener.EasyItemListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import easybase.EasyActivity;
 
 
 /**
@@ -95,7 +94,7 @@ public class RecyclerSlideDeleteActivity extends EasyActivity {
         itemDecoration.setLetterTextColor(0xffff0000);
         recycle.addItemDecoration(itemDecoration);
 
-        easyAdapter1.setItemListener(new EasyItemListenerB() {
+        easyAdapter1.setItemListener(new EasyItemListener() {
             @Override
             public void onItemClick(View view, int position) {
                 Toast.makeText(mContext, position + "", Toast.LENGTH_LONG).show();

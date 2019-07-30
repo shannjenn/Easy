@@ -8,9 +8,6 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.jen.easyui.recycler.listener.EasyItemListenerA;
-import com.jen.easyui.recycler.listener.EasyItemListenerB;
-
 /**
  * baseAdapter
  * 作者：ShannJenn
@@ -66,12 +63,11 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
             Log.w(TAG, "点击设置事件失败，请检查view是否不为空");
             return this;
         }
-        if (mAdapter.listener instanceof EasyItemListenerA) {
-            final EasyItemListenerA listenerA = (EasyItemListenerA) mAdapter.listener;
+        if (mAdapter.listener != null) {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listenerA.onViewClick(v, position);
+                    mAdapter.listener.onViewClick(v, position);
                 }
             });
         }
@@ -102,12 +98,11 @@ public abstract class EasyHolder extends RecyclerView.ViewHolder {
             Log.w(TAG, "点击设置事件失败，请检查view是否不为空");
             return this;
         }
-        if (mAdapter.listener instanceof EasyItemListenerA) {
-            final EasyItemListenerB listenerB = (EasyItemListenerB) mAdapter.listener;
+        if (mAdapter.listener !=null) {
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    return listenerB.onViewLongClick(v, position);
+                    return mAdapter.listener.onViewLongClick(v, position);
                 }
             });
         }

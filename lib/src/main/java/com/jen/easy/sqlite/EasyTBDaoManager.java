@@ -86,9 +86,9 @@ abstract class EasyTBDaoManager {
      * <p>
      *
      * @param clazz         要查找的对象(not null)
-     * @param selection     查询条件
-     * @param selectionArgs 条件参数
-     * @param orderBy       排序
+     * @param selection     查询条件 如："? = " + id + " AND name=?"
+     * @param selectionArgs 条件参数 如：new String[]{"id", name}
+     * @param orderBy       排序 如：如：id DESC
      * @param page          页数
      * @param pageNo        大于0分页,小于等于0不分页
      * @return 对象列表集合
