@@ -1,16 +1,10 @@
 package com.jen.easyui.dialog;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.jen.easy.bind.EasyBind;
-import com.jen.easyui.R;
 
 
 /**

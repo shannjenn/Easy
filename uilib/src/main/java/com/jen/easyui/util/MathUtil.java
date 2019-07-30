@@ -389,4 +389,75 @@ public class MathUtil {
         }
     }
 
+    /**
+     * 转Integer
+     *
+     * @param value .
+     * @return .
+     */
+    public static int paserInt(String value) {
+        if (value == null || value.trim().length() == 0) {
+            return 0;
+        }
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    /**
+     * 转Float
+     *
+     * @param value .
+     * @return .
+     */
+    public static float paserFloat(String value) {
+        if (value == null || value.trim().length() == 0) {
+            return 0;
+        }
+        try {
+            return Float.parseFloat(value);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    /**
+     * 转Double
+     *
+     * @param value .
+     * @return .
+     */
+    public static double paserDouble(String value) {
+        if (value == null || value.trim().length() == 0) {
+            return 0;
+        }
+        try {
+            return Double.parseDouble(value);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    /**
+     * 转Long
+     *
+     * @param value .
+     * @return .
+     */
+    public static long paserLong(String value) {
+        if (value == null || value.trim().length() == 0) {
+            return 0;
+        }
+        try {
+            return Long.parseLong(value);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }

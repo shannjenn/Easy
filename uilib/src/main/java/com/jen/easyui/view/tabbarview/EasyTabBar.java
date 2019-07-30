@@ -54,6 +54,7 @@ public class EasyTabBar extends HorizontalScrollView {
     private float mUnderlineHeight;
 
     private float mTabTextSize;
+    private float mTabTextSelectSize;
     private int mTabWidth;//不设置时自动适应
     private int mTabHeight;//不设置是自动适应
     private int mTabPaddingLeft;
@@ -163,6 +164,7 @@ public class EasyTabBar extends HorizontalScrollView {
         int TEXT_SIZE_DEFAULT = 16;
         String tabBarTextList = ta.getString(R.styleable.EasyTabBar_tabBarTextList);
         mTabTextSize = ta.getDimensionPixelOffset(R.styleable.EasyTabBar_tabBarTextSize, EasyDensityUtil.sp2pxInt(TEXT_SIZE_DEFAULT));
+        mTabTextSelectSize = ta.getDimensionPixelOffset(R.styleable.EasyTabBar_tabBarTextSelectSize, EasyDensityUtil.sp2pxInt(TEXT_SIZE_DEFAULT));
         mTabWidth = ta.getDimensionPixelOffset(R.styleable.EasyTabBar_tabBarTabWidth, -2);//-2为WRAP_CONTENT属性
         mTabHeight = ta.getDimensionPixelOffset(R.styleable.EasyTabBar_tabBarTabHeight, -2);
         mTabPaddingLeft = ta.getDimensionPixelOffset(R.styleable.EasyTabBar_tabBarTabPaddingLeft, 0);
@@ -204,7 +206,7 @@ public class EasyTabBar extends HorizontalScrollView {
         for (int i = 0; i < mTitles.size(); i++) {
             TextView textView = new TextView(mContext);
             textView.setText(mTitles.get(i));
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTabTextSize);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, i == mCurrentPosition ? mTabTextSelectSize : mTabTextSize);
             textView.setTextColor(i == mCurrentPosition ? mTabSelectTextColor : mTabUnSelectTextColor);
             textView.setPadding(mTabPaddingLeft, mTabPaddingTop, mTabPaddingRight, mTabPaddingBottom);
             textView.setGravity(Gravity.CENTER);
@@ -227,6 +229,7 @@ public class EasyTabBar extends HorizontalScrollView {
         for (int i = 0; i < mTitles.size(); i++) {
             TextView textView = (TextView) mTabsContainer.getChildAt(i);
             textView.setTextColor(i == position ? mTabSelectTextColor : mTabUnSelectTextColor);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, i == mCurrentPosition ? mTabTextSelectSize : mTabTextSize);
         }
     }
 

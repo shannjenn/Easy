@@ -14,7 +14,6 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -53,6 +52,7 @@ public class EasyPagerTabBar extends HorizontalScrollView {
     private float mUnderlineHeight;
 
     private float mTabTextSize;
+    private float mTabTextSelectSize;
     private int mTabWidth;//不设置时自动适应
     private int mTabHeight;//不设置是自动适应
     private int mTabPaddingLeft;
@@ -128,6 +128,7 @@ public class EasyPagerTabBar extends HorizontalScrollView {
         int TEXT_SIZE_DEFAULT = 16;
         String tabBarTextList = ta.getString(R.styleable.EasyPagerTabBar_tabBarTextList);
         mTabTextSize = ta.getDimensionPixelOffset(R.styleable.EasyPagerTabBar_tabBarTextSize, EasyDensityUtil.sp2pxInt(TEXT_SIZE_DEFAULT));
+        mTabTextSelectSize = ta.getDimensionPixelOffset(R.styleable.EasyPagerTabBar_tabBarTextSelectSize, EasyDensityUtil.sp2pxInt(TEXT_SIZE_DEFAULT));
         mTabWidth = ta.getDimensionPixelOffset(R.styleable.EasyPagerTabBar_tabBarTabWidth, -2);//-2为WRAP_CONTENT属性
         mTabHeight = ta.getDimensionPixelOffset(R.styleable.EasyPagerTabBar_tabBarTabHeight, -2);
         mTabPaddingLeft = ta.getDimensionPixelOffset(R.styleable.EasyPagerTabBar_tabBarTabPaddingLeft, 0);
@@ -233,7 +234,7 @@ public class EasyPagerTabBar extends HorizontalScrollView {
         for (int i = 0; i < mTitles.size(); i++) {
             TextView textView = new TextView(mContext);
             textView.setText(mTitles.get(i));
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTabTextSize);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, i == currentPosition ? mTabTextSelectSize : mTabTextSize);
             textView.setTextColor(i == currentPosition ? mTabSelectTextColor : mTabUnSelectTextColor);
             textView.setPadding(mTabPaddingLeft, mTabPaddingTop, mTabPaddingRight, mTabPaddingBottom);
             textView.setGravity(Gravity.CENTER);
@@ -256,6 +257,7 @@ public class EasyPagerTabBar extends HorizontalScrollView {
         for (int i = 0; i < mTitles.size(); i++) {
             TextView textView = (TextView) mTabsContainer.getChildAt(i);
             textView.setTextColor(i == position ? mTabSelectTextColor : mTabUnSelectTextColor);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, i == position ? mTabTextSelectSize : mTabTextSize);
         }
     }
 

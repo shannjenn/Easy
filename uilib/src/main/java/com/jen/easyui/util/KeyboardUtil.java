@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Rect;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import java.util.Objects;
 
@@ -14,6 +16,19 @@ public class KeyboardUtil {
 
     public KeyboardUtil() {
 
+    }
+
+    /**
+     * 判定当前是否需要隐藏(点击EditText外面时候隐藏)
+     */
+    public static boolean isShouldHideKeyBord(View v, MotionEvent ev) {
+        if ((v instanceof EditText)) {
+            int[] l = {0, 0};
+            v.getLocationInWindow(l);
+            int left = l[0], top = l[1], bottom = top + v.getHeight(), right = left + v.getWidth();
+            return !(ev.getX() > left && ev.getX() < right && ev.getY() > top && ev.getY() < bottom);
+        }
+        return false;
     }
 
     /**

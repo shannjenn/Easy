@@ -25,6 +25,7 @@
         <!-- 标题title -->
         <attr name="tabBarTextList" format="string" /><!--用英文逗号隔开-->
         <attr name="tabBarTextSize" format="dimension" />
+        <attr name="tabBarTextSelectSize" format="dimension" />
         <attr name="tabBarTextSelectColor" format="color" />
         <attr name="tabBarTextUnSelectColor" format="color" />
         <attr name="tabBarTextBold" format="boolean" />
@@ -68,6 +69,7 @@
         <!-- 标题title -->
         <attr name="tabBarTextList" />
         <attr name="tabBarTextSize" />
+        <attr name="tabBarTextSelectSize" />
         <attr name="tabBarTextSelectColor" />
         <attr name="tabBarTextUnSelectColor" />
         <attr name="tabBarTextBold" />
