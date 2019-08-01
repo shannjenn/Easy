@@ -52,7 +52,12 @@ public class PopupWindowActivity extends EasyActivity {
     }
 
     @Override
-    protected void initViews() {
+    public int bindView() {
+        return 0;
+    }
+
+    @Override
+    public void initData(Bundle savedInstanceState) {
 
         list.add("1");
         list.add("1");

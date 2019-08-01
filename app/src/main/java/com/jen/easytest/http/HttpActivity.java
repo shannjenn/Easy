@@ -28,15 +28,13 @@ public class HttpActivity extends EasyActivity {
     EasyHttp http = new EasyHttp(5);//设置请求最大线程数量值5
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_http);
-//        EasyMain.mHttp.setDefaultBaseListener(httpListener);
+    public int bindView() {
+        return R.layout.activity_http;
     }
 
-
     @Override
-    protected void initViews() {
+    public void initData(Bundle savedInstanceState) {
+
     }
 
 

@@ -25,14 +25,12 @@ public class ImageViewPagerActivity extends EasyActivity {
     ImageViewPagerAdapter mAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_image_view_pager);
+    public int bindView() {
+        return R.layout.activity_image_view_pager;
     }
 
-
     @Override
-    protected void initViews() {
+    public void initData(Bundle savedInstanceState) {
         List<String> list = new ArrayList<>();
         list.add("aaaa");
         list.add("bbbb");
@@ -42,8 +40,6 @@ public class ImageViewPagerActivity extends EasyActivity {
         image_view_pager.setAdapter(mAdapter);
         image_view_pager.setNumCount(4);
     }
-
-
 
     @Override
     protected void onBindClick(View view) {

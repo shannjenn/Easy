@@ -84,7 +84,7 @@ public class SlideDelete extends ViewGroup {
             //松开后,什么时候打开rightView,什么时候关闭leftView
             //临界值,rightView.getLeft() 和 屏幕的宽度-rightView.getWidth()/2
             if (releasedChild == leftView) {
-                if (rightView.getLeft() < getMeasuredWidth() - rightView.getMeasuredWidth() / 4) {
+                if (rightView.getLeft() < getMeasuredWidth() - rightView.getMeasuredWidth() / 2) {
                     //使用ViewDragHelper来滑动
                     helper.smoothSlideViewTo(rightView, getMeasuredWidth() - rightView.getMeasuredWidth(), 0);
                     invalidate();

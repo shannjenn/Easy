@@ -21,7 +21,9 @@ import com.jen.easytest.activity.TimePickActivity;
 import com.jen.easytest.activity.UtilActivity;
 import com.jen.easytest.activity.recyclerView.RecyclerViewMainActivity;
 import com.jen.easytest.logcatch.LogcatCrashActivity;
+
 import easybase.EasyActivity;
+
 import com.jen.easyui.view.baseview.EasyTopBar;
 
 public class MainActivity extends EasyActivity {
@@ -30,13 +32,12 @@ public class MainActivity extends EasyActivity {
     EasyTopBar topBar;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    public int bindView() {
+        return R.layout.activity_main;
     }
 
     @Override
-    protected void initViews() {
+    public void initData(Bundle savedInstanceState) {
         topBar.bindOnBackClick(this);
 //        Throw.exception(ExceptionType.ClassCastException,"ClassCastException-*---------*-------");
 //        Throw.exception(ExceptionType.NullPointerException,"NullPointerException-*---------*-------");
@@ -46,7 +47,7 @@ public class MainActivity extends EasyActivity {
 
     @EasyBindClick({R.id.tabBar, R.id.baseView, R.id.shapeView, R.id.http, R.id.imageLoader, R.id.dialog, R.id.popupWindow,
             R.id.sqlite, R.id.util, R.id.recycleView, R.id.timePick, R.id.ImageViewPager, R.id.OnclickTest,
-            R.id.PickerView,R.id.logcatCrash})
+            R.id.PickerView, R.id.logcatCrash})
     @Override
     protected void onBindClick(View view) {
         Class clazz = null;

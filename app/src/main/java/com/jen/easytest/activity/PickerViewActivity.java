@@ -22,13 +22,12 @@ public class PickerViewActivity extends EasyActivity {
     EasyLoopView pick_1;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pick_view);
+    public int bindView() {
+        return R.layout.activity_pick_view;
     }
 
     @Override
-    protected void initViews() {
+    public void initData(Bundle savedInstanceState) {
         List<String> data = new ArrayList<>();
         for (int i = 0; i < 24; i++) {
             data.add(i < 10 ? "0" + i : "" + i);

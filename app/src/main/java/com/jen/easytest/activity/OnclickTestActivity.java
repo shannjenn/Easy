@@ -21,14 +21,12 @@ public class OnclickTestActivity extends EasyActivity {
     TextView tv_onclickTest;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_onclick_test);
+    public int bindView() {
+        return R.layout.activity_onclick_test;
     }
 
-
     @Override
-    protected void initViews() {
+    public void initData(Bundle savedInstanceState) {
 
     }
 

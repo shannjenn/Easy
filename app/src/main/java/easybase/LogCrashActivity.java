@@ -1,5 +1,6 @@
 package easybase;
 
+import android.os.Bundle;
 import android.view.View;
 
 import com.jen.easyui.R;
@@ -17,9 +18,15 @@ public class LogCrashActivity<T> extends EasyActivity<T> {
     }
 
     @Override
-    protected void initViews() {
+    public int bindView() {
+        return 0;
+    }
+
+    @Override
+    public void initData(Bundle savedInstanceState) {
 
     }
+
     @Override
     protected void onBindClick(View view) {
 

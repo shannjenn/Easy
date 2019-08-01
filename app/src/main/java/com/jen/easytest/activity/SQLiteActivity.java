@@ -21,16 +21,15 @@ public class SQLiteActivity extends EasyActivity {
     private EasyTBDao dbDao;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sqlite);
+    public int bindView() {
+        return R.layout.activity_sqlite;
     }
-
 
     @Override
-    protected void initViews() {
-//        easyButon.setBackgroundColor(0xffff0000);
+    public void initData(Bundle savedInstanceState) {
+
     }
+
 
 
     @EasyBindClick({R.id.replace, R.id.search})

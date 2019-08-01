@@ -35,14 +35,12 @@ public class ImageLoaderActivity<T extends ImageLoaderResponse> extends EasyActi
     ImageLoaderAdapter<ImageLoaderModel> adapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_image_loader);
+    public int bindView() {
+        return R.layout.activity_image_loader;
     }
 
-
     @Override
-    protected void initViews() {
+    public void initData(Bundle savedInstanceState) {
         ImageLoader.getInstance().init(ImageLoaderConfig.build(MyApplication.getAppContext()));
         List<ImageLoaderModel> loaderModels = new ArrayList<>();
         loaderModels.add(new ImageLoaderModel());
@@ -56,7 +54,6 @@ public class ImageLoaderActivity<T extends ImageLoaderResponse> extends EasyActi
         adapter = new ImageLoaderAdapter<>(this, recycle);
         adapter.setDataAndNotify(loaderModels);
     }
-
 
     @Override
     protected void onBindClick(View view) {

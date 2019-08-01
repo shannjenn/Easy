@@ -26,9 +26,14 @@ public class LogcatCrashActivity extends EasyActivity {
 //        EasyMain.mHttp.setDefaultBaseListener(httpListener);
     }
 
+    @Override
+    public int bindView() {
+        return 0;
+    }
 
     @Override
-    protected void initViews() {
+    public void initData(Bundle savedInstanceState) {
+
         HttpLog.d("打印测试=======================================================" + " 请求中断。\n \t");//\n\t打印才出现空行
         HttpLog.d("打印测试=======================================================" + " 请求中断。\n          ");//\n\t打印才出现空行
         HttpLog.d("打印测试=======================================================" + " 请求中断。\n           ");//\n\t打印才出现空行

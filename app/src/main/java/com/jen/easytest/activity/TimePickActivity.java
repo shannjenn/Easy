@@ -23,14 +23,13 @@ import easybase.EasyActivity;
 public class TimePickActivity extends EasyActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_time_pick);
+    public int bindView() {
+        return R.layout.activity_time_pick;
     }
 
-
     @Override
-    protected void initViews() {
+    public void initData(Bundle savedInstanceState) {
+
     }
 
 

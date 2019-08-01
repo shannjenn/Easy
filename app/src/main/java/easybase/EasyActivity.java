@@ -33,18 +33,18 @@ public abstract class EasyActivity<T> extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mContext = this;
         mBindView = new EasyBind();
+        setContentView(bindView());
+        mBindView.bind(this);
         mLoading = new EasyLoading(this);
         mLoading.setCancelable(false);
 //        setContentView(setLayout());
         checkFilePermission();
+        initData(savedInstanceState);
     }
 
-    @Override
-    public void setContentView(@LayoutRes int layoutResID) {
-        super.setContentView(layoutResID);
-        mBindView.bind(this);
-        initViews();
-    }
+    public abstract int bindView();
+
+    public abstract void initData(Bundle savedInstanceState);
 
     @Override
     protected void onDestroy() {
@@ -56,7 +56,6 @@ public abstract class EasyActivity<T> extends AppCompatActivity {
         }
     }
 
-    protected abstract void initViews();
 
     protected void onBindClick(View view) {
     }

@@ -31,14 +31,12 @@ public class ShapeViewActivity extends EasyActivity {
     Book book;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_shape_view);
+    public int bindView() {
+        return R.layout.activity_shape_view;
     }
 
-
     @Override
-    protected void initViews() {
+    public void initData(Bundle savedInstanceState) {
         book = new Book();
         book.setName("thread test id");
 //        new MyThread(book).start();

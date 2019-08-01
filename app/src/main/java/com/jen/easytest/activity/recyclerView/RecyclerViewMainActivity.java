@@ -21,9 +21,13 @@ public class RecyclerViewMainActivity extends EasyActivity {
         setContentView(R.layout.activity_recycler_view_main);
     }
 
+    @Override
+    public int bindView() {
+        return 0;
+    }
 
     @Override
-    protected void initViews() {
+    public void initData(Bundle savedInstanceState) {
 
     }
 

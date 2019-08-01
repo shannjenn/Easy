@@ -21,14 +21,12 @@ public class DialogActivity extends EasyActivity {
     EasyDialog dialog;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dialog);
+    public int bindView() {
+        return R.layout.activity_dialog;
     }
 
-
     @Override
-    protected void initViews() {
+    public void initData(Bundle savedInstanceState) {
         loading = new EasyLoading(this);
         dialog = EasyDialog.build(this)
 //                .setIconLeft(getResources().getDrawable(R.mipmap.ic_launcher))

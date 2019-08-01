@@ -41,14 +41,12 @@ public class TabBarActivity extends EasyActivity {
     ScrollFragmentPagerAdapter scrollFragmentPagerAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tabbar);
+    public int bindView() {
+        return R.layout.activity_tabbar;
     }
 
-
     @Override
-    protected void initViews() {
+    public void initData(Bundle savedInstanceState) {
         initScroll();
     }
 

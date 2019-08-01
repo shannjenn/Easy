@@ -31,9 +31,14 @@ public class RecyclerHScrollActivity extends EasyActivity {
         setContentView(R.layout.activity_recycler_scroll);
     }
 
+    @Override
+    public int bindView() {
+        return 0;
+    }
 
     @Override
-    protected void initViews() {
+    public void initData(Bundle savedInstanceState) {
+
         mData.clear();
         for (int i = 0; i < 36; i++) {
             RecyclerViewModel model = new RecyclerViewModel();

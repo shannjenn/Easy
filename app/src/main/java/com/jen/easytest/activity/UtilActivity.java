@@ -18,13 +18,12 @@ public class UtilActivity extends EasyActivity {
     DateFormatUtil format = new DateFormatUtil();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_util);
+    public int bindView() {
+        return R.layout.activity_util;
     }
 
     @Override
-    protected void initViews() {
+    public void initData(Bundle savedInstanceState) {
 
     }
 

@@ -3,11 +3,11 @@ package com.jen.easyui.util;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
-
-import com.jen.easyui.R;
+import android.text.style.StyleSpan;
 
 /**
  * 作者：ShannJenn
@@ -15,22 +15,46 @@ import com.jen.easyui.R;
  * 说明：
  */
 public class TextUtil {
+    private static TextUtil me;
+
+    private TextUtil() {
+
+    }
+
+    public static TextUtil getIns() {
+        if (me == null) {
+            synchronized (TextUtil.class) {
+                if (me == null) {
+                    me = new TextUtil();
+                }
+            }
+        }
+        return me;
+    }
 
     /**
      * 设置部分文字颜色
      *
-     * @param style
-     * @param color
-     * @return
+     * @param style .
+     * @param color .
+     * @return .
      */
-    public static SpannableStringBuilder setPartTextColor(SpannableStringBuilder style, int color) {
-        if (style == null) {
-            style = new SpannableStringBuilder();
-        }
-        //设置部分文字颜色
+    public TextUtil setPartTextColor(SpannableStringBuilder style, int color, int start, int end) {
         ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(color);
-        style.setSpan(foregroundColorSpan, 86, 96, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return style;
+        style.setSpan(foregroundColorSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return this;
+    }
+
+    /**
+     * 设置部分文字加粗
+     *
+     * @param style .
+     * @return .
+     */
+    public TextUtil setPartTextBold(SpannableStringBuilder style, int start, int end) {
+        StyleSpan styleSpan = new StyleSpan(Typeface.BOLD);
+        style.setSpan(styleSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return this;
     }
 
     /**
@@ -62,10 +86,11 @@ public class TextUtil {
     /*
      * 复制到粘贴板
      */
-    public static void clipboard(Context context, String name, String text) {
+    public TextUtil clipboard(Context context, String name, String text) {
         ClipboardManager cbm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clipData = ClipData.newPlainText(name, text);
         cbm.setPrimaryClip(clipData);
 //        CommonUtils.showToast(context, context.getString(R.string.copy_done));
+        return this;
     }
 }
