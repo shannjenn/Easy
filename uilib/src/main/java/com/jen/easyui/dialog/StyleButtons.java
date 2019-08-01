@@ -1,6 +1,6 @@
 package com.jen.easyui.dialog;
 
-import com.jen.easyui.util.EasyDensityUtil;
+import com.jen.easyui.util.DensityUtil;
 
 public class StyleButtons {
     public Show show = Show.LEFT_RIGHT;//默认显示两个
@@ -44,18 +44,18 @@ public class StyleButtons {
      * 设置默认值
      */
     private void init() {
-        buttonsMarginTop = EasyDensityUtil.dp2pxInt(20);
-        buttonsMarginBottom = EasyDensityUtil.dp2pxInt(20);
+        buttonsMarginTop = DensityUtil.dp2pxInt(20);
+        buttonsMarginBottom = DensityUtil.dp2pxInt(20);
         switch (show) {
             case LEFT_RIGHT:
-                leftButtonMarginLeft = EasyDensityUtil.dp2pxInt(20);
-                leftButtonMarginRight = EasyDensityUtil.dp2pxInt(5);
-                rightButtonMarginLeft = EasyDensityUtil.dp2pxInt(5);
-                rightButtonMarginRight = EasyDensityUtil.dp2pxInt(20);
+                leftButtonMarginLeft = DensityUtil.dp2pxInt(20);
+                leftButtonMarginRight = DensityUtil.dp2pxInt(5);
+                rightButtonMarginLeft = DensityUtil.dp2pxInt(5);
+                rightButtonMarginRight = DensityUtil.dp2pxInt(20);
                 break;
             case RIGHT:
-                rightButtonMarginLeft = EasyDensityUtil.dp2pxInt(40);
-                rightButtonMarginRight = EasyDensityUtil.dp2pxInt(40);
+                rightButtonMarginLeft = DensityUtil.dp2pxInt(40);
+                rightButtonMarginRight = DensityUtil.dp2pxInt(40);
                 break;
         }
         leftButtonCorners = 4;
@@ -63,7 +63,7 @@ public class StyleButtons {
     }
 
     private int db2px(int db) {
-        return EasyDensityUtil.dp2pxInt(db);
+        return DensityUtil.dp2pxInt(db);
     }
 
     //getter================================================================================================

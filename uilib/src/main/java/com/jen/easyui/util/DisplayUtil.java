@@ -10,7 +10,7 @@ import android.view.WindowManager;
  * 作者：ShannJenn
  * 时间：2017/8/12.
  */
-public class EasyDisplayUtil {
+public class DisplayUtil {
 
     /**
      * 获得屏幕宽度

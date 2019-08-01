@@ -84,7 +84,7 @@ public class SlideDelete extends ViewGroup {
             //松开后,什么时候打开rightView,什么时候关闭leftView
             //临界值,rightView.getLeft() 和 屏幕的宽度-rightView.getWidth()/2
             if (releasedChild == leftView) {
-                if (rightView.getLeft() < getMeasuredWidth() - rightView.getMeasuredWidth() / 2) {
+                if (rightView.getLeft() < getMeasuredWidth() - rightView.getMeasuredWidth() / 4) {
                     //使用ViewDragHelper来滑动
                     helper.smoothSlideViewTo(rightView, getMeasuredWidth() - rightView.getMeasuredWidth(), 0);
                     invalidate();
@@ -140,11 +140,46 @@ public class SlideDelete extends ViewGroup {
 
     //View的事件传递
 
+    private float DownX;
+    private float DownY;
+    private float moveX;
+    private float moveY;
+    private long currentMS;
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         //1,要消费该事件,所以直接返回true
         //2,使用ViewDragHelper来实现滑动效果
         helper.processTouchEvent(event);
-        return true;
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                DownX = event.getX();//float DownX
+                DownY = event.getY();//float DownY
+                moveX = 0;
+                moveY = 0;
+                currentMS = System.currentTimeMillis();//long currentMS     获取系统时间
+                return true;
+            case MotionEvent.ACTION_MOVE:
+                moveX += Math.abs(event.getX() - DownX);//X轴距离
+                moveY += Math.abs(event.getY() - DownY);//y轴距离
+                DownX = event.getX();
+                DownY = event.getY();
+                return true;
+            case MotionEvent.ACTION_UP:
+                long moveTime = System.currentTimeMillis() - currentMS;//移动时间
+                //判断是否继续传递信号
+                if (moveTime > 200 && (moveX > 20 || moveY > 20)) {
+                    return true; //不再执行后面的事件，在这句前可写要执行的触摸相关代码。点击事件是发生在触摸弹起后
+                } else {
+                    performClick();
+                    return super.onTouchEvent(event);//可以触发点击事件
+                }
+        }
+        return true;//继续执行后面的代码
+    }
+
+    @Override
+    public boolean performClick() {
+        return super.performClick();
     }
 }

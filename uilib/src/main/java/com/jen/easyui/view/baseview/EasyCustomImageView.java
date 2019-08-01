@@ -18,7 +18,7 @@ import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 
 import com.jen.easyui.R;
-import com.jen.easyui.util.EasyDensityUtil;
+import com.jen.easyui.util.DensityUtil;
 
 /**
  * 自定义(圆形或者圆角)
@@ -70,9 +70,9 @@ public class EasyCustomImageView extends AppCompatImageView {
         mType = ta.getInt(R.styleable.EasyCustomImageView_type, DEFAULT_TYPE);
         mBorderColor = ta.getColor(R.styleable.EasyCustomImageView_borderColor, DEFAULT_BORDER_COLOR);
         mBorderWidth = ta.getDimensionPixelSize(R.styleable.EasyCustomImageView_borderWidth,
-                EasyDensityUtil.dp2pxInt(DEFAULT_BORDER_WIDTH));
+                DensityUtil.dp2pxInt(DEFAULT_BORDER_WIDTH));
         mRectRoundRadius = ta.getDimensionPixelSize(R.styleable.EasyCustomImageView_rectRoundRadius,
-                EasyDensityUtil.dp2pxInt(DEFAULT_RECT_ROUND_RADIUS));
+                DensityUtil.dp2pxInt(DEFAULT_RECT_ROUND_RADIUS));
         ta.recycle();
     }
 

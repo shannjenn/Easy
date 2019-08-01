@@ -4,7 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.jen.easyui.R;
-import com.jen.easyui.util.EasyDateFormatUtil;
+import com.jen.easyui.util.DateFormatUtil;
 import com.jen.easyui.view.loopview.EasyLoopView;
 
 import java.util.ArrayList;
@@ -207,7 +207,7 @@ public class EasyTimePickerWindow<T> extends EasyWindow<T> {
                 case YEAR_MONTH_DAY_HOUR_MIN_WEEK:
                 case MONTH_DAY_HOUR_MIN_WEEK:
                 case YEAR_MONTH_DAY_WEEK: {
-                    EasyDateFormatUtil formatUtil = new EasyDateFormatUtil();
+                    DateFormatUtil formatUtil = new DateFormatUtil();
                     Calendar calendar = Calendar.getInstance(Locale.CHINA);
                     calendar.setTimeInMillis(selectCalendar.getTimeInMillis());
                     formatUtil.setFormat("dd EEEE");

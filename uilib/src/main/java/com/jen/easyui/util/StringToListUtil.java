@@ -15,8 +15,8 @@ import java.util.List;
  * 时间：2017/8/14.
  */
 
-public class EasyStringToListUtil {
-    private final String TAG = "EasyStringToListUtil";
+public class StringToListUtil {
+    private final String TAG = "StringToListUtil";
     private String unicode = "utf-8";
 
     public void setUnicode(String unicode) {

@@ -2,7 +2,7 @@ package com.jen.easyui.dialog;
 
 import android.view.Gravity;
 
-import com.jen.easyui.util.EasyDensityUtil;
+import com.jen.easyui.util.DensityUtil;
 
 public class StyleContent {
     private int gravity;
@@ -13,9 +13,9 @@ public class StyleContent {
 
     public StyleContent() {
         gravity = Gravity.START;
-        paddingLeft = EasyDensityUtil.dp2pxInt(20);
-        paddingRight = EasyDensityUtil.dp2pxInt(20);
-        paddingTop = EasyDensityUtil.dp2pxInt(20);
+        paddingLeft = DensityUtil.dp2pxInt(20);
+        paddingRight = DensityUtil.dp2pxInt(20);
+        paddingTop = DensityUtil.dp2pxInt(20);
     }
 
     public int getGravity() {

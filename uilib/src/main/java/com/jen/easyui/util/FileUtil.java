@@ -10,8 +10,8 @@ import java.io.File;
  * 说明：
  */
 
-public class EasyFileUtil {
-    private final String TAG = EasyFileUtil.class.getSimpleName();
+public class FileUtil {
+    private final String TAG = FileUtil.class.getSimpleName();
 
     /**
      * 删除文件

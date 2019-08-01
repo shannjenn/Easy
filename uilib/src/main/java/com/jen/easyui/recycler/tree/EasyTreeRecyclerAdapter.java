@@ -9,10 +9,8 @@ import android.view.ViewGroup;
 
 import com.jen.easyui.recycler.EasyHolder;
 import com.jen.easyui.recycler.EasyAdapterFactory;
-import com.jen.easyui.util.EasyDensityUtil;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

@@ -10,7 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.jen.easyui.util.EasyDensityUtil;
+import com.jen.easyui.util.DensityUtil;
 
 /**
  * EasyTagDrawable
@@ -55,7 +55,7 @@ public class EasyTagDrawable extends Drawable {
         strokePaint.setAntiAlias(true);
         strokePaint.setStyle(Paint.Style.STROKE);
         strokePaint.setColor(strokeColor);
-        strokePaint.setStrokeWidth(EasyDensityUtil.sp2pxFloat(strokeWidth));
+        strokePaint.setStrokeWidth(DensityUtil.sp2pxFloat(strokeWidth));
 
         //文字画笔
         textPaint = new Paint();
@@ -63,7 +63,7 @@ public class EasyTagDrawable extends Drawable {
         textPaint.setColor(textColor);
         textPaint.setTextAlign(Paint.Align.CENTER);
         textPaint.setStyle(Paint.Style.FILL);
-        textPaint.setTextSize(EasyDensityUtil.sp2pxFloat(textSize));
+        textPaint.setTextSize(DensityUtil.sp2pxFloat(textSize));
 
         //测量文字的宽高
         Rect textRect = new Rect();
@@ -72,7 +72,7 @@ public class EasyTagDrawable extends Drawable {
         backgroundWidth = textRect.width() + (textRect.width() / text.length());
         //背景高度是文字高度的1.5倍
 //        backgroundHeight = (int) (textRect.height() * 1.5);
-        backgroundHeight = EasyDensityUtil.dp2pxInt(backgroundHeight);
+        backgroundHeight = DensityUtil.dp2pxInt(backgroundHeight);
 
         return this;
     }

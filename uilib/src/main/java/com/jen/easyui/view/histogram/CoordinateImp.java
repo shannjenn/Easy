@@ -1,13 +1,5 @@
 package com.jen.easyui.view.histogram;
 
-import android.graphics.Canvas;
-import android.graphics.DashPathEffect;
-import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.PathEffect;
-
-import com.jen.easyui.util.EasyDensityUtil;
-
 /**
  * 这是一个示例
  * 作者：ShannJenn

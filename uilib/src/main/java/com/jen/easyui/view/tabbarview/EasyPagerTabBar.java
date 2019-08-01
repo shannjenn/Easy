@@ -19,7 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jen.easyui.R;
-import com.jen.easyui.util.EasyDensityUtil;
+import com.jen.easyui.util.DensityUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -127,8 +127,8 @@ public class EasyPagerTabBar extends HorizontalScrollView {
         /*默认字体大小sp*/
         int TEXT_SIZE_DEFAULT = 16;
         String tabBarTextList = ta.getString(R.styleable.EasyPagerTabBar_tabBarTextList);
-        mTabTextSize = ta.getDimensionPixelOffset(R.styleable.EasyPagerTabBar_tabBarTextSize, EasyDensityUtil.sp2pxInt(TEXT_SIZE_DEFAULT));
-        mTabTextSelectSize = ta.getDimensionPixelOffset(R.styleable.EasyPagerTabBar_tabBarTextSelectSize, EasyDensityUtil.sp2pxInt(TEXT_SIZE_DEFAULT));
+        mTabTextSize = ta.getDimensionPixelOffset(R.styleable.EasyPagerTabBar_tabBarTextSize, DensityUtil.sp2pxInt(TEXT_SIZE_DEFAULT));
+        mTabTextSelectSize = ta.getDimensionPixelOffset(R.styleable.EasyPagerTabBar_tabBarTextSelectSize, DensityUtil.sp2pxInt(TEXT_SIZE_DEFAULT));
         mTabWidth = ta.getDimensionPixelOffset(R.styleable.EasyPagerTabBar_tabBarTabWidth, -2);//-2为WRAP_CONTENT属性
         mTabHeight = ta.getDimensionPixelOffset(R.styleable.EasyPagerTabBar_tabBarTabHeight, -2);
         mTabPaddingLeft = ta.getDimensionPixelOffset(R.styleable.EasyPagerTabBar_tabBarTabPaddingLeft, 0);

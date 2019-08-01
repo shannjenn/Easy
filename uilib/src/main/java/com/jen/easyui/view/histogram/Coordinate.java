@@ -7,7 +7,7 @@ import android.graphics.Path;
 import android.graphics.PathEffect;
 
 import com.jen.easy.log.EasyLog;
-import com.jen.easyui.util.EasyDensityUtil;
+import com.jen.easyui.util.DensityUtil;
 import com.jen.easyui.util.MathUtil;
 
 /**
@@ -32,9 +32,9 @@ public abstract class Coordinate<T> extends HistogramFactory<T> {
     @Override
     protected void init() {
         valueTextColor = 0xff666666;
-        valueTextSize = EasyDensityUtil.sp2pxFloat(10);
+        valueTextSize = DensityUtil.sp2pxFloat(10);
         timeTextColor = 0xff000000;
-        timeTextSize = EasyDensityUtil.sp2pxFloat(10);
+        timeTextSize = DensityUtil.sp2pxFloat(10);
         lineColor = 0xFFEEEEEE;//线条颜色
 
         yPaint = new Paint();

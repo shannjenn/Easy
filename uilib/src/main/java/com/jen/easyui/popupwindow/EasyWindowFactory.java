@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 
-import com.jen.easyui.util.EasyDisplayUtil;
+import com.jen.easyui.util.DisplayUtil;
 
 /**
  * 说明：
@@ -158,7 +158,7 @@ abstract class EasyWindowFactory<T> extends PopupWindow {
      * 控制窗口背景的不透明度
      */
     private void setWindowBackgroundAlpha(float alpha) {
-        EasyDisplayUtil.setBackgroundAlpha((Activity) build.context, alpha);
+        DisplayUtil.setBackgroundAlpha((Activity) build.context, alpha);
     }
 
     public void setShowAlpha(float alpha) {

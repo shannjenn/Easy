@@ -34,24 +34,24 @@ import java.util.TimeZone;
  z 时区(z/zz/zzz:PST zzzz:Pacific Standard Time)
  要忽略的字符都要用单引号('')括住！
  SimpleDateFormat sdf = new SimpleDateFormat("'日期'yyyy-MM-dd'Time'HH:mm:ss'Z'");*/
-public class EasyDateFormatUtil {
-    private final String TAG = EasyDateFormatUtil.class.getSimpleName();
+public class DateFormatUtil {
+    private final String TAG = DateFormatUtil.class.getSimpleName();
     private SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.SIMPLIFIED_CHINESE);//默认
-    private static EasyDateFormatUtil me;
+    private static DateFormatUtil me;
 
-    public EasyDateFormatUtil() {
+    public DateFormatUtil() {
 
     }
 
-    public EasyDateFormatUtil(@NonNull String dateFormat) {
+    public DateFormatUtil(@NonNull String dateFormat) {
         mFormat = new SimpleDateFormat(dateFormat, Locale.SIMPLIFIED_CHINESE);
     }
 
-    public static EasyDateFormatUtil getIns() {
+    public static DateFormatUtil getIns() {
         if (me == null) {
-            synchronized (EasyDateFormatUtil.class) {
+            synchronized (DateFormatUtil.class) {
                 if (me == null) {
-                    me = new EasyDateFormatUtil();
+                    me = new DateFormatUtil();
                 }
             }
         }
@@ -63,7 +63,7 @@ public class EasyDateFormatUtil {
      *
      * @param dateFormat 格式(如:yyyy-MM-dd HH:mm:ss)
      */
-    public EasyDateFormatUtil setFormat(@NonNull String dateFormat) {
+    public DateFormatUtil setFormat(@NonNull String dateFormat) {
         mFormat = new SimpleDateFormat(dateFormat, Locale.SIMPLIFIED_CHINESE);
         return this;
     }

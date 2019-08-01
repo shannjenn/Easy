@@ -8,7 +8,7 @@ import android.graphics.Color;
  * @author hzw
  * @date 2016/1/24.
  */
-public class EasyColorUtil {
+public class ColorUtil {
 
     /**
      * 计算渐变后的颜色

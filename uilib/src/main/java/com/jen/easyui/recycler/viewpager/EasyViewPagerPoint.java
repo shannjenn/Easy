@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.jen.easyui.R;
-import com.jen.easyui.util.EasyDensityUtil;
+import com.jen.easyui.util.DensityUtil;
 
 /**
  * 作者：ShannJenn
@@ -54,7 +54,7 @@ public class EasyViewPagerPoint extends RelativeLayout {
 
         LayoutParams linearLayoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         linearLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-        linearLayoutParams.bottomMargin = EasyDensityUtil.dp2pxInt(DB_BOTTOM_MARGIN);
+        linearLayoutParams.bottomMargin = DensityUtil.dp2pxInt(DB_BOTTOM_MARGIN);
         numLayout = new LinearLayout(getContext());
         numLayout.setLayoutParams(linearLayoutParams);
         addView(numLayout);
@@ -105,7 +105,7 @@ public class EasyViewPagerPoint extends RelativeLayout {
      */
     public void setNumCount(int numCount) {
         this.numCount = numCount;
-        int size = EasyDensityUtil.dp2pxInt(DB_NUM_SIZE);
+        int size = DensityUtil.dp2pxInt(DB_NUM_SIZE);
         LinearLayout.LayoutParams poitParams = new LinearLayout.LayoutParams(size, size);
         poitParams.rightMargin = DB_NUM_DISTANCE;
 //        poitParams.setMargins(0, 0, DB_NUM_DISTANCE, 0);

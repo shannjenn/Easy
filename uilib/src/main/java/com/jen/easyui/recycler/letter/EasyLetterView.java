@@ -12,7 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.jen.easyui.R;
-import com.jen.easyui.util.EasyDensityUtil;
+import com.jen.easyui.util.DensityUtil;
 
 /**
  * 说明：
@@ -83,7 +83,7 @@ public class EasyLetterView extends View {
 
         textTouchColor = ta.getColor(R.styleable.EasyLetterView_letterTextTouchColor, Color.RED);
         textDefaultColor = ta.getColor(R.styleable.EasyLetterView_letterTextDefaultColor, Color.BLACK);
-        textSize = ta.getDimensionPixelOffset(R.styleable.EasyLetterView_letterTextSize, EasyDensityUtil.sp2pxInt(14));
+        textSize = ta.getDimensionPixelOffset(R.styleable.EasyLetterView_letterTextSize, DensityUtil.sp2pxInt(14));
 
         backgroundTouchColor = ta.getColor(R.styleable.EasyLetterView_letterBackgroundTouchColor, Color.TRANSPARENT);
         backgroundColor = ta.getLayoutDimension(R.styleable.EasyLetterView_android_background, Color.TRANSPARENT);
@@ -96,7 +96,7 @@ public class EasyLetterView extends View {
         dialogBackgroundDrawable = getResources().getDrawable(dialogBackgroundDrawableId);
         dialogWith = ta.getDimensionPixelSize(R.styleable.EasyLetterView_letterDialogWith, 0);
         dialogHeight = ta.getDimensionPixelSize(R.styleable.EasyLetterView_letterDialogHeight, 0);
-        dialogTextSize = ta.getDimensionPixelOffset(R.styleable.EasyLetterView_letterDialogTextSize, EasyDensityUtil.sp2pxInt(14));
+        dialogTextSize = ta.getDimensionPixelOffset(R.styleable.EasyLetterView_letterDialogTextSize, DensityUtil.sp2pxInt(14));
         dialogTextColor = ta.getColor(R.styleable.EasyLetterView_letterDialogTextColor, Color.RED);
         dialogMarginRight = ta.getDimensionPixelSize(R.styleable.EasyLetterView_letterDialogMarginRight, 0);
 
@@ -194,7 +194,7 @@ public class EasyLetterView extends View {
             float x;
             float y = i * letterPerHeight + letterPerHeight / 2 + letterRect.height() / 2 + paddingTop;
             if (width < 0) {
-                int differ = EasyDensityUtil.dp2pxInt(20);//当布局宽度不固定时，暂时不做算法
+                int differ = DensityUtil.dp2pxInt(20);//当布局宽度不固定时，暂时不做算法
                 x = getWidth() - (differ + letterWidth) / 2;
             } else {
                 x = getWidth() - (width + letterWidth) / 2;

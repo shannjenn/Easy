@@ -1,14 +1,11 @@
 package com.jen.easytest.activity.popupWindow;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.jen.easy.EasyBindClick;
 import com.jen.easy.EasyBindId;
 import com.jen.easytest.R;
-import com.jen.easytest.adapter.decoration.MyItemDecoration;
 import com.jen.easytest.model.RecyclerViewModel;
 
 import easybase.EasyActivity;
@@ -19,14 +16,10 @@ import com.jen.easyui.popupwindow.EasyWindowLetter;
 import com.jen.easyui.popupwindow.EasyWindowObject;
 import com.jen.easyui.popupwindow.StyleTopBar;
 import com.jen.easyui.recycler.EasyHolder;
-import com.jen.easyui.recycler.EasyHolderBaseAdapter;
-import com.jen.easyui.recycler.LayoutType;
-import com.jen.easyui.recycler.letter.EasyLetterDecoration;
-import com.jen.easyui.util.EasyDensityUtil;
+import com.jen.easyui.util.DensityUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 作者：ShannJenn
@@ -181,12 +174,12 @@ public class PopupWindowActivity extends EasyActivity {
                 break;
             }
             case R.id.popup_window_right: {
-                int x = -EasyDensityUtil.dp2pxInt(195);
-                int y = EasyDensityUtil.dp2pxInt(23 + 10);
+                int x = -DensityUtil.dp2pxInt(195);
+                int y = DensityUtil.dp2pxInt(23 + 10);
                 EasyWindow.build(this)
                         .setShowTopBar(false)
-                        .setWidth(EasyDensityUtil.dp2pxInt(195))
-                        .setHeight(EasyDensityUtil.dp2pxInt(45))
+                        .setWidth(DensityUtil.dp2pxInt(195))
+                        .setHeight(DensityUtil.dp2pxInt(45))
                         .createObject(new EasyWindowAdapter<Object>() {
                             @Override
                             public int[] onBindLayout() {

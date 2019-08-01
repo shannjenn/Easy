@@ -8,7 +8,7 @@ import android.content.res.Resources;
  * 时间：2018/10/19.
  */
 
-public class EasyDensityUtil {
+public class DensityUtil {
     /*
      * TypedValue.applyDimension是一个将各种单位的值转换为像素的方法(源码)
      * TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 16, getResources().getDisplayMetrics())

@@ -19,19 +19,19 @@ import java.util.List;
  * 创建人：ShannJenn
  * 时间：2017/8/14.
  */
-public abstract class EasySharedUtil {
-    private final String TAG = "EasySharedUtil";
+public abstract class SharedPreUtil {
+    private final String TAG = "SharedPreUtil";
     private static final String xmlFileName = "easyShare";
     private final String Unicode = "UTF-8";
     private SharedPreferences config;
     private SharedPreferences.Editor editor;
-//    protected static EasySharedUtil me;
+//    protected static SharedPreUtil me;
 
-//    public static EasySharedUtil getIns() {
+//    public static SharedPreUtil getIns() {
 //        if (me == null) {
-//            synchronized (EasySharedUtil.class) {
+//            synchronized (SharedPreUtil.class) {
 //                if (me == null) {
-//                    me = new EasySharedUtil(XGApplication.getApplication());
+//                    me = new SharedPreUtil(XGApplication.getApplication());
 //                }
 //            }
 //        }
@@ -39,7 +39,7 @@ public abstract class EasySharedUtil {
 //    }
 
 
-    protected EasySharedUtil(Context context) {
+    protected SharedPreUtil(Context context) {
         config = context.getSharedPreferences(xmlFileName, Context.MODE_PRIVATE);
     }
 

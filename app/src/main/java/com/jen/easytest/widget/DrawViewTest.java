@@ -11,7 +11,7 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.jen.easyui.util.EasyDensityUtil;
+import com.jen.easyui.util.DensityUtil;
 
 public class DrawViewTest extends View {
     /**
@@ -112,7 +112,7 @@ public class DrawViewTest extends View {
         paint.setPathEffect(pathEffect);
 
         path.moveTo(10,0);
-        path.lineTo(10, EasyDensityUtil.dp2pxFloat(600));
+        path.lineTo(10, DensityUtil.dp2pxFloat(600));
         canvas.drawPath(path, paint);
     }
 

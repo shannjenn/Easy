@@ -17,7 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jen.easyui.R;
-import com.jen.easyui.util.EasyDensityUtil;
+import com.jen.easyui.util.DensityUtil;
 
 
 /**
@@ -98,7 +98,7 @@ public class EasyItemLayout extends RelativeLayout {
     }
 
     private void initAttrs(AttributeSet attrs, int defStyleAttr) {
-        int defaultTextSize = EasyDensityUtil.dp2pxInt(DEFAULT_TEXT_SIZE);
+        int defaultTextSize = DensityUtil.dp2pxInt(DEFAULT_TEXT_SIZE);
         TypedArray a = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.EasyItemLayout, defStyleAttr, 0);
 
         centerIsEdit = a.getBoolean(R.styleable.EasyItemLayout_centerIsEditText, false);

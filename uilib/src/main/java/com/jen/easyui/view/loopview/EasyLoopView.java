@@ -16,7 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jen.easyui.R;
-import com.jen.easyui.util.EasyDensityUtil;
+import com.jen.easyui.util.DensityUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -229,7 +229,7 @@ public class EasyLoopView extends View {
     private void initLoopView(Context context, AttributeSet attrs) {
         this.context = context;
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.EasyLoopView);
-        int textSizeXp = EasyDensityUtil.sp2pxInt(16);
+        int textSizeXp = DensityUtil.sp2pxInt(16);
 
         textSize = a.getDimensionPixelOffset(R.styleable.EasyLoopView_loopViewTextSize, textSizeXp);
         textColorSelect = a.getColor(R.styleable.EasyLoopView_loopViewTextSelectColor, 0xff0085f2);
@@ -506,7 +506,7 @@ public class EasyLoopView extends View {
 
     public void setTextSize(Integer size) {
         textSize = size;
-        float textSizeXp = EasyDensityUtil.sp2pxFloat(textSize);
+        float textSizeXp = DensityUtil.sp2pxFloat(textSize);
         unselectedPaint.setTextSize(textSizeXp);
         selectedPaint.setTextSize(textSizeXp);
         unitPaint.setTextSize(textSizeXp);

@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jen.easyui.R;
-import com.jen.easyui.util.EasyDensityUtil;
+import com.jen.easyui.util.DensityUtil;
 
 
 /**
@@ -88,8 +88,8 @@ public class UpDownChooseTextView extends View {
         int DEFAULT_TEXT_DOWN_COLOR = 0XFF999999;
         int DEFAULT_TEXT_DOWN_CHOOSE_COLOR = 0xFF335EC2;
 
-        int defaultTextUpSize = EasyDensityUtil.sp2pxInt(DEFAULT_TEXT_UP_SIZE);
-        int defaultTextDownSize = EasyDensityUtil.sp2pxInt(DEFAULT_TEXT_DOWN_SIZE);
+        int defaultTextUpSize = DensityUtil.sp2pxInt(DEFAULT_TEXT_UP_SIZE);
+        int defaultTextDownSize = DensityUtil.sp2pxInt(DEFAULT_TEXT_DOWN_SIZE);
 
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.UpDownChooseTextView);
         textUp = a.getString(R.styleable.UpDownChooseTextView_upDownTextUp);
@@ -188,7 +188,7 @@ public class UpDownChooseTextView extends View {
         boolean isFit = true;//字体是否合适
         if (measuredWidth > 0) {
             Rect rect = new Rect();
-            int onePx = EasyDensityUtil.sp2pxInt(1);
+            int onePx = DensityUtil.sp2pxInt(1);
             for (int i = 1; i < 100; i++) {//缩小字体，不能缩小太多，可以用省略号..代替
                 paint.getTextBounds(text, 0, text.length(), rect);
                 int withDown = rect.left + rect.right;

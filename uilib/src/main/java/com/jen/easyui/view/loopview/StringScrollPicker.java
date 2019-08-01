@@ -11,7 +11,7 @@ import android.text.TextPaint;
 import android.util.AttributeSet;
 
 import com.jen.easyui.R;
-import com.jen.easyui.util.EasyColorUtil;
+import com.jen.easyui.util.ColorUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -154,11 +154,11 @@ public class StringScrollPicker extends ScrollPickerView<CharSequence> {
             } else { // 计算渐变的颜色
                 float rate = (itemSize - Math.abs(moveLength))
                         / itemSize;
-                color = EasyColorUtil.computeGradientColor(mStartColor, mEndColor, rate);
+                color = ColorUtil.computeGradientColor(mStartColor, mEndColor, rate);
             }
         } else if (relative == 0) { // 中间item
             float rate = Math.abs(moveLength) / itemSize;
-            color = EasyColorUtil.computeGradientColor(mStartColor, mEndColor, rate);
+            color = ColorUtil.computeGradientColor(mStartColor, mEndColor, rate);
         }
 
         mPaint.setColor(color);
