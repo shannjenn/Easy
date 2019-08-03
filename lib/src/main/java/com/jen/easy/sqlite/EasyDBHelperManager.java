@@ -73,6 +73,7 @@ abstract class EasyDBHelperManager {
 
         DBReflectManager.ColumnInfo columnInfo = DBReflectManager.getColumnInfo(clazz);
         List<String> primaryKeys = columnInfo.primaryKeys;
+        boolean autoincrement = columnInfo.autoincrement;
         List<String> columns = columnInfo.columns;
         List<Field> fields = columnInfo.fields;
         if (columnInfo.columns.size() == 0) {
@@ -105,7 +106,11 @@ abstract class EasyDBHelperManager {
                 primaryKeySql.append(primaryKeys.get(i));
             }
             if (i + 1 == primaryKeys.size()) {
-                primaryKeySql.append(")");
+                if (autoincrement) {
+                    primaryKeySql.append(" AUTOINCREMENT)");
+                } else {
+                    primaryKeySql.append(")");
+                }
             }
         }
         if (primaryKeySql.length() == 0) {

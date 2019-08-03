@@ -24,6 +24,11 @@ public @interface EasyColumn {
     boolean primaryKey() default false;
 
     /**
+     * 主键是否自增
+     */
+    boolean autoincrement() default false;
+
+    /**
      * 失效，不做字段
      */
     boolean invalid() default false;

@@ -26,7 +26,8 @@ class DBReflectManager {
      */
     static class ColumnInfo {
         List<String> primaryKeys;//主键
-        List<String> columns;//列名
+        boolean autoincrement;//是否自增
+        List<String> columns;//列名(包括主键)
         List<Field> fields;//变量
 
         ColumnInfo() {
@@ -63,8 +64,6 @@ class DBReflectManager {
      */
     static ColumnInfo getColumnInfo(Class clazz) {
         ColumnInfo columnInfo = new ColumnInfo();
-
-
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
             boolean isInvalid = Invalid.isEasyInvalid(field, EasyInvalidType.Column);
@@ -72,12 +71,15 @@ class DBReflectManager {
                 continue;
             String columnName = "";
             boolean isPrimary = false;
+            boolean autoincrement = false;
 
             boolean isAnnotation = field.isAnnotationPresent(EasyColumn.class);
             if (isAnnotation) {
                 EasyColumn columnClass = field.getAnnotation(EasyColumn.class);
                 columnName = columnClass.value().trim();
                 isPrimary = columnClass.primaryKey();
+                if (isPrimary)
+                    autoincrement = columnClass.autoincrement();
             }
 
             if (columnName.length() == 0) {
@@ -86,8 +88,10 @@ class DBReflectManager {
             if (FieldType.isOtherField(columnName)) {
                 continue;
             }
-            if (isPrimary)
+            if (isPrimary) {
                 columnInfo.primaryKeys.add(columnName);
+                columnInfo.autoincrement = autoincrement;
+            }
             columnInfo.columns.add(columnName);
             columnInfo.fields.add(field);
         }

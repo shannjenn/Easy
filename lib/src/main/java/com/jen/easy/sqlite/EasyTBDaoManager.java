@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
 import com.jen.easy.constant.FieldType;
-import com.jen.easy.exception.ExceptionType;
 import com.jen.easy.exception.SQLLog;
 
 import java.lang.reflect.Field;
@@ -211,6 +210,9 @@ abstract class EasyTBDaoManager {
                     return false;
                 }
                 DBReflectManager.ColumnInfo columnInfo = DBReflectManager.getColumnInfo(list.get(0).getClass());
+                if (columnInfo.autoincrement) {//主键自动增长
+                    columnInfo.columns.removeAll(columnInfo.primaryKeys);
+                }
                 for (int i = 0; i < list.size(); i++) {
                     ContentValues values = contentValues(list.get(i), columnInfo);
                     db.insert(tableName, null, values);
@@ -228,7 +230,9 @@ abstract class EasyTBDaoManager {
                     return false;
                 }
                 DBReflectManager.ColumnInfo columnInfo = DBReflectManager.getColumnInfo(objects[0].getClass());
-
+                if (columnInfo.autoincrement) {//主键自动增长
+                    columnInfo.columns.removeAll(columnInfo.primaryKeys);
+                }
                 for (Object obj : objects) {
                     ContentValues values = contentValues(obj, columnInfo);
                     db.insert(tableName, null, values);
@@ -247,7 +251,9 @@ abstract class EasyTBDaoManager {
                     showErrorLog("表名不能为空，请注释 object=" + t.getClass().toString());
                     return false;
                 }
-
+                if (columnInfo.autoincrement) {//主键自动增长
+                    columnInfo.columns.removeAll(columnInfo.primaryKeys);
+                }
                 for (Object value : collection) {
                     ContentValues values = contentValues(value, columnInfo);
                     db.insert(tableName, null, values);
@@ -259,6 +265,9 @@ abstract class EasyTBDaoManager {
                     return false;
                 }
                 DBReflectManager.ColumnInfo columnInfo = DBReflectManager.getColumnInfo(t.getClass());
+                if (columnInfo.autoincrement) {//主键自动增长
+                    columnInfo.columns.removeAll(columnInfo.primaryKeys);
+                }
                 ContentValues values = contentValues(t, columnInfo);
                 db.insert(tableName, null, values);
             }

@@ -24,6 +24,9 @@ public abstract class EasyDialogFactory extends Dialog {
      */
     @Override
     public void show() {
+        if (isShowing()) {
+            return;
+        }
 //        Window window = getWindow();
 //        if (window != null) {
 //            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -31,6 +34,20 @@ public abstract class EasyDialogFactory extends Dialog {
 //            window.setGravity(Gravity.CENTER);
 //        }
         super.show();
+    }
+
+    @Override
+    public void cancel() {
+        if (isShowing()) {
+            super.cancel();
+        }
+    }
+
+    @Override
+    public void dismiss() {
+        if (isShowing()) {
+            super.dismiss();
+        }
     }
 
     @Override

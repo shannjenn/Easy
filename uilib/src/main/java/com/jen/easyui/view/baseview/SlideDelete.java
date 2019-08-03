@@ -15,6 +15,7 @@ public class SlideDelete extends ViewGroup {
     private View leftView;
     private View rightView;
     private ViewDragHelper helper;
+    private boolean enableSlide = true;
 
     public SlideDelete(Context context) {
         this(context, null);
@@ -148,6 +149,9 @@ public class SlideDelete extends ViewGroup {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if(!enableSlide){
+            return super.onTouchEvent(event);
+        }
         //1,要消费该事件,所以直接返回true
         //2,使用ViewDragHelper来实现滑动效果
         helper.processTouchEvent(event);
@@ -181,5 +185,9 @@ public class SlideDelete extends ViewGroup {
     @Override
     public boolean performClick() {
         return super.performClick();
+    }
+
+    public void setEnableSlide(boolean enableSlide) {
+        this.enableSlide = enableSlide;
     }
 }
