@@ -4,10 +4,10 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.jen.easy.EasyBindClick;
-import com.jen.easy.exception.HttpLog;
 import com.jen.easy.http.EasyHttp;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
+
 import easybase.EasyActivity;
 
 /**
@@ -33,10 +33,6 @@ public class LogcatCrashActivity extends EasyActivity {
 
     @Override
     public void initData(Bundle savedInstanceState) {
-
-        HttpLog.d("打印测试=======================================================" + " 请求中断。\n \t");//\n\t打印才出现空行
-        HttpLog.d("打印测试=======================================================" + " 请求中断。\n          ");//\n\t打印才出现空行
-        HttpLog.d("打印测试=======================================================" + " 请求中断。\n           ");//\n\t打印才出现空行
         LogcatCrashManager.getIns().start();
 //        bt_crash_error.length();
     }

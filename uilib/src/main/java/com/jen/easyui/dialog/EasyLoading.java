@@ -1,11 +1,12 @@
 package com.jen.easyui.dialog;
 
+import android.app.Application;
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import android.widget.ProgressBar;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.jen.easyui.R;
 
@@ -14,20 +15,38 @@ import com.jen.easyui.R;
  * 作者：ShannJenn
  * 时间：2018/1/15.
  */
-public class EasyLoading extends Dialog {
-    private Context context;
-    private ProgressBar progressBar;//预留后期改进
+public abstract class EasyLoading extends Dialog {
 
-    public EasyLoading(Context context) {
+    public EasyLoading(Application context) {
         super(context, R.style._easy_dialog_loading);
-        this.context = context;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout._easy_dialog_loading);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        int layoutId = bindLayout();
+        if (layoutId == 0) {
+            setContentView(R.layout._easy_dialog_loading);
+        } else {
+            setContentView(layoutId);
+        }
+        Window window = getWindow();
+        if (window != null) {
+            //全局，需要增加权限<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+            window.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        }
+    }
+
+    protected abstract int bindLayout();
+
+    @Override
+    public void setCanceledOnTouchOutside(boolean cancel) {
+        super.setCanceledOnTouchOutside(cancel);
+    }
+
+    @Override
+    public void setCancelable(boolean flag) {
+        super.setCancelable(flag);
     }
 
     @Override

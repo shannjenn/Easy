@@ -3,7 +3,6 @@ package com.jen.easytest.model;
 import android.view.View;
 
 import com.jen.easy.EasyResponse;
-import com.jen.easy.EasyResponseType;
 import com.jen.easy.EasyTable;
 
 /**

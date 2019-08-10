@@ -66,7 +66,7 @@ public abstract class EasyDialogFactory extends Dialog {
                             hideSoftInput(view.getWindowToken());
                         }
                     }
-                    onTouchOutside();
+                    onTouchOutsideListener();
                     break;
                 }
                 case MotionEvent.ACTION_UP: {
@@ -77,7 +77,10 @@ public abstract class EasyDialogFactory extends Dialog {
         return super.onTouchEvent(event);
     }
 
-    protected abstract void onTouchOutside();
+    /**
+     * 点击
+     */
+    protected abstract void onTouchOutsideListener();
 
     /**
      * 点击空白

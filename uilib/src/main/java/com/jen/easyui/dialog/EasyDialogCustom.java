@@ -32,7 +32,7 @@ public abstract class EasyDialogCustom extends EasyDialogFactory {
     }
 
     @Override
-    protected void onTouchOutside() {
+    protected void onTouchOutsideListener() {
         if(touchOutsideHideInputMethod){
 
         }

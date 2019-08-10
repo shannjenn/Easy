@@ -6,7 +6,6 @@ import android.view.View;
 import com.jen.easy.EasyBindClick;
 import com.jen.easy.http.EasyHttp;
 import com.jen.easy.http.EasyHttpTool;
-import com.jen.easy.http.TestHttp;
 import com.jen.easy.log.EasyLog;
 import com.jen.easytest.R;
 import com.jen.easytest.http.request.AirRequest;
@@ -75,13 +74,13 @@ public class HttpActivity extends EasyActivity {
                 break;
             case R.id.request_parse: {
                 AirRequest airRequest = new AirRequest();
-                TestHttp.httpReflectManager_test(airRequest);
+//                TestHttp.httpReflectManager_test(airRequest);
                 break;
             }
             case R.id.response_parse: {
                 AirRequest airRequest = new AirRequest();
-                JSONObject jsonObject = TestHttp.httpReflectManager_test(airRequest);
-                AirRequest2 airRequest2 = TestHttp.httpParseManager_test(AirRequest2.class, jsonObject.toString());
+//                JSONObject jsonObject = TestHttp.httpReflectManager_test(airRequest);
+//                AirRequest2 airRequest2 = TestHttp.httpParseManager_test(AirRequest2.class, jsonObject.toString());
                 EasyLog.d("----------");
                 break;
             }

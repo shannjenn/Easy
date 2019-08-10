@@ -16,8 +16,6 @@ import com.jen.easyui.dialog.EasyLoading;
 
 public class DialogActivity extends EasyActivity {
 
-    
-    EasyLoading loading;
     EasyDialog dialog;
 
     @Override
@@ -27,7 +25,6 @@ public class DialogActivity extends EasyActivity {
 
     @Override
     public void initData(Bundle savedInstanceState) {
-        loading = new EasyLoading(this);
         dialog = EasyDialog.build(this)
 //                .setIconLeft(getResources().getDrawable(R.mipmap.ic_launcher))
                 .setTitle("提示哟哟")
@@ -42,7 +39,6 @@ public class DialogActivity extends EasyActivity {
     protected void onBindClick(View view) {
         switch (view.getId()) {
             case R.id.loading: {
-                loading.show();
                 break;
             }
             case R.id.dialog: {

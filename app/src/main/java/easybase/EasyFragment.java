@@ -23,7 +23,6 @@ public abstract class EasyFragment<T> extends Fragment {
     protected View rootView;
     protected Context mContext;
     protected Handler mHandler = new Handler(Looper.getMainLooper());
-    protected EasyLoading mLoading;
     protected EasyBind mBindView;
 
     @Override
@@ -40,7 +39,6 @@ public abstract class EasyFragment<T> extends Fragment {
             rootView = inflater.inflate(inflateLayout(), container, false);
             mBindView = new EasyBind();
             mBindView.inject(this, rootView);
-            mLoading = new EasyLoading(getContext());
 //            httpListener.setListenerImp(this);
         }
         // 缓存的rootView需要判断是否已经被加过parent，如果有parent需要从parent删除，要不然会发生这个rootview已经有parent的错误。

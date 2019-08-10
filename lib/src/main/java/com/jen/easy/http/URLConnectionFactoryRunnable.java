@@ -155,7 +155,7 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
             Set<String> urlKeys = urls.keySet();
             for (String key : urlKeys) {
                 String value = urls.get(key);
-                mUrlStr = mUrlStr.replace("\\{" + key + "}", value);
+                mUrlStr = mUrlStr.replace("{" + key + "}", value);//不可以用replaceAll会报错
             }
 
             URL url = new URL(mUrlStr);
@@ -181,7 +181,8 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
                 mHeadLogBuilder.insert(0, "{");
                 mHeadLogBuilder.replace(mHeadLogBuilder.length() - 1, mHeadLogBuilder.length(), "}");
             }
-            mRequestLogInfo = method + " " + mUrlStr + "\nrequest heads：\n" + mHeadLogBuilder.toString() + "\nrequest body：\n" + mBody.toString();
+            mRequestLogInfo = method + " " + mUrlStr + "\nrequest class = " + mRequest.getClass().getName()
+                    + "\nrequest heads：\n" + mHeadLogBuilder.toString() + "\nrequest body：\n" + mBody.toString();
             childRun(connection);
             connection.disconnect();
         } catch (IOException e) {

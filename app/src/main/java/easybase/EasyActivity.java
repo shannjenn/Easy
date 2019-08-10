@@ -24,7 +24,6 @@ public abstract class EasyActivity<T> extends AppCompatActivity {
     private final String TAG = AppCompatActivity.class.getSimpleName();
     protected Context mContext;
     protected Handler mHandler = new Handler(Looper.getMainLooper());
-    protected EasyLoading mLoading;
     protected EasyBind mBindView;
 
 
@@ -35,8 +34,6 @@ public abstract class EasyActivity<T> extends AppCompatActivity {
         mBindView = new EasyBind();
         setContentView(bindView());
         mBindView.bind(this);
-        mLoading = new EasyLoading(this);
-        mLoading.setCancelable(false);
 //        setContentView(setLayout());
         checkFilePermission();
         initData(savedInstanceState);
