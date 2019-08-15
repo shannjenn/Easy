@@ -8,6 +8,7 @@ import java.util.TimerTask;
 
 public abstract class TimerUtil {
     private Timer timer;
+    private TimerTask timerTask;
     private boolean isRunning;
     private int timers;
     private ThreadType threadType;
@@ -19,7 +20,6 @@ public abstract class TimerUtil {
     }
 
     public TimerUtil(ThreadType threadType) {
-        timer = new Timer();
         this.threadType = threadType;
         switch (threadType) {
             case UIThread:
@@ -32,12 +32,12 @@ public abstract class TimerUtil {
 
     public abstract void listener(int timers);
 
-    public void start(long delay) {
-        start(delay, -1, -1);
+    public TimerUtil start(long delay) {
+        return start(delay, -1, -1);
     }
 
-    public void start(long delay, long period) {
-        start(delay, period, -1);
+    public TimerUtil start(long delay, long period) {
+        return start(delay, period, -1);
     }
 
     /**
@@ -45,12 +45,16 @@ public abstract class TimerUtil {
      * @param period    .
      * @param topTimers 运行几次停止
      */
-    public void start(long delay, long period, final long topTimers) {
+    public TimerUtil start(long delay, long period, final long topTimers) {
         if (isRunning) {
-            return;
+            return this;
+        }
+        if (timer != null || timerTask != null) {
+            stop();
         }
         isRunning = true;
-        TimerTask timerTask = new TimerTask() {
+        timer = new Timer();
+        timerTask = new TimerTask() {
             @Override
             public void run() {
                 timers++;
@@ -77,9 +81,18 @@ public abstract class TimerUtil {
         } else {
             timer.schedule(timerTask, delay);
         }
+        return this;
     }
 
     public void stop() {
-        timer.cancel();
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+        if (timerTask != null) {
+            timerTask.cancel();
+            timerTask = null;
+        }
+        isRunning = false;
     }
 }

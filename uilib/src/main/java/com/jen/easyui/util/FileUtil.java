@@ -1,8 +1,12 @@
 package com.jen.easyui.util;
 
+import android.util.Base64;
 import android.util.Log;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 /**
  * 作者：ShannJenn
@@ -11,19 +15,19 @@ import java.io.File;
  */
 
 public class FileUtil {
-    private final String TAG = FileUtil.class.getSimpleName();
+    private static final String TAG = FileUtil.class.getSimpleName();
 
     /**
      * 删除文件
      *
      * @param path 路径
      */
-    public void deleteFile(String path) {
+    public static void deleteFile(String path) {
         File file = new File(path);
-        deletFile(file);
+        deleteFile(file);
     }
 
-    public void deletFile(File file) {
+    public static void deleteFile(File file) {
         if (file == null) {
             Log.w(TAG, "file ==  null");
         } else if (!file.exists()) {
@@ -42,7 +46,7 @@ public class FileUtil {
      *
      * @param path 路径
      */
-    public void deleteDir(String path) {
+    public static void deleteDir(String path) {
         File dir = new File(path);
         deleteDir(dir);
     }
@@ -52,7 +56,7 @@ public class FileUtil {
      *
      * @param dir 文件夹
      */
-    public void deleteDir(File dir) {
+    public static void deleteDir(File dir) {
         if (dir == null) {
             Log.w(TAG, "传入为空");
         } else if (!dir.exists()) {
@@ -73,6 +77,40 @@ public class FileUtil {
             boolean result = dir.delete();// 删除目录本身
             Log.d(TAG, "删除文件" + filePath + (result ? "成功" : "失败"));
         }
-
     }
+
+
+    /**
+     * 将流转换成字符串
+     */
+    public static String fileToString(File file) {
+        String fileStr = null;
+        try {
+            FileInputStream inputStream = new FileInputStream(file);
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024 * 4];
+            int n;
+            while ((n = inputStream.read(buffer)) != -1) {
+                out.write(buffer, 0, n);
+            }
+            byte[] result = out.toByteArray();
+            inputStream.close();
+            fileStr = Base64.encodeToString(result, Base64.NO_WRAP);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return fileStr;
+    }
+
+    /**
+     * 将流转换成字符串
+     */
+    public static String fileToString(String filePath) {
+        File file = new File(filePath);
+        if (file.exists()) {
+            return fileToString(file);
+        }
+        return null;
+    }
+
 }

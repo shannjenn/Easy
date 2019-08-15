@@ -12,8 +12,12 @@ import java.util.Locale;
 class LogcatDate {
 
     static String getFileName() {
+        return getFileName(new Date(System.currentTimeMillis()));
+    }
+
+    static String getFileName(Date date) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
-        return format.format(new Date(System.currentTimeMillis()));
+        return format.format(date);
     }
 
     static String getDateEN() {

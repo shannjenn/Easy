@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Date;
 
 class LogCatch extends Thread {
     private static LogCatch instance;
@@ -20,6 +21,7 @@ class LogCatch extends Thread {
     private boolean running = true;
     private String cmds;
     private String PID;
+    final String prefix = "LogCatch-";//文件前缀
     private String suffix = ".txt";//默认后缀名
 
     private LogCatch() {
@@ -64,6 +66,14 @@ class LogCatch extends Thread {
         }
     }
 
+    private String getFileName() {
+        return getFileName(new Date(System.currentTimeMillis()));
+    }
+
+    String getFileName(Date date) {
+        return prefix + LogcatDate.getFileName(date) + suffix;
+    }
+
     void startLogs() {
         if (LogcatPath.getInstance().getPath() == null) {
             return;
@@ -83,11 +93,11 @@ class LogCatch extends Thread {
             logcatProc = Runtime.getRuntime().exec(cmds);
             reader = new BufferedReader(new InputStreamReader(logcatProc.getInputStream(), Unicode.DEFAULT), 1024);
             String line;
-            File file = new File(LogcatPath.getInstance().getPath(), "LogCatch-" + LogcatDate.getFileName() + suffix);
+            File file = new File(LogcatPath.getInstance().getPath(), getFileName());
             boolean isCreated = file.exists();//已经创建过文件
-            String addFileHeadStr = null;
+            String headStr = null;
             if (mListener != null) {
-                addFileHeadStr = mListener.addFileHeader();
+                headStr = mListener.addFileHeader();
             }
             while (running && (line = reader.readLine()) != null) {
                 if (!running) {
@@ -100,20 +110,20 @@ class LogCatch extends Thread {
                 if (line.contains(PID)) {
                     try {
                         FileOutputStream out = new FileOutputStream(file, true);
-                        if (!isCreated && addFileHeadStr != null) {
+                        if (!isCreated && headStr != null) {
                             isCreated = true;
-                            out.write((addFileHeadStr + "\n").getBytes(Unicode.DEFAULT));
+                            out.write((headStr + "\n").getBytes(Unicode.DEFAULT));
                         }
                         out.write((LogcatDate.getDateEN() + "  " + line + "\n").getBytes(Unicode.DEFAULT));
                         out.flush();
                         out.close();
+                        if (mListener != null && file.exists()) {
+                            mListener.onLogPrint(file);
+                        }
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
                 }
-            }
-            if (mListener != null && file.exists()) {
-                mListener.onLogPrint(file);
             }
         } catch (IOException e) {
             e.printStackTrace();

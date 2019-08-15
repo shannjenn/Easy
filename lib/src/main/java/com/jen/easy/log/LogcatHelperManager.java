@@ -4,6 +4,9 @@ import com.jen.easy.exception.ExceptionType;
 import com.jen.easy.exception.LogcatLog;
 import com.jen.easy.log.imp.LogcatListener;
 
+import java.io.File;
+import java.util.Date;
+
 /**
  * ClassName:LogcatHelperManager Function: log日志统计保存
  * <p>
@@ -23,6 +26,24 @@ abstract class LogcatHelperManager {
      */
     protected void setLogPath(String path) {
         LogcatPath.getInstance().setPath(path);
+    }
+
+    /**
+     * @param date 那一天时间
+     * @return 文件，注意：可能不存在
+     */
+    public File getLogFile(Date date) {
+        String fileName = LogCatch.getInstance().getFileName(date);
+        return new File(LogcatPath.getInstance().getPath(), fileName);
+    }
+
+    /**
+     * @param date 那一天时间
+     * @return 文件，注意：可能不存在
+     */
+    public File getCrashFile(Date date) {
+        String fileName = CrashCatch.getInstance().getFileName(date);
+        return new File(LogcatPath.getInstance().getPath(), fileName);
     }
 
     /**

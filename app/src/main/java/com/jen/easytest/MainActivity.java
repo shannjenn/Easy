@@ -3,6 +3,7 @@ package com.jen.easytest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
 import com.jen.easy.EasyBindClick;
 import com.jen.easy.EasyBindId;
@@ -30,6 +31,9 @@ public class MainActivity extends EasyActivity {
 
     @EasyBindId(R.id.topBar)
     EasyTopBar topBar;
+    @EasyBindId(R.id.http)
+    Button http;
+
 
     @Override
     public int bindView() {
@@ -42,6 +46,7 @@ public class MainActivity extends EasyActivity {
 //        Throw.exception(ExceptionType.ClassCastException,"ClassCastException-*---------*-------");
 //        Throw.exception(ExceptionType.NullPointerException,"NullPointerException-*---------*-------");
 //        Throw.exception(ExceptionType.RuntimeException,"RuntimeException-*---------*-------");
+        onBindClick(http);
     }
 
 

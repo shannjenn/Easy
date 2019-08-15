@@ -2,6 +2,9 @@ package com.jen.easy.log;
 
 import com.jen.easy.log.imp.LogcatListener;
 
+import java.io.File;
+import java.util.Date;
+
 /**
  * 作者：ShannJenn
  * 时间：2017/8/12.
@@ -58,6 +61,24 @@ public class LogcatHelper extends LogcatHelperManager {
     @Override
     public void setListener(LogcatListener listener) {
         super.setListener(listener);
+    }
+
+    /**
+     * @param date 那一天时间
+     * @return 文件，注意：可能不存在
+     */
+    @Override
+    public File getLogFile(Date date) {
+        return super.getLogFile(date);
+    }
+
+    /**
+     * @param date 那一天时间
+     * @return 文件，注意：可能不存在
+     */
+    @Override
+    public File getCrashFile(Date date) {
+        return super.getCrashFile(date);
     }
 
     /**

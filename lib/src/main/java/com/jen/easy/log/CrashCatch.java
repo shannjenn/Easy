@@ -13,6 +13,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.Thread.UncaughtExceptionHandler;
+import java.util.Date;
 
 /**
  * 作者：ShannJenn
@@ -23,6 +24,7 @@ class CrashCatch implements UncaughtExceptionHandler {
     private static CrashCatch instance; // 单例模式
     private LogcatListener mListener;
     private UncaughtExceptionHandler exceptionHandler; // 系统默认的UncaughtException处理类
+    final String prefix = "CrashCatch-";//文件前缀
     private String suffix = ".txt";//默认后缀名
 
     private CrashCatch() {
@@ -62,18 +64,26 @@ class CrashCatch implements UncaughtExceptionHandler {
             Thread.setDefaultUncaughtExceptionHandler(exceptionHandler);
     }
 
+    private String getFileName() {
+        return getFileName(new Date(System.currentTimeMillis()));
+    }
+
+    String getFileName(Date date) {
+        return prefix + LogcatDate.getFileName(date) + suffix;
+    }
+
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
         boolean userCatch = false;
         if (mListener != null) {
-            File file = new File(LogcatPath.getInstance().getPath(), "CrashCatch-" + LogcatDate.getFileName() + suffix);
+            File file = new File(LogcatPath.getInstance().getPath(), getFileName());
             boolean isCreated = file.exists();
             try {
                 FileOutputStream outputStream = new FileOutputStream(file, true);
                 if (!isCreated) {
-                    String addFileHeadStr = mListener.addFileHeader();
-                    if (addFileHeadStr != null) {
-                        outputStream.write((addFileHeadStr + "\n").getBytes(Unicode.DEFAULT));
+                    String headStr = mListener.addFileHeader();
+                    if (headStr != null) {
+                        outputStream.write((headStr + "\n").getBytes(Unicode.DEFAULT));
                     }
                 }
                 PrintWriter p = new PrintWriter(outputStream);
@@ -98,7 +108,7 @@ class CrashCatch implements UncaughtExceptionHandler {
         } else {
             LogcatLog.w("用户来处理异常");
             // 退出程序
-            android.os.Process.killProcess(android.os.Process.myPid());
+//            android.os.Process.killProcess(android.os.Process.myPid());
 //            System.exit(1);
         }
     }

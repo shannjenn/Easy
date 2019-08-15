@@ -4,18 +4,20 @@ import com.jen.easy.exception.HttpLog;
 import com.jen.easy.http.imp.EasyHttpListener;
 import com.jen.easy.http.request.EasyHttpUploadRequest;
 import com.jen.easy.http.request.EasyRequestState;
-import com.jen.easy.log.JsonLogFormat;
 
-import java.io.BufferedReader;
+import org.json.JSONException;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
     private Object responseObjectProgress;
@@ -31,11 +33,28 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
         if (request.isBreak && request.endPoint > request.startPoint + 100) {
             connection.setRequestProperty("Range", "bytes=" + request.startPoint + "-" + request.endPoint);
         }
+        long startTime = System.currentTimeMillis();
+        switch (request.uploadType) {
+            case OnlyFile:
+                uploadFile(connection, request);
+                break;
+            case ParamFile:
+                uploadFileAndParam(connection, request);
+                break;
+        }
+        runResponse(connection, startTime);
+    }
 
+    /**
+     * 单文件上传模式
+     */
+    private void uploadFile(HttpURLConnection connection, EasyHttpUploadRequest request) throws IOException {
         DataOutputStream out = new DataOutputStream(connection.getOutputStream());
         File file = new File(request.filePath);
         DataInputStream in = new DataInputStream(new FileInputStream(file));
         long curBytes = request.startPoint;
+        long endBytes = file.length();
+
         int len;
         byte[] bufferOut = new byte[1024];
         while ((len = in.read(bufferOut)) != -1) {
@@ -43,33 +62,82 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
             if (request.getRequestState() == EasyRequestState.interrupt) {
                 break;
             } else {
-                progress(curBytes, request.endPoint);
+                curBytes += len;
+                progress(curBytes, endBytes);
             }
         }
         in.close();
         out.flush();
         out.close();
+    }
 
-        // 读取返回数据
-        StringBuilder bodyBuffer = new StringBuilder();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), mCharset));
-        String line;
-        while ((line = reader.readLine()) != null) {
-            bodyBuffer.append(line);
+
+    /**
+     * 参数和文件上传模式
+     */
+    private void uploadFileAndParam(HttpURLConnection connection, EasyHttpUploadRequest request) throws IOException {
+        File file = new File(request.filePath);
+        String BOUNDARY = UUID.randomUUID().toString(); // 边界标识 随机生成
+        String PREFIX = "--", LINE_END = "\r\n";
+        String CONTENT_TYPE = "multipart/form-data"; // 内容类型
+
+        connection.setInstanceFollowRedirects(false);//不自动重定向
+        connection.setRequestProperty("Content-Type", CONTENT_TYPE + ";boundary=" + BOUNDARY);//设置请求头
+        connection.setRequestProperty("connection", "keep-alive");//保持连接
+        connection.connect();
+
+        DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+        Iterator<String> keys = requestObject.body.keys();
+        while (keys.hasNext()) {
+            String key = keys.next();
+            StringBuilder buffer = new StringBuilder();
+            Object value = "";
+            try {
+                value = requestObject.body.get(key);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            buffer.append(PREFIX).append(BOUNDARY).append(LINE_END);
+            buffer.append("Content-Disposition: form-data; name=\"")
+                    .append(key).append("\"").append(LINE_END)
+                    .append(LINE_END);
+            buffer.append(value).append(LINE_END);
+            String params = buffer.toString();
+            out.write(params.getBytes());
         }
-        reader.close();
 
-        String body = bodyBuffer.toString();
-
-        StringBuilder retLogBuild = new StringBuilder();
-        retLogBuild.append(mRequestLogInfo).append("\nresponse body：\n").append(body);
-        if (mRequest.getReplaceResult().size() > 0) {
-            body = replaceResult(body);
-            retLogBuild.append("\nformat return body：\n").append(body);
+        if (null == request.fileNameValue || request.fileNameValue.trim().length() == 0) {
+            request.fileNameValue = file.getName();
         }
-        retLogBuild.append("\nresponse code：").append(mResponseCode);
-        HttpLog.i(JsonLogFormat.formatJson(retLogBuild.toString()));
-        success(body, null);
+        String buffer = PREFIX + BOUNDARY + LINE_END
+                + "Content-Disposition: form-data; name=\"" + request.fileNameKey
+                + "\"; filename=\"" + request.fileNameValue + "\""
+                + LINE_END
+                + "Content-Type: application/octet-stream; charset="
+                + mCharset + LINE_END
+                + LINE_END;
+        out.write(buffer.getBytes());
+        InputStream fileInputStream = new FileInputStream(file);
+        byte[] bytes = new byte[1024];
+        int len;
+        long curBytes = request.startPoint;
+        long endBytes = file.length();
+        while ((len = fileInputStream.read(bytes)) != -1) {
+            out.write(bytes, 0, len);
+            if (request.getRequestState() == EasyRequestState.interrupt) {
+                break;
+            } else {
+                curBytes += len;
+                progress(curBytes, endBytes);
+            }
+        }
+        out.write(LINE_END.getBytes());
+        byte[] end_data = (PREFIX + BOUNDARY + PREFIX + LINE_END).getBytes();
+        out.write(end_data);
+
+        fileInputStream.close();
+        out.flush();
+        out.close();
     }
 
     @Override

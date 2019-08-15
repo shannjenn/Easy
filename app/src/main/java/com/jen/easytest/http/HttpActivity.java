@@ -13,7 +13,9 @@ import com.jen.easytest.http.request.AirRequest2;
 import com.jen.easytest.http.request.PutRequest;
 import com.jen.easytest.http.request.QNRequest;
 import com.jen.easytest.http.response.StockQuotationResponse;
+import com.jen.easytest.request.LogcatRequest;
 import com.jen.easytest.request.SystemParamRequest;
+
 import easybase.EasyActivity;
 
 import org.json.JSONObject;
@@ -33,7 +35,9 @@ public class HttpActivity extends EasyActivity {
 
     @Override
     public void initData(Bundle savedInstanceState) {
-
+        LogcatRequest uploadRequest = new LogcatRequest();
+        uploadRequest.filePath = "/storage/emulated/0/_LogcatHelper/LogCatch-2019-08-15.txt";
+        http.start(uploadRequest);
     }
 
 

@@ -81,7 +81,6 @@ class DBReflectManager {
                 if (isPrimary)
                     autoincrement = columnClass.autoincrement();
             }
-
             if (columnName.length() == 0) {
                 columnName = field.getName();
             }

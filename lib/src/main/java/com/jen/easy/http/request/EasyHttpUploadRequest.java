@@ -1,5 +1,6 @@
 package com.jen.easy.http.request;
 
+import com.jen.easy.EasyUploadType;
 import com.jen.easy.invalid.EasyInvalid;
 
 /**
@@ -14,6 +15,14 @@ public class EasyHttpUploadRequest extends EasyHttpRequest {
      */
     public String filePath;
     /**
+     * 上传文件名称key值
+     */
+    public String fileNameKey;
+    /**
+     * 上传文件名称value值
+     */
+    public String fileNameValue;
+    /**
      * 开始位置
      */
     public long startPoint;
@@ -25,5 +34,8 @@ public class EasyHttpUploadRequest extends EasyHttpRequest {
      * 是否断点下载
      */
     public boolean isBreak;
-
+    /**
+     * 上传模式
+     */
+    public EasyUploadType uploadType = EasyUploadType.ParamFile;
 }

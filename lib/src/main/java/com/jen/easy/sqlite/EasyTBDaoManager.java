@@ -210,9 +210,7 @@ abstract class EasyTBDaoManager {
                     return false;
                 }
                 DBReflectManager.ColumnInfo columnInfo = DBReflectManager.getColumnInfo(list.get(0).getClass());
-                if (columnInfo.autoincrement) {//主键自动增长
-                    columnInfo.columns.removeAll(columnInfo.primaryKeys);
-                }
+                removeAutoincrementKeyFromColumn(columnInfo.autoincrement, columnInfo);
                 for (int i = 0; i < list.size(); i++) {
                     ContentValues values = contentValues(list.get(i), columnInfo);
                     db.insert(tableName, null, values);
@@ -230,9 +228,7 @@ abstract class EasyTBDaoManager {
                     return false;
                 }
                 DBReflectManager.ColumnInfo columnInfo = DBReflectManager.getColumnInfo(objects[0].getClass());
-                if (columnInfo.autoincrement) {//主键自动增长
-                    columnInfo.columns.removeAll(columnInfo.primaryKeys);
-                }
+                removeAutoincrementKeyFromColumn(columnInfo.autoincrement, columnInfo);
                 for (Object obj : objects) {
                     ContentValues values = contentValues(obj, columnInfo);
                     db.insert(tableName, null, values);
@@ -251,9 +247,7 @@ abstract class EasyTBDaoManager {
                     showErrorLog("表名不能为空，请注释 object=" + t.getClass().toString());
                     return false;
                 }
-                if (columnInfo.autoincrement) {//主键自动增长
-                    columnInfo.columns.removeAll(columnInfo.primaryKeys);
-                }
+                removeAutoincrementKeyFromColumn(columnInfo.autoincrement, columnInfo);
                 for (Object value : collection) {
                     ContentValues values = contentValues(value, columnInfo);
                     db.insert(tableName, null, values);
@@ -265,9 +259,7 @@ abstract class EasyTBDaoManager {
                     return false;
                 }
                 DBReflectManager.ColumnInfo columnInfo = DBReflectManager.getColumnInfo(t.getClass());
-                if (columnInfo.autoincrement) {//主键自动增长
-                    columnInfo.columns.removeAll(columnInfo.primaryKeys);
-                }
+                removeAutoincrementKeyFromColumn(columnInfo.autoincrement, columnInfo);
                 ContentValues values = contentValues(t, columnInfo);
                 db.insert(tableName, null, values);
             }
@@ -618,6 +610,25 @@ abstract class EasyTBDaoManager {
     }
 
     /**
+     * 移除自动增长主键
+     *
+     * @param isAutoincrement .
+     * @param columnInfo      .
+     */
+    private void removeAutoincrementKeyFromColumn(boolean isAutoincrement, DBReflectManager.ColumnInfo columnInfo) {
+        if (!isAutoincrement)
+            return;
+        for (int i = 0; i < columnInfo.primaryKeys.size(); i++) {
+            String primaryKey = columnInfo.primaryKeys.get(i);
+            int index = columnInfo.columns.indexOf(primaryKey);
+            if (index >= 0) {
+                columnInfo.columns.remove(index);
+                columnInfo.fields.remove(index);
+            }
+        }
+    }
+
+    /**
      * 数据库存值
      * <p>
      * param obj
@@ -626,9 +637,8 @@ abstract class EasyTBDaoManager {
     private ContentValues contentValues(Object obj, DBReflectManager.ColumnInfo columnInfo) {
         ContentValues values = new ContentValues();
         try {
-            List<String> columns = columnInfo.columns;
-            for (int i = 0; i < columns.size(); i++) {
-                String column = columns.get(i);
+            for (int i = 0; i < columnInfo.columns.size(); i++) {
+                String column = columnInfo.columns.get(i);
                 Field field = columnInfo.fields.get(i);
                 field.setAccessible(true);
                 Object value = field.get(obj);
@@ -681,10 +691,9 @@ abstract class EasyTBDaoManager {
             throwException(e, "valuation IllegalAccessException");
         }
 
-        List<String> columns = columnInfo.columns;
-        for (int i = 0; i < columns.size(); i++) {
+        for (int i = 0; i < columnInfo.columns.size(); i++) {
             try {
-                String column = columns.get(i);
+                String column = columnInfo.columns.get(i);
                 Field field = columnInfo.fields.get(i);
                 field.setAccessible(true);
                 fieldClass = field.getType();
