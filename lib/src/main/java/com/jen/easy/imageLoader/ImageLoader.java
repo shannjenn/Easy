@@ -30,10 +30,14 @@ public class ImageLoader extends ImageLoaderManager {
     }
 
 
-
     @Override
     public void init(ImageLoaderConfig config) {
         super.init(config);
+    }
+
+    @Override
+    protected void setImage(String imageUrl, boolean useCache, ImageView imageView, boolean showDefaultImg, int width, int height) {
+        super.setImage(imageUrl, useCache, imageView, showDefaultImg, width, height);
     }
 
     @Override
@@ -44,5 +48,35 @@ public class ImageLoader extends ImageLoaderManager {
     @Override
     public void setImage(String imageUrl, ImageView imageView) {
         super.setImage(imageUrl, imageView);
+    }
+
+    @Override
+    public void setImage(String imageUrl, ImageView imageView, boolean showDefaultImg) {
+        super.setImage(imageUrl, imageView, showDefaultImg);
+    }
+
+    @Override
+    public void setImage(String imageUrl, boolean useCache, ImageView imageView, int width, int height) {
+        super.setImage(imageUrl, useCache, imageView, width, height);
+    }
+
+    @Override
+    public void setImage(String imageUrl, boolean useCache, ImageView imageView) {
+        super.setImage(imageUrl, useCache, imageView);
+    }
+
+    @Override
+    public void setImage(String imageUrl, boolean useCache, ImageView imageView, boolean showDefaultImg) {
+        super.setImage(imageUrl, useCache, imageView, showDefaultImg);
+    }
+
+    @Override
+    public void clearCache() {
+        super.clearCache();
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
     }
 }

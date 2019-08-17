@@ -87,13 +87,13 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
         connection.connect();
 
         DataOutputStream out = new DataOutputStream(connection.getOutputStream());
-        Iterator<String> keys = requestObject.body.keys();
+        Iterator<String> keys = mRequestObject.body.keys();
         while (keys.hasNext()) {
             String key = keys.next();
             StringBuilder buffer = new StringBuilder();
             Object value = "";
             try {
-                value = requestObject.body.get(key);
+                value = mRequestObject.body.get(key);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

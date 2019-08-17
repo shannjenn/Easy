@@ -84,7 +84,10 @@ class EasyDatabase {
 
     int getVersion() {
         try {
-            return getReadableDatabase().getVersion();
+            SQLiteDatabase db = getReadableDatabase();
+            int version = db.getVersion();
+            db.close();
+            return version;
         } catch (SQLiteCantOpenDatabaseException e) {
             e.printStackTrace();
             return -1;

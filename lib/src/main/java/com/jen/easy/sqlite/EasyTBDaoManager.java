@@ -54,6 +54,7 @@ abstract class EasyTBDaoManager {
         }
 
         SQLiteDatabase db;
+        Cursor cursor = null;
         try {
             db = database.getReadableDatabase();
         } catch (SQLiteCantOpenDatabaseException e) {
@@ -63,19 +64,19 @@ abstract class EasyTBDaoManager {
         try {
             String selection = columnInfo.primaryKeys.get(0) + "=?";
             String[] selectionArgs = {id};
-            Cursor cursor = db.query(tableName, null, selection, selectionArgs, null, null, null);
+            cursor = db.query(tableName, null, selection, selectionArgs, null, null, null);
             if (cursor == null || cursor.getCount() == 0) {
                 return null;
             }
             cursor.moveToFirst();
-            T obj = valuation(clazz, columnInfo, cursor);
-            cursor.close();
-            db.close();
-            return obj;
+            return valuation(clazz, columnInfo, cursor);
         } catch (SQLiteException e) {
             throwException(e, "SQLiteException class=" + clazz.getName());
         } finally {
-            db.close();
+            if (cursor != null)
+                cursor.close();
+            if (db != null)
+                db.close();
         }
         return null;
     }
@@ -113,6 +114,7 @@ abstract class EasyTBDaoManager {
         }
 
         SQLiteDatabase db;
+        Cursor cursor = null;
         try {
             db = database.getReadableDatabase();
         } catch (SQLiteCantOpenDatabaseException e) {
@@ -120,7 +122,7 @@ abstract class EasyTBDaoManager {
             return objs;
         }
         try {
-            Cursor cursor = db.query(tableName, null, selection, selectionArgs, null, null, orderBy, limit);
+            cursor = db.query(tableName, null, selection, selectionArgs, null, null, orderBy, limit);
             if (cursor == null || cursor.getCount() == 0) {
                 return objs;
             }
@@ -129,12 +131,13 @@ abstract class EasyTBDaoManager {
                 T obj = valuation(clazz, columnInfo, cursor);
                 objs.add(obj);
             } while (cursor.moveToNext());
-            cursor.close();
-            db.close();
         } catch (SQLiteException e) {
             throwException(e, "SQLiteException class=" + clazz.getName());
         } finally {
-            db.close();
+            if (cursor != null)
+                cursor.close();
+            if (db != null)
+                db.close();
         }
         return objs;
     }

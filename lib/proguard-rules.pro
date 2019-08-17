@@ -202,3 +202,6 @@
 -keep class com.jen.easy.imageLoader.ImageLoaderConfig {
     *;
 }
+-keep class com.jen.easy.imageLoader.ImageLoaderResponse {
+    *;
+}

@@ -38,7 +38,7 @@ class URLConnectionDownloadRunnable extends URLConnectionFactoryRunnable {
         if (!mIsGet) {
             connection.connect();
             DataOutputStream out = new DataOutputStream(connection.getOutputStream());
-            out.write(requestObject.body.toString().getBytes(Unicode.DEFAULT));
+            out.write(mRequestObject.body.toString().getBytes(Unicode.DEFAULT));
             out.flush();
             out.close();
         }

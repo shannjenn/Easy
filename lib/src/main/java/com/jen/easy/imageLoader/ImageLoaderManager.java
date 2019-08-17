@@ -9,7 +9,6 @@ import android.text.TextUtils;
 import android.util.LruCache;
 import android.widget.ImageView;
 
-import com.jen.easy.exception.ExceptionType;
 import com.jen.easy.exception.ImageLoaderLog;
 import com.jen.easy.http.EasyHttp;
 import com.jen.easy.http.imp.EasyHttpListener;
@@ -128,11 +127,23 @@ abstract class ImageLoaderManager {
         };
     }
 
-    protected void setImage(final String imageUrl, final ImageView imageView, final boolean showDefImg, final int width, final int height) {
+    /**
+     * @param imageUrl       图片地址
+     * @param useCache       是否使用缓存
+     * @param imageView      .
+     * @param showDefaultImg 是否显示默认图片
+     * @param width          宽
+     * @param height         高
+     */
+    protected void setImage(final String imageUrl, final boolean useCache, final ImageView imageView, final boolean showDefaultImg, final int width, final int height) {
         mExecutorService.submit(new Runnable() {
             public void run() {
-                if (TextUtils.isEmpty(imageUrl) || imageView == null) {
-                    ImageLoaderLog.exception(ExceptionType.NullPointerException, "imageUrl == null || imageView == null");
+                if (TextUtils.isEmpty(imageUrl)) {
+                    ImageLoaderLog.w("加载图片错误：setImage error imageUrl图片地址为空");
+                    return;
+                }
+                if (imageView == null) {
+                    ImageLoaderLog.w("加载图片错误：setImage error imageView为空 imageUrl = " + imageUrl);
                     return;
                 }
                 List<Image> imageViews = new ArrayList<>();
@@ -145,33 +156,46 @@ abstract class ImageLoaderManager {
                 }
                 imageViews.add(new Image(imageUrl, imageView, width, height));
                 mImageViewCache.put(imageUrl, imageViews);
+                if (useCache) {
+                    boolean cacheResult = getFromCache(imageUrl);//从内存获取
+                    if (cacheResult)
+                        return;
 
-                boolean cacheResult = getFromCache(imageUrl);
-                if (cacheResult)
-                    return;
-
-                boolean SDCardResult = createBitmapByUrl(width, height, imageUrl);
-                if (SDCardResult) {
-                    setImageViewByHandler(imageUrl);
-                    return;
+                    boolean SDCardResult = createBitmapByUrl(width, height, imageUrl);//从SD卡/文件获取
+                    if (SDCardResult) {
+                        setImageViewByHandler(imageUrl);
+                        return;
+                    }
                 }
-                if (showDefImg)
+                if (showDefaultImg)
                     setImageViewEmptyByHandler(imageUrl);
                 getFromHttp(imageUrl);
             }
         });
     }
 
-    protected void setImage(final String imageUrl, final ImageView imageView, final int width, final int height) {
-        setImage(imageUrl, imageView, false, width, height);
+    public void setImage(final String imageUrl, final ImageView imageView, final int width, final int height) {
+        setImage(imageUrl, true, imageView, false, width, height);
     }
 
-    protected void setImage(String imageUrl, ImageView imageView) {
-        setImage(imageUrl, imageView, false, 0, 0);
+    public void setImage(String imageUrl, ImageView imageView) {
+        setImage(imageUrl, true, imageView, false, 0, 0);
     }
 
-    protected void setImage(String imageUrl, ImageView imageView, boolean showDefImg) {
-        setImage(imageUrl, imageView, showDefImg, 0, 0);
+    public void setImage(String imageUrl, ImageView imageView, boolean showDefaultImg) {
+        setImage(imageUrl, true, imageView, showDefaultImg, 0, 0);
+    }
+
+    public void setImage(final String imageUrl, boolean useCache, final ImageView imageView, final int width, final int height) {
+        setImage(imageUrl, useCache, imageView, false, width, height);
+    }
+
+    public void setImage(String imageUrl, boolean useCache, ImageView imageView) {
+        setImage(imageUrl, useCache, imageView, false, 0, 0);
+    }
+
+    public void setImage(String imageUrl, boolean useCache, ImageView imageView, boolean showDefaultImg) {
+        setImage(imageUrl, useCache, imageView, showDefaultImg, 0, 0);
     }
 
     private boolean getFromCache(String imageUrl) {
@@ -306,5 +330,18 @@ abstract class ImageLoaderManager {
             ImageLoaderLog.d("flag = " + flag + " currentPoint = " + currentPoint + " endPoint=" + endPoint);
         }
     };
+
+    public void clearCache() {
+        mHandler.removeMessages(H_IMAGE);
+        mHandler.removeMessages(H_IMAGE_EMPTY);
+        if (mImageCache != null) {
+            mImageCache.evictAll();
+        }
+        mImageViewCache.clear();
+    }
+
+    public void destroy() {
+        mHttp.shutdown();
+    }
 
 }

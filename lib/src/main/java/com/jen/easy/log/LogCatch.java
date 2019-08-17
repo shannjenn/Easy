@@ -107,6 +107,10 @@ class LogCatch extends Thread {
                     EasyLog.d("LogCatch continue----------- ");
                     continue;
                 }
+                if (mListener.onLogFilter(line)) {
+                    EasyLog.d("LogCatch continue 过滤信息：" + line);
+                    continue;
+                }
                 if (line.contains(PID)) {
                     try {
                         FileOutputStream out = new FileOutputStream(file, true);

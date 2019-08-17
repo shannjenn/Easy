@@ -43,7 +43,21 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
     int mResponseCode = -1;//返回码
     String mCharset;//编码
     boolean mIsGet = true;
-    HttpReflectRequestManager.RequestObject requestObject;
+    HttpReflectRequestManager.RequestObject mRequestObject;
+
+    @IntDef({Type.data, Type.fileUp, Type.fileDown})
+    public @interface Type {
+        int data = 0;//基本数据
+        int fileUp = 1;//文件上传
+        int fileDown = 2;//文件下载
+    }
+
+    @IntDef({Response.success, Response.fail, Response.progress})
+    public @interface Response {
+        int success = 0;//成功
+        int fail = 1;//失败
+        int progress = 2;//上传、下载进度
+    }
 
     URLConnectionFactoryRunnable(EasyHttpRequest param, EasyHttpListener httpListener, int flagCode, String flagStr) {
         super();
@@ -141,16 +155,16 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
         mCharset = mRequest.charset;//编码
         mIsGet = method.toUpperCase().equals("GET");
         try {
-            requestObject = HttpReflectRequestManager.getRequestHeadAndBody(mRequest);
-            Map<String, String> urls = requestObject.urls;
-            Map<String, String> heads = requestObject.heads;
+            mRequestObject = HttpReflectRequestManager.getRequestHeadAndBody(mRequest);
+            Map<String, String> urls = mRequestObject.urls;
+            Map<String, String> heads = mRequestObject.heads;
             if (mIsGet) {
-                Iterator<String> paramKeys = requestObject.body.keys();
+                Iterator<String> paramKeys = mRequestObject.body.keys();
                 StringBuilder requestBuf = new StringBuilder();
                 boolean isFirst = true;
                 while (paramKeys.hasNext()) {
                     String key = paramKeys.next();
-                    Object value = requestObject.body.get(key);
+                    Object value = mRequestObject.body.get(key);
                     if (isFirst) {
                         isFirst = false;
                     } else {
@@ -223,85 +237,13 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
                 formatBody = replaceResult(body);
             }
             if (EasyLog.isPrint(LogLevel.I))
-                HttpLog.i(getLogFormatResponse(headMap, body, formatBody, timeSec));
+                HttpLog.i(getLogFormatRequestAndResponse(headMap, body, formatBody, timeSec));
             success(formatBody != null ? formatBody : body, headMap);
         } else {
             double timeSec = (System.currentTimeMillis() - startTime) / 1000d;
             HttpLog.e(JsonLogFormat.formatJson(getLogRequestInfo() + "\nresponse code：" + mResponseCode + " time: " + timeSec + " second"));
             fail();
         }
-    }
-
-    /**
-     * 开始请求前错误提示Log
-     */
-    private String getLogBeforeRequest(String log) {
-        return mUrlStr + " " + log + "\nclass " + mRequest.getClass().getName();
-    }
-
-    /**
-     * 获取请求Log
-     */
-    private String getLogRequestInfo() {
-        if (requestObject == null)
-            return "";
-        Map<String, String> heads = requestObject.heads;
-        StringBuilder mHeadLogBuilder = new StringBuilder();
-        Set<String> headKeys = heads.keySet();
-        for (String key : headKeys) {//设置请求头
-            String value = heads.get(key);
-            mHeadLogBuilder.append(key);
-            mHeadLogBuilder.append("：");
-            mHeadLogBuilder.append(value);
-            mHeadLogBuilder.append(",");
-        }
-        if (mHeadLogBuilder.length() > 0) {
-            mHeadLogBuilder.insert(0, "{");
-            mHeadLogBuilder.replace(mHeadLogBuilder.length() - 1, mHeadLogBuilder.length(), "}");
-        }
-        String filePath = "";
-        if (mRequest instanceof EasyHttpUploadRequest) {
-            filePath = "\nfilePath = " + ((EasyHttpUploadRequest) mRequest).filePath;
-        } else if (mRequest instanceof EasyHttpDownloadRequest) {
-            filePath = "\nfilePath = " + ((EasyHttpDownloadRequest) mRequest).filePath;
-        }
-        return mIsGet ? "GET " : "POST " + mUrlStr + "\nrequest class = " + mRequest.getClass().getName()
-                + filePath
-                + "\nrequest heads：\n" + mHeadLogBuilder.toString() + "\nrequest body：\n" + requestObject.body.toString();
-    }
-
-    /**
-     * 格式化返回数据Log
-     */
-    private String getLogFormatResponse(Map<String, List<String>> headMap, String body, String formatBody, double timeSec) {
-        final String COMMA = "\\,带英文逗号的值不做Json换行";
-        StringBuilder returnLogBuild = new StringBuilder();
-        returnLogBuild.append(getLogRequestInfo()).append("\nresponse HEADS：\n{");
-        for (Map.Entry<String, List<String>> entry : headMap.entrySet()) {
-            returnLogBuild.append(entry.getKey());
-            returnLogBuild.append(":");
-            StringBuilder valueBuild = new StringBuilder();
-            int size = entry.getValue().size();
-            for (int i = 0; i < size; i++) {
-                if (i > 0) {
-                    valueBuild.append(" && ");
-                }
-                valueBuild.append(entry.getValue().get(i));
-            }
-            String value = valueBuild.toString().replace(",", COMMA);
-            returnLogBuild.append(value);
-            returnLogBuild.append(",");
-        }
-        if (headMap.size() > 0) {
-            returnLogBuild.deleteCharAt(returnLogBuild.length() - 1);
-        }
-        returnLogBuild.append("}");
-        returnLogBuild.append("\nresponse BODY：\n").append(body);
-        if (formatBody != null) {
-            returnLogBuild.append("\nformat response BODY：\n").append(formatBody);
-        }
-        returnLogBuild.append("\nresponse CODE：").append(mResponseCode).append(" time: ").append(timeSec).append(" second");
-        return JsonLogFormat.formatJson(returnLogBuild.toString()).replace(COMMA, ",");
     }
 
     /**
@@ -317,20 +259,6 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
             response = response.replace(oldChar, replacement);
         }
         return response;
-    }
-
-    @IntDef({Type.data, Type.fileUp, Type.fileDown})
-    public @interface Type {
-        int data = 0;//基本数据
-        int fileUp = 1;//文件上传
-        int fileDown = 2;//文件下载
-    }
-
-    @IntDef({Response.success, Response.fail, Response.progress})
-    public @interface Response {
-        int success = 0;//成功
-        int fail = 1;//失败
-        int progress = 2;//上传、下载进度
     }
 
     Object createResponseObjectSuccess(@Type int type, String resultOrFilePath) {
@@ -458,4 +386,83 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
     protected abstract void success(String result, Map<String, List<String>> headMap);
 
     protected abstract void fail();
+
+    /**
+     * 开始请求前错误提示Log
+     */
+    private String getLogBeforeRequest(String log) {
+        return mUrlStr + " " + log + "\nclass " + mRequest.getClass().getName();
+    }
+
+    /**
+     * 获取请求Log
+     */
+    private String getLogRequestInfo() {
+        StringBuilder headBuilder = new StringBuilder();
+        String body = "";
+        String fileRequestInfo = "";
+        if (mRequestObject != null) {
+            Set<String> headKeys = mRequestObject.heads.keySet();
+            for (String key : headKeys) {//设置请求头
+                String value = mRequestObject.heads.get(key);
+                headBuilder.append(key);
+                headBuilder.append("：");
+                headBuilder.append(value);
+                headBuilder.append(",");
+            }
+            if (headBuilder.length() > 0) {
+                headBuilder.insert(0, "{");
+                headBuilder.replace(headBuilder.length() - 1, headBuilder.length(), "}");
+            }
+            body = mRequestObject.body.toString();
+            if (mRequest instanceof EasyHttpUploadRequest) {
+                EasyHttpUploadRequest uploadRequest = (EasyHttpUploadRequest) mRequest;
+                fileRequestInfo = "\nfilePath = " + uploadRequest.filePath;
+                fileRequestInfo += uploadRequest.fileNameKey != null ? "\nfileNameKey = " + uploadRequest.fileNameKey : "";
+                fileRequestInfo += uploadRequest.fileNameValue != null ? "\nfileNameValue = " + uploadRequest.fileNameValue : "";
+            } else if (mRequest instanceof EasyHttpDownloadRequest) {
+                fileRequestInfo = "\nfilePath = " + ((EasyHttpDownloadRequest) mRequest).filePath;
+            }
+        }
+        return (mIsGet ? "Get " : "Post ") + mUrlStr
+                + "\n请求 class = " + mRequest.getClass().getName()
+                + fileRequestInfo
+                + "\n请求 Heads：\n" + headBuilder.toString()
+                + "\n请求 Body：\n" + body;
+
+    }
+
+    /**
+     * 格式化返回数据Log
+     */
+    private String getLogFormatRequestAndResponse(Map<String, List<String>> ResponseHeadMap, String responseBody, String formatBody, double timeSec) {
+        final String COMMA = "\\,带英文逗号的值不做Json换行";
+        StringBuilder returnLogBuild = new StringBuilder();
+        returnLogBuild.append(getLogRequestInfo()).append("\n返回 Heads：\n{");
+        for (Map.Entry<String, List<String>> entry : ResponseHeadMap.entrySet()) {
+            returnLogBuild.append(entry.getKey());
+            returnLogBuild.append(":");
+            StringBuilder valueBuild = new StringBuilder();
+            int size = entry.getValue().size();
+            for (int i = 0; i < size; i++) {
+                if (i > 0) {
+                    valueBuild.append(" && ");
+                }
+                valueBuild.append(entry.getValue().get(i));
+            }
+            String value = valueBuild.toString().replace(",", COMMA);
+            returnLogBuild.append(value);
+            returnLogBuild.append(",");
+        }
+        if (ResponseHeadMap.size() > 0) {
+            returnLogBuild.deleteCharAt(returnLogBuild.length() - 1);
+        }
+        returnLogBuild.append("}");
+        returnLogBuild.append("\n返回 Body：\n").append(responseBody);
+        if (formatBody != null) {
+            returnLogBuild.append("\n格式化 返回 Body：\n").append(formatBody);
+        }
+        returnLogBuild.append("\n返回 Code：").append(mResponseCode).append(" Time: ").append(timeSec).append(" Second");
+        return JsonLogFormat.formatJson(returnLogBuild.toString()).replace(COMMA, ",");
+    }
 }

@@ -28,7 +28,7 @@ class HttpParseManager {
     /**
      * json解析
      *
-     * @param tClass   类
+     * @param tClass 类
      * @return 值
      */
     <T> T newResponseInstance(Class<T> tClass) {
@@ -36,10 +36,10 @@ class HttpParseManager {
         try {
             response = tClass.newInstance();
         } catch (InstantiationException e) {
-            HttpLog.w("newResponseInstance InstantiationException 创建对象出错：" + tClass.getName());
+            showErrorLog("newResponseInstance InstantiationException 创建对象出错：" + tClass.getName(), e);
             return null;
         } catch (IllegalAccessException e) {
-            HttpLog.w("newResponseInstance IllegalAccessException 创建对象出错" + tClass.getName());
+            showErrorLog("newResponseInstance IllegalAccessException 创建对象出错：" + tClass.getName(), e);
             return null;
         }
         return response;
@@ -60,7 +60,7 @@ class HttpParseManager {
         try {
             object = new JSONObject(obj);
         } catch (JSONException e) {
-            showErrorLog("JSONException 解析错误，不属于JSONObject数据");
+            showErrorLog("JSONException 解析错误，不属于JSONObject数据", e);
             return null;
         }
         response = parseJSONObject(tClass, object);
@@ -86,10 +86,10 @@ class HttpParseManager {
         try {
             tObj = tClass.newInstance();
         } catch (InstantiationException e) {
-            showErrorLog("InstantiationException 创建对象出错：" + tClass.getName());
+            showErrorLog("parseJSONObject InstantiationException 创建对象出错：" + tClass.getName(), e);
             return null;
         } catch (IllegalAccessException e) {
-            showErrorLog("IllegalAccessException 创建对象出错" + tClass.getName());
+            showErrorLog("parseJSONObject IllegalAccessException 创建对象出错" + tClass.getName(), e);
             return null;
         }
 
@@ -118,11 +118,11 @@ class HttpParseManager {
                     }
                     field.set(tObj, value);
                 } catch (JSONException e) {
-                    showErrorLog("JSONException：类型：" + fieldClass + " 参数：" + param);
+                    showErrorLog("JSONException：类型：" + fieldClass + " 参数：" + param, e);
                 } catch (IllegalAccessException e) {
-                    showErrorLog("IllegalAccessException：类型：" + fieldClass + " 参数：" + param);
+                    showErrorLog("IllegalAccessException：类型：" + fieldClass + " 参数：" + param, e);
                 } catch (IllegalArgumentException e) {
-                    showErrorLog("IllegalArgumentException：类型：" + fieldClass + " 参数：" + param);
+                    showErrorLog("IllegalArgumentException：类型：" + fieldClass + " 参数：" + param, e);
                 }
             }
         }
@@ -206,7 +206,7 @@ class HttpParseManager {
             try {
                 jsonObj = jsonArray.get(i);
             } catch (JSONException e) {
-                showErrorLog("JSONArray数据解析错误 JSONException");
+                showErrorLog("JSONArray数据解析错误 JSONException", e);
                 continue;
             }
             Type type1 = null;
@@ -239,7 +239,7 @@ class HttpParseManager {
                         throwException(ExceptionType.ClassCastException, "JSONArray数据解析错误3：" + type.toString());
                     }
                 } catch (ClassNotFoundException e) {
-                    showErrorLog(String.format("ClassNotFoundException：JSONArray数据解析错误，集合：%s 集合对象：%s", type.toString(), type1.toString()));
+                    showErrorLog(String.format("ClassNotFoundException：JSONArray数据解析错误，集合：%s 集合对象：%s", type.toString(), type1.toString()), e);
                 }
             } else if (jsonObj instanceof JSONArray) {
                 if (FieldType.isList(type1)) {
@@ -262,7 +262,7 @@ class HttpParseManager {
                         throwException(ExceptionType.ClassCastException, "JSONArray数据解析错误6：" + type.toString());
                     }
                 } catch (ClassNotFoundException e) {
-                    showErrorLog(String.format("ClassNotFoundException：JSONArray数据解析错误，集合：%s 集合对象：%s", type.toString(), type1.toString()));
+                    showErrorLog(String.format("ClassNotFoundException：JSONArray数据解析错误，集合：%s 集合对象：%s", type.toString(), type1.toString()), e);
                 }
             }
         }
@@ -649,9 +649,9 @@ class HttpParseManager {
      *
      * @param error 错误信息
      */
-    private void showErrorLog(String error) {
+    private void showErrorLog(String error, Exception e) {
         if (!mErrors.contains(error)) {
-            HttpLog.e(error);
+            HttpLog.e(error + "\n" + e.getMessage());
             mErrors.add(error);
         }
     }
