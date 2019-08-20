@@ -6,8 +6,6 @@ import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
-import com.jen.easy.exception.ExceptionType;
-import com.jen.easy.exception.SQLLog;
 import com.jen.easy.sqlite.imp.DatabaseListener;
 
 import java.io.File;
@@ -23,7 +21,7 @@ class EasyDatabase {
         if (!parent.exists()) {
             boolean ret = parent.mkdirs();
             if (!ret) {
-                SQLLog.exception(ExceptionType.RuntimeException, "创建数据库文件夹失败");
+                SQLLog.e("创建数据库文件夹失败");
             }
         }
     }
@@ -65,7 +63,7 @@ class EasyDatabase {
         try {
             int oldVersion = db.getVersion();
             if (version < oldVersion) {
-                SQLLog.exception(ExceptionType.RuntimeException, "升级版本不能小于当前版本：" + oldVersion);
+                SQLLog.e("升级版本不能小于当前版本：" + oldVersion);
             }
             if (oldVersion == version) {
                 return;

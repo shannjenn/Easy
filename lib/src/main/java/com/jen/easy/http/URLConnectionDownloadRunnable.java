@@ -1,7 +1,6 @@
 package com.jen.easy.http;
 
 import com.jen.easy.constant.Unicode;
-import com.jen.easy.exception.HttpLog;
 import com.jen.easy.http.imp.EasyHttpListener;
 import com.jen.easy.http.request.EasyHttpDownloadRequest;
 import com.jen.easy.http.request.EasyRequestState;
@@ -22,7 +21,8 @@ class URLConnectionDownloadRunnable extends URLConnectionFactoryRunnable {
     }
 
     @Override
-    protected void childRun(HttpURLConnection connection) throws IOException {
+    protected boolean childRun(HttpURLConnection connection) throws IOException {
+        boolean isSuccess = false;
         responseObjectProgress = createResponseObjectProgress(Type.fileDown);
         EasyHttpDownloadRequest request = (EasyHttpDownloadRequest) mRequest;
         if (request.startPoint <= 1024 * 2) {
@@ -57,37 +57,35 @@ class URLConnectionDownloadRunnable extends URLConnectionFactoryRunnable {
             while ((len = inStream.read(buffer)) != -1) {
                 randFile.write(buffer, 0, len);
                 curBytes += len;
-                if (mRequest.getRequestState() == EasyRequestState.interrupt) {
-                    break;
-                } else {
-                    progress(curBytes, request.endPoint);
-                }
+                progress(curBytes, request.endPoint);
             }
             if (curBytes == request.endPoint) {
                 success(request.filePath, headMap);
+                isSuccess = true;
             } else {
-                fail();
+                HttpLog.e("下载文件出错，下载文件大小不一致");
             }
-        } else {
-            fail();
         }
+        return isSuccess;
     }
 
     @Override
     protected void success(String filePath, Map<String, List<String>> headMap) {
-        if (checkListener())
+        mRequest.setRequestState(EasyRequestState.finish);
+        if (httpListener != null)
             httpListener.success(flagCode, flagStr, createResponseObjectSuccess(Type.fileDown, filePath), headMap);
     }
 
     @Override
     protected void fail() {
-        if (checkListener())
+        mRequest.setRequestState(EasyRequestState.finish);
+        if (httpListener != null)
             httpListener.fail(flagCode, flagStr, createResponseObjectFail(Type.fileDown));
     }
 
     private void progress(long currentPoint, long endPoint) {
         HttpLog.d(mUrlStr + " 下载进度：currentPoint = " + currentPoint + " endPoint = " + endPoint);
-        if (checkListener())
+        if (httpListener != null)
             httpListener.progress(flagCode, flagStr, responseObjectProgress, currentPoint, endPoint);
     }
 

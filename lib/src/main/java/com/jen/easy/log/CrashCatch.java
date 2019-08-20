@@ -1,15 +1,12 @@
 package com.jen.easy.log;
 
 import com.jen.easy.constant.Unicode;
-import com.jen.easy.exception.ExceptionType;
-import com.jen.easy.exception.LogcatLog;
 import com.jen.easy.log.imp.LogcatListener;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.Thread.UncaughtExceptionHandler;
@@ -106,7 +103,7 @@ class CrashCatch implements UncaughtExceptionHandler {
             // 如果用户没有处理则让系统默认的异常处理器来处理
             exceptionHandler.uncaughtException(thread, ex);
         } else {
-            LogcatLog.w("用户来处理异常");
+            EasyLog.d("用户来处理异常");
             // 退出程序
 //            android.os.Process.killProcess(android.os.Process.myPid());
 //            System.exit(1);

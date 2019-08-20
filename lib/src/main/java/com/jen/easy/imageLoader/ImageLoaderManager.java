@@ -9,7 +9,6 @@ import android.text.TextUtils;
 import android.util.LruCache;
 import android.widget.ImageView;
 
-import com.jen.easy.exception.ImageLoaderLog;
 import com.jen.easy.http.EasyHttp;
 import com.jen.easy.http.imp.EasyHttpListener;
 

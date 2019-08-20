@@ -11,6 +11,12 @@ public class EasyLog {
     private static final String TAG = "EasyLog";
     private static final int maxLength = 2000;
 
+    public static boolean easyAOPPrint = true;
+    public static boolean easyBindPrint = true;
+    public static boolean easyHttpPrint = true;//是否打印httpLog
+    public static boolean easyImageLoaderPrint = true;
+    public static boolean easySQLPrint = true;
+
     /**
      * 日志打印级别
      */

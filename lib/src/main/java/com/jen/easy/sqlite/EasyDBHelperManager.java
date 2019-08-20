@@ -7,8 +7,6 @@ import android.database.sqlite.SQLiteException;
 import android.text.TextUtils;
 
 import com.jen.easy.constant.FieldType;
-import com.jen.easy.exception.ExceptionType;
-import com.jen.easy.exception.SQLLog;
 import com.jen.easy.sqlite.imp.DatabaseListener;
 
 import java.lang.reflect.Field;
@@ -58,12 +56,12 @@ abstract class EasyDBHelperManager {
      */
     protected void createTB(Class clazz) {
         if (clazz == null) {
-            SQLLog.exception(ExceptionType.NullPointerException, "创建数据库文件夹失败");
+            SQLLog.e("createTB 创建数据库文件夹失败");
             return;
         }
         String tableName = DBReflectManager.getTableName(clazz);
         if (tableName == null) {
-            SQLLog.exception(ExceptionType.RuntimeException, "创建数据库失败，tableName为空，请注释");
+            SQLLog.e("创建数据库失败，tableName为空，请注释");
             return;
         }
         /*boolean existTB = database.checkTableExist(db, tableName);
@@ -77,7 +75,7 @@ abstract class EasyDBHelperManager {
         List<String> columns = columnInfo.columns;
         List<Field> fields = columnInfo.fields;
         if (columnInfo.columns.size() == 0) {
-            SQLLog.exception(ExceptionType.RuntimeException, "创建数据库失败，列名为空");
+            SQLLog.e("创建数据库失败，列名为空");
             return;
         }
 
@@ -88,7 +86,7 @@ abstract class EasyDBHelperManager {
             Field field = fields.get(i);
             String type = FieldType.getDBColumnType(field.getType());
             if (type == null) {
-                SQLLog.exception(ExceptionType.RuntimeException, "创建表失败，不支持该类型：" + name);
+                SQLLog.e("创建表失败，不支持该类型：" + name);
                 return;
             }
             fieldSql.append(name);
@@ -203,7 +201,7 @@ abstract class EasyDBHelperManager {
         }
         String type = FieldType.getDBColumnType(clazz);
         if (type == null) {
-            SQLLog.exception(ExceptionType.RuntimeException, "增加列失败，不支持该类型：" + clazz);
+            SQLLog.e("增加列失败，不支持该类型：" + clazz);
             return;
         }
         try {

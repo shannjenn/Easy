@@ -2,8 +2,6 @@ package com.jen.easy.bind;
 
 import com.jen.easy.EasyBindClick;
 import com.jen.easy.EasyBindId;
-import com.jen.easy.exception.BindLog;
-import com.jen.easy.exception.ExceptionType;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -39,7 +37,7 @@ abstract class BindReflectManager {
     static FieldInfo getFields(Class clazz) {
         FieldInfo fieldInfo = new FieldInfo();
         if (clazz == null) {
-            BindLog.exception(ExceptionType.NullPointerException, "BindView getMethods出现空指针错误：clazz不能为空");
+            BindLog.e("BindView getMethods出现空指针错误：clazz不能为空");
             return fieldInfo;
         }
 
@@ -69,7 +67,7 @@ abstract class BindReflectManager {
     static Map<Method, int[]> getMethods(Class clazz) {
         Map<Method, int[]> method_ids = new HashMap<>();
         if (clazz == null) {
-            BindLog.exception(ExceptionType.NullPointerException, "BindView getMethods出现空指针错误：clazz不能为空");
+            BindLog.e("BindView getMethods出现空指针错误：clazz不能为空");
             return method_ids;
         }
         Method[] methods = clazz.getDeclaredMethods();

@@ -2,8 +2,6 @@ package com.jen.easy.aop;
 
 import com.jen.easy.EasyAopAfter;
 import com.jen.easy.EasyAopBefore;
-import com.jen.easy.exception.AopLog;
-import com.jen.easy.exception.ExceptionType;
 
 import java.lang.reflect.Method;
 
@@ -21,7 +19,7 @@ class AOPReflectManager {
      */
     static Method getBefore(Class clazz) {
         if (clazz == null) {
-            AopLog.exception(ExceptionType.NullPointerException, "参数不能为空");
+            AopLog.e("参数不能为空");
             return null;
         }
         Method[] methods = clazz.getDeclaredMethods();
@@ -42,7 +40,7 @@ class AOPReflectManager {
      */
     static Method getAfter(Class clazz) {
         if (clazz == null) {
-            AopLog.exception(ExceptionType.NullPointerException, "参数不能为空");
+            AopLog.e("参数不能为空");
             return null;
         }
         Method[] methods = clazz.getDeclaredMethods();

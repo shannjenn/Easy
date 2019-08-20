@@ -8,6 +8,6 @@ package com.jen.easy.http.request;
 public enum EasyRequestState {
     ready,//准备状态,未执行
     running,//正在运行
-    finish,//完成
-    interrupt//被中断/停止
+    finish//完成
+//    interrupt//被中断/停止(与finish有逻辑冲突，不好控制，暂停使用)
 }

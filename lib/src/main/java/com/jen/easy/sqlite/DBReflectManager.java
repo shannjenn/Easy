@@ -3,8 +3,6 @@ package com.jen.easy.sqlite;
 import com.jen.easy.EasyColumn;
 import com.jen.easy.EasyTable;
 import com.jen.easy.constant.FieldType;
-import com.jen.easy.exception.ExceptionType;
-import com.jen.easy.exception.SQLLog;
 import com.jen.easy.invalid.EasyInvalidType;
 import com.jen.easy.invalid.Invalid;
 
@@ -50,7 +48,7 @@ class DBReflectManager {
         }*/
         boolean isAnnotation = clazz.isAnnotationPresent(EasyTable.class);
         if (!isAnnotation) {
-            SQLLog.exception(ExceptionType.RuntimeException, clazz.getName() + "未增加表注释");
+            SQLLog.e(clazz.getName() + "未增加表注释");
             return null;
         }
         EasyTable table = (EasyTable) clazz.getAnnotation(EasyTable.class);

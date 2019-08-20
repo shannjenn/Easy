@@ -1,7 +1,5 @@
 package com.jen.easy.log;
 
-import com.jen.easy.exception.ExceptionType;
-import com.jen.easy.exception.LogcatLog;
 import com.jen.easy.log.imp.LogcatListener;
 
 import java.io.File;
@@ -60,10 +58,10 @@ abstract class LogcatHelperManager {
      */
     protected void start() {
         if (LogcatPath.getInstance().getPath() == null) {
-            LogcatLog.exception(ExceptionType.NullPointerException, "日志路径为空，LogcatHelper日志未能启动--------------------");
+            EasyLog.e("日志路径为空，LogcatHelper日志未能启动--------------------");
             return;
         }
-        LogcatLog.i("日志路径为:" + LogcatPath.getInstance().getPath());
+        EasyLog.i("日志路径为:" + LogcatPath.getInstance().getPath());
         LogCatch.getInstance().startLogs();
         CrashCatch.getInstance().start();
     }

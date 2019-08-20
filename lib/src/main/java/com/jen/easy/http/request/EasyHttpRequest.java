@@ -1,8 +1,7 @@
 package com.jen.easy.http.request;
 
 import com.jen.easy.constant.Unicode;
-import com.jen.easy.exception.ExceptionType;
-import com.jen.easy.exception.HttpLog;
+import com.jen.easy.http.HttpLog;
 import com.jen.easy.invalid.EasyInvalid;
 
 import java.io.Serializable;
@@ -79,7 +78,7 @@ public abstract class EasyHttpRequest implements Serializable {
      */
     public void addReplaceResult(String oldChar, String newChar) {
         if (oldChar == null || newChar == null) {
-            HttpLog.exception(ExceptionType.NullPointerException, "格式化前后字符串不能为空");
+            HttpLog.e(" 格式化前后字符串不能为空");
             return;
         }
         if (replaceResult == null) {
@@ -125,10 +124,10 @@ public abstract class EasyHttpRequest implements Serializable {
         this.requestState = requestState;
     }
 
-    /**
-     * 中断/停止请求请求
-     */
-    public void interrupt() {
-        this.requestState = EasyRequestState.interrupt;
-    }
+//    /**
+//     * 中断/停止请求请求
+//     */
+//    public void interrupt() {
+//        this.requestState = EasyRequestState.interrupt;
+//    }
 }

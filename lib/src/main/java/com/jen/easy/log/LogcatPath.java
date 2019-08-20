@@ -2,9 +2,6 @@ package com.jen.easy.log;
 
 import android.os.Environment;
 
-import com.jen.easy.exception.ExceptionType;
-import com.jen.easy.exception.LogcatLog;
-
 import java.io.File;
 
 class LogcatPath {
@@ -50,14 +47,14 @@ class LogcatPath {
 
     void setPath(String path) {
         if (path == null) {
-            LogcatLog.exception(ExceptionType.NullPointerException, "设置的日志路径不能为空：");
+            EasyLog.e("设置的日志路径不能为空：");
             return;
         }
         File file = new File(path);
         if (!file.exists()) {
             boolean ret = file.mkdirs();
             if (!ret) {
-                LogcatLog.exception(ExceptionType.RuntimeException, "设置的日志路径不正确：" + path);
+                EasyLog.e("设置的日志路径不正确：" + path);
                 return;
             }
         }

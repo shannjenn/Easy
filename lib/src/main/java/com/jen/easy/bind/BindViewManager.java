@@ -3,9 +3,6 @@ package com.jen.easy.bind;
 import android.app.Activity;
 import android.view.View;
 
-import com.jen.easy.exception.BindLog;
-import com.jen.easy.exception.ExceptionType;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -26,7 +23,7 @@ abstract class BindViewManager {
      */
     protected void bind(final Activity activity) {
         if (activity == null) {
-            BindLog.exception(ExceptionType.NullPointerException, "BindView bind 出现空指针：activity不能为空");
+            BindLog.e("BindView bind 出现空指针：activity不能为空");
             return;
         }
         String name = activity.getClass().getName();
@@ -76,10 +73,10 @@ abstract class BindViewManager {
      */
     protected void inject(final Object obj, final View parent) {
         if (obj == null) {
-            BindLog.exception(ExceptionType.NullPointerException, "BindView inject 出现空指针：类 不能为空");
+            BindLog.e("BindView inject 出现空指针：类 不能为空");
             return;
         } else if (parent == null) {
-            BindLog.exception(ExceptionType.NullPointerException, "BindView inject 出现空指针：View 不能为空");
+            BindLog.e("BindView inject 出现空指针：View 不能为空");
             return;
         }
         BindReflectManager.FieldInfo fieldInfo = BindReflectManager.getFields(obj.getClass());

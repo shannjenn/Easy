@@ -1,6 +1,5 @@
 package com.jen.easy.http;
 
-import com.jen.easy.exception.HttpLog;
 import com.jen.easy.http.imp.EasyHttpListener;
 import com.jen.easy.http.request.EasyHttpUploadRequest;
 import com.jen.easy.http.request.EasyRequestState;
@@ -27,7 +26,7 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
     }
 
     @Override
-    protected void childRun(HttpURLConnection connection) throws IOException {
+    protected boolean childRun(HttpURLConnection connection) throws IOException {
         responseObjectProgress = createResponseObjectProgress(Type.fileUp);
         EasyHttpUploadRequest request = (EasyHttpUploadRequest) mRequest;
         if (request.isBreak && request.endPoint > request.startPoint + 100) {
@@ -42,7 +41,7 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
                 uploadFileAndParam(connection, request);
                 break;
         }
-        runResponse(connection, startTime);
+        return runResponse(connection, startTime);
     }
 
     /**
@@ -59,12 +58,8 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
         byte[] bufferOut = new byte[1024];
         while ((len = in.read(bufferOut)) != -1) {
             out.write(bufferOut, 0, len);
-            if (request.getRequestState() == EasyRequestState.interrupt) {
-                break;
-            } else {
-                curBytes += len;
-                progress(curBytes, endBytes);
-            }
+            curBytes += len;
+            progress(curBytes, endBytes);
         }
         in.close();
         out.flush();
@@ -124,12 +119,8 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
         long endBytes = file.length();
         while ((len = fileInputStream.read(bytes)) != -1) {
             out.write(bytes, 0, len);
-            if (request.getRequestState() == EasyRequestState.interrupt) {
-                break;
-            } else {
-                curBytes += len;
-                progress(curBytes, endBytes);
-            }
+            curBytes += len;
+            progress(curBytes, endBytes);
         }
         out.write(LINE_END.getBytes());
         byte[] end_data = (PREFIX + BOUNDARY + PREFIX + LINE_END).getBytes();
@@ -142,19 +133,21 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
 
     @Override
     protected void success(String result, Map<String, List<String>> headMap) {
-        if (checkListener())
+        mRequest.setRequestState(EasyRequestState.finish);
+        if (httpListener != null)
             httpListener.success(flagCode, flagStr, createResponseObjectSuccess(Type.fileUp, result), headMap);
     }
 
     @Override
     protected void fail() {
-        if (checkListener())
+        mRequest.setRequestState(EasyRequestState.finish);
+        if (httpListener != null)
             httpListener.fail(flagCode, flagStr, createResponseObjectFail(Type.fileUp));
     }
 
     private void progress(long currentPoint, long endPoint) {
         HttpLog.d(mUrlStr + " 上传进度：currentPoint = " + currentPoint + " endPoint = " + endPoint);
-        if (checkListener())
+        if (httpListener != null)
             httpListener.progress(flagCode, flagStr, responseObjectProgress, currentPoint, endPoint);
     }
 }

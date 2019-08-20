@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
 import com.jen.easy.constant.FieldType;
-import com.jen.easy.exception.SQLLog;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

@@ -7,8 +7,6 @@ import com.jen.easy.EasyRequest;
 import com.jen.easy.EasyRequestCommit;
 import com.jen.easy.EasyRequestType;
 import com.jen.easy.constant.FieldType;
-import com.jen.easy.exception.ExceptionType;
-import com.jen.easy.exception.HttpLog;
 import com.jen.easy.http.request.EasyHttpRequest;
 import com.jen.easy.invalid.EasyInvalidType;
 import com.jen.easy.invalid.Invalid;
@@ -120,7 +118,7 @@ class HttpReflectRequestManager {
         if (loopMap.containsKey(clazzName)) {
             int value = loopMap.get(clazzName);
             if (value == 100) {//超过100默认死循环
-                HttpLog.exception(ExceptionType.RuntimeException, "无限死循环引用错误：" + clazzName);
+                HttpLog.e("无限死循环引用错误：" + clazzName);
                 return;
             } else {
                 loopMap.put(clazzName, value + 1);
@@ -301,7 +299,7 @@ class HttpReflectRequestManager {
                     parseRequest(loopMap, value, urls, item, heads);
                     body.put(key, item);
                 } else {
-                    HttpLog.exception(ExceptionType.IllegalArgumentException, "不支持该类型参数：" + field.getName());
+                    HttpLog.e("不支持该类型参数：" + field.getName());
                 }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();

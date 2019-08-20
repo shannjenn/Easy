@@ -27,18 +27,9 @@ import com.jen.easyui.util.DensityUtil;
  */
 
 public class EasyCustomImageView extends AppCompatImageView {
-    /**
-     * (默认)android.widget.ImageView
-     */
-    public static final int TYPE_NONE = 0;
-    /**
-     * 圆形
-     */
-    public static final int TYPE_CIRCLE = 1;
-    /**
-     * 圆角矩形
-     */
-    public static final int TYPE_ROUNDED_RECT = 2;
+    public static final int TYPE_NONE = 0;//(默认)android.widget.ImageView
+    public static final int TYPE_CIRCLE = 1;//圆形
+    public static final int TYPE_ROUNDED_RECT = 2;//圆角矩形
 
     private static final int DEFAULT_TYPE = TYPE_NONE;
     private static final int DEFAULT_BORDER_COLOR = Color.TRANSPARENT;
@@ -93,10 +84,8 @@ public class EasyCustomImageView extends AppCompatImageView {
                 mRawBitmap = rawBitmap;
                 mShader = new BitmapShader(mRawBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
             }
-            if (mShader != null) {
-                mMatrix.setScale((dstWidth - doubleBorderWidth) / rawBitmap.getWidth(), (dstHeight - doubleBorderWidth) / rawBitmap.getHeight());
-                mShader.setLocalMatrix(mMatrix);
-            }
+            mMatrix.setScale((dstWidth - doubleBorderWidth) / rawBitmap.getWidth(), (dstHeight - doubleBorderWidth) / rawBitmap.getHeight());
+            mShader.setLocalMatrix(mMatrix);
 
             mPaintBitmap.setShader(mShader);
             mPaintBorder.setStyle(Paint.Style.STROKE);

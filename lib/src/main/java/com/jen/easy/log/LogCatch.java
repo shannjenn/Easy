@@ -1,8 +1,6 @@
 package com.jen.easy.log;
 
 import com.jen.easy.constant.Unicode;
-import com.jen.easy.exception.ExceptionType;
-import com.jen.easy.exception.LogcatLog;
 import com.jen.easy.log.imp.LogcatListener;
 
 import java.io.BufferedReader;

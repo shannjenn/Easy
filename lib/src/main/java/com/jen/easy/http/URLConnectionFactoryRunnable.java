@@ -5,12 +5,10 @@ import android.text.TextUtils;
 
 import com.jen.easy.EasyUploadType;
 import com.jen.easy.constant.FieldType;
-import com.jen.easy.exception.HttpLog;
 import com.jen.easy.http.imp.EasyHttpListener;
 import com.jen.easy.http.request.EasyHttpDownloadRequest;
 import com.jen.easy.http.request.EasyHttpRequest;
 import com.jen.easy.http.request.EasyHttpUploadRequest;
-import com.jen.easy.http.request.EasyRequestState;
 import com.jen.easy.http.response.EasyHttpFileResponse;
 import com.jen.easy.http.response.EasyHttpResponse;
 import com.jen.easy.log.EasyLog;
@@ -151,6 +149,7 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
             }
         }
 
+        boolean isSuccess;
         mResponseCode = -1;//返回码
         mCharset = mRequest.charset;//编码
         mIsGet = method.toUpperCase().equals("GET");
@@ -199,23 +198,26 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
                 String value = heads.get(key);
                 connection.setRequestProperty(key, value);
             }
-            childRun(connection);
+            isSuccess = childRun(connection);
             connection.disconnect();
         } catch (IOException e) {
-            HttpLog.e("Http IOException error：\n" + JsonLogFormat.formatJson(getLogRequestInfo()));
+            HttpLog.e("\nHttp IOException error：\n" + JsonLogFormat.formatJson(getLogRequestInfo()) + "\n");
             e.printStackTrace();
-            fail();
+            isSuccess = false;
         } catch (JSONException e) {
-            HttpLog.e("Http JSONException error：\n" + JsonLogFormat.formatJson(getLogRequestInfo()));
+            HttpLog.e("\nHttp JSONException error：\n" + JsonLogFormat.formatJson(getLogRequestInfo()) + "\n");
             e.printStackTrace();
-            fail();
+            isSuccess = false;
         }
+        if (!isSuccess)
+            fail();
     }
 
     /**
      * 运行获取返回参数
      */
-    void runResponse(HttpURLConnection connection, long startTime) throws IOException {
+    boolean runResponse(HttpURLConnection connection, long startTime) throws IOException {
+        boolean isSuccess;
         mResponseCode = connection.getResponseCode();
         if ((mResponseCode == 200)) {
             Map<String, List<String>> headMap = connection.getHeaderFields();//获取head数据
@@ -236,14 +238,16 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
             if (mRequest.getReplaceResult().size() > 0) {
                 formatBody = replaceResult(body);
             }
-            if (EasyLog.isPrint(LogLevel.I))
+            if (EasyLog.easyHttpPrint && EasyLog.isPrint(LogLevel.I))//性能优化
                 HttpLog.i(getLogFormatRequestAndResponse(headMap, body, formatBody, timeSec));
             success(formatBody != null ? formatBody : body, headMap);
+            isSuccess = true;
         } else {
             double timeSec = (System.currentTimeMillis() - startTime) / 1000d;
-            HttpLog.e(JsonLogFormat.formatJson(getLogRequestInfo() + "\nresponse code：" + mResponseCode + " time: " + timeSec + " second"));
-            fail();
+            HttpLog.e("\n" + JsonLogFormat.formatJson(getLogRequestInfo() + "\nresponse code：" + mResponseCode + " time: " + timeSec + " second\n"));
+            isSuccess = false;
         }
+        return isSuccess;
     }
 
     /**
@@ -353,18 +357,18 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
                 }
             }
             if (responseObject instanceof EasyHttpResponse) {
-                ((EasyHttpResponse) responseObject).setResponseCode(mResponseCode);
+                EasyHttpResponse httpResponse = (EasyHttpResponse) responseObject;
+                httpResponse.setResponseCode(mResponseCode);
+                httpResponse.setRequestLog(getLogRequestInfo());
             } else if (responseObject == null) {
                 responseObject = "";
             }
         }
         switch (responseType) {
             case Response.success:
-                mRequest.setRequestState(EasyRequestState.finish);
                 HttpLog.i(mUrlStr + " SUCCESS\n \t");
                 break;
             case Response.fail:
-                mRequest.setRequestState(EasyRequestState.finish);
                 HttpLog.i(mUrlStr + " FAIL\n \t");
                 break;
             case Response.progress:
@@ -373,15 +377,7 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
         return responseObject;
     }
 
-    boolean checkListener() {
-        if (mRequest.getRequestState() == EasyRequestState.interrupt) {
-            HttpLog.i(mUrlStr + " The request was interrupted.\n \t");
-            return false;
-        }
-        return httpListener != null;
-    }
-
-    protected abstract void childRun(HttpURLConnection connection) throws IOException;
+    protected abstract boolean childRun(HttpURLConnection connection) throws IOException;
 
     protected abstract void success(String result, Map<String, List<String>> headMap);
 
@@ -462,7 +458,7 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
         if (formatBody != null) {
             returnLogBuild.append("\n格式化 返回 Body：\n").append(formatBody);
         }
-        returnLogBuild.append("\n返回 Code：").append(mResponseCode).append(" Time: ").append(timeSec).append(" Second");
+        returnLogBuild.append("\n返回 Code：").append(mResponseCode).append(" Time: ").append(timeSec).append(" Second\n");
         return JsonLogFormat.formatJson(returnLogBuild.toString()).replace(COMMA, ",");
     }
 }

@@ -1,8 +1,5 @@
 package com.jen.easy.aop;
 
-import com.jen.easy.exception.AopLog;
-import com.jen.easy.exception.ExceptionType;
-
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -25,21 +22,21 @@ abstract class DynamicProxyManager implements InvocationHandler {
 
     protected Object bind(Object target) {
         if (target == null) {
-            AopLog.exception(ExceptionType.NullPointerException, "参数不能为空");
+            AopLog.e("参数不能为空");
             return null;
         }
         this.target = target;
         try {
             return Proxy.newProxyInstance(target.getClass().getClassLoader(), target.getClass().getInterfaces(), this);
         } catch (IllegalArgumentException e) {
-            AopLog.exception(ExceptionType.IllegalArgumentException, "切入对象为空");
+            AopLog.e("切入对象为空");
         }
         return null;
     }
 
     protected void setBeforeMethod(Class<?> beforeClzz, Object... beforeParams) {
         if (beforeClzz == null) {
-            AopLog.exception(ExceptionType.NullPointerException, "Class参数不能为空");
+            AopLog.e("Class参数不能为空");
             return;
         }
         try {
@@ -53,15 +50,15 @@ abstract class DynamicProxyManager implements InvocationHandler {
                 }
             }
         } catch (InstantiationException e) {
-            AopLog.exception(ExceptionType.InstantiationException, "setBeforeMethod方法错");
+            AopLog.e("setBeforeMethod方法错");
         } catch (IllegalAccessException e) {
-            AopLog.exception(ExceptionType.IllegalAccessException, "setBeforeMethod方法错");
+            AopLog.e("setBeforeMethod方法错");
         }
     }
 
     protected void setAfterMethod(Class<?> afterClzz, Object... afterParams) {
         if (afterClzz == null) {
-            AopLog.exception(ExceptionType.NullPointerException, "Class参数不能为空");
+            AopLog.e("Class参数不能为空");
             return;
         }
         try {
@@ -75,9 +72,9 @@ abstract class DynamicProxyManager implements InvocationHandler {
                 }
             }
         } catch (InstantiationException e) {
-            AopLog.exception(ExceptionType.InstantiationException, "setAfterMethod方法错");
+            AopLog.e("setAfterMethod方法错");
         } catch (IllegalAccessException e) {
-            AopLog.exception(ExceptionType.IllegalAccessException, "setAfterMethod方法错");
+            AopLog.e("setAfterMethod方法错");
         }
     }
 
@@ -115,7 +112,7 @@ abstract class DynamicProxyManager implements InvocationHandler {
                                     beforeParams[6], beforeParams[7]);
                             break;
                         default:
-                            AopLog.exception(ExceptionType.RuntimeException, "invoke 方法参数超过8个");
+                            AopLog.e("invoke 方法参数超过8个");
                             break;
                     }
                 } else {
@@ -152,7 +149,7 @@ abstract class DynamicProxyManager implements InvocationHandler {
                                     afterParams[7]);
                             break;
                         default:
-                            AopLog.exception(ExceptionType.RuntimeException, "invoke 方法参数超过8个");
+                            AopLog.e("invoke 方法参数超过8个");
                             break;
                     }
                 } else {
@@ -160,11 +157,11 @@ abstract class DynamicProxyManager implements InvocationHandler {
                 }
             }
         } catch (IllegalAccessException e) {
-            AopLog.exception(ExceptionType.IllegalAccessException, "invoke 方法错误");
+            AopLog.e("invoke 方法错误");
         } catch (IllegalArgumentException e) {
-            AopLog.exception(ExceptionType.IllegalArgumentException, "invoke 方法错误");
+            AopLog.e("invoke 方法错误");
         } catch (InvocationTargetException e) {
-            AopLog.exception(ExceptionType.InvocationTargetException, "InvocationTargetException invoke 方法错误");
+            AopLog.e("InvocationTargetException invoke 方法错误");
         }
         return result;
     }

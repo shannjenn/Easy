@@ -1,6 +1,5 @@
 package com.jen.easy.http;
 
-import com.jen.easy.exception.HttpLog;
 import com.jen.easy.http.imp.EasyHttpListener;
 import com.jen.easy.http.request.EasyHttpDataRequest;
 import com.jen.easy.http.request.EasyHttpDownloadRequest;

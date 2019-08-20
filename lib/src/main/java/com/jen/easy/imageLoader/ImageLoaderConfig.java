@@ -6,9 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 
-import com.jen.easy.exception.ExceptionType;
-import com.jen.easy.exception.ImageLoaderLog;
-
 import java.io.File;
 
 /**
@@ -45,7 +42,7 @@ public class ImageLoaderConfig {
             if (!file.exists()) {
                 boolean result = file.mkdirs();
                 if (!result) {
-                    ImageLoaderLog.exception(ExceptionType.IllegalArgumentException, "创建图片缓存目录失败1");
+                    ImageLoaderLog.e("创建图片缓存目录失败1");
                 }
             }
         }
@@ -55,7 +52,7 @@ public class ImageLoaderConfig {
             if (!file.exists()) {
                 boolean result = file.mkdirs();
                 if (!result) {
-                    ImageLoaderLog.exception(ExceptionType.IllegalArgumentException, "创建图片缓存目录失败2");
+                    ImageLoaderLog.e("创建图片缓存目录失败2");
                 }
             }
         }
