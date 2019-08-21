@@ -46,14 +46,8 @@ public class RecyclerViewLetterActivity extends EasyActivity {
     EasyAdapter1<RecyclerViewModel> easyAdapter1;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recycler_view_letter);
-    }
-
-    @Override
     public int bindView() {
-        return 0;
+        return R.layout.activity_recycler_view_letter;
     }
 
     @Override

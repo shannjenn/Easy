@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.jen.easy.EasyBindClick;
 import com.jen.easytest.R;
+
 import easybase.EasyActivity;
 
 
@@ -15,15 +16,10 @@ import easybase.EasyActivity;
 
 public class RecyclerViewMainActivity extends EasyActivity {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recycler_view_main);
-    }
 
     @Override
     public int bindView() {
-        return 0;
+        return R.layout.activity_recycler_view_main;
     }
 
     @Override
@@ -32,8 +28,7 @@ public class RecyclerViewMainActivity extends EasyActivity {
     }
 
 
-
-    @EasyBindClick({R.id.recycleHScroll, R.id.recycleViewLetter, R.id.SlideDelete})
+    @EasyBindClick({R.id.recycleHScroll, R.id.recycleViewLetter, R.id.slideDelete})
     @Override
     protected void onBindClick(View view) {
         Class clazz = null;
@@ -46,7 +41,7 @@ public class RecyclerViewMainActivity extends EasyActivity {
                 clazz = RecyclerViewLetterActivity.class;
                 break;
             }
-            case R.id.SlideDelete: {
+            case R.id.slideDelete: {
                 clazz = RecyclerSlideDeleteActivity.class;
                 break;
             }

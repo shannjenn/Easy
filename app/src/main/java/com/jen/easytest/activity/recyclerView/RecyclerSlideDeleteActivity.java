@@ -2,19 +2,15 @@ package com.jen.easytest.activity.recyclerView;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jen.easy.EasyBindId;
 import com.jen.easytest.R;
-import com.jen.easytest.adapter.decoration.MyItemDecoration;
 import com.jen.easytest.model.RecyclerViewModel;
-import com.jen.easyui.recycler.EasyBaseAdapter;
 import com.jen.easyui.recycler.EasyHolder;
-import com.jen.easyui.recycler.letter.EasyLetterDecoration;
+import com.jen.easyui.recycler.EasyHolderBaseAdapter;
 import com.jen.easyui.recycler.listener.EasyItemListener;
 
 import java.util.ArrayList;
@@ -32,17 +28,11 @@ public class RecyclerSlideDeleteActivity extends EasyActivity {
     RecyclerView recycle;
 
     List<RecyclerViewModel> mData = new ArrayList<>();
-    EasyAdapter1<RecyclerViewModel> easyAdapter1;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recycler_slide);
-    }
+    MyAdapter easyAdapter;
 
     @Override
     public int bindView() {
-        return 0;
+        return R.layout.activity_recycler_slide;
     }
 
     @Override
@@ -90,16 +80,9 @@ public class RecyclerSlideDeleteActivity extends EasyActivity {
         mData.get(34).setLetter("R");
 
 
-        easyAdapter1 = new EasyAdapter1<>(this, mData);
-        recycle.setLayoutManager(new LinearLayoutManager(this));
-        easyAdapter1.setItemTouchSortEvent(recycle);
-        recycle.setAdapter(easyAdapter1);
-
-        EasyLetterDecoration itemDecoration = new EasyLetterDecoration(mData);
-        itemDecoration.setLetterTextColor(0xffff0000);
-        recycle.addItemDecoration(itemDecoration);
-
-        easyAdapter1.setItemListener(new EasyItemListener() {
+        easyAdapter = new MyAdapter(this, recycle);
+        easyAdapter.setDataAndNotify(mData);
+        easyAdapter.setItemListener(new EasyItemListener() {
             @Override
             public void onItemClick(View view, int position) {
                 Toast.makeText(mContext, position + "", Toast.LENGTH_LONG).show();
@@ -124,52 +107,30 @@ public class RecyclerSlideDeleteActivity extends EasyActivity {
 
     }
 
-    private class EasyAdapter1<T extends RecyclerViewModel> extends EasyBaseAdapter<T> {
+    private class MyAdapter extends EasyHolderBaseAdapter<RecyclerViewModel> {
 
-        public EasyAdapter1(Context context) {
+        public MyAdapter(Context context) {
             super(context);
         }
 
-        public EasyAdapter1(Context context, List<T> list) {
-            super(context);
-        }
-
-        public EasyAdapter1(Context context, RecyclerView recyclerView) {
+        public MyAdapter(Context context, RecyclerView recyclerView) {
             super(context, recyclerView);
         }
 
         @Override
-        public RecyclerView.ItemDecoration onDecoration() {
-            return MyItemDecoration.newInstance(mContext);
-        }
-
-        @Override
-        protected int gridLayoutItemRows(int position) {
-            return 0;
-        }
-
-        @Override
-        protected EasyHolder bindHolder(View view) {
-            return new MyHolder(this, view);
-        }
-
-        @Override
         protected int onBindLayout() {
-            return R.layout.item_recycler_view_slide;
+            return R.layout.item_recycler_view_slide2;
         }
 
-        class MyHolder extends EasyHolder {
-
-            public MyHolder(EasyBaseAdapter adapter, View itemView) {
-                super(adapter, itemView);
-            }
-
-            @Override
-            protected void onBindData(View view, int viewType, int position) {
-                TextView tv_text = view.findViewById(R.id.content);
-                tv_text.setText(mData.get(position).getLetter());
-            }
+        @Override
+        protected void onBindHolderData(EasyHolder easyHolder, View view, int viewType, int position) {
 
         }
+
+        @Override
+        public RecyclerView.ItemDecoration onDecoration() {
+            return null;
+        }
+
     }
 }

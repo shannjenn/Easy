@@ -91,13 +91,13 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
         if (mRequest instanceof EasyHttpUploadRequest) {//===============上传请求处理
             EasyHttpUploadRequest uploadRequest = (EasyHttpUploadRequest) mRequest;
             if (TextUtils.isEmpty(uploadRequest.filePath)) {
-                HttpLog.e(getLogBeforeRequest("上传文件地址不能为空"));
+                HttpLog.e(getLogBeforeRequest("上传的文件地址不能为空"));
                 fail();
                 return;
             }
             File file = new File(uploadRequest.filePath);
             if (!file.isFile()) {
-                HttpLog.e(getLogBeforeRequest("上传文件地址不可用"));
+                HttpLog.e(getLogBeforeRequest("上传的文件地址不可用 filePath = " + uploadRequest.filePath));
                 fail();
                 return;
             }

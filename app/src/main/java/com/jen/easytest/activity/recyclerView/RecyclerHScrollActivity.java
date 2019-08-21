@@ -26,14 +26,8 @@ public class RecyclerHScrollActivity extends EasyActivity {
     List<RecyclerViewModel> mData = new ArrayList<>();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recycler_scroll);
-    }
-
-    @Override
     public int bindView() {
-        return 0;
+        return R.layout.activity_recycler_scroll;
     }
 
     @Override

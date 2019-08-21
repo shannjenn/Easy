@@ -46,7 +46,7 @@ public class MainActivity extends EasyActivity {
 //        Throw.exception(ExceptionType.ClassCastException,"ClassCastException-*---------*-------");
 //        Throw.exception(ExceptionType.NullPointerException,"NullPointerException-*---------*-------");
 //        Throw.exception(ExceptionType.RuntimeException,"RuntimeException-*---------*-------");
-        onBindClick(http);
+//        onBindClick(http);
     }
 
 
