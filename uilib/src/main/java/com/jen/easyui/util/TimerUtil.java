@@ -10,7 +10,7 @@ public abstract class TimerUtil {
     private Timer timer;
     private TimerTask timerTask;
     private boolean isRunning;
-    private int timers;
+    private int timers;//-1关闭
     private ThreadType threadType;
     private Handler handler;
 
@@ -45,7 +45,7 @@ public abstract class TimerUtil {
      * @param period    .
      * @param topTimers 运行几次停止
      */
-    public TimerUtil start(long delay, long period, final long topTimers) {
+    public TimerUtil start(long delay, long period, final int topTimers) {
         if (isRunning) {
             return this;
         }
@@ -54,10 +54,10 @@ public abstract class TimerUtil {
         }
         isRunning = true;
         timer = new Timer();
+        timers = topTimers;
         timerTask = new TimerTask() {
             @Override
             public void run() {
-                timers++;
                 switch (threadType) {
                     case UIThread:
                         handler.post(new Runnable() {
@@ -71,8 +71,12 @@ public abstract class TimerUtil {
                         listener(timers);
                         break;
                 }
-                if (timers == topTimers) {
-                    cancel();
+                if (topTimers > 0) {
+                    if (timers <= -1) {
+                        cancel();
+                    } else {
+                        timers--;
+                    }
                 }
             }
         };

@@ -127,8 +127,7 @@ class HttpReflectRequestManager {
             loopMap.put(clazzName, 1);
         }
 
-        String objName = Object.class.getName();
-        while (!clazzName.equals(objName)) {
+        while (!clazzName.equals(Object.class.getName())) {
             boolean isInvalid = Invalid.isEasyInvalid(clazz, EasyInvalidType.Request);
             if (!isInvalid) {
                 parseRequestEntity(loopMap, clazz, request, urls, body, heads);

@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * 作者：ShannJenn
  * 时间：2018/10/26.
- * 说明：网络请求Pose
+ * 说明：网络请求Post
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

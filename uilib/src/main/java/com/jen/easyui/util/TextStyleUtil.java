@@ -14,22 +14,56 @@ import android.text.style.StyleSpan;
  * 时间：2018/11/30.
  * 说明：
  */
-public class TextUtil {
-    private static TextUtil me;
-
-    private TextUtil() {
+public class TextStyleUtil {
+    private TextStyleUtil() {
 
     }
 
-    public static TextUtil getIns() {
-        if (me == null) {
-            synchronized (TextUtil.class) {
-                if (me == null) {
-                    me = new TextUtil();
-                }
-            }
+    /**
+     * 左边黑体加粗
+     *
+     * @param strId   .
+     * @param partStr .
+     * @return .
+     */
+    public static SpannableStringBuilder setBoldBlackLeft(Context context, int strId, String partStr) {
+        String text = context.getString(strId, partStr);
+        return setBoldBlack(text, 0, partStr.length());
+    }
+
+    /**
+     * 右边黑体加粗
+     *
+     * @param strId   .
+     * @param partStr .
+     * @return .
+     */
+    public static SpannableStringBuilder setBoldBlackRight(Context context, int strId, String partStr) {
+        String text = context.getString(strId, partStr);
+        int start = text.length() - partStr.length();
+        int end = text.length();
+        return setBoldBlack(text, start, end);
+    }
+
+    /**
+     * 设置黑体加粗
+     *
+     * @param start .
+     * @param end   .
+     * @param text  .
+     * @return .
+     */
+    public static SpannableStringBuilder setBoldBlack(String text, int start, int end) {
+        if (text == null || text.length() == 0) {
+            return new SpannableStringBuilder("");
         }
-        return me;
+        if (start < 0 || start >= text.length() || end == 0 || end > text.length()) {
+            return new SpannableStringBuilder("");
+        }
+        SpannableStringBuilder builder = new SpannableStringBuilder(text);
+        setPartTextColor(builder, 0xff000000, start, end);
+        setPartTextBold(builder, start, end);
+        return builder;
     }
 
     /**
@@ -37,24 +71,20 @@ public class TextUtil {
      *
      * @param style .
      * @param color .
-     * @return .
      */
-    public TextUtil setPartTextColor(SpannableStringBuilder style, int color, int start, int end) {
+    public static void setPartTextColor(SpannableStringBuilder style, int color, int start, int end) {
         ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(color);
         style.setSpan(foregroundColorSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return this;
     }
 
     /**
      * 设置部分文字加粗
      *
      * @param style .
-     * @return .
      */
-    public TextUtil setPartTextBold(SpannableStringBuilder style, int start, int end) {
+    public static void setPartTextBold(SpannableStringBuilder style, int start, int end) {
         StyleSpan styleSpan = new StyleSpan(Typeface.BOLD);
         style.setSpan(styleSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return this;
     }
 
     /**
@@ -86,11 +116,10 @@ public class TextUtil {
     /*
      * 复制到粘贴板
      */
-    public TextUtil clipboard(Context context, String name, String text) {
+    public static void clipboard(Context context, String name, String text) {
         ClipboardManager cbm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clipData = ClipData.newPlainText(name, text);
         cbm.setPrimaryClip(clipData);
 //        CommonUtils.showToast(context, context.getString(R.string.copy_done));
-        return this;
     }
 }
