@@ -184,6 +184,9 @@ class HttpReflectRequestManager {
                 if (value instanceof JSONObject || value instanceof JSONArray
                         || value instanceof String || value instanceof Integer || value instanceof Float || value instanceof Long
                         || value instanceof Double || value instanceof Boolean) {
+                    if (commitType == EasyRequestCommit.onlyField) {
+                        HttpLog.w("该标记只能在实体class参数才适合使用，其他类型参数不能使用 错误参数名称：" + field.getName());
+                    }
                     switch (paramType) {
                         case Param: {
                             if (body.has(key)) {
@@ -250,6 +253,9 @@ class HttpReflectRequestManager {
                                 }
                             }
                             break;
+                        case onlyField:
+                            HttpLog.w("该标记只能在实体class参数才适合使用，其他类型参数不能使用 错误参数名称：" + field.getName());
+                            break;
                     }
                     if (isBasic) {
                         for (int i = 0; i < listObj.size(); i++) {
@@ -293,6 +299,9 @@ class HttpReflectRequestManager {
                                     HttpLog.e("object is not JSONObject, http reflectRequest error: EasyRequestCommit multiple");
                                 }
                             }
+                            break;
+                        case onlyField:
+                            item = body;
                             break;
                     }
                     parseRequest(loopMap, value, urls, item, heads);
