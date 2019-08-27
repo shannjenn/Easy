@@ -17,6 +17,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -282,6 +283,7 @@ class HttpReflectRequestManager {
                 } else if (FieldType.isEntityClass(field.getType())) {
                     JSONObject item = new JSONObject();
                     boolean haveObject = body.has(key);
+                    boolean onlyField = false;
                     switch (commitType) {
                         case def:
                             if (haveObject) {
@@ -301,11 +303,21 @@ class HttpReflectRequestManager {
                             }
                             break;
                         case onlyField:
-                            item = body;
+                            onlyField = true;
                             break;
                     }
                     parseRequest(loopMap, value, urls, item, heads);
-                    body.put(key, item);
+                    if (onlyField) {
+                        Iterator<String> keys = item.keys();
+                        while (keys.hasNext()) {
+                            String itemKey = keys.next();
+                            if (!body.has(itemKey)) {//已经存在的key不替换
+                                body.put(itemKey, item.get(itemKey));
+                            }
+                        }
+                    } else {
+                        body.put(key, item);
+                    }
                 } else {
                     HttpLog.e("不支持该类型参数：" + field.getName());
                 }

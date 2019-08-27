@@ -58,6 +58,10 @@ public class DateFormatUtil {
         return me;
     }
 
+    public static DateFormatUtil newIns(@NonNull String dateFormat) {
+        return new DateFormatUtil(dateFormat);
+    }
+
     /**
      * 设置时间格式
      *
