@@ -146,7 +146,7 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
     }
 
     private void progress(long currentPoint, long endPoint) {
-        HttpLog.d(mUrlStr + " 上传进度：currentPoint = " + currentPoint + " endPoint = " + endPoint);
+//        HttpLog.d(mUrlStr + " 上传进度：currentPoint = " + currentPoint + " endPoint = " + endPoint);
         if (httpListener != null)
             httpListener.progress(flagCode, flagStr, responseObjectProgress, currentPoint, endPoint);
     }

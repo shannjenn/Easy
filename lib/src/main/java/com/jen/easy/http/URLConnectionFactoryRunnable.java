@@ -238,7 +238,7 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
             if (mRequest.getReplaceResult().size() > 0) {
                 formatBody = replaceResult(body);
             }
-            if (EasyLog.easyHttpPrint && EasyLog.isPrint(LogLevel.I))//性能优化
+            if (EasyLog.easyHttpPrint && EasyLog.isPrint(LogLevel.I))//先判断是否打印（性能优化）
                 HttpLog.i(getLogFormatRequestAndResponse(headMap, body, formatBody, timeSec));
             success(formatBody != null ? formatBody : body, headMap);
             isSuccess = true;
@@ -393,7 +393,7 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
     /**
      * 获取请求Log
      */
-    private String getLogRequestInfo() {
+    String getLogRequestInfo() {
         StringBuilder headBuilder = new StringBuilder();
         String body = "";
         String fileRequestInfo = "";
@@ -413,11 +413,11 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
             body = mRequestObject.body.toString();
             if (mRequest instanceof EasyHttpUploadRequest) {
                 EasyHttpUploadRequest uploadRequest = (EasyHttpUploadRequest) mRequest;
-                fileRequestInfo = "\nfilePath = " + uploadRequest.filePath;
+                fileRequestInfo = "\n上传文件 filePath = " + uploadRequest.filePath;
                 fileRequestInfo += uploadRequest.fileNameKey != null ? "\nfileNameKey = " + uploadRequest.fileNameKey : "";
                 fileRequestInfo += uploadRequest.fileNameValue != null ? "\nfileNameValue = " + uploadRequest.fileNameValue : "";
             } else if (mRequest instanceof EasyHttpDownloadRequest) {
-                fileRequestInfo = "\nfilePath = " + ((EasyHttpDownloadRequest) mRequest).filePath;
+                fileRequestInfo = "\n下载文件 filePath = " + ((EasyHttpDownloadRequest) mRequest).filePath;
             }
         }
         return (mIsGet ? "Get " : "Post ") + mUrlStr

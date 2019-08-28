@@ -4,6 +4,9 @@ import com.jen.easy.constant.Unicode;
 import com.jen.easy.http.imp.EasyHttpListener;
 import com.jen.easy.http.request.EasyHttpDownloadRequest;
 import com.jen.easy.http.request.EasyRequestState;
+import com.jen.easy.log.EasyLog;
+import com.jen.easy.log.JsonLogFormat;
+import com.jen.easy.log.LogLevel;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -22,6 +25,7 @@ class URLConnectionDownloadRunnable extends URLConnectionFactoryRunnable {
 
     @Override
     protected boolean childRun(HttpURLConnection connection) throws IOException {
+        long startTime = System.currentTimeMillis();
         boolean isSuccess = false;
         responseObjectProgress = createResponseObjectProgress(Type.fileDown);
         EasyHttpDownloadRequest request = (EasyHttpDownloadRequest) mRequest;
@@ -60,6 +64,11 @@ class URLConnectionDownloadRunnable extends URLConnectionFactoryRunnable {
                 progress(curBytes, request.endPoint);
             }
             if (curBytes == request.endPoint) {
+                if (EasyLog.easyHttpPrint && EasyLog.isPrint(LogLevel.I)) {//先判断是否打印（性能优化）
+                    double timeSec = (System.currentTimeMillis() - startTime) / 1000d;
+                    HttpLog.i("\n" + JsonLogFormat.formatJson(getLogRequestInfo()
+                            + "\nresponse code：" + mResponseCode + " time: " + timeSec + " second\n"));
+                }
                 success(request.filePath, headMap);
                 isSuccess = true;
             } else {
@@ -84,7 +93,7 @@ class URLConnectionDownloadRunnable extends URLConnectionFactoryRunnable {
     }
 
     private void progress(long currentPoint, long endPoint) {
-        HttpLog.d(mUrlStr + " 下载进度：currentPoint = " + currentPoint + " endPoint = " + endPoint);
+//        HttpLog.d(mUrlStr + " 下载进度：currentPoint = " + currentPoint + " endPoint = " + endPoint);
         if (httpListener != null)
             httpListener.progress(flagCode, flagStr, responseObjectProgress, currentPoint, endPoint);
     }
