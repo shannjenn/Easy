@@ -74,12 +74,17 @@ abstract class EasyHttpManager {
             URLConnectionUploadRunnable upload = new URLConnectionUploadRunnable((EasyHttpUploadRequest) request, httpListener, flagCode, flagStr);
             pool.execute(upload);
         } else {
+            String errorMsg;
             if (request == null) {
-                HttpLog.w("参数不能为空");
+                errorMsg = "请求对象不能为空";
             } else {
-                HttpLog.w("请求参数类型错误，请继承:" + EasyHttpRequest.class.getName() + "子类:数据"
+                errorMsg = "请求对象类型错误，请继承:" + EasyHttpRequest.class.getName() + "子类:数据"
                         + EasyHttpDataRequest.class.getName() + "或上传" + EasyHttpUploadRequest.class.getName()
-                        + "或下载" + EasyHttpDownloadRequest.class.getName());
+                        + "或下载" + EasyHttpDownloadRequest.class.getName();
+            }
+            HttpLog.e(errorMsg);
+            if (httpListener != null) {
+                httpListener.fail(flagCode, flagStr, errorMsg);
             }
         }
     }
