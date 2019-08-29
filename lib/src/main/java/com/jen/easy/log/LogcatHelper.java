@@ -90,4 +90,14 @@ public class LogcatHelper extends LogcatHelperManager {
     public void setSuffix(String suffix) {
         super.setSuffix(suffix);
     }
+
+    /**
+     * 增加Log文件内容头部信息
+     *
+     * @param header 文件内容头部信息
+     */
+    @Override
+    public void setFileHeader(String header) {
+        super.setFileHeader(header);
+    }
 }

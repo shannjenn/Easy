@@ -21,6 +21,7 @@ class LogCatch extends Thread {
     private String PID;
     final String prefix = "LogCatch-";//文件前缀
     private String suffix = ".txt";//默认后缀名
+    private String fileHeader;//增加文件头部信息
 
     private LogCatch() {
         PID = String.valueOf(android.os.Process.myPid());
@@ -92,11 +93,6 @@ class LogCatch extends Thread {
             reader = new BufferedReader(new InputStreamReader(logcatProc.getInputStream(), Unicode.DEFAULT), 1024);
             String line;
             File file = new File(LogcatPath.getInstance().getPath(), getFileName());
-            boolean isCreated = file.exists();//已经创建过文件
-            String headStr = null;
-            if (mListener != null) {
-                headStr = mListener.addFileHeader();
-            }
             while (running && (line = reader.readLine()) != null) {
                 if (!running) {
                     break;
@@ -111,10 +107,10 @@ class LogCatch extends Thread {
                 }
                 if (line.contains(PID)) {
                     try {
+                        boolean exists = file.exists();
                         FileOutputStream out = new FileOutputStream(file, true);
-                        if (!isCreated && headStr != null) {
-                            isCreated = true;
-                            out.write((headStr + "\n").getBytes(Unicode.DEFAULT));
+                        if (!exists && fileHeader != null) {
+                            out.write((fileHeader + "\n").getBytes(Unicode.DEFAULT));
                         }
                         out.write((LogcatDate.getDateEN() + "  " + line + "\n").getBytes(Unicode.DEFAULT));
                         out.flush();
@@ -147,6 +143,10 @@ class LogCatch extends Thread {
 
     void setSuffix(String suffix) {
         this.suffix = suffix;
+    }
+
+    void setFileHeader(String fileHeader) {
+        this.fileHeader = fileHeader;
     }
 
     void setListener(LogcatListener listener) {

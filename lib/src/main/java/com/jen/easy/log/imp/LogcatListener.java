@@ -35,10 +35,4 @@ public abstract class LogcatListener {
         return false;
     }
 
-    /**
-     * @return 文件头部信息
-     */
-    public String addFileHeader() {
-        return null;
-    }
 }

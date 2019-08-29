@@ -64,10 +64,6 @@ public class LogcatCrashManager {
 
         }
 
-        @Override
-        public String addFileHeader() {
-            return "这个是文件头部信息===================================";
-        }
     };
 
     public void start() {

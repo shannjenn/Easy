@@ -1,5 +1,6 @@
 package easybase;
 
+import android.content.Context;
 import android.view.Gravity;
 import android.widget.Toast;
 
@@ -10,6 +11,24 @@ import android.widget.Toast;
  */
 
 public class EasyToast {
+
+    private static Toast mToast = null;
+
+    /**
+     * 避免重复提示
+     * @param context
+     * @param text
+     * @param duration
+     */
+    public static void showToast(Context context, String text, int duration) {
+        if (mToast == null) {
+            mToast = Toast.makeText(context, text, duration);
+        } else {
+            mToast.setText(text);
+            mToast.setDuration(duration);
+        }
+        mToast.show();
+    }
 
     /**
      * 显示 LENGTH_SHORT

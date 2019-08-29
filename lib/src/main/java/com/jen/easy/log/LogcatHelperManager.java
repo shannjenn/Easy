@@ -93,4 +93,14 @@ abstract class LogcatHelperManager {
         LogCatch.getInstance().setSuffix(suffix);
         CrashCatch.getInstance().setSuffix(suffix);
     }
+
+    /**
+     * 增加Log文件内容头部信息
+     *
+     * @param header 文件内容头部信息
+     */
+    public void setFileHeader(String header) {
+        LogCatch.getInstance().setFileHeader(header);
+        CrashCatch.getInstance().setFileHeader(header);
+    }
 }
