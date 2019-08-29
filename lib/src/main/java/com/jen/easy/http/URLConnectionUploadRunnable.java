@@ -56,10 +56,16 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
 
         int len;
         byte[] bufferOut = new byte[1024];
+        int i = 0;
         while ((len = in.read(bufferOut)) != -1) {
             out.write(bufferOut, 0, len);
             curBytes += len;
             progress(curBytes, endBytes);
+            i++;
+            if (i == 100) {
+                i = 0;
+                out.flush();
+            }
         }
         in.close();
         out.flush();
@@ -117,10 +123,16 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
         int len;
         long curBytes = request.startPoint;
         long endBytes = file.length();
+        int i = 0;
         while ((len = fileInputStream.read(bytes)) != -1) {
             out.write(bytes, 0, len);
             curBytes += len;
             progress(curBytes, endBytes);
+            i++;
+            if (i == 100) {
+                i = 0;
+                out.flush();
+            }
         }
         out.write(LINE_END.getBytes());
         byte[] end_data = (PREFIX + BOUNDARY + PREFIX + LINE_END).getBytes();
