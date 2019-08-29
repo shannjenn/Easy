@@ -29,16 +29,22 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
     protected boolean childRun(HttpURLConnection connection) throws IOException {
         responseObjectProgress = createResponseObjectProgress(Type.fileUp);
         EasyHttpUploadRequest request = (EasyHttpUploadRequest) mRequest;
+        File file = new File(request.filePath);
+        /*虽然说这个方法可行，但需要注意的是，一些服务器并不支持这种模式。
+        可以改用 从1.7后引入的新方法：setFixedLengthStreamingMode(writeLength);
+        它同setChunkedStreamingMode(0)有类似的效果，但在服务器兼容性上做的更好。*/
+//        connection.setFixedLengthStreamingMode(file.length());//HttpURLConnection上传大文件内存溢出的原因及解决办法（文件大小无变化时才适用）
+        connection.setChunkedStreamingMode(0);//注意部分服务器可能不支持
         if (request.isBreak && request.endPoint > request.startPoint + 100) {
             connection.setRequestProperty("Range", "bytes=" + request.startPoint + "-" + request.endPoint);
         }
         long startTime = System.currentTimeMillis();
         switch (request.uploadType) {
             case OnlyFile:
-                uploadFile(connection, request);
+                uploadFile(connection, request, file);
                 break;
             case ParamFile:
-                uploadFileAndParam(connection, request);
+                uploadFileAndParam(connection, request, file);
                 break;
         }
         return runResponse(connection, startTime);
@@ -47,25 +53,18 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
     /**
      * 单文件上传模式
      */
-    private void uploadFile(HttpURLConnection connection, EasyHttpUploadRequest request) throws IOException {
+    private void uploadFile(HttpURLConnection connection, EasyHttpUploadRequest request, File file) throws IOException {
         DataOutputStream out = new DataOutputStream(connection.getOutputStream());
-        File file = new File(request.filePath);
         DataInputStream in = new DataInputStream(new FileInputStream(file));
         long curBytes = request.startPoint;
         long endBytes = file.length();
 
         int len;
         byte[] bufferOut = new byte[1024];
-        int i = 0;
         while ((len = in.read(bufferOut)) != -1) {
             out.write(bufferOut, 0, len);
             curBytes += len;
             progress(curBytes, endBytes);
-            i++;
-            if (i == 100) {
-                i = 0;
-                out.flush();
-            }
         }
         in.close();
         out.flush();
@@ -76,12 +75,10 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
     /**
      * 参数和文件上传模式
      */
-    private void uploadFileAndParam(HttpURLConnection connection, EasyHttpUploadRequest request) throws IOException {
-        File file = new File(request.filePath);
+    private void uploadFileAndParam(HttpURLConnection connection, EasyHttpUploadRequest request, File file) throws IOException {
         String BOUNDARY = UUID.randomUUID().toString(); // 边界标识 随机生成
         String PREFIX = "--", LINE_END = "\r\n";
         String CONTENT_TYPE = "multipart/form-data"; // 内容类型
-
         connection.setInstanceFollowRedirects(false);//不自动重定向
         connection.setRequestProperty("Content-Type", CONTENT_TYPE + ";boundary=" + BOUNDARY);//设置请求头
         connection.setRequestProperty("connection", "keep-alive");//保持连接
@@ -123,16 +120,10 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
         int len;
         long curBytes = request.startPoint;
         long endBytes = file.length();
-        int i = 0;
         while ((len = fileInputStream.read(bytes)) != -1) {
             out.write(bytes, 0, len);
             curBytes += len;
             progress(curBytes, endBytes);
-            i++;
-            if (i == 100) {
-                i = 0;
-                out.flush();
-            }
         }
         out.write(LINE_END.getBytes());
         byte[] end_data = (PREFIX + BOUNDARY + PREFIX + LINE_END).getBytes();
