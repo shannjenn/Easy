@@ -8,7 +8,7 @@ import com.jen.easy.invalid.EasyInvalid;
  * 说明：http返回参数 用于解析优化
  */
 @EasyInvalid
-public abstract class EasyHttpFileResponse extends EasyHttpResponse {
+public abstract class EasyHttpDownLoadResponse extends EasyHttpResponse {
     private String filePath;
 
     public String getFilePath() {

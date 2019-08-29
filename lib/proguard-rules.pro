@@ -131,7 +131,7 @@
 -keep class com.jen.easy.http.response.EasyHttpResponse* {
     *;
 }
--keep class com.jen.easy.http.response.EasyHttpFileResponse* {
+-keep class com.jen.easy.http.response.EasyHttpDownLoadResponse* {
     *;
 }
 -keep class com.jen.easy.http.imp.EasyHttpListener {

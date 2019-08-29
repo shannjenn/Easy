@@ -1,7 +1,7 @@
 package com.jen.easy.imageLoader;
 
-import com.jen.easy.http.response.EasyHttpFileResponse;
+import com.jen.easy.http.response.EasyHttpDownLoadResponse;
 
-public class ImageLoaderResponse extends EasyHttpFileResponse {
+public class ImageLoaderResponse extends EasyHttpDownLoadResponse {
 
 }
