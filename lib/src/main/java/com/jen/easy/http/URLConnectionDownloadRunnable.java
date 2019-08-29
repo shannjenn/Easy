@@ -82,20 +82,20 @@ class URLConnectionDownloadRunnable extends URLConnectionFactoryRunnable {
     protected void success(String filePath, Map<String, List<String>> headMap) {
         mRequest.setRequestState(EasyRequestState.finish);
         if (httpListener != null)
-            httpListener.success(flagCode, flagStr, createResponseObjectSuccess(Type.fileDown, filePath), headMap);
+            httpListener.success(flagCode, flagStr, mRequest, createResponseObjectSuccess(Type.fileDown, filePath), headMap);
     }
 
     @Override
     protected void fail() {
         mRequest.setRequestState(EasyRequestState.finish);
         if (httpListener != null)
-            httpListener.fail(flagCode, flagStr, createResponseObjectFail(Type.fileDown));
+            httpListener.fail(flagCode, flagStr, mRequest, createResponseObjectFail(Type.fileDown));
     }
 
     private void progress(long currentPoint, long endPoint) {
 //        HttpLog.d(mUrlStr + " 下载进度：currentPoint = " + currentPoint + " endPoint = " + endPoint);
         if (httpListener != null)
-            httpListener.progress(flagCode, flagStr, responseObjectProgress, currentPoint, endPoint);
+            httpListener.progress(flagCode, flagStr, mRequest, responseObjectProgress, currentPoint, endPoint);
     }
 
 }

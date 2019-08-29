@@ -135,19 +135,19 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
     protected void success(String result, Map<String, List<String>> headMap) {
         mRequest.setRequestState(EasyRequestState.finish);
         if (httpListener != null)
-            httpListener.success(flagCode, flagStr, createResponseObjectSuccess(Type.fileUp, result), headMap);
+            httpListener.success(flagCode, flagStr, mRequest, createResponseObjectSuccess(Type.fileUp, result), headMap);
     }
 
     @Override
     protected void fail() {
         mRequest.setRequestState(EasyRequestState.finish);
         if (httpListener != null)
-            httpListener.fail(flagCode, flagStr, createResponseObjectFail(Type.fileUp));
+            httpListener.fail(flagCode, flagStr, mRequest, createResponseObjectFail(Type.fileUp));
     }
 
     private void progress(long currentPoint, long endPoint) {
 //        HttpLog.d(mUrlStr + " 上传进度：currentPoint = " + currentPoint + " endPoint = " + endPoint);
         if (httpListener != null)
-            httpListener.progress(flagCode, flagStr, responseObjectProgress, currentPoint, endPoint);
+            httpListener.progress(flagCode, flagStr, mRequest, responseObjectProgress, currentPoint, endPoint);
     }
 }

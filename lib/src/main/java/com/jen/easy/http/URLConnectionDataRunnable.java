@@ -34,14 +34,14 @@ class URLConnectionDataRunnable extends URLConnectionFactoryRunnable {
     protected void success(String result, Map<String, List<String>> headMap) {
         mRequest.setRequestState(EasyRequestState.finish);
         if (httpListener != null)
-            httpListener.success(flagCode, flagStr, createResponseObjectSuccess(Type.data, result), headMap);
+            httpListener.success(flagCode, flagStr, mRequest, createResponseObjectSuccess(Type.data, result), headMap);
     }
 
     @Override
     protected void fail() {
         mRequest.setRequestState(EasyRequestState.finish);
         if (httpListener != null)
-            httpListener.fail(flagCode, flagStr, createResponseObjectFail(Type.data));
+            httpListener.fail(flagCode, flagStr, mRequest, createResponseObjectFail(Type.data));
     }
 
 }

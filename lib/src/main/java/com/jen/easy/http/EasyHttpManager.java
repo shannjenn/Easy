@@ -84,7 +84,7 @@ abstract class EasyHttpManager {
             }
             HttpLog.e(errorMsg);
             if (httpListener != null) {
-                httpListener.fail(flagCode, flagStr, errorMsg);
+                httpListener.fail(flagCode, flagStr, request, errorMsg);
             }
         }
     }

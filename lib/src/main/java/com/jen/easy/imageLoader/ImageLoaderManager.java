@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.jen.easy.http.EasyHttp;
 import com.jen.easy.http.imp.EasyHttpListener;
+import com.jen.easy.http.request.EasyHttpRequest;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -305,7 +306,7 @@ abstract class ImageLoaderManager {
     private EasyHttpListener mHttpListener = new EasyHttpListener() {
 
         @Override
-        public void success(int flagCode, String flagStr, Object response, Map<String, List<String>> headMap) {
+        public void success(int flagCode, String flagStr, EasyHttpRequest request, Object response, Map<String, List<String>> headMap) {
             ImageLoaderLog.d("图片下载成功 imageUrl = " + flagStr);
             List<Image> images = mImageViewCache.get(flagStr);
             if (images != null && images.size() > 0) {
@@ -319,13 +320,13 @@ abstract class ImageLoaderManager {
         }
 
         @Override
-        public void fail(int flagCode, String flagStr, Object response) {
+        public void fail(int flagCode, String flagStr, EasyHttpRequest request, Object response) {
             ImageLoaderLog.e("图片下载失败 imageUrl = " + flagStr);
             mImageViewCache.remove(flagStr);
         }
 
         @Override
-        public void progress(int flagCode, String flag, Object response, long currentPoint, long endPoint) {
+        public void progress(int flagCode, String flag, EasyHttpRequest request, Object response, long currentPoint, long endPoint) {
             ImageLoaderLog.d("flag = " + flag + " currentPoint = " + currentPoint + " endPoint=" + endPoint);
         }
     };
