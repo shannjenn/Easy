@@ -238,7 +238,7 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
             if (mRequest.getReplaceResult().size() > 0) {
                 formatBody = replaceResult(body);
             }
-            if (EasyLog.easyHttpPrint && EasyLog.isPrint(LogLevel.I))//先判断是否打印（性能优化）
+            if (EasyLog.httpPrint && EasyLog.isPrint(LogLevel.I))//先判断是否打印（性能优化）
                 HttpLog.i(getLogFormatRequestAndResponse(headMap, body, formatBody, timeSec));
             success(formatBody != null ? formatBody : body, headMap);
             isSuccess = true;

@@ -3,25 +3,24 @@ package com.jen.easy.imageLoader;
 import com.jen.easy.log.EasyLog;
 
 public class ImageLoaderLog {
-    private static final String tag = "EasyImageLoader";
-
+    
     public static void d(String msg) {
-        if (EasyLog.easyImageLoaderPrint)
-            EasyLog.d(tag, msg);
+        if (EasyLog.imageLoaderPrint)
+            EasyLog.d(EasyLog.TAG_IMAGE_LOADER, msg);
     }
 
     public static void i(String msg) {
-        if (EasyLog.easyImageLoaderPrint)
-            EasyLog.i(tag, msg);
+        if (EasyLog.imageLoaderPrint)
+            EasyLog.i(EasyLog.TAG_IMAGE_LOADER, msg);
     }
 
     public static void w(String msg) {
-        if (EasyLog.easyImageLoaderPrint)
-            EasyLog.w(tag, msg);
+        if (EasyLog.imageLoaderPrint)
+            EasyLog.w(EasyLog.TAG_IMAGE_LOADER, msg);
     }
 
     public static void e(String msg) {
-        if (EasyLog.easyImageLoaderPrint)
-            EasyLog.e(tag, msg);
+        if (EasyLog.imageLoaderPrint)
+            EasyLog.e(EasyLog.TAG_IMAGE_LOADER, msg);
     }
 }

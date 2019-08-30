@@ -1,5 +1,7 @@
 package com.jen.easyui.util;
 
+import android.content.Context;
+import android.content.res.AssetManager;
 import android.util.Base64;
 import android.util.Log;
 
@@ -7,6 +9,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 作者：ShannJenn
@@ -16,6 +22,60 @@ import java.io.IOException;
 
 public class FileUtil {
     private static final String TAG = FileUtil.class.getSimpleName();
+
+    /**
+     * 获取Raw文件夹下文件路径
+     *
+     * @param context .
+     * @param rawId   .
+     * @return .
+     */
+    public static String getFilePathFromRaw(Context context, int rawId) {
+        return "android.resource://" + context.getPackageName() + "/" + rawId;
+    }
+
+    /**
+     * 读取raw文件夹下的文件(内容)
+     *
+     * @param resourceId raw文件夹下的文件资源ID
+     * @return 文件内容
+     */
+    public static String getFileFromRaw(Context context, int resourceId) {
+        if (null == context || resourceId < 0) {
+            return null;
+        }
+        String result = null;
+        try {
+            InputStream inputStream = context.getResources().openRawResource(resourceId);
+            int length = inputStream.available();// 获取文件的字节数
+            byte[] buffer = new byte[length];// 创建byte数组
+            inputStream.read(buffer);// 将文件中的数据读到byte数组中
+            result = bytesToString(buffer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /**
+     * 列出Asserts文件夹下的所有文件
+     *
+     * @return asserts目录下的文件名列表
+     */
+    public static List<String> getFilesFromAsserts(Context context) {
+        AssetManager assetManager = context.getAssets();
+        String[] files = null;
+        try {
+            files = assetManager.list("");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return (null == files) ? null : Arrays.asList(files);
+    }
+
+    public static String bytesToString(byte[] bytes) {
+        return new String(bytes, StandardCharsets.UTF_8);
+    }
 
     /**
      * 删除文件
@@ -95,7 +155,7 @@ public class FileUtil {
             }
             byte[] result = out.toByteArray();
             inputStream.close();
-            fileStr = Base64.encodeToString(result, Base64.NO_WRAP);
+            fileStr = Base64.encodeToString(result, Base64.DEFAULT);
         } catch (IOException e) {
             e.printStackTrace();
         }

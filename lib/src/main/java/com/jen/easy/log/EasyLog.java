@@ -8,14 +8,20 @@ import android.util.Log;
  * 说明：日志输出
  */
 public class EasyLog {
-    private static final String TAG = "EasyLog";
+    public static final String TAG = "EasyLog";
+    public static final String TAG_AOP = "EasyAOP";
+    public static final String TAG_BIND = "EasyBind";
+    public static final String TAG_HTTP = "EasyHttp";
+    public static final String TAG_IMAGE_LOADER = "EasyImageLoader";
+    public static final String TAG_SQL = "EasySQL";
+
     private static final int maxLength = 2000;
 
-    public static boolean easyAOPPrint = true;
-    public static boolean easyBindPrint = true;
-    public static boolean easyHttpPrint = true;//是否打印httpLog
-    public static boolean easyImageLoaderPrint = true;
-    public static boolean easySQLPrint = true;
+    public static boolean AOPPrint = true;
+    public static boolean bindPrint = true;
+    public static boolean httpPrint = true;//是否打印httpLog
+    public static boolean imageLoaderPrint = true;
+    public static boolean SQLPrint = true;
 
     /**
      * 日志打印级别

@@ -65,7 +65,7 @@ class URLConnectionDownloadRunnable extends URLConnectionFactoryRunnable {
             }
             randFile.close();
             if (curBytes == request.endPoint) {
-                if (EasyLog.easyHttpPrint && EasyLog.isPrint(LogLevel.I)) {//先判断是否打印（性能优化）
+                if (EasyLog.httpPrint && EasyLog.isPrint(LogLevel.I)) {//先判断是否打印（性能优化）
                     double timeSec = (System.currentTimeMillis() - startTime) / 1000d;
                     HttpLog.i("\n" + JsonLogFormat.formatJson(getLogRequestInfo()
                             + "\nresponse code：" + mResponseCode + " time: " + timeSec + " second\n"));
