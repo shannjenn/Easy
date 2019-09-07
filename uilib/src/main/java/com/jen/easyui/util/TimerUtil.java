@@ -10,9 +10,11 @@ public abstract class TimerUtil {
     private Timer timer;
     private TimerTask timerTask;
     private boolean isRunning;
-    private int timers;//-1关闭
+    private int second;//-1关闭
     private ThreadType threadType;
     private Handler handler;
+    private boolean pause;//暂停（单次无效）
+    private int topSecond;//运行几次停止
 
     public enum ThreadType {
         UIThread,//不能再子线程新建（未实现）
@@ -43,40 +45,53 @@ public abstract class TimerUtil {
     /**
      * @param delay     .
      * @param period    .
-     * @param topTimers 运行几次停止
+     * @param topSecond 运行几次停止
      */
-    public TimerUtil start(long delay, long period, final int topTimers) {
+    public TimerUtil start(long delay, long period, final int topSecond) {
         if (isRunning) {
             return this;
         }
         if (timer != null || timerTask != null) {
             stop();
         }
+        this.topSecond = topSecond;
+        second = topSecond;
         isRunning = true;
         timer = new Timer();
-        timers = topTimers;
         timerTask = new TimerTask() {
             @Override
             public void run() {
+                if (pause) {
+                    return;
+                }
                 switch (threadType) {
                     case UIThread:
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                listener(timers);
+                                listener(second);
+                                if (topSecond > 0) {
+                                    if (second <= -1) {
+                                        if (timerTask != null)
+                                            timerTask.cancel();
+                                    } else {
+                                        second--;
+                                    }
+                                }
                             }
                         });
                         break;
                     case Thread:
-                        listener(timers);
+                        listener(second);
+                        if (topSecond > 0) {
+                            if (second <= -1) {
+                                if (timerTask != null)
+                                    timerTask.cancel();
+                            } else {
+                                second--;
+                            }
+                        }
                         break;
-                }
-                if (topTimers > 0) {
-                    if (timers <= -1) {
-                        cancel();
-                    } else {
-                        timers--;
-                    }
                 }
             }
         };
@@ -88,14 +103,23 @@ public abstract class TimerUtil {
         return this;
     }
 
+    public void pause() {
+        pause = true;
+    }
+
+    public void restart() {
+        pause = false;
+        second = topSecond;
+    }
+
     public void stop() {
-        if (timer != null) {
-            timer.cancel();
-            timer = null;
-        }
         if (timerTask != null) {
             timerTask.cancel();
             timerTask = null;
+        }
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
         }
         isRunning = false;
     }

@@ -22,6 +22,7 @@ import java.util.Map;
 class HttpParseManager {
     /*错误提示*/
     private List<String> mErrors = new ArrayList<>();
+    private String responseClassName;
 
     /**
      * json解析
@@ -30,6 +31,7 @@ class HttpParseManager {
      * @return 值
      */
     <T> T newResponseInstance(Class<T> tClass) {
+        responseClassName = tClass.getName();
         T response;
         try {
             response = tClass.newInstance();
@@ -52,6 +54,7 @@ class HttpParseManager {
      */
     <T> T parseResponseBody(Class<T> tClass, String obj) {
         HttpLog.d("解析：" + tClass.getName() + "----开始");
+        responseClassName = tClass.getName();
         long startTime = System.currentTimeMillis();
         T response;
         JSONObject object;
@@ -161,28 +164,28 @@ class HttpParseManager {
             if (object instanceof JSONObject) {
                 return object;
             } else {
-                showErrorLog("数据类型错误" + fieldClass + ",该数据不是JSONObject类型");
+                showErrorLog("数据类型错误" + fieldClass + ",该数据不是JSONObject类型" + " 参数：" + param);
             }
         } else if (FieldType.isJSONArray(fieldClass)) {//解析JSONArray
             if (object instanceof JSONArray) {
                 return object;
             } else {
-                showErrorLog("数据类型错误" + fieldClass + ",该数据不是JSONArray类型");
+                showErrorLog("数据类型错误" + fieldClass + ",该数据不是JSONArray类型" + " 参数：" + param);
             }
         } else if (FieldType.isList(fieldClass)) {//解析list
             if (object instanceof JSONArray) {
                 return parseJSONArray(type, (JSONArray) object);
             } else {
-                showErrorLog("数据类型错误" + fieldClass + ",该数据为List类型");
+                showErrorLog("数据类型错误" + fieldClass + ",该数据不是List类型" + " 参数：" + param);
             }
         } else if (FieldType.isEntityClass(fieldClass)) {//解析指定class
             if (object instanceof JSONObject) {
                 return parseJSONObject(fieldClass, (JSONObject) object);
             } else {
-                showErrorLog("数据类型错误" + fieldClass + ",该数据为Class类型");
+                showErrorLog("数据类型错误" + fieldClass + ",该数据不是Class对象类型" + " 参数：" + param);
             }
         } else {
-            showErrorLog("不支持该数据类型解析" + fieldClass);
+            showErrorLog("不支持该数据类型解析" + fieldClass + " 参数：" + param);
         }
         return null;
     }
@@ -310,7 +313,7 @@ class HttpParseManager {
      * @return 返回
      */
     private int parseInt(String param, Object obj) {
-        final String logType = "Integer";
+        final String toType = "Integer";
         int res = 0;
         try {
             if (obj instanceof Integer) {
@@ -318,19 +321,19 @@ class HttpParseManager {
             } else if (obj instanceof String) {
                 res = Integer.valueOf((String) obj);
             } else if (obj instanceof Boolean) {
-                showErrorLog(getParseErrorEnable(param, obj, logType));
+                showErrorLog(getParseErrorEnable(param, obj, "Boolean ", toType));
             } else if (obj instanceof Float) {
                 Float value = (Float) obj;
                 res = value.intValue();
-                showWarnLog(getParseErrorLoss(param, obj, logType));
+                showWarnLog(getParseErrorLoss(param, obj, "Float", toType));
             } else if (obj instanceof Long) {
                 Long value = (Long) obj;
                 res = value.intValue();
-                showWarnLog(getParseErrorLoss(param, obj, logType));
+                showWarnLog(getParseErrorLoss(param, obj, "Long", toType));
             } else if (obj instanceof Double) {
                 Double value = (Double) obj;
                 res = value.intValue();
-                showWarnLog(getParseErrorLoss(param, obj, logType));
+                showWarnLog(getParseErrorLoss(param, obj, "Double", toType));
             } else if (obj instanceof Short) {
                 Short value = (Short) obj;
                 res = value.intValue();
@@ -340,10 +343,10 @@ class HttpParseManager {
                 Byte value = (Byte) obj;
                 res = value.intValue();
             } else {
-                showErrorLog(getParseErrorUnInvalid(param, obj, logType));
+                showErrorLog(getParseErrorUnInvalid(param, obj, toType));
             }
         } catch (NumberFormatException e) {
-            showErrorLog(getParseErrorThrow(param, obj, logType));
+            showErrorLog(getParseErrorThrow(param, obj, toType));
         }
         return res;
     }
@@ -398,17 +401,16 @@ class HttpParseManager {
             } else if (obj instanceof Integer) {
                 Integer value = (Integer) obj;
                 res = value.floatValue();
-                showWarnLog(getParseErrorLoss(param, obj, logType));
             } else if (obj instanceof Boolean) {
-                showErrorLog(getParseErrorEnable(param, obj, logType));
+                showErrorLog(getParseErrorEnable(param, obj, "Boolean", logType));
             } else if (obj instanceof Long) {
                 Long value = (Long) obj;
                 res = value.floatValue();
-                showWarnLog(getParseErrorLoss(param, obj, logType));
+                showWarnLog(getParseErrorLoss(param, obj, "Long", logType));
             } else if (obj instanceof Double) {
                 Double value = (Double) obj;
                 res = value.floatValue();
-                showWarnLog(getParseErrorLoss(param, obj, logType));
+                showWarnLog(getParseErrorLoss(param, obj, "Double", logType));
             } else if (obj instanceof Short) {
                 Short value = (Short) obj;
                 res = value.floatValue();
@@ -444,15 +446,15 @@ class HttpParseManager {
                 Integer value = (Integer) obj;
                 res = value.longValue();
             } else if (obj instanceof Boolean) {
-                showErrorLog(getParseErrorEnable(param, obj, logType));
+                showErrorLog(getParseErrorEnable(param, obj, "Boolean", logType));
             } else if (obj instanceof Float) {
                 Float value = (Float) obj;
                 res = value.longValue();
-                showWarnLog(getParseErrorLoss(param, obj, logType));
+                showWarnLog(getParseErrorLoss(param, obj, "Float", logType));
             } else if (obj instanceof Double) {
                 Double value = (Double) obj;
                 res = value.longValue();
-                showWarnLog(getParseErrorLoss(param, obj, logType));
+                showWarnLog(getParseErrorLoss(param, obj, "Double", logType));
             } else if (obj instanceof Short) {
                 Short value = (Short) obj;
                 res = value.longValue();
@@ -477,7 +479,7 @@ class HttpParseManager {
      * @return 返回
      */
     private double parseDouble(String param, Object obj) {
-        final String logType = "Double";
+        final String toType = "Double";
         double res = 0;
         try {
             if (obj instanceof Double) {
@@ -487,16 +489,16 @@ class HttpParseManager {
             } else if (obj instanceof Integer) {
                 Integer value = (Integer) obj;
                 res = value.doubleValue();
-                showWarnLog(getParseErrorLoss(param, obj, logType));
+                showWarnLog(getParseErrorLoss(param, obj, "Integer", toType));
             } else if (obj instanceof Boolean) {
-                showErrorLog(getParseErrorEnable(param, obj, logType));
+                showErrorLog(getParseErrorEnable(param, obj, "Boolean", toType));
             } else if (obj instanceof Float) {
                 Float value = (Float) obj;
                 res = value.doubleValue();
             } else if (obj instanceof Long) {
                 Long value = (Long) obj;
                 res = value.doubleValue();
-                showWarnLog(getParseErrorLoss(param, obj, logType));
+                showWarnLog(getParseErrorLoss(param, obj, "Long", toType));
             } else if (obj instanceof Short) {
                 Short value = (Short) obj;
                 res = value.doubleValue();
@@ -506,10 +508,10 @@ class HttpParseManager {
                 Byte value = (Byte) obj;
                 res = value.doubleValue();
             } else {
-                showErrorLog(getParseErrorUnInvalid(param, obj, logType));
+                showErrorLog(getParseErrorUnInvalid(param, obj, toType));
             }
         } catch (NumberFormatException e) {
-            showErrorLog(getParseErrorThrow(param, obj, logType));
+            showErrorLog(getParseErrorThrow(param, obj, toType));
         }
         return res;
     }
@@ -521,7 +523,7 @@ class HttpParseManager {
      * @return 返回
      */
     private short parseShort(String param, Object obj) {
-        final String logType = "Short";
+        final String toType = "Short";
         short res = 0;
         try {
             if (obj instanceof Short) {
@@ -531,31 +533,31 @@ class HttpParseManager {
             } else if (obj instanceof Integer) {
                 Integer value = (Integer) obj;
                 res = value.shortValue();
-                showWarnLog(getParseErrorLoss(param, obj, logType));
+                showWarnLog(getParseErrorLoss(param, obj, "Integer", toType));
             } else if (obj instanceof Boolean) {
-                showErrorLog(getParseErrorEnable(param, obj, logType));
+                showErrorLog(getParseErrorEnable(param, obj, "Boolean", toType));
             } else if (obj instanceof Float) {
                 Float value = (Float) obj;
                 res = value.shortValue();
-                showWarnLog(getParseErrorLoss(param, obj, logType));
+                showWarnLog(getParseErrorLoss(param, obj, "Float", toType));
             } else if (obj instanceof Long) {
                 Long value = (Long) obj;
                 res = value.shortValue();
-                showWarnLog(getParseErrorLoss(param, obj, logType));
+                showWarnLog(getParseErrorLoss(param, obj, "Long", toType));
             } else if (obj instanceof Double) {
                 Double value = (Double) obj;
                 res = value.shortValue();
-                showWarnLog(getParseErrorLoss(param, obj, logType));
+                showWarnLog(getParseErrorLoss(param, obj, "Double", toType));
             } else if (obj instanceof Character) {
                 res = Short.valueOf(String.valueOf(obj));
             } else if (obj instanceof Byte) {
                 Byte value = (Byte) obj;
                 res = value.shortValue();
             } else {
-                showErrorLog(getParseErrorUnInvalid(param, obj, logType));
+                showErrorLog(getParseErrorUnInvalid(param, obj, toType));
             }
         } catch (NumberFormatException e) {
-            showErrorLog(e.getMessage() + getParseErrorThrow(param, obj, logType));
+            showErrorLog(e.getMessage() + getParseErrorThrow(param, obj, toType));
         }
         return res;
     }
@@ -626,30 +628,30 @@ class HttpParseManager {
         return res;
     }
 
-    private String getParseErrorLoss(String param, Object obj, String type) {
-        return "参数:" + param + " Json值:" + obj + " 转换为" + type + " 类型可能会丢失精度";
+    private String getParseErrorLoss(String param, Object obj, String fromType, String toType) {
+        return "参数:" + param + " Json值:" + obj + "，从" + fromType + "类型转换为" + toType + "类型，可能会丢失精度";
     }
 
-    private String getParseErrorEnable(String param, Object obj, String type) {
-        return "参数:" + param + " Json值:" + obj + " 无法转换成" + type + "类型";
+    private String getParseErrorEnable(String param, Object obj, String fromType, String toType) {
+        return "参数:" + param + " Json值:" + obj + "，从" + fromType + "类型无法转换成" + toType + "类型";
     }
 
-    private String getParseErrorUnInvalid(String param, Object obj, String type) {
-        return "参数:" + param + " Json值:" + obj + " 不支持" + type + "类型转换";
+    private String getParseErrorUnInvalid(String param, Object obj, String toType) {
+        return "参数:" + param + " Json值:" + obj + "，不支持的数据类型，无法转换成" + toType + "类型";
     }
 
-    private String getParseErrorThrow(String param, Object obj, String type) {
-        return "参数:" + param + " Json值:" + obj + "转换成" + type + "类型错误";
+    private String getParseErrorThrow(String param, Object obj, String toType) {
+        return "参数:" + param + " Json值:" + obj + "，转换成" + toType + "类型发生错误";
     }
 
     /**
      * 警告Log
      *
-     * @param error 错误信息
+     * @param error 警告信息
      */
-    private void showErrorLog(String error, Exception e) {
+    private void showWarnLog(String error) {
         if (!mErrors.contains(error)) {
-            HttpLog.e(error + "\n" + e.getMessage());
+            HttpLog.w(error + "，" + responseClassName);
             mErrors.add(error);
         }
     }
@@ -659,9 +661,9 @@ class HttpParseManager {
      *
      * @param error 错误信息
      */
-    private void showWarnLog(String error) {
+    private void showErrorLog(String error, Exception e) {
         if (!mErrors.contains(error)) {
-            HttpLog.w(error);
+            HttpLog.e(error + "，" + responseClassName + "\n" + e.getMessage());
             mErrors.add(error);
         }
     }
@@ -673,7 +675,7 @@ class HttpParseManager {
      */
     private void showErrorLog(String error) {
         if (!mErrors.contains(error)) {
-            HttpLog.e(error);
+            HttpLog.e(error + "，" + responseClassName);
             mErrors.add(error);
         }
     }

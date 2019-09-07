@@ -25,9 +25,17 @@
         </attr>
 
         <attr name="centerIsEditText" format="boolean" />
+        <attr name="centerEditTextFocusEnable" format="boolean" />
         <attr name="centerEditTextLines" format="integer" />
         <attr name="centerEditTextTextSize" format="dimension" />
+        <attr name="centerEditTextTextStyle">
+            <enum name="normal" value="0" />
+            <enum name="bold" value="1" />
+            <enum name="italic" value="2" />
+            <enum name="bold_italic" value="3" />
+        </attr>
         <attr name="centerEditTextTextColor" format="color" />
+        <attr name="centerEditTextBackgroundDrawable" format="reference" />
         <attr name="centerEditTextTextHint" format="string" />
         <attr name="centerEditTextTextHintColor" format="color" />
         <attr name="centerEditTextMarginTop" format="dimension" />

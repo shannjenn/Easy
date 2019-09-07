@@ -3,6 +3,8 @@ package com.jen.easyui.dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.jen.easy.bind.EasyBind;
 
@@ -29,11 +31,16 @@ public abstract class EasyDialogCustom extends EasyDialogFactory {
         easyBind.inject(this, layout);
         initView(layout);
         setContentView(layout);
+        if (alwaysHideKeyboard()) {
+            Window window = getWindow();
+            if (window != null)
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        }
     }
 
     @Override
     protected void onTouchOutsideListener() {
-        if(touchOutsideHideInputMethod){
+        if (touchOutsideHideInputMethod) {
 
         }
     }
@@ -41,6 +48,15 @@ public abstract class EasyDialogCustom extends EasyDialogFactory {
     protected abstract int bindLayout();
 
     protected abstract void initView(View layout);
+
+    /**
+     * 禁止键盘弹出
+     *
+     * @return .
+     */
+    protected boolean alwaysHideKeyboard() {
+        return false;
+    }
 
     @Override
     public void show() {

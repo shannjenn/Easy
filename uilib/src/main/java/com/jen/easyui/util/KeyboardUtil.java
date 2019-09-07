@@ -7,8 +7,11 @@ import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+
+import com.jen.easy.log.EasyLog;
 
 import java.util.Objects;
 
@@ -54,11 +57,54 @@ public class KeyboardUtil {
     /**
      * @param listener .
      */
-    public static void setOnKeyboardChangeListener(Activity context, final KeyboardChangeListener listener) {
+    public static void setOnKeyboardChangeListener(Activity activity, final KeyboardChangeListener listener) {
         final int[] virtualKeyboardHeight = new int[1];//获取屏幕的高度,该方式的获取不包含虚拟键盘
-        final int screenHeight = context.getResources().getDisplayMetrics().heightPixels;
+        final int screenHeight = activity.getResources().getDisplayMetrics().heightPixels;
         final int screenHeight6 = screenHeight / 6;//屏幕6分之一的高度，作用是防止获取到虚拟键盘的高度
-        final View rootView = context.getWindow().getDecorView();
+        final View rootView = activity.getWindow().getDecorView();
+
+        rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            //当键盘弹出隐藏的时候会 调用此方法。
+            @Override
+            public void onGlobalLayout() {
+                //回调该方法时rootView还未绘制，需要设置绘制完成监听
+                rootView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Rect rect = new Rect();
+                        //获取屏幕底部坐标
+                        rootView.getWindowVisibleDisplayFrame(rect);
+                        //获取键盘的高度
+                        int heightDifference = screenHeight - rect.bottom;
+                        if (heightDifference < screenHeight6) {
+                            virtualKeyboardHeight[0] = heightDifference;
+                            if (listener != null) {
+                                listener.onKeyboardHide();
+                            }
+                        } else {
+                            if (listener != null) {
+                                listener.onKeyboardShow(heightDifference - virtualKeyboardHeight[0]);
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * @param listener .
+     */
+    public static void setOnKeyboardChangeListener(Dialog dialog, final KeyboardChangeListener listener) {
+        final int[] virtualKeyboardHeight = new int[1];//获取屏幕的高度,该方式的获取不包含虚拟键盘
+        final int screenHeight = dialog.getContext().getResources().getDisplayMetrics().heightPixels;
+        final int screenHeight6 = screenHeight / 6;//屏幕6分之一的高度，作用是防止获取到虚拟键盘的高度
+        Window window = dialog.getWindow();
+        if (window == null) {
+            EasyLog.e("KeyboardUtil setOnKeyboardChangeListener window == null");
+            return;
+        }
+        final View rootView = window.getDecorView();
 
         rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             //当键盘弹出隐藏的时候会 调用此方法。
@@ -92,17 +138,19 @@ public class KeyboardUtil {
     /**
      * 软键盘状态切换监听
      */
-    public interface KeyboardChangeListener {
+    public abstract static class KeyboardChangeListener {
         /**
          * 键盘弹出
          *
          * @param keyboardHeight 键盘高度
          */
-        void onKeyboardShow(int keyboardHeight);
+        protected void onKeyboardShow(int keyboardHeight) {
+        }
 
         /**
          * 键盘隐藏
          */
-        void onKeyboardHide();
+        protected void onKeyboardHide() {
+        }
     }
 }

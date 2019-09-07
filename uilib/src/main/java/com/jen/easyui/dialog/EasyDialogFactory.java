@@ -104,6 +104,15 @@ public abstract class EasyDialogFactory extends Dialog {
     /**
      * 隐藏软键盘
      *
+     * @param view .
+     */
+    public void hideSorfInput(View view) {
+        hideSoftInput(view.getWindowToken());
+    }
+
+    /**
+     * 隐藏软键盘
+     *
      * @param token .
      */
     private void hideSoftInput(IBinder token) {

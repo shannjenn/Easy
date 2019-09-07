@@ -35,9 +35,6 @@ public class EasyItemLayout extends RelativeLayout {
     private final int DEFAULT_TEXT_COLOR_COUNT = 0XFF6b6b6b;//默认字体颜色count
     private final int TEXT_HINT_COLOR = 0XFFD9D9D9;
 
-    /*是否为输入模式：TRUE显示EditText，隐藏TextView*/
-    boolean centerIsEdit;
-
     TextView easy_item_left_tv;
     TextView easy_item_center_tv;
     EditText easy_item_center_et;
@@ -64,11 +61,16 @@ public class EasyItemLayout extends RelativeLayout {
     int centerTextGray;//默认0
     final int GRAY_LEFT = 0, GRAY_CENTER = 1, GRAY_RIGHT = 2;
 
+    /*是否为输入模式：TRUE显示EditText，隐藏TextView*/
+    boolean centerIsEdit;
+    boolean centerEditTextFocusEnable;
     int centerEditTextSize;
     int centerEditTextColor;
     int centerEditTextHintColor;
     String centerEditTextHint;
     int centerEditLines = 1;
+    int centerEditTextTextStyle;//字体样式
+    int centerEditTextBackgroundDrawable;//背景
 
     int rightWidth;
     String rightText;
@@ -101,7 +103,6 @@ public class EasyItemLayout extends RelativeLayout {
         int defaultTextSize = DensityUtil.dp2pxInt(DEFAULT_TEXT_SIZE);
         TypedArray a = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.EasyItemLayout, defStyleAttr, 0);
 
-        centerIsEdit = a.getBoolean(R.styleable.EasyItemLayout_centerIsEditText, false);
         leftText = a.getString(R.styleable.EasyItemLayout_leftText);
 
         leftTextSize = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_leftTextSize, defaultTextSize);
@@ -117,6 +118,8 @@ public class EasyItemLayout extends RelativeLayout {
         centerTextTextLines = a.getInt(R.styleable.EasyItemLayout_centerTextViewLines, 1);
         centerTextGray = a.getInt(R.styleable.EasyItemLayout_centerTextViewGray, GRAY_LEFT);
 
+        centerIsEdit = a.getBoolean(R.styleable.EasyItemLayout_centerIsEditText, false);
+        centerEditTextFocusEnable = a.getBoolean(R.styleable.EasyItemLayout_centerEditTextFocusEnable, true);
         centerEditTextSize = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_centerEditTextTextSize, defaultTextSize);
         centerEditTextColor = a.getColor(R.styleable.EasyItemLayout_centerEditTextTextColor, DEFAULT_TEXT_COLOR_CONTENT);
         centerEditTextHintColor = a.getColor(R.styleable.EasyItemLayout_centerEditTextTextHintColor, TEXT_HINT_COLOR);
@@ -124,6 +127,8 @@ public class EasyItemLayout extends RelativeLayout {
         centerEditLines = a.getInt(R.styleable.EasyItemLayout_centerEditTextLines, 1);
         centerEditTextMarginTop = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_centerEditTextMarginTop, 0);
         centerEditTextMarginBottom = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_centerEditTextMarginBottom, 0);
+        centerEditTextTextStyle = a.getInt(R.styleable.EasyItemLayout_centerEditTextTextStyle, 0);//0默认正常字体
+        centerEditTextBackgroundDrawable = a.getResourceId(R.styleable.EasyItemLayout_centerEditTextBackgroundDrawable, -1);
 
         rightWidth = a.getDimensionPixelOffset(R.styleable.EasyItemLayout_rightWidth, -1);
         rightText = a.getString(R.styleable.EasyItemLayout_rightText);
@@ -158,15 +163,15 @@ public class EasyItemLayout extends RelativeLayout {
         int txtGray = Gravity.START;
         switch (centerTextGray) {
             case GRAY_LEFT: {
-                txtGray = Gravity.START;
+                txtGray = Gravity.START | Gravity.CENTER_VERTICAL;
                 break;
             }
             case GRAY_CENTER: {
-                txtGray = Gravity.CENTER;
+                txtGray = Gravity.CENTER | Gravity.CENTER_VERTICAL;
                 break;
             }
             case GRAY_RIGHT: {
-                txtGray = Gravity.END;
+                txtGray = Gravity.END | Gravity.CENTER_VERTICAL;
                 break;
             }
         }
@@ -200,10 +205,15 @@ public class EasyItemLayout extends RelativeLayout {
         easy_item_center_tv.setLines(centerTextTextLines);
         easy_item_center_tv.setGravity(txtGray);
 
+        easy_item_center_et.setFocusable(centerEditTextFocusEnable);
         easy_item_center_et.setHint(centerEditTextHint);
         easy_item_center_et.setTextSize(TypedValue.COMPLEX_UNIT_PX, centerEditTextSize);
         easy_item_center_et.setTextColor(centerEditTextColor);
         easy_item_center_et.setHintTextColor(centerEditTextHintColor);
+        if (centerEditTextBackgroundDrawable != -1) {
+            easy_item_center_et.setBackgroundResource(centerEditTextBackgroundDrawable);
+        }
+        easy_item_center_et.setTypeface(easy_item_center_et.getTypeface(), centerEditTextTextStyle);
 //        easy_item_center_et.setFilters(new InputFilter[]{new InputFilter.LengthFilter(itemEditMaxLength)});
         LinearLayout.LayoutParams et_params = (LinearLayout.LayoutParams) easy_item_center_et.getLayoutParams();
         et_params.topMargin = centerEditTextMarginTop;
@@ -230,15 +240,15 @@ public class EasyItemLayout extends RelativeLayout {
         int rightGray = Gravity.START;
         switch (rightTextViewGray) {
             case GRAY_LEFT: {
-                rightGray = Gravity.START;
+                rightGray = Gravity.START | Gravity.CENTER_VERTICAL;
                 break;
             }
             case GRAY_CENTER: {
-                rightGray = Gravity.CENTER;
+                rightGray = Gravity.CENTER | Gravity.CENTER_VERTICAL;
                 break;
             }
             case GRAY_RIGHT: {
-                rightGray = Gravity.END;
+                rightGray = Gravity.END | Gravity.CENTER_VERTICAL;
                 break;
             }
         }
@@ -275,16 +285,14 @@ public class EasyItemLayout extends RelativeLayout {
         }
     };
 
+    public EditText getCenterEditTextView() {
+        return easy_item_center_et;
+    }
+
+    //===============================================================================================
+
     public void setTitle(String text) {
         easy_item_left_tv.setText(text);
-    }
-
-    public void setCenterTextText(String text) {
-        easy_item_center_tv.setText(text);
-    }
-
-    public void setContentEdit(String text) {
-        easy_item_center_et.setText(text);
     }
 
     public void setCount(String text) {
@@ -304,6 +312,22 @@ public class EasyItemLayout extends RelativeLayout {
         easy_item_left_tv.setText(text);
     }
 
+    public void setCenterTextText(String text) {
+        easy_item_center_tv.setText(text);
+    }
+
+    public void setCenterEditText(String text) {
+        easy_item_center_et.setText(text);
+    }
+
+    public String getCenterTextText() {
+        return easy_item_center_tv.getText().toString();
+    }
+
+    public String getCenterEditText() {
+        return easy_item_center_et.getText().toString();
+    }
+
     public void setRightText(String text) {
         easy_item_right_tv.setText(text);
     }
@@ -311,14 +335,5 @@ public class EasyItemLayout extends RelativeLayout {
     public String getRightText() {
         return easy_item_right_tv.getText().toString();
     }
-
-    public void setCenterText(String text) {
-        easy_item_center_tv.setText(text);
-    }
-
-    public String getCenterText() {
-        return easy_item_center_tv.getText().toString();
-    }
-
 
 }
