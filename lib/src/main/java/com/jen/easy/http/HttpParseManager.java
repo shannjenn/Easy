@@ -119,11 +119,11 @@ class HttpParseManager {
                     }
                     field.set(tObj, value);
                 } catch (JSONException e) {
-                    showErrorLog("JSONException：类型：" + fieldClass + " 参数：" + param, e);
+                    showErrorLog("JSONException：参数类型=" + fieldClass + " 参数名称=" + param, e);
                 } catch (IllegalAccessException e) {
-                    showErrorLog("IllegalAccessException：类型：" + fieldClass + " 参数：" + param, e);
+                    showErrorLog("IllegalAccessException：参数类型=" + fieldClass + " 参数名称=" + param, e);
                 } catch (IllegalArgumentException e) {
-                    showErrorLog("IllegalArgumentException：类型：" + fieldClass + " 参数：" + param, e);
+                    showErrorLog("IllegalArgumentException：参数类型=" + fieldClass + " 参数名称=" + param, e);
                 }
             }
         }
@@ -164,28 +164,28 @@ class HttpParseManager {
             if (object instanceof JSONObject) {
                 return object;
             } else {
-                showErrorLog("数据类型错误" + fieldClass + ",该数据不是JSONObject类型" + " 参数：" + param);
+                showErrorLog("数据类型错误Json数据=" + object + "，该数据不是JSONObject类型" + "，参数名称=" + param + "，参数类型=" + fieldClass);
             }
         } else if (FieldType.isJSONArray(fieldClass)) {//解析JSONArray
             if (object instanceof JSONArray) {
                 return object;
             } else {
-                showErrorLog("数据类型错误" + fieldClass + ",该数据不是JSONArray类型" + " 参数：" + param);
+                showErrorLog("数据类型错误Json数据=" + object + "，该数据不是JSONArray类型" + "，参数名称=" + param + "，参数类型=" + fieldClass);
             }
         } else if (FieldType.isList(fieldClass)) {//解析list
             if (object instanceof JSONArray) {
                 return parseJSONArray(type, (JSONArray) object);
             } else {
-                showErrorLog("数据类型错误" + fieldClass + ",该数据不是List类型" + " 参数：" + param);
+                showErrorLog("数据类型错误Json数据=" + object + "，该数据不是List类型" + "，参数名称=" + param + "，参数类型=" + fieldClass);
             }
         } else if (FieldType.isEntityClass(fieldClass)) {//解析指定class
             if (object instanceof JSONObject) {
                 return parseJSONObject(fieldClass, (JSONObject) object);
             } else {
-                showErrorLog("数据类型错误" + fieldClass + ",该数据不是Class对象类型" + " 参数：" + param);
+                showErrorLog("数据类型错误，Json数据=" + object + "，该数据不是Class对象类型" + "，参数名称=" + param + "，参数类型=" + fieldClass);
             }
         } else {
-            showErrorLog("不支持该数据类型解析" + fieldClass + " 参数：" + param);
+            showErrorLog("不支持该数据类型解析，Json数据=" + object + "，参数名称=" + param + "，参数类型=" + fieldClass);
         }
         return null;
     }
