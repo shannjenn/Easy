@@ -1,6 +1,7 @@
 package com.jen.easyui.recycler.viewpager;
 
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -89,6 +90,7 @@ public abstract class EasyFragmentPagerAdapter extends FragmentStatePagerAdapter
         return mFragments.indexOf(object);
     }
 
+    @NonNull
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         Fragment instantiateItem = ((Fragment) super.instantiateItem(container, position));

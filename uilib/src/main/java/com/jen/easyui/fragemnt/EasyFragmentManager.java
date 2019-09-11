@@ -51,6 +51,9 @@ public class EasyFragmentManager {
             EasyLog.w(cls.getName() + " 未曾增加");
             return;
         }
+        if (mCurrentFragment != null && mCurrentFragment.getClass().getName().equals(cls.getName())) {
+            return;
+        }
         FragmentTransaction transition = mManager.beginTransaction();
         transition.show(fragment);
         if (mCurrentFragment != null) {
@@ -106,5 +109,9 @@ public class EasyFragmentManager {
      */
     public Fragment getCurrentFragment() {
         return mCurrentFragment;
+    }
+
+    public boolean isFragmentShow(Class clazz) {
+        return mCurrentFragment != null && mCurrentFragment.getClass().getName().equals(clazz.getName());
     }
 }

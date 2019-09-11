@@ -1,5 +1,7 @@
 package com.jen.easytest.activity.recyclerView.fragment;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
@@ -84,12 +86,12 @@ public class StockInfoListFragment extends EasyFragment {
     protected Type mType = Type.SELECTION_SINGLE;
 
     @Override
-    protected int inflateLayout() {
+    protected int bindLayout() {
         return R.layout.fragment_stock_info_list;
     }
 
     @Override
-    protected void initViews() {
+    protected void initData(@Nullable Bundle savedInstanceState) {
         iv_stock_info_arrow_left.setVisibility(View.INVISIBLE);
         iv_stock_info_arrow_right.setVisibility(View.VISIBLE);
 
@@ -114,17 +116,7 @@ public class StockInfoListFragment extends EasyFragment {
         tv_stock_info_amplitude.setCompType(StockInfo.CompType.amplitude);
         tv_stock_info_volRate.setCompType(StockInfo.CompType.volRate);
         tv_stock_info_committee.setCompType(StockInfo.CompType.committee);
-//        tv_stock_info_sevenDayChgPct.setCompType(StockInfo.CompType.sevenDayChgPct);
-//        tv_stock_info_prevClose.setCompType(StockInfo.CompType.prevClose);
 
-//        smart_refresh.setEnableLoadmore(true);
-//        smart_refresh.setRefreshHeader(new ClassicsHeader(mActivity).setProgressResource(R.drawable.loadanimation).setArrowResource(R.drawable.shiprun_down));
-//        smart_refresh.setOnRefreshListener(mOnRefreshListener);
-//        smart_refresh.setOnLoadmoreListener(mOnLoadMoreListener);
-    }
-
-    @Override
-    protected void loadDataAfterView() {
         if (mStartRequest) {
             if (mRequest instanceof StockChooseConditionResultRequest) {
 //                mRequest.flagCode = H_FLAG_RESULT_REFRESH;

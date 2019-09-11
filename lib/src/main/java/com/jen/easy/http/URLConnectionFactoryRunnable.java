@@ -9,7 +9,6 @@ import com.jen.easy.http.imp.EasyHttpListener;
 import com.jen.easy.http.request.EasyHttpDownloadRequest;
 import com.jen.easy.http.request.EasyHttpRequest;
 import com.jen.easy.http.request.EasyHttpUploadRequest;
-import com.jen.easy.http.response.EasyHttpDownLoadResponse;
 import com.jen.easy.http.response.EasyHttpResponse;
 import com.jen.easy.log.EasyLog;
 import com.jen.easy.log.JsonLogFormat;
@@ -327,10 +326,6 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
                     switch (responseType) {
                         case Response.success: {
                             responseObject = new HttpParseManager().newResponseInstance(mResponse);
-                            if (responseObject instanceof EasyHttpDownLoadResponse) {
-                                EasyHttpDownLoadResponse fileResponse = (EasyHttpDownLoadResponse) responseObject;
-                                fileResponse.setFilePath(filePath);
-                            }
                             break;
                         }
                         case Response.fail:

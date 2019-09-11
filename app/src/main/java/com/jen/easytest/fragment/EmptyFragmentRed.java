@@ -1,5 +1,8 @@
 package com.jen.easytest.fragment;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+
 import com.jen.easytest.R;
 import easybase.EasyFragment;
 
@@ -11,18 +14,12 @@ public class EmptyFragmentRed extends EasyFragment {
 
 
     @Override
-    protected int inflateLayout() {
+    protected int bindLayout() {
         return R.layout.fragment_empty_red;
     }
 
     @Override
-    protected void initViews() {
+    protected void initData(@Nullable Bundle savedInstanceState) {
 
     }
-
-    @Override
-    protected void loadDataAfterView() {
-
-    }
-
 }

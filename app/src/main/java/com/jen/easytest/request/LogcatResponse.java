@@ -1,7 +1,7 @@
 package com.jen.easytest.request;
 
-import com.jen.easy.http.response.EasyHttpDownLoadResponse;
+import com.jen.easy.http.response.EasyHttpResponse;
 
-public class LogcatResponse extends EasyHttpDownLoadResponse {
+public class LogcatResponse extends EasyHttpResponse {
 
 }

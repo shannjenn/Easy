@@ -11,7 +11,7 @@ import com.jen.easy.invalid.EasyInvalid;
 @EasyInvalid
 public class EasyHttpDownloadRequest extends EasyHttpRequest {
     /**
-     * 上传/下载文件位置
+     * 下载文件位置
      */
     public String filePath;
     /**
