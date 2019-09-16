@@ -1,0 +1,8 @@
+<resources>
+    <declare-styleable name="AlignTextView">
+        <attr name="alignOneTextWithCount" format="integer" /><!--一个字后面带几个半脚空格-->
+        <attr name="alignEndTextIgnore" format="boolean" /><!--最后一个字符是否忽略，如冒号-->
+
+        <attr name="android:text" />
+    </declare-styleable>
+</resources>

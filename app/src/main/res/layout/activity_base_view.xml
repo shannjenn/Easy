@@ -43,5 +43,24 @@
             android:layout_height="wrap_content"
             android:text="11111111111111" />
 
+        <com.jen.easyui.view.baseview.AlignTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:alignOneTextWithCount="4"
+            app:alignEndTextIgnore="true"
+            android:text="电话：" />
+
+        <com.jen.easyui.view.baseview.AlignTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:alignEndTextIgnore="true"
+            app:alignOneTextWithCount="1"
+            android:text="电话号：" />
+
+        <com.jen.easyui.view.baseview.AlignTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="电话号码：" />
+
     </LinearLayout>
 </LinearLayout>
