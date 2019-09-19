@@ -45,7 +45,7 @@ public abstract class EasyCyclePagerAdapter<T> extends PagerAdapter {
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-                EasyLog.d("onPageSelected position = " + position);
+//                EasyLog.d("onPageSelected position = " + position);
                 if (viewPager.getSuperCurrentItem() == mData.size() - 1) {
                     viewPager.setCurrentItem(1, false);
                 } else if (viewPager.getSuperCurrentItem() == 0) {

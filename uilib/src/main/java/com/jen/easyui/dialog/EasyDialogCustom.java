@@ -1,6 +1,7 @@
 package com.jen.easyui.dialog;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -21,6 +22,12 @@ public abstract class EasyDialogCustom extends EasyDialogFactory {
 
     public EasyDialogCustom(Context context) {
         super(context);
+        this.context = context;
+        init();
+    }
+
+    public EasyDialogCustom(@NonNull Context context, int themeResId) {
+        super(context, themeResId);
         this.context = context;
         init();
     }

@@ -18,6 +18,10 @@ public abstract class EasyDialogFactory extends Dialog {
         super(context, R.style._easy_dialog);
     }
 
+    public EasyDialogFactory(@NonNull Context context, int themeResId) {
+        super(context, themeResId);
+    }
+
     /**
      * 最外层布局属于Window，默认宽高:WindowManager.LayoutParams.WRAP_CONTENT
      * 相应属性也可以在布局中设置：如居中显示:android:layout_gravity="center"

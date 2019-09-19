@@ -1,6 +1,7 @@
 package com.jen.easyui.dialog;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -34,6 +35,12 @@ public class EasyDialog extends EasyDialogFactory implements View.OnClickListene
 
     EasyDialog(Context context, Build build) {
         super(context);
+        this.build = build;
+        initViews();
+    }
+
+    public EasyDialog(@NonNull Context context, int themeResId, Build build) {
+        super(context, themeResId);
         this.build = build;
         initViews();
     }

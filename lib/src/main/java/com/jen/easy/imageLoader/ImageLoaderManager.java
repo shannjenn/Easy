@@ -135,7 +135,7 @@ abstract class ImageLoaderManager {
      * @param width          宽
      * @param height         高
      */
-    protected void setImage(final String imageUrl, final boolean useCache, final ImageView imageView, final boolean showDefaultImg, final int width, final int height) {
+    public void setImage(final boolean useCache, final String imageUrl, final ImageView imageView, final boolean showDefaultImg, final int width, final int height) {
         mExecutorService.submit(new Runnable() {
             public void run() {
                 if (TextUtils.isEmpty(imageUrl)) {
@@ -175,27 +175,27 @@ abstract class ImageLoaderManager {
     }
 
     public void setImage(final String imageUrl, final ImageView imageView, final int width, final int height) {
-        setImage(imageUrl, true, imageView, false, width, height);
+        setImage(true, imageUrl, imageView, false, width, height);
     }
 
     public void setImage(String imageUrl, ImageView imageView) {
-        setImage(imageUrl, true, imageView, false, 0, 0);
+        setImage(true, imageUrl, imageView, false, 0, 0);
     }
 
     public void setImage(String imageUrl, ImageView imageView, boolean showDefaultImg) {
-        setImage(imageUrl, true, imageView, showDefaultImg, 0, 0);
+        setImage(true, imageUrl, imageView, showDefaultImg, 0, 0);
     }
 
-    public void setImage(final String imageUrl, boolean useCache, final ImageView imageView, final int width, final int height) {
-        setImage(imageUrl, useCache, imageView, false, width, height);
+    public void setImage(boolean useCache, final String imageUrl, final ImageView imageView, final int width, final int height) {
+        setImage(useCache, imageUrl, imageView, false, width, height);
     }
 
-    public void setImage(String imageUrl, boolean useCache, ImageView imageView) {
-        setImage(imageUrl, useCache, imageView, false, 0, 0);
+    public void setImage(boolean useCache, String imageUrl, ImageView imageView) {
+        setImage(useCache, imageUrl, imageView, false, 0, 0);
     }
 
-    public void setImage(String imageUrl, boolean useCache, ImageView imageView, boolean showDefaultImg) {
-        setImage(imageUrl, useCache, imageView, showDefaultImg, 0, 0);
+    public void setImage(boolean useCache, String imageUrl, ImageView imageView, boolean showDefaultImg) {
+        setImage(useCache, imageUrl, imageView, showDefaultImg, 0, 0);
     }
 
     private boolean getFromCache(String imageUrl) {
