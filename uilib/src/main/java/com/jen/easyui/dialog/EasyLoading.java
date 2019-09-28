@@ -32,6 +32,8 @@ public abstract class EasyLoading extends Dialog {
         if (window != null) {
             //全局，需要增加权限<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
             window.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+            //失去焦点，防止系统导航栏自动弹出
+            window.setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
         }
     }
 

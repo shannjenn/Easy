@@ -1,5 +1,6 @@
 package com.jen.easyui.dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.IBinder;
@@ -9,17 +10,21 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.inputmethod.InputMethodManager;
 
+import com.jen.easy.log.EasyLog;
 import com.jen.easyui.R;
 
 public abstract class EasyDialogFactory extends Dialog {
+    protected Context context;
     boolean touchOutsideHideInputMethod = true;//点击空白隐藏输入法
 
     public EasyDialogFactory(@NonNull Context context) {
         super(context, R.style._easy_dialog);
+        this.context = context;
     }
 
     public EasyDialogFactory(@NonNull Context context, int themeResId) {
         super(context, themeResId);
+        this.context = context;
     }
 
     /**
@@ -30,6 +35,11 @@ public abstract class EasyDialogFactory extends Dialog {
     public void show() {
         if (isShowing()) {
             return;
+        } else if (context instanceof Activity) {
+            if (((Activity) context).isFinishing()) {//TODO: activity结束后不能show，否则报错
+                EasyLog.e("activity已经销毁，该Dialog不能再show方法：" + getClass().getName());
+                return;
+            }
         }
 //        Window window = getWindow();
 //        if (window != null) {

@@ -241,7 +241,7 @@ public class GifView extends View {
 
         movie.setTime(mCurrentAnimationTime);
 
-        canvas.save(Canvas.MATRIX_SAVE_FLAG);
+        canvas.save();
         canvas.scale(mScale, mScale);
         movie.draw(canvas, mLeft / mScale, mTop / mScale);
         canvas.restore();

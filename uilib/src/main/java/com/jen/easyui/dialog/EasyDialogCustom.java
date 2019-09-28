@@ -18,17 +18,14 @@ import com.jen.easy.bind.EasyBind;
  * 时间：2018/1/15.
  */
 public abstract class EasyDialogCustom extends EasyDialogFactory {
-    public Context context;
 
     public EasyDialogCustom(Context context) {
         super(context);
-        this.context = context;
         init();
     }
 
     public EasyDialogCustom(@NonNull Context context, int themeResId) {
         super(context, themeResId);
-        this.context = context;
         init();
     }
 
