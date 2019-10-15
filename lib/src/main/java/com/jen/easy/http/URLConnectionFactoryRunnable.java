@@ -9,6 +9,7 @@ import com.jen.easy.http.imp.EasyHttpListener;
 import com.jen.easy.http.request.EasyHttpDownloadRequest;
 import com.jen.easy.http.request.EasyHttpRequest;
 import com.jen.easy.http.request.EasyHttpUploadRequest;
+import com.jen.easy.http.request.EasyRequestState;
 import com.jen.easy.http.response.EasyHttpResponse;
 import com.jen.easy.log.EasyLog;
 import com.jen.easy.log.JsonLogFormat;
@@ -36,11 +37,15 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
     EasyHttpRequest mRequest;
     private Class mResponse;
 
-    String mUrlStr = "";
+    private String mUrlStr = "";
     int mResponseCode = -1;//返回码
+    double mResponseTime;//返回时间
     String mCharset;//编码
     boolean mIsGet = true;
     HttpReflectRequestManager.RequestObject mRequestObject;
+    private StringBuilder mParseLog;//解析log信息
+    @Type
+    int mType;
 
     @IntDef({Type.data, Type.fileUp, Type.fileDown})
     public @interface Type {
@@ -62,6 +67,7 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
         this.httpListener = httpListener;
         this.flagCode = flagCode;
         this.flagStr = flagStr;
+        mParseLog = new StringBuilder();
     }
 
     @Override
@@ -216,7 +222,7 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
      * 运行获取返回参数
      */
     boolean runResponse(HttpURLConnection connection, long startTime) throws IOException {
-        boolean isSuccess;
+        boolean isSuccess = false;
         mResponseCode = connection.getResponseCode();
         if ((mResponseCode == 200)) {
             Map<String, List<String>> headMap = connection.getHeaderFields();//获取head数据
@@ -231,20 +237,12 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
             inStream.close();
             connection.disconnect();
 
-            double timeSec = (System.currentTimeMillis() - startTime) / 1000d;
+            mResponseTime = (System.currentTimeMillis() - startTime) / 1000d;
             String body = bodyBuffer.toString();
-            String formatBody = null;
-            if (mRequest.getReplaceResult().size() > 0) {
-                formatBody = replaceResult(body);
-            }
-            if (EasyLog.httpPrint && EasyLog.isPrint(LogLevel.I))//先判断是否打印（性能优化）
-                HttpLog.i(getLogFormatRequestAndResponse(headMap, body, formatBody, timeSec));
-            success(formatBody != null ? formatBody : body, headMap);
+            success(body, mRequest.getReplaceResult().size() > 0 ? replaceResult(body) : null, headMap);
             isSuccess = true;
         } else {
-            double timeSec = (System.currentTimeMillis() - startTime) / 1000d;
-            HttpLog.e("\n" + JsonLogFormat.formatJson(getLogRequestInfo() + "\nresponse code：" + mResponseCode + " time: " + timeSec + " second\n"));
-            isSuccess = false;
+            mResponseTime = (System.currentTimeMillis() - startTime) / 1000d;
         }
         return isSuccess;
     }
@@ -264,35 +262,14 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
         return response;
     }
 
-    Object createResponseObjectSuccess(@Type int type, String resultOrFilePath) {
-        switch (type) {
-            case Type.data:
-                return createResponseObject(type, Response.success, resultOrFilePath, null);
-            case Type.fileDown:
-                return createResponseObject(type, Response.success, null, resultOrFilePath);
-            case Type.fileUp:
-                return createResponseObject(type, Response.success, resultOrFilePath, null);
-        }
-        return "";
-    }
-
-    Object createResponseObjectFail(@Type int type) {
-        return createResponseObject(type, Response.fail, null, null);
-    }
-
-    Object createResponseObjectProgress(@Type int type) {
-        return createResponseObject(type, Response.progress, null, null);
-    }
-
     /**
      * 创建返回实体
      *
-     * @param type         类型
      * @param result       返回数据
      * @param responseType 返回类型
      * @return .
      */
-    private Object createResponseObject(@Type int type, @Response int responseType, String result, String filePath) {
+    Object createResponseObject(@Response int responseType, String result) {
         Object responseObject = null;
         if (mResponse == null || FieldType.isObject(mResponse) || FieldType.isString(mResponse)) {//Object和String类型不做数据解析
             switch (responseType) {
@@ -305,11 +282,11 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
                     break;
             }
         } else {
-            switch (type) {
+            switch (mType) {
                 case Type.data: {
                     switch (responseType) {
                         case Response.success: {
-                            responseObject = new HttpParseManager().parseResponseBody(mResponse, result);
+                            responseObject = new HttpParseManager().parseResponseBody(mResponse, result, mParseLog);
                             break;
                         }
                         case Response.fail: {
@@ -339,7 +316,7 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
                 case Type.fileUp: {
                     switch (responseType) {
                         case Response.success: {
-                            responseObject = new HttpParseManager().parseResponseBody(mResponse, result);
+                            responseObject = new HttpParseManager().parseResponseBody(mResponse, result, mParseLog);
                             break;
                         }
                         case Response.fail:
@@ -359,24 +336,79 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
                 responseObject = "";
             }
         }
-        switch (responseType) {
-            case Response.success:
-                HttpLog.i(mUrlStr + " SUCCESS\n \t");
-                break;
-            case Response.fail:
-                HttpLog.i(mUrlStr + " FAIL\n \t");
-                break;
-            case Response.progress:
-                break;
-        }
         return responseObject;
     }
 
     protected abstract boolean childRun(HttpURLConnection connection) throws IOException;
 
-    protected abstract void success(String result, Map<String, List<String>> headMap);
+    void success(String body, String formatBody, Map<String, List<String>> headMap) {
+        Object responseObj = createResponseObject(Response.success, formatBody == null ? body : formatBody);
+        if (EasyLog.httpPrint && EasyLog.isPrint(LogLevel.I)) {//先判断是否打印（性能优化）
+            String typeLog = "";
+            switch (mType) {
+                case Type.data:
+                    typeLog = "数据请求";
+                    break;
+                case Type.fileDown:
+                    typeLog = "文件下载";
+                    break;
+                case Type.fileUp:
+                    typeLog = "文件上传";
+                    break;
+            }
+            String mResultLog = "EasyHttp 请求信息打印\n"
+                    + getLogRequestInfo()
+                    + getLogResponseInfo(headMap, body, formatBody)
+                    + "\nresponse code："
+                    + mResponseCode
+                    + " time: "
+                    + mResponseTime
+                    + " 秒"
+                    + mParseLog.toString()
+                    + "\n"
+                    + typeLog
+                    + "成功\n\n \t";
+            HttpLog.d("============================================================================== EasyHttp " + typeLog);
+            HttpLog.i(JsonLogFormat.formatJson(mResultLog));
+        }
+        mRequest.setRequestState(EasyRequestState.finish);
+        if (httpListener != null) {
+            httpListener.success(flagCode, flagStr, mRequest, responseObj, headMap);
+        }
+    }
 
-    protected abstract void fail();
+    private void fail() {
+        Object responseObj = createResponseObject(Response.fail, null);
+        if (EasyLog.httpPrint && EasyLog.isPrint(LogLevel.W)) {//先判断是否打印（性能优化）
+            String typeLog = "";
+            switch (mType) {
+                case Type.data:
+                    typeLog = "数据请求";
+                    break;
+                case Type.fileDown:
+                    typeLog = "文件下载";
+                    break;
+                case Type.fileUp:
+                    typeLog = "文件上传";
+                    break;
+            }
+            String mResultLog = "EasyHttp 请求信息打印\n"
+                    + getLogRequestInfo()
+                    + "\nresponse code："
+                    + mResponseCode
+                    + " time: "
+                    + mResponseTime
+                    + " 秒\n"
+                    + typeLog
+                    + "失败\n\n \t";
+            HttpLog.d("============================================================================== EasyHttp " + typeLog);
+            HttpLog.w(JsonLogFormat.formatJson(mResultLog));
+        }
+        mRequest.setRequestState(EasyRequestState.finish);
+        if (httpListener != null) {
+            httpListener.fail(flagCode, flagStr, mRequest, responseObj);
+        }
+    }
 
     /**
      * 开始请求前错误提示Log
@@ -388,11 +420,12 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
     /**
      * 获取请求Log
      */
-    String getLogRequestInfo() {
+    private String getLogRequestInfo() {
         StringBuilder headBuilder = new StringBuilder();
         String body = "";
         String fileRequestInfo = "";
         if (mRequestObject != null) {
+            headBuilder.append("{");
             Set<String> headKeys = mRequestObject.heads.keySet();
             for (String key : headKeys) {//设置请求头
                 String value = mRequestObject.heads.get(key);
@@ -401,59 +434,64 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
                 headBuilder.append(value);
                 headBuilder.append(",");
             }
-            if (headBuilder.length() > 0) {
-                headBuilder.insert(0, "{");
+            if (headBuilder.length() > 1) {
                 headBuilder.replace(headBuilder.length() - 1, headBuilder.length(), "}");
+            } else {
+                headBuilder.append("}");
             }
             body = mRequestObject.body.toString();
             if (mRequest instanceof EasyHttpUploadRequest) {
                 EasyHttpUploadRequest uploadRequest = (EasyHttpUploadRequest) mRequest;
-                fileRequestInfo = "\n上传文件 filePath = " + uploadRequest.filePath;
+                fileRequestInfo = "\n上传文件路径FilePath：" + uploadRequest.filePath;
                 fileRequestInfo += uploadRequest.fileNameKey != null ? "\nfileNameKey = " + uploadRequest.fileNameKey : "";
                 fileRequestInfo += uploadRequest.fileNameValue != null ? "\nfileNameValue = " + uploadRequest.fileNameValue : "";
             } else if (mRequest instanceof EasyHttpDownloadRequest) {
-                fileRequestInfo = "\n下载文件 filePath = " + ((EasyHttpDownloadRequest) mRequest).filePath;
+                fileRequestInfo = "\n下载文件保存路径FilePath：" + ((EasyHttpDownloadRequest) mRequest).filePath;
             }
         }
-        return (mIsGet ? "Get " : "Post ") + mUrlStr
-                + "\n请求 class = " + mRequest.getClass().getName()
+        return "请求方式：" + (mIsGet ? "Get " : "Post ") + "\n请求地址：" + mUrlStr
+                + "\n请求Class：" + mRequest.getClass().getName()
+                + "\n返回Class：" + mResponse.getName()
                 + fileRequestInfo
-                + "\n请求 Heads：\n" + headBuilder.toString()
-                + "\n请求 Body：\n" + body;
+                + "\n请求Heads：\n" + headBuilder.toString()
+                + "\n请求Body：\n" + body;
 
     }
 
     /**
-     * 格式化返回数据Log
+     * 获取返回数据Log
      */
-    private String getLogFormatRequestAndResponse(Map<String, List<String>> ResponseHeadMap, String responseBody, String formatBody, double timeSec) {
+    private String getLogResponseInfo(Map<String, List<String>> ResponseHeadMap, String responseBody, String formatBody) {
         final String COMMA = "\\,带英文逗号的值不做Json换行";
         StringBuilder returnLogBuild = new StringBuilder();
-        returnLogBuild.append(getLogRequestInfo()).append("\n返回 Heads：\n{");
-        for (Map.Entry<String, List<String>> entry : ResponseHeadMap.entrySet()) {
-            returnLogBuild.append(entry.getKey());
-            returnLogBuild.append(":");
-            StringBuilder valueBuild = new StringBuilder();
-            int size = entry.getValue().size();
-            for (int i = 0; i < size; i++) {
-                if (i > 0) {
-                    valueBuild.append(" && ");
+        if (ResponseHeadMap != null) {
+            returnLogBuild.append("\n返回Heads：\n{");
+            for (Map.Entry<String, List<String>> entry : ResponseHeadMap.entrySet()) {
+                returnLogBuild.append(entry.getKey());
+                returnLogBuild.append(":");
+                StringBuilder valueBuild = new StringBuilder();
+                int size = entry.getValue().size();
+                for (int i = 0; i < size; i++) {
+                    if (i > 0) {
+                        valueBuild.append(" && ");
+                    }
+                    valueBuild.append(entry.getValue().get(i));
                 }
-                valueBuild.append(entry.getValue().get(i));
+                String value = valueBuild.toString().replace(",", COMMA);
+                returnLogBuild.append(value);
+                returnLogBuild.append(",");
             }
-            String value = valueBuild.toString().replace(",", COMMA);
-            returnLogBuild.append(value);
-            returnLogBuild.append(",");
+            if (ResponseHeadMap.size() > 0) {
+                returnLogBuild.deleteCharAt(returnLogBuild.length() - 1);
+            }
+            returnLogBuild.append("}");
         }
-        if (ResponseHeadMap.size() > 0) {
-            returnLogBuild.deleteCharAt(returnLogBuild.length() - 1);
+        if (responseBody != null) {
+            returnLogBuild.append("\n返回Body：\n").append(responseBody);
+            if (formatBody != null) {
+                returnLogBuild.append("\n格式化返回Body：\n").append(formatBody);
+            }
         }
-        returnLogBuild.append("}");
-        returnLogBuild.append("\n返回 Body：\n").append(responseBody);
-        if (formatBody != null) {
-            returnLogBuild.append("\n格式化 返回 Body：\n").append(formatBody);
-        }
-        returnLogBuild.append("\n返回 Code：").append(mResponseCode).append(" Time: ").append(timeSec).append(" Second\n");
-        return JsonLogFormat.formatJson(returnLogBuild.toString()).replace(COMMA, ",");
+        return returnLogBuild.toString().replace(COMMA, ",");
     }
 }

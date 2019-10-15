@@ -52,8 +52,7 @@ class HttpParseManager {
      * @param obj    数据
      * @return 值
      */
-    <T> T parseResponseBody(Class<T> tClass, String obj) {
-        HttpLog.d("解析：" + tClass.getName() + "----开始");
+    <T> T parseResponseBody(Class<T> tClass, String obj, StringBuilder mParseLog) {
         responseClassName = tClass.getName();
         long startTime = System.currentTimeMillis();
         T response;
@@ -68,9 +67,17 @@ class HttpParseManager {
         mErrors.clear();
         double timeSec = (System.currentTimeMillis() - startTime) / 1000d;
         if (response == null) {
-            HttpLog.w("解析：" + tClass.getName() + "----失败 解析耗时:" + timeSec + "秒");
+            mParseLog.append("\n解析：")
+                    .append(tClass.getName())
+                    .append("----解析失败 解析耗时:")
+                    .append(timeSec)
+                    .append("秒");
         } else {
-            HttpLog.d("解析：" + tClass.getName() + "----成功 解析耗时:" + timeSec + "秒");
+            mParseLog.append("\n解析：")
+                    .append(tClass.getName())
+                    .append("----解析成功 解析耗时:")
+                    .append(timeSec)
+                    .append("秒");
         }
         return response;
     }

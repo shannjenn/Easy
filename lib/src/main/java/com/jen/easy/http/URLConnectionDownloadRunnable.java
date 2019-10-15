@@ -3,10 +3,6 @@ package com.jen.easy.http;
 import com.jen.easy.constant.Unicode;
 import com.jen.easy.http.imp.EasyHttpListener;
 import com.jen.easy.http.request.EasyHttpDownloadRequest;
-import com.jen.easy.http.request.EasyRequestState;
-import com.jen.easy.log.EasyLog;
-import com.jen.easy.log.JsonLogFormat;
-import com.jen.easy.log.LogLevel;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -21,13 +17,14 @@ class URLConnectionDownloadRunnable extends URLConnectionFactoryRunnable {
 
     URLConnectionDownloadRunnable(EasyHttpDownloadRequest request, EasyHttpListener httpListener, int flagCode, String flagStr) {
         super(request, httpListener, flagCode, flagStr);
+        mType = Type.fileDown;
     }
 
     @Override
     protected boolean childRun(HttpURLConnection connection) throws IOException {
         long startTime = System.currentTimeMillis();
         boolean isSuccess = false;
-        responseObjectProgress = createResponseObjectProgress(Type.fileDown);
+        responseObjectProgress = createResponseObject(Response.progress, null);
         EasyHttpDownloadRequest request = (EasyHttpDownloadRequest) mRequest;
         if (request.startPoint <= 1024 * 2) {
             request.startPoint = 0;
@@ -48,7 +45,6 @@ class URLConnectionDownloadRunnable extends URLConnectionFactoryRunnable {
         }
 
         mResponseCode = connection.getResponseCode();
-        HttpLog.d(mUrlStr + "  Http请求返回码：" + mResponseCode);
         if (mResponseCode == 200) {
             long curBytes = request.startPoint;
             Map<String, List<String>> headMap = connection.getHeaderFields();//获取head数据
@@ -64,39 +60,22 @@ class URLConnectionDownloadRunnable extends URLConnectionFactoryRunnable {
                 progress(curBytes, request.endPoint);
             }
             randFile.close();
+            mResponseTime = (System.currentTimeMillis() - startTime) / 1000d;
             if (curBytes == request.endPoint) {
-                if (EasyLog.httpPrint && EasyLog.isPrint(LogLevel.I)) {//先判断是否打印（性能优化）
-                    double timeSec = (System.currentTimeMillis() - startTime) / 1000d;
-                    HttpLog.i("\n" + JsonLogFormat.formatJson(getLogRequestInfo()
-                            + "\nresponse code：" + mResponseCode + " time: " + timeSec + " second\n"));
-                }
-                success(request.filePath, headMap);
+                success(null, null, headMap);
                 isSuccess = true;
-            } else {
-                HttpLog.e("下载文件出错，下载文件大小不一致");
             }
+        }
+        if (!isSuccess) {
+            mResponseTime = (System.currentTimeMillis() - startTime) / 1000d;
         }
         return isSuccess;
     }
 
-    @Override
-    protected void success(String filePath, Map<String, List<String>> headMap) {
-        mRequest.setRequestState(EasyRequestState.finish);
-        if (httpListener != null)
-            httpListener.success(flagCode, flagStr, mRequest, createResponseObjectSuccess(Type.fileDown, filePath), headMap);
-    }
-
-    @Override
-    protected void fail() {
-        mRequest.setRequestState(EasyRequestState.finish);
-        if (httpListener != null)
-            httpListener.fail(flagCode, flagStr, mRequest, createResponseObjectFail(Type.fileDown));
-    }
-
     private void progress(long currentPoint, long endPoint) {
-//        HttpLog.d(mUrlStr + " 下载进度：currentPoint = " + currentPoint + " endPoint = " + endPoint);
-        if (httpListener != null)
+        if (httpListener != null) {
             httpListener.progress(flagCode, flagStr, mRequest, responseObjectProgress, currentPoint, endPoint);
+        }
     }
 
 }

@@ -11,6 +11,7 @@ import android.view.View;
  * 密码输入框 ●●●●●
  */
 public abstract class EasyPasswordEditText extends android.support.v7.widget.AppCompatEditText {
+    private boolean see;
 
     public EasyPasswordEditText(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -48,7 +49,7 @@ public abstract class EasyPasswordEditText extends android.support.v7.widget.App
 
         public char charAt(int index) {
 //            return '●';
-            return password();
+            return see ? mSource.charAt(index) : password();
         }
 
         public int length() {
@@ -66,4 +67,14 @@ public abstract class EasyPasswordEditText extends android.support.v7.widget.App
     }
 
     protected abstract char password();
+
+    public boolean isSee() {
+        return see;
+    }
+
+    public void setSee(boolean see) {
+        this.see = see;
+        setText(getText());
+        setSelection(getText().toString().length());
+    }
 }

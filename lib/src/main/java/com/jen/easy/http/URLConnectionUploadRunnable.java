@@ -2,7 +2,6 @@ package com.jen.easy.http;
 
 import com.jen.easy.http.imp.EasyHttpListener;
 import com.jen.easy.http.request.EasyHttpUploadRequest;
-import com.jen.easy.http.request.EasyRequestState;
 
 import org.json.JSONException;
 
@@ -14,8 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
@@ -23,11 +20,12 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
 
     URLConnectionUploadRunnable(EasyHttpUploadRequest request, EasyHttpListener httpListener, int flagCode, String flagStr) {
         super(request, httpListener, flagCode, flagStr);
+        mType = Type.fileUp;
     }
 
     @Override
     protected boolean childRun(HttpURLConnection connection) throws IOException {
-        responseObjectProgress = createResponseObjectProgress(Type.fileUp);
+        responseObjectProgress = createResponseObject(Response.progress, null);
         EasyHttpUploadRequest request = (EasyHttpUploadRequest) mRequest;
         File file = new File(request.filePath);
         /*虽然说这个方法可行，但需要注意的是，一些服务器并不支持这种模式。
@@ -134,23 +132,9 @@ class URLConnectionUploadRunnable extends URLConnectionFactoryRunnable {
         out.close();
     }
 
-    @Override
-    protected void success(String result, Map<String, List<String>> headMap) {
-        mRequest.setRequestState(EasyRequestState.finish);
-        if (httpListener != null)
-            httpListener.success(flagCode, flagStr, mRequest, createResponseObjectSuccess(Type.fileUp, result), headMap);
-    }
-
-    @Override
-    protected void fail() {
-        mRequest.setRequestState(EasyRequestState.finish);
-        if (httpListener != null)
-            httpListener.fail(flagCode, flagStr, mRequest, createResponseObjectFail(Type.fileUp));
-    }
-
     private void progress(long currentPoint, long endPoint) {
-//        HttpLog.d(mUrlStr + " 上传进度：currentPoint = " + currentPoint + " endPoint = " + endPoint);
-        if (httpListener != null)
+        if (httpListener != null) {
             httpListener.progress(flagCode, flagStr, mRequest, responseObjectProgress, currentPoint, endPoint);
+        }
     }
 }

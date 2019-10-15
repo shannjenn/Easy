@@ -35,6 +35,6 @@ public class EasyHttpTool {
      */
     public static <T> T parseResponse(Class<T> tClass, String obj) {
         HttpParseManager parseManager = new HttpParseManager();
-        return parseManager.parseResponseBody(tClass, obj);
+        return parseManager.parseResponseBody(tClass, obj, new StringBuilder());
     }
 }
