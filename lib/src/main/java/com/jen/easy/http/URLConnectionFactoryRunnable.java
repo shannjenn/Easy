@@ -453,8 +453,8 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
                 + "\n请求Class：" + mRequest.getClass().getName()
                 + "\n返回Class：" + mResponse.getName()
                 + fileRequestInfo
-                + "\n请求Heads：\n" + headBuilder.toString()
-                + "\n请求Body：\n" + body;
+                + "\n请求Heads：" + headBuilder.toString()
+                + "\n请求Body：" + body;
 
     }
 
@@ -465,7 +465,7 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
         final String COMMA = "\\,带英文逗号的值不做Json换行";
         StringBuilder returnLogBuild = new StringBuilder();
         if (ResponseHeadMap != null) {
-            returnLogBuild.append("\n返回Heads：\n{");
+            returnLogBuild.append("\n返回Heads：{");
             for (Map.Entry<String, List<String>> entry : ResponseHeadMap.entrySet()) {
                 returnLogBuild.append(entry.getKey());
                 returnLogBuild.append(":");
@@ -487,9 +487,9 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
             returnLogBuild.append("}");
         }
         if (responseBody != null) {
-            returnLogBuild.append("\n返回Body：\n").append(responseBody);
+            returnLogBuild.append("\n返回Body：").append(responseBody);
             if (formatBody != null) {
-                returnLogBuild.append("\n格式化返回Body：\n").append(formatBody);
+                returnLogBuild.append("\n格式化返回Body：").append(formatBody);
             }
         }
         return returnLogBuild.toString().replace(COMMA, ",");
