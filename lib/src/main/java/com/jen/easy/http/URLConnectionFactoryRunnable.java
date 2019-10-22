@@ -450,11 +450,11 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
             }
         }
         return "请求方式：" + (mIsGet ? "Get " : "Post ") + "\n请求地址：" + mUrlStr
-                + "\n请求Class：" + mRequest.getClass().getName()
-                + "\n返回Class：" + mResponse.getName()
+                + "\n请求类名：" + mRequest.getClass().getName()
+                + "\n返回类名：" + mResponse.getName()
                 + fileRequestInfo
-                + "\n请求Heads：" + headBuilder.toString()
-                + "\n请求Body：" + body;
+                + "\n请求头部：" + headBuilder.toString()
+                + "\n请求实体：" + body;
 
     }
 
@@ -465,7 +465,7 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
         final String COMMA = "\\,带英文逗号的值不做Json换行";
         StringBuilder returnLogBuild = new StringBuilder();
         if (ResponseHeadMap != null) {
-            returnLogBuild.append("\n返回Heads：{");
+            returnLogBuild.append("\n返回头部：{");
             for (Map.Entry<String, List<String>> entry : ResponseHeadMap.entrySet()) {
                 returnLogBuild.append(entry.getKey());
                 returnLogBuild.append(":");
@@ -487,9 +487,9 @@ abstract class URLConnectionFactoryRunnable implements Runnable {
             returnLogBuild.append("}");
         }
         if (responseBody != null) {
-            returnLogBuild.append("\n返回Body：").append(responseBody);
+            returnLogBuild.append("\n返回实体：").append(responseBody);
             if (formatBody != null) {
-                returnLogBuild.append("\n格式化返回Body：").append(formatBody);
+                returnLogBuild.append("\n返回实体格式化：").append(formatBody);
             }
         }
         return returnLogBuild.toString().replace(COMMA, ",");
